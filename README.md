@@ -54,7 +54,7 @@
         - A command prompt will open and ask for login. Enter your username fro PIC
         - Then enter your PASSCODE as created in the step above.
         
-![PuTTY Configuration](/READMEfigs/puttyConfig.png)
+![PuTTY Configuration](READMEfigs/puttyConfig.png)
 
 - **Login to WinSCP:**
     - Now you can login to WinSCP and connect to your folder on PIC.
@@ -65,4 +65,4 @@
         - In "User name" enter your username
         - In "Password" enter your PASSCODE
         
-![PuTTY Configuration](/READMEfigs/WINSCPConfig.png)
+![PuTTY Configuration](READMEfigs/WINSCPConfig.png)
