@@ -9,5 +9,5 @@
 The overall goal of the SRN model is develop a framework which integrates GCAM and various other submodules to analyze several sectors including water, energy, land, socio-economics at various spatial and temporal scales. 
 
        
-![PuTTY Configuration](READMEfigs/srn_workflow.png =150px)
+![PuTTY Configuration](READMEfigs/srn_workflow.png =150x)
 
