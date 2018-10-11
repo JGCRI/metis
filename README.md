@@ -12,4 +12,4 @@ The overall goal of the SRN model is develop a framework which integrates GCAM a
 ![PuTTY Configuration](READMEfigs/srn_workflow.png)
 
 
-<img src="/READMEfigs/srn_workflow.png" width="50%">
+<img src="READMEfigs/srn_workflow.png">
