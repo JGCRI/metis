@@ -1,14 +1,15 @@
 #' srn.colors
 #'
 #' This function loads various color palettes used previously in GCAM
-#' as well as new palettes for SRN modeling
+#' as well as new palettes for SRN modeling to the global environment
 #' @keywords colors, palette
+#' @export
 #' @examples
 #' srn.colors()
 #' pie(rep(1,length(colorsX_Basic)),label=names(colorsX_Basic),col=colorsX_Basic)
 #' @import RColorBrewer
 
-
+srn.colors <- function(){
 # GCAM Color Palettes
 
 # General purpose color scheme where sequentail colors do not clash too much
@@ -320,4 +321,4 @@ colorsX_elec_tech_colors <- c( "a Coal" = "gray60",
                                "energy reduction" = "grey",
                                "Total" = "black",
                                "Other" = "black")
-
+}

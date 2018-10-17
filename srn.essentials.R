@@ -26,5 +26,5 @@ on.exit(options(old), add = TRUE)
 old <- setwd(tempdir())
 on.exit(setwd(old), add = TRUE)
 
-devtools::install_git("https://khan404@stash.pnnl.gov/scm/~khan404/srn.git", ref="dev_userguide")
+install_github(repo="zarrarkhan/srn",'dev_srn')
 
