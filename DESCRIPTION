@@ -1,0 +1,11 @@
+Package: srn
+Title: Sub-Regional Nexus Modeling Tool
+Version: 0.0.1
+Authors@R: person("Zarrar", "Khan", email = "zarrar85@gmail.com", role = c("aut", "cre"))
+Description: Package to process water-energy-land nexus data to different sub-regional levels.
+Depends: R (>= 3.4.3)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Suggests: testthat
+RoxygenNote: 6.1.0
