@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1539740181667.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3516235009",
+    "id" : "2807030B",
+    "lastKnownWriteTime" : 1539740341,
+    "last_content_update" : 1539740341439,
+    "path" : "D:/srn/R/srn.colors.R",
+    "project_path" : "R/srn.colors.R",
+    "properties" : {
+        "cursorPosition" : "9,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
