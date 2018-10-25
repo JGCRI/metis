@@ -18,7 +18,11 @@ devtools::session_info()
 
 # Clean up Code Formatting
 install.packages("lintr")
-lintr::lint_package()
+lintr::lint_package() # Will give warnings
+
+install.packages("formatR")
+formatR::tidy_app()
+formatR::tidy_dir("R") # Will change your code
 
 # If you change options or working directories, change them back on exit
 old <- options(stringsAsFactors = FALSE)
