@@ -2,44 +2,45 @@
 #'
 #' This function loads various color palettes used previously in GCAM
 #' as well as new palettes for SRN modeling to the global environment
+#'
+#' List of Color Palettes
+#' Once srn.colors has been called all the following colors palettes are
+#' added to the global environment. Each can be called to see the colors
+#' and associated levels.
+#' \itemize{
+#' \item cbPalette
+#' \item elec_tech_colors
+#' \item elec_renew_colors
+#' \item building_colors
+#' \item trn_fuel_colors
+#' \item enduse_fuel_numbered
+#' \item enduse_colors
+#' \item PAL_pri_ene
+#' \item PAL_pri_fuelcost
+#' \item PAL_emiss_sector
+#' \item PAL_landuse
+#' \item PAL_hydrogen
+#' \item PAL_refliq
+#' \item emiss_by_enduse_colors
+#' \item biouse_colors
+#' \item colorsX_Basic
+#' \item colorsX_Gas
+#' \item colorsX_Diff
+#' \item colorsX_Diff5
+#' \item colorsX_Absolute
+#' \item colorsX_Absolute5
+#' \item colorsX_Unassigned
+#' \item colorsX_elec_subsec
+#' \item colorsX_elec_finalNrgFuel
+#' \item colorsX_elec_techs
+#' \item colorsX_elec_sec
+#' \item colorsX_finalNrg_sec
+#' \item colorsX_PAL_pri_ene
+#' \item colorsX_elec_tech_colors}
+#'
 #' @keywords colors, palette
 #' @export
 #' @examples
-#' List of Color Palettes
-#' Once srn.colors() has been called all the following colors palettes are
-#' added to the global environment. Each can be called to see the colors
-#' and associated levels.
-#' cbPalette
-#' elec_tech_colors
-#' elec_renew_colors
-#' building_colors
-#' trn_fuel_colors
-#' enduse_fuel_numbered
-#' enduse_colors
-#' PAL_pri_ene
-#' PAL_pri_fuelcost
-#' PAL_emiss_sector
-#' PAL_landuse
-#' PAL_hydrogen
-#' PAL_refliq
-#' emiss_by_enduse_colors
-#' biouse_colors
-#' colorsX_Basic
-#' colorsX_Gas
-#' colorsX_Diff
-#' colorsX_Diff5
-#' colorsX_Absolute
-#' colorsX_Absolute5
-#' colorsX_Unassigned
-#' colorsX_elec_subsec
-#' colorsX_elec_finalNrgFuel
-#' colorsX_elec_techs
-#' colorsX_elec_sec
-#' colorsX_finalNrg_sec
-#' colorsX_PAL_pri_ene
-#' colorsX_elec_tech_colors
-#'
-#' EXample: Call srn.colors and build pie chart to view colors and labels
 #' srn.colors()
 #' pie(rep(1,length(colorsX_Basic)),label=names(colorsX_Basic),col=colorsX_Basic)
 #' @import RColorBrewer
