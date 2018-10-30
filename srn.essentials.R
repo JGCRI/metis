@@ -10,14 +10,18 @@
 # rstudioapi::isAvailable("0.99.149")
 # install Rtools (Not an R package)
 
-# How to create Documentation
+#---------------------
+# Create User Manual
+#---------------------
 # Add R to system variable path C:
 # install.packages('tinytex')
 # tinytex::install_tinytex()
 # tinytex:::is_tinytex()
 system(paste("R CMD Rd2pdf ",getwd(),sep=""))
 
+#--------------------
 # Create Vignettes
+#---------------------
 # Create a subdirectory in the package folder called "vignettes"
 # Place NAME.vignette.Rmd file in there
 # http://kbroman.org/pkg_primer/pages/vignettes.html
