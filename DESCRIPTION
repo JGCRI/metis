@@ -10,3 +10,5 @@ LazyData: true
 Suggests: testthat
 RoxygenNote: 6.1.0
 Imports: RColorBrewer
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
