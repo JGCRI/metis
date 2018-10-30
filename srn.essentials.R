@@ -5,11 +5,23 @@
 
 # Sys.getenv("R_LIBS_USER")  # For location of Libraries
 # Close other R sessions to install certain packages
-#install.packages(c("digest","devtools", "roxygen2", "testthat", "knitr","rstudioapi"))
-#devtools::install_github("r-lib/devtools")
+# install.packages(c("digest","devtools", "roxygen2", "testthat", "knitr","rstudioapi"))
+# devtools::install_github("r-lib/devtools")
 # rstudioapi::isAvailable("0.99.149")
 # install Rtools (Not an R package)
 
+# How to create Documentation
+# Add R to system variable path C:
+# install.packages('tinytex')
+# tinytex::install_tinytex()
+# tinytex:::is_tinytex()
+system(paste("R CMD Rd2pdf ",getwd(),sep=""))
+
+# Create Vignettes
+# Create a subdirectory in the package folder called "vignettes"
+# Place NAME.vignette.Rmd file in there
+# http://kbroman.org/pkg_primer/pages/vignettes.html
+devtools::build_vignettes()
 
 library(roxygen2)
 library(testthat)
