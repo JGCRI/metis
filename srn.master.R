@@ -1,7 +1,16 @@
 
 
-
-install_github(repo="zarrarkhan/srn",'dev_srn')
+#----------------------------
+# Install The SRN Package
+#----------------------------
+#install.packages("devtools");
+#library(devtools)
+#install_github(repo="zarrarkhan/srn",'dev_srn') # To install directly from branch
 library(srn)
-srn.colors()
-pie(rep(1,length(colorsX_Basic)),label=names(colorsX_Basic),col=colorsX_Basic)
+
+#----------------------------
+# Load Libraries
+#----------------------------
+a<-srn.colors()
+testcolor<-a$elec_tech_colors
+pie(rep(1,length(testcolor)),label=names(testcolor),col=a$testcolor)

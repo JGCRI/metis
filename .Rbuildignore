@@ -2,3 +2,7 @@
 ^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+READMEfigs
+srn.essentials.R
+srn.master.R
+srn.pdf

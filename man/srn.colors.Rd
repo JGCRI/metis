@@ -6,6 +6,9 @@
 \usage{
 srn.colors()
 }
+\value{
+A list of color palettes.
+}
 \description{
 This function loads various color palettes used previously in GCAM
 as well as new palettes for SRN modeling to the global environment
@@ -16,39 +19,40 @@ Once srn.colors has been called all the following colors palettes are
 added to the global environment. Each can be called to see the colors
 and associated levels.
 \itemize{
-\item cbPalette
+\item pal_16
 \item elec_tech_colors
 \item elec_renew_colors
 \item building_colors
 \item trn_fuel_colors
 \item enduse_fuel_numbered
 \item enduse_colors
-\item PAL_pri_ene
-\item PAL_pri_fuelcost
-\item PAL_emiss_sector
-\item PAL_landuse
-\item PAL_hydrogen
-\item PAL_refliq
+\item pal_pri_ene
+\item pal_pri_fuelcost
+\item pal_emiss_sector
+\item pal_landuse
+\item pal_hydrogen
+\item pal_refliq
 \item emiss_by_enduse_colors
 \item biouse_colors
-\item colorsX_Basic
-\item colorsX_Gas
-\item colorsX_Diff
-\item colorsX_Diff5
-\item colorsX_Absolute
-\item colorsX_Absolute5
-\item colorsX_Unassigned
-\item colorsX_elec_subsec
-\item colorsX_elec_finalNrgFuel
-\item colorsX_elec_techs
-\item colorsX_elec_sec
-\item colorsX_finalNrg_sec
-\item colorsX_PAL_pri_ene
-\item colorsX_elec_tech_colors}
+\item pal_Basic
+\item pal_Gas
+\item pal_Diff
+\item pal_Diff5
+\item pal_Absolute
+\item pal_Absolute5
+\item pal_Unassigned
+\item pal_elec_subsec
+\item pal_elec_finalNrgFuel
+\item pal_elec_techs
+\item pal_elec_sec
+\item pal_finalNrg_sec
+\item pal_pri_ene
+\item pal_elec_tech_colors}
 }
 \examples{
-srn.colors()
-pie(rep(1,length(colorsX_Basic)),label=names(colorsX_Basic),col=colorsX_Basic)
+library(srn)
+a<-srn.colors()
+pie(rep(1,length(a$pal_Basic)),label=names(a$pal_Basic),col=a$pal_Basic)
 }
 \keyword{colors,}
 \keyword{palette}
