@@ -16,7 +16,7 @@ The overall goal of the SRN model is develop a framework which integrates GCAM a
 
 <center>
 	__**Figure 2: SRN Phase 1 Structure**__
-![Figure 2](READMEfigs/srn_workflowLongTerm.png)
+![Figure 2](READMEfigs/srn_workflowPhase1.png)
 </center>
 
 
