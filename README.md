@@ -30,7 +30,7 @@ library(srn)
 The work plan is divided into two phases as described in Table 1 and Figure 1 below. The plan for Phase 1 is to develop a multi-sector accounting tool which can be used to visualize and analyze the demands, supplies and distribution of various resources across multiple sectors at flexible sub-regional scales. The tools in this phase will be designed to be flexible and with an aim to allow interactions with multiple stakeholders and other models. In Phase 2 of the model development links between the different sectors and sub-regions will be developed to allow analyis of cross-sector dynamics. Further details on each Phase are described in the corresponding sectionss.  
 
 <p align="center">
-**Table 1: SRN Phases**  
+<b> Table 1: SRN Phases </b> 
 </p>
 
 | Phase |Components       |Description            |Proposed Deadline | Status  |
@@ -40,11 +40,11 @@ The work plan is divided into two phases as described in Table 1 and Figure 1 be
 | 1     | srn.grid2poly.R |   Create polygon tables from grid | 7 Dec 2018 | Under development |
 | 1     | srn.maps.R      |   Create maps | 7 Dec 2018 | Under development |
 
-<p align="center"> **Figure 1: SRN Phases** </p>
-<p align="center"> ![](READMEfigs/srn_workflowLongTerm.png)</p>
+<p align="center"> <b> Figure 1: SRN Phases </b> </p>
+<p align="center"> <img src="READMEfigs/srn_workflowLongTerm.png" alt="SRN Phases"></p>
 
 <p align="center"> **Figure 2: SRN Phase 1 Structure** </p>
-<p align="center"> ![](READMEfigs/srn_workflowPhase1.png)</p>
+<p align="center"> <img src="READMEfigs/srn_workflowPhase1.png" alt="SRN Phases"></p>
 
 # <a name="Modeling Framework"></a>Modeling Framework
 
