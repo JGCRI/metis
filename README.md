@@ -8,14 +8,10 @@
 
 The overall goal of the SRN model is develop a framework which integrates GCAM and various other submodules to analyze several sectors including water, energy, land, socio-economics at various spatial and temporal scales. 
 
-<p align="center">
 __**Figure 1: SRN Phases**__
 ![](READMEfigs/srn_workflowLongTerm.png)
-</p>
 
-<p align="center">
 __**Figure 2: SRN Phase 1 Structure**__
 ![](READMEfigs/srn_workflowPhase1.png)
-</p>
 
 
