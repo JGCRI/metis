@@ -3,7 +3,7 @@
 # Table of Contents
 
 * [Introduction](#Introduction)
-* [Work Plan](#Work Plan)
+* [Work Plan](#WorkPlan)
 * [Modeling Framework](#Modeling Framework)
 
 
@@ -26,7 +26,8 @@ library(srn)
     ii. The R package user manual "srn.pdf" in the home directory "srn" after cloning or downloading. This is automatically created during the package build and contains an index of all the functions with brief descriptions and dependencies.
     iii. The vignette inside srn/doc/srn.vignette.html. The vignette examples for each function.
 
-# <a name="Work Plan"></a>Work Plan
+# <a name="WorkPlan"></a>Work Plan
+
 The work plan is divided into two phases as described in Table 1 and Figure 1 below. The plan for Phase 1 is to develop a multi-sector accounting tool which can be used to visualize and analyze the demands, supplies and distribution of various resources across multiple sectors at flexible sub-regional scales. The tools in this phase will be designed to be flexible and with an aim to allow interactions with multiple stakeholders and other models. In Phase 2 of the model development links between the different sectors and sub-regions will be developed to allow analyis of cross-sector dynamics. Further details on each Phase are described in the corresponding sectionss.  
 
 <p align="center">
