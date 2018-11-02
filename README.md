@@ -4,7 +4,7 @@
 
 * [Introduction](#Introduction)
 * [Work Plan](#WorkPlan)
-* [Modeling Framework](#Modeling Framework)
+* [Modeling Framework](#ModelingFramework)
 
 
 # <a name="Introduction"></a>Introduction
@@ -47,6 +47,6 @@ The work plan is divided into two phases as described in Table 1 and Figure 1 be
 <p align="center"> **Figure 2: SRN Phase 1 Structure** </p>
 <p align="center"> <img src="READMEfigs/srn_workflowPhase1.png" alt="SRN Phases"></p>
 
-# <a name="Modeling Framework"></a>Modeling Framework
+# <a name="ModelingFramework"></a>Modeling Framework
 
 The model is hosted on github and is comprised of an R Package which comes with sample data. The R package has several different functions. Each function is described in the 
