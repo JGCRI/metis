@@ -42,6 +42,11 @@ library(testthat)
 devtools::session_info() # For loaded packages
 
 #---------------------
+# Checking
+#--------------------
+system("R CMD check --help")
+
+#---------------------
 # Code Formatting
 #--------------------
 #install.packages("lintr")

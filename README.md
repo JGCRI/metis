@@ -15,11 +15,15 @@ The overall goal of the SRN model is develop a framework to analyze dynamics acr
 - The address to clone this repo is: https://github.com/zarrarkhan/srn.git
 - The model is comprised of an R package and additional files with sample data
 - The R package can be installed from within R from this github site using the following code:
+
 ```r
-install.packages("devtools");library(devtools)
-install_github(repo="zarrarkhan/srn")
+# Check and load required packages
+if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
+library(devtools)
+if("devtools" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/srn")} 
 library(srn)
-```
+```  
+
 - Once installed the "srn.master.R"" file can be opened from the downloaded diretory to start analysis
 - The following guides are available for further guidance:
     i. This README.md file at https://github.com/zarrarkhan/srn 
@@ -47,6 +51,35 @@ The work plan is divided into two phases as described in Table 1 and Figure 1 be
 <p align="center"> **Figure 2: SRN Phase 1 Structure** </p>
 <p align="center"> <img src="READMEfigs/srn_workflowPhase1.png" alt="SRN Phases"></p>
 
-# <a name="ModelingFramework"></a>Modeling Framework
+# <a name="ModelingFramework"></a> Phase 1 Modeling Framework
 
-The model is hosted on github and is comprised of an R Package which comes with sample data. The R package has several different functions. Each function is described in the 
+This section describes the modeling framework and key functions used in Phase 1 of the model. For a full list of functions please read the user manual "srn.pdf".
+
+## Reading GCAM data (srn.readgcam)
+
+<b> Key Inputs </b>  
+
+- GCAM database: A gcam database
+- Query File: An ".xml" query file
+
+GCAM produces an output in the form of a database. The database contains outputs from various scenario runs. "srn.readgcam" uses another package "rgcam" to connects with the gcam database and retrieves data based on "queries" provided in an ".xml" file. Often scenario names in the model can be long and not appropriate for final figures. This function allows you to rename the scenarios as they are read in. Once the data has been extracted from a gcam database it is saved in a ".proj" file. Reading data from the gcam database can take a considerable amount of time depending on the number of scenarios it contains. The "srn.readgcam" function gives the option of directly providing a ".proj" which can be loaded directly or using the ".proj" file from a previous run by setting the parameter "reReadData" to FALSE. If "reReadData" is set to FALSE the function will first search for a user provided ".proj" file (which is entered in the param "dataProj"), then in the "inputs/gcam" folder and if it doesn't exist will give an error message. If "reReadData" is set to TRUE then the function will create a file called "dataProj.proj" in the same folder as the GCAM database.
+
+```r
+# Check and load required packages
+if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
+library(devtools)
+if("devtools" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/srn")} 
+library(srn)
+
+# Use function localDBConn from package rgcam to get a list of scenarios if needed.
+localDBConn(gcamdatabase)
+
+gcamData<-srn.readgcam(gcamdatabase=paste(getwd(),"/inputs/gcam/example_database_basexdb",sep=""),
+             queryxml=paste(getwd(),"/inputs/gcam/srnQueries.xml",sep=""),
+             scenOrigNames=c("example_Reference1","example_Reference2"),
+             scenNewNames=c("Ref1","Ref2"),
+             reReadData=T, # Default Value
+             dataProj=NULL, # Default Value
+             dirOutputs= paste(getwd(),"/outputs",sep="") # Default Value
+             )
+```  

@@ -2,7 +2,13 @@
 ^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-READMEfigs
-srn.essentials.R
-srn.master.R
-srn.pdf
+^READMEfigs$
+^srn.essentials.R$
+^srn.master.R$
+^srn.pdf$
+^example_database_basexdb$
+^.*\.basexdb$
+^.*\.xml$
+^.*\queries.xml$
+
+
