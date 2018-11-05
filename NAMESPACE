@@ -3,4 +3,6 @@
 export(srn.colors)
 export(srn.readgcam)
 import(RColorBrewer)
+import(dplyr)
 import(rgcam)
+import(tibble)

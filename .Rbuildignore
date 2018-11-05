@@ -6,9 +6,6 @@
 ^srn.essentials.R$
 ^srn.master.R$
 ^srn.pdf$
-^example_database_basexdb$
-^.*\.basexdb$
-^.*\.xml$
-^.*\queries.xml$
+^inputs$
 
 

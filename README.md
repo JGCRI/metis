@@ -71,15 +71,19 @@ library(devtools)
 if("devtools" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/srn")} 
 library(srn)
 
-# Use function localDBConn from package rgcam to get a list of scenarios if needed.
-localDBConn(gcamdatabase)
+gcamdatabasePath <-paste(getwd(),"/inputs/gcam",sep="")
+gcamdatabaseName <-"example_database_basexdb"
 
-gcamData<-srn.readgcam(gcamdatabase=paste(getwd(),"/inputs/gcam/example_database_basexdb",sep=""),
-             queryxml=paste(getwd(),"/inputs/gcam/srnQueries.xml",sep=""),
-             scenOrigNames=c("example_Reference1","example_Reference2"),
-             scenNewNames=c("Ref1","Ref2"),
-             reReadData=T, # Default Value
-             dataProj=NULL, # Default Value
-             dirOutputs= paste(getwd(),"/outputs",sep="") # Default Value
-             )
+# Use function localDBConn from package rgcam to get a list of scenarios if needed.
+localDBConn(gcamdatabasePath,gcamdatabaseName)
+
+gcamData<-srn.readgcam(gcamdatabasePath=gcamdatabasePath,
+                       gcamdatabaseName=gcamdatabaseName,
+                       queryxml=paste(getwd(),"/inputs/gcam/srnQueries.xml",sep=""),
+                       scenOrigNames=c("ExampleScen1","ExampleScen2"),
+                       scenNewNames=c("Eg1","Eg2"),
+                       reReadData=T, # Default Value
+                       dataProj=NULL, # Default Value
+                       dirOutputs= paste(getwd(),"/outputs",sep="") # Default Value
+                       )
 ```  
