@@ -26,9 +26,9 @@ library(srn)
 
 - Once installed the "srn.master.R"" file can be opened from the downloaded diretory to start analysis
 - The following guides are available for further guidance:
-    i. This README.md file at https://github.com/zarrarkhan/srn 
-    ii. The R package user manual "srn.pdf" in the home directory "srn" after cloning or downloading. This is automatically created during the package build and contains an index of all the functions with brief descriptions and dependencies.
-    iii. The vignette inside srn/doc/srn.vignette.html. The vignette examples for each function.
+    1. This README.md file at https://github.com/zarrarkhan/srn 
+    2. The R package user manual "srn.pdf" in the home directory "srn" after cloning or downloading. This is automatically created during the package build and contains an index of all the functions with brief descriptions and dependencies.
+    3. The vignette inside srn/doc/srn.vignette.html. The vignette examples for each function.
 
 # <a name="WorkPlan"></a>Work Plan
 
@@ -48,7 +48,7 @@ The work plan is divided into two phases as described in Table 1 and Figure 1 be
 <p align="center"> <b> Figure 1: SRN Phases </b> </p>
 <p align="center"> <img src="READMEfigs/srn_workflowLongTerm.png" alt="SRN Phases"></p>
 
-<p align="center"> **Figure 2: SRN Phase 1 Structure** </p>
+<p align="center"> <b> Figure 2: SRN Phase 1 Structure </b> </p>
 <p align="center"> <img src="READMEfigs/srn_workflowPhase1.png" alt="SRN Phases"></p>
 
 # <a name="ModelingFramework"></a> Phase 1 Modeling Framework

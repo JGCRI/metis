@@ -6,6 +6,7 @@
 ^srn.essentials.R$
 ^srn.master.R$
 ^srn.pdf$
-^inputs$
+^dataFiles$
+^outputs$
 
 

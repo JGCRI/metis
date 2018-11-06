@@ -20,9 +20,10 @@ pie(rep(1,length(testcolor)),label=names(testcolor),col=a$testcolor)
 #----------------------------
 # Read GCAM Data
 #---------------------------
-gcamdatabasePath <-paste(getwd(),"/inputs/gcam",sep="")
+gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 gcamdatabaseName <-"example_database_basexdb"
 queryxml <- "srnQueries.xml"
+regions <- c("Colombia","Argentina")
 
 # Use function localDBConn from package rgcam to get a list of scenarios if needed.
 #localDBConn(gcamdatabasePath,gcamdatabaseName)
@@ -35,5 +36,5 @@ gcamData<-srn.readgcam(reReadData=F, # Default Value is T
                        gcamdatabaseName=gcamdatabaseName,
                        queryxml=queryxml,
                        dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
-                       regions=NULL # Default Value is NULL
+                       regions=regions # Default Value is NULL
                        )

@@ -4,5 +4,5 @@ doc
 .Rhistory
 .RData
 .Ruserdata
-inputs
-!srnQueries.xml
+*basexdb*
+outputs
