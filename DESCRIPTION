@@ -9,6 +9,6 @@ Encoding: UTF-8
 LazyData: true
 Suggests: testthat, knitr, rmarkdown
 RoxygenNote: 6.1.0
-Imports: RColorBrewer, rgcam, tibble, dplyr
+Imports: RColorBrewer, rgcam, tibble, dplyr, tmap
 Remotes: github::JGCRI/rgcam
 VignetteBuilder: knitr

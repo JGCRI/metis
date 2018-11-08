@@ -22,13 +22,16 @@
 #' @import rgcam tibble dplyr
 #' @export
 
-srn.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml, scenOrigNames, scenNewNames = NULL,
-    reReadData = T, dataProj = "dataProj.proj", dirOutputs = paste(getwd(), "/outputs", sep = ""),
-    regions = NULL) {
+srn.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "srnQueries.xml",
+                         scenOrigNames, scenNewNames = NULL,
+                         reReadData = T, dataProj = "dataProj.proj", dirOutputs = paste(getwd(), "/outputs", sep = ""),
+                         regions = NULL) {
 
 
     # Initialize variables by setting to NULL
-    vintage <- year <- xLabel <- x <- value <- sector <- scenario <- region <- param <- origX <- origValue <- origUnits <- origScen <- origQuery <- fillPalette2 <- fillPalette1 <- fillLabel2 <- fillLabel1 <- fill2 <- fill1 <- connx <- aggregate <- Units <- NULL
+    vintage <- year <- xLabel <- x <- value <- sector <- scenario <- region <- param <- origX <- origValue <-
+    origUnits <- origScen <- origQuery <- classPalette2 <- classPalette1 <- classLabel2 <- classLabel1 <- class2 <-
+    class1 <- connx <- aggregate <- Units <- NULL
 
     # Create necessary directories if they dont exist.
     if (!dir.exists(dirOutputs))
@@ -88,8 +91,6 @@ srn.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml, scenOrigN
     scenarios <- listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
     queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
-    # Conversions
-    convEJ2TWh <- 277.77777777778
 
     # Read in paramaters from query file and format for later use
     data <- tibble()
@@ -103,14 +104,29 @@ srn.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml, scenOrigN
         }
         tbl <- tbl %>%
           left_join(data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-          mutate(param = "finalNrgbySec", origScen = scenario, origQuery = paramx, origValue = value,
-                origUnits = Units, origX = year, scenario = scenNewNames, value = value * convEJ2TWh,
-                units = "Final Energy (TWh)", vintage = paste("Vint_", year, sep = ""), x = year,
-                xLabel = "Year", aggregate = "sum", fill1 = sector, fillLabel1 = "Sector", fillPalette1 = "pal_finalNrg_sec",
-                fill2 = "fill2", fillLabel2 = "fillLabel2", fillPalette2 = "fillPalette2")%>%
+          mutate(param = "finalNrgbySec",
+                 sources = "Sources",
+                 origScen = scenario,
+                 origQuery = paramx,
+                 origValue = value,
+                 origUnits = Units,
+                 origX = year,
+                 scenario = scenNewNames,
+                 value = value * srn.assumptions()$convEJ2TWh,
+                 units = "Final Energy (TWh)",
+                 vintage = paste("Vint_", year, sep = ""),
+                 x = year,
+                 xLabel = "Year",
+                 aggregate = "sum",
+                 class1 = sector,
+                 classLabel1 = "Sector",
+                 classPalette1 = "pal_finalNrg_sec",
+                 class2 = "class2",
+                 classLabel2 = "classLabel2",
+                 classPalette2 = "classPalette2")%>%
           dplyr::select(origScen,origQuery, origValue, origUnits, origX, region, param, scenario,
-                        value, units, vintage, x, xLabel, aggregate, fill1, fillLabel1, fillPalette1,
-                        fill2, fillLabel2, fillPalette2)
+                        value, units, vintage, x, xLabel, aggregate, class1, classLabel1, classPalette1,
+                        class2, classLabel2, classPalette2)
         data <- bind_rows(data, tbl)
     } else {
         print(paste("Paramater '", paramx, "' not found in database", sep = ""))
@@ -125,14 +141,29 @@ srn.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml, scenOrigN
         }
         tbl <- tbl %>%
           left_join(data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-          mutate(param = "gdp", origScen = scenario, origQuery = paramx, origValue = value, origUnits = Units,
-                origX = year, scenario = scenNewNames, value = value/1000, units = "GDP (Billion 1990 USD)",
-                vintage = paste("Vint_", year, sep = ""), x = year, xLabel = "Year", aggregate = "sum",
-                fill1 = "fill1", fillLabel1 = "GDP", fillPalette1 = "pal_16", fill2 = "fill2", fillLabel2 = "fillLabel2",
-                fillPalette2 = "fillPalette2") %>%
-          dplyr::select(scenario, region, param, units, fill1, fill2, x, vintage, value, origScen,
-                        origQuery, origValue, origUnits, origX, xLabel, aggregate, fillLabel1, fillPalette1,
-                        fillLabel2, fillPalette2)
+          mutate(param = "gdp",
+                 sources = "Sources",
+                 origScen = scenario,
+                 origQuery = paramx,
+                 origValue = value,
+                 origUnits = Units,
+                 origX = year,
+                 scenario = scenNewNames,
+                 value = value/1000,
+                 units = "GDP (Billion 1990 USD)",
+                 vintage = paste("Vint_", year, sep = ""),
+                 x = year,
+                 xLabel = "Year",
+                 aggregate = "sum",
+                 class1 = "class1",
+                 classLabel1 = "GDP",
+                 classPalette1 = "pal_16",
+                 class2 = "class2",
+                 classLabel2 = "classLabel2",
+                 classPalette2 = "classPalette2") %>%
+          dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origValue, origUnits, origX)
         data <- bind_rows(data, tbl)
     } else {
         print(paste("Paramater '", paramx, "' not found in database", sep = ""))
@@ -144,11 +175,10 @@ srn.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml, scenOrigN
     #---------------------
 
     dataTemplate <- data %>%
-      mutate(scenario = "Local Data", origScen = "Local Data", value = 0, origValue = 0) %>%
+      mutate(scenario = "Local Data", origScen = "Local Data", value = 0, origValue = 0, sources="Sources") %>%
       unique() %>%
-      dplyr::select(scenario, region, param, units, fill1, fill2, x, vintage, value,
-        origScen, origQuery, origValue, origUnits, origX, xLabel, aggregate, fillLabel1, fillPalette1,
-        fillLabel2, fillPalette2)
+      dplyr::select(scenario, region, sources, param, x, xLabel, vintage, class1, class2, units, value, aggregate,
+                    classLabel1, classPalette1, classLabel2, classPalette2)
 
     #---------------------
     # Save Data in CSV

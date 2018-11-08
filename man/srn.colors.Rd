@@ -15,9 +15,6 @@ as well as new palettes for SRN modeling to the global environment
 }
 \details{
 List of Color Palettes
-Once srn.colors has been called all the following colors palettes are
-added to the global environment. Each can be called to see the colors
-and associated levels.
 \itemize{
 \item pal_16
 \item elec_tech_colors

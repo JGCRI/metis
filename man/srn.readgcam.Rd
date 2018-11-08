@@ -4,8 +4,9 @@
 \alias{srn.readgcam}
 \title{srn.readgcam}
 \usage{
-srn.readgcam(gcamdatabasePath, gcamdatabaseName, queryxml, scenOrigNames,
-  scenNewNames = NULL, reReadData = T, dataProj = "dataProj.proj",
+srn.readgcam(gcamdatabasePath, gcamdatabaseName,
+  queryxml = "srnQueries.xml", scenOrigNames, scenNewNames = NULL,
+  reReadData = T, dataProj = "dataProj.proj",
   dirOutputs = paste(getwd(), "/outputs", sep = ""), regions = NULL)
 }
 \arguments{
