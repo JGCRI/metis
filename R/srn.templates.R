@@ -25,19 +25,19 @@
 # Print to PDF or PNG
 #-------------
 
-srn.printPdfPng <- function(figure,dir,filename, figWidth, figHeight,pdfpng="png"){
+srn.printPdfPng <- function(figure,dir,filename, figWidth = 13, figHeight = 9,pdfpng="png"){
 
-    if(pdfpng=='pdf'){pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth_InchMaster,height=figHeight_InchMaster)
+    if(pdfpng=='pdf'){pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
       print(figure)
       dev.off()}
-    if(pdfpng=='png'){png(paste(dir,"/",filename,".png",sep=""),width=figWidth_InchMaster,height=figHeight_InchMaster, units="in",res=300)
+    if(pdfpng=='png'){png(paste(dir,"/",filename,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
       print(figure)
       dev.off()}
     if(pdfpng=='both'){
-      pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth_InchMaster,height=figHeight_InchMaster)
+      pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
       print(figure)
       dev.off()
-      png(paste(dir,"/",filename,".png",sep=""),width=figWidth_InchMaster,height=figHeight_InchMaster, units="in",res=300)
+      png(paste(dir,"/",filename,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
       print(figure)
       dev.off()
     }

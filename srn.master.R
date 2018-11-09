@@ -10,6 +10,7 @@ library(srn)
 #install_github(repo="JGCRI/rgcam")
 library(rgcam)
 
+
 #----------------------------
 # Load Libraries
 #----------------------------
@@ -43,9 +44,9 @@ gcamData<-srn.readgcam(reReadData=F, # Default Value is T
 # Produce Data Charts
 #---------------------------
 
-dataTables<-c("D:/srn/outputs/Colombia/regional/dataTable_Colombia_1975to2100.csv",
-              "D:/srn/outputs/Colombia/regional/dataTableLocal_Colombia_1975to2100.csv")
+dataTables<-c(paste(getwd(),"/outputs/Colombia/regional/dataTable_Colombia_1975to2100.csv",sep=""),
+              paste(getwd(),"/outputs/Colombia/regional/dataTableLocal_Colombia_1975to2100.csv",sep=""))
 
-charts<-srn.charts(dataTables)
+charts<-srn.chartsProcess(dataTables)
 
 

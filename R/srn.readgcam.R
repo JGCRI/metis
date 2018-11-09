@@ -27,8 +27,16 @@ srn.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "srnQuer
                          reReadData = T, dataProj = "dataProj.proj", dirOutputs = paste(getwd(), "/outputs", sep = ""),
                          regions = NULL) {
 
+#------------------
+# Load required Libraries
+# -----------------
+library(tibble,quietly = T)
+library(dplyr,quietly = T)
 
-    # Initialize variables by setting to NULL
+#----------------
+# Initialize variables by setting to NULL
+#----------------
+
     vintage <- year <- xLabel <- x <- value <- sector <- scenario <- region <- param <- origX <- origValue <-
     origUnits <- origScen <- origQuery <- classPalette2 <- classPalette1 <- classLabel2 <- classLabel1 <- class2 <-
     class1 <- connx <- aggregate <- Units <- NULL
@@ -100,7 +108,7 @@ srn.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "srnQuer
     if (paramx %in% queries) {
         tbl <- getQuery(dataProjLoaded, paramx)  # Tibble
         if (!is.null(regions)) {
-            tbl <- tbl %>% filter(region %in% regions)
+            tbl <- tbl %>% dplyr::filter(region %in% regions)
         }
         tbl <- tbl %>%
           left_join(data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
@@ -137,7 +145,7 @@ srn.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "srnQuer
     if (paramx %in% queries) {
         tbl <- getQuery(dataProjLoaded, paramx)  # Tibble
         if (!is.null(regions)) {
-            tbl <- tbl %>% filter(region %in% regions)
+            tbl <- tbl %>% dplyr::filter(region %in% regions)
         }
         tbl <- tbl %>%
           left_join(data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
@@ -191,10 +199,10 @@ srn.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "srnQuer
             "to", max(range(data$x)), ".csv", sep = ""), row.names = F)
     } else {
         for (region_i in regions) {
-            utils::write.csv(data %>% filter(region == region_i), file = paste(dirOutputs, "/", region_i,
+            utils::write.csv(data %>% dplyr::filter(region == region_i), file = paste(dirOutputs, "/", region_i,
                 "/regional/dataTable_",region_i,"_", min(range(data$x)), "to", max(range(data$x)), ".csv", sep = ""),
                 row.names = F)
-            utils::write.csv(dataTemplate %>% filter(region == region_i), file = paste(dirOutputs, "/", region_i,
+            utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i), file = paste(dirOutputs, "/", region_i,
                 "/regional/dataTableTemplate_",region_i,"_", min(range(data$x)), "to", max(range(data$x)), ".csv", sep = ""),
                 row.names = F)
         }

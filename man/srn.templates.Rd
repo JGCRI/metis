@@ -8,7 +8,7 @@
 \alias{srn.tmapLayout}
 \title{srn.templates}
 \usage{
-srn.printPdfPng(figure, dir, filename, figWidth, figHeight,
+srn.printPdfPng(figure, dir, filename, figWidth = 13, figHeight = 9,
   pdfpng = "png")
 
 srn.chartsThemeLight()

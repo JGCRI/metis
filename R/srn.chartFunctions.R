@@ -7,7 +7,7 @@
 #' \itemize{
 #' \item scenario: The name of the new data scenario
 #' }
-#' @param srnFormattedTable
+#' @param srnFormattedTable Table in srn format
 #' @param x Default "x"
 #' @param y Default "value"
 #' @param class Default "class1"
@@ -28,14 +28,17 @@
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
 #' @export
-#' @examples
 #' @import tools ggplot2 scales
-#' library(srn)
 
 
 #----------------
-# Bar plots
+# Load Libraries
 #---------------
+
+library(tools,quietly = T)
+library(ggplot2,quietly = T)
+library(scales,quietly = T)
+
 
 srn.chart<-function(srnFormattedTable,
                          chartType="bar",position="stack",
@@ -49,8 +52,11 @@ srn.chart<-function(srnFormattedTable,
                          sizeBarLines=0.5,sizeLines=1.5){
 
   l1 <- srnFormattedTable
-  l1[[units]] = gsub(" ","~",l1[[units]])
-  paletteX<-srn.colors()[[unique(l1[[classPalette]])]];
+  l1<-l1%>%mutate(units=gsub(" ","~",units))
+  if(classPalette %in% names(srnFormattedTable)){
+  paletteX<-srn.colors()[[unique(l1[[classPalette]])]]}else{
+    paletteX<-srn.colors()[[classPalette]]
+  }
   if(useNewLabels==1){
     if(!is.null(names(paletteX))){
       names(paletteX)<-toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",names(paletteX)))}
@@ -66,7 +72,7 @@ srn.chart<-function(srnFormattedTable,
            scale_fill_manual(values=paletteX) + guides(color=F)
   if(!grepl("class",class)){
     p = p + guides(fill = guide_legend(title=toTitleCase(paste(class,sep=""))))}else{
-      if(length(unique(l1[[classLabel]]))<2){
+      if(length(unique(l1[[class]]))<2){
         p = p + theme(legend.position="none")
       }else{
         p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]])))
@@ -75,11 +81,11 @@ srn.chart<-function(srnFormattedTable,
   }
 
   if(chartType=="line"){
-  p <- p +  geom_line(aes(color=get(class)),size=sizeLines, stat="identity",position="identity") +
+  p <- p +  geom_line(aes(color=get(class),group=get(class)),size=sizeLines, stat="identity",position="identity") +
             scale_color_manual(values=paletteX)
   if(!grepl("class",class)){
     p = p + guides(color = guide_legend(title=toTitleCase(paste(class,sep=""))))}else{
-      if(length(unique(l1[[classLabel]]))<2){
+      if(length(unique(l1[[class]]))<2){
         p = p + theme(legend.position="none")
       }else{
     p = p + guides(color = guide_legend(title=unique(l1[[classLabel]])))
@@ -100,12 +106,12 @@ srn.chart<-function(srnFormattedTable,
     p <- p + facet_grid(get(facet_rows)~get(facet_columns),scales=scales)
   }else{
 
-    if(length(unique(l1[[facet_columns]])) > 1 & length(unique(l1[[facet_rows]])) == 0){
-      p <- p + facet_wrap(get(facet_columns)~.,ncol=ncolrow,scales = scales)
+    if(length(unique(l1[[facet_columns]])) > 1 & length(unique(l1[[facet_rows]])) < 2){
+      p <- p + facet_wrap(facet_columns,ncol=ncolrow,scales = scales)
     }
 
-    if(length(unique(l1[[facet_columns]])) == 0 & length(unique(l1[[facet_rows]])) > 1){
-        p <- p + facet_wrap(get(facet_rows)~.,nrow=ncolrow,scales = scales)
+    if(length(unique(l1[[facet_columns]])) < 2 & length(unique(l1[[facet_rows]])) > 1){
+        p <- p + facet_wrap(facet_rows,nrow=ncolrow,scales = scales)
       }
     }
 
