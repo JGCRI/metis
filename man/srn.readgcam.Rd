@@ -4,15 +4,38 @@
 \alias{srn.readgcam}
 \title{srn.readgcam}
 \usage{
-srn.readgcam(gcamdatabase, queryxml)
+srn.readgcam(gcamdatabasePath, gcamdatabaseName,
+  queryxml = "srnQueries.xml", scenOrigNames, scenNewNames = NULL,
+  reReadData = T, dataProj = "dataProj.proj",
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), regions = NULL)
 }
 \arguments{
-\item{gcamdatabase}{Full path to gcam database}
+\item{gcamdatabasePath}{Path to gcam database folder}
+
+\item{gcamdatabaseName}{Name of gcam database}
 
 \item{queryxml}{Full path to query.xml file}
+
+\item{scenOrigNames}{Original Scenarios names in GCAM database in a string vector.
+For example c('scenario1','scenario2).}
+
+\item{scenNewNames}{New Names which may be shorter and more useful for figures etc.
+Default will use Original Names. For example c('scenario1','scenario2)}
+
+\item{reReadData}{If TRUE will read the GCAM data base and create a queryData.proj file
+in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
+with full path is provided otherwise it will search for a dataProj.proj file in the existing
+folder which may have been created from an old run.}
+
+\item{dataProj}{Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.}
+
+\item{dirOutputs}{Full path to directory for outputs}
+
+\item{regions}{The regions to analyze in a vector. Example c('Colombia','Pakistan')}
 }
 \value{
-A table with data formatted for srn package charting functions
+A list with the scenarios in the gcam database, queries in the queryxml file and a
+tibble with gcam data formatted for srn charts.
 }
 \description{
 This function connects to a gcamdatabase and uses a query file to

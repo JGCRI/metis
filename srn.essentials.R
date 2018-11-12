@@ -23,6 +23,7 @@
 # install.packages('tinytex')
 # tinytex::install_tinytex()
 # tinytex:::is_tinytex()
+if(file.exists(paste(getwd(),"/srn.pdf",sep=""))){unlink(paste(getwd(),"/srn.pdf",sep=""))}
 system(paste("R CMD Rd2pdf ",getwd(),sep=""))
 
 #--------------------
@@ -42,6 +43,11 @@ library(testthat)
 devtools::session_info() # For loaded packages
 
 #---------------------
+# Checking
+#--------------------
+system("R CMD check --help")
+
+#---------------------
 # Code Formatting
 #--------------------
 #install.packages("lintr")
@@ -53,12 +59,16 @@ library(formatR)
 #formatR::tidy_app() # App to paste code for formatting
 #formatR::tidy_dir("R") # Will change your code
 
-
-# If you change options or working directories, change them back on exit
-old <- options(stringsAsFactors = FALSE)
-on.exit(options(old), add = TRUE)
-old <- setwd(tempdir())
-on.exit(setwd(old), add = TRUE)
+#------------------------
+# Push and Pull to Github
+#------------------------
+# In srn folder, open gitbash (right click GitBash Here)
+# git status
+# git add .
+# git commit -m "Messages"
+# git push
+# On github site merge dev branch with master
+# git pull origin/master (To get the extra commits)
 
 install_github(repo="zarrarkhan/srn",'dev_srn')
 
