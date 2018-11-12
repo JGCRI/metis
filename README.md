@@ -2,9 +2,11 @@
 
 # Table of Contents
 
-* [Introduction](#Introduction)
-* [Installation Guide](#InstallGuide)
-* [Step-by-step Phase 1 walkthrough](#Phase1WalkThrough)
+- [Introduction](#Introduction)
+- [Installation Guide](#InstallGuide)
+- [Step-by-step Phase 1 walkthrough](#Phase1WalkThrough)  
+    + [Phase 1 Modeling Framework](#Phase1Framework)  
+    + [Reading GCAM data (srn.readgcam)](#ReadGCAM)
 
 
 # <a name="Introduction"></a>Introduction
@@ -50,7 +52,7 @@ library(rgcam)
 
 # <a name="Phase1WalkThrough"></a> Step-by-step Phase 1 Walkthrough
 
-## Phase 1 Modeling Framework
+## <a name="Phase1Framework"></a> Phase 1 Modeling Framework
 
 The modeling framework and key functions used in Phase 1 of the model are shown in Figure 2.
 
@@ -58,7 +60,7 @@ The modeling framework and key functions used in Phase 1 of the model are shown 
 <p align="center"> <img src="READMEfigs/srn_workflowPhase1.png" alt="SRN Phases"></p>
 
 
-## Reading GCAM data (srn.readgcam)
+## <a name="ReadGCAM"></a> Reading GCAM data (srn.readgcam)
 
 <b> Key Inputs </b>  
 
