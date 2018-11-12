@@ -5,7 +5,8 @@
 \title{srn.chartsProcess}
 \usage{
 srn.chartsProcess(dataTables, scenRef = NULL,
-  dirOutputs = paste(getwd(), "/outputs", sep = ""), pdfpng = "png")
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), pdfpng = "png",
+  yearsCompare = c("2015", "2030", "2050", "2100"))
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -14,9 +15,15 @@ Example c("D:/srn/outputs/Colombia/regional/dataTable_Colombia_1975to2100.csv",
 Where "dataTableLocal_Colombia_1975to2100.csv" is the new datafile created based on
 "dataTableTemplate_Colombia_1975to2100.csv" and contains new local data.}
 
+\item{scenRef}{The reference scenario to compare against. Default will pick first scenario from
+list f all scenarios}
+
 \item{dirOutputs}{Full path to directory for outputs}
 
 \item{pdfpng}{Choose the format for outputs. Either "pdf", "png" or "both. Default is "png"}
+
+\item{yearsCompare}{Choose the years to compare scenarios for xScenSelectYears plot. Default is
+c("2015","2030","2050","2100")}
 }
 \value{
 Produces charts in output folder and also returns combined table in srn format.

@@ -30,16 +30,16 @@ srn.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "srnQuer
 #------------------
 # Load required Libraries
 # -----------------
-library(tibble,quietly = T)
-library(dplyr,quietly = T)
+requireNamespace("tibble",quietly = T)
+requireNamespace("dplyr",quietly = T)
 
 #----------------
 # Initialize variables by setting to NULL
 #----------------
 
-    vintage <- year <- xLabel <- x <- value <- sector <- scenario <- region <- param <- origX <- origValue <-
-    origUnits <- origScen <- origQuery <- classPalette2 <- classPalette1 <- classLabel2 <- classLabel1 <- class2 <-
-    class1 <- connx <- aggregate <- Units <- NULL
+    NULL -> vintage -> year -> xLabel -> x -> value -> sector -> scenario -> region -> param -> origX -> origValue ->
+    origUnits -> origScen -> origQuery -> classPalette2 -> classPalette1 -> classLabel2 -> classLabel1 -> class2 ->
+    class1 -> connx -> aggregate -> Units -> sources
 
     # Create necessary directories if they dont exist.
     if (!dir.exists(dirOutputs))

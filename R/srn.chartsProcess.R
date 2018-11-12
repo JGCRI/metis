@@ -34,20 +34,33 @@
 #' "dataTableTemplate_Colombia_1975to2100.csv" and contains new local data.
 #' @param dirOutputs Full path to directory for outputs
 #' @param pdfpng Choose the format for outputs. Either "pdf", "png" or "both. Default is "png"
+#' @param scenRef The reference scenario to compare against. Default will pick first scenario from
+#' list f all scenarios
+#' @param yearsCompare Choose the years to compare scenarios for xScenSelectYears plot. Default is
+#' c("2015","2030","2050","2100")
 #' @keywords charts, diffplots
 #' @return Produces charts in output folder and also returns combined table in srn format.
 #' @export
-#' @import dplyr tibble
+#' @import dplyr tibble utils tidyr rlang
 
 srn.chartsProcess <- function(dataTables,scenRef=NULL,
-                       dirOutputs=paste(getwd(),"/outputs",sep=""),pdfpng="png") {
+                       dirOutputs=paste(getwd(),"/outputs",sep=""),pdfpng="png",
+                       yearsCompare=c("2015","2030","2050","2100")) {
 
 #------------------
 # Load required Libraries
 # -----------------
-  library(tibble,quietly = T)
-  library(dplyr,quietly = T)
+  requireNamespace("tibble",quietly = T)
+  requireNamespace("dplyr",quietly = T)
+  requireNamespace("utils",quietly = T)
 
+#------------------
+# Initialize variables to remove binding errors
+# -----------------
+
+  NULL->scenario->value->x->region->param->aggregate->origValue->origScen->origQuery->
+  origUnits->origX->sources->vintage->xLabel->class1->classLabel1->classPalette1->
+  class2->classLabel2->classPalette2
 
 #------------------
 # Read in tables
@@ -109,14 +122,14 @@ for(region_i in unique(tbl$region)){
     srn.printPdfPng(
     srn.chart(tbl_rsp, chartType = "bar"),
     dir = paste(dirOutputs, "/", region_i, "/regional","/", scenario_i,sep = ""),
-    filename = paste("figBar_",region_i,"_",scenario_i,"_",param_i,sep="")
+    filename = paste(param_i,"_figBar_",region_i,"_",scenario_i,sep="")
     )
 
     # Line Chart
     srn.printPdfPng(
       srn.chart(tbl_rsp,chartType = "line"),
       dir = paste(dirOutputs, "/", region_i, "/regional","/", scenario_i,sep = ""),
-      filename = paste("figLine_",region_i,"_",scenario_i,"_",param_i,sep="")
+      filename = paste(param_i,"_figLine_",region_i,"_",scenario_i,sep="")
     )
 
 } # close loop for param
@@ -141,7 +154,7 @@ for(region_i in unique(tbl$region)){
       srn.printPdfPng(
         srn.chart(tbl_rp, chartType = "bar"),
         dir = paste(dirOutputs, "/", region_i,"/regional/compareScen",sep = ""),
-        filename = paste("figBar_",region_i,"_compareScen_",param_i,sep=""),
+        filename = paste(param_i,"_figBar_",region_i,"_compareScen",sep=""),
         figWidth = 13*length(unique(tbl_rp$scenario))/2
       )
 
@@ -149,42 +162,61 @@ for(region_i in unique(tbl$region)){
       srn.printPdfPng(
         srn.chart(tbl_rp,chartType = "line"),
         dir = paste(dirOutputs, "/", region_i,"/regional/compareScen",sep = ""),
-        filename = paste("figLine_",region_i,"_compareScen_",param_i,sep=""),
+        filename = paste(param_i,"_figLine_",region_i,"_compareScen",sep=""),
         figWidth = 13*length(unique(tbl_rp$scenario))/2
       )
+
+#-------------------------
+# Plot with Scenarios on X for Chosen Years
+#------------------------
+
+      tbl_rpy <- tbl_rp%>%filter(x %in% yearsCompare)
+
+      # Bar Chart
+      srn.printPdfPng(
+        srn.chart(tbl_rpy, chartType = "bar", facet_columns = "x", xData ="scenario"),
+        dir = paste(dirOutputs, "/", region_i,"/regional/compareScen",sep = ""),
+        filename = paste(param_i,"_figBar_",region_i,"_compareScen_xScenSelectYears",sep=""),
+        figWidth = 13*length(unique(tbl_rp$scenario))/2
+      )
+
+
+#-------------------------
+# Aggregate and Plot Dodged/OverLapping Plots
+#------------------------
 
       # Aggregate across classes
       tbl_rpAggsums<-tbl_rp%>%
         dplyr::filter(aggregate=="sum")%>%
-        dplyr::select(-contains(class))%>%
+        dplyr::select(-contains("class"))%>%
         group_by_at(vars(-value,-origValue))%>%
         summarize_at(c("value"),funs(sum))
       tbl_rpAggmeans<-tbl_rp%>%
         dplyr::filter(aggregate=="mean")%>%
-        dplyr::select(-contains(class))%>%
+        dplyr::select(-contains("class"))%>%
         group_by_at(vars(-value,-origValue))%>%
         summarize_at(c("value"),funs(mean))
       tbl_rpAgg<-bind_rows(tbl_rpAggsums,tbl_rpAggmeans)%>%ungroup()
 
 
-      # Bar Chart
+      # Bar Chart Dodged
       srn.printPdfPng(
         srn.chart(tbl_rpAgg, chartType = "bar", facet_columns="none",
                   class ="scenario", position ="dodge", classPalette = "pal_Basic"),
         dir = paste(dirOutputs, "/", region_i,"/regional/compareScen",sep = ""),
-        filename = paste("figBarDodged_",region_i,"_compareScen_",param_i,sep="")
+        filename = paste(param_i,"_figBarDodged_",region_i,"_compareScen_",sep="")
       )
 
-      # Line Chart
+      # Line Chart Overlapped
       srn.printPdfPng(
         srn.chart(tbl_rpAgg, chartType = "line", facet_columns="none",
                   class ="scenario", classPalette = "pal_Basic"),
         dir = paste(dirOutputs, "/", region_i,"/regional/compareScen",sep = ""),
-        filename = paste("figLineOverlap_",region_i,"_compareScen_",param_i,sep="")
+        filename = paste(param_i,"_figLineOverlap_",region_i,"_compareScen",sep="")
       )
 
 #-------------------------
-# Creating Diff Plots
+# Diff Plots
 #------------------------
 
       if(is.null(scenRef)){scenRef = unique(tbl_rp$scenario)[1]} # Check if Ref Scenario Chosen
@@ -214,7 +246,7 @@ for(region_i in unique(tbl$region)){
       srn.printPdfPng(
         srn.chart(tbl_rpd, chartType = "bar"),
         dir = paste(dirOutputs, "/", region_i,"/regional/compareScen",sep = ""),
-        filename = paste("figBarDiff_",region_i,"_compareScen_",param_i,sep=""),
+        filename = paste(param_i,"figBarDiff_",region_i,"_compareScen_",sep=""),
         figWidth = 13*length(unique(tbl_rpd$scenario))/2
       )
 
@@ -222,15 +254,15 @@ for(region_i in unique(tbl$region)){
       srn.printPdfPng(
         srn.chart(tbl_rpd,chartType = "line"),
         dir = paste(dirOutputs, "/", region_i,"/regional/compareScen",sep = ""),
-        filename = paste("figLineDiff_",region_i,"_compareScen_",param_i,sep=""),
+        filename = paste(param_i,"figLineDiff_",region_i,"_compareScen_",sep=""),
         figWidth = 13*length(unique(tbl_rpd$scenario))/2
       )
 
 
-    } # close loop for param
-  } # close loop for region
-} # Close if multiple scenarios available
+      } # close loop for param
+    } # close loop for region
+  } # Close if multiple scenarios available
 
-return(tbl)
+  return(tbl)
 
-} # Close Function
+  } # Close Function

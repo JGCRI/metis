@@ -12,7 +12,7 @@ library(rgcam)
 
 
 #----------------------------
-# Load Libraries
+# Tests
 #----------------------------
 a<-srn.colors()
 testcolor<-a$elec_tech_colors

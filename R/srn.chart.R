@@ -1,15 +1,13 @@
-#' srn.chartFunctions
+#' srn.chart
 #'
-#' This file contains several functions used to produce different kinds of charts
-#' in the srn package. Each figure is accompanied with a csv table.
+#' This function produce different kinds of charts for the srn package.
+#' iIt requires a table in the SRN format. Each figure is accompanied with a csv table.
 #'
-#' List of Functions in this script:
-#' \itemize{
-#' \item scenario: The name of the new data scenario
-#' }
 #' @param srnFormattedTable Table in srn format
-#' @param x Default "x"
-#' @param y Default "value"
+#' @param chartType Type of chart: "bar" or "line"
+#' @param position Position in bar charts. "identity", "stack" or "dodge"
+#' @param xData Default "x"
+#' @param yData Default "value"
 #' @param class Default "class1"
 #' @param group Default "scenario"
 #' @param classPalette Default "classPalette1"
@@ -17,7 +15,6 @@
 #' @param xLabel Default "xLabel"
 #' @param facet_rows Default "region"
 #' @param facet_columns Default "scenario"
-#' @param ncol Default 4
 #' @param scales Default "fixed"
 #' @param useNewLabels Default 1
 #' @param units Default "units"
@@ -25,24 +22,18 @@
 #' @param  xBreaksMin Default 5
 #' @param yBreaksMajn Default 5
 #' @param  yBreaksMinn Default 10
+#' @param sizeBarLines Default 0.5
+#' @param sizeLines Default 1.5
+#' @param ncolrow Number of columns or Rows for Faceted plots
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
 #' @export
 #' @import tools ggplot2 scales
 
 
-#----------------
-# Load Libraries
-#---------------
-
-library(tools,quietly = T)
-library(ggplot2,quietly = T)
-library(scales,quietly = T)
-
-
 srn.chart<-function(srnFormattedTable,
                          chartType="bar",position="stack",
-                         x="x",y="value",class="class1",group="scenario",
+                         xData="x",yData="value",class="class1",group="scenario",
                          classPalette="classPalette1",classLabel="classLabel1",
                          xLabel="xLabel",
                          facet_rows="region",facet_columns="scenario",ncolrow=4,scales="fixed",
@@ -50,6 +41,21 @@ srn.chart<-function(srnFormattedTable,
                          xBreaksMaj=10, xBreaksMin=5,
                          yBreaksMajn=5, yBreaksMinn=10,
                          sizeBarLines=0.5,sizeLines=1.5){
+
+#----------------
+# Load Libraries
+#---------------
+
+  requireNamespace("tools",quietly = T)
+  requireNamespace("ggplot2",quietly = T)
+  requireNamespace("scales",quietly = T)
+
+#------------------
+# Initialize variables to remove binding errors
+# -----------------
+
+NULL->tools->ggplot2
+
 
   l1 <- srnFormattedTable
   l1<-l1%>%mutate(units=gsub(" ","~",units))
@@ -63,7 +69,7 @@ srn.chart<-function(srnFormattedTable,
     l1[[class]]<-toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",l1[[class]]))
   }
 
-  p <- ggplot(l1,aes(x=x,y=value,group=get(group))) +
+  p <- ggplot(l1,aes(x=get(xData),y=get(yData),group=get(group))) +
        srn.chartsThemeLight()
 
   # Chart Type
@@ -96,10 +102,11 @@ srn.chart<-function(srnFormattedTable,
   p <- p +
        xlab(unique(l1[[xLabel]])) + ylab(eval(parse(text=paste(unique(l1[[units]]),collapse="~")))) +
        theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
-       scale_x_continuous (breaks=(seq(min(range(l1[[x]])),max(range(l1[[x]])),by=xBreaksMaj)),
-                               minor_breaks=(seq(min(range(l1[[x]])),max(range(l1[[x]])),by=xBreaksMin)),
-                               expand=c(0,xBreaksMaj/2)) +
        scale_y_continuous(breaks = pretty_breaks(n = yBreaksMajn), minor_breaks = waiver())
+
+if(xData =='x'){p<- p + scale_x_continuous (breaks=(seq(min(range(l1[[xData]])),max(range(l1[[xData]])),by=xBreaksMaj)),
+                               minor_breaks=(seq(min(range(l1[[xData]])),max(range(l1[[xData]])),by=xBreaksMin)),
+                               expand=c(0,xBreaksMaj/2))}
 
   # Faceting
   if(length(unique(l1[[facet_columns]])) > 1 & length(unique(l1[[facet_rows]])) > 1){

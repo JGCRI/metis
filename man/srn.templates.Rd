@@ -30,6 +30,14 @@ srn.tmapLayout()
 \item{figHeight}{Figure height in inches for figures to be printed in function srn.printPdfPng}
 
 \item{pdfpng}{Either "pdf", "png" or "both" to define the format of output}
+
+\item{map}{A tmap object with facets which will be converted to animations}
+
+\item{width}{Width of map in inches.}
+
+\item{height}{Hieght of map}
+
+\item{delay}{Delay. Time between animations = delay/100. Default is 60 or 0.6 seconds.}
 }
 \value{
 A list of different templates

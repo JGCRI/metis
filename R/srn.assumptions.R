@@ -58,7 +58,7 @@ srn.assumptions <- function() {
     "Gg",0.001,
     "Tg",1,
     "MTC",1
-  )%>%as.data.frame;head(convertGgTgMTC)
+  )%>%as.data.frame;
 
   GWPType<-"GWPAR4" #GWPSAR,GWPAR4,GWPAR5
 

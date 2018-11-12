@@ -20,6 +20,7 @@
 #' @keywords templates, charts, maps, print
 #' @return A list of different templates
 #' @export
+#' @import grDevices
 
 #-------------
 # Print to PDF or PNG
@@ -51,6 +52,12 @@ srn.printPdfPng <- function(figure,dir,filename, figWidth = 13, figHeight = 9,pd
 #-------------
 
 srn.chartsThemeLight <- function(){
+
+#------------------
+# Load required Libraries
+# -----------------
+requireNamespace("ggplot2",quietly = T)
+
     x<- theme_bw() +
         theme(
         text =                element_text(family = NULL, face = "plain",colour = "black", size = 24,
@@ -72,6 +79,10 @@ srn.chartsThemeLight <- function(){
 
 #-------------
 #' @rdname srn.templates
+#' @param map A tmap object with facets which will be converted to animations
+#' @param width Width of map in inches.
+#' @param height Hieght of map
+#' @param delay Delay. Time between animations = delay/100. Default is 60 or 0.6 seconds.
 #' @export
 #' @import tmap
 # Creating tmap Animations
@@ -80,11 +91,16 @@ srn.chartsThemeLight <- function(){
 
 srn.tmapAnimate <- function(map, filename="animation.gif", width, height, delay=60){
 
+#------------------
+# Load required Libraries
+# -----------------
+  requireNamespace("tmap",quietly = T)
+
   checkIM <- system("cmd.exe",input="magick -version")
   if (checkIM!=0) stop("Could not find ImageMagick. Make sure it is installed and included in the systems PATH")
   d <- paste(getwd(), "/tmap_plots", sep="")   #------------ Create Temporary Folder for plots
   dir.create(d, showWarnings = FALSE)
-  save_tmap(tm+tm_facets(nrow=1,ncol=1,free.scales=F) +
+  save_tmap(map+tm_facets(nrow=1,ncol=1,free.scales=F) +
               tm_layout(outer.margins=c(0,0,0,0),inner.margins = c(0,0,0,0), between.margin = 0),
             filename = paste(d, "plot%03d.png", sep="/"), width=width*0.5, height=height*0.5) #------------ In tmap tm_facets MAKE SURE nrow/ncol=1, tm_facets(free.scales=FALSE,nrow=1,ncol=1)
   processed <- system("cmd.exe",input=paste("magick -delay ", delay, " ", d, "/*.png \"", filename, "\"", sep=""))
@@ -101,8 +117,14 @@ srn.tmapAnimate <- function(map, filename="animation.gif", width, height, delay=
 #-------------
 
 srn.tmapLayout <- function(){
+
+#------------------
+# Load required Libraries
+# -----------------
+  requireNamespace("tmap",quietly = T)
+
     x<-tm_layout(main.title.position="left",main.title.size=1.5,
-       inner.margins = rep(0,4),outer.margin=rep(0.05,4),
+       inner.margins = rep(0,4),outer.margins=rep(0.05,4),
        panel.label.bg.color="gray90")
   return(x)
 }
