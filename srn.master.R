@@ -3,13 +3,12 @@
 #----------------------------
 # Install The SRN Package
 #----------------------------
-#install.packages("devtools");
-#library(devtools)
-#install_github(repo="zarrarkhan/srn",'dev_srn') # To install directly from branch
+if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
+library(devtools)
+if("srn" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/srn")}
 library(srn)
-#install_github(repo="JGCRI/rgcam")
+if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
-
 
 #----------------------------
 # Tests
