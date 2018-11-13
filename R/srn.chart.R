@@ -59,6 +59,8 @@ NULL->tools->ggplot2
 
   l1 <- srnFormattedTable
   l1<-l1%>%mutate(units=gsub(" ","~",units))
+  if(length(classPalette)>1){
+    paletteX<-classPalette}else{
   if(classPalette %in% names(srnFormattedTable)){
   paletteX<-srn.colors()[[unique(l1[[classPalette]])]]}else{
     if(classPalette %in% names(srn.colors())){
@@ -66,6 +68,8 @@ NULL->tools->ggplot2
       paletteX<-classPalette
     }
   }
+  }
+
   if(useNewLabels==1){
     if(!is.null(names(paletteX))){
       names(paletteX)<-toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",names(paletteX)))}

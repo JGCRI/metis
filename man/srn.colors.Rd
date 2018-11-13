@@ -16,6 +16,7 @@ as well as new palettes for SRN modeling to the global environment
 \details{
 List of Color Palettes
 \itemize{
+\item pal_HDDCDD
 \item pal_16
 \item elec_tech_colors
 \item elec_renew_colors
