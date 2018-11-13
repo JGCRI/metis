@@ -7,7 +7,8 @@
 srn.readgcam(gcamdatabasePath, gcamdatabaseName,
   queryxml = "srnQueries.xml", scenOrigNames, scenNewNames = NULL,
   reReadData = T, dataProj = "dataProj.proj",
-  dirOutputs = paste(getwd(), "/outputs", sep = ""), regions = NULL)
+  dirOutputs = paste(getwd(), "/outputs", sep = ""),
+  regionsSelect = NULL, queriesSelect = "All")
 }
 \arguments{
 \item{gcamdatabasePath}{Path to gcam database folder}
@@ -31,7 +32,19 @@ folder which may have been created from an old run.}
 
 \item{dirOutputs}{Full path to directory for outputs}
 
-\item{regions}{The regions to analyze in a vector. Example c('Colombia','Pakistan')}
+\item{regionsSelect}{The regions to analyze in a vector. Example c('Colombia','Argentina')}
+
+\item{queriesSelect}{Default = "All". Vector of queries to read from the queryxml for example
+c("Total final energy by aggregate end-use sector", "Population by region"). The queries must be
+availble in the queryxml file. Current list of available paramaters are:
+\itemize{
+\item "Total final energy by aggregate end-use sector"
+\item "GDP per capita MER by region" : Where MER is "Market Exchange Rate"
+\item "GDP MER by region" : Where MER is "Market Exchange Rate"
+\item "GDP Growth Rate (Percent)" : Calculated based on the GDP MER by region.
+\item "Population by region"
+\item "ag production by tech" : Where technologies signify irrigated or rainfed
+}}
 }
 \value{
 A list with the scenarios in the gcam database, queries in the queryxml file and a
