@@ -3,7 +3,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^READMEfigs$
-^srn.essentials.R$
+^srn.extras.R$
 ^srn.master.R$
 ^srn.pdf$
 ^dataFiles$

@@ -5,6 +5,7 @@
 #'
 #' List of Color Palettes
 #' \itemize{
+#' \item pal_HDDCDD
 #' \item pal_16
 #' \item elec_tech_colors
 #' \item elec_renew_colors
@@ -46,6 +47,9 @@
 
 srn.colors <- function() {
     # GCAM Color Palettes
+
+    # HDDCDD Palette for Cooling and Heating
+    pal_HDDCDD<-c("CDD"="cornflowerblue","HDD"="coral2")
 
     # General purpose color scheme where sequentail colors do not clash too much
     pal_16 <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
