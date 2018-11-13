@@ -206,7 +206,7 @@ srn.colors <- function() {
         `l Wind` = "#fdd67b", `m Solar` = "#fdfa28", `n CHP` = "#507fab", `o Battery` = "#92a75d",
         `energy reduction` = "grey", Total = "black", Other = "black")
 
-    return(list(pal_16 = pal_16, elec_tech_colors = elec_tech_colors, elec_renew_colors = elec_renew_colors,
+    return(list(pal_HDDCDD=pal_HDDCDD, pal_16 = pal_16, elec_tech_colors = elec_tech_colors, elec_renew_colors = elec_renew_colors,
         building_colors = building_colors, trn_fuel_colors = trn_fuel_colors, enduse_fuel_numbered = enduse_fuel_numbered,
         enduse_colors = enduse_colors, pal_pri_ene = pal_pri_ene, pal_pri_fuelcost = pal_pri_fuelcost,
         pal_emiss_sector = pal_emiss_sector, pal_landuse = pal_landuse, pal_hydrogen = pal_hydrogen,
