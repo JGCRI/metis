@@ -4,9 +4,10 @@
 \alias{srn.chartsProcess}
 \title{srn.chartsProcess}
 \usage{
-srn.chartsProcess(dataTables, scenRef = NULL,
+srn.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), pdfpng = "png",
-  yearsCompare = c("2015", "2030", "2050", "2100"))
+  yearsCompare = c("2015", "2030", "2050", "2100"),
+  paramsSelect = "All", regionsSelect = "All")
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -14,6 +15,8 @@ Example c("D:/srn/outputs/Colombia/regional/dataTable_Colombia_1975to2100.csv",
 "D:/srn/outputs/Colombia/regional/dataTableLocal_Colombia_1975to2100.csv").
 Where "dataTableLocal_Colombia_1975to2100.csv" is the new datafile created based on
 "dataTableTemplate_Colombia_1975to2100.csv" and contains new local data.}
+
+\item{rTable}{If a table is created directly in R as a data.frame or tibble it can entered here.}
 
 \item{scenRef}{The reference scenario to compare against. Default will pick first scenario from
 list f all scenarios}
@@ -24,6 +27,20 @@ list f all scenarios}
 
 \item{yearsCompare}{Choose the years to compare scenarios for xScenSelectYears plot. Default is
 c("2015","2030","2050","2100")}
+
+\item{paramsSelect}{Default = "All". Select the paramaters to analyze from the the tables provided.
+The parameters corresponding to the different gcam query files are as follows:
+\itemize{
+\item "Query" : "Param"
+\item "Total final energy by aggregate end-use sector" : "finalNrgbySec"
+\item "GDP per capita MER by region" : "gdp"
+\item "GDP MER by region" : "gdp"
+\item "GDP Growth Rate (Percent)" : Calculated based on the GDP MER by region.
+\item "Population by region"
+\item "ag production by tech" : Where technologies signify irrigated or rainfed
+}}
+
+\item{regionsSelect}{Default = "All". Select regions to create charts for.}
 }
 \value{
 Produces charts in output folder and also returns combined table in srn format.
