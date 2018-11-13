@@ -19,9 +19,9 @@
 #' @param useNewLabels Default 1
 #' @param units Default "units"
 #' @param xBreaksMaj Default 10
-#' @param  xBreaksMin Default 5
+#' @param xBreaksMin Default 5
 #' @param yBreaksMajn Default 5
-#' @param  yBreaksMinn Default 10
+#' @param yBreaksMinn Default 10
 #' @param sizeBarLines Default 0.5
 #' @param sizeLines Default 1.5
 #' @param ncolrow Number of columns or Rows for Faceted plots
@@ -61,7 +61,10 @@ NULL->tools->ggplot2
   l1<-l1%>%mutate(units=gsub(" ","~",units))
   if(classPalette %in% names(srnFormattedTable)){
   paletteX<-srn.colors()[[unique(l1[[classPalette]])]]}else{
-    paletteX<-srn.colors()[[classPalette]]
+    if(classPalette %in% names(srn.colors())){
+    paletteX<-srn.colors()[[classPalette]]} else {
+      paletteX<-classPalette
+    }
   }
   if(useNewLabels==1){
     if(!is.null(names(paletteX))){
