@@ -1,0 +1,5 @@
+"units","param","class1","class2","xLabel","aggregate","classLabel1","classPalette1","classLabel2","classPalette2"
+"Final Energy (TWh)","finalNrgbySec","building","class2","Year","sum","Sector","pal_finalNrg_sec","classLabel2","classPalette2"
+"Final Energy (TWh)","finalNrgbySec","industry","class2","Year","sum","Sector","pal_finalNrg_sec","classLabel2","classPalette2"
+"Final Energy (TWh)","finalNrgbySec","transportation","class2","Year","sum","Sector","pal_finalNrg_sec","classLabel2","classPalette2"
+"GDP (Billion 1990 USD)","gdp","class1","class2","Year","sum","GDP","pal_16","classLabel2","classPalette2"

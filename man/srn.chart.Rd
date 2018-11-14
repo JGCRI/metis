@@ -4,17 +4,17 @@
 \alias{srn.chart}
 \title{srn.chart}
 \usage{
-srn.chart(srnFormattedTable, chartType = "bar", position = "stack",
-  xData = "x", yData = "value", class = "class1",
-  group = "scenario", classPalette = "classPalette1",
-  classLabel = "classLabel1", xLabel = "xLabel",
-  facet_rows = "region", facet_columns = "scenario", ncolrow = 4,
-  scales = "fixed", useNewLabels = 1, units = "units",
-  xBreaksMaj = 10, xBreaksMin = 5, yBreaksMajn = 5,
-  yBreaksMinn = 10, sizeBarLines = 0.5, sizeLines = 1.5)
+srn.chart(data, chartType = "bar", position = "stack", xData = "x",
+  yData = "value", class = "class1", group = "scenario",
+  classPalette = "classPalette1", classLabel = "classLabel1",
+  xLabel = "xLabel", yLabel = "yLabel", facet_rows = "region",
+  facet_columns = "scenario", ncolrow = 4, scales = "fixed",
+  useNewLabels = 1, units = "units", xBreaksMaj = 10,
+  xBreaksMin = 5, yBreaksMajn = 5, yBreaksMinn = 10,
+  sizeBarLines = 0.5, sizeLines = 1.5)
 }
 \arguments{
-\item{srnFormattedTable}{Table in srn format}
+\item{data}{data table for charting}
 
 \item{chartType}{Type of chart: "bar" or "line"}
 
@@ -33,6 +33,8 @@ srn.chart(srnFormattedTable, chartType = "bar", position = "stack",
 \item{classLabel}{Default "classLabel1"}
 
 \item{xLabel}{Default "xLabel"}
+
+\item{yLabel}{Default "units"}
 
 \item{facet_rows}{Default "region"}
 
@@ -64,6 +66,20 @@ Returns the formatted data used to produce chart
 \description{
 This function produce different kinds of charts for the srn package.
 iIt requires a table in the SRN format. Each figure is accompanied with a csv table.
+}
+\examples{
+# Examples below show the default chart with minimum information
+# and then adding progressively more details.
+
+library(tibble)
+tbl <- tribble (
+~x,     ~value,
+2010,   15,
+2020,   20,
+2030,   30
+)
+srn.chart(data=tbl,xData="x",yData="value",chartType = "line")
+srn.chart(data=tbl,xData="x",yData="value",chartType = "bar")
 }
 \keyword{charts,}
 \keyword{diffplots}

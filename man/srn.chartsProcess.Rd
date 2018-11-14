@@ -6,8 +6,10 @@
 \usage{
 srn.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), pdfpng = "png",
-  yearsCompare = c("2015", "2030", "2050", "2100"),
-  paramsSelect = "All", regionsSelect = "All")
+  xCompare = c("2015", "2030", "2050", "2100"), paramsSelect = "All",
+  regionsSelect = "All", xData = "x", yData = "value",
+  xLabel = "xLabel", yLabel = "units", aggregate = "sum",
+  class = "class", classPalette = "pal_Basic", regionCompareOnly = 0)
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -25,7 +27,7 @@ list f all scenarios}
 
 \item{pdfpng}{Choose the format for outputs. Either "pdf", "png" or "both. Default is "png"}
 
-\item{yearsCompare}{Choose the years to compare scenarios for xScenSelectYears plot. Default is
+\item{xCompare}{Choose the years to compare scenarios for xScenSelectYears plot. Default is
 c("2015","2030","2050","2100")}
 
 \item{paramsSelect}{Default = "All". Select the paramaters to analyze from the the tables provided.
@@ -41,6 +43,23 @@ The parameters corresponding to the different gcam query files are as follows:
 }}
 
 \item{regionsSelect}{Default = "All". Select regions to create charts for.}
+
+\item{xData}{Default "x"}
+
+\item{yData}{Default "value"}
+
+\item{xLabel}{Default "xLabel"}
+
+\item{yLabel}{Default "units"}
+
+\item{aggregate}{Default "sum"}
+
+\item{class}{Default "class"}
+
+\item{classPalette}{Default "pal_Basic" from srn.colors()$pal_Basic}
+
+\item{regionCompareOnly}{Default 0. If set to 1, will only run comparison plots and not individual
+regions}
 }
 \value{
 Produces charts in output folder and also returns combined table in srn format.

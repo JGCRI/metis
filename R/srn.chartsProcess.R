@@ -37,7 +37,16 @@
 #' @param pdfpng Choose the format for outputs. Either "pdf", "png" or "both. Default is "png"
 #' @param scenRef The reference scenario to compare against. Default will pick first scenario from
 #' list f all scenarios
-#' @param yearsCompare Choose the years to compare scenarios for xScenSelectYears plot. Default is
+#' @param xData Default "x"
+#' @param yData Default "value"
+#' @param xLabel Default "xLabel"
+#' @param yLabel Default "units"
+#' @param class Default "class"
+#' @param aggregate Default "sum"
+#' @param classPalette Default "pal_Basic" from srn.colors()$pal_Basic
+#' @param regionCompareOnly Default 0. If set to 1, will only run comparison plots and not individual
+#' regions
+#' @param xCompare Choose the years to compare scenarios for xScenSelectYears plot. Default is
 #' c("2015","2030","2050","2100")
 #' @param paramsSelect Default = "All". Select the paramaters to analyze from the the tables provided.
 #' The parameters corresponding to the different gcam query files are as follows:
@@ -58,9 +67,12 @@
 
 srn.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        dirOutputs=paste(getwd(),"/outputs",sep=""),pdfpng="png",
-                       yearsCompare=c("2015","2030","2050","2100"),
+                       xCompare=c("2015","2030","2050","2100"),
                        paramsSelect="All",
-                       regionsSelect="All") {
+                       regionsSelect="All",
+                       xData="x",yData="value",xLabel="xLabel",yLabel="units",
+                       aggregate="sum",class="class", classPalette="pal_Basic",
+                       regionCompareOnly=0) {
 
 #------------------
 # Load required Libraries
@@ -73,12 +85,42 @@ srn.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
 # Initialize variables to remove binding errors
 # -----------------
 
-  NULL->scenario->value->x->region->param->aggregate->origValue->origScen->origQuery->
-  origUnits->origX->sources->vintage->xLabel->class1->classLabel1->classPalette1->
+  NULL->scenario->value->x->region->param->origValue->origScen->origQuery->
+  origUnits->origX->sources->vintage->class1->classLabel1->classPalette1->
   class2->classLabel2->classPalette2->i->j->k
 
 #------------------
-# Read in tables
+# Function for adding any missing columns if needed
+# -----------------
+
+addMissing<-function(data){
+  if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
+  if(!"region"%in%names(data)){data<-data%>%mutate(region="region")}
+  if(!"param"%in%names(data)){data<-data%>%mutate(param="param")}
+  if(!"value"%in%names(data)){data<-data%>%mutate(value=get(yData))}
+  if(!"origValue"%in%names(data)){data<-data%>%mutate(origValue=value)}
+  if(!"units"%in%names(data)){data<-data%>%mutate(units="units")}
+  if(!"vintage"%in%names(data)){data<-data%>%mutate(vintage="vintage")}
+  if(!"x"%in%names(data)){data<-data%>%mutate(x="x")}
+  if(!"xLabel"%in%names(data)){data<-data%>%mutate(xLabel=xLabel)}
+  if(!"aggregate"%in%names(data)){data<-data%>%mutate(aggregate=aggregate)}
+  if(!"class1"%in%names(data)){data<-data%>%mutate(class1="class1")}
+  if(!"classLabel1"%in%names(data)){data<-data%>%mutate(classLabel1="classLabel1")}
+  if(!"classPalette1"%in%names(data)){data<-data%>%mutate(classPalette1=classPalette)}
+  if(!"class2"%in%names(data)){data<-data%>%mutate(class2="class2")}
+  if(!"classLabel2"%in%names(data)){data<-data%>%mutate(classLabel2="classLabel2")}
+  if(!"classPalette2"%in%names(data)){data<-data%>%mutate(classPalette2=classPalette)}
+  if(!"origScen"%in%names(data)){data<-data%>%mutate(origScen="origScen")}
+  if(!"origQuery"%in%names(data)){data<-data%>%mutate(origQuery="origQuery")}
+  if(!"origUnits"%in%names(data)){data<-data%>%mutate(origUnits="origUnits")}
+  if(!"origX"%in%names(data)){data<-data%>%mutate(origX="origX")}
+  if(!"sources"%in%names(data)){data<-data%>%mutate(sources="sources")}
+  return(data)
+}
+
+
+#------------------
+# Read in tables (Either csv tables (dataTables) or R data (rTables))
 #------------------
 
 tbl<-tibble()
@@ -87,53 +129,60 @@ if(is.null(dataTables) & is.null(rTable)){
   stop ("No dataTable or rTables have been provided.")
 }
 
+# Read in csv (dataTables)
+#------------------------
 if(!is.null(dataTables)){
 
 for(i in dataTables){
   if(file.exists(i)){
-  # Check if any new data tables using the template have been added. The template has
-  # fewer number of columns since some columns are only used to track processed gcam data.
-  # These missing columns are added in order to have consistent rows with gcamdata tables.
   tblNew<-read.csv(paste(i), stringsAsFactors = F)%>%as.tibble
-  if(ncol(tblNew)==16){
-    tblNew<-tblNew%>%
-      mutate(origScen=scenario,
-             origQuery="Query",
-             origValue=value,
-             origUnits=units,
-             x=as.numeric(x),
-             origX=x)
   if(length(unique(tblNew$vintage))<2){tblNew<-tblNew%>%mutate(vintage = paste("Vint_", x, sep = ""))}
-  } else {stop(paste("Table ",i," format is not correct. The table should have the following column names:
-                scenario, region, sources, param, class1, class2, units, x,
-                value, vintage, xLabel, aggregate, classLabel1, classPalette1, classLabel2, classPalette2",sep=""))}
   tbl<-bind_rows(tbl,tblNew)
   } else {stop(paste(i," does not exist"))}
 }
 
+# Join relevant colors and classes using the mapping file if it exists
+if(file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
+  map<-read.csv(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""), stringsAsFactors = F)%>%as.tibble
+  tbl<-tbl%>%left_join(map)
+  }
+
+# Add missing columns
+  tbl<-addMissing(tbl)
 }
 
+# Read in R data (rTable)
+#------------------------
 if(!is.null(rTable)){
+  rTable<-addMissing(rTable)
+  rTable$origScen=as.character(rTable$origScen)
+  rTable$origQuery=as.character(rTable$origQuery)
+  rTable$origUnits=as.character(rTable$origUnits)
+  rTable$origX=as.character(rTable$origX)
 tbl<-bind_rows(tbl,rTable)
 }
 
 tbl<-tbl%>%unique()
 
+
+#------------------------
+# Print which parameters and regions if selected are available
+#------------------------
+
 if(any(paramsSelect!="All")){
-  if(!all(paramsSelect %in% unique(tbl$param))){
+  if(all(!paramsSelect %in% unique(tbl$param))){}else{
     print(paste("Parameters not available in data: ", paste(paramsSelect[!(paramsSelect %in% unique(tbl$param))],collapse=", "), sep=""))
     print(paste("Running remaining paramaters: ",  paste(paramsSelect[(paramsSelect %in% unique(tbl$param))],collapse=", "), sep=""))
-    }
   tbl<-tbl%>%dplyr::filter(param %in% paramsSelect[(paramsSelect %in% unique(tbl$param))])
+  }
 }
-
 
 if(any(regionsSelect!="All")){
-  if(!all(regionsSelect %in% unique(tbl$region))){
+  if(all(!regionsSelect %in% unique(tbl$region))){}else{
     print(paste("Regions not available in data: ", paste(regionsSelect[!(regionsSelect %in% unique(tbl$region))],collapse=", "), sep=""))
     print(paste("Running remaining regions: ",  paste(regionsSelect[(regionsSelect %in% unique(tbl$region))],collapse=", "), sep=""))
-}
 tbl<-tbl%>%dplyr::filter(region %in% regionsSelect[(regionsSelect %in% unique(tbl$region))])
+}
 }
 
 #------------------
@@ -141,20 +190,241 @@ tbl<-tbl%>%dplyr::filter(region %in% regionsSelect[(regionsSelect %in% unique(tb
 #------------------
 if (!dir.exists(dirOutputs)){
   dir.create(dirOutputs)}
+if (!dir.exists(paste(dirOutputs, "/compareRegions", sep = ""))){
+  dir.create(paste(dirOutputs, "/compareRegions", sep = ""))}
+if (!dir.exists(paste(dirOutputs, "/compareRegions/compareScen", sep = ""))){
+  dir.create(paste(dirOutputs, "/compareRegions/compareScen", sep = ""))}
+for (j in unique(tbl$scenario)) {
+  if (!dir.exists(paste(dirOutputs, "/compareRegions","/", j,sep = "")))
+  {dir.create(paste(dirOutputs, "/compareRegions","/", j,sep = ""))}
+}
+
+if(regionCompareOnly==0){
 for (i in unique(tbl$region)){
+  tbl_r<-tbl%>%filter(region==i)
     if (!dir.exists(paste(dirOutputs, "/", i, sep = ""))){
       dir.create(paste(dirOutputs, "/", i, sep = ""))}
     if (!dir.exists(paste(dirOutputs, "/", i, "/regional", sep = ""))){
       dir.create(paste(dirOutputs, "/", i, "/regional", sep = ""))}
-  if(length(unique(tbl$scenario))>1){
+  if(length(unique(tbl_r$scenario))>1){
   if (!dir.exists(paste(dirOutputs, "/", i, "/regional/compareScen",sep = ""))){
     dir.create(paste(dirOutputs, "/", i, "/regional/compareScen",sep = ""))}}
-  for (j in unique(tbl$scenario)) {
+  for (j in unique(tbl_r$scenario)) {
     if (!dir.exists(paste(dirOutputs, "/", i, "/regional","/", j,sep = "")))
     {dir.create(paste(dirOutputs, "/", i, "/regional","/", j,sep = ""))}
   }
 }
+} # Close if(regionCompareOnly==0)
+#------------------
+# Create Charts for Regional Comparison
+#------------------
 
+
+
+  for(j in unique(tbl$scenario)){
+    for(k in unique(tbl$param)){
+
+      tbl_sp<-tbl%>%dplyr::filter(scenario==j,
+                                   param==k)
+
+      if(nrow(tbl_sp)>0){
+
+        # Bar Chart
+        srn.printPdfPng(
+          srn.chart(tbl_sp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+                    chartType = "bar",facet_columns="region",facet_rows="none"),
+          dir = paste(dirOutputs, "/compareRegions","/", j,sep = ""),
+          filename = paste(k,"_figBar_",j,"_compareRegions",sep=""),
+          figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2
+        )
+
+        # Line Chart
+        srn.printPdfPng(
+          srn.chart(tbl_sp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+                    chartType = "line",facet_columns="region",facet_rows="none"),
+          dir = paste(dirOutputs, "/compareRegions","/", j,sep = ""),
+          filename = paste(k,"_figLines_",j,"_compareRegions",sep=""),
+          figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2
+        )
+
+      } # Close if(nrow(tbl_sp)>0)
+
+    } # close loop for param
+  } # close loop for scenario
+
+
+#------------------
+# Compare Scenarios for each region
+#------------------
+
+if(length(unique(tbl$scenario))>1){
+
+
+    for(j in unique(tbl$param)){
+
+      tbl_p<-tbl%>%dplyr::filter(param==j)
+
+      if(nrow(tbl_p)>0){
+
+        # Bar Chart
+        srn.printPdfPng(
+          srn.chart(tbl_p, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+                    chartType = "bar",facet_columns="scenario",facet_rows="region"),
+          dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
+          filename = paste(j,"_figBar_compareScenRegions",sep=""),
+          figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2,
+          figHeight = 12*max(length(unique(tbl_p$region)),2)/2
+        )
+
+        # Line Chart
+        srn.printPdfPng(
+          srn.chart(tbl_p,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+                    chartType = "line",facet_columns="scenario",facet_rows="region"),
+          dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
+          filename = paste(j,"_figLine_compareScenRegions",sep=""),
+          figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2,
+          figHeight = 12*max(length(unique(tbl_p$region)),2)/2
+        )
+
+        #-------------------------
+        # Plot with Scenarios on X for Chosen Years
+        #------------------------
+
+        if(any(!xCompare %in% unique(tbl_p[[xData]]))){
+          print(paste("xCompare not available in data: ", paste(xCompare[!(xCompare %in% unique(tbl_p[[xData]]))],collapse=", "), sep=""))
+          print(paste("Comparing for only: ",  paste(xCompare[(xCompare %in% unique(tbl_p[[xData]]))],collapse=", "), sep=""))
+          tbl_py <- tbl_p%>%filter(x %in% xCompare)}else{
+            if(length(unique(tbl_p[[xData]]))<5){
+              tbl_py <- tbl_p}else{
+                xCompare<-c(unique(tbl_p[[xData]])[1],
+                            unique(tbl_p[[xData]])[round(length(unique(tbl_p[[xData]]))/2)],
+                            tail(unique(tbl_p[[xData]]),n=1)
+                )
+                tbl_py <- tbl_p%>%filter(x %in% xCompare)
+              }
+          }
+
+        # Bar Chart
+        srn.printPdfPng(
+          srn.chart(tbl_py, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel,
+                    chartType = "bar", facet_columns = xData, facet_rows="region"),
+          dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
+          filename = paste(j,"_figBar_compareScenRegion_xScenSelectYears",sep=""),
+          figWidth = 13*max(length(xCompare),2)/3,
+          figHeight = 12*max(length(unique(tbl_p$region)),2)/2
+        )
+
+
+        #-------------------------
+        # Aggregate and Plot Dodged/OverLapping Plots
+        #------------------------
+
+        # Aggregate across classes
+        tbl_pAggsums<-tbl_p%>%
+          dplyr::filter(aggregate=="sum")%>%
+          dplyr::select(-contains(class))%>%
+          group_by_at(vars(-yData,-origValue))%>%
+          summarize_at(c(yData),funs(sum))
+        tbl_pAggmeans<-tbl_p%>%
+          dplyr::filter(aggregate=="mean")%>%
+          dplyr::select(-contains(class))%>%
+          group_by_at(vars(-yData,-origValue))%>%
+          summarize_at(c(yData),funs(mean))
+        tbl_pAgg<-bind_rows(tbl_pAggsums,tbl_pAggmeans)%>%ungroup()
+
+
+        if(nrow(tbl_pAgg)>0){
+
+          # Bar Chart Dodged
+          srn.printPdfPng(
+            srn.chart(tbl_pAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, chartType = "bar",
+                      class ="scenario", position ="dodge", classPalette = classPalette,
+                      facet_columns="region",facet_rows="none"),
+            dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
+            filename = paste(j,"_figBarDodged_compareScenRegion_",sep=""),
+            figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2,
+            figHeight = 9*max(length(unique(tbl_p$region)),2)/2
+          )
+
+          # Line Chart Overlapped
+          srn.printPdfPng(
+            srn.chart(tbl_pAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+                      chartType = "line",class ="scenario", classPalette = classPalette,
+                      facet_columns="region",facet_rows="none"),
+            dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
+            filename = paste(j,"_figLineOverlap_compareScenRegion_",sep=""),
+            figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2,
+            figHeight = 9*max(length(unique(tbl_p$region)),2)/2
+          )
+        }
+
+        #-------------------------
+        # Diff Plots
+        #------------------------
+
+        if(is.null(scenRef)){
+          print(paste("No reference scenario provided",sep=""))
+          print(paste("Using ",unique(tbl_p$scenario)[1]," as reference",sep=""))
+          scenRef_i = unique(tbl_p$scenario)[1]}else{
+            if(!scenRef %in% unique(tbl_p$scenario)){
+              print(paste("scenario ",scenRef," not in scenarios",sep=""))
+              print(paste("Using ",unique(tbl_p$scenario)[1]," as reference",sep=""))
+              scenRef_i = unique(tbl_p$scenario)[1]}else{
+                scenRef_i <- scenRef}
+          } # Check if Ref Scenario Chosen
+
+        # Calculate Diff Values
+        tbl_pd<-tbl_p%>%
+          filter(scenario==scenRef_i)%>%
+          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
+        if(!yData %in% names(tbl_p)){tbl_pd<-tbl_pd%>%dplyr::select(-yData)}
+
+        for (k in unique(tbl_p$scenario)[unique(tbl_p$scenario)!=scenRef_i]){
+          tbl_temp <- tbl_p%>%
+            dplyr::filter(scenario %in% c(scenRef_i,k))%>%
+            dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
+          if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-yData)}
+          tbl_temp <- tbl_temp%>%
+            tidyr::spread(scenario,yData)%>%
+            mutate(!!paste(k,"_diff",sep=""):=get(k)-get(scenRef_i))%>%
+            dplyr::select(-k,-scenRef_i)
+          tbl_temp<-tbl_temp%>%
+            tidyr::gather(key=scenario,value=!!yData,
+                          -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,"_diff",sep="")]))
+          tbl_pd<-bind_rows(tbl_pd,tbl_temp)
+        }
+
+        tbl_pd <-tbl_pd %>%
+          mutate(scenario=factor(scenario,
+                                 levels=c(scenRef_i,
+                                          unique(tbl_pd$scenario)[unique(tbl_pd$scenario)!=scenRef_i])))
+
+        # Bar Chart
+        srn.printPdfPng(
+          srn.chart(tbl_pd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+                    chartType = "bar", facet_rows="region"),
+          dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
+          filename = paste(j,"_figBarDiff_compareScenRegion",sep=""),
+          figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2,
+          figHeight = 12*max(length(unique(tbl_p$region)),2)/2
+        )
+
+        # Line Chart
+        srn.printPdfPng(
+          srn.chart(tbl_pd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+                    chartType = "line", facet_rows="region"),
+          dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
+          filename = paste(j,"_figLineDiff_compareScenRegion",sep=""),
+          figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2,
+          figHeight = 12*max(length(unique(tbl_p$region)),2)/2
+        )
+
+
+        } # Close if(nrow(tbl_rsp)>0)
+    } # close loop for param
+} # Close if multiple scenarios available
+
+if(regionCompareOnly==0){
 
 #------------------
 # Create Charts for Each Region & Each Scenario
@@ -172,14 +442,14 @@ for(i in unique(tbl$region)){
 
     # Bar Chart
     srn.printPdfPng(
-    srn.chart(tbl_rsp, chartType = "bar"),
+    srn.chart(tbl_rsp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,chartType = "bar"),
     dir = paste(dirOutputs, "/", i, "/regional","/", j,sep = ""),
     filename = paste(k,"_figBar_",i,"_",j,sep="")
     )
 
     # Line Chart
     srn.printPdfPng(
-      srn.chart(tbl_rsp,chartType = "line"),
+      srn.chart(tbl_rsp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,chartType = "line"),
       dir = paste(dirOutputs, "/", i, "/regional","/", j,sep = ""),
       filename = paste(k,"_figLine_",i,"_",j,sep="")
     )
@@ -207,7 +477,7 @@ for(i in unique(tbl$region)){
 
       # Bar Chart
       srn.printPdfPng(
-        srn.chart(tbl_rp, chartType = "bar"),
+        srn.chart(tbl_rp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, chartType = "bar"),
         dir = paste(dirOutputs, "/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figBar_",i,"_compareScen",sep=""),
         figWidth = 13*length(unique(tbl_rp$scenario))/2
@@ -215,7 +485,7 @@ for(i in unique(tbl$region)){
 
       # Line Chart
       srn.printPdfPng(
-        srn.chart(tbl_rp,chartType = "line"),
+        srn.chart(tbl_rp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, chartType = "line"),
         dir = paste(dirOutputs, "/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figLine_",i,"_compareScen",sep=""),
         figWidth = 13*length(unique(tbl_rp$scenario))/2
@@ -225,14 +495,26 @@ for(i in unique(tbl$region)){
 # Plot with Scenarios on X for Chosen Years
 #------------------------
 
-      tbl_rpy <- tbl_rp%>%filter(x %in% yearsCompare)
+      if(any(!xCompare %in% unique(tbl_rp[[xData]]))){
+      print(paste("xCompare not available in data: ", paste(xCompare[!(xCompare %in% unique(tbl_rp[[xData]]))],collapse=", "), sep=""))
+      print(paste("Comparing for only: ",  paste(xCompare[(xCompare %in% unique(tbl_rp[[xData]]))],collapse=", "), sep=""))
+      tbl_rpy <- tbl_rp%>%filter(x %in% xCompare)}else{
+        if(length(unique(tbl_rp[[xData]]))<5){
+          tbl_rpy <- tbl_rp}else{
+        xCompare<-c(unique(tbl_rp[[xData]])[1],
+                        unique(tbl_rp[[xData]])[round(length(unique(tbl_rp[[xData]]))/2)],
+                        tail(unique(tbl_rp[[xData]]),n=1)
+                        )
+        tbl_rpy <- tbl_rp%>%filter(x %in% xCompare)
+        }
+      }
 
       # Bar Chart
       srn.printPdfPng(
-        srn.chart(tbl_rpy, chartType = "bar", facet_columns = "x", xData ="scenario"),
+        srn.chart(tbl_rpy, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, chartType = "bar", facet_columns = xData),
         dir = paste(dirOutputs, "/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figBar_",i,"_compareScen_xScenSelectYears",sep=""),
-        figWidth = 13*length(unique(tbl_rp$scenario))/2
+        figWidth = 13*max(length(unique(tbl_rp$scenario)),2)/2
       )
 
 
@@ -243,58 +525,69 @@ for(i in unique(tbl$region)){
       # Aggregate across classes
       tbl_rpAggsums<-tbl_rp%>%
         dplyr::filter(aggregate=="sum")%>%
-        dplyr::select(-contains("class"))%>%
-        group_by_at(vars(-value,-origValue))%>%
-        summarize_at(c("value"),funs(sum))
+        dplyr::select(-contains(class))%>%
+        group_by_at(vars(-yData,-origValue))%>%
+        summarize_at(c(yData),funs(sum))
       tbl_rpAggmeans<-tbl_rp%>%
         dplyr::filter(aggregate=="mean")%>%
-        dplyr::select(-contains("class"))%>%
-        group_by_at(vars(-value,-origValue))%>%
-        summarize_at(c("value"),funs(mean))
+        dplyr::select(-contains(class))%>%
+        group_by_at(vars(-yData,-origValue))%>%
+        summarize_at(c(yData),funs(mean))
       tbl_rpAgg<-bind_rows(tbl_rpAggsums,tbl_rpAggmeans)%>%ungroup()
 
 
+      if(nrow(tbl_rpAgg)>0){
+
       # Bar Chart Dodged
       srn.printPdfPng(
-        srn.chart(tbl_rpAgg, chartType = "bar", facet_columns="none",
-                  class ="scenario", position ="dodge", classPalette = "pal_Basic"),
+        srn.chart(tbl_rpAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, chartType = "bar", facet_columns="none",
+                  class ="scenario", position ="dodge", classPalette = classPalette),
         dir = paste(dirOutputs, "/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figBarDodged_",i,"_compareScen_",sep="")
       )
 
       # Line Chart Overlapped
       srn.printPdfPng(
-        srn.chart(tbl_rpAgg, chartType = "line", facet_columns="none",
-                  class ="scenario", classPalette = "pal_Basic"),
+        srn.chart(tbl_rpAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, chartType = "line", facet_columns="none",
+                  class ="scenario", classPalette = classPalette),
         dir = paste(dirOutputs, "/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figLineOverlap_",i,"_compareScen",sep="")
       )
+      }
 
 #-------------------------
 # Diff Plots
 #------------------------
 
-      if(is.null(scenRef)){scenRef_i = unique(tbl_rp$scenario)[1]}else{
-        scenRef_i <- scenRef
+      if(is.null(scenRef)){
+        print(paste("No reference scenario provided",sep=""))
+        print(paste("Using ",unique(tbl_rp$scenario)[1]," as reference",sep=""))
+        scenRef_i = unique(tbl_rp$scenario)[1]}else{
+        if(!scenRef %in% unique(tbl_rp$scenario)){
+          print(paste("scenario ",scenRef," not in scenarios",sep=""))
+          print(paste("Using ",unique(tbl_rp$scenario)[1]," as reference",sep=""))
+          scenRef_i = unique(tbl_rp$scenario)[1]}else{
+        scenRef_i <- scenRef}
       } # Check if Ref Scenario Chosen
 
       # Calculate Diff Values
       tbl_rpd<-tbl_rp%>%
         filter(scenario==scenRef_i)%>%
         dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
+      if(!yData %in% names(tbl_rp)){tbl_rpd<-tbl_rpd%>%dplyr::select(-yData)}
 
       for (k in unique(tbl_rp$scenario)[unique(tbl_rp$scenario)!=scenRef_i]){
         tbl_temp <- tbl_rp%>%
           dplyr::filter(scenario %in% c(scenRef_i,k))%>%
-          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)%>%
-          tidyr::spread(scenario,value)%>%
+          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
+        if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-yData)}
+        tbl_temp <- tbl_temp%>%
+          tidyr::spread(scenario,yData)%>%
           mutate(!!paste(k,"_diff",sep=""):=get(k)-get(scenRef_i))%>%
-          dplyr::select(-k,-scenRef_i)%>%
-          #dplyr::rename(!!paste(k):=!!paste(k,"_diff",sep=""))%>%
-          tidyr::gather(key=scenario,value=value,
-                        -region,-param,-units,-vintage,-x,-xLabel,-aggregate,
-                        -class1,-classLabel1,-classPalette1,-class2,-classLabel2,
-                        -classPalette2)
+          dplyr::select(-k,-scenRef_i)
+        tbl_temp<-tbl_temp%>%
+          tidyr::gather(key=scenario,value=!!yData,
+                        -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,"_diff",sep="")]))
         tbl_rpd<-bind_rows(tbl_rpd,tbl_temp)
       }
 
@@ -305,18 +598,18 @@ for(i in unique(tbl$region)){
 
       # Bar Chart
       srn.printPdfPng(
-        srn.chart(tbl_rpd, chartType = "bar"),
+        srn.chart(tbl_rpd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, chartType = "bar"),
         dir = paste(dirOutputs, "/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figBarDiff_",i,"_compareScen",sep=""),
-        figWidth = 13*length(unique(tbl_rpd$scenario))/2
+        figWidth = 13*max(length(unique(tbl_rpd$scenario)),2)/2
       )
 
       # Line Chart
       srn.printPdfPng(
-        srn.chart(tbl_rpd,chartType = "line"),
+        srn.chart(tbl_rpd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,chartType = "line"),
         dir = paste(dirOutputs, "/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figLineDiff_",i,"_compareScen",sep=""),
-        figWidth = 13*length(unique(tbl_rpd$scenario))/2
+        figWidth = 13*max(length(unique(tbl_rpd$scenario)),2)/2
       )
 
       } # Close if(nrow(tbl_rsp)>0)
@@ -324,6 +617,7 @@ for(i in unique(tbl$region)){
       } # close loop for param
     } # close loop for region
   } # Close if multiple scenarios available
+} # Close if(regionCompareOnly==0)
 
   return(tbl)
 
