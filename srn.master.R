@@ -54,16 +54,22 @@ unique(rTable$param)
 
 # Choose Parameters or set to "All" for all params
 paramsSelect=c("gdp","finalNrgbySec","xxx")
-regionsSelect=c("Argentina","Colombia","XSASD")
+regionsSelect=c("Argentina","Colombia","XSASD","karachi")
 
 charts<-srn.chartsProcess(rTable=rTable, # Default is NULL
                           dataTables=dataTables, # Default is NULL
-                          paramsSelect=paramsSelect, # Default is "All"
-                          regionsSelect=regionsSelect, # Default is "All"
-                          yearsCompare=c("2015","2030","2050","2100"), # Default is c("2015","2030","2050","2100")
+                          #paramsSelect=paramsSelect, # Default is "All"
+                          #regionsSelect=regionsSelect, # Default is "All"
+                          xCompare=c("2015","2035","2050","2100"), # Default is c("2015","2030","2050","2100")
                           scenRef="Eg1", # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
-                          pdfpng="png" # Default is "png"
+                          pdfpng="png", # Default is "png"
+                          xData="x", # Default is "x"
+                          yData="value",  # Default is "value"
+                          #xLabel="XLabelTest", # Default is "xLabel"
+                          #yLabel="yLabelTest"  # Default is "units"
+                          #aggregate="sum" #Default is "sum"
+                          regionCompareOnly=1 # Default is 0
                           )
 
 

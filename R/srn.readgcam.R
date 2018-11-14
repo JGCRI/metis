@@ -185,13 +185,24 @@ requireNamespace("dplyr",quietly = T)
 
     dataTemplate <- datax %>%
       mutate(scenario = "Local Data", value = 0, sources="Sources", x=2010, vintage="vintage if available") %>%
-      dplyr::select(scenario, region, sources, param, class1, class2, units, x, value, vintage, xLabel, aggregate,
+      dplyr::select(scenario, region, sources, units, class1, class2, x, value, vintage) %>%
+      unique()
+
+    fullTemplateMap <- datax %>%
+      dplyr::select(units, param, class1, class2, units, xLabel, aggregate,
                     classLabel1, classPalette1, classLabel2, classPalette2) %>%
       unique()
 
     #---------------------
     # Save Data in CSV
     #---------------------
+
+    if (!dir.exists(paste(getwd(),"/dataFiles", sep = ""))){
+      dir.create(paste(getwd(),"/dataFiles", sep = ""))}  # dataFiles directory (should already exist)
+    if (!dir.exists(paste(getwd(),"/dataFiles/mapping", sep = ""))){
+      dir.create(paste(getwd(),"/dataFiles/mapping", sep = ""))}  # mapping directory
+    utils::write.csv(fullTemplateMap, file = paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""),
+                     row.names = F)
 
     if (is.null(regionsSelect)) {
         utils::write.csv(datax, file = paste(dirOutputs, "/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),

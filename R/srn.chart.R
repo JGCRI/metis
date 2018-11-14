@@ -3,7 +3,7 @@
 #' This function produce different kinds of charts for the srn package.
 #' iIt requires a table in the SRN format. Each figure is accompanied with a csv table.
 #'
-#' @param srnFormattedTable Table in srn format
+#' @param data data table for charting
 #' @param chartType Type of chart: "bar" or "line"
 #' @param position Position in bar charts. "identity", "stack" or "dodge"
 #' @param xData Default "x"
@@ -13,6 +13,7 @@
 #' @param classPalette Default "classPalette1"
 #' @param classLabel Default "classLabel1"
 #' @param xLabel Default "xLabel"
+#' @param yLabel Default "units"
 #' @param facet_rows Default "region"
 #' @param facet_columns Default "scenario"
 #' @param scales Default "fixed"
@@ -28,15 +29,29 @@
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
 #' @export
-#' @import tools ggplot2 scales
+#' @examples
+#' # Examples below show the default chart with minimum information
+#' # and then adding progressively more details.
+#'
+#' library(tibble)
+#' tbl <- tribble (
+#' ~x,     ~value,
+#' 2010,   15,
+#' 2020,   20,
+#' 2030,   30
+#' )
+#' srn.chart(data=tbl,xData="x",yData="value",chartType = "line")
+#' srn.chart(data=tbl,xData="x",yData="value",chartType = "bar")
+#' @import tools ggplot2 scales dplyr tibble
 
 
-srn.chart<-function(srnFormattedTable,
+srn.chart<-function(data,
                          chartType="bar",position="stack",
                          xData="x",yData="value",class="class1",group="scenario",
                          classPalette="classPalette1",classLabel="classLabel1",
-                         xLabel="xLabel",
-                         facet_rows="region",facet_columns="scenario",ncolrow=4,scales="fixed",
+                         xLabel="xLabel",yLabel="yLabel",
+                         facet_rows="region",facet_columns="scenario",ncolrow=4,
+                         scales="fixed",
                          useNewLabels=1,units="units",
                          xBreaksMaj=10, xBreaksMin=5,
                          yBreaksMajn=5, yBreaksMinn=10,
@@ -49,19 +64,31 @@ srn.chart<-function(srnFormattedTable,
   requireNamespace("tools",quietly = T)
   requireNamespace("ggplot2",quietly = T)
   requireNamespace("scales",quietly = T)
+  requireNamespace("dplyr",quietly = T)
+  requireNamespace("tibble",quietly = T)
 
 #------------------
-# Initialize variables to remove binding errors
+# Initialize variables to remove binding errors if needed
 # -----------------
 
-NULL->tools->ggplot2
+#------------------------------------------
+# Format data to include any missing columns
+#------------------------------------------
 
+# At the very least data, x and y are needed.
+if(length(names(data))<2){stop("Need to provide a data object with at least x and y.
+                               srn.chart(data = userData,xData ='x',yData ='y'")}
 
-  l1 <- srnFormattedTable
+if(!"units"%in%names(data)){data<-data%>%mutate(units="units")}
+if(!"classPalette1"%in%names(data)){data<-data%>%mutate(classPalette1="pal_Basic")}
+if(!"class1"%in%names(data)){data<-data%>%mutate(class1="class1")}
+if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
+
+  l1 <- data
   l1<-l1%>%mutate(units=gsub(" ","~",units))
   if(length(classPalette)>1){
     paletteX<-classPalette}else{
-  if(classPalette %in% names(srnFormattedTable)){
+  if(classPalette %in% names(l1)){
   paletteX<-srn.colors()[[unique(l1[[classPalette]])]]}else{
     if(classPalette %in% names(srn.colors())){
     paletteX<-srn.colors()[[classPalette]]} else {
@@ -106,12 +133,16 @@ NULL->tools->ggplot2
     }
   }
 
-  p <- p +
-       xlab(unique(l1[[xLabel]])) + ylab(eval(parse(text=paste(unique(l1[[units]]),collapse="~")))) +
-       theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
+if(!xLabel%in%names(l1)){
+  if(xLabel!="xLabel"){p<-p+xlab(xLabel)}else{
+    p<-p+xlab(NULL)}}else{
+      if(xLabel!="xLabel"){p<-p+xlab(unique(l1[[xLabel]]))}else{
+        p<-p+xlab(NULL)}}
+if(!yLabel%in%names(l1)){p<-p+ylab(yLabel)}else{p<-p+ylab(eval(parse(text=paste(unique(l1[[yLabel]]),collapse="~"))))}
+  p <- p + theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
        scale_y_continuous(breaks = pretty_breaks(n = yBreaksMajn), minor_breaks = waiver())
 
-if(xData =='x'){p<- p + scale_x_continuous (breaks=(seq(min(range(l1[[xData]])),max(range(l1[[xData]])),by=xBreaksMaj)),
+if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1[[xData]])),max(range(l1[[xData]])),by=xBreaksMaj)),
                                minor_breaks=(seq(min(range(l1[[xData]])),max(range(l1[[xData]])),by=xBreaksMin)),
                                expand=c(0,xBreaksMaj/2))}
 
