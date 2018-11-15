@@ -55,12 +55,14 @@ requireNamespace("dplyr",quietly = T)
     # Create necessary directories if they dont exist.
     if (!dir.exists(dirOutputs)){
       dir.create(dirOutputs)}  # Output Directory
-    if (!dir.exists(paste(dirOutputs, "/Tables_gcam", sep = ""))){
-        dir.create(paste(dirOutputs, "/Tables_gcam", sep = ""))}  # GCAM output directory
-    if (!dir.exists(paste(dirOutputs, "/Tables_Templates", sep = ""))){
-         dir.create(paste(dirOutputs, "/Tables_Templates", sep = ""))}  # GCAM output directory
-    if (!dir.exists(paste(dirOutputs, "/Tables_Local", sep = ""))){
-         dir.create(paste(dirOutputs, "/Tables_Local", sep = ""))}  # GCAM output directory
+    if (!dir.exists(paste(dirOutputs,"/Tables",sep=""))){
+      dir.create(paste(dirOutputs,"/Tables",sep=""))}  # Output Directory
+    if (!dir.exists(paste(dirOutputs, "/Tables/Tables_gcam", sep = ""))){
+        dir.create(paste(dirOutputs, "/Tables/Tables_gcam", sep = ""))}  # GCAM output directory
+    if (!dir.exists(paste(dirOutputs, "/Tables/Tables_Templates", sep = ""))){
+         dir.create(paste(dirOutputs, "/Tables/Tables_Templates", sep = ""))}  # GCAM output directory
+    if (!dir.exists(paste(dirOutputs, "/Tables/Tables_Local", sep = ""))){
+         dir.create(paste(dirOutputs, "/Tables/Tables_Local", sep = ""))}  # GCAM output directory
 
 
     # Check for new scenario names
@@ -205,9 +207,9 @@ requireNamespace("dplyr",quietly = T)
                      row.names = F)
 
     if (is.null(regionsSelect)) {
-        utils::write.csv(datax, file = paste(dirOutputs, "/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
+        utils::write.csv(datax, file = paste(dirOutputs, "/Tables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
             "to", max(range(datax$x)), ".csv", sep = ""), row.names = F)
-        utils::write.csv(dataTemplate, file = paste(dirOutputs, "/Tables_Template/template_Regional_AllRegions.csv", sep = ""),
+        utils::write.csv(dataTemplate, file = paste(dirOutputs, "/Tables/Tables_Template/template_Regional_AllRegions.csv", sep = ""),
                          row.names = F)
     } else {
 
@@ -218,12 +220,12 @@ requireNamespace("dplyr",quietly = T)
 
         for (region_i in regionsSelect[(regionsSelect %in% unique(datax$region))]) {
             utils::write.csv(datax %>% dplyr::filter(region == region_i),
-                             file = paste(dirOutputs, "/Tables_gcam/gcamDataTable_",region_i,"_", min(range(datax$x)),
+                             file = paste(dirOutputs, "/Tables/Tables_gcam/gcamDataTable_",region_i,"_", min(range(datax$x)),
                                           "to", max(range(datax$x)), ".csv", sep = ""),row.names = F)
             utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
-                             file = paste(dirOutputs, "/Tables_Templates/template_Regional_",region_i,".csv", sep = ""),row.names = F)
-            utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
-                             file = paste(dirOutputs, "/Tables_Local/local_Regional_",region_i,".csv", sep = ""),row.names = F)
+                             file = paste(dirOutputs, "/Tables/Tables_Templates/template_Regional_",region_i,".csv", sep = ""),row.names = F)
+            #utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
+            #                 file = paste(dirOutputs, "/Tables/Tables_Local/local_Regional_",region_i,".csv", sep = ""),row.names = F)
         }
     }
 

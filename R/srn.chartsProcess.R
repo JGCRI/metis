@@ -165,6 +165,22 @@ tbl<-bind_rows(tbl,rTable)
 tbl<-tbl%>%unique()
 
 
+# Tables
+
+for(i in unique(tbl$region)){
+  utils::write.csv(tbl%>%
+                     dplyr::filter(region == i)%>%
+                     dplyr::select(scenario, region,units, class1, class2, x, value, vintage, scenario)%>%
+                     tidyr::spread(scenario,yData),
+                   file = paste(dirOutputs, "/Tables/Tables_regional_",i,".csv", sep = ""),row.names = F)
+}
+
+utils::write.csv(tbl%>%
+                   dplyr::select(scenario, region, units, class1, class2, x, value, vintage, scenario)%>%
+                   tidyr::spread(scenario,yData),
+                 file = paste(dirOutputs, "/Tables/Tables_regional_allRegions.csv", sep = ""),row.names = F)
+
+
 #------------------------
 # Print which parameters and regions if selected are available
 #------------------------
@@ -618,6 +634,7 @@ for(i in unique(tbl$region)){
     } # close loop for region
   } # Close if multiple scenarios available
 } # Close if(regionCompareOnly==0)
+
 
   return(tbl)
 
