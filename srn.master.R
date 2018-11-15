@@ -45,8 +45,8 @@ dataGCAM<-srn.readgcam(reReadData=F, # Default Value is T
 #---------------------------
 
 # Read in Tables
-dataTables<-c(paste(getwd(),"/outputs/Tables_Local/local_Regional_Colombia.csv",sep=""),
-              paste(getwd(),"/outputs/Tables_Local/local_Regional_Argentina.csv",sep=""))
+dataTables<-c(paste(getwd(),"/outputs/Tables/Tables_Local/local_Regional_Colombia.csv",sep=""),
+              paste(getwd(),"/outputs/Tables/Tables_Local/local_Regional_Argentina.csv",sep=""))
 
 # Read in the data from the function srn.readgcam
 rTable <- dataGCAM$data;
@@ -65,11 +65,11 @@ charts<-srn.chartsProcess(rTable=rTable, # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           pdfpng="png", # Default is "png"
                           xData="x", # Default is "x"
-                          yData="value",  # Default is "value"
+                          yData="value"  # Default is "value"
                           #xLabel="XLabelTest", # Default is "xLabel"
                           #yLabel="yLabelTest"  # Default is "units"
                           #aggregate="sum" #Default is "sum"
-                          regionCompareOnly=1 # Default is 0
+                          #regionCompareOnly=1 # Default is 0
                           )
 
 

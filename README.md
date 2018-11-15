@@ -1,11 +1,33 @@
-
+---
+title: 'SRN: Sub-Regional Nexus Model Version 1.0.0'
+tags:
+  - sub-region
+  - nexus
+  - water
+  - energy
+  - land
+authors:
+  - name: Zarrar Khan
+    orcid: 0000-0003-0872-7098
+    affiliation: "1, 2" # (Multiple affiliations must be quoted)
+  - name: Thomas Bernard Wild
+    orcid: 0000-0000-0000-0000
+    affiliation: 2
+affiliations:
+ - name: Lyman Spitzer, Jr. Fellow, Princeton University
+   index: 1
+ - name: Institution 2
+   index: 2
+date: 14 November 2018
+---
 
 # Table of Contents
 
-- [Introduction](#Introduction)
+- [Summary](#Summary)
+- [Need](#Need)
 - [Installation Guide](#InstallGuide)
-- [Step-by-step Phase 1 walkthrough](#Phase1WalkThrough)  
-    + [Phase 1 Modeling Framework](#Phase1Framework)  
+- [Framework](#Framework)
+- [Step-by-step walkthrough](#WalkThrough) 
     + [Reading GCAM data (srn.readgcam)](#ReadGCAM)
 
 
@@ -21,6 +43,10 @@ The model development can be divided into two main phases as shown in Figure 1 b
 
 <p align="center"> <b> Figure 1: SRN Phases </b> </p>
 <p align="center"> <img src="READMEfigs/srn_workflowLongTerm.png" alt="SRN Phases"></p>
+
+# <a name="Need"></a>Need
+
+Need statement
 
 
 # <a name="InstallGuide"></a>Installation Guide
@@ -38,7 +64,7 @@ git clone https://github.com/zarrarkhan/srn.git
 2. Open the "srn.master.R"" file which contains code to help install and run remaining model.
 
 
-2. Install the R package - SRN (This code is also part of the "srn.master.R"" file):
+3. Install the R package - SRN (This code is also part of the "srn.master.R"" file):
 
 ```r
 # Check and load required packages (devtools, srn, rgcam)
@@ -50,15 +76,14 @@ if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/
 library(rgcam)
 ```  
 
-# <a name="Phase1WalkThrough"></a> Step-by-step Phase 1 Walkthrough
-
-## <a name="Phase1Framework"></a> Phase 1 Modeling Framework
+# <a name="Framework"></a> Framework
 
 The modeling framework and key functions used in Phase 1 of the model are shown in Figure 2.
 
 <p align="center"> <b> Figure 2: SRN Phase 1 Structure </b> </p>
 <p align="center"> <img src="READMEfigs/srn_workflowPhase1.png" alt="SRN Phases"></p>
 
+# <a name="WalkThrough"></a> Step-by-step Walkthrough
 
 ## <a name="ReadGCAM"></a> Reading GCAM data (srn.readgcam)
 
