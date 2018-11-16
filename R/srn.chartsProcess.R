@@ -251,7 +251,7 @@ for (i in unique(tbl$region)){
                     chartType = "bar",facet_columns="region",facet_rows="none"),
           dir = paste(dirOutputs, "/compareRegions","/", j,sep = ""),
           filename = paste(k,"_figBar_",j,"_compareRegions",sep=""),
-          figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2
+          figWidth = 13*max(length(unique(tbl_sp$scenario)),2)/2
         )
 
         # Line Chart
@@ -260,7 +260,7 @@ for (i in unique(tbl$region)){
                     chartType = "line",facet_columns="region",facet_rows="none"),
           dir = paste(dirOutputs, "/compareRegions","/", j,sep = ""),
           filename = paste(k,"_figLines_",j,"_compareRegions",sep=""),
-          figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2
+          figWidth = 13*max(length(unique(tbl_sp$scenario)),2)/2
         )
 
       } # Close if(nrow(tbl_sp)>0)
@@ -327,7 +327,7 @@ if(length(unique(tbl$scenario))>1){
           dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
           filename = paste(j,"_figBar_compareScenRegion_xScenSelectYears",sep=""),
           figWidth = 13*max(length(xCompare),2)/3,
-          figHeight = 12*max(length(unique(tbl_p$region)),2)/2
+          figHeight = 12*max(length(unique(tbl_py$region)),2)/2
         )
 
 
@@ -358,8 +358,8 @@ if(length(unique(tbl$scenario))>1){
                       facet_columns="region",facet_rows="none"),
             dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
             filename = paste(j,"_figBarDodged_compareScenRegion_",sep=""),
-            figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2,
-            figHeight = 9*max(length(unique(tbl_p$region)),2)/2
+            figWidth = 13*max(length(unique(tbl_pAgg$scenario)),2)/2,
+            figHeight = 9*max(length(unique(tbl_pAgg$region)),2)/2
           )
 
           # Line Chart Overlapped
@@ -369,8 +369,8 @@ if(length(unique(tbl$scenario))>1){
                       facet_columns="region",facet_rows="none"),
             dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
             filename = paste(j,"_figLineOverlap_compareScenRegion_",sep=""),
-            figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2,
-            figHeight = 9*max(length(unique(tbl_p$region)),2)/2
+            figWidth = 13*max(length(unique(tbl_pAgg$scenario)),2)/2,
+            figHeight = 9*max(length(unique(tbl_pAgg$region)),2)/2
           )
         }
 
@@ -421,8 +421,8 @@ if(length(unique(tbl$scenario))>1){
                     chartType = "bar", facet_rows="region"),
           dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
           filename = paste(j,"_figBarDiff_compareScenRegion",sep=""),
-          figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2,
-          figHeight = 12*max(length(unique(tbl_p$region)),2)/2
+          figWidth = 13*max(length(unique(tbl_pd$scenario)),2)/2,
+          figHeight = 12*max(length(unique(tbl_pd$region)),2)/2
         )
 
         # Line Chart
@@ -431,8 +431,8 @@ if(length(unique(tbl$scenario))>1){
                     chartType = "line", facet_rows="region"),
           dir = paste(dirOutputs, "/compareRegions/compareScen", sep = ""),
           filename = paste(j,"_figLineDiff_compareScenRegion",sep=""),
-          figWidth = 13*max(length(unique(tbl_p$scenario)),2)/2,
-          figHeight = 12*max(length(unique(tbl_p$region)),2)/2
+          figWidth = 13*max(length(unique(tbl_pd$scenario)),2)/2,
+          figHeight = 12*max(length(unique(tbl_pd$region)),2)/2
         )
 
 
@@ -530,7 +530,7 @@ for(i in unique(tbl$region)){
         srn.chart(tbl_rpy, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, chartType = "bar", facet_columns = xData),
         dir = paste(dirOutputs, "/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figBar_",i,"_compareScen_xScenSelectYears",sep=""),
-        figWidth = 13*max(length(unique(tbl_rp$scenario)),2)/2
+        figWidth = 13*max(length(unique(tbl_rpy$scenario)),2)/2
       )
 
 

@@ -9,7 +9,7 @@ srn.chart(data, chartType = "bar", position = "stack", xData = "x",
   classPalette = "classPalette1", classLabel = "classLabel1",
   xLabel = "xLabel", yLabel = "yLabel", facet_rows = "region",
   facet_columns = "scenario", ncolrow = 4, scales = "fixed",
-  useNewLabels = 1, units = "units", xBreaksMaj = 10,
+  useNewLabels = 0, units = "units", xBreaksMaj = 10,
   xBreaksMin = 5, yBreaksMajn = 5, yBreaksMinn = 10,
   sizeBarLines = 0.5, sizeLines = 1.5)
 }
@@ -44,7 +44,7 @@ srn.chart(data, chartType = "bar", position = "stack", xData = "x",
 
 \item{scales}{Default "fixed"}
 
-\item{useNewLabels}{Default 1}
+\item{useNewLabels}{Default 0}
 
 \item{units}{Default "units"}
 
