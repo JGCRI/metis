@@ -57,7 +57,7 @@
 #' \item "GDP MER by region" : "gdp"
 #' \item "GDP Growth Rate (Percent)" : Calculated based on the GDP MER by region.
 #' \item "Population by region"
-#' \item "ag production by tech" : Where technologies signify irrigated or rainfed
+#' \item "ag production by tech" : Where tech signify irrigated or rainfed
 #' }
 #' @param regionsSelect Default = "All". Select regions to create charts for.
 #' @keywords charts, diffplots
