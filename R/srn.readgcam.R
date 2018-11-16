@@ -26,6 +26,8 @@
 #' \item "GDP Growth Rate (Percent)" : Calculated based on the GDP MER by region.
 #' \item "Population by region"
 #' \item "ag production by tech" : Where technologies signify irrigated or rainfed
+#' \item "land allocation by crop and water source"
+#' \item "biophysical water demand by crop type and land region"
 #' }
 #' @return A list with the scenarios in the gcam database, queries in the queryxml file and a
 #' tibble with gcam data formatted for srn charts.

@@ -17,7 +17,7 @@
 #' @param facet_rows Default "region"
 #' @param facet_columns Default "scenario"
 #' @param scales Default "fixed"
-#' @param useNewLabels Default 1
+#' @param useNewLabels Default 0
 #' @param units Default "units"
 #' @param xBreaksMaj Default 10
 #' @param xBreaksMin Default 5
@@ -52,7 +52,7 @@ srn.chart<-function(data,
                          xLabel="xLabel",yLabel="yLabel",
                          facet_rows="region",facet_columns="scenario",ncolrow=4,
                          scales="fixed",
-                         useNewLabels=1,units="units",
+                         useNewLabels=0,units="units",
                          xBreaksMaj=10, xBreaksMin=5,
                          yBreaksMajn=5, yBreaksMinn=10,
                          sizeBarLines=0.5,sizeLines=1.5){
@@ -80,7 +80,7 @@ if(length(names(data))<2){stop("Need to provide a data object with at least x an
                                srn.chart(data = userData,xData ='x',yData ='y'")}
 
 if(!"units"%in%names(data)){data<-data%>%mutate(units="units")}
-if(!"classPalette1"%in%names(data)){data<-data%>%mutate(classPalette1="pal_Basic")}
+if(!"classPalette1"%in%names(data)){data<-data%>%mutate(classPalette1="pal_16")}
 if(!"class1"%in%names(data)){data<-data%>%mutate(class1="class1")}
 if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
 
