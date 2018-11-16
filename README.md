@@ -112,6 +112,8 @@ if("srn" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkh
 library(srn)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
+library(tibble)
+library(dplyr)
 
 #----------------------------
 # Read GCAM Data
