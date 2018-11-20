@@ -8,17 +8,14 @@ tags:
   - land
 authors:
   - name: Zarrar Khan
-    orcid: 0000-0003-0872-7098
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
+    affiliation: "1" # (Multiple affiliations must be quoted)
   - name: Thomas Bernard Wild
     orcid: 0000-0000-0000-0000
-    affiliation: 2
+    affiliation: "1""
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University
+ - name: Joint Global Change Research Institute (JGCRI) - PNNL
    index: 1
- - name: Institution 2
-   index: 2
-date: 14 November 2018
+date: December 2018
 ---
 
 # Table of Contents
@@ -121,13 +118,20 @@ library(dplyr)
 
 # ?srn.readgcam # For more details on the function.
 
+
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 gcamdatabaseName <-"example_database_basexdb"
 gcamdataProjFile <-"Example_dataProj.proj"
-regionsSelect <- c("Colombia","Argentina")  # Select Regions of Interest
+regionsSelect <- c("Colombia","Argentina")
+# Choose Parameters or set to "All" for all params. For complete list see ?srn.readgcam
+paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+               "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons",
+               "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
+               "agProdbyIrrRfd","agProdByCrop",
+               "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
 
 # Use function localDBConn from package rgcam to get a list of scenarios if needed.
-#localDBConn(gcamdatabasePath,gcamdatabaseName)
+# localDBConn(gcamdatabasePath,gcamdatabaseName)
 
 dataGCAM<-srn.readgcam(reReadData=F, # Default Value is T
                        dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
@@ -135,13 +139,13 @@ dataGCAM<-srn.readgcam(reReadData=F, # Default Value is T
                        scenNewNames=c("Eg1","Eg2"),
                        gcamdatabasePath=gcamdatabasePath,
                        gcamdatabaseName=gcamdatabaseName,
-                       queryxml="srnQueries.xml",  #Default Value is "srnQueries.xml"
-                       dirOutputs= paste(getwd(),"/outputs",sep=""), #Default: paste(getwd(),"/outputs",sep="")
-                       regionsSelect=regionsSelect, #Default Value is NULL
-                       queriesSelect="All" # Default value is "All"
+                       queryxml="srnQueries.xml",  # Default Value is "srnQueries.xml"
+                       dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
+                       regionsSelect=regionsSelect, # Default Value is NULL
+                       paramsSelect=paramsSelect # Default value is "All"
                        )
 
-#dataGCAM$data # To view the data read that was read.
+dataGCAM$data # To view the data read that was read.
                        
 ```  
 

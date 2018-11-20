@@ -35,7 +35,7 @@
 #' \item pal_finalNrg_sec
 #' \item pal_pri_ene
 #' \item pal_elec_tech_colors}
-#'
+#' @param palx Palette name to view the palette colors. Eg. srn.colors("pal_Basic")
 #' @keywords colors, palette
 #' @return A list of color palettes.
 #' @export
@@ -45,15 +45,19 @@
 #' pie(rep(1,length(a$pal_Basic)),label=names(a$pal_Basic),col=a$pal_Basic)
 #' @import RColorBrewer
 
-srn.colors <- function() {
+srn.colors <- function(palx=NULL) {
+
+
+  NULL->pie
+
     # GCAM Color Palettes
 
     # HDDCDD Palette for Cooling and Heating
     pal_HDDCDD<-c("CDD"="cornflowerblue","HDD"="coral2")
 
     # General purpose color scheme where sequentail colors do not clash too much
-    pal_16 <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
-        "#333333", "#FFCC00", "#CC6600", "#006600", "#3333CC", "#CC0033", "#0099CC", "#999966")
+    pal_16 <- rep(c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
+        "#333333", "#FFCC00", "#CC6600", "#006600", "#3333CC", "#CC0033", "#0099CC", "#999966"),100)
 
     # Color scheme for electricity generation by aggregate fuel
     elec_tech_colors <- c(`a Coal` = "#a0237c", `b Coal w/CCS` = "#dab4c7", `c Gas` = "#25a9e0", `d Gas w/CCS` = "#84e7f9",
@@ -131,7 +135,8 @@ srn.colors <- function() {
 
 
     # Basic Colors
-    pal_Basic <- c("red", "green3", "blue", "black", "magenta", "yellow", "cyan", "gray")
+    pal_Basic <- rep(c("red", "green3", "blue", "black", "magenta", "yellow", "cyan", "gray"),100)
+
 
     # Gas Colors
     pal_Gas <- c(`gas (CC CCS)` = "black", `gas (CT)` = "red", `gas (steam)` = "green3", `gas (CC)` = "blue",
@@ -182,8 +187,8 @@ srn.colors <- function() {
 
 
     pal_finalNrg_sec <- c(building = "#facda4", `comm non-building` = "#ff230e", industry = "#cef4d1",
-        transportation = "#d0f6f7", trn_pass_road_bus = "purple", unlist(mapply(brewer.pal, qual_col_pals$maxcolors,
-            rownames(qual_col_pals))))
+        transportation = "#d0f6f7", trn_pass_road_bus = "purple",buildings = "#facda4", electricity="lightcoral",
+        `LUC Emission`="grey30",`LUC Absorption`="darkolivegreen4")
 
 
     # Modified Original GCAM color scheme for Primary energy consumption Modified the 'Primary energy
@@ -206,7 +211,33 @@ srn.colors <- function() {
         `l Wind` = "#fdd67b", `m Solar` = "#fdfa28", `n CHP` = "#507fab", `o Battery` = "#92a75d",
         `energy reduction` = "grey", Total = "black", Other = "black")
 
-    return(list(pal_HDDCDD=pal_HDDCDD, pal_16 = pal_16, elec_tech_colors = elec_tech_colors, elec_renew_colors = elec_renew_colors,
+
+    # Agriculture Production Type
+    pal_ag_type <- c(Forest = "darkgreen" , NonFoodDemand_Forest = "darkolivegreen1",
+                     biomass = "grey50", Corn = "gold3" ,
+                     FiberCrop = "gold4",  MiscCrop = "darkorange4", OilCrop = "gray20",
+                     OtherGrain  = "indianred2",
+                     PalmFruit = "firebrick3" ,  Rice = "steelblue2", Root_Tuber  = "lightslateblue", SugarCrop = "yellow2",
+                     Wheat  = "burlywood", FodderGrass = "darkseagreen1",
+                     FodderHerb = "darkseagreen4", Pasture = "deepskyblue4",
+                     UnmanagedLand = "black")
+
+    # Water Demand Sectors
+    pal_wat_dem <- c(municipal = "dodgerblue", mining = "grey75", livestock = "darkseagreen3",
+                     industry = "gold2", electricity = "darkorange", agriculture = "darkolivegreen4")
+
+    pal_lu_type <- c(urban="indianred2",tundra="antiquewhite1",shrubs="lightslateblue",`rock and desert`="black",
+                pasture="deepskyblue",otherarable="darkorange4",grass="darkolivegreen1",forest="darkgreen",
+                crops="yellow2",biomass="grey50")
+
+    if(!is.null(palx)){
+    if(length(get(palx))>1){
+      a<-get(palx)
+      if(palx=="pal_Basic" | palx=="pal_16"){a<-a[1:(length(a)/100)]}
+      pie(rep(1,length(a)),label=names(a),col=a)
+    }}
+
+    return(list(pal_lu_type=pal_lu_type,pal_ag_type=pal_ag_type,pal_wat_dem=pal_wat_dem,pal_HDDCDD=pal_HDDCDD, pal_16 = pal_16, elec_tech_colors = elec_tech_colors, elec_renew_colors = elec_renew_colors,
         building_colors = building_colors, trn_fuel_colors = trn_fuel_colors, enduse_fuel_numbered = enduse_fuel_numbered,
         enduse_colors = enduse_colors, pal_pri_ene = pal_pri_ene, pal_pri_fuelcost = pal_pri_fuelcost,
         pal_emiss_sector = pal_emiss_sector, pal_landuse = pal_landuse, pal_hydrogen = pal_hydrogen,

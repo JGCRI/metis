@@ -9,7 +9,7 @@ srn.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   xCompare = c("2015", "2030", "2050", "2100"), paramsSelect = "All",
   regionsSelect = "All", xData = "x", yData = "value",
   xLabel = "xLabel", yLabel = "units", aggregate = "sum",
-  class = "class", classPalette = "pal_Basic", regionCompareOnly = 0)
+  class = "class", classPalette = "pal_Basic", regionCompareOnly = 1)
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -31,16 +31,12 @@ list f all scenarios}
 c("2015","2030","2050","2100")}
 
 \item{paramsSelect}{Default = "All". Select the paramaters to analyze from the the tables provided.
-The parameters corresponding to the different gcam query files are as follows:
-\itemize{
-\item "Query" : "Param"
-\item "Total final energy by aggregate end-use sector" : "finalNrgbySec"
-\item "GDP per capita MER by region" : "gdp"
-\item "GDP MER by region" : "gdp"
-\item "GDP Growth Rate (Percent)" : Calculated based on the GDP MER by region.
-\item "Population by region"
-\item "ag production by tech" : Where tech signify irrigated or rainfed
-}}
+Full list of parameters:
+c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+"watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
+"gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
+"agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
+"LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")}
 
 \item{regionsSelect}{Default = "All". Select regions to create charts for.}
 

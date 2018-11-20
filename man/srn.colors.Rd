@@ -4,7 +4,10 @@
 \alias{srn.colors}
 \title{srn.colors}
 \usage{
-srn.colors()
+srn.colors(palx = NULL)
+}
+\arguments{
+\item{palx}{Palette name to view the palette colors. Eg. srn.colors("pal_Basic")}
 }
 \value{
 A list of color palettes.

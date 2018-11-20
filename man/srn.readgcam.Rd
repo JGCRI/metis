@@ -8,7 +8,7 @@ srn.readgcam(gcamdatabasePath, gcamdatabaseName,
   queryxml = "srnQueries.xml", scenOrigNames, scenNewNames = NULL,
   reReadData = T, dataProj = "dataProj.proj",
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  regionsSelect = NULL, queriesSelect = "All")
+  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All")
 }
 \arguments{
 \item{gcamdatabasePath}{Path to gcam database folder}
@@ -36,17 +36,39 @@ folder which may have been created from an old run.}
 
 \item{queriesSelect}{Default = "All". Vector of queries to read from the queryxml for example
 c("Total final energy by aggregate end-use sector", "Population by region"). The queries must be
-availble in the queryxml file. Current list of available paramaters are:
+availble in the queryxml file. Current list of queries and generated paramaters are:
 \itemize{
-\item "Total final energy by aggregate end-use sector"
-\item "GDP per capita MER by region" : Where MER is "Market Exchange Rate"
-\item "GDP MER by region" : Where MER is "Market Exchange Rate"
-\item "GDP Growth Rate (Percent)" : Calculated based on the GDP MER by region.
-\item "Population by region"
-\item "ag production by tech" : Where technologies signify irrigated or rainfed
-\item "land allocation by crop and water source"
-\item "biophysical water demand by crop type and land region"
+\item "Total final energy by aggregate end-use sector". Parameters generated: finalNrgbySec.
+\item "primary energy consumption by region (direct equivalent)".
+Parameters generated: primNrgConsumByFuel
+\item "Electricity generation by aggregate technology". Parameters generated: elecByTech
+\item "water withdrawals by sector". Parameters generated: watWithdrawBySec
+\item "water consumption by sector". Parameters generated: watConsumBySec
+\item "water withdrawals by crop". Parameters generated: watWithdrawByCrop
+\item "biophysical water demand by crop type and land region". Parameters generated: watBioPhysCons
+\item "water withdrawals by water mapping source". Parameters generated: irrWatWithBasin
+\item "water consumption by water mapping source". Parameters generated: irrWatConsBasin
+\item "GDP per capita MER by region". Where MER is "Market Exchange Rate".
+Parameters generated: gdpPerCapita.
+\item "GDP MER by region". Where MER is "Market Exchange Rate".
+Parameters generated: gdp, gdpGrowthRate
+\item "Population by region". Parameters generated: pop.
+\item "ag production by tech". Where technologies signify irrigated or rainfed.
+Parameters generated: agProdbyIrrRfd
+\item "Ag Production by Crop Type". Parameters generated: agProdBiomass, agProdForest, agProdByCrop
+\item "land allocation by crop and water source". Parameters generated: landIrrRfd
+\item "aggregated land allocation". Parameters generated: aggLandAlloc
+\item "Land Use Change Emission". Parameters generated: LUCemissFut
+\item "CO2 Emissions by enduse". Parameters generated: co2emission, co2emissionByEndUse,
+\item "GHG emissions by subsector". Parameters generated: ghgEmissByGHGGROUPS, ghgEmissionByGHG
 }}
+
+\item{paramsSelect}{Default = "All". If desired select a subset of paramaters to analyze from the full list of parameters:
+c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+"watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
+"gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
+"agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
+"LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")}
 }
 \value{
 A list with the scenarios in the gcam database, queries in the queryxml file and a
