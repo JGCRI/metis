@@ -68,5 +68,6 @@ srn.assumptions <- function() {
          conv1975USDperGJ22017USDperMWh=conv1975USDperGJ22017USDperMWh,
          conv1975USDperGJ22017USDperMBTU=conv1975USDperGJ22017USDperMBTU,
          convertGgTgMTC=convertGgTgMTC,
-         GWPType=GWPType))
+         GWPType=GWPType,
+         GWP=GWP))
 }

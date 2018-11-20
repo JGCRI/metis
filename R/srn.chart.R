@@ -103,6 +103,7 @@ if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
     l1[[class]]<-toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",l1[[class]]))
   }
 
+  l1[[class]]<-factor(l1[[class]],levels=unique(l1[[class]]))
   p <- ggplot(l1,aes(x=get(xData),y=get(yData),group=get(group))) +
        srn.chartsThemeLight()
 
@@ -111,11 +112,11 @@ if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
   p <- p + geom_bar(aes(fill=get(class)),size=sizeBarLines,color="black", stat="identity",position=position) +
            scale_fill_manual(values=paletteX) + guides(color=F)
   if(!grepl("class",class)){
-    p = p + guides(fill = guide_legend(title=toTitleCase(paste(class,sep=""))))}else{
+    p = p + guides(fill = guide_legend(title=toTitleCase(paste(class,sep="")),reverse = T))}else{
       if(length(unique(l1[[class]]))<2){
         p = p + theme(legend.position="none")
       }else{
-        p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]])))
+        p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))
       }
     }
   }
