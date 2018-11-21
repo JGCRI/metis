@@ -104,6 +104,12 @@ if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
   }
 
   l1[[class]]<-factor(l1[[class]],levels=unique(l1[[class]]))
+
+  add_colors<-(srn.colors()$pal_Basic)[1:length(levels(l1[[class]])[!levels(l1[[class]]) %in% names(paletteX)])]
+  names(add_colors)<-levels(l1[[class]])[!levels(l1[[class]]) %in% names(paletteX)]
+
+  paletteX<-c(paletteX,add_colors)
+
   p <- ggplot(l1,aes(x=get(xData),y=get(yData),group=get(group))) +
        srn.chartsThemeLight()
 

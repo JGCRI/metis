@@ -9,7 +9,8 @@ srn.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   xCompare = c("2015", "2030", "2050", "2100"), paramsSelect = "All",
   regionsSelect = "All", xData = "x", yData = "value",
   xLabel = "xLabel", yLabel = "units", aggregate = "sum",
-  class = "class", classPalette = "pal_Basic", regionCompareOnly = 1)
+  class = "class", classPalette = "pal_Basic", regionCompareOnly = 0,
+  useNewLabels = 0, sizeBarLines = 0.5, sizeLines = 1.5)
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -54,7 +55,13 @@ c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 
 \item{classPalette}{Default "pal_Basic" from srn.colors()$pal_Basic}
 
-\item{regionCompareOnly}{Default 0. If set to 1, will only run comparison plots and not individual
+\item{regionCompareOnly}{Default 0. If set to 1, will only run comparison plots and not individual}
+
+\item{useNewLabels}{Default 0}
+
+\item{sizeBarLines}{Default 0.5}
+
+\item{sizeLines}{Default 1.5
 regions}
 }
 \value{

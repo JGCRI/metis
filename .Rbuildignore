@@ -3,9 +3,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^READMEfigs$
-^srn.extras.R$
 ^srn.master.R$
-^srn.master_Z.R$
+^extras$
 ^srn.pdf$
 ^dataFiles$
 ^outputs$
