@@ -6,4 +6,6 @@ doc
 .Ruserdata
 *basexdb*
 outputs
-srn.master_Z.R
+LAC_dataProj.proj
+Uruguay_dataProj.proj
+srngis

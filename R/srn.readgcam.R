@@ -142,9 +142,9 @@ requireNamespace("dplyr",quietly = T)
                      "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
     }else{paramsSelectx=paramsSelect}
 
-
+     paramx<-"finalNrgbySec"
     # Total final energy by aggregate end-use sector
-    if("finalNrgbySec" %in% paramsSelectx){
+    if(paramx %in% paramsSelectx){
     queryx <- "Total final energy by aggregate end-use sector"
     if (queryx %in% queriesx) {
         tbl <- getQuery(dataProjLoaded, queryx)  # Tibble
@@ -173,9 +173,9 @@ requireNamespace("dplyr",quietly = T)
                  class2 = "class2",
                  classLabel2 = "classLabel2",
                  classPalette2 = "classPalette2")%>%
-          dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+          dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%
+                        origScen, origQuery, origValue, origUnits, origX)%>%
           group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                    aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                    origScen, origQuery, origUnits, origX)%>%summarize_at("value",funs(sum))%>%ungroup()%>%
@@ -183,11 +183,11 @@ requireNamespace("dplyr",quietly = T)
         datax <- bind_rows(datax, tbl)
     } else {
         print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-
+    paramx<-"primNrgConsumByFuel"
     # primary energy consumption by region (direct equivalent)
-    if("primNrgConsumByFuel" %in% paramsSelectx){
+    if(paramx %in% paramsSelectx){
     queryx <- "primary energy consumption by region (direct equivalent)"
     if (queryx %in% queriesx) {
       tbl <- getQuery(dataProjLoaded, queryx)  # Tibble
@@ -216,9 +216,9 @@ requireNamespace("dplyr",quietly = T)
                class2 = "class2",
                classLabel2 = "classLabel2",
                classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                      origScen, origQuery, origUnits, origX)%>%
+                      origScen, origQuery, origValue, origUnits, origX)%>%
         group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                  origScen, origQuery, origUnits, origX)%>%summarize_at("value",funs(sum))%>%ungroup()%>%
@@ -226,10 +226,11 @@ requireNamespace("dplyr",quietly = T)
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
 
-    if("elecByTech" %in% paramsSelectx){
+    paramx <- "elecByTech"
+    if(paramx %in% paramsSelectx){
     # Electricity generation by aggregate technology
     queryx <- "Electricity generation by aggregate technology"
     if (queryx %in% queriesx) {
@@ -259,19 +260,22 @@ requireNamespace("dplyr",quietly = T)
                class2 = "class2",
                classLabel2 = "classLabel2",
                classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                      origScen, origQuery, origUnits, origX)%>%
-        group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                  origScen, origQuery, origUnits, origX)%>%summarize_at("value",funs(sum))%>%ungroup()%>%
         mutate(origValue = value)%>%filter(!is.na(value))
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-    if("watConsumBySec" %in% paramsSelectx){
+    # srn.chart(tbl,xData="x",yData="value",useNewLabels = 0)
+
+    paramx <- "watConsumBySec"
+    if(paramx %in% paramsSelectx){
     # water consumption by sector
     queryx <- "water consumption by sector"
     if (queryx %in% queriesx) {
@@ -301,9 +305,9 @@ requireNamespace("dplyr",quietly = T)
                class2 = "class2",
                classLabel2 = "classLabel2",
                classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                      origScen, origQuery, origUnits, origX)%>%
+                      origScen, origQuery, origValue, origUnits, origX)%>%
         group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                  origScen, origQuery, origUnits, origX)%>%summarize_at("value",funs(sum))%>%ungroup()%>%
@@ -311,9 +315,10 @@ requireNamespace("dplyr",quietly = T)
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-    if("watWithdrawBySec" %in% paramsSelectx){
+    paramx<- "watWithdrawBySec"
+    if(paramx %in% paramsSelectx){
     # water withdrawals by sector
     queryx <- "water withdrawals by sector"
     if (queryx %in% queriesx) {
@@ -343,9 +348,9 @@ requireNamespace("dplyr",quietly = T)
                class2 = "class2",
                classLabel2 = "classLabel2",
                classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                      origScen, origQuery, origUnits, origX)%>%
+                      origScen, origQuery, origValue, origUnits, origX)%>%
         group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                  origScen, origQuery, origUnits, origX)%>%summarize_at("value",funs(sum))%>%ungroup()%>%
@@ -353,9 +358,10 @@ requireNamespace("dplyr",quietly = T)
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-    if("watWithdrawByCrop" %in% paramsSelectx){
+    paramx <- "watWithdrawByCrop"
+    if(paramx %in% paramsSelectx){
     # water withdrawals by sector
     queryx <- "water withdrawals by crop"
     if (queryx %in% queriesx) {
@@ -387,9 +393,9 @@ requireNamespace("dplyr",quietly = T)
                class2 = "class2",
                classLabel2 = "classLabel2",
                classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                      origScen, origQuery, origUnits, origX)%>%
+                      origScen, origQuery, origValue, origUnits, origX)%>%
         group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                  origScen, origQuery, origUnits, origX)%>%summarize_at("value",funs(sum))%>%ungroup()%>%
@@ -397,9 +403,10 @@ requireNamespace("dplyr",quietly = T)
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-    if("watBioPhysCons" %in% paramsSelectx){
+    paramx <- "watBioPhysCons"
+    if(paramx %in% paramsSelectx){
     # biophysical water demand by crop type and land region
     queryx <- "biophysical water demand by crop type and land region"
     if (queryx %in% queriesx) {
@@ -440,9 +447,10 @@ requireNamespace("dplyr",quietly = T)
       tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-    if("irrWatWithBasin" %in% paramsSelectx){
+    paramx <- "irrWatWithBasin"
+    if(paramx %in% paramsSelectx){
     # water withdrawals by water mapping source
     queryx <- "water withdrawals by water mapping source"
     if (queryx %in% queriesx) {
@@ -486,10 +494,11 @@ requireNamespace("dplyr",quietly = T)
       tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
 
-    if("irrWatConsBasin" %in% paramsSelectx){
+    paramx <- "irrWatConsBasin"
+    if(paramx %in% paramsSelectx){
     # water consumption by water mapping source
     queryx <- "water consumption by water mapping source"
     if (queryx %in% queriesx) {
@@ -533,9 +542,10 @@ requireNamespace("dplyr",quietly = T)
       tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-    if("gdpPerCapita" %in% paramsSelectx){
+    paramx <- "gdpPerCapita"
+    if(paramx  %in% paramsSelectx){
     # GDP MER per Capita MER by region
     queryx <- "GDP per capita MER by region"
     if (queryx %in% queriesx) {
@@ -575,9 +585,10 @@ requireNamespace("dplyr",quietly = T)
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-    if("gdp" %in% paramsSelectx){
+    paramx <- "gdp"
+    if(paramx %in% paramsSelectx){
     # GDP MER by region
     queryx <- "GDP MER by region"
     if (queryx %in% queriesx) {
@@ -618,9 +629,10 @@ requireNamespace("dplyr",quietly = T)
       tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-    if("gdpGrowthRate" %in% paramsSelectx){
+    paramx <- "gdpGrowthRate"
+    if(paramx %in% paramsSelectx){
     # GDP Growth Rate by region
     queryx <- "GDP Growth Rate (Percent)"
     if ("GDP MER by region" %in% queriesx) {
@@ -650,9 +662,10 @@ requireNamespace("dplyr",quietly = T)
     } else {
       print(paste("Paramater 'GDP MER by region' not found in database, so
                   cannot calculate" ,queryx, sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-    if("pop" %in% paramsSelectx){
+    paramx <- "pop"
+    if(paramx %in% paramsSelectx){
     # Population
     queryx <- "Population by region"
     if (queryx %in% queriesx) {
@@ -693,9 +706,10 @@ requireNamespace("dplyr",quietly = T)
       tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-    if("agProdbyIrrRfd" %in% paramsSelectx){
+    paramx <- "agProdbyIrrRfd"
+    if(paramx %in% paramsSelectx){
     # Ag production by tech
     queryx <- "ag production by tech"
     if (queryx %in% queriesx) {
@@ -739,10 +753,11 @@ requireNamespace("dplyr",quietly = T)
       tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
 
-    if("agProdBiomass" %in% paramsSelectx){
+    paramx <- "agProdBiomass"
+    if(paramx %in% paramsSelectx){
     # Ag Production by Crop Type Biomass EJ
     queryx <- "Ag Production by Crop Type"
     if (queryx %in% queriesx) {
@@ -779,10 +794,10 @@ requireNamespace("dplyr",quietly = T)
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-
-    if("agProdForest" %in% paramsSelectx){
+    paramx <- "agProdForest"
+    if(paramx %in% paramsSelectx){
     # Ag Production by Crop Type Forest
     queryx <- "Ag Production by Crop Type"
     if (queryx %in% queriesx) {
@@ -819,11 +834,11 @@ requireNamespace("dplyr",quietly = T)
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
 
-
-    if("agProdByCrop" %in% paramsSelectx){
+    paramx <- "agProdByCrop"
+    if(paramx %in% paramsSelectx){
     # Ag Production by Crop Type
     queryx <- "Ag Production by Crop Type"
     if (queryx %in% queriesx) {
@@ -860,10 +875,10 @@ requireNamespace("dplyr",quietly = T)
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-
-    if("landIrrRfd" %in% paramsSelectx){
+    paramx <- "landIrrRfd"
+    if(paramx %in% paramsSelectx){
     # land allocation by crop and water source
     queryx <- "land allocation by crop and water source"
     if (queryx %in% queriesx) {
@@ -905,10 +920,10 @@ requireNamespace("dplyr",quietly = T)
       tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-
-    if("aggLandAlloc" %in% paramsSelectx){
+    paramx <- "aggLandAlloc"
+    if(paramx %in% paramsSelectx){
     # aggregated land allocation
     queryx <- "aggregated land allocation"
     if (queryx %in% queriesx) {
@@ -953,10 +968,10 @@ requireNamespace("dplyr",quietly = T)
       tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-
-    if("LUCemiss" %in% paramsSelectx){
+    paramx <- "LUCemiss"
+    if(paramx %in% paramsSelectx){
     # Land Use Change Emission (future)
     queryx <- "Land Use Change Emission (future)"
     if (queryx %in% queriesx) {
@@ -998,9 +1013,9 @@ requireNamespace("dplyr",quietly = T)
       tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-
+    paramx <- "co2emission"
     if(any(grepl("\\bco2emission\\b",paramsSelectx))){
     # CO2 Emissions
     queryx <- "CO2 Emissions"
@@ -1042,10 +1057,10 @@ requireNamespace("dplyr",quietly = T)
       tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-
-    if("co2emissionByEndUse" %in% paramsSelectx){
+    paramx <- "co2emissionByEndUse"
+    if(paramx %in% paramsSelectx){
     # CO2 Emissions by enduse
     queryx <- "CO2 Emissions by enduse"
     if (queryx %in% queriesx) {
@@ -1077,7 +1092,48 @@ requireNamespace("dplyr",quietly = T)
                classPalette2 = "classPalette2") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                      origScen, origQuery, origValue, origUnits, origX)
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                 aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                 origScen, origQuery, origUnits, origX)%>%summarize_at("value",funs(sum))%>%ungroup()%>%
+        mutate(origValue = value)%>%filter(!is.na(value))
+
+       # Add LU Change Emissions
+       tblLUEmiss <- getQuery(dataProjLoaded, "Land Use Change Emission (future)")  # Tibble
+        if (!is.null(regionsSelect)) {
+          tblLUEmiss <- tblLUEmiss %>% dplyr::filter(region %in% regionsSelect)
+        }
+       tblLUEmiss <- tblLUEmiss %>%
+          left_join(data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+          mutate(param = "LUCemiss",
+                 sources = "Sources",
+                 origScen = scenario,
+                 origQuery = queryx,
+                 origUnits = Units,
+                 origX = year,
+                 scenario = scenNewNames,
+                 value = value*(srn.assumptions()$GWP%>%filter(ghg=="CO2")%>%dplyr::select(srn.assumptions()$GWPType))[1,1],
+                 origValue = value,
+                 units = "LUC CO2 Emissions (MTCO2 Eq.)",
+                 vintage = paste("Vint_", year, sep = ""),
+                 x = year,
+                 xLabel = "Year",
+                 aggregate = "sum",
+                 class1 = "class1",
+                 classLabel1 = "Land Type",
+                 classPalette1 = "pal_16",
+                 class2 = "class2",
+                 classLabel2 = "classLabel2",
+                 classPalette2 = "classPalette2") %>%
+          dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origValue, origUnits, origX)%>%
+          group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                   aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                   origScen, origQuery, origUnits, origX)%>%summarize_at("value",funs(sum))%>%ungroup()%>%
+          mutate(origValue = value)%>%filter(!is.na(value))
+
+
       dfLUCAbs<-tblLUEmiss%>%filter(value<0)%>%mutate(class1="LUC_Absorption")
       dfLUCAbs<-dfLUCAbs%>%group_by_at(vars(-value,-origValue)) %>% summarize(value = sum(value,na.rm=T))%>%
         ungroup()%>%mutate(origValue=value,class1="LUC Absorption")
@@ -1088,14 +1144,16 @@ requireNamespace("dplyr",quietly = T)
       dfLUC<-dfLUC%>%mutate(param=unique(tbl$param),
                           classLabel1=unique(tbl$classLabel1),
                           classPalette1=unique(tbl$classPalette1))
+
       tbl<-bind_rows(tbl,dfLUC)%>%filter(!is.na(value))%>%mutate(units = "CO2 Emission by Enduse (MTCO2 Eq.)")
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
 
-    if("ghgEmissionByGHG" %in% paramsSelectx){
+    paramx<-"ghgEmissionByGHG"
+    if(paramx %in% paramsSelectx){
     # GHG emissions by subsector
     queryx <- "GHG emissions by subsector"
     if (queryx %in% queriesx) {
@@ -1137,10 +1195,10 @@ requireNamespace("dplyr",quietly = T)
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
-
-    if("ghgEmissByGHGGROUPS" %in% paramsSelectx){
+    paramx <- "ghgEmissByGHGGROUPS"
+    if(paramx %in% paramsSelectx){
     # GHG emissions by subsector
     queryx <- "GHG emissions by subsector"
     if (queryx %in% queriesx) {
@@ -1188,7 +1246,7 @@ requireNamespace("dplyr",quietly = T)
       datax <- bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}else{print(paste("Param '", paramx, "' not available in current queries", sep = ""))}
+    }}
 
 
    datax<-datax%>%unique()

@@ -47,6 +47,10 @@
 
 srn.colors <- function(palx=NULL) {
 
+  #------------------
+  # Load required Libraries
+  # -----------------
+  requireNamespace("RColorBrewer",quietly = T)
 
   NULL->pie
 
@@ -219,7 +223,7 @@ srn.colors <- function(palx=NULL) {
                      OtherGrain  = "indianred2",
                      PalmFruit = "firebrick3" ,  Rice = "steelblue2", Root_Tuber  = "lightslateblue", SugarCrop = "yellow2",
                      Wheat  = "burlywood", FodderGrass = "darkseagreen1",
-                     FodderHerb = "darkseagreen4", Pasture = "deepskyblue4",
+                     FodderHerb = "darkseagreen4", Pasture = "goldenrod1",
                      UnmanagedLand = "black")
 
     # Water Demand Sectors
@@ -227,7 +231,7 @@ srn.colors <- function(palx=NULL) {
                      industry = "gold2", electricity = "darkorange", agriculture = "darkolivegreen4")
 
     pal_lu_type <- c(urban="indianred2",tundra="antiquewhite1",shrubs="lightslateblue",`rock and desert`="black",
-                pasture="deepskyblue",otherarable="darkorange4",grass="darkolivegreen1",forest="darkgreen",
+                pasture="goldenrod1",otherarable="darkorange4",grass="darkolivegreen1",forest="darkgreen",
                 crops="yellow2",biomass="grey50")
 
     if(!is.null(palx)){
