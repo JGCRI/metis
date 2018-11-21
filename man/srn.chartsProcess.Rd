@@ -6,11 +6,12 @@
 \usage{
 srn.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), pdfpng = "png",
-  xCompare = c("2015", "2030", "2050", "2100"), paramsSelect = "All",
-  regionsSelect = "All", xData = "x", yData = "value",
-  xLabel = "xLabel", yLabel = "units", aggregate = "sum",
-  class = "class", classPalette = "pal_Basic", regionCompareOnly = 0,
-  useNewLabels = 0, sizeBarLines = 0.5, sizeLines = 1.5)
+  xRange = "All", xCompare = c("2015", "2030", "2050", "2100"),
+  paramsSelect = "All", regionsSelect = "All", xData = "x",
+  yData = "value", xLabel = "xLabel", yLabel = "units",
+  aggregate = "sum", class = "class", classPalette = "pal_Basic",
+  regionCompareOnly = 0, useNewLabels = 0, sizeBarLines = 0,
+  sizeLines = 1.5)
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -27,6 +28,8 @@ list f all scenarios}
 \item{dirOutputs}{Full path to directory for outputs}
 
 \item{pdfpng}{Choose the format for outputs. Either "pdf", "png" or "both. Default is "png"}
+
+\item{xRange}{Default "All". Range of x values eg. c(2001:2005)}
 
 \item{xCompare}{Choose the years to compare scenarios for xScenSelectYears plot. Default is
 c("2015","2030","2050","2100")}
@@ -61,8 +64,9 @@ c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 
 \item{sizeBarLines}{Default 0.5}
 
-\item{sizeLines}{Default 1.5
-regions}
+\item{sizeLines}{Default 1.5}
+
+\item{sizeLines}{Default "All"}
 }
 \value{
 Produces charts in output folder and also returns combined table in srn format.

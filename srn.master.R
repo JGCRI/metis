@@ -5,7 +5,7 @@
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
-if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/srn")}
+if("srn" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/srn")}
 library(srn)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)

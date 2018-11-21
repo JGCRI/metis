@@ -97,18 +97,19 @@ if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
   }
   }
 
+  l1[[class]]<-factor(l1[[class]],levels=unique(l1[[class]]))
+
+  if(!is.null(names(paletteX))){
+    if(!all(levels(l1[[class]]) %in% names(paletteX))){
+  add_colors<-(srn.colors()$pal_Basic)[1:length(levels(l1[[class]])[!levels(l1[[class]]) %in% names(paletteX)])]
+  names(add_colors)<-levels(l1[[class]])[!levels(l1[[class]]) %in% names(paletteX)]
+  paletteX<-c(paletteX,add_colors)}}
+
   if(useNewLabels==1){
     if(!is.null(names(paletteX))){
       names(paletteX)<-toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",names(paletteX)))}
     l1[[class]]<-toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",l1[[class]]))
   }
-
-  l1[[class]]<-factor(l1[[class]],levels=unique(l1[[class]]))
-
-  add_colors<-(srn.colors()$pal_Basic)[1:length(levels(l1[[class]])[!levels(l1[[class]]) %in% names(paletteX)])]
-  names(add_colors)<-levels(l1[[class]])[!levels(l1[[class]]) %in% names(paletteX)]
-
-  paletteX<-c(paletteX,add_colors)
 
   p <- ggplot(l1,aes(x=get(xData),y=get(yData),group=get(group))) +
        srn.chartsThemeLight()
@@ -120,7 +121,7 @@ if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
   if(!grepl("class",class)){
     p = p + guides(fill = guide_legend(title=toTitleCase(paste(class,sep="")),reverse = T))}else{
       if(length(unique(l1[[class]]))<2){
-        p = p + theme(legend.position="none")
+        p = p + theme(legend.position="none") + scale_fill_manual(values="firebrick")
       }else{
         p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))
       }
@@ -133,7 +134,7 @@ if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
   if(!grepl("class",class)){
     p = p + guides(color = guide_legend(title=toTitleCase(paste(class,sep=""))))}else{
       if(length(unique(l1[[class]]))<2){
-        p = p + theme(legend.position="none")
+        p = p + theme(legend.position="none") + scale_color_manual(values="firebrick")
       }else{
     p = p + guides(color = guide_legend(title=unique(l1[[classLabel]])))
     }

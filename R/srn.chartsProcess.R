@@ -48,7 +48,6 @@
 #' @param useNewLabels Default 0
 #' @param sizeBarLines Default 0.5
 #' @param sizeLines Default 1.5
-#' regions
 #' @param xCompare Choose the years to compare scenarios for xScenSelectYears plot. Default is
 #' c("2015","2030","2050","2100")
 #' @param paramsSelect Default = "All". Select the paramaters to analyze from the the tables provided.
@@ -59,6 +58,7 @@
 #' "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
 #' "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
 #' @param regionsSelect Default = "All". Select regions to create charts for.
+#' @param xRange Default "All". Range of x values eg. c(2001:2005)
 #' @keywords charts, diffplots
 #' @return Produces charts in output folder and also returns combined table in srn format.
 #' @export
@@ -66,13 +66,14 @@
 
 srn.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        dirOutputs=paste(getwd(),"/outputs",sep=""),pdfpng="png",
+                       xRange="All",
                        xCompare=c("2015","2030","2050","2100"),
                        paramsSelect="All",
                        regionsSelect="All",
                        xData="x",yData="value",xLabel="xLabel",yLabel="units",
                        aggregate="sum",class="class", classPalette="pal_Basic",
                        regionCompareOnly=0,useNewLabels=0,
-                       sizeBarLines=0.5,sizeLines=1.5) {
+                       sizeBarLines=0,sizeLines=1.5) {
 
 #------------------
 # Load required Libraries
@@ -87,7 +88,7 @@ srn.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
 
   NULL->scenario->value->x->region->param->origValue->origScen->origQuery->
   origUnits->origX->sources->vintage->class1->classLabel1->classPalette1->
-  class2->classLabel2->classPalette2->i->j->k
+  class2->classLabel2->classPalette2->i->j->k->figWmult
 
 #------------------
 # Function for adding any missing columns if needed
@@ -162,7 +163,8 @@ if(!is.null(rTable)){
 tbl<-bind_rows(tbl,rTable)
 }
 
-tbl<-tbl%>%unique()
+tbl<-tbl%>%unique()%>%filter(region %in% regionsSelect)
+if(any(xRange!="All")){if(is.numeric(tbl$x)){tbl<-tbl%>%filter(x %in% xRange)}}
 
 
 #------------------
@@ -260,22 +262,24 @@ if(length(unique(tbl$region))>1){
 
       if(nrow(tbl_sp)>0){
 
+        if(length(unique(tbl_sp$class1))>1){figWMult=1.3}else{figWmult=1}
+
         # Bar Chart
         srn.printPdfPng(
           srn.chart(tbl_sp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
-                    sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows="none"),
+                    sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows="none"),
           dir = paste(dirOutputs, "/Charts/compareRegions","/", j,sep = ""),
           filename = paste(k,"_figBar_",j,"_compareRegions",sep=""),
-          figWidth = 13*max((length(unique(tbl_sp$region))/2),1)
+          figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult
         )
 
         # Line Chart
         srn.printPdfPng(
           srn.chart(tbl_sp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
-                    sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows="none"),
+                    sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows="none"),
           dir = paste(dirOutputs, "/Charts/compareRegions","/", j,sep = ""),
           filename = paste(k,"_figLines_",j,"_compareRegions",sep=""),
-          figWidth = 13*max((length(unique(tbl_sp$region))/2),1)
+          figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult
         )
 
       } # Close if(nrow(tbl_sp)>0)
@@ -297,24 +301,26 @@ if(length(unique(tbl$scenario))>1){
 
       if(nrow(tbl_p)>0){
 
+        if(length(unique(tbl_p$class1))>1){figWMult=1.3}else{figWmult=1}
+
         # Bar Chart
         srn.printPdfPng(
           srn.chart(tbl_p, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
-                    sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "bar",facet_columns="scenario",facet_rows="region"),
+                    sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="scenario",facet_rows="region"),
           dir = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
           filename = paste(j,"_figBar_compareScenRegions",sep=""),
-          figWidth = 13*max((length(unique(tbl_p$scenario))/2),1),
-          figHeight = 9*max((length(unique(tbl_p$region))/2),1)
+          figWidth = 13*max((length(unique(tbl_p$scenario))/2),1)*figWMult,
+          figHeight = 9*max((length(unique(tbl_p$region))/2),1)*figWMult
         )
 
         # Line Chart
         srn.printPdfPng(
           srn.chart(tbl_p,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
-                    sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "line",facet_columns="scenario",facet_rows="region"),
+                    sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="scenario",facet_rows="region"),
           dir = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
           filename = paste(j,"_figLine_compareScenRegions",sep=""),
-          figWidth = 13*max((length(unique(tbl_p$scenario))/2),1),
-          figHeight = 9*max((length(unique(tbl_p$region))/2),1)
+          figWidth = 13*max((length(unique(tbl_p$scenario))/2),1)*figWMult,
+          figHeight = 9*max((length(unique(tbl_p$region))/2),1)*figWMult
         )
 
         #-------------------------
@@ -335,14 +341,16 @@ if(length(unique(tbl$scenario))>1){
               }
           }
 
+        if(length(unique(tbl_py$class1))>1){figWMult=1.3}else{figWmult=1}
+
         # Bar Chart
         srn.printPdfPng(
           srn.chart(tbl_py, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel,
-                    sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "bar", facet_columns = xData, facet_rows="region"),
+                    sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData, facet_rows="region"),
           dir = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
           filename = paste(j,"_figBar_compareScenRegion_xScenSelectYears",sep=""),
           figWidth = 13*max((length(unique(tbl_py$x)[unique(tbl_py$x) %in% xCompare])/3),1),
-          figHeight = 9*max((length(unique(tbl_py$region))/2),1)
+          figHeight = 9*max((length(unique(tbl_py$region))/2),1)*figWMult
         )
 
 
@@ -366,26 +374,28 @@ if(length(unique(tbl$scenario))>1){
 
         if(nrow(tbl_pAgg)>0){
 
+          if(length(unique(tbl_pAgg$class1))>1){figWMult=1.3}else{figWmult=1}
+
           # Bar Chart Dodged
           srn.printPdfPng(
-            srn.chart(tbl_pAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "bar",
+            srn.chart(tbl_pAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge", classPalette = classPalette,
                       facet_columns="region",facet_rows="none"),
             dir = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
             filename = paste(j,"_figBarDodged_compareScenRegion",sep=""),
-            figWidth = 13*max((length(unique(tbl_pAgg$scenario))/2),1),
-            figHeight = 9*max((length(unique(tbl_pAgg$region))/2),1)
+            figWidth = 13*max((length(unique(tbl_pAgg$scenario))/2),1)*figWMult,
+            figHeight = 9*max((length(unique(tbl_pAgg$region))/2),1)*figWMult
           )
 
           # Line Chart Overlapped
           srn.printPdfPng(
             srn.chart(tbl_pAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
-                      sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "line",class ="scenario", classPalette = classPalette,
+                      sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario", classPalette = classPalette,
                       facet_columns="region",facet_rows="none"),
             dir = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
             filename = paste(j,"_figLineOverlap_compareScenRegion",sep=""),
-            figWidth = 13*max((length(unique(tbl_pAgg$scenario))/2),1),
-            figHeight = 9*max((length(unique(tbl_pAgg$region))/2),1)
+            figWidth = 13*max((length(unique(tbl_pAgg$scenario))/2),1)*figWMult,
+            figHeight = 9*max((length(unique(tbl_pAgg$region))/2),1)*figWMult
           )
         }
 
@@ -430,24 +440,26 @@ if(length(unique(tbl$scenario))>1){
                                  levels=c(scenRef_i,
                                           unique(tbl_pd$scenario)[unique(tbl_pd$scenario)!=scenRef_i])))
 
+        if(length(unique(tbl_pd$class1))>1){figWMult=1.3}else{figWmult=1}
+
         # Bar Chart
         srn.printPdfPng(
           srn.chart(tbl_pd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
-                    sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "bar", facet_rows="region"),
+                    sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region"),
           dir = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
           filename = paste(j,"_figBarDiff_compareScenRegion",sep=""),
-          figWidth = 13*max((length(unique(tbl_pd$scenario))/2),1),
-          figHeight = 9*max((length(unique(tbl_pd$region))/2),1)
+          figWidth = 13*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,
+          figHeight = 9*max((length(unique(tbl_pd$region))/2),1)*figWMult
         )
 
         # Line Chart
         srn.printPdfPng(
           srn.chart(tbl_pd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
-                    sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "line", facet_rows="region"),
+                    sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region"),
           dir = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
           filename = paste(j,"_figLineDiff_compareScenRegion",sep=""),
-          figWidth = 13*max((length(unique(tbl_pd$scenario))/2),1),
-          figHeight = 9*max((length(unique(tbl_pd$region))/2),1)
+          figWidth = 13*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,
+          figHeight = 9*max((length(unique(tbl_pd$region))/2),1)*figWMult
         )
 
 
@@ -473,16 +485,18 @@ for(i in unique(tbl$region)){
 
     if(nrow(tbl_rsp)>0){
 
+      if(length(unique(tbl_rsp$class1))>1){figWMult=1.3}else{figWmult=1}
+
     # Bar Chart
     srn.printPdfPng(
-    srn.chart(tbl_rsp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "bar"),
+    srn.chart(tbl_rsp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar"),
     dir = paste(dirOutputs, "/Charts/", i, "/regional","/", j,sep = ""),
     filename = paste(k,"_figBar_",i,"_",j,sep="")
     )
 
     # Line Chart
     srn.printPdfPng(
-      srn.chart(tbl_rsp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "line"),
+      srn.chart(tbl_rsp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line"),
       dir = paste(dirOutputs, "/Charts/", i, "/regional","/", j,sep = ""),
       filename = paste(k,"_figLine_",i,"_",j,sep="")
     )
@@ -508,22 +522,24 @@ for(i in unique(tbl$region)){
 
       if(nrow(tbl_rp)>0){
 
+        if(length(unique(tbl_rp$class1))>1){figWMult=1.3}else{figWmult=1}
+
       # Bar Chart
       srn.printPdfPng(
-        srn.chart(tbl_rp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "bar"),
+        srn.chart(tbl_rp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar"),
         dir = paste(dirOutputs, "/Charts/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figBar_",i,"_compareScen",sep=""),
-        figWidth = 13*max((length(unique(tbl_rp$scenario))/2),1),
-        figHeight = 9*max((length(unique(tbl_rp$region))/2),1)
+        figWidth = 13*max((length(unique(tbl_rp$scenario))/2),1)*figWMult,
+        figHeight = 9*max((length(unique(tbl_rp$region))/2),1)*figWMult
       )
 
       # Line Chart
       srn.printPdfPng(
-        srn.chart(tbl_rp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "line"),
+        srn.chart(tbl_rp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line"),
         dir = paste(dirOutputs, "/Charts/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figLine_",i,"_compareScen",sep=""),
-        figWidth = 13*max((length(unique(tbl_rp$scenario))/2),1),
-        figHeight = 9*max((length(unique(tbl_rp$region))/2),1)
+        figWidth = 13*max((length(unique(tbl_rp$scenario))/2),1)*figWMult,
+        figHeight = 9*max((length(unique(tbl_rp$region))/2),1)*figWMult
       )
 
 #-------------------------
@@ -544,13 +560,15 @@ for(i in unique(tbl$region)){
         }
       }
 
+      if(length(unique(tbl_rpy$class1))>1){figWMult=1.3}else{figWmult=1}
+
       # Bar Chart
       srn.printPdfPng(
-        srn.chart(tbl_rpy, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "bar", facet_columns = xData),
+        srn.chart(tbl_rpy, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData),
         dir = paste(dirOutputs, "/Charts/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figBar_",i,"_compareScen_xScenSelectYears",sep=""),
         figWidth = 13*max((length(unique(tbl_rpy$x)[unique(tbl_py$x) %in% xCompare])/3),1),
-        figHeight = 9*max((length(unique(tbl_rpy$region))/2),1)
+        figHeight = 9*max((length(unique(tbl_rpy$region))/2),1)*figWMult
       )
 
 
@@ -574,24 +592,26 @@ for(i in unique(tbl$region)){
 
       if(nrow(tbl_rpAgg)>0){
 
+        if(length(unique(tbl_rpAgg$class1))>1){figWMult=1.3}else{figWmult=1}
+
       # Bar Chart Dodged
       srn.printPdfPng(
-        srn.chart(tbl_rpAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "bar", facet_columns="none",
+        srn.chart(tbl_rpAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns="none",
                   class ="scenario", position ="dodge", classPalette = classPalette),
         dir = paste(dirOutputs, "/Charts/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figBarDodged_",i,"_compareScen_",sep=""),
-        figWidth = 13*max((length(unique(tbl_rpAgg$scenario))/2),1),
-        figHeight = 9*max((length(unique(tbl_rpAgg$region))/2),1)
+        figWidth = 13*max((length(unique(tbl_rpAgg$scenario))/2),1)*figWMult,
+        figHeight = 9*max((length(unique(tbl_rpAgg$region))/2),1)*figWMult
       )
 
       # Line Chart Overlapped
       srn.printPdfPng(
-        srn.chart(tbl_rpAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "line", facet_columns="none",
+        srn.chart(tbl_rpAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns="none",
                   class ="scenario", classPalette = classPalette),
         dir = paste(dirOutputs, "/Charts/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figLineOverlap_",i,"_compareScen",sep=""),
-        figWidth = 13*max(length(unique(tbl_rpAgg$scenario)),2)/2,
-        figHeight = 9*max(length(unique(tbl_rpAgg$region)),2)/2
+        figWidth = 13*max((length(unique(tbl_rpAgg$scenario))/2),1)*figWMult,
+        figHeight = 9*max((length(unique(tbl_rpAgg$region))/2),1)*figWMult
       )
       }
 
@@ -636,22 +656,24 @@ for(i in unique(tbl$region)){
                                levels=c(scenRef_i,
                                         unique(tbl_rpd$scenario)[unique(tbl_rpd$scenario)!=scenRef_i])))
 
+      if(length(unique(tbl_rpd$class1))>1){figWMult=1.3}else{figWmult=1}
+
       # Bar Chart
       srn.printPdfPng(
-        srn.chart(tbl_rpd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "bar"),
+        srn.chart(tbl_rpd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar"),
         dir = paste(dirOutputs, "/Charts/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figBarDiff_",i,"_compareScen",sep=""),
-        figWidth = 13*max(length(unique(tbl_rpd$scenario)),2)/2,
-        figHeight = 9*max(length(unique(tbl_rpd$region)),2)/2
+        figWidth = 13*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,
+        figHeight = 9*max((length(unique(tbl_rpd$region))/2),1)*figWMult
       )
 
       # Line Chart
       srn.printPdfPng(
-        srn.chart(tbl_rpd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,sizeLines=sizeLines, chartType = "line"),
+        srn.chart(tbl_rpd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line"),
         dir = paste(dirOutputs, "/Charts/", i,"/regional/compareScen",sep = ""),
         filename = paste(j,"_figLineDiff_",i,"_compareScen",sep=""),
-        figWidth = 13*max(length(unique(tbl_rpd$scenario)),2)/2,
-        figHeight = 9*max(length(unique(tbl_rpd$region)),2)/2
+        figWidth = 13*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,
+        figHeight = 9*max((length(unique(tbl_rpd$region))/2),1)*figWMult
       )
 
       } # Close if(nrow(tbl_rsp)>0)

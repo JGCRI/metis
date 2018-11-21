@@ -5,7 +5,7 @@
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
-install_github(repo="zarrarkhan/srn",force=T)
+if("srn" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/srn")}
 library(srn)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
@@ -27,10 +27,10 @@ pie(rep(1,length(testcolor)),label=names(testcolor),col=a$testcolor)
 
 # Choose Parameters or set to "All" for all params. For complete list see ?srn.readgcam
 paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
-               "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons",
+               "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop",
                "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
                "agProdbyIrrRfd","agProdByCrop",
-               "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
+               "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissByGHGGROUPS")
 
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 gcamdatabaseName <-"database_basexdb_LAC"
@@ -88,9 +88,9 @@ unique((dataGCAM%>%filter(value>0))$param)
 # ?srn.chartsProcess # For more help on charting process
 
 # Read in Tables (If exist)
-dataTables<-c(paste(getwd(),"/outputs/Tables/Tables_Local/local_Regional_Colombia.csv",sep=""),
-              paste(getwd(),"/outputs/Tables/Tables_Local/local_Regional_Argentina.csv",sep=""),
-              paste(getwd(),"/outputs/Tables/Tables_Local/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
+#dataTables<-c(paste(getwd(),"/outputs/Tables/Tables_Local/local_Regional_Colombia.csv",sep=""),
+#              paste(getwd(),"/outputs/Tables/Tables_Local/local_Regional_Argentina.csv",sep=""),
+#              paste(getwd(),"/outputs/Tables/Tables_Local/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
 
 # Read in the data from the function srn.readgcam
 rTable <- dataGCAM;
@@ -100,14 +100,14 @@ rTable <- dataGCAM;
 #                "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons",
 #                "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
 #                "agProdbyIrrRfd","agProdByCrop",
-#                "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
+#                "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissionByGHG")
 
-paramsSelect=c("elecByTech")
+#paramsSelect=c("elecByTech")
 
-regionsSelect=c("Argentina","Colombia","Uruguay")
+regionsSelect=c("Uruguay","Argentina")
 
 charts<-srn.chartsProcess(rTable=rTable, # Default is NULL
-                          dataTables=dataTables, # Default is NULL
+                          #dataTables=dataTables, # Default is NULL
                           paramsSelect=paramsSelect, # Default is "All"
                           regionsSelect=regionsSelect, # Default is "All"
                           xCompare=c("2015","2035","2050","2100"), # Default is c("2015","2030","2050","2100")
@@ -115,7 +115,8 @@ charts<-srn.chartsProcess(rTable=rTable, # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           pdfpng="png", # Default is "png"
                           regionCompareOnly=0, # Default is "0"
-                          useNewLabels=1
+                          useNewLabels=1,sizeBarLines = 0,
+                          xRange=c(2010:2050) # Default is All
                           )
 
 
@@ -135,7 +136,7 @@ xLabel="xLabel";
 yLabel="units";
 aggregate="sum";class="class"; classPalette="pal_Basic";
 useNewLabels=0
-
+xRange=c(2010:2050)
 #------------------------
 # Maps
 #------------------------
