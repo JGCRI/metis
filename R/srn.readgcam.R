@@ -1235,6 +1235,8 @@ requireNamespace("dplyr",quietly = T)
                                    (grepl("CO2", class1)) ~ "CO2",
                                    (grepl("N2O", class1)) ~ "N2O",
                                    (grepl("CH4", class1)) ~ "CH4",
+                                   (grepl("SO2", class1)) ~ "SO2",
+                                   (grepl("NH3", class1)) ~ "NH3",
                                    TRUE ~ "Other"))%>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
