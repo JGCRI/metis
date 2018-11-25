@@ -8,5 +8,6 @@
 ^srn.pdf$
 ^dataFiles$
 ^outputs$
-
-
+^gis$
+^grids$
+^dataFiles$

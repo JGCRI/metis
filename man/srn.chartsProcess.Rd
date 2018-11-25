@@ -15,8 +15,8 @@ srn.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
-Example c("D:/srn/outputs/Colombia/regional/dataTable_Colombia_1975to2100.csv",
-"D:/srn/outputs/Colombia/regional/dataTableLocal_Colombia_1975to2100.csv").
+Example c("D:/srn/outputs/Colombia/dataTable_Colombia_1975to2100.csv",
+"D:/srn/outputs/Colombia/dataTableLocal_Colombia_1975to2100.csv").
 Where "dataTableLocal_Colombia_1975to2100.csv" is the new datafile created based on
 "dataTableTemplate_Colombia_1975to2100.csv" and contains new local data.}
 
@@ -25,7 +25,7 @@ Where "dataTableLocal_Colombia_1975to2100.csv" is the new datafile created based
 \item{scenRef}{The reference scenario to compare against. Default will pick first scenario from
 list f all scenarios}
 
-\item{dirOutputs}{Full path to directory for outputs}
+\item{dirOutputs}{Full path to directory for outputs. Default is paste(getwd(),"/outputs",sep="")}
 
 \item{pdfpng}{Choose the format for outputs. Either "pdf", "png" or "both. Default is "png"}
 
@@ -65,8 +65,6 @@ c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 \item{sizeBarLines}{Default 0.5}
 
 \item{sizeLines}{Default 1.5}
-
-\item{sizeLines}{Default "All"}
 }
 \value{
 Produces charts in output folder and also returns combined table in srn format.
