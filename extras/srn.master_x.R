@@ -12,6 +12,7 @@ library(rgcam)
 library(tibble)
 library(dplyr)
 
+
 #----------------------------
 # Tests
 #----------------------------
@@ -59,7 +60,7 @@ dataGCAM_LAC<-srn.readgcam(reReadData=F, # Default Value is T
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 gcamdatabaseName <-"database_basexdb_Uruguay"
 gcamdataProjFile <-"Uruguay_dataProj.proj"
-regionsSelect <- c("Uruguay")
+regionsSelect <- c("Uruguay","Argentina")
 
 #dataProjLoaded <- loadProject(paste(gcamdatabasePath, "/", gcamdataProjFile, sep = ""))
 #listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
@@ -137,11 +138,47 @@ yLabel="units";
 aggregate="sum";class="class"; classPalette="pal_Basic";
 useNewLabels=0
 xRange=c(2010:2050)
+
+
 #------------------------
-# Maps
+# Prepare Grids
 #------------------------
 
-# Get Base Shapefiles
+demeterFolder<-"C:/Users/khan404/Desktop/srn/dataFiles/grids/demeter/"
+demeterScenario<-"Eg1"
+demeterTimesteps<-seq(from=2005,to=2100,by=5)
+
+grid<-srn.prepGrid(demeterFolder=demeterFolder,
+             demeterScenario=demeterScenario,
+             demeterTimesteps=demeterTimesteps,
+             dirOutputs=paste(getwd(),"/outputs",sep=""),
+             reReadData=1,
+             gridSRNData=paste(dirOutputs, "/Grids/gridSRN.RData", sep = ""))
 
 
+# Grid to Shape
+
+grid=paste(getwd(),"/outputs/Grids/gridSRN.csv",sep="")
+shpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36_1",sep="")
+shpFile=paste("gadm36_1",sep="")
+shpRegCol="NAME_0"
+subReg="NAME_1"
+aggType="vol"
+regionsSelect=c("Argentina")
+dirOutputs=paste(getwd(),"/outputs",sep="")
+shapeFilesData=paste(dirOutputs, "/Maps/shapeFiles.RData", sep = "")
+gridSRNData=paste(dirOutputs, "/Grids/gridSRN.RData", sep = "")
+
+load(shapeFilesData)
+shape<-get("gadm36_1")
+shape<-shape[which(shape[[shpRegCol]] %in% regionsSelect),]
+shape@data<-shape@data%>%dplyr::select(NAME_1)%>%droplevels
+
+load(gridSRNData) # grid is called gridSRN
+grid<-gridSRN
+
+poly <- srn.grid2poly(grid=grid,
+                      shape=shape,
+                      subReg=subReg,
+                      aggType="depth")
 

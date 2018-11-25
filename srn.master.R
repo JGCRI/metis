@@ -79,7 +79,7 @@ rTable <- dataGCAM$data;
 paramsSelect=c("elecByTech","gdp")
 
 
-regionsSelect=c("Argentina","Colombia")
+regionsSelect=c("Argentina")
 
 charts<-srn.chartsProcess(rTable=rTable, # Default is NULL
                           #dataTables=dataTables, # Default is NULL
