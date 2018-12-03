@@ -43,7 +43,7 @@
 #' library(srn)
 #' a<-srn.colors()
 #' pie(rep(1,length(a$pal_Basic)),label=names(a$pal_Basic),col=a$pal_Basic)
-#' @import RColorBrewer
+
 
 srn.colors <- function(palx=NULL) {
 
@@ -146,24 +146,13 @@ srn.colors <- function(palx=NULL) {
     pal_Gas <- c(`gas (CC CCS)` = "black", `gas (CT)` = "red", `gas (steam)` = "green3", `gas (CC)` = "blue",
         "cyan", "magenta", "yellow", "gray")
 
-    pal_Diff <- c("#693C01", "#815A3D", "#9C7D6A", "#BDA89D", "white", "#ACAABF", "#8480A2", "#635D8B",
-        "#473E7A")
+    pal_hot <- c('#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026')
 
-    pal_Diff5 <- c("#693C01", "#9C7D6A", "white", "#8480A2", "#473E7A")
+    pal_wet <- c('#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b')
 
-    pal_Absolute <- rev(c("#67001F", "#8C0C25", "#B2182B", "#C43C3C", "#D6604D", "#E58267", "#F4A582",
-        "#F8C0A4", "#FDDBC7", "#FEEDE3", "#FFFFFF"))
+    pal_green <- c('#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529')
 
-    pal_Absolute5 <- rev(c("#67001F", "#D6604D", "#F4A582", "#FDDBC7", "#FFFFFF"))
-
-    colorsDiff <- c("#693C01", "#815A3D", "#9C7D6A", "#BDA89D", "white", "#ACAABF", "#8480A2", "#635D8B",
-        "#473E7A")
-
-    # Custom Colors for large unassigned palettes Custom Colors
-    # https://stackoverflow.com/questions/15282580/how-to-generate-a-number-of-most-distinctive-colors-in-r
-    qual_col_pals = brewer.pal.info[brewer.pal.info$category == "qual", ]
-    pal_Unassigned <- rep(unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals))),
-        100)
+    pal_div <- c('#a50026','#d73027','#f46d43','#fdae61','#fee08b','#ffffbf','#d9ef8b','#a6d96a','#66bd63','#1a9850','#006837')
 
 
     # Color scheme for electricity generation by aggregate fuel
@@ -182,8 +171,7 @@ srn.colors <- function(palx=NULL) {
         `coal (conv pul)` = "#a0237c", `gas (CC CCS)` = "#25c9e0", `gas (CC)` = "#25a9e0", `gas (CT)` = "#25e9e0",
         `gas (steam)` = "greenyellow", hydro = "#fdfa28", `refined liquids` = "#000000", `refined liquids (CC CCS)` = "#000000",
         `refined liquids (CC)` = "#000000", `refined liquids (CT)` = "#000000", `refined liquids (steam)` = "#000000",
-        wind = "#0000ff", "red", "green", geothermal = "gray40", unlist(mapply(brewer.pal, qual_col_pals$maxcolors,
-            rownames(qual_col_pals))))
+        wind = "#0000ff", "red", "green", geothermal = "gray40")
 
 
     pal_elec_sec <- c(elect_td_bld = "#ff230e", elect_td_ind = "darkolivegreen4", elect_td_trn = "dodgerblue",
@@ -246,8 +234,8 @@ srn.colors <- function(palx=NULL) {
         enduse_colors = enduse_colors, pal_pri_ene = pal_pri_ene, pal_pri_fuelcost = pal_pri_fuelcost,
         pal_emiss_sector = pal_emiss_sector, pal_landuse = pal_landuse, pal_hydrogen = pal_hydrogen,
         pal_refliq = pal_refliq, emiss_by_enduse_colors = emiss_by_enduse_colors, biouse_colors = biouse_colors,
-        pal_Basic = pal_Basic, pal_Gas = pal_Gas, pal_Diff = pal_Diff, pal_Diff5 = pal_Diff5, pal_Absolute = pal_Absolute,
-        pal_Absolute5 = pal_Absolute5, pal_Unassigned = pal_Unassigned, pal_elec_subsec = pal_elec_subsec,
+        pal_Basic = pal_Basic, pal_Gas = pal_Gas, pal_elec_subsec = pal_elec_subsec,
         pal_elec_finalNrgFuel = pal_elec_finalNrgFuel, pal_elec_techs = pal_elec_techs, pal_elec_sec = pal_elec_sec,
-        pal_finalNrg_sec = pal_finalNrg_sec, pal_pri_ene = pal_pri_ene, pal_elec_tech_colors = pal_elec_tech_colors))
+        pal_finalNrg_sec = pal_finalNrg_sec, pal_pri_ene = pal_pri_ene, pal_elec_tech_colors = pal_elec_tech_colors,
+        pal_hot = pal_hot,pal_wet=pal_wet, pal_div=pal_div,pal_green=pal_green))
 }

@@ -20,7 +20,6 @@
 #' @keywords templates, charts, maps, print
 #' @return A list of different templates
 #' @export
-#' @import grDevices
 
 #-------------
 # Print to PDF or PNG
@@ -28,19 +27,19 @@
 
 srn.printPdfPng <- function(figure,dir,filename, figWidth = 13, figHeight = 9,pdfpng="png"){
 
-    if(pdfpng=='pdf'){pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
+    if(pdfpng=='pdf'){grDevices::pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
       print(figure)
-      dev.off()}
-    if(pdfpng=='png'){png(paste(dir,"/",filename,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
+      grDevices::dev.off()}
+    if(pdfpng=='png'){grDevices::png(paste(dir,"/",filename,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
       print(figure)
-      dev.off()}
+      grDevices::dev.off()}
     if(pdfpng=='both'){
-      pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
+      grDevices::pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
       print(figure)
-      dev.off()
-      png(paste(dir,"/",filename,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
+      grDevices::dev.off()
+      grDevices::png(paste(dir,"/",filename,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
       print(figure)
-      dev.off()
+      grDevices::dev.off()
     }
 }
 
@@ -107,27 +106,5 @@ srn.tmapAnimate <- function(map, filename="animation.gif", width, height, delay=
   unlink(d, recursive = TRUE) #-------------- cleaning up plots and temporary variables
   invisible()
 }
-
-
-#-------------
-#' @rdname srn.templates
-#' @export
-#' @import tmap
-# A tmap layout theme
-#-------------
-
-srn.tmapLayout <- function(){
-
-#------------------
-# Load required Libraries
-# -----------------
-  requireNamespace("tmap",quietly = T)
-
-    x<-tm_layout(main.title.position="left",main.title.size=1.5,
-       inner.margins = rep(0,4),outer.margins=rep(0.05,4),
-       panel.label.bg.color="gray90")
-  return(x)
-}
-
 
 

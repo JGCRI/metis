@@ -4,7 +4,51 @@
 \alias{srn.grid2poly}
 \title{srn.grid2poly}
 \usage{
-srn.grid2poly()
+srn.grid2poly(grid = NULL, boundaryRegShape = NULL,
+  boundaryRegShpFolder = paste(getwd(), "/dataFiles/gis/admin_gadm36",
+  sep = ""), boundaryRegShpFile = paste("gadm36_0", sep = ""),
+  boundaryRegCol = "NAME_0", boundaryRegionsSelect = NULL,
+  subRegShape = NULL, subRegShpFolder = paste(getwd(),
+  "/dataFiles/gis/admin_gadm36", sep = ""),
+  subRegShpFile = paste("gadm36_1", sep = ""), subRegCol = "NAME_1",
+  subRegionsSelect = NULL, subRegType = "subRegType", aggType = NULL,
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
+  expandbboxPercent = 2, extension = T)
+}
+\arguments{
+\item{grid}{Default=NULL,}
+
+\item{boundaryRegShape}{Default=NULL,}
+
+\item{boundaryRegShpFolder}{Default=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep  Default=""),}
+
+\item{boundaryRegShpFile}{Default=paste("gadm36_0",sep  Default=""),}
+
+\item{boundaryRegCol}{Default="NAME_0",}
+
+\item{boundaryRegionsSelect}{Default=NULL,}
+
+\item{subRegShape}{Default=NULL,}
+
+\item{subRegShpFolder}{Default=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep  Default=""),}
+
+\item{subRegShpFile}{Default=paste("gadm36_1",sep  Default=""),}
+
+\item{subRegCol}{Default="NAME_1",}
+
+\item{subRegionsSelect}{Default=NULL,}
+
+\item{subRegType}{Default="subRegType",}
+
+\item{aggType}{Default=NULL,}
+
+\item{dirOutputs}{Default=paste(getwd(),"/outputs",sep  Default=""),}
+
+\item{nameAppend}{Default="",}
+
+\item{expandbboxPercent}{Default=2,}
+
+\item{extension}{Default=T,}
 }
 \value{
 A table with data by polygon ID for each shapefile provided

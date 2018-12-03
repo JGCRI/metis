@@ -3,107 +3,327 @@
 #' This function produce different kinds of maps for the srn package.
 #' Each figure is accompanied with a csv table.
 #'
-#' @param data data table for charting
+#' @param dataPolygon Default = NULL,
+#' @param dataGrid Default = NULL,
+#' @param mapName Default = "map",
+#' @param dataRaster Default = NULL,
+#' @param shpFolder Default = paste(getwd(),"/dataFiles/gis/admin_gadm36_1",sep Default = ""),
+#' @param shpFile Default = paste("gadm36_1",sep Default = ""),
+#' @param shpName Default = "NAME_0",
+#' @param dirOutputs Default = paste(getwd(),"/outputs",sep Default = ""),
+#' @param fillPalette Default = "Spectral",
+#' @param borderColor Default = "gray20",
+#' @param lwd Default = 1,
+#' @param lty Default = 1,
+#' @param bgColor Default = "white",
+#' @param frameShow Default = F,
+#' @param fillColumn Default = NULL, # Or give column data with
+#' @param labels Default = F,
+#' @param labelsSize Default = 1.2,
+#' @param labelsColor Default = "black",
+#' @param labelsAutoPlace Default = F,
+#' @param mapWidth Default = 9,
+#' @param mapHeight Default = 7,
+#' @param legendWidth Default = -1,
+#' @param legendShow Default = F,
+#' @param legendOutside Default = T,
+#' @param legendTextSize Default = 0.8,
+#' @param legendTitleSize Default = 1,
+#' @param legendOutsidePosition Default = NULL, # "right","left","top","bottom", "center"
+#' @param legendPosition Default = NULL, # c("RIGHT','top') - RIGHT LEFT TOP BOTTOM
+#' @param legendDigits Default = NULL,
+#' @param legendTitle Default = "Legend",
+#' @param legendStyle Default = "pretty",
+#' @param legendFixedBreaks Default = "5",
+#' @param pdfpng Default = "png",
+#' @param underLayer Default = NULL,
+#' @param overLayer Default = NULL,
+#' @param printMap Default = T,
+#' @param facetFreeScale Default = F,
+#' @param facetRows Default = NA,
+#' @param facetCols Default = 3,
+#' @param facetLabelColor Default = "grey75",
+#' @param facetLabelSize Default = 1.5,
+#' @param alpha Default = 1
+#' @param rasterCoverNegShape Default =T
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
 #' @export
-#' @import rgdal
 
-
-srn.map<-function(regionsSelect=c("Argentina"),
+srn.map<-function(dataPolygon=NULL,
+                  dataGrid=NULL,
+                  mapName="map",
+                  dataRaster=NULL,
                   shpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36_1",sep=""),
                   shpFile=paste("gadm36_1",sep=""),
                   shpName="NAME_0",
                   dirOutputs=paste(getwd(),"/outputs",sep=""),
-                  reReadData=1,
-                  shapeFilesData=paste(dirOutputs, "/Maps/shapeFiles.RData", sep = "")
+                  fillPalette="Spectral",
+                  borderColor="gray20",
+                  lwd=1,
+                  lty=1,
+                  bgColor="white",
+                  frameShow=F,
+                  fillColumn=NULL, # Or give column data with
+                  labels=F,
+                  labelsSize=1.2,
+                  labelsColor="black",
+                  labelsAutoPlace=F,
+                  mapWidth=9,
+                  mapHeight=7,
+                  legendWidth=-1,
+                  legendShow=F,
+                  legendOutside=T,
+                  legendTextSize=0.8,
+                  legendTitleSize=1,
+                  legendOutsidePosition=NULL,
+                  legendPosition=NULL,
+                  legendDigits=NULL,
+                  legendTitle="Legend",
+                  legendStyle="pretty",
+                  legendFixedBreaks="5",
+                  pdfpng="png",
+                  underLayer=NULL,
+                  overLayer=NULL,
+                  printMap=T,
+                  facetFreeScale=F,
+                  facetRows=NA,
+                  facetCols=3,
+                  facetLabelColor="grey75",
+                  facetLabelSize=1.5,
+                  alpha=1,
+                  rasterCoverNegShape=T
                   ){
+
+
+  # dataPolygon=NULL
+  # dataGrid=NULL
+  # mapName="map"
+  # dataRaster=NULL
+  # shpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36_1",sep="")
+  # shpFile=paste("gadm36_1",sep="")
+  # shpName="NAME_0"
+  # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # fillPalette="Spectral"
+  # borderColor="gray20"
+  # lwd=1
+  # lty=1
+  # bgColor="white"
+  # frameShow=F
+  # fillColumn=NULL # Or give column data with
+  # labels=F
+  # labelsSize=1.2
+  # labelsColor="black"
+  # labelsAutoPlace=F
+  # mapWidth=9
+  # mapHeight=7
+  # legendWidth=-1
+  # legendShow=F
+  # legendOutside=T
+  # legendTextSize=0.8
+  # legendTitleSize=1
+  # legendOutsidePosition=NULL
+  # legendPosition=NULL
+  # legendDigits=NULL
+  # legendTitle="Legend"
+  # legendStyle="pretty"
+  # legendFixedBreaks="5"
+  # pdfpng="png"
+  # underLayer=NULL
+  # overLayer=NULL
+  # printMap=T
+  # facetFreeScale=F
+  # facetRows=NA
+  # facetCols=3
+  # facetLabelColor="grey75"
+  # facetLabelSize=1.5
+  # alpha=1
 
 #----------------
 # Load Libraries
 #---------------
-
-  requireNamespace("rgdal",quietly = T)
-  # requireNamespace("ggplot2",quietly = T)
-  # requireNamespace("scales",quietly = T)
-  # requireNamespace("dplyr",quietly = T)
-  # requireNamespace("tibble",quietly = T)
-
+  requireNamespace("tmap",quietly = T)
+  requireNamespace("tidyr",quietly = T)
+  requireNamespace("dplyr",quietly = T)
+  requireNamespace("tibble",quietly = T)
+  requireNamespace("rgeos",quietly = T)
 #------------------
 # Initialize variables to remove binding errors if needed
 # -----------------
+
+NULL->raster->shape->map->checkFacets
 
 #------------------------------------------
 # Read data and check inputs
 #------------------------------------------
 
 if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
-if (!dir.exists(paste(dirOutputs, "/Maps", sep = ""))){dir.create(paste(dirOutputs, "/Maps", sep = ""))}
 
-if(reReadData==1){
-
-if(!dir.exists(shpFolder)){
-   stop("Shapefile folder: ", shpFolder ," is incorrect or doesn't exist.",sep="")}
-if(!file.exists(paste(shpFolder,"/",shpFile,".shp",sep=""))){
+if(!is.null(dataPolygon)){
+  print("Using given dataPolygon file as shape.")
+  if(!is.null(shpFolder) & !is.null(shpFile)){print(paste("NOT reading shapefile '",shpFile,"' from folder '",shpFolder,"'",sep=""))}
+    shape<-dataPolygon
+  }else{
+if(!is.null(shpFolder) & !is.null(shpFile)){
+  if(!dir.exists(shpFolder)){
+    stop("Shapefile folder: ", shpFolder ," is incorrect or doesn't exist.",sep="")}
+  if(!file.exists(paste(shpFolder,"/",shpFile,".shp",sep=""))){
     stop("Shape file: ", paste(shpFolder,"/",shpFile,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
-
-assign(shpFile,readOGR(dsn=shpFolder,layer=shpFile,use_iconv=T,encoding='UTF-8'))
-projX<-proj4string(get(shpFile)) # Setting projection
-
-save(list=shpFile,file=shapeFilesData)
-
-}else{ # Close if reRead==1
-
-  if(!file.exists(shapeFilesData)){stop(paste("File shapefilesData not found: ",shapeFilesData,sep=""))}else{
-    load(shapeFilesData)
-  }}
-
-# Regional Selected Region
-shp0a<<-shp[which(shp[[shpName]] %in% regionsSelect),]
-shp0a@data<-droplevels(shp0a@data)
-shp0a<<-shp0a
-plot(shp0a)
-
-
-data=shp0a
-fillPalette=c("white","red","blue")
-legendShow=F
-borderColor="gray20"
-lwd=1
-lty=1
-bgColor="white"
-frame=F
-labelCol="NAME_1" # Or give column data with
-
-map<-tm_shape(data) +
-  tm_fill(col=labelCol,palette = fillPalette,style="kmeans",n=100,
-                            midpoint = 0, legend.show=T,showNA=F) +
-  tm_legend(outside = T, text.size = .8)+
-  tm_layout(panel.labels=gsub("X","",names(data)),
-            panel.label.bg.color = "white",
-            panel.label.size = 2,
-            legend.position = c("LEFT","TOP"),
-            legend.format = list(digits = 2),legend.title.size = 1,legend.text.size = 0.8) +
-  tm_borders(borderColor,lwd=lwd, lty=lty) +
-  tm_layout(frame = frame, bg.color=bgColor) + srn.tmapLayout()
-
-if(labels!=F){
-  if(labelCol %in% names(data)){
-  map= map + tm_text(labelCol,scale=0.7,auto.placement=F, col="black")}else {
-    stop(paste("Label column: ", labelCol," not available in data"))
+    print("Reading shapefile '",shpFile,"' from folder '",shpFolder,"'",sep="")
+    shape=rgdal::readOGR(dsn=shpFolder,layer=shpFile,use_iconv=T,encoding='UTF-8')
+    }
   }
+
+if(!is.null(dataGrid)){
+   if(!grepl("SpatialPixelsDataFrame",class(dataGrid)[1],ignore.case=T)){
+     stop("dataGrid must be of class 'SpatialPixelsDataFrame'")}
+    raster<-dataGrid
+  }
+
+if(!is.null(fillColumn)){
+if(is.null(raster)){
+  if(any(!fillColumn %in% names(shape))){
+        stop(paste("One or more columns in 'fillColumn' specified: ",fillColumn," are not any of the columns of shape: ",names(shape),
+                   sep=""))}
+          }else{
+  if(any(!fillColumn %in% names(raster))){
+    stop(paste("One or more columns in 'fillColumn' specified: ",fillColumn," are not any of the columns of raster: ",names(raster),
+               sep=""))}
+          }
 }
 
-map
+if(length(fillPalette)==1){
+ if(fillPalette %in% names(srn.colors())){
+            fillPalette<-srn.colors()[[fillPalette]]}}else{
+             fillPalette<-fillPalette}
 
-fname<<-paste("map_test",sep="")
-srn.printPdfPng(map,dir=paste(dirOutputs,"/Maps",sep=""),
+#-----------------
+#----------------
+
+if(!is.null(raster)){
+  map<-tm_shape(raster) + tm_raster(palette = fillPalette, title=legendTitle,
+                                  style=legendStyle,breaks=legendFixedBreaks)
+
+  if(!is.null(raster)){checkFacets=length(names(raster))-2}else{
+  }
+  if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
+    map<- map + tm_facets(free.scales.fill=facetFreeScale,
+                          nrow=facetRows,
+                          ncol=min(facetCols,length(fillColumn))) +
+      tm_layout(panel.labels=gsub("X","",fillColumn),
+                panel.label.bg.color = facetLabelColor,
+                panel.label.size = facetLabelSize)
+    mapWidth=mapWidth*1.2
+  }
+
+  if(rasterCoverNegShape==T){
+  if(!is.null(shape)){
+  # Add Extent to hide rasters outside shape
+  shapeExpandEtxent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
+  expandbboxPercent<-1; shapeExpandEtxent$min;shapeExpandEtxent$max
+  shapeExpandEtxent$min[1]<-if(shapeExpandEtxent$min[1]<0){(1+expandbboxPercent/100)*shapeExpandEtxent$min[1]}else{(1-expandbboxPercent/100)*shapeExpandEtxent$min[1]};
+  shapeExpandEtxent$min[2]<-if(shapeExpandEtxent$min[2]<0){(1+expandbboxPercent/100)*shapeExpandEtxent$min[2]}else{(1-expandbboxPercent/100)*shapeExpandEtxent$min[2]};
+  shapeExpandEtxent$max[1]<-if(shapeExpandEtxent$max[1]<0){(1-expandbboxPercent/100)*shapeExpandEtxent$max[1]}else{(1+expandbboxPercent/100)*shapeExpandEtxent$max[1]};
+  shapeExpandEtxent$max[2]<-if(shapeExpandEtxent$max[2]<0){(1-expandbboxPercent/100)*shapeExpandEtxent$max[2]}else{(1+expandbboxPercent/100)*shapeExpandEtxent$max[2]};
+  shapeExpandEtxent$min;shapeExpandEtxent$max;
+  shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
+  sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
+  neg <- rgeos::gDifference(shapeExpandEtxent,shape)
+  map<-map+tm_shape(neg)+tm_fill(col=bgColor)}
+    }
+}
+
+
+
+
+if(is.null(underLayer)){
+  if(grepl("tmap",class(shape)[1],ignore.case=T)){
+    if(!is.null(map)){map<-map+shape}else{map<-shape}
+    }else
+      if(!is.null(map)){map<-map+tm_shape(shape)}else{map<-tm_shape(shape)}
+  }else{
+    if(grepl("tmap",class(shape)[1],ignore.case=T)){
+      if(!is.null(map)){map<-map+underLayer+shape}else{map<-underLayer+shape}
+      }else
+        if(!is.null(map)){map<-map+underLayer+tm_shape(shape)}else{map<-underLayer+tm_shape(shape)}
+  }
+
+if(!is.null(shape)){
+
+if(grepl("line",class(shape)[1],ignore.case=T)){
+  map=map +  tm_lines(col=borderColor,lwd=lwd, lty=lty)}
+
+if(grepl("polygon",class(shape)[1],ignore.case=T) | grepl("tmap",class(shape)[1],ignore.case=T)){
+  if(is.null(fillColumn)){
+    map= map + tm_borders(col=borderColor,lwd=lwd, lty=lty)
+  }else{
+if(is.null(raster)){
+map<-map + tm_fill(col=fillColumn, palette = fillPalette, title=legendTitle,
+                   style=legendStyle,breaks=legendFixedBreaks,alpha=alpha) +
+           tm_borders(col=borderColor,lwd=lwd, lty=lty)
+}else{
+  map<-map + tm_borders(col=borderColor,lwd=lwd, lty=lty)
+}
+  }
+
+}
+
+  if(labels!=F){
+    if(is.null(raster)){
+      map= map + tm_text(fillColumn,scale=labelsSize,auto.placement=labelsAutoPlace, col=labelsColor)}
+  }
+
+  } # Close Polygon Maps
+
+
+if(!is.null(legendOutsidePosition)){map <- map + tm_layout(legend.outside.position = legendOutsidePosition)}
+if(!is.null(legendPosition)){map <- map + tm_layout(legend.position = legendPosition)}
+
+
+if(is.null(raster)){if(!is.null(shape)){checkFacets=length(names(shape))-1}
+if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
+  map<- map + tm_facets(free.scales.fill=facetFreeScale,
+                        nrow=facetRows,
+                        ncol=min(facetCols,length(fillColumn))) +
+              tm_layout(panel.labels=gsub("X","",fillColumn),
+                        panel.label.bg.color = facetLabelColor,
+                        panel.label.size = facetLabelSize)
+  mapWidth=mapWidth*1.2
+}}
+
+  map<- map +
+    tm_layout(legend.show = legendShow,
+              legend.outside=legendOutside,
+              legend.title.size = legendTitleSize,
+              legend.text.size = legendTextSize)+
+    tm_layout(frame = frameShow, bg.color=bgColor)+
+    tm_layout(main.title.position="left",main.title.size=1.5,
+              inner.margins = rep(0,4),outer.margins=rep(0.01,4))+
+    tmap_options(max.categories = 10000)
+
+if(!is.null(legendDigits)){map<- map + tm_layout(legend.format = list(digits = legendDigits))}
+
+
+if(!is.null(overLayer)){
+  map<-map+overLayer
+}
+
+print(map)
+
+if(printMap!=F){
+fname<-paste(mapName,sep="")
+srn.printPdfPng(figure=map,
+                dir=dirOutputs,
                 filename=fname,
-                figWidth=13,
-                figHeight=9)
+                figWidth=mapWidth,
+                figHeight=mapHeight,
+                pdfpng=pdfpng)
+
+print(paste("Map saved as: ",mapName,".",pdfpng," in folder: ", paste(dirOutputs,"/Maps",sep=""),sep=""))
+}else{print("printMap set to F so no figure will be saved.")}
 
 
-  return(p)
+  return(map)
 }
 
 

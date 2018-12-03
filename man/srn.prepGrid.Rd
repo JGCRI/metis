@@ -5,8 +5,10 @@
 \title{srn.prepGrid}
 \usage{
 srn.prepGrid(demeterFolder, demeterScenario, demeterTimesteps = seq(from
-  = 2005, to = 2100, by = 5), dirOutputs = paste(getwd(), "/outputs", sep
-  = ""), reReadData = 1, gridSRNData = paste(dirOutputs,
+  = 2005, to = 2100, by = 5), tethysFolder, tethysScenario,
+  tethysFiles = c("wddom", "wdelec", "wdirr", "wdliv", "wdmfg", "wdmin",
+  "wdnonag", "wdtotal"), dirOutputs = paste(getwd(), "/outputs", sep =
+  ""), reReadData = 1, gridSRNData = paste(dirOutputs,
   "/Grids/gridSRN.RData", sep = ""))
 }
 \arguments{
@@ -15,6 +17,12 @@ srn.prepGrid(demeterFolder, demeterScenario, demeterTimesteps = seq(from
 \item{demeterScenario}{Name of demeter scenario}
 
 \item{demeterTimesteps}{Default is seq(from=2005,to=2100,by=5)}
+
+\item{tethysFolder}{Folder for tethys results}
+
+\item{tethysScenario}{Scenario name for tethys run}
+
+\item{tethysFiles}{Default =c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal"),}
 
 \item{dirOutputs}{Default =paste(getwd(),"/outputs",sep=""),}
 

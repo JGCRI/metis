@@ -72,6 +72,7 @@ iIt requires a table in the SRN format. Each figure is accompanied with a csv ta
 # and then adding progressively more details.
 
 library(tibble)
+library(dplyr)
 tbl <- tribble (
 ~x,     ~value,
 2010,   15,

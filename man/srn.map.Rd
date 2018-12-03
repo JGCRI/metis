@@ -4,61 +4,110 @@
 \alias{srn.map}
 \title{srn.map}
 \usage{
-srn.map(data, chartType = "bar", position = "stack", xData = "x",
-  yData = "value", class = "class1", group = "scenario",
-  classPalette = "classPalette1", classLabel = "classLabel1",
-  xLabel = "xLabel", yLabel = "yLabel", facet_rows = "region",
-  facet_columns = "scenario", ncolrow = 4, scales = "fixed",
-  useNewLabels = 0, units = "units", xBreaksMaj = 10,
-  xBreaksMin = 5, yBreaksMajn = 5, yBreaksMinn = 10,
-  sizeBarLines = 0.5, sizeLines = 1.5)
+srn.map(dataPolygon = NULL, dataGrid = NULL, mapName = "map",
+  dataRaster = NULL, shpFolder = paste(getwd(),
+  "/dataFiles/gis/admin_gadm36_1", sep = ""), shpFile = paste("gadm36_1",
+  sep = ""), shpName = "NAME_0", dirOutputs = paste(getwd(),
+  "/outputs", sep = ""), fillPalette = "Spectral",
+  borderColor = "gray20", lwd = 1, lty = 1, bgColor = "white",
+  frameShow = F, fillColumn = NULL, labels = F, labelsSize = 1.2,
+  labelsColor = "black", labelsAutoPlace = F, mapWidth = 9,
+  mapHeight = 7, legendWidth = -1, legendShow = F,
+  legendOutside = T, legendTextSize = 0.8, legendTitleSize = 1,
+  legendOutsidePosition = NULL, legendPosition = NULL,
+  legendDigits = NULL, legendTitle = "Legend",
+  legendStyle = "pretty", legendFixedBreaks = "5", pdfpng = "png",
+  underLayer = NULL, overLayer = NULL, printMap = T,
+  facetFreeScale = F, facetRows = NA, facetCols = 3,
+  facetLabelColor = "grey75", facetLabelSize = 1.5, alpha = 1,
+  rasterCoverNegShape = T)
 }
 \arguments{
-\item{data}{data table for charting}
+\item{dataPolygon}{Default = NULL,}
 
-\item{chartType}{Type of chart: "bar" or "line"}
+\item{dataGrid}{Default = NULL,}
 
-\item{position}{Position in bar charts. "identity", "stack" or "dodge"}
+\item{mapName}{Default = "map",}
 
-\item{xData}{Default "x"}
+\item{dataRaster}{Default = NULL,}
 
-\item{yData}{Default "value"}
+\item{shpFolder}{Default = paste(getwd(),"/dataFiles/gis/admin_gadm36_1",sep Default = ""),}
 
-\item{class}{Default "class1"}
+\item{shpFile}{Default = paste("gadm36_1",sep Default = ""),}
 
-\item{group}{Default "scenario"}
+\item{shpName}{Default = "NAME_0",}
 
-\item{classPalette}{Default "classPalette1"}
+\item{dirOutputs}{Default = paste(getwd(),"/outputs",sep Default = ""),}
 
-\item{classLabel}{Default "classLabel1"}
+\item{fillPalette}{Default = "Spectral",}
 
-\item{xLabel}{Default "xLabel"}
+\item{borderColor}{Default = "gray20",}
 
-\item{yLabel}{Default "units"}
+\item{lwd}{Default = 1,}
 
-\item{facet_rows}{Default "region"}
+\item{lty}{Default = 1,}
 
-\item{facet_columns}{Default "scenario"}
+\item{bgColor}{Default = "white",}
 
-\item{ncolrow}{Number of columns or Rows for Faceted plots}
+\item{frameShow}{Default = F,}
 
-\item{scales}{Default "fixed"}
+\item{fillColumn}{Default = NULL, # Or give column data with}
 
-\item{useNewLabels}{Default 0}
+\item{labels}{Default = F,}
 
-\item{units}{Default "units"}
+\item{labelsSize}{Default = 1.2,}
 
-\item{xBreaksMaj}{Default 10}
+\item{labelsColor}{Default = "black",}
 
-\item{xBreaksMin}{Default 5}
+\item{labelsAutoPlace}{Default = F,}
 
-\item{yBreaksMajn}{Default 5}
+\item{mapWidth}{Default = 9,}
 
-\item{yBreaksMinn}{Default 10}
+\item{mapHeight}{Default = 7,}
 
-\item{sizeBarLines}{Default 0.5}
+\item{legendWidth}{Default = -1,}
 
-\item{sizeLines}{Default 1.5}
+\item{legendShow}{Default = F,}
+
+\item{legendOutside}{Default = T,}
+
+\item{legendTextSize}{Default = 0.8,}
+
+\item{legendTitleSize}{Default = 1,}
+
+\item{legendOutsidePosition}{Default = NULL, # "right","left","top","bottom", "center"}
+
+\item{legendPosition}{Default = NULL, # c("RIGHT','top') - RIGHT LEFT TOP BOTTOM}
+
+\item{legendDigits}{Default = NULL,}
+
+\item{legendTitle}{Default = "Legend",}
+
+\item{legendStyle}{Default = "pretty",}
+
+\item{legendFixedBreaks}{Default = "5",}
+
+\item{pdfpng}{Default = "png",}
+
+\item{underLayer}{Default = NULL,}
+
+\item{overLayer}{Default = NULL,}
+
+\item{printMap}{Default = T,}
+
+\item{facetFreeScale}{Default = F,}
+
+\item{facetRows}{Default = NA,}
+
+\item{facetCols}{Default = 3,}
+
+\item{facetLabelColor}{Default = "grey75",}
+
+\item{facetLabelSize}{Default = 1.5,}
+
+\item{alpha}{Default = 1}
+
+\item{rasterCoverNegShape}{Default =T}
 }
 \value{
 Returns the formatted data used to produce chart
@@ -66,20 +115,6 @@ Returns the formatted data used to produce chart
 \description{
 This function produce different kinds of maps for the srn package.
 Each figure is accompanied with a csv table.
-}
-\examples{
-# Examples below show the default chart with minimum information
-# and then adding progressively more details.
-
-library(tibble)
-tbl <- tribble (
-~x,     ~value,
-2010,   15,
-2020,   20,
-2030,   30
-)
-srn.chart(data=tbl,xData="x",yData="value",chartType = "line")
-srn.chart(data=tbl,xData="x",yData="value",chartType = "bar")
 }
 \keyword{charts,}
 \keyword{diffplots}

@@ -34,6 +34,7 @@
 #' # and then adding progressively more details.
 #'
 #' library(tibble)
+#' library(dplyr)
 #' tbl <- tribble (
 #' ~x,     ~value,
 #' 2010,   15,
@@ -42,7 +43,6 @@
 #' )
 #' srn.chart(data=tbl,xData="x",yData="value",chartType = "line")
 #' srn.chart(data=tbl,xData="x",yData="value",chartType = "bar")
-#' @import tools ggplot2 scales dplyr tibble
 
 
 srn.chart<-function(data,
@@ -66,6 +66,7 @@ srn.chart<-function(data,
   requireNamespace("scales",quietly = T)
   requireNamespace("dplyr",quietly = T)
   requireNamespace("tibble",quietly = T)
+  requireNamespace("magrittr",quietly = T)
 
 #------------------
 # Initialize variables to remove binding errors if needed
@@ -79,13 +80,13 @@ srn.chart<-function(data,
 if(length(names(data))<2){stop("Need to provide a data object with at least x and y.
                                srn.chart(data = userData,xData ='x',yData ='y'")}
 
-if(!"units"%in%names(data)){data<-data%>%mutate(units="units")}
-if(!"classPalette1"%in%names(data)){data<-data%>%mutate(classPalette1="pal_16")}
-if(!"class1"%in%names(data)){data<-data%>%mutate(class1="class1")}
-if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
+if(!"units"%in%names(data)){data<-data%>%dplyr::mutate(units="units")}
+if(!"classPalette1"%in%names(data)){data<-data%>%dplyr::mutate(classPalette1="pal_16")}
+if(!"class1"%in%names(data)){data<-data%>%dplyr::mutate(class1="class1")}
+if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
   l1 <- data
-  l1<-l1%>%mutate(units=gsub(" ","~",units))
+  l1<-l1%>%dplyr::mutate(units=gsub(" ","~",units))
   if(length(classPalette)>1){
     paletteX<-classPalette}else{
   if(classPalette %in% names(l1)){
@@ -107,8 +108,8 @@ if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
 
   if(useNewLabels==1){
     if(!is.null(names(paletteX))){
-      names(paletteX)<-toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",names(paletteX)))}
-    l1[[class]]<-toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",l1[[class]]))
+      names(paletteX)<-tools::toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",names(paletteX)))}
+    l1[[class]]<-tools::toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",l1[[class]]))
   }
 
   p <- ggplot(l1,aes(x=get(xData),y=get(yData),group=get(group))) +
@@ -119,7 +120,7 @@ if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
   p <- p + geom_bar(aes(fill=get(class)),size=sizeBarLines,color="black", stat="identity",position=position) +
            scale_fill_manual(values=paletteX) + guides(color=F)
   if(!grepl("class",class)){
-    p = p + guides(fill = guide_legend(title=toTitleCase(paste(class,sep="")),reverse = T))}else{
+    p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
       if(length(unique(l1[[class]]))<2){
         p = p + theme(legend.position="none") + scale_fill_manual(values="firebrick")
       }else{
@@ -132,7 +133,7 @@ if(!"scenario"%in%names(data)){data<-data%>%mutate(scenario="scenario")}
   p <- p +  geom_line(aes(color=get(class),group=get(class)),size=sizeLines, stat="identity",position="identity") +
             scale_color_manual(values=paletteX)
   if(!grepl("class",class)){
-    p = p + guides(color = guide_legend(title=toTitleCase(paste(class,sep=""))))}else{
+    p = p + guides(color = guide_legend(title=tools::toTitleCase(paste(class,sep=""))))}else{
       if(length(unique(l1[[class]]))<2){
         p = p + theme(legend.position="none") + scale_color_manual(values="firebrick")
       }else{
@@ -148,7 +149,7 @@ if(!xLabel%in%names(l1)){
         p<-p+xlab(NULL)}}
 if(!yLabel%in%names(l1)){p<-p+ylab(yLabel)}else{p<-p+ylab(eval(parse(text=paste(unique(l1[[yLabel]]),collapse="~"))))}
   p <- p + theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
-       scale_y_continuous(breaks = pretty_breaks(n = yBreaksMajn), minor_breaks = waiver())
+       scale_y_continuous(breaks = scales::pretty_breaks(n = yBreaksMajn), minor_breaks = waiver())
 
 if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1[[xData]])),max(range(l1[[xData]])),by=xBreaksMaj)),
                                minor_breaks=(seq(min(range(l1[[xData]])),max(range(l1[[xData]])),by=xBreaksMin)),
