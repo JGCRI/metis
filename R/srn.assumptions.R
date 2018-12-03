@@ -17,8 +17,17 @@
 #' library(srn)
 #' a<-srn.assumptions()
 #' a # will give full list of assumptions
+#' @importFrom magrittr %>%
 
 srn.assumptions <- function() {
+
+  #------------------
+  # Load required Libraries
+  # -----------------
+
+  requireNamespace("tibble",quietly = T)
+  requireNamespace("utils",quietly = T)
+  requireNamespace("magrittr",quietly = T)
 
   #------------------
   # Conversions
@@ -33,7 +42,7 @@ srn.assumptions <- function() {
   # GWP conversions - uses 100-yr GWPs from IPPC AR4 and AR5
   # https://www.ghgprotocol.org/sites/default/files/ghgp/Global-Warming-Potential-Values%20%28Feb%2016%202016%29_1.pdf
   # Does not include all covnersions. Add them if they are tracked in GCAM
-  GWP<- tribble(
+  GWP<- tibble::tribble(
     ~ghg, ~GWPSAR, ~GWPAR4,~GWPAR5,
     "CO2",44/12,44/12,44/12,
     "CH4",21,25,28,
@@ -51,9 +60,9 @@ srn.assumptions <- function() {
     "HFC32",0.650,0.675,0.677,
     "HFC365mfc",0.794,0.794,0.804,
     "SF6",23.9,22.8,23.5
-  )%>%as.data.frame;head(GWP)
+  )%>%as.data.frame;
 
-  convertGgTgMTC<- tribble(
+  convertGgTgMTC<- tibble::tribble(
     ~Units,~Convert,
     "Gg",0.001,
     "Tg",1,

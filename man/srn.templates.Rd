@@ -5,7 +5,6 @@
 \alias{srn.printPdfPng}
 \alias{srn.chartsThemeLight}
 \alias{srn.tmapAnimate}
-\alias{srn.tmapLayout}
 \title{srn.templates}
 \usage{
 srn.printPdfPng(figure, dir, filename, figWidth = 13, figHeight = 9,
@@ -15,8 +14,6 @@ srn.chartsThemeLight()
 
 srn.tmapAnimate(map, filename = "animation.gif", width, height,
   delay = 60)
-
-srn.tmapLayout()
 }
 \arguments{
 \item{figure}{Figure to be printed in function srn.printPdfPng}
