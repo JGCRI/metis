@@ -646,7 +646,7 @@ requireNamespace("dplyr",quietly = T)
                sources = "Sources",
                value = (value-dplyr::lag(value,order_by=year))*100/dplyr::lag(value,order_by=x),
                units = "GDP Growth Rate (Percent)",
-               vintage = paste("Vint_", year, sep = ""),
+               vintage = paste("Vint_", x, sep = ""),
                classLabel1 = "GDP growth rate",
                origQuery = "Calculated",
                origValue = value,
@@ -1261,8 +1261,9 @@ requireNamespace("dplyr",quietly = T)
     #---------------------
 
     dataTemplate <- datax %>%
-      dplyr::mutate(scenario = "Local Data", value = 0, sources="Sources", x=2010, vintage="vintage if available") %>%
-      dplyr::select(scenario, region, sources, param, units, class1, class2, x, value, vintage) %>%
+      dplyr::mutate(scenario = "Local Data", value = 0, sources="Sources", x=2010) %>%
+      dplyr::rename(class=class1)%>%
+      dplyr::select(scenario, region, sources, param, units, class, x, value) %>%
       unique()
 
     fullTemplateMap <- datax %>%
@@ -1297,6 +1298,24 @@ requireNamespace("dplyr",quietly = T)
             utils::write.csv(datax %>% dplyr::filter(region == region_i),
                              file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_", min(range(datax$x)),
                                           "to", max(range(datax$x)), ".csv", sep = ""),row.names = F)
+
+          # Aggregate across classes
+          dataxAggsums<-datax%>%
+            dplyr::filter(aggregate=="sum")%>%
+            dplyr::select(-tidyselect::contains("class"))%>%
+            dplyr::group_by_at(vars(-value,-origValue))%>%
+            dplyr::summarize_at(c("value"),dplyr::funs(sum))
+          dataxAggmeans<-datax%>%
+            dplyr::filter(aggregate=="mean")%>%
+            dplyr::select(-tidyselect::contains("class"))%>%
+            dplyr::group_by_at(vars(-value,-origValue))%>%
+            dplyr::summarize_at(c("value"),dplyr::funs(mean))
+          dataxAgg<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
+
+          utils::write.csv(dataxAgg,
+                           file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_AGGclass_",region_i,"_", min(range(datax$x)),
+                                        "to", max(range(datax$x)), ".csv", sep = ""),row.names = F)
+
             utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
                              file = paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_",region_i,".csv", sep = ""),row.names = F)
             #utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),

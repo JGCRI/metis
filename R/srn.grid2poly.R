@@ -84,6 +84,19 @@ NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
 # Load Shapefile and save boundary maps
 #---------------
 
+# GCAM Basin
+gcamBasinShpFolder <-paste(getwd(),"/dataFiles/gis/basin_gcam",sep="")
+gcamBasinShpFile <-"Global235_CLM_final_5arcmin_multipart"
+  if(!is.null(gcamBasinShpFolder) & !is.null(gcamBasinShpFile)){
+    if(!dir.exists(gcamBasinShpFolder)){
+      stop("Shapefile folder: ", gcamBasinShpFolder ," is incorrect or doesn't exist.",sep="")}
+    if(!file.exists(paste(gcamBasinShpFolder,"/",gcamBasinShpFile,".shp",sep=""))){
+      stop("Shape file: ", paste(gcamBasinShpFolder,"/",gcamBasinShpFile,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
+    gcamBasinShape=rgdal::readOGR(dsn=gcamBasinShpFolder,layer=gcamBasinShpFile,use_iconv=T,encoding='UTF-8')
+    print(paste("Sub Reg Shape : ",gcamBasinShpFolder,"/",gcamBasinShpFile,".shp",sep=""))
+    print(raster::head(gcamBasinShape))
+  } # if(!is.null(gcamBasinShpFolder) & !is.null(gcamBasinShpFile)){
+
   if(is.null(boundaryRegShape)){
     if(!is.null(boundaryRegShpFolder) & !is.null(boundaryRegShpFile)){
   if(!dir.exists(boundaryRegShpFolder)){
@@ -107,6 +120,8 @@ NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
     print(raster::head(subRegShape))
     } # if(!is.null(subRegShpFolder) & !is.null(subRegShpFile)){
   }
+
+
 
   if(is.null(boundaryRegShape) & is.null(subRegShape)){
     stop("No valid boundary or subregional shape file available")}
@@ -139,8 +154,8 @@ dir=paste(dirOutputs, "/Maps/Boundaries/",region_i,sep = "")
     boundaryShape@data<-droplevels(boundaryShape@data)
     shape <- raster::intersect(subRegShape,boundaryShape)
     #shape@data<-shape@data%>%dplyr::select(subRegCol,boundaryRegCol)%>%unique
-    if(is.null(shape)){stop("Boundary and subregion files do not intersect.")}
-  }
+     if(is.null(shape)){stop("Boundary and subregion files do not intersect.")}
+    }
 
   if(is.null(subRegShape) & !is.null(boundaryRegShape)){
       boundaryShape<-boundaryRegShape[which(boundaryRegShape[[boundaryRegCol]] %in% boundaryRegionsSelect),]
@@ -148,7 +163,7 @@ dir=paste(dirOutputs, "/Maps/Boundaries/",region_i,sep = "")
       shape<-boundaryRegShape[which(boundaryRegShape[[boundaryRegCol]] %in% boundaryRegionsSelect),]
       #shape@data<-shape@data%>%dplyr::select(subRegCol,boundaryRegCol)%>%unique
       shape@data<-droplevels(shape@data)
-    }
+      }
 
   if(!is.null(subRegShape) & is.null(boundaryRegShape)){
     shape<-subRegShape[which(subRegShape[[boundaryRegCol]] %in% boundaryRegionsSelect),]
@@ -163,6 +178,16 @@ dir=paste(dirOutputs, "/Maps/Boundaries/",region_i,sep = "")
    shapex@data<-shapex@data%>%dplyr::rename("subRegion"=subRegCol)%>%dplyr::mutate(region=boundaryRegionsSelect)
    rgdal::writeOGR(obj=boundaryShapex, dsn=dir, layer=paste(boundaryRegionsSelect,"_Boundary",nameAppend,sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
    rgdal::writeOGR(obj=shapex, dsn=dir, layer=paste(boundaryRegionsSelect,"_Subregion_",subRegType,nameAppend,sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+
+   # Crop GCAM Basins to shape boundary and set projection
+   if(!is.null(gcamBasinShape) & extension==T){
+     if(!is.null(boundaryShape)){
+     sp::proj4string(gcamBasinShape) <- sp::proj4string(boundaryShape)
+     gcamBasinShapeCropped<-raster::intersect(gcamBasinShape,boundaryShape)}else{
+       print("BoundaryShape not provided. Not cropping GCAM Basins.")
+     }
+     }
+
 
 #----------------
 # Create Boundary Extension
@@ -233,6 +258,11 @@ srn.map(dataPolygon=shape,mapName = paste(boundaryRegionsSelect,"_",subRegType,"
 srn.map(dataPolygon=shape,mapName = paste(boundaryRegionsSelect,"_",subRegType,"_ExtendedMap_Filled",nameAppend,sep=""),dirOutputs = dir,
         fillColumn = subRegCol,labels=F,underLayer = underLayer,bgColor="lightblue1",frameShow=T)
 
+#  Extended Map Highlight
+underLayer<-srn.map(dataPolygon=boundaryregion,mapName = paste(boundaryRegionsSelect,"_mapRegionHighlight",nameAppend,sep=""),dirOutputs = dir,
+                    underLayer = underLayer,bgColor="lightblue1",frameShow=T,printMap=F)
+srn.map(dataPolygon=gcamBasinShapeCropped,mapName = paste(boundaryRegionsSelect,"_mapRegionHighlightGCAMBASINS",nameAppend,sep=""),dirOutputs = dir,
+        underLayer = underLayer,borderColor="red",bgColor="lightblue1",frameShow=T)
 }
 
 print(paste("Boundary files saved to: ",dir,sep=""))

@@ -31,10 +31,8 @@ gcamdataProjFile <-"Example_dataProj.proj"
 regionsSelect <- c("Colombia","Argentina")
 # Choose Parameters or set to "All" for all params. For complete list see ?srn.readgcam
 paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
-               "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons",
-               "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
-               "agProdbyIrrRfd","agProdByCrop",
-               "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
+               "watConsumBySec", "watWithdrawBySec","gdp", "gdpGrowthRate", "pop",
+               "agProdByCrop", "aggLandAlloc","co2emissionByEndUse")
 
 # Use function localDBConn from package rgcam to get a list of scenarios if needed.
 # localDBConn(gcamdatabasePath,gcamdatabaseName)
@@ -52,10 +50,12 @@ dataGCAM<-srn.readgcam(reReadData=F, # Default Value is T
                        queryxml="srnQueries.xml",  # Default Value is "srnQueries.xml"
                        dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
                        regionsSelect=regionsSelect, # Default Value is NULL
-                       paramsSelect=paramsSelect # Default value is "All"
+                       paramsSelect=paramsSelect, # Default value is "All"
+                       queriesSelect="All" # Default is "All"
                        )
 
 dataGCAM$data # To view the data read that was read.
+
 
 #----------------------------
 # Produce Data Charts
@@ -64,7 +64,7 @@ dataGCAM$data # To view the data read that was read.
 # ?srn.chartsProcess # For more help on charting process
 
 # Read in Tables (If exist)
-#dataTables<-c(paste(getwd(),"/outputs/Tables/Tables_Local/local_Regional_Colombia.csv",sep=""))  # Need to create this before loading
+dataTables<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Argentina.csv",sep=""))  # Need to create this before loading
 
 # Read in the data from the function srn.readgcam
 rTable <- dataGCAM$data;
@@ -92,4 +92,12 @@ charts<-srn.chartsProcess(rTable=rTable, # Default is NULL
                           regionCompareOnly=0 # Default is "0"
                           )
 
-
+# rTable=rTable # Default is NULL
+# dataTables=dataTables # Default is NULL
+# paramsSelect=paramsSelect # Default is "All"
+# regionsSelect=regionsSelect # Default is "All"
+# xCompare=c("2015","2035","2050","2100") # Default is c("2015""2030""2050""2100")
+# scenRef="Eg1" # Default is NULL
+# dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd()"/outputs"sep="")
+# pdfpng="png" # Default is "png"
+# regionCompareOnly=0 # Default is "0"

@@ -270,7 +270,10 @@ map<-map + tm_fill(col=fillColumn, palette = fillPalette, title=legendTitle,
 
   if(labels!=F){
     if(is.null(raster)){
-      map= map + tm_text(fillColumn,scale=labelsSize,auto.placement=labelsAutoPlace, col=labelsColor)}
+      if(!is.null(fillColumn)){
+      map= map + tm_text(fillColumn,scale=labelsSize,auto.placement=labelsAutoPlace, col=labelsColor)}else{
+        print("For labels text need to define fillColumn. Ignoring text labels for now.")}
+    }
   }
 
   } # Close Polygon Maps

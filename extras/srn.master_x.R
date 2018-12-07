@@ -145,21 +145,36 @@ xRange=c(2010:2050)
 #------------------------
 
 dirOutputs=paste(getwd(),"/outputs",sep="")
-
-demeterFolder<-paste(getwd(),"/dataFiles/grids/demeter/",sep="")
-demeterScenario<-"Eg1"
+demeterFolder=paste(getwd(),"/dataFiles/grids/demeter/",sep="")
+demeterScenario="Eg1"
+demeterUnits="Landuse (Fraction)"
 demeterTimesteps<-seq(from=2005,to=2020,by=5)
 tethysFolder=paste(getwd(),"/dataFiles/grids/tethys/",sep="")
 tethysScenario="Eg1"
 tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
+tethysUnits="Water Withdrawals (mm)"
+xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthos/",sep="")
+xanthosScenario="Eg1"
+xanthosUnits="Runoff (mm)"
+xanthosFiles=c("q_bced_1960_1999_ipsl-cm5a-lr_1950_2005")
+xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")
+scarcityXanthosRollMeanWindow=10
 
 grid<-srn.prepGrid(
              demeterFolder=demeterFolder,
              demeterScenario=demeterScenario,
              demeterTimesteps=demeterTimesteps,
+             demeterUnits=demeterUnits,
              tethysFolder=tethysFolder,
              tethysScenario=tethysScenario,
              tethysFiles=tethysFiles,
+             tethysUnits=tethysUnits,
+             xanthosFolder=xanthosFolder,
+             xanthosScenario=xanthosScenario,
+             xanthosUnits=xanthosUnits,
+             xanthosFiles=xanthosFiles,
+             xanthosCoordinatesPath=xanthosCoordinatesPath,
+             scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow,
              dirOutputs=paste(getwd(),"/outputs",sep=""),
              reReadData=1,
              gridSRNData=paste(dirOutputs, "/Grids/gridSRN.RData", sep = ""))
@@ -174,7 +189,7 @@ grid<-gridSRN
 # Prepare Poly Tables
 #------------------------
 
-polyIndiaGADM<-srn.grid2poly(grid=NULL,
+polyIndiaGADM<-srn.grid2poly(grid=grid,
                            boundaryRegShape=NULL,
                            subRegShape=NULL,
                            boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
@@ -214,21 +229,37 @@ polyIndiaLocal<-srn.grid2poly(grid=grid,
 
 library(rgdal)
 
+argentina=readOGR(dsn=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
+                  layer="gadm36_0",use_iconv=T,encoding='UTF-8')
+argentina<-argentina[which(argentina[["NAME_0"]] %in% "Argentina"),]
 catchment=readOGR(dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
                          layer="Catchment",use_iconv=T,encoding='UTF-8')
 bermejo3=readOGR(dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
                   layer=paste("Bemeo_3Subains",sep=""),use_iconv=T,encoding='UTF-8')
 bermejo1<-bermejo3[which(bermejo3[["SUB_NAME"]] %in% c("Bermejo 1")),]
+bermejo3Cropped= raster::intersect(bermejo3,argentina)
+writeOGR(obj=bermejo3Cropped, dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""), layer=paste("bermejo3Cropped",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 
 bermejo<-raster::aggregate(bermejo3, by= "MAJ_BAS")
 writeOGR(obj=bermejo, dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""), layer=paste("bermejo",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 catchmentBermejo <- raster::intersect(catchment,bermejo)
 writeOGR(obj=catchmentBermejo, dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""), layer=paste("catchmentBermejo",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 catchmentBermejo1 <- raster::intersect(catchment,bermejo1)
+catchmentBermejo1@data<-catchmentBermejo1@data%>%
+  mutate(random=runif(nrow(catchmentBermejo1@data)))
 writeOGR(obj=catchmentBermejo1, dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""), layer=paste("catchmentBermejo1",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 
 bermejo=readOGR(dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
                  layer=paste("bermejo",sep=""),use_iconv=T,encoding='UTF-8')
+
+catchmentBermejo1=readOGR(dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
+                  layer="catchmentBermejo1",use_iconv=T,encoding='UTF-8')
+
+srn.map(dataPolygon=catchmentBermejo1,mapName = paste("X"),dirOutputs = dir,
+        fillColumn = "random",printMap=F)
+srn.map(dataPolygon=bermejo3Cropped,mapName = paste("X"),dirOutputs = dir,
+        fillColumn = "SUB_NAME",printMap=F)
+
 
 # Grid to Shape
 gridSRNData<-paste(getwd(),"/outputs/Grids/gridSRN.RData",sep="")
@@ -237,7 +268,7 @@ grid<-gridSRN
 
 grid<-grid%>%filter(!class %in% c("Non Agriculture","Total"))
 
-polyBermeo3<-srn.grid2poly(grid=grid,
+polyBermeo3Cropped<-srn.grid2poly(grid=grid,
                            boundaryRegShape=NULL,
                            boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
                            boundaryRegShpFile=paste("gadm36_0",sep=""),
@@ -245,7 +276,7 @@ polyBermeo3<-srn.grid2poly(grid=grid,
                            boundaryRegionsSelect="Argentina",
                            subRegShape=NULL,
                            subRegShpFolder=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
-                           subRegShpFile=paste("Bemeo_3Subains",sep=""),
+                           subRegShpFile=paste("bermejo3Cropped",sep=""),
                            subRegCol="SUB_NAME",
                            subRegionsSelect=NULL,
                            subRegType="subBasin",
@@ -254,7 +285,7 @@ polyBermeo3<-srn.grid2poly(grid=grid,
                            expandbboxPercent=2,
                            extension=F)
 
-# grid=grid
+# grid=NULL
 # boundaryRegShape=NULL
 # boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep="")
 # boundaryRegShpFile=paste("gadm36_0",sep="")
@@ -289,6 +320,23 @@ polyCatchmentBermejo1<-srn.grid2poly(grid=grid,
                                      extension=F)
 
 
+polyCatchmentBermejo1RANDOM<-srn.grid2poly(grid=NULL,
+                                     boundaryRegShape=NULL,
+                                     subRegShape=NULL,
+                                     boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
+                                     boundaryRegShpFile=paste("gadm36_0",sep=""),
+                                     boundaryRegCol="NAME_0",
+                                     boundaryRegionsSelect="Argentina",
+                                     subRegShpFolder=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
+                                     subRegShpFile=paste("catchmentBermejo1",sep=""),
+                                     subRegCol="random",
+                                     subRegionsSelect=NULL,
+                                     subRegType="catchment",
+                                     dirOutputs=paste(getwd(),"/outputs",sep=""),
+                                     nameAppend="_hydrobidCatchRandom",
+                                     expandbboxPercent=2,
+                                     extension=F)
+
 #------------------------
 # Process Maps
 #------------------------
@@ -311,31 +359,32 @@ srn.mapProcess(polygonDataTables=polygonDataTables,
                regionsSelect="Argentina",
                subRegShape=NULL,
                subRegShpFolder=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
-               subRegShpFile=paste("Bemeo_3Subains",sep=""),
+               subRegShpFile=paste("bermejo3Cropped",sep=""),
                subRegCol="SUB_NAME",
                subRegType="subBasin",
                aggType=NULL,
-               nameAppend="_hydrobid")
+               nameAppend="_hydrobid",
+               legendPosition=c("RIGHT","top"))
 
-# polygonDataTables=polygonDataTables
-# gridDataTables=grid
-# dirOutputs=paste(getwd(),"/outputs",sep="")
-# xRange="All"
-# labels=F
-# labelsSize=1.2
-# regionsSelect="Argentina"
-# subRegShape=NULL
-# subRegShpFolder=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep="")
-# subRegShpFile=paste("Bemeo_3Subains",sep="")
-# subRegCol="SUB_NAME"
-# subRegType="subRegType"
-# aggType=NULL
-# nameAppend="_hydrobid"
+polygonDataTables=polygonDataTables
+gridDataTables=grid
+dirOutputs=paste(getwd(),"/outputs",sep="")
+xRange="All"
+labels=F
+labelsSize=1.2
+regionsSelect="Argentina"
+subRegShape=NULL
+subRegShpFolder=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep="")
+subRegShpFile=paste("Bemeo_3Subains",sep="")
+subRegCol="SUB_NAME"
+subRegType="subRegType"
+aggType=NULL
+nameAppend="_hydrobid"
 
 srn.mapProcess(polygonDataTables=polyCatchmentBermejo1,
-               gridDataTables=grid,
+               gridDataTables=NULL,
                dirOutputs=paste(getwd(),"/outputs",sep=""),
-               xRange="All",
+               xRange=c(2010),
                labels=F,
                labelsSize=1.2,
                regionsSelect="Argentina",
@@ -344,16 +393,44 @@ srn.mapProcess(polygonDataTables=polyCatchmentBermejo1,
                subRegCol="COMID",
                subRegType="catchment",
                aggType=NULL,
-               nameAppend="_hydrobidCatch")
+               nameAppend="_hydrobidCatch",
+               legendPosition=c("RIGHT","top"))
+
+# regionsSelect_i="Argentina";scenario_i="Eg1";
+# param_i="demeterLandUse";x_i=2010
+# subRegType_i="catchment"
+# polygonDataTables=polyCatchmentBermejo1
+# gridDataTables=grid
+# dirOutputs=paste(getwd(),"/outputs",sep="")
+# xRange="All"
+# labels=F
+# labelsSize=1.2
+# regionsSelect="Argentina"
+# subRegShape=NULL
+# subRegShpFolder=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep="")
+# subRegShpFile=paste("catchmentBermejo1",sep="")
+# subRegCol="COMID"
+# subRegType="catchment"
+# aggType=NULL
+# nameAppend="_hydrobidCatch"
+# legendPosition=c("RIGHT","top")
+
+# Grid to Shape
+gridSRNData<-paste(getwd(),"/outputs/Grids/gridSRN.RData",sep="")
+load(gridSRNData) # grid is called gridSRN
+grid<-gridSRN
 
 polygonDataTables=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_State_origDownscaled_local.csv",sep="")
-# polygonDataTables<-utils::read.csv(paste(polygonDataTables), stringsAsFactors = F)%>%tibble::as.tibble()
-#polygonDataTables=polyIndiaLocal
+polygonDataTables<-utils::read.csv(paste(polygonDataTables), stringsAsFactors = F)%>%tibble::as.tibble()
+polyIndiaLocal=polygonDataTables
 
-srn.mapProcess(polygonDataTables=polygonDataTables,
+polyIndiaLocal1=polyIndiaLocal%>%filter(param=="xanthosRunoff")%>%mutate(classPalette="pal_hot")
+grid1<-grid%>%filter(param=="xanthosRunoff")%>%mutate(classPalette="pal_hot")
+
+srn.mapProcess(polygonDataTables=polyIndiaLocal1,
                gridDataTables=NULL,
                dirOutputs=paste(getwd(),"/outputs",sep=""),
-               xRange=c(2010),
+               xRange=c(2000,2005),
                labels=F,
                labelsSize=1.2,
                regionsSelect="India",
@@ -367,22 +444,27 @@ srn.mapProcess(polygonDataTables=polygonDataTables,
                legendOutsidePosition=NULL,
                legendPosition=c("RIGHT","bottom"))
 
-# polygonDataTables=polygonDataTables
-# gridDataTables=grid
-# dirOutputs=paste(getwd(),"/outputs",sep="")
-# xRange="All"
-# labels=F
-# labelsSize=1.2
-# regionsSelect="India"
-# subRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_India",sep="")
-# subRegShpFile=paste("IND_adm1",sep="")
-# subRegCol="NAME_1"
-# subRegType="State"
-# aggType=NULL
-# nameAppend="_IndiaLocal"
-#
-# regionsSelect_i="India";scenario_i="Eg1";
-# param_i="demeterLandUse";x_i=2010
+polygonDataTables=polygonDataTables
+gridDataTables=grid
+dirOutputs=paste(getwd(),"/outputs",sep="")
+xRange=c(2000,2005)
+labels=F
+labelsSize=1.2
+regionsSelect="India"
+subRegShape=NULL
+subRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_India",sep="")
+subRegShpFile=paste("IND_adm1",sep="")
+subRegCol="NAME_1"
+subRegType="State"
+aggType=NULL
+rasterCoverNegShape=F
+nameAppend="_IndiaLocal"
+legendOutsidePosition=NULL
+legendPosition=c("RIGHT","bottom")
+
+regionsSelect_i="India";scenario_i="Eg1";
+param_i="xanthosRunoff";x_i=2000
+
 #
 # #srn.map
 # dataPolygon=subRegShape
