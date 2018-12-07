@@ -220,9 +220,8 @@ if(any(!regionsSelect %in% unique(shapeTbl$region))){
 for(regionsSelect_i in regionsSelect){
 
 shapeTbl<-shapeTbl%>%unique()%>%dplyr::filter(region %in% regionsSelect_i)
-if(any(xRange!="All")){if(is.numeric(shapeTbl$x)){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange)}}
-if(any(xRange!="All")){if(is.numeric(gridTbl$x)){gridTbl<-gridTbl%>%dplyr::filter(x %in% xRange)}}
-
+if(any(xRange!="All")){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange)}
+if(any(xRange!="All")){gridTbl<-gridTbl%>%dplyr::filter(x %in% xRange)}
 
 #------------------
 # Create Folders if needed
@@ -291,9 +290,9 @@ if(!"subRegType" %in% names(gridTbl)){
 
         # Figure 1 : each param: If class > 1 { (Map x Class) x Selected Years}
 
-        if(length(unique(shapeTbl$class))>1){
+        if(length(unique(gridTbl$class))>1){
 
-          for (x_i in unique(shapeTbl$x)){
+          for (x_i in unique(gridTbl$x)){
 
             datax<-gridTbl%>%dplyr::filter(scenario==scenario_i,x==x_i,param==param_i)
         if(nrow(datax)>1){
@@ -637,7 +636,7 @@ if(length(unique(shapeTbl$class))==1){
               legendOutsidePosition = legendOutsidePosition,
               legendPosition = NULL,
               fillPalette = fillPalette,
-              mapName = paste("map_",regionsSelect_i,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
+              mapName = paste("map_",regionsSelect_i,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
               dirOutputs = paste(dirOutputs,"/Maps/",regionsSelect_i,"/",subRegion_i,"/", scenario_i,sep = ""))
 
       srn.map(dataPolygon=mapx,
@@ -655,7 +654,7 @@ if(length(unique(shapeTbl$class))==1){
               legendOutsidePosition = legendOutsidePosition,
               legendPosition = NULL,
               fillPalette = fillPalette,
-              mapName = paste("map_",regionsSelect_i,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
+              mapName = paste("map_",regionsSelect_i,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
               dirOutputs = paste(dirOutputs,"/Maps/",regionsSelect_i,"/",subRegion_i,"/", scenario_i,sep = ""))
 
       srn.map(dataPolygon=mapx,
@@ -673,10 +672,12 @@ if(length(unique(shapeTbl$class))==1){
               legendOutsidePosition = legendOutsidePosition,
               legendPosition = legendPosition,
               fillPalette = fillPalette,
-              mapName = paste("map_",regionsSelect_i,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
+              mapName = paste("map_",regionsSelect_i,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
               dirOutputs = paste(dirOutputs,"/Maps/",regionsSelect_i,"/",subRegion_i,"/", scenario_i,sep = ""))
 
 # Animate 2 : each param: If class == 1 { (Map x Anim Years}
+
+
 }  #if(nrow(datax)>1){
   } # If number of classes == 1
 

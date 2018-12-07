@@ -104,16 +104,24 @@ addMissing<-function(data){
   if(!"value"%in%names(data)){data<-data%>%dplyr::mutate(value=get(yData))}
   if(!"origValue"%in%names(data)){data<-data%>%dplyr::mutate(origValue=value)}
   if(!"units"%in%names(data)){data<-data%>%dplyr::mutate(units="units")}
-  if(!"vintage"%in%names(data)){data<-data%>%dplyr::mutate(vintage="vintage")}
   if(!"x"%in%names(data)){data<-data%>%dplyr::mutate(x="x")}
-  if(!"xLabel"%in%names(data)){data<-data%>%dplyr::mutate(xLabel=xLabel)}
-  if(!"aggregate"%in%names(data)){data<-data%>%dplyr::mutate(aggregate=aggregate)}
-  if(!"class1"%in%names(data)){data<-data%>%dplyr::mutate(class1="class1")}
-  if(!"classLabel1"%in%names(data)){data<-data%>%dplyr::mutate(classLabel1="classLabel1")}
-  if(!"classPalette1"%in%names(data)){data<-data%>%dplyr::mutate(classPalette1=classPalette)}
+  if(!"vintage" %in% names(data)){data<-data%>%dplyr::mutate(vintage = paste("Vint_", x, sep = ""))}
+  if(!"xLabel"%in%names(data)){
+    if(is.null(xLabel)){data<-data%>%dplyr::mutate(xLabel="xLabel")}else{
+      data<-data%>%dplyr::mutate(xLabel=xLabel)}}
+  if(!"aggregate"%in%names(data)){ if(is.null(aggregate)){data<-data%>%dplyr::mutate(aggregate="aggregate")}else{
+    data<-data%>%dplyr::mutate(aggregate=aggregate)}}
+  if(!"class1"%in%names(data)){
+    if("class"%in%names(data)){
+    data<-data%>%dplyr::rename(class1=class)}else
+      {data<-data%>%dplyr::mutate(class1="class1")}}
+  if(!"classLabel1"%in%names(data)){ if(is.null(classPalette)){data<-data%>%dplyr::mutate(classLabel1="classLabel1")}
+  if(!"classPalette1"%in%names(data)){data<-data%>%dplyr::mutate(classPalette1="pal_Basic")}else{
+    data<-data%>%dplyr::mutate(classPalette1=classPalette)}}
   if(!"class2"%in%names(data)){data<-data%>%dplyr::mutate(class2="class2")}
   if(!"classLabel2"%in%names(data)){data<-data%>%dplyr::mutate(classLabel2="classLabel2")}
-  if(!"classPalette2"%in%names(data)){data<-data%>%dplyr::mutate(classPalette2=classPalette)}
+  if(!"classPalette2"%in%names(data)){ if(is.null(classPalette)){data<-data%>%dplyr::mutate(classPalette2="pal_Basic")}else{
+    data<-data%>%dplyr::mutate(classPalette2=classPalette)}}
   if(!"origScen"%in%names(data)){data<-data%>%dplyr::mutate(origScen="origScen")}
   if(!"origQuery"%in%names(data)){data<-data%>%dplyr::mutate(origQuery="origQuery")}
   if(!"origUnits"%in%names(data)){data<-data%>%dplyr::mutate(origUnits="origUnits")}
@@ -140,8 +148,7 @@ if(!is.null(dataTables)){
 for(i in dataTables){
   if(file.exists(i)){
   tblNew<-utils::read.csv(paste(i), stringsAsFactors = F)%>%tibble::as.tibble()
-  if(length(unique(tblNew$vintage))<2){tblNew<-tblNew%>%dplyr::mutate(vintage = paste("Vint_", x, sep = ""))}
-  tbl<-dplyr::bind_rows(tbl,tblNew)
+   tbl<-dplyr::bind_rows(tbl,tblNew)
   } else {stop(paste(i," does not exist"))}
 }
 
@@ -210,18 +217,43 @@ if(regionCompareOnly==0){
 # Tables
 #------------------
 
+# Aggregate across classes
+tblAggsums<-tbl%>%
+  dplyr::filter(aggregate=="sum")%>%
+  dplyr::select(-tidyselect::contains("class"))%>%
+  dplyr::select(scenario,region,param,units,x, value, vintage)%>%
+  dplyr::group_by_at(vars(-value))%>%
+  dplyr::summarize_at(c("value"),dplyr::funs(sum))
+tblAggmeans<-tbl%>%
+  dplyr::filter(aggregate=="mean")%>%
+  dplyr::select(-tidyselect::contains("class"))%>%
+  dplyr::select(scenario,region,param,units,x, value, vintage)%>%
+  dplyr::group_by_at(vars(-value))%>%
+  dplyr::summarize_at(c("value"),dplyr::funs(mean))
+tblAgg<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
+
+
 for(i in unique(tbl$region)){
   utils::write.csv(tbl%>%
                      dplyr::filter(region == i)%>%
                      dplyr::select(scenario,region,param,units, class1, class2, x, value, vintage)%>%
                      tidyr::spread(scenario,yData),
                    file = paste(dirOutputs, "/Charts/Tables_regional_",i,".csv", sep = ""),row.names = F)
+
+  utils::write.csv(tblAgg%>%
+                     dplyr::filter(region == i)%>%
+                     tidyr::spread(scenario,yData),
+                   file = paste(dirOutputs, "/Charts/Tables_regional_",i,"_aggClass.csv", sep = ""),row.names = F)
 }
 
 utils::write.csv(tbl%>%
                    dplyr::select(scenario, region, units, class1, class2, x, value, vintage)%>%
                    tidyr::spread(scenario,yData),
                  file = paste(dirOutputs, "/Charts/Tables_regional_allRegions.csv", sep = ""),row.names = F)
+
+utils::write.csv(tblAgg%>%
+                   tidyr::spread(scenario,yData),
+                 file = paste(dirOutputs, "/Charts/Tables_regional_allRegions_aggClass.csv", sep = ""),row.names = F)
 
 
 #------------------------

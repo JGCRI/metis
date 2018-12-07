@@ -5,11 +5,14 @@
 \title{srn.prepGrid}
 \usage{
 srn.prepGrid(demeterFolder, demeterScenario, demeterTimesteps = seq(from
-  = 2005, to = 2100, by = 5), tethysFolder, tethysScenario,
-  tethysFiles = c("wddom", "wdelec", "wdirr", "wdliv", "wdmfg", "wdmin",
-  "wdnonag", "wdtotal"), dirOutputs = paste(getwd(), "/outputs", sep =
-  ""), reReadData = 1, gridSRNData = paste(dirOutputs,
-  "/Grids/gridSRN.RData", sep = ""))
+  = 2005, to = 2100, by = 5), demeterUnits, tethysFolder, tethysScenario,
+  tethysUnits, tethysFiles = c("wddom", "wdelec", "wdirr", "wdliv",
+  "wdmfg", "wdmin", "wdnonag", "wdtotal"), xanthosFolder, xanthosScenario,
+  xanthosUnits, xanthosFiles, xanthosCoordinatesPath = paste(getwd(),
+  "/dataFiles/grids/xanthosCoords/coordinates.csv", sep = ""),
+  scarcityXanthosRollMeanWindow = 10, dirOutputs = paste(getwd(),
+  "/outputs", sep = ""), reReadData = 1,
+  gridSRNData = paste(dirOutputs, "/Grids/gridSRN.RData", sep = ""))
 }
 \arguments{
 \item{demeterFolder}{Full path to demeter outputs}
@@ -18,11 +21,27 @@ srn.prepGrid(demeterFolder, demeterScenario, demeterTimesteps = seq(from
 
 \item{demeterTimesteps}{Default is seq(from=2005,to=2100,by=5)}
 
+\item{demeterUnits}{No Default}
+
 \item{tethysFolder}{Folder for tethys results}
 
 \item{tethysScenario}{Scenario name for tethys run}
 
+\item{tethysUnits}{No Default}
+
 \item{tethysFiles}{Default =c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal"),}
+
+\item{xanthosFolder}{Xanthos Folder Path}
+
+\item{xanthosScenario}{Xanthos Scenario Name}
+
+\item{xanthosUnits}{Xanthos Untis}
+
+\item{xanthosFiles}{Xanthos Files to Read}
+
+\item{xanthosCoordinatesPath}{paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")}
+
+\item{scarcityXanthosRollMeanWindow}{Default = 10,}
 
 \item{dirOutputs}{Default =paste(getwd(),"/outputs",sep=""),}
 
