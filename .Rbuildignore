@@ -3,9 +3,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^READMEfigs$
-^srn.master.R$
+^metis.master.R$
 ^extras$
-^srn.pdf$
+^metis.pdf$
 ^dataFiles$
 ^outputs$
 ^gis$

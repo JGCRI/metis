@@ -1,4 +1,4 @@
 library(testthat)
-library(srn)
+library(metis)
 
-test_check("srn")
+test_check("metis")
