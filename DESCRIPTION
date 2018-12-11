@@ -1,4 +1,4 @@
-Package: srn
+Package: metis
 Title: Sub-Regional Nexus Modeling Tool
 Version: 0.0.1
 Authors@R: person("Zarrar", "Khan", email = "zarrar85@gmail.com", role = c("aut", "cre"))
