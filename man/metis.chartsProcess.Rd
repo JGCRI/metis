@@ -10,7 +10,7 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   paramsSelect = "All", regionsSelect = "All", xData = "x",
   yData = "value", xLabel = "xLabel", yLabel = "units",
   aggregate = "sum", class = "class", classPalette = "pal_Basic",
-  regionCompareOnly = 0, useNewLabels = 0, sizeBarLines = 0,
+  regionCompareOnly = 1, useNewLabels = 0, sizeBarLines = 0,
   sizeLines = 1.5, nameAppend = "")
 }
 \arguments{

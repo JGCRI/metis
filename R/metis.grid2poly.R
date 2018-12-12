@@ -21,6 +21,8 @@
 #' @param nameAppend  Default="",
 #' @param expandbboxPercent  Default=2,
 #' @param extension  Default=T,
+#' @param gcamBasinShpFolder Default = NULL. Can save to paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),
+#' @param gcamBasinShpFile Default = NULL. Can save to ="Global235_CLM_final_5arcmin_multipart"
 #' @export
 
 metis.grid2poly<- function(grid=NULL,
@@ -39,7 +41,9 @@ metis.grid2poly<- function(grid=NULL,
                          dirOutputs=paste(getwd(),"/outputs",sep=""),
                          nameAppend="",
                          expandbboxPercent=2,
-                         extension=T) {
+                         extension=T,
+                         gcamBasinShpFolder=NULL,
+                         gcamBasinShpFile=NULL) {
 
 #------------------
 # Load required Libraries
@@ -85,8 +89,6 @@ NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
 #---------------
 
 # GCAM Basin
-gcamBasinShpFolder <-paste(getwd(),"/dataFiles/gis/basin_gcam",sep="")
-gcamBasinShpFile <-"Global235_CLM_final_5arcmin_multipart"
   if(!is.null(gcamBasinShpFolder) & !is.null(gcamBasinShpFile)){
     if(!dir.exists(gcamBasinShpFolder)){
       stop("Shapefile folder: ", gcamBasinShpFolder ," is incorrect or doesn't exist.",sep="")}
@@ -132,6 +134,8 @@ gcamBasinShpFile <-"Global235_CLM_final_5arcmin_multipart"
 
   poly<-tibble::tibble()
 
+  if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect="Region"}
+
   for (region_i in boundaryRegionsSelect){
 
 #----------------
@@ -166,7 +170,14 @@ dir=paste(dirOutputs, "/Maps/Boundaries/",region_i,sep = "")
       }
 
   if(!is.null(subRegShape) & is.null(boundaryRegShape)){
-    shape<-subRegShape[which(subRegShape[[boundaryRegCol]] %in% boundaryRegionsSelect),]
+    if(!is.null(boundaryRegCol)){
+      if(boundaryRegCol %in% names(subRegShape@data)){
+    shape<-subRegShape[which(subRegShape[[boundaryRegCol]] %in% boundaryRegionsSelect),]}
+      boundaryShape<-shape}else{
+      shape<-subRegShape
+      boundaryShape<-shape
+      boundaryRegCol<-subRegCol
+    }
     shape@data<-droplevels(shape@data)
   }
 
@@ -276,8 +287,11 @@ if(!is.null(grid)){
   gridCropped<-tibble::tibble()
 
   if(!"aggType" %in% names(grid)){
+    if(is.null(aggType)){
     print("Column aggType is missing from grid data. Assigning aggType='depth'")
-    grid<-grid%>%dplyr::mutate(aggType="depth")}
+    grid<-grid%>%dplyr::mutate(aggType="depth")}else{
+      grid<-grid%>%dplyr::mutate(aggType=aggType)
+    }}
 
   for(colx in names(grid)){
     if(is.character(grid[[colx]])){

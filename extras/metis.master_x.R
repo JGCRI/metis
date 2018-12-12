@@ -115,29 +115,29 @@ charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
                           scenRef="GCAMModified", # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           pdfpng="png", # Default is "png"
-                          regionCompareOnly=0, # Default is "0"
+                          regionCompareOnly=1, # Default is "0"
                           useNewLabels=1,sizeBarLines = 0,
                           xRange=c(2010:2050) # Default is All
                           )
 
 
-rTable=rTable; # Default is NULL
-dataTables=dataTables; # Default is NULL
-paramsSelect=paramsSelect; # Default is "All"
-regionsSelect=regionsSelect; # Default is "All"
-xCompare=c("2015","2035","2050","2100"); # Default is c("2015";"2030";"2050";"2100")
-scenRef="GCAMModified"; # Default is NULL
-dirOutputs=paste(getwd(),"/outputs",sep=""); # Default is paste(getwd();"/outputs";sep="")
-pdfpng="png"; # Default is "png"
-regionCompareOnly=0 # Default is "0"
-
-xData="x";
-yData="value";
-xLabel="xLabel";
-yLabel="units";
-aggregate="sum";class="class"; classPalette="pal_Basic";
-useNewLabels=0
-xRange=c(2010:2050)
+# rTable=rTable; # Default is NULL
+# dataTables=dataTables; # Default is NULL
+# paramsSelect=paramsSelect; # Default is "All"
+# regionsSelect=regionsSelect; # Default is "All"
+# xCompare=c("2015","2035","2050","2100"); # Default is c("2015";"2030";"2050";"2100")
+# scenRef="GCAMModified"; # Default is NULL
+# dirOutputs=paste(getwd(),"/outputs",sep=""); # Default is paste(getwd();"/outputs";sep="")
+# pdfpng="png"; # Default is "png"
+# regionCompareOnly=0 # Default is "0"
+#
+# xData="x";
+# yData="value";
+# xLabel="xLabel";
+# yLabel="units";
+# aggregate="sum";class="class"; classPalette="pal_Basic";
+# useNewLabels=0
+# xRange=c(2010:2050)
 
 
 #------------------------
@@ -160,7 +160,7 @@ xanthosFiles=c("q_mmperyear_Reference")
 xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")
 scarcityXanthosRollMeanWindow=10
 
-grid<-metis.prepGrid(
+gridMetis<-metis.prepGrid(
              demeterFolder=demeterFolder,
              demeterScenario=demeterScenario,
              demeterTimesteps=demeterTimesteps,
@@ -181,9 +181,9 @@ grid<-metis.prepGrid(
 
 
 # Grid to Shape
-gridMetisData<-paste(getwd(),"/outputs/Grids/gridMetis.RData",sep="")
-load(gridMetisData) # grid is called gridMetis
-grid<-gridMetis
+# gridMetisData<-paste(getwd(),"/outputs/Grids/gridMetis.RData",sep="")
+# load(gridMetisData) # grid is called gridMetis
+# grid<-gridMetis
 
 #------------------------
 # Prepare Poly Tables
