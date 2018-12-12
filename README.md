@@ -21,10 +21,10 @@ date: January 2019
 
 # Table of Contents
 
-- [Summary](#Summary)
+- [Introduction](#Introduction)
 - [Need](#Need)
-- [Installation Guide](#InstallGuide)
 - [Framework](#Framework)
+- [Installation Guide](#InstallGuide)
 - [Step-by-step walkthrough](#WalkThrough) 
     + [Module GCAM](#ModuleGCAM)
     + [Module Chart](#ModuleChart)
@@ -46,6 +46,15 @@ The model is composed of different modules as shown in Figure 1. The first three
 # <a name="Need"></a>Need
 
 The motivation behind developing the Metis model is to bridge the gap between models working at different spatial and temporal resolutions. Sector specific details such as diurnal electricity demand profiles and the availability of intermittent technologies are often captured by fine resolution sector specific models. These finer scale models are however often limited in scope to the specific sector in question. With increasing pressures on limited resources from growing populations, technological advances and a changing climate the links across human-earth systems are becoming more critical. These links include feedbacks across system such as water demands for powerplant cooling and hydropower; energy demands for water purification, transfers and distribution; both energy and water demands for agriculture production and harvesting; and the impacts of land-use change emissions and water demands as a result of biofuel expansion and deforestation. All of these are driven by socio-economic developments and policy decisions across these systems. Global integrateed assessment models are often used to capture these broader longterm dynamics on larger spatial and temporal scales. The development of the Metis model will address this need to capture both broader long-term dynamcis across systems and global markets as well as sub-regional details. The model will do this by taking global data and dynamcis from an IAM such as GCAM and then downscale the results to relevant sub-regional boundaries based on the needs of local stakeholders. The downscaled data will then be refined and calibrated with local sector specific data. This will be followed by calibration of the local inter-sectoral links and the model will then be used for future sector specific policy analysis at the relevant scales while still including global dynamics.
+
+# <a name="Framework"></a> Framework
+
+The framework for data processing, charting and mapping is shown in Figure 2.
+
+<p align="center"> <b> Figure 2: Metis Current </b> </p>
+<p align="center"> <img src="READMEfigs/metis_workflowChartMap.png"></p>
+
+Links between sub-regions and sectors as well as the forecasting modules will be developed in future versions of the model.
 
 
 # <a name="InstallGuide"></a>Installation Guide
@@ -74,15 +83,6 @@ library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
 ```  
-
-# <a name="Framework"></a> Framework
-
-The framework for data processing, charting and mapping is shown in Figure 2.
-
-<p align="center"> <b> Figure 2: Metis Current </b> </p>
-<p align="center"> <img src="READMEfigs/metis_workflowChartMap.png"></p>
-
-Links between sub-regions and sectors as well as the forecasting modules will be developed in future versions of the model.
 
 # <a name="WalkThrough"></a> Step-by-step Walkthrough
 

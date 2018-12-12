@@ -278,9 +278,6 @@ gridTbl<-gridTbl%>%dplyr::filter(gridID %in% unique((croppedCoords@data)$gridID)
 # Compare Gridded Data
 # Create Example Data For Testing
 if(!is.null(gridTbl)){
-gridTbl->gridTblA
-gridTblB<-gridTblA%>%dplyr::mutate(value=value*(0.5-stats::runif(nrow(gridTblA))),scenario="Eg2")
-gridTbl<-dplyr::bind_rows(gridTblA,gridTblB)
 
 if(length(unique(gridTbl$scenario))>1){
   # Get Diff Values
@@ -342,9 +339,6 @@ if(!"subRegType" %in% names(gridTbl)){
 # Compare Shape Data
 # Create Example Data for Testing
   if(!is.null(shapeTbl)){
-shapeTbl->shapeTblA
-shapeTblB<-shapeTblA%>%dplyr::mutate(value=value*(0.5-stats::runif(nrow(shapeTblA))),scenario="Eg2")
-shapeTbl<-dplyr::bind_rows(shapeTblA,shapeTblB)
 
 if(length(unique(shapeTbl$scenario))>1){
   # Get Diff Values

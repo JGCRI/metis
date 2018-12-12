@@ -183,17 +183,17 @@ if(!is.null(dataGrid)){
   }
 
 
-if(!is.null(shape)){
-  if(any(!fillColumn %in% names(shape))){
-        stop(paste("One or more columns in 'fillColumn' specified: ",paste(fillColumn,collapse=", ")," are not any of the columns of shape: ",
-                   paste(names(shape),collapse=", "),
-                   sep=""))}}
-if(!is.null(raster)){
-  if(any(!fillColumn %in% names(raster))){
-    stop(paste("One or more columns in 'fillColumn' specified: ",paste(fillColumn,collapse=", ")," are not any of the columns of raster: ",
-               paste(names(raster),collapse=", "),
-               sep=""))}
-          }
+# if(!is.null(shape)){
+#   if(any(!fillColumn %in% names(shape))){
+#         stop(paste("One or more columns in 'fillColumn' specified: ",paste(fillColumn,collapse=", ")," are not any of the columns of shape: ",
+#                    paste(names(shape),collapse=", "),
+#                    sep=""))}}
+# if(!is.null(raster)){
+#   if(any(!fillColumn %in% names(raster))){
+#     stop(paste("One or more columns in 'fillColumn' specified: ",paste(fillColumn,collapse=", ")," are not any of the columns of raster: ",
+#                paste(names(raster),collapse=", "),
+#                sep=""))}
+#           }
 
 if(length(fillPalette)==1){
  if(fillPalette %in% names(metis.colors())){

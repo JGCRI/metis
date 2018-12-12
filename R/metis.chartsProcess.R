@@ -73,7 +73,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        regionsSelect="All",
                        xData="x",yData="value",xLabel="xLabel",yLabel="units",
                        aggregate="sum",class="class", classPalette="pal_Basic",
-                       regionCompareOnly=0,useNewLabels=0,
+                       regionCompareOnly=1,useNewLabels=0,
                        sizeBarLines=0,sizeLines=1.5,
                        nameAppend="") {
 
@@ -199,7 +199,7 @@ if(length(unique(tbl$region))>1){
   }
 } # If length(unique(tbl$region))>1
 
-if(regionCompareOnly==0){
+if(regionCompareOnly!=1){
   for (i in unique(tbl$region)){
     tbl_r<-tbl%>%dplyr::filter(region==i)
     if (!dir.exists(paste(dirOutputs, "/Charts/", i, sep = ""))){
@@ -212,7 +212,7 @@ if(regionCompareOnly==0){
       {dir.create(paste(dirOutputs, "/Charts/", i,"/", j,sep = ""))}
     }
   }
-} # Close if(regionCompareOnly==0)
+} # Close if(regionCompareOnly!=1)
 
 
 #------------------
@@ -491,7 +491,7 @@ if(length(unique(tbl$scenario))>1){
 
 } # if length(unique(tbl$region))>1
 
-if(regionCompareOnly!=0){
+if(regionCompareOnly!=1){
 
 #------------------
 # Create Charts for Each Region & Each Scenario
