@@ -94,7 +94,7 @@ metis.map<-function(dataPolygon=NULL,
                   facetLabelColor="grey75",
                   facetLabelSize=1.5,
                   alpha=1,
-                  rasterCoverNegShape=T
+                  rasterCoverNegShape=F
                   ){
 
 
@@ -222,7 +222,7 @@ if(!is.null(raster)){
   }
 
   if(rasterCoverNegShape==T){
-  if(!is.null(shape)){
+  if(!is.null(shape) & !is.null(raster)){
   # Add Extent to hide rasters outside shape
   shapeExpandEtxent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
   expandbboxPercent<-1; shapeExpandEtxent$min;shapeExpandEtxent$max

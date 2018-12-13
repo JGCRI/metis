@@ -17,7 +17,6 @@
 #' @param subRegShpFile Default = paste("gadm36_1",sep=""),
 #' @param subRegCol Default ="NAME_1",
 #' @param subRegType Default ="subRegType",
-#' @param aggType Default = NULL,
 #' @param nameAppend Default =""
 #' @param rasterCoverNegShape Default =T
 #' @param legendOutsidePosition Default = NULL, # "right","left","top","bottom", "center"
@@ -42,7 +41,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                          subRegShpFile=paste("gadm36_1",sep=""),
                          subRegCol="NAME_1",
                          subRegType="subRegType",
-                         aggType=NULL,
                          nameAppend="",
                          rasterCoverNegShape=T,
                          legendOutsidePosition=NULL,

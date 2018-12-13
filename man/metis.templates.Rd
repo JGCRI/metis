@@ -4,16 +4,12 @@
 \alias{metis.templates}
 \alias{metis.printPdfPng}
 \alias{metis.chartsThemeLight}
-\alias{metis.tmapAnimate}
 \title{metis.templates}
 \usage{
 metis.printPdfPng(figure, dir, filename, figWidth = 13, figHeight = 9,
   pdfpng = "png")
 
 metis.chartsThemeLight()
-
-metis.tmapAnimate(map, filename = "animation.gif", width, height,
-  delay = 60)
 }
 \arguments{
 \item{figure}{Figure to be printed in function metis.printPdfPng}
@@ -27,14 +23,6 @@ metis.tmapAnimate(map, filename = "animation.gif", width, height,
 \item{figHeight}{Figure height in inches for figures to be printed in function metis.printPdfPng}
 
 \item{pdfpng}{Either "pdf", "png" or "both" to define the format of output}
-
-\item{map}{A tmap object with facets which will be converted to animations}
-
-\item{width}{Width of map in inches.}
-
-\item{height}{Hieght of map}
-
-\item{delay}{Delay. Time between animations = delay/100. Default is 60 or 0.6 seconds.}
 }
 \value{
 A list of different templates

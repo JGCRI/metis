@@ -10,7 +10,7 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   subRegShape = NULL, subRegShpFolder = paste(getwd(),
   "/dataFiles/gis/admin_gadm36", sep = ""),
   subRegShpFile = paste("gadm36_1", sep = ""), subRegCol = "NAME_1",
-  subRegType = "subRegType", aggType = NULL, nameAppend = "",
+  subRegType = "subRegType", nameAppend = "",
   rasterCoverNegShape = T, legendOutsidePosition = NULL,
   legendPosition = NULL, legendFixedBreaks = 5, animateOn = T,
   delay = 100, legendTitleSize = 1, scenRef = NULL)
@@ -39,8 +39,6 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{subRegCol}{Default ="NAME_1",}
 
 \item{subRegType}{Default ="subRegType",}
-
-\item{aggType}{Default = NULL,}
 
 \item{nameAppend}{Default =""}
 

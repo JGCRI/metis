@@ -232,6 +232,11 @@ library(rgdal)
 argentina=readOGR(dsn=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
                   layer="gadm36_0",use_iconv=T,encoding='UTF-8')
 argentina<-argentina[which(argentina[["NAME_0"]] %in% "Argentina"),]
+writeOGR(obj=argentina, dsn=paste(getwd(),"/dataFiles/examples",sep=""), layer=paste("Argentina",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+
+metis.map(dataPolygon=argentina,printFig=F)
+
+
 catchment=readOGR(dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
                          layer="Catchment",use_iconv=T,encoding='UTF-8')
 bermejo3=readOGR(dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
@@ -255,9 +260,9 @@ bermejo=readOGR(dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
 catchmentBermejo1=readOGR(dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
                   layer="catchmentBermejo1",use_iconv=T,encoding='UTF-8')
 
-metis.map(dataPolygon=catchmentBermejo1,mapName = paste("X"),dirOutputs = getwd(),
+metis.map(dataPolygon=catchmentBermejo1,fileName = paste("X"),dirOutputs = getwd(),
         fillColumn = "random",printFig=F)
-metis.map(dataPolygon=bermejo3Cropped,mapName = paste("X"),dirOutputs = getwd(),
+metis.map(dataPolygon=bermejo3Cropped,fileName = paste("X"),dirOutputs = getwd(),
         fillColumn = "SUB_NAME",printFig=F)
 
 
@@ -410,7 +415,7 @@ legendOutsidePosition = legendOutsidePosition
 legendPosition = NULL
 fillPalette = fillPalette
 rasterCoverNegShape=rasterCoverNegShape
-mapName = paste("map_",regionsSelect_i,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
+fileName = paste("map_",regionsSelect_i,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
 dirOutputs = paste(dirOutputs,"/Maps/",regionsSelect_i,"/raster/", scenario_i,"/byYear",sep = "")
 
 
@@ -516,7 +521,7 @@ param_i="xanthosRunoff";x_i=2000
 # legendOutsidePosition = NULL
 # legendPosition = NULL
 # fillPalette = fillPalette
-# mapName = paste("map_",regionsSelect_i,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
+# fileName = paste("map_",regionsSelect_i,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
 # dirOutputs = paste(dirOutputs,"/Maps/",regionsSelect_i,"/raster/",scenario_i,"/byYear",sep = "")
 #
 # library("tmap",quietly = T)

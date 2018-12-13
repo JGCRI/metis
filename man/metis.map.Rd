@@ -20,7 +20,7 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   printFig = T, fileName = "map", dirOutputs = paste(getwd(),
   "/outputs", sep = ""), facetFreeScale = F, facetRows = NA,
   facetCols = 3, facetLabelColor = "grey75", facetLabelSize = 1.5,
-  alpha = 1, rasterCoverNegShape = T)
+  alpha = 1, rasterCoverNegShape = F)
 }
 \arguments{
 \item{dataPolygon}{Default = NULL,}

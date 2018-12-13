@@ -1,7 +1,7 @@
 
 
 #----------------------------
-# Install The metis Package
+# Install necessary packages
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
@@ -9,15 +9,19 @@ if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrar
 library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
+if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}
 library(tibble)
+if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dlpyr")}
 library(dplyr)
+if("rgdal" %in% rownames(installed.packages()) == F){install.packages("rgdal")}
+library(rgdal)
+if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}
+library(tmap)
 
 
 #----------------------------
 # Read GCAM Data
 #---------------------------
-
-# ?metis.readgcam # For more help
 
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 gcamdatabaseName <-"example_database_basexdb"
@@ -85,60 +89,37 @@ charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
 # Grid to Poly
 #-------------
 
-# Grid to Shape
-gridMetisData<-paste(getwd(),"/outputs/Grids/gridMetis.RData",sep="")
-load(gridMetisData) # grid is called gridMetis
-grid<-gridMetis
-
+# Example Grid File
 grid<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
-
-
-# Shape FIle
+# Example Shape FIle
 examplePolyFolder<-paste(getwd(),"/dataFiles/examples",sep="")
-examplePolyFile<-paste("bermejo3Cropped",sep="")
+exampleSubRegionFile<-paste("bermejo3Cropped",sep="")
 
 # View and Test SHape File
-library(rgdal)
 bermejo3Cropped=readOGR(dsn=examplePolyFolder,
-                layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
-metis.map(dataPolygon=bermejo3Cropped,fileName = paste("X"),dirOutputs = getwd(),
-          fillColumn = "SUB_NAME",labels=T ,printFig=F)
+                layer=exampleSubRegionFile,use_iconv=T,encoding='UTF-8')
+head(bermejo3Cropped@data)
+metis.map(dataPolygon=bermejo3Cropped,fillColumn = "SUB_NAME",labels=T ,printFig=F)
 
-polyBermeo3Cropped<-metis.grid2poly(grid=gridMetis,
+# Run metis.grid2poly
+polyBermeo3Cropped<-metis.grid2poly(grid=grid,
                                     boundaryRegShape=NULL,
-                                    boundaryRegShpFolder=NULL,
-                                    boundaryRegShpFile=NULL,
-                                    boundaryRegCol=NULL,
+                                    boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
+                                    boundaryRegShpFile=paste("gadm36_0",sep=""),
+                                    boundaryRegCol="NAME_0",
                                     boundaryRegionsSelect="Argentina",
                                     subRegShape=NULL,
                                     subRegShpFolder=examplePolyFolder,
-                                    subRegShpFile=examplePolyFile,
+                                    subRegShpFile=exampleSubRegionFile,
                                     subRegCol="SUB_NAME",
                                     subRegionsSelect=NULL,
                                     subRegType="subBasin",
                                     dirOutputs=paste(getwd(),"/outputs",sep=""),
                                     nameAppend="_hydrobidBermeo3",
                                     expandbboxPercent=2,
-                                    extension=F,
-                                    gcamBasinShpFolder=paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),
-                                    gcamBasinShpFile ="Global235_CLM_final_5arcmin_multipart")
-
-grid=gridMetis
-boundaryRegShape=NULL
-boundaryRegShpFolder=NULL
-boundaryRegShpFile=NULL
-boundaryRegCol=NULL
-boundaryRegionsSelect="Argentina"
-subRegShape=NULL
-subRegShpFolder=examplePolyFolder
-subRegShpFile=examplePolyFile
-subRegCol="SUB_NAME"
-subRegionsSelect=NULL
-subRegType="subBasin"
-dirOutputs=paste(getwd(),"/outputs",sep="")
-nameAppend="_hydrobidBermeo3"
-expandbboxPercent=2
-extension=F
+                                    extension=T,
+                                    overlapShpFolder=paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),
+                                    overlapShpFile ="Global235_CLM_final_5arcmin_multipart")
 
 #-----------
 # Mapping
@@ -150,23 +131,16 @@ examplePolygonTable<-paste(getwd(),"/dataFiles/examples/example_poly_ArgentinaBe
 
 metis.mapProcess(polygonDataTables=examplePolygonTable,
                  gridDataTables=exampleGridTable,
-                 dirOutputs=paste(getwd(),"/outputs",sep=""),
                  xRange=c(2005,2010,2020),
-                 labels=F,
-                 labelsSize=1.2,
                  regionsSelect="Argentina",
                  subRegShape=NULL,
                  subRegShpFolder=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
                  subRegShpFile=paste("bermejo3Cropped",sep=""),
                  subRegCol="SUB_NAME",
                  subRegType="subBasin",
-                 aggType=NULL,
                  nameAppend="_hydrobid",
                  legendPosition=c("RIGHT","top"),
-                 rasterCoverNegShape=T,
-                 legendFixedBreaks=5,
                  animateOn=T,
                  delay=100,
-                 legendTitleSize=1,
                  scenRef="Eg1")
 

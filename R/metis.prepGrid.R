@@ -139,7 +139,7 @@ if(!dir.exists(tethysFolder)){
 
       } # Close if tethys file exists
     } # close tethys file loops
-  } # Close tethys folder
+
 
 gridMetis<-gridMetis%>%
   dplyr::mutate(class=dplyr::case_when(grepl("wddom",class)~"Domestic",
@@ -151,6 +151,7 @@ gridMetis<-gridMetis%>%
                   grepl("nonag",class)~"Non Agriculture",
                   grepl("total",class)~"Total",
                         TRUE~class))
+  } # Close tethys folder
 
 #----------------
 # Prepare Xanthos Files
@@ -248,11 +249,13 @@ gridMetis<-dplyr::bind_rows(gridMetis,gridMetisScarcity)
 #--------------
 # Save RData and csv.
 #----------------
-
+if(nrow(gridMetis)>0){
 save(gridMetis,file=gridMetisData)
 utils::write.csv(gridMetis,file = paste(dirOutputs, "/Grids/gridMetis.csv", sep = ""),row.names = F)
 print(paste("gridMetis params: ", paste(unique(gridMetis$param),collapse=", "),sep=""))
-print(paste("gridMetis.csv saved in: ", paste(dirOutputs, "/Grids/gridMetis.csv", sep = ""),sep=""))
+print(paste("gridMetis.csv saved in: ", paste(dirOutputs, "/Grids/gridMetis.csv", sep = ""),sep=""))}else{
+  print("No data added to gridMetis. Check datafiles folders to see if data is available.")
+}
 
 }else{ # Close if reRead==1
 

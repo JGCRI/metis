@@ -13,8 +13,8 @@ metis.grid2poly(grid = NULL, boundaryRegShape = NULL,
   subRegShpFile = paste("gadm36_1", sep = ""), subRegCol = "NAME_1",
   subRegionsSelect = NULL, subRegType = "subRegType", aggType = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
-  expandbboxPercent = 2, extension = T, gcamBasinShpFolder = NULL,
-  gcamBasinShpFile = NULL)
+  expandbboxPercent = 2, extension = F, overlapShpFolder = NULL,
+  overlapShpFile = NULL)
 }
 \arguments{
 \item{grid}{Default=NULL,}
@@ -51,9 +51,9 @@ metis.grid2poly(grid = NULL, boundaryRegShape = NULL,
 
 \item{extension}{Default=T,}
 
-\item{gcamBasinShpFolder}{Default = NULL. Can save to paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),}
+\item{overlapShpFolder}{Default = NULL. Can save to paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),}
 
-\item{gcamBasinShpFile}{Default = NULL. Can save to ="Global235_CLM_final_5arcmin_multipart"}
+\item{overlapShpFile}{Default = NULL. Can save to ="Global235_CLM_final_5arcmin_multipart"}
 }
 \value{
 A table with data by polygon ID for each shapefile provided

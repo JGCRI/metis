@@ -76,35 +76,4 @@ requireNamespace("ggplot2",quietly = T)
   return(x)
 }
 
-#-------------
-#' @rdname metis.templates
-#' @param map A tmap object with facets which will be converted to animations
-#' @param width Width of map in inches.
-#' @param height Hieght of map
-#' @param delay Delay. Time between animations = delay/100. Default is 60 or 0.6 seconds.
-#' @export
-#' @import tmap
-# Creating tmap Animations
-#-------------
-#-------- ANIMATED TMAPS animation_tmap https://rdrr.io/cran/tmap/man/animation_tmap.html
-
-metis.tmapAnimate <- function(map, filename="animation.gif", width, height, delay=60){
-
-#------------------
-# Load required Libraries
-# -----------------
-  requireNamespace("tmap",quietly = T)
-
-  checkIM <- system("cmd.exe",input="magick -version")
-  if (checkIM!=0) stop("Could not find ImageMagick. Make sure it is installed and included in the systems PATH")
-  d <- paste(getwd(), "/tmap_plots", sep="")   #------------ Create Temporary Folder for plots
-  dir.create(d, showWarnings = FALSE)
-  save_tmap(map+tm_facets(nrow=1,ncol=1,free.scales=F) +
-              tm_layout(outer.margins=c(0,0,0,0),inner.margins = c(0,0,0,0), between.margin = 0),
-            filename = paste(d, "plot%03d.png", sep="/"), width=width*0.5, height=height*0.5) #------------ In tmap tm_facets MAKE SURE nrow/ncol=1, tm_facets(free.scales=FALSE,nrow=1,ncol=1)
-  processed <- system("cmd.exe",input=paste("magick -delay ", delay, " ", d, "/*.png \"", filename, "\"", sep=""))
-  unlink(d, recursive = TRUE) #-------------- cleaning up plots and temporary variables
-  invisible()
-}
-
 

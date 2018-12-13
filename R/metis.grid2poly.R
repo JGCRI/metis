@@ -21,8 +21,8 @@
 #' @param nameAppend  Default="",
 #' @param expandbboxPercent  Default=2,
 #' @param extension  Default=T,
-#' @param gcamBasinShpFolder Default = NULL. Can save to paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),
-#' @param gcamBasinShpFile Default = NULL. Can save to ="Global235_CLM_final_5arcmin_multipart"
+#' @param overlapShpFolder Default = NULL. Can save to paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),
+#' @param overlapShpFile Default = NULL. Can save to ="Global235_CLM_final_5arcmin_multipart"
 #' @export
 
 metis.grid2poly<- function(grid=NULL,
@@ -41,9 +41,9 @@ metis.grid2poly<- function(grid=NULL,
                          dirOutputs=paste(getwd(),"/outputs",sep=""),
                          nameAppend="",
                          expandbboxPercent=2,
-                         extension=T,
-                         gcamBasinShpFolder=NULL,
-                         gcamBasinShpFile=NULL) {
+                         extension=F,
+                         overlapShpFolder=NULL,
+                         overlapShpFile=NULL) {
 
 #------------------
 # Load required Libraries
@@ -69,14 +69,16 @@ NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
 
   if(!is.null(grid)){
   if(all(!class(grid) %in% c("tbl_df","tbl","data.frame"))){
-    if(any(grepl(".csv",paste(class(grid))))){
-    print("Attempting to read grid csv file ",grid)
+    if(any(grepl(".csv",paste(grid)))){
+    print(paste("Attempting to read grid csv file ",grid,sep=""))
       if(file.exists(grid)){
-    grid<-utils::read.csv(grid, stringsAsFactors = F)}else{
+    grid<-utils::read.csv(grid, stringsAsFactors = F)
+    grid<-grid%>%unique()}else{
       stop(paste("Grid file ",grid," does not exist",sep=""))
     }
     }
   }
+
 
   if(any(!c("lat","lon","value") %in% names(grid))){
     stop(paste(grid," should have columns lon, lat and value. Missing columns: ",
@@ -89,15 +91,15 @@ NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
 #---------------
 
 # GCAM Basin
-  if(!is.null(gcamBasinShpFolder) & !is.null(gcamBasinShpFile)){
-    if(!dir.exists(gcamBasinShpFolder)){
-      stop("Shapefile folder: ", gcamBasinShpFolder ," is incorrect or doesn't exist.",sep="")}
-    if(!file.exists(paste(gcamBasinShpFolder,"/",gcamBasinShpFile,".shp",sep=""))){
-      stop("Shape file: ", paste(gcamBasinShpFolder,"/",gcamBasinShpFile,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
-    gcamBasinShape=rgdal::readOGR(dsn=gcamBasinShpFolder,layer=gcamBasinShpFile,use_iconv=T,encoding='UTF-8')
-    print(paste("Sub Reg Shape : ",gcamBasinShpFolder,"/",gcamBasinShpFile,".shp",sep=""))
-    print(raster::head(gcamBasinShape))
-  } # if(!is.null(gcamBasinShpFolder) & !is.null(gcamBasinShpFile)){
+  if(!is.null(overlapShpFolder) & !is.null(overlapShpFile)){
+    if(!dir.exists(overlapShpFolder)){
+      stop("Shapefile folder: ", overlapShpFolder ," is incorrect or doesn't exist.",sep="")}
+    if(!file.exists(paste(overlapShpFolder,"/",overlapShpFile,".shp",sep=""))){
+      stop("Shape file: ", paste(overlapShpFolder,"/",overlapShpFile,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
+    overlapShape=rgdal::readOGR(dsn=overlapShpFolder,layer=overlapShpFile,use_iconv=T,encoding='UTF-8')
+    print(paste("Sub Reg Shape : ",overlapShpFolder,"/",overlapShpFile,".shp",sep=""))
+    print(raster::head(overlapShape))
+  } # if(!is.null(overlapShpFolder) & !is.null(overlapShpFile)){
 
   if(is.null(boundaryRegShape)){
     if(!is.null(boundaryRegShpFolder) & !is.null(boundaryRegShpFile)){
@@ -191,10 +193,10 @@ dir=paste(dirOutputs, "/Maps/Boundaries/",region_i,sep = "")
    rgdal::writeOGR(obj=shapex, dsn=dir, layer=paste(boundaryRegionsSelect,"_Subregion_",subRegType,nameAppend,sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 
    # Crop GCAM Basins to shape boundary and set projection
-   if(!is.null(gcamBasinShape) & extension==T){
+   if(!is.null(overlapShape) & extension==T){
      if(!is.null(boundaryShape)){
-     sp::proj4string(gcamBasinShape) <- sp::proj4string(boundaryShape)
-     gcamBasinShapeCropped<-raster::intersect(gcamBasinShape,boundaryShape)}else{
+     sp::proj4string(overlapShape) <- sp::proj4string(boundaryShape)
+     overlapShapeCropped<-raster::intersect(overlapShape,boundaryShape)}else{
        print("BoundaryShape not provided. Not cropping GCAM Basins.")
      }
      }
@@ -272,7 +274,7 @@ metis.map(dataPolygon=shape,fileName = paste(boundaryRegionsSelect,"_",subRegTyp
 #  Extended Map Highlight
 underLayer<-metis.map(dataPolygon=boundaryregion,fileName = paste(boundaryRegionsSelect,"_mapRegionHighlight",nameAppend,sep=""),dirOutputs = dir,
                     underLayer = underLayer,bgColor="lightblue1",frameShow=T,printFig=F)
-metis.map(dataPolygon=gcamBasinShapeCropped,fileName = paste(boundaryRegionsSelect,"_mapRegionHighlightGCAMBASINS",nameAppend,sep=""),dirOutputs = dir,
+metis.map(dataPolygon=overlapShapeCropped,fileName = paste(boundaryRegionsSelect,"_mapRegionHighlightoverlap",nameAppend,sep=""),dirOutputs = dir,
         underLayer = underLayer,borderColor="red",bgColor="lightblue1",frameShow=T)
 }
 
@@ -415,7 +417,8 @@ if(!is.null(grid)){
 # Save Cropped Grid
 
 gridCropped<-tidyr::gather(gridCropped,key=key,value=value,-c(lat,lon))%>%
-  tidyr::separate(col="key",into=names(grid)[!names(grid) %in% c("lat","lon","value")],sep="_")
+  tidyr::separate(col="key",into=names(grid)[!names(grid) %in% c("lat","lon","value")],sep="_")%>%
+  unique()
 
 for(colx in names(gridCropped)){
   if(is.character(gridCropped[[colx]])){
@@ -427,6 +430,7 @@ for(colx in names(gridCropped)){
 }
 
 polyType=subRegType
+if (!dir.exists(paste(dirOutputs, "/Grids", sep = ""))){dir.create(paste(dirOutputs, "/Grids", sep = ""))}
 utils::write.csv(gridCropped%>%dplyr::mutate(region=region_i,polyType=polyType),
                 file = paste(dirOutputs, "/Grids/gridCropped_",region_i,"_",polyType,nameAppend,".csv", sep = ""),row.names = F)
 
