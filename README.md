@@ -43,13 +43,10 @@ date: January 2019
 <!-- ------------------------>
 # <a name="Introduction"></a>Introduction
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right"> 
-[Contents](#Contents) 
-</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
-[Contents](#Contents)
+[                                                                       Back to Contents](#Contents)
 
 The Metis model is a joint effort by the Pacific Northwest National Laboratory (PNNL) and the University of Maryland (UMD). The name "Metis" is inspired by the the Greek Goddes of goddess of "good counsel, planning, cunning and wisdom". The overall goal of the Metis model is to develop a framework to analyze dynamics across multiple sectors including water, energy, land and socio-economics at various spatial and temporal scales. The Metis model is designed to be a flexible tool to be used in conjunction with both global integrated assessment models (IAMs) which capture global dynamics as well as more detailed models which can capture specific sub-regional and sectoral details at finer resolutions. Metis integrates with these other tools by sharing data in standarized formats across the platforms. 
 
