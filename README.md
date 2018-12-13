@@ -46,7 +46,7 @@ date: January 2019
 <!-- ------------------------>
 <!-- ------------------------>
 
-[                                                                       Back to Contents](#Contents)
+[Back to Contents](#Contents)
 
 The Metis model is a joint effort by the Pacific Northwest National Laboratory (PNNL) and the University of Maryland (UMD). The name "Metis" is inspired by the the Greek Goddes of goddess of "good counsel, planning, cunning and wisdom". The overall goal of the Metis model is to develop a framework to analyze dynamics across multiple sectors including water, energy, land and socio-economics at various spatial and temporal scales. The Metis model is designed to be a flexible tool to be used in conjunction with both global integrated assessment models (IAMs) which capture global dynamics as well as more detailed models which can capture specific sub-regional and sectoral details at finer resolutions. Metis integrates with these other tools by sharing data in standarized formats across the platforms. 
 
@@ -63,9 +63,10 @@ The Metis model is a joint effort by the Pacific Northwest National Laboratory (
 <!-- ------------------------>
 # <a name="Need"></a>Need
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
+
+[Back to Contents](#Contents)
 
 The motivation behind developing the Metis model is to bridge the gap between models working at different spatial and temporal resolutions. Sector specific details such as diurnal electricity demand profiles and the availability of intermittent technologies are often captured by fine resolution sector specific models. These finer scale models are however often limited in scope to the specific sector in question. With increasing pressures on limited resources from growing populations, technological advances and a changing climate the links across human-earth systems are becoming more critical. These links include feedbacks across system such as water demands for powerplant cooling and hydropower; energy demands for water purification, transfers and distribution; both energy and water demands for agriculture production and harvesting; and the impacts of land-use change emissions and water demands as a result of biofuel expansion and deforestation. All of these are driven by socio-economic developments and policy decisions across these systems. Global integrateed assessment models are often used to capture these broader longterm dynamics on larger spatial and temporal scales. The development of the Metis model will address this need to capture both broader long-term dynamcis across systems and global markets as well as sub-regional details. The model will do this by taking global data and dynamcis from an IAM such as GCAM and then downscale the results to relevant sub-regional boundaries based on the needs of local stakeholders. The downscaled data will then be refined and calibrated with local sector specific data. This will be followed by calibration of the local inter-sectoral links and the model will then be used for future sector specific policy analysis at the relevant scales while still including global dynamics.
 
@@ -74,9 +75,10 @@ The motivation behind developing the Metis model is to bridge the gap between mo
 <!-- ------------------------>
 # <a name="Framework"></a> Framework
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
+
+[Back to Contents](#Contents)
 
 The model is composed of different modules as shown below. The first three modules: "GCAM", "Charting" and "Mapping", serve as a multi-sector accounting tool which can be used to visualize and analyze demands, supplies and distribution of various resources across multiple sectors at flexible sub-regional scales. The "Nexus Links" and "Forecasting" modules, will focus on understanding the links between the different sectors and sub-regions to allow analyis of cross-sector dynamics. The modules are designed to be flexible and easy to use by multiple stakeholders with varying needs. 
 
@@ -88,10 +90,10 @@ The model is composed of different modules as shown below. The first three modul
 <!-- ------------------------>
 # <a name="InstallGuide"></a>Installation Guide
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
+[Back to Contents](#Contents)
 
 1. Clone the repo from github:
 
@@ -148,10 +150,10 @@ Save and unzip the file in ./metis/datafiles/gis.
 <!-- ------------------------>
 # <a name="WalkThrough"></a> Step-by-step Walkthrough
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
+[Back to Contents](#Contents)
 
 This section walks through the different features of the metis package using the example data provided in order to familiarize the user with the different functions. All metis R functions are stored in ./metis/R. In Metis version 1.0.0 the following functions are available:
 
@@ -181,9 +183,10 @@ The workflow for data processing, charting and mapping is shown below. The follo
 <!-- ------------------------>
 ## <a name="metis.readgcam"></a> metis.readgcam
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
+
+[Back to Contents](#Contents)
 
 <b> Key Inputs </b>  
 
@@ -245,9 +248,10 @@ The function metis.readgcam() returns a list which contains a dataframe with the
 <!-- ------------------------>
 ## <a name="metis.chartsProcess"></a> metis.chartsProcess
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
+
+[Back to Contents](#Contents)
 
 <b> Key Inputs </b>  
 
@@ -303,9 +307,10 @@ charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
 <!-- ------------------------>
 ## <a name="metis.grid2poly"></a> metis.grid2poly
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
+
+[Back to Contents](#Contents)
 
 <b> Key Inputs </b>  
 
@@ -383,9 +388,10 @@ polyBermeo3Cropped<-metis.grid2poly(grid=grid,
 <!-- ------------------------>
 ## <a name="metis.mapsProcess"></a> metis.mapsProcess
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
+
+[Back to Contents](#Contents)
 
 <b> Key Inputs </b>  
 
@@ -443,5 +449,4 @@ metis.mapProcess(polygonDataTables=examplePolygonTable,
 
 <p align="center"> <img src="READMEfigs/metisHeaderThin.PNG"></p>
 
-<p align="right">[Contents](#Contents)</p>
-
+[Back to Contents](#Contents)
