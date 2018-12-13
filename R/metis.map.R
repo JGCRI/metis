@@ -206,16 +206,16 @@ if(length(fillPalette)==1){
 if(!is.null(raster)){
 
   if(is.null(legendBreaks)){legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(raster@data%>%dplyr::select(fillColumn)%>%as.matrix())}
-  map<-tm_shape(raster) + tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
+  map<-tmap::tm_shape(raster) + tmap::tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
                                   style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks)
 
   if(!is.null(raster)){checkFacets=length(names(raster))}else{
   }
   if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
-    map<- map + tm_facets(free.scales.fill=facetFreeScale,
+    map<- map + tmap::tm_facets(free.scales.fill=facetFreeScale,
                           nrow=facetRows,
                           ncol=min(facetCols,length(fillColumn))) +
-      tm_layout(panel.labels=gsub("X","",fillColumn),
+      tmap::tm_layout(panel.labels=gsub("X","",fillColumn),
                 panel.label.bg.color = facetLabelColor,
                 panel.label.size = facetLabelSize)
     figWidth=figWidth*1.2
@@ -234,7 +234,7 @@ if(!is.null(raster)){
   shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
   sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
   neg <- rgeos::gDifference(shapeExpandEtxent,shape)
-  map<-map+tm_shape(neg)+tm_fill(col=bgColor)}
+  map<-map+tmap::tm_shape(neg)+tmap::tm_fill(col=bgColor)}
     }
 }
 
@@ -245,31 +245,31 @@ if(is.null(underLayer)){
   if(grepl("tmap",class(shape)[1],ignore.case=T)){
     if(!is.null(map)){map<-map+shape}else{map<-shape}
     }else
-      if(!is.null(map)){map<-map+tm_shape(shape)}else{map<-tm_shape(shape)}
+      if(!is.null(map)){map<-map+tmap::tm_shape(shape)}else{map<-tmap::tm_shape(shape)}
   }else{
     if(grepl("tmap",class(shape)[1],ignore.case=T)){
       if(!is.null(map)){map<-map+underLayer+shape}else{map<-underLayer+shape}
       }else
-        if(!is.null(map)){map<-map+underLayer+tm_shape(shape)}else{map<-underLayer+tm_shape(shape)}
+        if(!is.null(map)){map<-map+underLayer+tmap::tm_shape(shape)}else{map<-underLayer+tmap::tm_shape(shape)}
   }
 
 if(!is.null(shape)){
 
 if(grepl("line",class(shape)[1],ignore.case=T)){
-  map=map +  tm_lines(col=borderColor,lwd=lwd, lty=lty)}
+  map=map +  tmap::tm_lines(col=borderColor,lwd=lwd, lty=lty)}
 
 if(grepl("polygon",class(shape)[1],ignore.case=T) | grepl("tmap",class(shape)[1],ignore.case=T)){
   if(is.null(fillColumn)){
-    map= map + tm_borders(col=borderColor,lwd=lwd, lty=lty)
+    map= map + tmap::tm_borders(col=borderColor,lwd=lwd, lty=lty)
   }else{
 if(is.null(raster)){
 if(is.null(legendBreaks)){legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(shape@data%>%dplyr::select(fillColumn)%>%as.matrix())}
 #names(shape)[names(shape) %in% fillColumn]<-gsub(" ","_",names(shape)[names(shape) %in% fillColumn])
-map<-map + tm_fill(col=fillColumn, palette = fillPalette, title=legendTitle,
+map<-map + tmap::tm_fill(col=fillColumn, palette = fillPalette, title=legendTitle,
                    style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks,alpha=alpha,colorNA=NULL) +
-           tm_borders(col=borderColor,lwd=lwd, lty=lty)
+           tmap::tm_borders(col=borderColor,lwd=lwd, lty=lty)
 }else{
-  map<-map + tm_borders(col=borderColor,lwd=lwd, lty=lty)
+  map<-map + tmap::tm_borders(col=borderColor,lwd=lwd, lty=lty)
 }
   }
 
@@ -278,7 +278,7 @@ map<-map + tm_fill(col=fillColumn, palette = fillPalette, title=legendTitle,
   if(labels!=F){
     if(is.null(raster)){
       if(!is.null(fillColumn)){
-      map= map + tm_text(fillColumn,scale=labelsSize,auto.placement=labelsAutoPlace, col=labelsColor)}else{
+      map= map + tmap::tm_text(fillColumn,scale=labelsSize,auto.placement=labelsAutoPlace, col=labelsColor)}else{
         print("For labels text need to define fillColumn. Ignoring text labels for now.")}
     }
   }
@@ -286,31 +286,31 @@ map<-map + tm_fill(col=fillColumn, palette = fillPalette, title=legendTitle,
   } # Close Polygon Maps
 
 
-if(!is.null(legendOutsidePosition)){map <- map + tm_layout(legend.outside.position = legendOutsidePosition)}
-if(!is.null(legendPosition)){map <- map + tm_layout(legend.position = legendPosition)}
+if(!is.null(legendOutsidePosition)){map <- map + tmap::tm_layout(legend.outside.position = legendOutsidePosition)}
+if(!is.null(legendPosition)){map <- map + tmap::tm_layout(legend.position = legendPosition)}
 
 
 if(is.null(raster)){if(!is.null(shape)){checkFacets=length(names(shape))-1}
 if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
-  map<- map + tm_facets(free.scales.fill=facetFreeScale,
+  map<- map + tmap::tm_facets(free.scales.fill=facetFreeScale,
                         nrow=facetRows,
                         ncol=min(facetCols,length(fillColumn))) +
-              tm_layout(panel.labels=gsub("X","",fillColumn),
+              tmap::tm_layout(panel.labels=gsub("X","",fillColumn),
                         panel.label.bg.color = facetLabelColor,
                         panel.label.size = facetLabelSize)
   figWidth=figWidth*1.2
 }}
 
   map<- map +
-    tm_layout(legend.show = legendShow,
+    tmap::tm_layout(legend.show = legendShow,
               legend.outside=legendOutside,
               legend.title.size = legendTitleSize,
               legend.text.size = legendTextSize)+
-    tm_layout(frame = frameShow, bg.color=bgColor)+
-    tm_layout(main.title.position="left",main.title.size=1.5,
+    tmap::tm_layout(frame = frameShow, bg.color=bgColor)+
+    tmap::tm_layout(main.title.position="left",main.title.size=1.5,
               inner.margins = rep(0,4),outer.margins=rep(0.01,4))
 
-if(!is.null(legendDigits)){map<- map + tm_layout(legend.format = list(digits = legendDigits))}
+if(!is.null(legendDigits)){map<- map + tmap::tm_layout(legend.format = list(digits = legendDigits))}
 
 
 if(!is.null(overLayer)){

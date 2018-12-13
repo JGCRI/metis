@@ -189,6 +189,13 @@ gridMetis<-metis.prepGrid(
 # Prepare Poly Tables
 #------------------------
 
+# Grid to Shape
+gridMetisData<-paste(getwd(),"/outputs/Grids/gridMetis.RData",sep="")
+load(gridMetisData) # grid is called gridMetis
+grid<-gridMetis
+
+grid<-grid%>%filter(!class %in% c("Non Agriculture","Total"))
+
 polyIndiaGADM<-metis.grid2poly(grid=grid,
                            boundaryRegShape=NULL,
                            subRegShape=NULL,
