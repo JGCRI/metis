@@ -24,7 +24,7 @@ date: January 2019
 
 <!-- ------------------------>
 <!-- ------------------------>
-# <a name="TOC"></a>Table of Contents
+# <a name="Contents"></a>Contents
 <!-- ------------------------>
 <!-- ------------------------>
 
@@ -42,14 +42,14 @@ date: January 2019
 <!-- ------------------------>
 # <a name="Introduction"></a>Introduction
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Back to TOC](#TOC)</p>
+<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
 The Metis model is a joint effort by the Pacific Northwest National Laboratory (PNNL) and the University of Maryland (UMD). The name "Metis" is inspired by the the Greek Goddes of goddess of "good counsel, planning, cunning and wisdom". The overall goal of the Metis model is to develop a framework to analyze dynamics across multiple sectors including water, energy, land and socio-economics at various spatial and temporal scales. The Metis model is designed to be a flexible tool to be used in conjunction with both global integrated assessment models (IAMs) which capture global dynamics as well as more detailed models which can capture specific sub-regional and sectoral details at finer resolutions. Metis integrates with these other tools by sharing data in standarized formats across the platforms. 
 
 <p align="center"> <b> Metis - A model to bridge the gap between coarse resolution IAMs and finer-resolution sector specific models </b> </p>
-<p align="center"> <img src="READMEfigs/metis_MidSpatial.png"></p>
+<p align="center"> <img src="READMEfigs/metis_MidSpatial.PNG"></p>
 
 - The Metis modeling development platform is hosted on github at: https://github.com/zarrarkhan/metis
 - The address to clone this repo is: https://github.com/zarrarkhan/metis.git
@@ -61,7 +61,7 @@ The Metis model is a joint effort by the Pacific Northwest National Laboratory (
 <!-- ------------------------>
 # <a name="Need"></a>Need
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Back to TOC](#TOC)</p>
+<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
@@ -72,7 +72,7 @@ The motivation behind developing the Metis model is to bridge the gap between mo
 <!-- ------------------------>
 # <a name="Framework"></a> Framework
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Back to TOC](#TOC)</p>
+<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
@@ -86,7 +86,7 @@ The model is composed of different modules as shown below. The first three modul
 <!-- ------------------------>
 # <a name="InstallGuide"></a>Installation Guide
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Back to TOC](#TOC)</p>
+<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
@@ -139,14 +139,14 @@ Save and unzip the file in ./metis/datafiles/gis.
 - mapping: This contains two files which are used to map color palettes and other parameters not provided by stakeholder tables.
 
 <p align="center"> <b> Metis Initial Folders </b> </p>
-<p align="center"> <img src="READMEfigs/metis_initialFolders.png"></p>
+<p align="center"> <img src="READMEfigs/metis_initialFolders.PNG"></p>
 
 
 <!-- ------------------------>
 <!-- ------------------------>
 # <a name="WalkThrough"></a> Step-by-step Walkthrough
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Back to TOC](#TOC)</p>
+<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
@@ -179,7 +179,7 @@ The workflow for data processing, charting and mapping is shown below. The follo
 <!-- ------------------------>
 ## <a name="metis.readgcam"></a> metis.readgcam
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Back to TOC](#TOC)</p>
+<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
@@ -243,7 +243,7 @@ The function metis.readgcam() returns a list which contains a dataframe with the
 <!-- ------------------------>
 ## <a name="metis.chartsProcess"></a> metis.chartsProcess
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Back to TOC](#TOC)</p>
+<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
@@ -301,7 +301,7 @@ charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
 <!-- ------------------------>
 ## <a name="metis.grid2poly"></a> metis.grid2poly
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Back to TOC](#TOC)</p>
+<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
@@ -328,7 +328,7 @@ metis.grid2poly is used to aggregate gridded data to given sub-regional spatial 
 
 
 <p align="center"> <b> metis.grid2poly metis.grid2poly conceptual aggregation methods  </b> </p>
-<p align="center"> <img src="READMEfigs/metis_moduleGrid2PolySpatAgg.PNG"></p>
+<p align="center"> <img src="READMEfigs/metis_moduleGrid2PolySpatAgg.png"></p>
 
 
 metis.grid2poly can also be used to create maps showing where the sub-region lies in the greater region. For this option a boundary region should be defined. GADM boundary region files have been made available throught the osf repository https://osf.io/pbta5/). Once grid2poly has been run a folder for "Maps" and a folder for "Grids" (if a grid file was provided) are created. Within the Maps folder (./metis/outputs/Maps) the user will find a Tables folder which contains all the data used to create the map as a well as a template for stakeholders to input their own data as a new scenario by sub-region. The Maps folder will also contain a "Boundary" folder which contains the boundary files defining each region and subregion and also includes shapefiles incase these need to be shared with others. The folder structure and example output boundary maps are shown in the figures that follow. If a grid has been provided then a "Grid" folder is also created which contains the cropped gridded data which can be used in for mapping.
@@ -381,7 +381,7 @@ polyBermeo3Cropped<-metis.grid2poly(grid=grid,
 <!-- ------------------------>
 ## <a name="metis.mapsProcess"></a> metis.mapsProcess
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Back to TOC](#TOC)</p>
+<p align="right">[Contents](#Contents)</p>
 <!-- ------------------------>
 <!-- ------------------------>
 
@@ -441,5 +441,5 @@ metis.mapProcess(polygonDataTables=examplePolygonTable,
 
 <p align="center"> <img src="READMEfigs/metisHeaderThin.PNG"></p>
 
-<p align="right">[Back to TOC](#TOC)</p>
+<p align="right">[Contents](#Contents)</p>
 
