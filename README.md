@@ -43,7 +43,7 @@ date: January 2019
 <!-- ------------------------>
 # <a name="Introduction"></a>Introduction
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<p align="right">[Contents](#Contents)</p>
+<p align="right"> [Contents](#Contents) </p>
 <!-- ------------------------>
 <!-- ------------------------>
 
