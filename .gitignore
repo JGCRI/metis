@@ -9,4 +9,6 @@ outputs
 LAC_dataProj.proj
 Uruguay_dataProj.proj
 gis
-grids
+**/grids/demeter
+**/grids/tethys
+**/grids/xanthos

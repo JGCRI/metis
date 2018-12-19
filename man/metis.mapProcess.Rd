@@ -6,14 +6,20 @@
 \usage{
 metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), xRange = "All",
-  labels = F, labelsSize = 1.2, regionsSelect = NULL,
-  subRegShape = NULL, subRegShpFolder = paste(getwd(),
-  "/dataFiles/gis/admin_gadm36", sep = ""),
-  subRegShpFile = paste("gadm36_1", sep = ""), subRegCol = "NAME_1",
+  labels = F, labelsSize = 1.2, subRegShape = NULL,
+  subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
   subRegType = "subRegType", nameAppend = "",
-  rasterCoverNegShape = T, legendOutsidePosition = NULL,
-  legendPosition = NULL, legendFixedBreaks = 5, animateOn = T,
-  delay = 100, legendTitleSize = 1, scenRef = NULL)
+  legendOutsidePosition = NULL, legendPosition = NULL,
+  legendFixedBreaks = 5, animateOn = T, delay = 100,
+  legendTitleSize = 1, scenRef = NULL, extension = F,
+  boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
+  boundaryRegShpFile = NULL, boundaryRegCol = NULL,
+  boundaryRegionsSelect = NULL, fillcolorNA = NULL,
+  extendedFillColor = "grey75", extendedBGColor = "lightblue1",
+  extendedHighLightColor = "cornsilk1", extendedLabelsColor = "grey30",
+  extdendedLabelSize = 0.7, extendedShape = NULL,
+  extendedShapeCol = NULL, expandPercent = 2,
+  projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -28,8 +34,6 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{labelsSize}{Default = 1.2,}
 
-\item{regionsSelect}{Default = NULL,}
-
 \item{subRegShape}{Default = NULL,}
 
 \item{subRegShpFolder}{Default = paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),}
@@ -41,8 +45,6 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{subRegType}{Default ="subRegType",}
 
 \item{nameAppend}{Default =""}
-
-\item{rasterCoverNegShape}{Default =T}
 
 \item{legendOutsidePosition}{Default = NULL, # "right","left","top","bottom", "center"}
 
@@ -57,6 +59,38 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{legendTitleSize}{Default = 1,}
 
 \item{scenRef}{Default = NULL}
+
+\item{extension}{Default =F,}
+
+\item{boundaryRegShape}{Default = NULL,}
+
+\item{boundaryRegShpFolder}{Default= NULL . Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default="")}
+
+\item{boundaryRegShpFile}{Default=NULL . Suggested paste("ne_10m_admin_0_countries",sep  Default=""),}
+
+\item{boundaryRegCol}{Default=NULL. Suggested "NAME_0",}
+
+\item{boundaryRegionsSelect}{Default = NULL,}
+
+\item{fillcolorNA}{Default = NULL}
+
+\item{extendedFillColor}{Default ="grey75",}
+
+\item{extendedBGColor}{Default ="lightblue1",}
+
+\item{extendedHighLightColor}{Default ="cornsilk1",}
+
+\item{extendedLabelsColor}{Default ="grey30",}
+
+\item{extdendedLabelSize}{Default =0.7,}
+
+\item{extendedShape}{Default =NULL,}
+
+\item{extendedShapeCol}{Default =NULL,}
+
+\item{expandPercent}{Default =2}
+
+\item{projX}{Default = projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"}
 }
 \value{
 Returns the formatted data used to produce chart

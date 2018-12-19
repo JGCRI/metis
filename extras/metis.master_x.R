@@ -212,26 +212,10 @@ polyIndiaGADM<-metis.grid2poly(grid=grid,
                            dirOutputs=paste(getwd(),"/outputs",sep=""),
                            nameAppend="_gadm",
                            expandbboxPercent=2,
-                           extension=F)
+                           extension=F,
+                           labelsSize=0.8)
 
 
-polyIndiaLocal<-metis.grid2poly(grid=grid,
-                           boundaryRegShape=NULL,
-                           subRegShape=NULL,
-                           boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_India",sep=""),
-                           boundaryRegShpFile=paste("IND_adm1",sep=""),
-                           boundaryRegCol="NAME_0",
-                           boundaryRegionsSelect="India",
-                           subRegShpFolder=NULL,
-                           subRegShpFile=NULL,
-                           subRegCol="NAME_1",
-                           subRegionsSelect=NULL,
-                           subRegType="State",
-                           aggType="depth",
-                           dirOutputs=paste(getwd(),"/outputs",sep=""),
-                           nameAppend="_local",
-                           expandbboxPercent=2,
-                           extension=F)
 
 
 library(rgdal)
@@ -460,17 +444,8 @@ metis.mapProcess(polygonDataTables=polyCatchmentBermejo1,
 # nameAppend="_hydrobidCatch"
 # legendPosition=c("RIGHT","top")
 
-# Grid to Shape
-gridMetisData<-paste(getwd(),"/outputs/Grids/gridMetis.RData",sep="")
-load(gridMetisData) # grid is called gridMetis
-grid<-gridMetis
-
-polygonDataTables=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_State_origDownscaled_local.csv",sep="")
-polygonDataTables<-utils::read.csv(paste(polygonDataTables), stringsAsFactors = F)%>%tibble::as.tibble()
-polyIndiaLocal=polygonDataTables
-
-polyIndiaLocal1=polyIndiaLocal%>%filter(param=="xanthosRunoff")%>%mutate(classPalette="pal_hot")
-grid1<-grid%>%filter(param=="xanthosRunoff")%>%mutate(classPalette="pal_hot")
+gridX<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+polyX<-paste(getwd(),"/dataFiles/examples/example_poly_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
 
 metis.mapProcess(polygonDataTables=polyIndiaLocal1,
                gridDataTables=NULL,
@@ -510,29 +485,4 @@ legendPosition=c("RIGHT","bottom")
 regionsSelect_i="India";scenario_i="Eg1";
 param_i="xanthosRunoff";x_i=2000
 
-#
-# #metis.map
-# dataPolygon=subRegShape
-# dataGrid=mapx
-# fillColumn = names(mapx@data)
-# legendShow = T
-# legendOutside = T
-# facetFreeScale = F
-# frameShow = T
-# labels=labels
-# labelsSize = labelsSize
-# legendTitle =legendTitle
-# legendStyle="kmeans"
-# legendFixedBreaks = 10
-# legendDigits = legendDigits
-# legendOutsidePosition = NULL
-# legendPosition = NULL
-# fillPalette = fillPalette
-# fileName = paste("map_",regionsSelect_i,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-# dirOutputs = paste(dirOutputs,"/Maps/",regionsSelect_i,"/raster/",scenario_i,"/byYear",sep = "")
-#
-# library("tmap",quietly = T)
-# library("tidyr",quietly = T)
-# library("dplyr",quietly = T)
-# library("tibble",quietly = T)
-# library("rgeos",quietly = T)
+
