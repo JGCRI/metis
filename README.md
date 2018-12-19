@@ -410,7 +410,7 @@ bermejoBoundaries<- metis.boundaries(
 
 <p align="center"> <b> metis.boundaries Outputs and Example Charts </b> </p>
 <p align="center"> <img src="READMEfigs/metis_moduleBoundary1.png"></p>
-<p align="center"> <img src="READMEfigs/metis_moduleBoundary2.PNG"></p>
+<p align="center"> <img src="READMEfigs/metis_moduleBoundary2.png"></p>
 
 </p>
 </details>
