@@ -5,45 +5,40 @@
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @param grid  Default=NULL,
-#' @param boundaryRegShape  Default=NULL,
 #' @param subRegShape  Default=NULL,
-#' @param boundaryRegShpFolder  Default=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep  Default=""),
-#' @param boundaryRegShpFile  Default=paste("gadm36_0",sep  Default=""),
-#' @param boundaryRegCol  Default="NAME_0",
 #' @param boundaryRegionsSelect  Default=NULL,
-#' @param subRegShpFolder  Default=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep  Default=""),
-#' @param subRegShpFile  Default=paste("gadm36_1",sep  Default=""),
-#' @param subRegCol  Default="NAME_1",
-#' @param subRegionsSelect  Default=NULL,
+#' @param subRegShpFolder  Default = NULL, Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default="")
+#' @param subRegShpFile  Default = NULL, paste("ne_10m_admin_1_states_provinces",sep  Default=""),
+#' @param subRegCol  Default = NULL, "NAME_1",
 #' @param subRegType  Default="subRegType",
 #' @param aggType  Default=NULL,
 #' @param dirOutputs  Default=paste(getwd(),"/outputs",sep  Default=""),
 #' @param nameAppend  Default="",
-#' @param expandbboxPercent  Default=2,
-#' @param extension  Default=T,
-#' @param overlapShpFolder Default = NULL. Can save to paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),
-#' @param overlapShpFile Default = NULL. Can save to ="Global235_CLM_final_5arcmin_multipart"
+#' @param labelsSize Default =1.2
 #' @export
 
 metis.grid2poly<- function(grid=NULL,
-                         boundaryRegShape=NULL,
-                         boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
-                         boundaryRegShpFile=paste("gadm36_0",sep=""),
-                         boundaryRegCol="NAME_0",
                          boundaryRegionsSelect=NULL,
                          subRegShape=NULL,
-                         subRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
-                         subRegShpFile=paste("gadm36_1",sep=""),
-                         subRegCol="NAME_1",
-                         subRegionsSelect=NULL,
+                         subRegShpFolder=NULL,
+                         subRegShpFile=NULL,
+                         subRegCol=NULL,
                          subRegType="subRegType",
                          aggType=NULL,
                          dirOutputs=paste(getwd(),"/outputs",sep=""),
                          nameAppend="",
-                         expandbboxPercent=2,
-                         extension=F,
-                         overlapShpFolder=NULL,
-                         overlapShpFile=NULL) {
+                         labelsSize=1.2) {
+#
+#   grid=NULL
+#   boundaryRegionsSelect=NULL
+#   subRegShape=NULL
+#   subRegShpFolder=NULL
+#   subRegShpFile=NULL
+#   subRegCol=NULL
+#   subRegType="subRegType"
+#   aggType=NULL
+#   dirOutputs=paste(getwd(),"/outputs",sep="")
+#   nameAppend=""
 
 #------------------
 # Load required Libraries
@@ -61,7 +56,7 @@ requireNamespace("tmap",quietly = T)
 #----------------
 
 NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
-  param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon
+  param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon->overlapShape->gridPolyLoop
 
 #----------------
 # Check input data format
@@ -90,55 +85,25 @@ NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
 # Load Shapefile and save boundary maps
 #---------------
 
-# GCAM Basin
-  if(!is.null(overlapShpFolder) & !is.null(overlapShpFile)){
-    if(!dir.exists(overlapShpFolder)){
-      stop("Shapefile folder: ", overlapShpFolder ," is incorrect or doesn't exist.",sep="")}
-    if(!file.exists(paste(overlapShpFolder,"/",overlapShpFile,".shp",sep=""))){
-      stop("Shape file: ", paste(overlapShpFolder,"/",overlapShpFile,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
-    overlapShape=rgdal::readOGR(dsn=overlapShpFolder,layer=overlapShpFile,use_iconv=T,encoding='UTF-8')
-    print(paste("Sub Reg Shape : ",overlapShpFolder,"/",overlapShpFile,".shp",sep=""))
-    print(raster::head(overlapShape))
-  } # if(!is.null(overlapShpFolder) & !is.null(overlapShpFile)){
-
-  if(is.null(boundaryRegShape)){
-    if(!is.null(boundaryRegShpFolder) & !is.null(boundaryRegShpFile)){
-  if(!dir.exists(boundaryRegShpFolder)){
-    stop("Shapefile folder: ", boundaryRegShpFolder ," is incorrect or doesn't exist.",sep="")}
-  if(!file.exists(paste(boundaryRegShpFolder,"/",boundaryRegShpFile,".shp",sep=""))){
-    stop("Shape file: ", paste(boundaryRegShpFolder,"/",boundaryRegShpFile,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
-  boundaryRegShape=rgdal::readOGR(dsn=boundaryRegShpFolder,layer=boundaryRegShpFile,use_iconv=T,encoding='UTF-8')
-  print(paste("Boundary Shape : ",boundaryRegShpFolder,"/",boundaryRegShpFile,".shp",sep=""))
-  print(raster::head(boundaryRegShape))
-  } # close if(!is.null(boundaryRegShpFolder) & !is.null(boundaryRegShpFile))
-  }
-
   if(is.null(subRegShape)){
     if(!is.null(subRegShpFolder) & !is.null(subRegShpFile)){
     if(!dir.exists(subRegShpFolder)){
       stop("Shapefile folder: ", subRegShpFolder ," is incorrect or doesn't exist.",sep="")}
     if(!file.exists(paste(subRegShpFolder,"/",subRegShpFile,".shp",sep=""))){
       stop("Shape file: ", paste(subRegShpFolder,"/",subRegShpFile,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
-    subRegShape=rgdal::readOGR(dsn=subRegShpFolder,layer=subRegShpFile,use_iconv=T,encoding='UTF-8')
+    shape=rgdal::readOGR(dsn=subRegShpFolder,layer=subRegShpFile,use_iconv=T,encoding='UTF-8')
     print(paste("Sub Reg Shape : ",subRegShpFolder,"/",subRegShpFile,".shp",sep=""))
-    print(raster::head(subRegShape))
-    } # if(!is.null(subRegShpFolder) & !is.null(subRegShpFile)){
-  }
+    print(raster::head(shape))
+    }else {
+        stop("No valid boundary or subregional shape file available")
+      }# if(!is.null(subRegShpFolder) & !is.null(subRegShpFile)){
+  }else{shape=subRegShape}
 
-
-
-  if(is.null(boundaryRegShape) & is.null(subRegShape)){
-    stop("No valid boundary or subregional shape file available")}
-
-  if(!is.null(boundaryRegShape) & !is.null(subRegShape)){
-    sp::proj4string(boundaryRegShape) <- sp::proj4string(subRegShape)
-  }
 
   poly<-tibble::tibble()
 
   if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect="Region"}
 
-  for (region_i in boundaryRegionsSelect){
 
 #----------------
 # Create Folders
@@ -147,138 +112,10 @@ NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
 if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
 if (!dir.exists(paste(dirOutputs, "/Maps", sep = ""))){dir.create(paste(dirOutputs, "/Maps", sep = ""))}
 if (!dir.exists(paste(dirOutputs, "/Maps/Boundaries", sep = ""))){dir.create(paste(dirOutputs, "/Maps/Boundaries", sep = ""))}
-if (!dir.exists(paste(dirOutputs, "/Maps/Boundaries/",region_i, sep = ""))){dir.create(paste(dirOutputs, "/Maps/Boundaries/",region_i,sep = ""))}
+if (!dir.exists(paste(dirOutputs, "/Maps/Boundaries/",boundaryRegionsSelect, sep = ""))){dir.create(paste(dirOutputs, "/Maps/Boundaries/",boundaryRegionsSelect,sep = ""))}
 if (!dir.exists(paste(dirOutputs, "/Maps/Tables", sep = ""))){dir.create(paste(dirOutputs, "/Maps/Tables", sep = ""))}
-dir=paste(dirOutputs, "/Maps/Boundaries/",region_i,sep = "")
+dir=paste(dirOutputs, "/Maps/Boundaries/",boundaryRegionsSelect,sep = "")
 
-#----------------
-# Create Boundary and subRegional shapefiles
-#---------------
-
-  if(!is.null(subRegShape) & !is.null(boundaryRegShape)){
-    boundaryShape<-boundaryRegShape[which(boundaryRegShape[[boundaryRegCol]] %in% boundaryRegionsSelect),]
-    boundaryShape@data<-droplevels(boundaryShape@data)
-    shape <- raster::intersect(subRegShape,boundaryShape)
-    #shape@data<-shape@data%>%dplyr::select(subRegCol,boundaryRegCol)%>%unique
-     if(is.null(shape)){stop("Boundary and subregion files do not intersect.")}
-    }
-
-  if(is.null(subRegShape) & !is.null(boundaryRegShape)){
-      boundaryShape<-boundaryRegShape[which(boundaryRegShape[[boundaryRegCol]] %in% boundaryRegionsSelect),]
-      boundaryShape@data<-droplevels(boundaryShape@data)
-      shape<-boundaryRegShape[which(boundaryRegShape[[boundaryRegCol]] %in% boundaryRegionsSelect),]
-      #shape@data<-shape@data%>%dplyr::select(subRegCol,boundaryRegCol)%>%unique
-      shape@data<-droplevels(shape@data)
-      }
-
-  if(!is.null(subRegShape) & is.null(boundaryRegShape)){
-    if(!is.null(boundaryRegCol)){
-      if(boundaryRegCol %in% names(subRegShape@data)){
-    shape<-subRegShape[which(subRegShape[[boundaryRegCol]] %in% boundaryRegionsSelect),]}
-      boundaryShape<-shape}else{
-      shape<-subRegShape
-      boundaryShape<-shape
-      boundaryRegCol<-subRegCol
-    }
-    shape@data<-droplevels(shape@data)
-  }
-
-   shape@data=shape@data%>%dplyr::select(names(shape)[names(shape) %in% c(boundaryRegCol,subRegCol)])
-
-   boundaryShapex<-boundaryShape
-   boundaryShapex@data<-boundaryShapex@data%>%dplyr::rename("region"=boundaryRegCol)
-   shapex<-shape
-   shapex@data<-shapex@data%>%dplyr::rename("subRegion"=subRegCol)%>%dplyr::mutate(region=boundaryRegionsSelect)
-   rgdal::writeOGR(obj=boundaryShapex, dsn=dir, layer=paste(boundaryRegionsSelect,"_Boundary",nameAppend,sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
-   rgdal::writeOGR(obj=shapex, dsn=dir, layer=paste(boundaryRegionsSelect,"_Subregion_",subRegType,nameAppend,sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
-
-   # Crop GCAM Basins to shape boundary and set projection
-   if(!is.null(overlapShape) & extension==T){
-     if(!is.null(boundaryShape)){
-     sp::proj4string(overlapShape) <- sp::proj4string(boundaryShape)
-     overlapShapeCropped<-raster::intersect(overlapShape,boundaryShape)}else{
-       print("BoundaryShape not provided. Not cropping GCAM Basins.")
-     }
-     }
-
-
-#----------------
-# Create Boundary Extension
-#---------------
-
-    if(extension){
-
-    bbox1<-as.data.frame(sp::bbox(boundaryShape))   # Get Bounding box
-    expandbboxPercent<-expandbboxPercent; bbox1$min;bbox1$max
-    bbox1$min[1]<-if(bbox1$min[1]<0){(1+expandbboxPercent/100)*bbox1$min[1]}else{(1-expandbboxPercent/100)*bbox1$min[1]};
-    bbox1$min[2]<-if(bbox1$min[2]<0){(1+expandbboxPercent/100)*bbox1$min[2]}else{(1-expandbboxPercent/100)*bbox1$min[2]};
-    bbox1$max[1]<-if(bbox1$max[1]<0){(1-expandbboxPercent/100)*bbox1$max[1]}else{(1+expandbboxPercent/100)*bbox1$max[1]};
-    bbox1$max[2]<-if(bbox1$max[2]<0){(1-expandbboxPercent/100)*bbox1$max[2]}else{(1+expandbboxPercent/100)*bbox1$max[2]};
-    bbox1$min;bbox1$max;
-    bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
-    sp::proj4string(bbox1)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
-
-
-    if(!is.null(boundaryRegShape)){
-      shapeExtended <- raster::crop(boundaryRegShape,bbox1)
-      shapeExtended@data<-droplevels(shapeExtended@data)
-    }
-
-    if(!is.null(subRegShape) & is.null(boundaryRegShape)){
-      shapeExtended <- raster::crop(subRegShape,bbox1)
-      shapeExtended@data<-droplevels(shapeExtended@data)
-    }
-
-}
-
-#----------------
-# Modify Maps For Particular Regions if Data Available
-#---------------
-
-    if(region_i=="Argentina"){  # FOR ARGENTINA MERGE Ciudad de Buenos Aires into Buenos Aires
-      if(all(c("Ciudad de Buenos Aires","Buenos Aires") %in% unique(shape@data[[subRegCol]]))){
-      shape@data[[subRegCol]][which(shape@data[[subRegCol]]=="Ciudad de Buenos Aires")]<-"Buenos Aires"
-      shape<-raster::aggregate(shape, by= subRegCol)
-      shape@data<-droplevels(shape@data)}
-    }
-
-
-#----------------
-# Save boundary maps
-#---------------
-
-
-# Base Maps
-metis.map(dataPolygon=shape,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_map_blank",nameAppend,sep=""),dirOutputs = dir)
-metis.map(dataPolygon=shape,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_map_Filled",nameAppend,sep=""),dirOutputs = dir,
-           fillColumn = subRegCol)
-metis.map(dataPolygon=shape,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_map_blank_Labels",nameAppend,sep=""),dirOutputs = dir,
-           fillColumn = subRegCol,fillPalette = "white", labels=T)
-metis.map(dataPolygon=shape,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_map_Filled_Labels",nameAppend,sep=""),dirOutputs = dir,
-           fillColumn = subRegCol,labels=T)
-
-if(extension){
-# Extended Boundaries
-underLayer<-metis.map(dataPolygon=shapeExtended,dirOutputs = dir,printFig=F,
-                      fillColumn = boundaryRegCol,labels=T, fillPalette = "grey75", bgColor = "lightblue1", frameShow=T, labelsSize=0.7, labelsColor="grey30")
-boundaryregion<-metis.map(dataPolygon=boundaryShape,dirOutputs = dir,
-        fillColumn = boundaryRegCol, fillPalette = "cornsilk1", labels=T,printFig = F)
-#  Extended Map Highlight
-metis.map(dataPolygon=boundaryregion,fileName = paste(boundaryRegionsSelect,"_mapRegionHighlight",nameAppend,sep=""),dirOutputs = dir,
-        underLayer = underLayer,bgColor="lightblue1",frameShow=T)
-metis.map(dataPolygon=shape,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_ExtendedMap_Filled_Labels",nameAppend,sep=""),dirOutputs = dir,
-        fillColumn = subRegCol,labels=T,underLayer = underLayer,bgColor="lightblue1",frameShow=T)
-metis.map(dataPolygon=shape,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_ExtendedMap_Filled",nameAppend,sep=""),dirOutputs = dir,
-        fillColumn = subRegCol,labels=F,underLayer = underLayer,bgColor="lightblue1",frameShow=T)
-
-#  Extended Map Highlight
-underLayer<-metis.map(dataPolygon=boundaryregion,fileName = paste(boundaryRegionsSelect,"_mapRegionHighlight",nameAppend,sep=""),dirOutputs = dir,
-                    underLayer = underLayer,bgColor="lightblue1",frameShow=T,printFig=F)
-metis.map(dataPolygon=overlapShapeCropped,fileName = paste(boundaryRegionsSelect,"_mapRegionHighlightoverlap",nameAppend,sep=""),dirOutputs = dir,
-        underLayer = underLayer,borderColor="red",bgColor="lightblue1",frameShow=T)
-}
-
-print(paste("Boundary files saved to: ",dir,sep=""))
 
 #----------------
 # Read in shapefiles and check format
@@ -295,6 +132,7 @@ if(!is.null(grid)){
       grid<-grid%>%dplyr::mutate(aggType=aggType)
     }}
 
+  print("setting grid columns ...")
   for(colx in names(grid)){
     if(is.character(grid[[colx]])){
       grid[[colx]]<-gsub(" ","XSPACEX",grid[[colx]])
@@ -342,19 +180,25 @@ if(!is.null(grid)){
     sp::proj4string(rcropP)<-sp::proj4string(shape)
     rcropPx<-raster::intersect(shape,rcropP)
 
-    metis.map(dataPolygon=rcropPx,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_map_GridSize_Labels",nameAppend,sep=""),
+    if(is.null(gridPolyLoop)){
+    print("Printing Grid overlay...")
+    metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_map_GridSize_Labels",nameAppend,sep=""),
             dirOutputs = dir,
-            overLayer = metis.map(dataPolygon=shape,fillColumn = subRegCol,
-                                 fillPalette = "white",alpha=0,
-                                 labels=T,printFig=F))
+            overLayer = metis.map(labelsSize=labelsSize, dataPolygon=shape,fillColumn = subRegCol,
+                                 fillPalette = "white",alpha=0,facetsON=F,
+                                 labels=T,printFig=F),facetsON=F)
 
-    metis.map(dataPolygon=rcropPx,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_map_GridSize",nameAppend,sep=""),
+    print("Printing Grid overlay with Labels...")
+    metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_map_GridSize",nameAppend,sep=""),
             dirOutputs = dir,
-            overLayer = metis.map(dataPolygon=shape,fillColumn = subRegCol,
-                                fillPalette = "white",alpha=0,
-                                labels=F,printFig = F))
+            overLayer = metis.map(labelsSize=labelsSize, dataPolygon=shape,fillColumn = subRegCol,
+                                fillPalette = "white",alpha=0,facetsON=F,
+                                labels=F,printFig = F),facetsON=F)
+    }
+    gridPolyLoop=1; # To prevent gridded map being produced multiple times
 
     if(aggType_i=="depth"){
+      print("Aggregating depth ...")
       rcropPx@data$area<-raster::area(rcropPx)
       s1<-shape
       s1$subRegAreaSum<-raster::area(shape);
@@ -369,6 +213,7 @@ if(!is.null(grid)){
       polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(round(sum(.,na.rm=T),2)))
     }
     if(aggType_i=="vol"){
+      print("Aggregating vol ...")
       w <- raster::extract(r,shape, method="simple",weights=T, normalizeWeights=F);
       dfx<-data.frame()
       for (i in seq(w)){
@@ -415,7 +260,8 @@ if(!is.null(grid)){
 }else{print("No grid provided.")}
 
 # Save Cropped Grid
-
+if(!is.null(grid)){
+if(nrow(gridCropped)>0){
 gridCropped<-tidyr::gather(gridCropped,key=key,value=value,-c(lat,lon))%>%
   tidyr::separate(col="key",into=names(grid)[!names(grid) %in% c("lat","lon","value")],sep="_")%>%
   unique()
@@ -431,12 +277,11 @@ for(colx in names(gridCropped)){
 
 polyType=subRegType
 if (!dir.exists(paste(dirOutputs, "/Grids", sep = ""))){dir.create(paste(dirOutputs, "/Grids", sep = ""))}
-utils::write.csv(gridCropped%>%dplyr::mutate(region=region_i,polyType=polyType),
-                file = paste(dirOutputs, "/Grids/gridCropped_",region_i,"_",polyType,nameAppend,".csv", sep = ""),row.names = F)
+utils::write.csv(gridCropped%>%dplyr::mutate(region=boundaryRegionsSelect,polyType=polyType),
+                file = paste(dirOutputs, "/Grids/gridCropped_",boundaryRegionsSelect,"_",polyType,nameAppend,".csv", sep = ""),row.names = F)
+}} # If null grid
 
 
-
-  }# Close for boundaryRegionsSelect
 #----------------
 # Save template, csv and .RDATA
 #---------------
@@ -448,23 +293,23 @@ utils::write.csv(gridCropped%>%dplyr::mutate(region=region_i,polyType=polyType),
       dir.create(paste(getwd(),"/dataFiles", sep = ""))}  # dataFiles directory (should already exist)
     if (!dir.exists(paste(getwd(),"/dataFiles/mapping", sep = ""))){
       dir.create(paste(getwd(),"/dataFiles/mapping", sep = ""))}  # mapping directory
-    utils::write.csv(poly %>% dplyr::filter(region == region_i) %>%
+    utils::write.csv(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
                        dplyr::select(param,units,class,classPalette),
                      file = paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""),row.names = F)
 
 
-  for (region_i in boundaryRegionsSelect[(boundaryRegionsSelect %in% unique(poly$region))]) {
-    utils::write.csv(poly %>% dplyr::filter(region == region_i) %>%
+  for (boundaryRegionsSelect in boundaryRegionsSelect[(boundaryRegionsSelect %in% unique(poly$region))]) {
+    utils::write.csv(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
                        dplyr::select(scenario,param,units,class,value,x,subRegion,subRegType,region)%>%
                        dplyr::mutate(value=0,x=2015)%>%unique,
-                     file = paste(dirOutputs, "/Maps/Tables/subReg_",region_i,"_",subRegType,"_template",nameAppend,".csv", sep = ""),row.names = F)
-    utils::write.csv(poly %>% dplyr::filter(region == region_i) %>%
+                     file = paste(dirOutputs, "/Maps/Tables/subReg_",boundaryRegionsSelect,"_",subRegType,"_template",nameAppend,".csv", sep = ""),row.names = F)
+    utils::write.csv(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
                        dplyr::select(scenario,param,units,class,value,x,subRegion,subRegType,region,classPalette),
-                     file = paste(dirOutputs, "/Maps/Tables/subReg_origData_byClass_",region_i,"_",subRegType,"_origDownscaled",nameAppend,".csv", sep = ""),row.names = F)
+                     file = paste(dirOutputs, "/Maps/Tables/subReg_origData_byClass_",boundaryRegionsSelect,"_",subRegType,"_origDownscaled",nameAppend,".csv", sep = ""),row.names = F)
     }
 
-    print(paste("Subregional Polygon template .csv files written to: ",dirOutputs, "/Maps/Tables/subReg_",region_i,"_template",nameAppend,".csv", sep = ""))
-    print(paste("Subregional Polygon data .csv files written to: ",dirOutputs, "/Maps/Tables/subReg_origData_byClass_",region_i,"_",subRegType,"_origDownscaled",nameAppend,".csv", sep = ""))
+    print(paste("Subregional Polygon template .csv files written to: ",dirOutputs, "/Maps/Tables/subReg_",boundaryRegionsSelect,"_template",nameAppend,".csv", sep = ""))
+    print(paste("Subregional Polygon data .csv files written to: ",dirOutputs, "/Maps/Tables/subReg_origData_byClass_",boundaryRegionsSelect,"_",subRegType,"_origDownscaled",nameAppend,".csv", sep = ""))
 
   }else{print("Polygon data has 0 rows")}
 

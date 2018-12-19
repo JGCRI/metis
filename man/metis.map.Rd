@@ -5,22 +5,21 @@
 \title{metis.map}
 \usage{
 metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
-  shpFolder = paste(getwd(), "/dataFiles/gis/admin_gadm36", sep = ""),
-  shpFile = paste("gadm36_1", sep = ""), shpName = "NAME_0",
-  fillPalette = "Spectral", borderColor = "gray20", lwd = 1,
-  lty = 1, bgColor = "white", frameShow = F, fillColumn = NULL,
-  labels = F, labelsSize = 1.2, labelsColor = "black",
-  labelsAutoPlace = F, figWidth = 9, figHeight = 7,
-  legendWidth = -1, legendShow = F, legendOutside = T,
-  legendTextSize = 1, legendTitleSize = 2,
+  shpFolder = NULL, shpFile = NULL, fillPalette = "Spectral",
+  borderColor = "gray20", lwd = 1, lty = 1, bgColor = "white",
+  frameShow = F, fillColumn = NULL, labels = F, labelsSize = 1.2,
+  labelsColor = "black", labelsAutoPlace = F, figWidth = 9,
+  figHeight = 7, legendWidth = -1, legendShow = F,
+  legendOutside = T, legendTextSize = 1, legendTitleSize = 2,
   legendOutsidePosition = NULL, legendPosition = NULL,
   legendDigits = NULL, legendTitle = "Legend",
   legendStyle = "pretty", legendFixedBreaks = 5, legendBreaks = NULL,
   pdfpng = "png", underLayer = NULL, overLayer = NULL,
   printFig = T, fileName = "map", dirOutputs = paste(getwd(),
   "/outputs", sep = ""), facetFreeScale = F, facetRows = NA,
-  facetCols = 3, facetLabelColor = "grey75", facetLabelSize = 1.5,
-  alpha = 1, rasterCoverNegShape = F)
+  facetCols = 3, facetBGColor = "grey30", facetLabelColor = "white",
+  facetLabelSize = 1.5, alpha = 1, fillcolorNA = NULL,
+  facetsON = T, panelLabel = NULL)
 }
 \arguments{
 \item{dataPolygon}{Default = NULL,}
@@ -32,8 +31,6 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
 \item{shpFolder}{Default = paste(getwd(),"/dataFiles/gis/admin_gadm36_1",sep Default = ""),}
 
 \item{shpFile}{Default = paste("gadm36_1",sep Default = ""),}
-
-\item{shpName}{Default = "NAME_0",}
 
 \item{fillPalette}{Default = "Spectral",}
 
@@ -103,13 +100,19 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
 
 \item{facetCols}{Default = 3,}
 
-\item{facetLabelColor}{Default = "grey75",}
+\item{facetBGColor}{Default = "grey75",}
+
+\item{facetLabelColor}{Default = "black",}
 
 \item{facetLabelSize}{Default = 1.5,}
 
 \item{alpha}{Default = 1}
 
-\item{rasterCoverNegShape}{Default =T}
+\item{fillcolorNA}{Default =NULL}
+
+\item{facetsON}{Default =F,}
+
+\item{panelLabel}{Default = NULL,}
 }
 \value{
 Returns the formatted data used to produce chart

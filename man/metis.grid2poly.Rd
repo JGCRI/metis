@@ -4,40 +4,24 @@
 \alias{metis.grid2poly}
 \title{metis.grid2poly}
 \usage{
-metis.grid2poly(grid = NULL, boundaryRegShape = NULL,
-  boundaryRegShpFolder = paste(getwd(), "/dataFiles/gis/admin_gadm36",
-  sep = ""), boundaryRegShpFile = paste("gadm36_0", sep = ""),
-  boundaryRegCol = "NAME_0", boundaryRegionsSelect = NULL,
-  subRegShape = NULL, subRegShpFolder = paste(getwd(),
-  "/dataFiles/gis/admin_gadm36", sep = ""),
-  subRegShpFile = paste("gadm36_1", sep = ""), subRegCol = "NAME_1",
-  subRegionsSelect = NULL, subRegType = "subRegType", aggType = NULL,
+metis.grid2poly(grid = NULL, boundaryRegionsSelect = NULL,
+  subRegShape = NULL, subRegShpFolder = NULL, subRegShpFile = NULL,
+  subRegCol = NULL, subRegType = "subRegType", aggType = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
-  expandbboxPercent = 2, extension = F, overlapShpFolder = NULL,
-  overlapShpFile = NULL)
+  labelsSize = 1.2)
 }
 \arguments{
 \item{grid}{Default=NULL,}
-
-\item{boundaryRegShape}{Default=NULL,}
-
-\item{boundaryRegShpFolder}{Default=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep  Default=""),}
-
-\item{boundaryRegShpFile}{Default=paste("gadm36_0",sep  Default=""),}
-
-\item{boundaryRegCol}{Default="NAME_0",}
 
 \item{boundaryRegionsSelect}{Default=NULL,}
 
 \item{subRegShape}{Default=NULL,}
 
-\item{subRegShpFolder}{Default=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep  Default=""),}
+\item{subRegShpFolder}{Default = NULL, Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default="")}
 
-\item{subRegShpFile}{Default=paste("gadm36_1",sep  Default=""),}
+\item{subRegShpFile}{Default = NULL, paste("ne_10m_admin_1_states_provinces",sep  Default=""),}
 
-\item{subRegCol}{Default="NAME_1",}
-
-\item{subRegionsSelect}{Default=NULL,}
+\item{subRegCol}{Default = NULL, "NAME_1",}
 
 \item{subRegType}{Default="subRegType",}
 
@@ -47,13 +31,7 @@ metis.grid2poly(grid = NULL, boundaryRegShape = NULL,
 
 \item{nameAppend}{Default="",}
 
-\item{expandbboxPercent}{Default=2,}
-
-\item{extension}{Default=T,}
-
-\item{overlapShpFolder}{Default = NULL. Can save to paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),}
-
-\item{overlapShpFile}{Default = NULL. Can save to ="Global235_CLM_final_5arcmin_multipart"}
+\item{labelsSize}{Default =1.2}
 }
 \value{
 A table with data by polygon ID for each shapefile provided
