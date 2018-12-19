@@ -93,7 +93,7 @@ The motivation behind developing the Metis model is to bridge the gap between mo
 Metis is envisioned to be developed in several phases with progressively more detail while maintainging ease-of-use and accesibility to a range of stakeholders with varying expertise and comfort from different sectors. The long-term vision of metis is shown in the figure below. This first version of metis provides the basic tools for stakeholders to visualize and aggregate data up to the relevant area of interest. Version 2 of the model will focus on understanding the links between different sectors and sub-regions to allow analyis of cross-sector dynamics. In version 3 of the model, infrastructure options will be included to allow exploration of various investments options such electricity grid, road and pipeline expansion. Version 1 of the model is composed of three main modules: "GCAM", "Charting" and "Mapping" which serve as a multi-sector accounting tool to visualize and analyze demands, supplies and distribution of various resources across multiple sectors at flexible sub-regional scales. The modules are designed to be flexible and easy to use by multiple stakeholders with varying needs.  
 
 <p align="center"> <b> Metis Long Term Vision</b> </p>
-<p align="center"> <img src="READMEfigs/metis_vision.png"></p>
+<p align="center"> <img src="READMEfigs/metis_Vision.PNG"></p>
 
 <p align="center"> <b> Metis 1.0 Framework </b> </p>
 <p align="center"> <img src="READMEfigs/metis_workflow1.png"></p>
@@ -155,12 +155,7 @@ Save and unzip the file in ./metis/datafiles/gis.
 - gis: This is the unzipped osf folder (https://osf.io/pbta5/) and contains other shape files including sub-basins, gcam regions, gcam basins, naturalEarth boundaries and other country specific boundaries.
 - mapping: This contains two files which are used to map color palettes and other parameters not provided by stakeholder tables.
 
-<details><summary>
-<span style="background-color: #000000">
-<font color="white">
-Click here to expand for further details, code and example figures
-</font>
-</span></summary>
+<details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
 
 <p align="center"> <b> Metis Initial Folders </b> </p>
@@ -193,12 +188,7 @@ This section walks through the different features of the metis package using the
 - metis.readgcam.R: This functions is designed to interact specifically with GCAM outputs. The function processes GCAM outputs into .csv files by GCAM region which can then be used as inputs to metis.chartsProcess.R
 - metis.templates.R: Templates which define the overall look and feel of metis charts. The templates file also contains the metis figure printing function allowin a choice between pdf and png files. 
 
-<details><summary>
-<span style="background-color: #000000">
-<font color="white">
-Click here to expand for further details, code and example figures
-</font>
-</span></summary>
+<details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
 
 <p align="center"> <b> Metis Functions </b> </p>
@@ -232,12 +222,7 @@ The workflow for data processing, charting and mapping is shown below. The follo
 
 The model comes with an example gcamdatabase ".proj" file called "Example_dataProj.proj" which lies in the folder metis/dataFiles/gcam/ as shown in the figure below. It is recommended that other gcamdatabases are also kept in this folder. GCAM produces an output in the form of a database. The database contains outputs from various scenario runs. "metis.readgcam" uses another package "rgcam" to connects with the gcam database and retrieves data based on "queries" provided in an ".xml" file. Often scenario names in the model can be long and not appropriate for final figures. This function allows you to rename the scenarios as they are read in. Once the data has been extracted from a gcam database it is saved in a ".proj" file. Reading data from the gcam database can take a considerable amount of time depending on the number of scenarios it contains. The "metis.readgcam" function gives the option of directly providing a ".proj" which can be loaded directly or using the ".proj" file from a previous run by setting the parameter "reReadData" to FALSE. If "reReadData" is set to FALSE the function will first search for a user provided ".proj" file (which is entered in the param "dataProj"), then in the "inputs/gcam" folder and if it doesn't exist will give an error message. If "reReadData" is set to TRUE then the function will create a file called "dataProj.proj" in the same folder as the GCAM database. The code below shows how to read in data using the database or .proj file. The user can choose the regions of interest.
 
-<details><summary>
-<span style="background-color: #000000">
-<font color="white">
-Click here to expand for further details, code and example figures
-</font>
-</span></summary>
+<details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
 
 <p align="center"> <b> GCAM data </b> </p>
@@ -313,14 +298,8 @@ After running metis.chartsProcess several charts will be produced. These will be
 Tables with the data used for each figure will also be provided in ./metis/outputs/Charts.
 
 
-<details><summary>
-<span style="background-color: #000000">
-<font color="white">
-Click here to expand for further details, code and example figures
-</font>
-</span></summary>
+<details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
-
 
 ```r
 #----------------------------
@@ -392,12 +371,7 @@ charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
 
 metis.boundaries is used to create maps showing where the sub-region lies in the greater region. For this option a boundary region should be defined. NaturalEarth boundary region files have been made available throught the osf repository https://osf.io/pbta5/). Once metis.boundaries has been run a folder for "Maps" is created. The Maps folder will contain a "Boundary" folder which contains the boundary files defining each region and subregion. The function also shows how different grid cells sizes compare with the selected regions. This is useful to understand if the desired regional resolution is too fine for a particular grid size. The folder structure and example output boundary maps are shown in the figures that follow.
 
-<details><summary>
-<span style="background-color: #000000">
-<font color="white">
-Click here to expand for further details, code and example figures
-</font>
-</span></summary>
+<details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
 
 ```r
@@ -436,7 +410,7 @@ bermejoBoundaries<- metis.boundaries(
 
 <p align="center"> <b> metis.boundaries Outputs and Example Charts </b> </p>
 <p align="center"> <img src="READMEfigs/metis_moduleBoundary1.png"></p>
-<p align="center"> <img src="READMEfigs/metis_moduleBoundary2.PNG"></p>
+<p align="center"> <img src="READMEfigs/metis_moduleBoundary2.png"></p>
 
 </p>
 </details>
@@ -466,14 +440,8 @@ metis.grid2poly is used to aggregate gridded data to given sub-regional spatial 
 
 metis.grid2poly can also be used to create maps showing where the sub-region lies in the greater region. For this option a boundary region should be defined. naturalEarth boundary region files have been made available throught the osf repository https://osf.io/pbta5/). Once grid2poly has been run a folder for "Maps" and a folder for "Grids" (if a grid file was provided) are created. Within the Maps folder (./metis/outputs/Maps) the user will find a Tables folder which contains all the data used to create the map as a well as a template for stakeholders to input their own data as a new scenario by sub-region. The Maps folder will also contain a "Boundary" folder which contains the boundary files defining each region and subregion and also includes shapefiles incase these need to be shared with others. The folder structure and example output boundary maps are shown in the figures that follow. If a grid has been provided then a "Grid" folder is also created which contains the cropped gridded data which can be used in for mapping.
 
-<details><summary>
-<span style="background-color: #000000">
-<font color="white">
-Click here to expand for further details, code and example figures
-</font>
-</span></summary>
+<details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
-
 
 ```r
 #-----------
@@ -531,14 +499,8 @@ polyBermeo3Cropped<-metis.grid2poly(grid=gridExample,
 
 After running metis.mapsProcess additional folders are created in the ./metis/outputs/Maps/ folder for each region and sub-region indicated. Within each of these there are plots for each scenario as well as diff plots showing the absolute and percentage difference between the selected reference scenario and all other scenarios. Each map is produced with three kinds of legends Freescale, Kmeans and pretty (or equal breaks) which allow the user to analyze different kinds of data. THe colors schemes for the plots are determined in metis.colors and can be adjusted by advanced users. Animations showing changes through the years are also created for each type of map and legend type. Example of the folder structure and ouputs from metis.mapsProcess are shown below.
 
-<details><summary>
-<span style="background-color: #000000">
-<font color="white">
-Click here to expand for further details, code and example figures
-</font>
-</span></summary>
+<details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
-
 
 
 ```r
