@@ -77,6 +77,29 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        sizeBarLines=0,sizeLines=1.5,
                        nameAppend="") {
 
+
+  # dataTables=NULL
+  # rTable=NULL
+  # scenRef=NULL
+  # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # pdfpng="png"
+  # xRange="All"
+  # xCompare=c("2015","2030","2050","2100")
+  # paramsSelect="All"
+  # regionsSelect="All"
+  # xData="x"
+  # yData="value"
+  # xLabel="xLabel"
+  # yLabel="units"
+  # aggregate="sum"
+  # class="class"
+  # classPalette="pal_Basic"
+  # regionCompareOnly=1
+  # useNewLabels=0
+  # sizeBarLines=0
+  # sizeLines=1.5
+  # nameAppend=""
+
 #------------------
 # Load required Libraries
 # -----------------
@@ -394,12 +417,12 @@ if(length(unique(tbl$scenario))>1){
         tbl_pAggsums<-tbl_p%>%
           dplyr::filter(aggregate=="sum")%>%
           dplyr::select(-tidyselect::contains(class))%>%
-          dplyr::group_by_at(dplyr::vars(-yData,-origValue))%>%
+          dplyr::group_by_at(dplyr::vars(-get(yData),-origValue))%>%
           dplyr::summarize_at(c(yData),dplyr::funs(sum))
         tbl_pAggmeans<-tbl_p%>%
           dplyr::filter(aggregate=="mean")%>%
           dplyr::select(-tidyselect::contains(class))%>%
-          dplyr::group_by_at(dplyr::vars(-yData,-origValue))%>%
+          dplyr::group_by_at(dplyr::vars(-get(yData),-origValue))%>%
           dplyr::summarize_at(c(yData),dplyr::funs(mean))
         tbl_pAgg<-dplyr::bind_rows(tbl_pAggsums,tbl_pAggmeans)%>%dplyr::ungroup()
 
@@ -444,17 +467,17 @@ if(length(unique(tbl$scenario))>1){
         tbl_pd<-tbl_p%>%
           dplyr::filter(scenario==scenRef_i)%>%
           dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
-        if(!yData %in% names(tbl_p)){tbl_pd<-tbl_pd%>%dplyr::select(-yData)}
+        if(!yData %in% names(tbl_p)){tbl_pd<-tbl_pd%>%dplyr::select(-get(yData))}
 
         for (k in unique(tbl_p$scenario)[unique(tbl_p$scenario)!=scenRef_i]){
           tbl_temp <- tbl_p%>%
             dplyr::filter(scenario %in% c(scenRef_i,k))%>%
             dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
-          if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-yData)}
+          if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-get(yData))}
           tbl_temp <- tbl_temp%>%
             tidyr::spread(scenario,yData)%>%
             dplyr::mutate(!!paste(k,"_diff",sep=""):=get(k)-get(scenRef_i))%>%
-            dplyr::select(-k,-scenRef_i)
+            dplyr::select(-get(k),-get(scenRef_i))
           tbl_temp<-tbl_temp%>%
             tidyr::gather(key=scenario,value=!!yData,
                           -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,"_diff",sep="")]))
@@ -599,12 +622,12 @@ for(i in unique(tbl$region)){
       tbl_rpAggsums<-tbl_rp%>%
         dplyr::filter(aggregate=="sum")%>%
         dplyr::select(-tidyselect::contains(class))%>%
-        dplyr::group_by_at(dplyr::vars(-yData,-origValue))%>%
+        dplyr::group_by_at(dplyr::vars(-get(yData),-origValue))%>%
         dplyr::summarize_at(c(yData),dplyr::funs(sum))
       tbl_rpAggmeans<-tbl_rp%>%
         dplyr::filter(aggregate=="mean")%>%
         dplyr::select(-tidyselect::contains(class))%>%
-        dplyr::group_by_at(dplyr::vars(-yData,-origValue))%>%
+        dplyr::group_by_at(dplyr::vars(-get(yData),-origValue))%>%
         dplyr::summarize_at(c(yData),dplyr::funs(mean))
       tbl_rpAgg<-dplyr::bind_rows(tbl_rpAggsums,tbl_rpAggmeans)%>%dplyr::ungroup()
 
@@ -649,17 +672,17 @@ for(i in unique(tbl$region)){
       tbl_rpd<-tbl_rp%>%
         dplyr::filter(scenario==scenRef_i)%>%
         dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
-      if(!yData %in% names(tbl_rp)){tbl_rpd<-tbl_rpd%>%dplyr::select(-yData)}
+      if(!yData %in% names(tbl_rp)){tbl_rpd<-tbl_rpd%>%dplyr::select(-get(yData))}
 
       for (k in unique(tbl_rp$scenario)[unique(tbl_rp$scenario)!=scenRef_i]){
         tbl_temp <- tbl_rp%>%
           dplyr::filter(scenario %in% c(scenRef_i,k))%>%
           dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
-        if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-yData)}
+        if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-get(yData))}
         tbl_temp <- tbl_temp%>%
           tidyr::spread(scenario,yData)%>%
           dplyr::mutate(!!paste(k,"_diff",sep=""):=get(k)-get(scenRef_i))%>%
-          dplyr::select(-k,-scenRef_i)
+          dplyr::select(-get(k),-get(scenRef_i))
         tbl_temp<-tbl_temp%>%
           tidyr::gather(key=scenario,value=!!yData,
                         -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,"_diff",sep="")]))

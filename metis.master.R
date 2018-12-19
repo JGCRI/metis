@@ -34,7 +34,7 @@ paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 
 # Use function localDBConn from package rgcam to get a list of scenarios if needed.
 # localDBConn(gcamdatabasePath,gcamdatabaseName)
-# dataProjLoaded <- loadProject(paste(gcamdatabasePath, "/", dataProj, sep = ""))
+# dataProjLoaded <- loadProject(paste(gcamdatabasePath, "/", gcamdataProjFile, sep = ""))
 #  listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 # queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
@@ -62,7 +62,8 @@ dataGCAM$data # To view the data read that was read.
 # Read in Tables (If exist)
 # To test can create a copy of the template in ./readGCAMTables/Tables_Templates/template_Regional_Argentina.csv
 # in ./readGCAMTables/Tables_Local/ and rename the file something like "local_Regional_Argentina.csv.
-# dataTables<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Argentina.csv",sep=""))  # Need to create this before loading
+ dataTables<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Argentina.csv",sep=""))  # Need to create this before loading
+a<-read.csv(dataTables)
 
 # Read in the data from the function metis.readgcam
 rTable <- dataGCAM$data;
@@ -75,14 +76,24 @@ regionsSelect=c("Argentina","Colombia")
 
 charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
                           #dataTables=dataTables, # Default is NULL
-                          paramsSelect=paramsSelect, # Default is "All"
+                          #paramsSelect=paramsSelect, # Default is "All"
                           regionsSelect=regionsSelect, # Default is "All"
                           xCompare=c("2015","2030","2050","2100"), # Default is c("2015","2030","2050","2100")
                           scenRef="Eg1", # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           pdfpng="png", # Default is "png"
-                          regionCompareOnly=1 # Default is "0"
+                          regionCompareOnly=0 # Default is "0"
                           )
+#
+# rTable=rTable
+# #dataTables=dataTables
+# #paramsSelect=paramsSelect
+# regionsSelect=regionsSelect
+# xCompare=c("2015","2030","2050","2100")
+# scenRef="Eg1"
+# dirOutputs=paste(getwd(),"/outputs",sep="")
+# pdfpng="png"
+# regionCompareOnly=0
 
 
 #-----------
@@ -155,3 +166,19 @@ metis.mapProcess(polygonDataTables=examplePolygonTable,
                  delay=100,
                  scenRef="Eg1"
                  )
+
+# polygonDataTables=examplePolygonTable
+# gridDataTables=exampleGridTable
+# xRange=c(2005,2010,2020)
+# boundaryRegionsSelect="Argentina"
+# subRegShape=NULL
+# subRegShpFolder=paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep="")
+# subRegShpFile=paste("bermejo3Cropped",sep="")
+# subRegCol="SUB_NAME"
+# subRegType="subBasin"
+# nameAppend="_hydrobid"
+# legendPosition=c("RIGHT","top")
+# animateOn=T
+# delay=100
+# scenRef="Eg1"
+

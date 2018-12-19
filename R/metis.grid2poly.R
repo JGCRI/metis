@@ -29,16 +29,17 @@ metis.grid2poly<- function(grid=NULL,
                          nameAppend="",
                          labelsSize=1.2) {
 #
-#   grid=NULL
-#   boundaryRegionsSelect=NULL
-#   subRegShape=NULL
-#   subRegShpFolder=NULL
-#   subRegShpFile=NULL
-#   subRegCol=NULL
-#   subRegType="subRegType"
-#   aggType=NULL
-#   dirOutputs=paste(getwd(),"/outputs",sep="")
-#   nameAppend=""
+  # grid=NULL
+  # boundaryRegionsSelect=NULL
+  # subRegShape=NULL
+  # subRegShpFolder=NULL
+  # subRegShpFile=NULL
+  # subRegCol=NULL
+  # subRegType="subRegType"
+  # aggType=NULL
+  # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # nameAppend=""
+  # labelsSize=1.2
 
 #------------------
 # Load required Libraries
@@ -248,7 +249,7 @@ if(!is.null(grid)){
     polyx<-shape
     polyx@data<-dplyr::left_join(polyx@data,polyData)
     polyx@data<-polyx@data%>%
-      dplyr::rename(subRegion:= subRegCol)%>%
+      dplyr::rename(subRegion:= !!paste(subRegCol))%>%
       dplyr::mutate(region=boundaryRegionsSelect)%>%
       dplyr::filter(!is.na(x))
 
