@@ -395,7 +395,7 @@ shapeExpandEtxent$min;shapeExpandEtxent$max;
 shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
 sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
 
-gridTbl<-gridTbl%>%dplyr::mutate(gridID=dplyr::row_number())
+gridTbl<-gridTbl%>%dplyr::mutate(gridID=seq(1:nrow(gridTbl)))
 croppedCoords<-gridTbl%>%dplyr::select(lat,lon,gridID)%>%unique()
 croppedCoords<-sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(croppedCoords$lon,croppedCoords$lat))),data=croppedCoords)
 sp::proj4string(croppedCoords)<-sp::proj4string(shapeExpandEtxent)
@@ -441,7 +441,7 @@ if(length(unique(gridTbl$scenario))>1){
     tbl_temp1 <-gridTblDiff%>%
       dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
                     classPalette="pal_div")%>%
-      dplyr::select(-scenario_i,-scenRef_i)
+      dplyr::select(-get(scenario_i),-get(scenRef_i))
     tbl_temp1<-tbl_temp1%>%
       tidyr::gather(key=scenario,value=value,
                     -c(names(tbl_temp1)[!names(tbl_temp1) %in% paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep="")]))%>%
@@ -450,7 +450,7 @@ if(length(unique(gridTbl$scenario))>1){
     tbl_temp2 <-gridTblDiff%>%
       dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
                     classPalette="pal_div")%>%
-      dplyr::select(-scenario_i,-scenRef_i)
+      dplyr::select(-get(scenario_i),-get(scenRef_i))
     tbl_temp2<-tbl_temp2%>%
       tidyr::gather(key=scenario,value=value,
                     -c(names(tbl_temp2)[!names(tbl_temp2) %in% paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep="")]))%>%
@@ -502,7 +502,7 @@ if(length(unique(shapeTbl$scenario))>1){
     tbl_temp1 <-shapeTblDiff%>%
       dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
                     classPalette="pal_div")%>%
-      dplyr::select(-scenario_i,-scenRef_i)
+      dplyr::select(-get(scenario_i),-get(scenRef_i))
     tbl_temp1<-tbl_temp1%>%
       tidyr::gather(key=scenario,value=value,
                     -c(names(tbl_temp1)[!names(tbl_temp1) %in% paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep="")]))%>%
@@ -511,7 +511,7 @@ if(length(unique(shapeTbl$scenario))>1){
     tbl_temp2 <-shapeTblDiff%>%
      dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
                     classPalette="pal_div")%>%
-      dplyr::select(-scenario_i,-scenRef_i)
+      dplyr::select(-get(scenario_i),-get(scenRef_i))
     tbl_temp2<-tbl_temp2%>%
       tidyr::gather(key=scenario,value=value,
                     -c(names(tbl_temp2)[!names(tbl_temp2) %in% paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep="")]))%>%
