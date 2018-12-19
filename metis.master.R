@@ -62,8 +62,8 @@ dataGCAM$data # To view the data read that was read.
 # Read in Tables (If exist)
 # To test can create a copy of the template in ./readGCAMTables/Tables_Templates/template_Regional_Argentina.csv
 # in ./readGCAMTables/Tables_Local/ and rename the file something like "local_Regional_Argentina.csv.
- dataTables<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Argentina.csv",sep=""))  # Need to create this before loading
-a<-read.csv(dataTables)
+# dataTables<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Argentina.csv",sep=""))  # Need to create this before loading
+#a<-read.csv(dataTables)
 
 # Read in the data from the function metis.readgcam
 rTable <- dataGCAM$data;
