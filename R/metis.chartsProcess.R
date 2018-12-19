@@ -265,6 +265,7 @@ utils::write.csv(tblAgg%>%
 if(any(paramsSelect!="All")){
   if(all(paramsSelect %in% unique(tbl$param))){
     print(paste("Running paramaters: ",  paste(paramsSelect[(paramsSelect %in% unique(tbl$param))],collapse=", "), sep=""))
+    tbl<-tbl%>%dplyr::filter(param %in% paramsSelect[(paramsSelect %in% unique(tbl$param))])
   }else{
     print(paste("Parameters not available in data: ", paste(paramsSelect[!(paramsSelect %in% unique(tbl$param))],collapse=", "), sep=""))
     print(paste("Running remaining paramaters: ",  paste(paramsSelect[(paramsSelect %in% unique(tbl$param))],collapse=", "), sep=""))
@@ -275,6 +276,7 @@ if(any(paramsSelect!="All")){
 if(any(regionsSelect!="All")){
   if(all(regionsSelect %in% unique(tbl$region))){
     print(paste("Running regions: ",  paste(regionsSelect[(regionsSelect %in% unique(tbl$region))],collapse=", "), sep=""))
+    tbl<-tbl%>%dplyr::filter(region %in% regionsSelect[(regionsSelect %in% unique(tbl$region))])
   }else{
     print(paste("Regions not available in data: ", paste(regionsSelect[!(regionsSelect %in% unique(tbl$region))],collapse=", "), sep=""))
     print(paste("Running remaining regions: ",  paste(regionsSelect[(regionsSelect %in% unique(tbl$region))],collapse=", "), sep=""))
@@ -616,8 +618,7 @@ for(i in unique(tbl$region)){
                   class ="scenario", position ="dodge", classPalette = classPalette,
         dirOutputs = paste(dirOutputs, "/Charts/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figBarDodged_",i,"_compareScen_",nameAppend,sep=""),
-        figWidth = 13*max((length(unique(tbl_rpAgg$scenario))/2),1)*figWMult,
-        figHeight = 9*max((length(unique(tbl_rpAgg$region))/2),1),pdfpng=pdfpng
+        figWidth = 13*max((length(unique(tbl_rpAgg$scenario))/2),1)*figWMult,pdfpng=pdfpng
       )
 
       # Line Chart Overlapped
@@ -625,8 +626,7 @@ for(i in unique(tbl$region)){
                   class ="scenario", classPalette = classPalette,
         dirOutputs = paste(dirOutputs, "/Charts/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep=""),
-        figWidth = 13*max((length(unique(tbl_rpAgg$scenario))/2),1)*figWMult,
-        figHeight = 9*max((length(unique(tbl_rpAgg$region))/2),1),pdfpng=pdfpng
+        figWidth = 13*max((length(unique(tbl_rpAgg$scenario))/2),1)*figWMult,pdfpng=pdfpng
       )
       }
 

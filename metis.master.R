@@ -77,11 +77,11 @@ charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
                           #dataTables=dataTables, # Default is NULL
                           paramsSelect=paramsSelect, # Default is "All"
                           regionsSelect=regionsSelect, # Default is "All"
-                          xCompare=c("2015","2035","2050","2100"), # Default is c("2015","2030","2050","2100")
+                          xCompare=c("2015","2030","2050","2100"), # Default is c("2015","2030","2050","2100")
                           scenRef="Eg1", # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           pdfpng="png", # Default is "png"
-                          regionCompareOnly=0 # Default is "0"
+                          regionCompareOnly=1 # Default is "0"
                           )
 
 
