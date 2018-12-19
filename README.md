@@ -93,7 +93,7 @@ The motivation behind developing the Metis model is to bridge the gap between mo
 Metis is envisioned to be developed in several phases with progressively more detail while maintainging ease-of-use and accesibility to a range of stakeholders with varying expertise and comfort from different sectors. The long-term vision of metis is shown in the figure below. This first version of metis provides the basic tools for stakeholders to visualize and aggregate data up to the relevant area of interest. Version 2 of the model will focus on understanding the links between different sectors and sub-regions to allow analyis of cross-sector dynamics. In version 3 of the model, infrastructure options will be included to allow exploration of various investments options such electricity grid, road and pipeline expansion. Version 1 of the model is composed of three main modules: "GCAM", "Charting" and "Mapping" which serve as a multi-sector accounting tool to visualize and analyze demands, supplies and distribution of various resources across multiple sectors at flexible sub-regional scales. The modules are designed to be flexible and easy to use by multiple stakeholders with varying needs.  
 
 <p align="center"> <b> Metis Long Term Vision</b> </p>
-<p align="center"> <img src="READMEfigs/metis_vision.PNG"></p>
+<p align="center"> <img src="READMEfigs/metis_Vision.PNG"></p>
 
 <p align="center"> <b> Metis 1.0 Framework </b> </p>
 <p align="center"> <img src="READMEfigs/metis_workflow1.png"></p>
