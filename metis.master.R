@@ -76,7 +76,7 @@ regionsSelect=c("Argentina","Colombia")
 
 charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
                           #dataTables=dataTables, # Default is NULL
-                          #paramsSelect=paramsSelect, # Default is "All"
+                          paramsSelect=paramsSelect, # Default is "All"
                           regionsSelect=regionsSelect, # Default is "All"
                           xCompare=c("2015","2030","2050","2100"), # Default is c("2015","2030","2050","2100")
                           scenRef="Eg1", # Default is NULL
@@ -87,7 +87,7 @@ charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
 #
 # rTable=rTable
 # #dataTables=dataTables
-# #paramsSelect=paramsSelect
+# paramsSelect=paramsSelect
 # regionsSelect=regionsSelect
 # xCompare=c("2015","2030","2050","2100")
 # scenRef="Eg1"
@@ -150,6 +150,8 @@ polyBermeo3Cropped<-metis.grid2poly(grid=gridExample,
 exampleGridTable<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
 examplePolygonTable<-paste(getwd(),"/dataFiles/examples/example_poly_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
 
+#gridTable=read.csv(exampleGridTable);head(gridTable)
+#polyTable=read.csv(examplePolygonTable);head(polyTable)
 
 metis.mapProcess(polygonDataTables=examplePolygonTable,
                  gridDataTables=exampleGridTable,

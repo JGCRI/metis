@@ -40,7 +40,7 @@ date: January 2019
 - [Need](#Need)
 - [Framework](#Framework)
 - [Installation Guide](#InstallGuide)
-- [Step-by-step walkthrough](#WalkThrough) 
+- [Metis 1.0 Step-by-step walkthrough](#WalkThrough) 
     + [metis.readgcam](#metis.readgcam)
     + [mtis.chartsProcess](#metis.chartsProcess)
     + [mtis.boundaries](#metis.boundaries)
@@ -167,7 +167,7 @@ Save and unzip the file in ./metis/datafiles/gis.
 
 <!-- ------------------------>
 <!-- ------------------------>
-# <a name="WalkThrough"></a> Step-by-step Walkthrough
+# <a name="WalkThrough"></a> Metis 1.0 Step-by-step Walkthrough
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
 <!-- ------------------------>
 <!-- ------------------------>

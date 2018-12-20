@@ -208,7 +208,7 @@ if(!is.null(subRegShape) & !is.null(boundaryRegShape)){
   if(cropSubShape2Bound==T){
   extendedSubReg<-subRegShape
   print(paste("subsetting subRegShape to boundary region...",sep=""))
-  subRegShape<-raster::intersect(subRegShape, boundaryRegShape)
+  subRegShape<-raster::crop(subRegShape, boundaryRegShape)
   print(paste("subRegShape subset to boundary region",sep=""))}else{
     extendedSubReg<-subRegShape
     subRegShape<-subRegShape
@@ -258,11 +258,11 @@ if(!is.null(bbox1)){
   sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
   if(!is.null(extendedBoundary)){
   print("Creating extended boundary using boundaryRegShape...")
-  extendedShape<-raster::intersect(extendedBoundary, bbox1)
+  extendedShape<-raster::crop(extendedBoundary, bbox1)
   }else{
     if(!is.null(extendedSubReg)){
       print("Creating extended boundary using subRegShape...")
-      extendedShape<-raster::intersect(extendedSubReg, bbox1)
+      extendedShape<-raster::crop(extendedSubReg, bbox1)
 
     }}
   extendedShape<-sp::SpatialPolygonsDataFrame(extendedShape,data=extendedShape@data)
@@ -279,7 +279,7 @@ if(!is.null(bbox1)){
    if(!is.null(overlapShape)){
      if(!is.null(boundaryRegShape)){
        print("Cropping overlapBoundary to boundaryRegShape...")
-       overlapBoundary<-raster::intersect(overlapShape, boundaryRegShape)
+       overlapBoundary<-raster::crop(overlapShape, boundaryRegShape)
        print("overlapBoundary cropped to boundaryRegShape.")
      }else{
        print("BoundaryShape not provided. Not overlapping over boundary.")
@@ -288,7 +288,7 @@ if(!is.null(bbox1)){
     if(!is.null(overlapShape)){
       if(!is.null(subRegShape)){
         print("Cropping overlapSubReg to subRegShape...")
-          overlapSubReg<-raster::intersect(overlapShape, subRegShape)
+          overlapSubReg<-raster::crop(overlapShape, subRegShape)
           print("overlapSubReg cropped to subRegShape.")
       }else{
         print("subRegShape not provided. Not overlapping over subReg.")
@@ -461,11 +461,11 @@ shapeExpandEtxent$max[2]<-if(shapeExpandEtxent$max[2]<0){(1-expandbboxPercent/10
 shapeExpandEtxent$min;shapeExpandEtxent$max;
 shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
 sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(subRegShape)) # ASSIGN COORDINATE SYSTEM
-rcrop<-raster::intersect(r,shapeExpandEtxent)
+rcrop<-raster::crop(r,shapeExpandEtxent)
 rcropP<-raster::rasterToPolygons(rcrop)
 sp::proj4string(rcropP)<-sp::proj4string(subRegShape)
 print("Intersecting grid with subRegShape...")
-rcropPx<-raster::intersect(subRegShape,rcropP)
+rcropPx<-raster::crop(subRegShape,rcropP)
 
 if(grepl("025",grid_i)){add_grid_name="_25Grid"}else{
 if(grepl("050",grid_i)){add_grid_name="_50Grid"}else{add_grid_name=""}}
