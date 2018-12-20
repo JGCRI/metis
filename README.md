@@ -297,9 +297,16 @@ The function metis.readgcam() returns a list which contains a dataframe with the
 After running metis.chartsProcess several charts will be produced. These will be saved in separate folders for each region and then within each there will be a folder for each scenario as well as a folder for cross-scenario comparisons. The folder paths are shown in the figure below. In addition to the individual regional folders a folder called compareRegions will contain inter-regional comparisons for each scenario as well as a cross-region/cross-scenario comparison.
 Tables with the data used for each figure will also be provided in ./metis/outputs/Charts.
 
+<p align="center"> <b> metis.chartsProcess Example Outputs </b> </p>
+<p align="center"> <img src="READMEfigs/metis_moduleChart2.PNG"></p>
+
 
 <details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
+
+<p align="center"> <b> metis.chartsProcess Output folders </b> </p>
+<p align="center"> <img src="READMEfigs/metis_moduleChart1.png"></p>
+
 
 ```r
 #----------------------------
@@ -333,11 +340,6 @@ charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
 
 ```
 
-<p align="center"> <b> metis.chartsProcess Outputs and Example Charts </b> </p>
-<p align="center"> <img src="READMEfigs/metis_moduleChart1.png"></p>
-
-<p align="center"> <img src="READMEfigs/metis_moduleChart2.PNG"></p>
-
 </p>
 </details>
 
@@ -370,6 +372,10 @@ charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
 - overlapShpFile: Overlapping shapefile name for eg. "Global235_CLM_final_5arcmin_multipart"
 
 metis.boundaries is used to create maps showing where the sub-region lies in the greater region. For this option a boundary region should be defined. NaturalEarth boundary region files have been made available throught the osf repository https://osf.io/pbta5/). Once metis.boundaries has been run a folder for "Maps" is created. The Maps folder will contain a "Boundary" folder which contains the boundary files defining each region and subregion. The function also shows how different grid cells sizes compare with the selected regions. This is useful to understand if the desired regional resolution is too fine for a particular grid size. The folder structure and example output boundary maps are shown in the figures that follow.
+
+<p align="center"> <b> metis.boundaries Outputs and Example Charts </b> </p>
+<p align="center"> <img src="READMEfigs/metis_moduleBoundary1.png"></p>
+<p align="center"> <img src="READMEfigs/metis_moduleBoundary2.png"></p>
 
 <details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
@@ -407,10 +413,6 @@ bermejoBoundaries<- metis.boundaries(
                             )
 
 ```
-
-<p align="center"> <b> metis.boundaries Outputs and Example Charts </b> </p>
-<p align="center"> <img src="READMEfigs/metis_moduleBoundary1.png"></p>
-<p align="center"> <img src="READMEfigs/metis_moduleBoundary2.png"></p>
 
 </p>
 </details>
@@ -499,6 +501,17 @@ polyBermeo3Cropped<-metis.grid2poly(grid=gridExample,
 
 After running metis.mapsProcess additional folders are created in the ./metis/outputs/Maps/ folder for each region and sub-region indicated. Within each of these there are plots for each scenario as well as diff plots showing the absolute and percentage difference between the selected reference scenario and all other scenarios. Each map is produced with three kinds of legends Freescale, Kmeans and pretty (or equal breaks) which allow the user to analyze different kinds of data. THe colors schemes for the plots are determined in metis.colors and can be adjusted by advanced users. Animations showing changes through the years are also created for each type of map and legend type. Example of the folder structure and ouputs from metis.mapsProcess are shown below.
 
+<p align="center"> <b> metis.mapsProcess Example Outputs Spatial Scales </b> </p>
+
+Grid |  State
+:-------------------------:|:-------------------------:
+![](READMEfigs/anim_India_raster_griddedScarcityLimit1_Eg1_Local_KMEANS.gif)  |  ![](READMEfigs/anim_India_State_griddedScarcityLimit1_Eg1_Local_KMEANS.gif)  
+
+Grid |  Basin 
+:-------------------------:|:-------------------------:
+![](READMEfigs/anim_India_raster_xanthosRunoff_Eg1_Local_KMEANS.gif)  |  ![](READMEfigs/anim_India_State_xanthosRunoff_Eg1_Local_KMEANS.gif)  
+
+
 <details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
 
@@ -531,20 +544,8 @@ metis.mapProcess(polygonDataTables=examplePolygonTable,
 <p align="center"> <b> metis.mapsProcess Outputs Folders </b> </p>
 <p align="center"> <img src="READMEfigs/metis_moduleMapsProcessFolders.png"></p>
 
-
 <p align="center"> <b> metis.mapsProcess Example Output Data Scales </b> </p>
 <p align="center"> <img src="READMEfigs/metis_moduleMapsProcessRaster.png"></p>
-
-
-<p align="center"> <b> metis.mapsProcess Example Outputs Spatial Scales </b> </p>
-
-Grid |  State
-:-------------------------:|:-------------------------:
-![](READMEfigs/anim_India_raster_griddedScarcityLimit1_Eg1_Local_KMEANS.gif)  |  ![](READMEfigs/anim_India_State_griddedScarcityLimit1_Eg1_Local_KMEANS.gif)  
-
-Grid |  Basin 
-:-------------------------:|:-------------------------:
-![](READMEfigs/anim_India_raster_xanthosRunoff_Eg1_Local_KMEANS.gif)  |  ![](READMEfigs/anim_India_State_xanthosRunoff_Eg1_Local_KMEANS.gif)  
 
 
 </p>
