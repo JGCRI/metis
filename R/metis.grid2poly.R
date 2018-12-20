@@ -173,13 +173,13 @@ if(!is.null(grid)){
     shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
     sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
 
-    rcrop<-raster::intersect(r,shapeExpandEtxent)
+    rcrop<-raster::crop(r,shapeExpandEtxent)
     rcropP<-raster::rasterToPolygons(rcrop)
 
     gridCropped<-dplyr::bind_rows(gridCropped,tibble::as_tibble(rcropP@data))
 
     sp::proj4string(rcropP)<-sp::proj4string(shape)
-    rcropPx<-raster::intersect(shape,rcropP)
+    rcropPx<-raster::crop(shape,rcropP)
 
     if(is.null(gridPolyLoop)){
     print("Printing Grid overlay...")

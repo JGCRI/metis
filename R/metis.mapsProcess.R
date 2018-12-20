@@ -343,7 +343,7 @@ if(!is.null(bbox1)){
     bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
     sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
     print("Creating extended boundary using boundaryRegShape...")
-    extendedShape<-raster::intersect(extendedBoundary, bbox1)
+    extendedShape<-raster::crop(extendedBoundary, bbox1)
     extendedShapeCol<-boundaryRegCol
 }else{print("No extended boundary.")}
 }
@@ -399,7 +399,7 @@ gridTbl<-gridTbl%>%dplyr::mutate(gridID=seq(1:nrow(gridTbl)))
 croppedCoords<-gridTbl%>%dplyr::select(lat,lon,gridID)%>%unique()
 croppedCoords<-sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(croppedCoords$lon,croppedCoords$lat))),data=croppedCoords)
 sp::proj4string(croppedCoords)<-sp::proj4string(shapeExpandEtxent)
-croppedCoords<-raster::intersect(croppedCoords,shapeExpandEtxent)
+croppedCoords<-raster::crop(croppedCoords,shapeExpandEtxent)
 sp::gridded(croppedCoords)<-T
 
 gridTbl<-gridTbl%>%dplyr::filter(gridID %in% unique((croppedCoords@data)$gridID))%>%dplyr::select(-gridID)
@@ -441,7 +441,7 @@ if(length(unique(gridTbl$scenario))>1){
     tbl_temp1 <-gridTblDiff%>%
       dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
                     classPalette="pal_div")%>%
-      dplyr::select(-get(scenario_i),-get(scenRef_i))
+      dplyr::select(-dplyr::one_of(c(scenario_i,scenRef_i)))
     tbl_temp1<-tbl_temp1%>%
       tidyr::gather(key=scenario,value=value,
                     -c(names(tbl_temp1)[!names(tbl_temp1) %in% paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep="")]))%>%
@@ -450,7 +450,7 @@ if(length(unique(gridTbl$scenario))>1){
     tbl_temp2 <-gridTblDiff%>%
       dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
                     classPalette="pal_div")%>%
-      dplyr::select(-get(scenario_i),-get(scenRef_i))
+      dplyr::select(-dplyr::one_of(c(scenario_i,scenRef_i)))
     tbl_temp2<-tbl_temp2%>%
       tidyr::gather(key=scenario,value=value,
                     -c(names(tbl_temp2)[!names(tbl_temp2) %in% paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep="")]))%>%
@@ -502,7 +502,7 @@ if(length(unique(shapeTbl$scenario))>1){
     tbl_temp1 <-shapeTblDiff%>%
       dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
                     classPalette="pal_div")%>%
-      dplyr::select(-get(scenario_i),-get(scenRef_i))
+      dplyr::select(-dplyr::one_of(c(scenario_i,scenRef_i)))
     tbl_temp1<-tbl_temp1%>%
       tidyr::gather(key=scenario,value=value,
                     -c(names(tbl_temp1)[!names(tbl_temp1) %in% paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep="")]))%>%
@@ -511,7 +511,7 @@ if(length(unique(shapeTbl$scenario))>1){
     tbl_temp2 <-shapeTblDiff%>%
      dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
                     classPalette="pal_div")%>%
-      dplyr::select(-get(scenario_i),-get(scenRef_i))
+      dplyr::select(-dplyr::one_of(c(scenario_i,scenRef_i)))
     tbl_temp2<-tbl_temp2%>%
       tidyr::gather(key=scenario,value=value,
                     -c(names(tbl_temp2)[!names(tbl_temp2) %in% paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep="")]))%>%
@@ -628,7 +628,7 @@ if(!is.null(gridTbl)){
 
             rasterx<-sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(datax$lon,datax$lat))),data=datax)
             sp::proj4string(rasterx)<-sp::proj4string(shape)
-            rasterx<-raster::intersect(rasterx,shapeExpandEtxent)
+            rasterx<-raster::crop(rasterx,shapeExpandEtxent)
             sp::gridded(rasterx)<-T
 
             scaleData<-datax%>%dplyr::select(-lat,-lon)
@@ -897,7 +897,7 @@ if(!is.null(gridTbl)){
 
           rasterx<-sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(datax$lon,datax$lat))),data=datax)
           sp::proj4string(rasterx)<-sp::proj4string(shape)
-          rasterx<-raster::intersect(rasterx,shapeExpandEtxent)
+          rasterx<-raster::crop(rasterx,shapeExpandEtxent)
           sp::gridded(rasterx)<-T
 
           scaleData<-datax%>%dplyr::select(-lat,-lon)
