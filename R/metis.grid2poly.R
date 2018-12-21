@@ -179,7 +179,7 @@ if(!is.null(grid)){
     gridCropped<-dplyr::bind_rows(gridCropped,tibble::as_tibble(rcropP@data))
 
     sp::proj4string(rcropP)<-sp::proj4string(shape)
-    rcropPx<-raster::crop(shape,rcropP)
+    rcropPx<-raster::intersect(shape,rcropP)
 
     if(is.null(gridPolyLoop)){
     print("Printing Grid overlay...")
@@ -232,7 +232,7 @@ if(!is.null(grid)){
       polyDatax<-dfx%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(round(sum(.,na.rm=T),2)))%>%tibble::as_tibble()
     }
 
-    polyData<-tidyr::gather(polyDatax,key=key,value=value,-( subRegCol))%>%
+    polyData<-tidyr::gather(polyDatax,key=key,value=value,-(subRegCol))%>%
       tidyr::separate(col="key",into=names(grid)[!names(grid) %in% c("lat","lon","value")],sep="_")
 
     for(colx in names(polyData)){

@@ -19,8 +19,17 @@ library(tmap)
 if("rgeos" %in% rownames(installed.packages()) == F){install.packages("rgeos")}
 library(rgeos)
 
-#------------
-# India Polygons
+
+
+#---------------
+#  Select Countries
+#----------------
+
+countriesSelect=c("Pakistan")
+
+
+#---------------
+#  Polygons
 #----------------
 
 NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
@@ -31,28 +40,30 @@ NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
 
 GCAMBasins<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
                     layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
-
-metis.map(GCAMBasins,fillColumn = "basin_name",facetsON = F)
+metis.map(GCAMBasins,fillColumn = "basin_name",facetsON = F,printFig = F)
 
 projX<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
 NE0<-spTransform(NE0,CRS(projX))
 NE1<-spTransform(NE1,CRS(projX))
 GCAMBasins<-spTransform(GCAMBasins,CRS(projX))
 
-BrazilNE0<-NE0[(NE0$NAME=="Brazil"),]
-head(BrazilNE0@data)
-plot(BrazilNE0)
 
-BrazilNE1<-raster::crop(NE1,BrazilNE0)
-head(BrazilNE1@data)
-plot(BrazilNE1)
-
-BrazilGCAMBasins<-raster::crop(GCAMBasins,BrazilNE0)
-head(BrazilGCAMBasins@data)
-plot(BrazilGCAMBasins)
-
+#---------------
 # Boundaries
 #-----------------
+for(country_i in countriesSelect){
+
+countryXNE0<-NE0[(NE0$NAME==country_i),]
+head(countryXNE0@data)
+plot(countryXNE0)
+
+countryXNE1<-raster::crop(NE1,countryXNE0)
+head(countryXNE1@data)
+plot(countryXNE1)
+
+countryXGCAMBasins<-raster::crop(GCAMBasins,countryXNE0)
+head(countryXGCAMBasins@data)
+plot(countryXGCAMBasins)
 
 
 boundaries<- metis.boundaries(
@@ -60,8 +71,8 @@ boundaries<- metis.boundaries(
                     #boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),#
                     #boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),#
                     boundaryRegCol="NAME",#
-                    boundaryRegionsSelect="Brazil",#
-                    subRegShape=BrazilGCAMBasins,#
+                    boundaryRegionsSelect=country_i,#
+                    subRegShape=countryXGCAMBasins,#
                     #subRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),#
                     #subRegShpFile=paste("ne_10m_admin_1_states_provinces",sep=""),#
                     subRegCol="basin_name",#
@@ -85,8 +96,8 @@ boundaries<- metis.boundaries(
                             #boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),#
                             #boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),#
                             boundaryRegCol="NAME",#
-                            boundaryRegionsSelect="Brazil",#
-                            subRegShape=BrazilNE1,#
+                            boundaryRegionsSelect=country_i,#
+                            subRegShape=countryXNE1,#
                             #subRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),#
                             #subRegShpFile=paste("ne_10m_admin_1_states_provinces",sep=""),#
                             subRegCol="name",#
@@ -95,7 +106,7 @@ boundaries<- metis.boundaries(
                             #dirOutputs=paste(getwd(),"/outputs",sep=""),#
                             nameAppend="_local",#
                             expandPercent=2,#
-                            overlapShape=BrazilGCAMBasins,#
+                            overlapShape=countryXGCAMBasins,#
                             #overlapShpFile="Global235_CLM_final_5arcmin_multipart",#
                             #overlapShpFolder=paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),#
                             labelsSize=0.7,#
@@ -105,4 +116,4 @@ boundaries<- metis.boundaries(
                                       paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""))
                           )
 
-
+} # Close country loop
