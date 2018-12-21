@@ -143,12 +143,21 @@ polyBermeo3Cropped<-metis.grid2poly(grid=gridExample,
                                     #aggType=NULL,
                                     nameAppend="_hydrobidBermeo3")
 
+# grid=gridExample
+# boundaryRegionsSelect="Argentina"
+# subRegShpFolder=examplePolyFolder
+# subRegShpFile=examplePolyFile
+# subRegCol="SUB_NAME"
+# #aggType=NULL
+# nameAppend="_hydrobidBermeo3"
+
 #-----------
 # Mapping
 #-------------
 
 exampleGridTable<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
 examplePolygonTable<-paste(getwd(),"/dataFiles/examples/example_poly_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+#examplePolygonTable<-paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_subRegType_origDownscaled_hydrobidBermeo3.csv",sep="")
 
 #gridTable=read.csv(exampleGridTable);head(gridTable)
 #polyTable=read.csv(examplePolygonTable);head(polyTable)
