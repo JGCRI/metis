@@ -357,6 +357,8 @@ if(length(unique(tbl$scenario))>1){
 
       tbl_p<-tbl%>%dplyr::filter(param==j)
 
+      if(length(unique((tbl_p%>%dplyr::filter(value>0))$scenario))>1){
+
       if(nrow(tbl_p)>0){
 
         if(length(unique(tbl_p$class1))>1){figWMult=1.3}else{figWmult=1}
@@ -511,6 +513,7 @@ if(length(unique(tbl$scenario))>1){
 
 
         } # Close if(nrow(tbl_rsp)>0)
+     } # Close loop if(length(unique(tbl$scenario))>1) to see if multiple scenarios for chosen param
     } # close loop for param
 } # Close if multiple scenarios available
 
@@ -564,6 +567,8 @@ for(i in unique(tbl$region)){
 
       tbl_rp<-tbl%>%dplyr::filter(region==i,
                                    param==j)
+
+      if(length(unique((tbl_rp%>%dplyr::filter(value>0))$scenario))>1){
 
       if(nrow(tbl_rp)>0){
 
@@ -713,7 +718,7 @@ for(i in unique(tbl$region)){
       )
 
       } # Close if(nrow(tbl_rsp)>0)
-
+      } # if(length(unique(tbl$scenario))>1){ to check if chosen param exists for comparison
       } # close loop for param
     } # close loop for region
   } # Close if multiple scenarios available
