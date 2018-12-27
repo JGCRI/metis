@@ -4,17 +4,17 @@
 #' the data by spatial boundaries given different shapefiles.
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
-#' @param grid  Default=NULL,
-#' @param subRegShape  Default=NULL,
-#' @param boundaryRegionsSelect  Default=NULL,
-#' @param subRegShpFolder  Default = NULL, Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default="")
-#' @param subRegShpFile  Default = NULL, paste("ne_10m_admin_1_states_provinces",sep  Default=""),
-#' @param subRegCol  Default = NULL, "NAME_1",
-#' @param subRegType  Default="subRegType",
-#' @param aggType  Default=NULL,
+#' @param grid  Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",
+#' @param subRegShape  Default=NULL. shapefile over which grid data is to be aggregated.
+#' @param boundaryRegionsSelect  Default=NULL. Larger region name which will be used as the folder name for outputs.
+#' @param subRegShpFolder  Default=NULL. Folder containing boundary region shapefile. Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),
+#' @param subRegShpFile  Default=NULL. Name of sub-region shapefile. Suggested paste("ne_10m_admin_1_states_provinces",sep  Default=""),
+#' @param subRegCol  Default= NULL. Suggested for states "name",
+#' @param subRegType  Default="subRegType". Eg. "states", "basins" etc.
+#' @param aggType  Default=NULL. Aggregation method to be used. Either "vol" or "depth" dependening on the type of data provided.
 #' @param dirOutputs  Default=paste(getwd(),"/outputs",sep  Default=""),
 #' @param nameAppend  Default="",
-#' @param labelsSize Default =1.2
+#' @param labelsSize Default =1.2. Label size for the region names for the gridoverlay plot.
 #' @export
 
 metis.grid2poly<- function(grid=NULL,

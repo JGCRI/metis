@@ -1,5 +1,5 @@
 ---
-title: 'Metis 1.0'
+title: 'Metis 2.0'
 tags:
   - sub-region
   - nexus
@@ -40,12 +40,14 @@ date: January 2019
 - [Need](#Need)
 - [Framework](#Framework)
 - [Installation Guide](#InstallGuide)
-- [Metis 1.0 Step-by-step walkthrough](#WalkThrough) 
+- [Metis 1.0 Step-by-step walkthrough](#WalkThrough1) 
     + [metis.readgcam](#metis.readgcam)
     + [mtis.chartsProcess](#metis.chartsProcess)
     + [mtis.boundaries](#metis.boundaries)
     + [mtis.grid2poly](#metis.grid2poly)
     + [metis.mapsProcess](#metis.mapsProcess)
+- [Metis 2.0 Step-by-step walkthrough](#WalkThrough2) 
+    + [metis.io](#metis.io)
   
 <!-- ------------------------>
 <!-- ------------------------>
@@ -166,7 +168,7 @@ Save and unzip the file in ./metis/datafiles/gis.
 
 <!-- ------------------------>
 <!-- ------------------------>
-# <a name="WalkThrough"></a> Metis 1.0 Step-by-step Walkthrough
+# <a name="WalkThrough1"></a> Metis 1.0 Step-by-step Walkthrough
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
 <!-- ------------------------>
 <!-- ------------------------>
@@ -549,6 +551,33 @@ metis.mapProcess(polygonDataTables=examplePolygonTable,
 
 </p>
 </details>
+
+<!-- ------------------------>
+<!-- ------------------------>
+# <a name="WalkThrough2"></a> Metis 2.0 Step-by-step Walkthrough
+<p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
+<!-- ------------------------>
+<!-- ------------------------>
+
+[Back to Contents](#Contents)
+
+This section walks through the different features and additional functions of Metis 2. Metis 2 contains the following additional functions:
+
+- metis.io.R: Input Output analysis
+
+
+<!-- ------------------------>
+<!-- ------------------------>
+## <a name="metis.io"></a> metis.io
+<p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
+<!-- ------------------------>
+<!-- ------------------------>
+
+[Back to Contents](#Contents)
+
+
+<b> Key Inputs </b>  
+
 
 
 
