@@ -19,59 +19,59 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   cropSubShape2Bound = T, grids = NULL)
 }
 \arguments{
-\item{boundaryRegShape}{Default=NULL,}
+\item{boundaryRegShape}{Default=NULL. Boundary region shape if already read into R.}
 
-\item{boundaryRegShpFolder}{Default= NULL . Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),}
+\item{boundaryRegShpFolder}{Default= NULL. Folder containing boundary region shapefile. Suggested: paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),}
 
-\item{boundaryRegShpFile}{Default=NULL . Suggested paste("ne_10m_admin_0_countries",sep  Default=""),}
+\item{boundaryRegShpFile}{Default=NULL. Name of shapefile. Suggested: paste("ne_10m_admin_0_countries",sep  Default=""),}
 
-\item{boundaryRegCol}{Default=NULL. Suggested "NAME_0",}
+\item{boundaryRegCol}{Default=NULL. Column name with region names. Suggested "NAME_0",}
 
-\item{boundaryRegionsSelect}{Default=NULL. Suggested GADM country Names}
+\item{boundaryRegionsSelect}{Default=NULL. The region to choose from the given shapefile.}
 
-\item{subRegShape}{Default=NULL,}
+\item{subRegShape}{Default=NULL. Sub-region shape if already read into R.}
 
-\item{subRegShpFolder}{Default=NULL. Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),}
+\item{subRegShpFolder}{Default=NULL. Folder containing boundary region shapefile. Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),}
 
-\item{subRegShpFile}{Default=NULL. Suggested paste("ne_10m_admin_1_states_provinces",sep  Default=""),}
+\item{subRegShpFile}{Default=NULL. Name of sub-region shapefile. Suggested paste("ne_10m_admin_1_states_provinces",sep  Default=""),}
 
-\item{subRegCol}{Default="NULL Suggested for states "name",}
+\item{subRegCol}{Default= NULL. Suggested for states "name",}
 
-\item{subRegionsSelect}{Default=NULL,}
+\item{subRegionsSelect}{Default=NULL. The region to choose from the given sub-region shapefile.}
 
-\item{subRegType}{Default="subRegType",}
+\item{subRegType}{Default="subRegType". Eg. "states", "basins" etc.}
 
-\item{dirOutputs}{Default=paste(getwd(),"/outputs",sep  Default=""),}
+\item{dirOutputs}{Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.}
 
-\item{nameAppend}{Default="",}
+\item{nameAppend}{Default="".}
 
-\item{expandPercent}{Default=2,}
+\item{expandPercent}{Default=2. Percentage to expand boundary region beyond chosen region.}
 
-\item{overlapShape}{Default = NULL}
+\item{overlapShape}{Default = NULL. If boundary lines of another shapefile are desired specify the shape here.}
 
-\item{overlapShpFolder}{Default = NULL. For Basins use paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),}
+\item{overlapShpFolder}{Default = NULL. For GCAM basins use paste(getwd(),"/dataFiles/gis/basin_gcam",sep="").}
 
-\item{overlapShpFile}{Default = NULL. For Basins use ="Global235_CLM_final_5arcmin_multipart"}
+\item{overlapShpFile}{Default = NULL. For GCAM basins use ="Global235_CLM_final_5arcmin_multipart"}
 
-\item{labelsSize}{Default =1.2}
+\item{labelsSize}{Default =1.2.}
 
-\item{fillcolorNA}{Default =NULL}
+\item{fillcolorNA}{Default =NULL.}
 
-\item{projX}{Default ="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",}
+\item{projX}{Default ="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0".}
 
-\item{extendedFillColor}{Default = "grey75",}
+\item{extendedFillColor}{Default = "grey75".}
 
-\item{extendedBGColor}{Default = "lightblue1",}
+\item{extendedBGColor}{Default = "lightblue1".}
 
-\item{extendedHighLightColor}{Default = "cornsilk1",}
+\item{extendedHighLightColor}{Default = "cornsilk1".}
 
-\item{extendedLabelsColor}{Default = "grey30"}
+\item{extendedLabelsColor}{Default = "grey30".}
 
-\item{extdendedLabelSize}{Default =0.7}
+\item{extdendedLabelSize}{Default =0.7.}
 
 \item{extension}{Default = T}
 
-\item{fillPalette}{Default ="Spectral",}
+\item{fillPalette}{Default ="Spectral".}
 
 \item{cropSubShape2Bound}{Default = T. Set to False if subregion shape is larger than boundary, but desired fro extension.}
 

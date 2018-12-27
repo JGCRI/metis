@@ -4,33 +4,33 @@
 #' the data by spatial boundaries given different shapefiles.
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
-#' @param boundaryRegShape  Default=NULL,
-#' @param subRegShape  Default=NULL,
-#' @param boundaryRegShpFolder  Default= NULL . Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),
-#' @param boundaryRegShpFile  Default=NULL . Suggested paste("ne_10m_admin_0_countries",sep  Default=""),
-#' @param boundaryRegCol  Default=NULL. Suggested "NAME_0",
-#' @param boundaryRegionsSelect  Default=NULL. Suggested GADM country Names
-#' @param subRegShpFolder  Default=NULL. Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),
-#' @param subRegShpFile  Default=NULL. Suggested paste("ne_10m_admin_1_states_provinces",sep  Default=""),
-#' @param subRegCol  Default="NULL Suggested for states "name",
-#' @param subRegionsSelect  Default=NULL,
-#' @param subRegType  Default="subRegType",
-#' @param dirOutputs  Default=paste(getwd(),"/outputs",sep  Default=""),
-#' @param nameAppend  Default="",
-#' @param expandPercent  Default=2,
-#' @param overlapShape Default = NULL
-#' @param overlapShpFolder Default = NULL. For Basins use paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),
-#' @param overlapShpFile Default = NULL. For Basins use ="Global235_CLM_final_5arcmin_multipart"
-#' @param fillcolorNA Default =NULL
-#' @param labelsSize Default =1.2
-#' @param projX Default ="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
-#' @param extendedFillColor Default = "grey75",
-#' @param extendedBGColor Default = "lightblue1",
-#' @param extendedHighLightColor Default = "cornsilk1",
-#' @param extendedLabelsColor Default = "grey30"
-#' @param extdendedLabelSize Default =0.7
+#' @param boundaryRegShape  Default=NULL. Boundary region shape if already read into R.
+#' @param subRegShape  Default=NULL. Sub-region shape if already read into R.
+#' @param boundaryRegShpFolder  Default= NULL. Folder containing boundary region shapefile. Suggested: paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),
+#' @param boundaryRegShpFile  Default=NULL. Name of shapefile. Suggested: paste("ne_10m_admin_0_countries",sep  Default=""),
+#' @param boundaryRegCol  Default=NULL. Column name with region names. Suggested "NAME_0",
+#' @param boundaryRegionsSelect  Default=NULL. The region to choose from the given shapefile.
+#' @param subRegShpFolder  Default=NULL. Folder containing boundary region shapefile. Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),
+#' @param subRegShpFile  Default=NULL. Name of sub-region shapefile. Suggested paste("ne_10m_admin_1_states_provinces",sep  Default=""),
+#' @param subRegCol  Default= NULL. Suggested for states "name",
+#' @param subRegionsSelect  Default=NULL. The region to choose from the given sub-region shapefile.
+#' @param subRegType  Default="subRegType". Eg. "states", "basins" etc.
+#' @param dirOutputs  Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.
+#' @param nameAppend  Default="".
+#' @param expandPercent  Default=2. Percentage to expand boundary region beyond chosen region.
+#' @param overlapShape Default = NULL. If boundary lines of another shapefile are desired specify the shape here.
+#' @param overlapShpFolder Default = NULL. For GCAM basins use paste(getwd(),"/dataFiles/gis/basin_gcam",sep="").
+#' @param overlapShpFile Default = NULL. For GCAM basins use ="Global235_CLM_final_5arcmin_multipart"
+#' @param fillcolorNA Default =NULL.
+#' @param labelsSize Default =1.2.
+#' @param projX Default ="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0".
+#' @param extendedFillColor Default = "grey75".
+#' @param extendedBGColor Default = "lightblue1".
+#' @param extendedHighLightColor Default = "cornsilk1".
+#' @param extendedLabelsColor Default = "grey30".
+#' @param extdendedLabelSize Default =0.7.
 #' @param extension Default = T
-#' @param fillPalette Default ="Spectral",
+#' @param fillPalette Default ="Spectral".
 #' @param cropSubShape2Bound Default = T. Set to False if subregion shape is larger than boundary, but desired fro extension.
 #' @param grids Default = NULL. Suggested is c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
 #' paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""))

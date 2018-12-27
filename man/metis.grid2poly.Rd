@@ -11,27 +11,27 @@ metis.grid2poly(grid = NULL, boundaryRegionsSelect = NULL,
   labelsSize = 1.2)
 }
 \arguments{
-\item{grid}{Default=NULL,}
+\item{grid}{Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",}
 
-\item{boundaryRegionsSelect}{Default=NULL,}
+\item{boundaryRegionsSelect}{Default=NULL. Larger region name which will be used as the folder name for outputs.}
 
-\item{subRegShape}{Default=NULL,}
+\item{subRegShape}{Default=NULL. shapefile over which grid data is to be aggregated.}
 
-\item{subRegShpFolder}{Default = NULL, Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default="")}
+\item{subRegShpFolder}{Default=NULL. Folder containing boundary region shapefile. Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),}
 
-\item{subRegShpFile}{Default = NULL, paste("ne_10m_admin_1_states_provinces",sep  Default=""),}
+\item{subRegShpFile}{Default=NULL. Name of sub-region shapefile. Suggested paste("ne_10m_admin_1_states_provinces",sep  Default=""),}
 
-\item{subRegCol}{Default = NULL, "NAME_1",}
+\item{subRegCol}{Default= NULL. Suggested for states "name",}
 
-\item{subRegType}{Default="subRegType",}
+\item{subRegType}{Default="subRegType". Eg. "states", "basins" etc.}
 
-\item{aggType}{Default=NULL,}
+\item{aggType}{Default=NULL. Aggregation method to be used. Either "vol" or "depth" dependening on the type of data provided.}
 
 \item{dirOutputs}{Default=paste(getwd(),"/outputs",sep  Default=""),}
 
 \item{nameAppend}{Default="",}
 
-\item{labelsSize}{Default =1.2}
+\item{labelsSize}{Default =1.2. Label size for the region names for the gridoverlay plot.}
 }
 \value{
 A table with data by polygon ID for each shapefile provided

@@ -469,17 +469,17 @@ if(length(unique(tbl$scenario))>1){
         tbl_pd<-tbl_p%>%
           dplyr::filter(scenario==scenRef_i)%>%
           dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
-        if(!yData %in% names(tbl_p)){tbl_pd<-tbl_pd%>%dplyr::select(-one_of(c(yData)))}
+        if(!yData %in% names(tbl_p)){tbl_pd<-tbl_pd%>%dplyr::select(-dplyr::one_of(c(yData)))}
 
         for (k in unique(tbl_p$scenario)[unique(tbl_p$scenario)!=scenRef_i]){
           tbl_temp <- tbl_p%>%
             dplyr::filter(scenario %in% c(scenRef_i,k))%>%
             dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
-          if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-one_of(c(yData)))}
+          if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-dplyr::one_of(c(yData)))}
           tbl_temp <- tbl_temp%>%
             tidyr::spread(scenario,yData)%>%
             dplyr::mutate(!!paste(k,"_diff",sep=""):=get(k)-get(scenRef_i))%>%
-            dplyr::select(-one_of(c(k,scenRef_i)))
+            dplyr::select(-dplyr::one_of(c(k,scenRef_i)))
           tbl_temp<-tbl_temp%>%
             tidyr::gather(key=scenario,value=!!yData,
                           -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,"_diff",sep="")]))
@@ -677,17 +677,17 @@ for(i in unique(tbl$region)){
       tbl_rpd<-tbl_rp%>%
         dplyr::filter(scenario==scenRef_i)%>%
         dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
-      if(!yData %in% names(tbl_rp)){tbl_rpd<-tbl_rpd%>%dplyr::select(-one_of(c(yData)))}
+      if(!yData %in% names(tbl_rp)){tbl_rpd<-tbl_rpd%>%dplyr::select(-dplyr::one_of(c(yData)))}
 
       for (k in unique(tbl_rp$scenario)[unique(tbl_rp$scenario)!=scenRef_i]){
         tbl_temp <- tbl_rp%>%
           dplyr::filter(scenario %in% c(scenRef_i,k))%>%
           dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
-        if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-one_of(c(yData)))}
+        if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-dplyr::one_of(c(yData)))}
         tbl_temp <- tbl_temp%>%
           tidyr::spread(scenario,yData)%>%
           dplyr::mutate(!!paste(k,"_diff",sep=""):=get(k)-get(scenRef_i))%>%
-          dplyr::select(-one_of(c(k,scenRef_i)))
+          dplyr::select(-dplyr::one_of(c(k,scenRef_i)))
         tbl_temp<-tbl_temp%>%
           tidyr::gather(key=scenario,value=!!yData,
                         -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,"_diff",sep="")]))
