@@ -65,8 +65,8 @@ In most projects looking at multi-sector dynamics one of the key constraints is 
 <p align="center"> <b> Metis - A model to bridge the gap between coarse resolution IAMs and finer-resolution sector specific models </b> </p>
 <p align="center"> <img src="READMEfigs/metis_MidSpatial.PNG"></p>
 
-- The Metis modeling development platform is hosted on github at: https://github.com/zarrarkhan/metis
-- To clone this repo is: https://github.com/zarrarkhan/metis.git
+- The Metis modeling development platform is hosted on github at: https://github.com/JGCRI/metis
+- To clone this repo is: https://github.com/JGCRI/metis.git
 - The model is comprised of an R package and additional files with sample data
 
 
@@ -114,9 +114,9 @@ Metis is envisioned to be developed in several phases with progressively more de
 ```r
 # Download a git software (eg. https://git-scm.com/downloads)
 # Clone repo
-git clone https://github.com/zarrarkhan/metis.git
+git clone https://github.com/JGCRI/metis.git
 
-# Or download from github https://github.com/zarrarkhan/metis 
+# Or download from github https://github.com/JGCRI/metis 
 ```  
 
 2. Download R studio (https://www.rstudio.com/) and R (https://www.r-project.org/)
@@ -133,7 +133,7 @@ git clone https://github.com/zarrarkhan/metis.git
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
+if("metis" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/metis")}
 library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
