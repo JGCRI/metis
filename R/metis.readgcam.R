@@ -1285,7 +1285,7 @@ requireNamespace("dplyr",quietly = T)
     if (is.null(regionsSelect)) {
         utils::write.csv(datax, file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
             "to", max(range(datax$x)), ".csv", sep = ""), row.names = F)
-        utils::write.csv(dataTemplate, file = paste(dirOutputs, "/readGCAMTables/Tables_Template/template_Regional_AllRegions.csv", sep = ""),
+        utils::write.csv(dataTemplate, file = paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = ""),
                          row.names = F)
     } else {
 

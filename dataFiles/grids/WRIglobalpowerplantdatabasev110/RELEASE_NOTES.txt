@@ -1,0 +1,17 @@
+Release Notes for Global Power Plant Database v1.1.0
+
+Changes Since 1.0.0:
+
+	New: First data for China (2901 plants @ 1237.5 GW)
+	New: First data for Fiji (12 plants @ 0.237 GW)
+	New: More plants from India CEA (76 plants @ ~50 GW)
+	New: Added generation data from India CEA for years 2013-2015
+	New: More plants from Philippines DOE (9 plants @ 520 MW)
+	New: More plants added in Israel (14 @ 1.9 GW)
+	New: More plants in United Kingdom (4 plants @ 2.9 GW)
+
+	Change: Some United Kingdom plants have changes to their IDs
+
+	Fix: India CEA plants had shuffled geolocations, but now are correctly geolocated
+	Fix: India generation data now correctly attributed to 2015 instead of 2016
+	Fix: Cambodia now has correct ISO-3 code KHM instead of KMH

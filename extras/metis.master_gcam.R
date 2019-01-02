@@ -34,9 +34,10 @@ paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
                "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissByGHGGROUPS")
 
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
-gcamdatabaseName <-"database_basexdb_LAC"
+#gcamdatabaseName <-"database_basexdb_LAC"
 gcamdataProjFile <-"LAC_dataProj.proj"
 regionsSelect <- c("Colombia","Argentina")
+#regionsSelect <- NULL
 
 # Use function localDBConn from package rgcam to get a list of scenarios if needed.
 # localDBConn(gcamdatabasePath,gcamdatabaseName)
@@ -56,6 +57,7 @@ dataGCAM_LAC<-metis.readgcam(reReadData=F, # Default Value is T
                              regionsSelect=regionsSelect, # Default Value is NULL
                              paramsSelect=paramsSelect # Default value is "All"
 )
+
 
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 gcamdatabaseName <-"database_basexdb_Uruguay"
