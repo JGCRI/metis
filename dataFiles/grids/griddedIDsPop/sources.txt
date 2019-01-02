@@ -1,0 +1,3 @@
+# grid_pop_map.csv compiled from the data files in this folder which were taken from the cloned version of Tethys.
+# Tethys\Input\rgn32
+# Tethys\Input\harmonized_inputs

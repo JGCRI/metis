@@ -240,6 +240,42 @@ gridMetis<-dplyr::bind_rows(gridMetis,gridMetisScarcity)
 }else {print(paste("gridMetis is NULL, skipping gridded scracity calculation.",sep=""))}
 
 
+#----------------
+# Prepare gridded Population
+#---------------
+# GWP population
+
+#----------------
+# Prepare gridded Agricultural Production
+#---------------
+# Based on LU crop distribution and Ag production GCAM
+# For each Scenario and each GCAM Region Calculate:
+# relative percentage of area in each grid cell
+# Total ag production of crop
+# Distribute ag production by percentage
+
+
+#----------------
+# Prepare gridded Electricity Demands
+#---------------
+# WRI database + GCAM Elec demands
+# Distribute electric demands by population percentage
+
+
+#----------------
+# Prepare gridded Power Generation (Supply)
+#---------------
+# WRI database + GCAM Power Generated
+# Calculate total power by fuel by region
+# calculate relative prcnt by fuel by region
+# Distirbute capacity by prnct distirbution
+
+#----------------
+# Prepare gridded Power Capacity (Supply)
+#---------------
+# WRI database power capacity + GCAM Cum Power Capacity
+
+
 #----------------------
 
 # Test Unique Values
