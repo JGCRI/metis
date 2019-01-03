@@ -15,6 +15,9 @@
 #' @param xanthosFiles Xanthos Files to Read
 #' @param xanthosCoordinatesPath paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")
 #' @param scarcityXanthosRollMeanWindow Default = 10,
+#' @param popFolder Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
+#' @param popFiles Default = <-"grid_pop_map"
+#' @param popUnits Default = <-"person"
 #' @param dirOutputs Default =paste(getwd(),"/outputs",sep=""),
 #' @param reReadData Default =1,
 #' @param gridMetisData Default = paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")
@@ -36,6 +39,9 @@ metis.prepGrid<- function(demeterFolder=NULL,
                         xanthosFiles=NULL,
                         xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep=""),
                         scarcityXanthosRollMeanWindow=10,
+                        popFolder=paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep=""),
+                        popFiles="grid_pop_map",
+                        popUnits="person",
                         dirOutputs=paste(getwd(),"/outputs",sep=""),
                         reReadData=1,
                         gridMetisData=paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")
@@ -243,7 +249,38 @@ gridMetis<-dplyr::bind_rows(gridMetis,gridMetisScarcity)
 #----------------
 # Prepare gridded Population
 #---------------
-# GWP population
+
+if(!dir.exists(popFolder)){
+  print(paste("pop folder: ", popFolder ," is incorrect or doesn't exist.",sep=""))
+  print(paste("Skipping pop runs",sep=""))}else {
+
+    for(popFile_i in popFiles){
+
+      class_i=gsub(".csv","",popFile_i)
+      if(!grepl(".csv",popFile_i)){popFile_i=paste(popFile_i,".csv",sep="")}
+
+      if(!file.exists(paste(popFolder,"/",popFile_i,sep=""))){
+        print(paste("pop file: ", popFolder,"/",popFile_i," is incorrect or doesn't exist.",sep=""))
+        print(paste("Skipping file: ",popFolder,"/",popFile_i,sep=""))
+      }else{
+        gridx<-utils::read.csv(paste(popFolder,"/",popFile_i,sep=""), stringsAsFactors = F)%>%
+          tibble::as_tibble()%>%dplyr::select(lon,lat,dplyr::contains("popGWP"))%>%
+          tidyr::gather(key="key",value="value",-c("lat","lon"))%>%
+          tidyr::separate(col="key",into=c("scenario","x"),sep="_")%>%
+          dplyr::mutate(param="population",
+                        units=popUnits,
+                        aggType="vol",
+                        classPalette="pal_hot",
+                        class="class")
+        gridx$x<-as.numeric(gridx$x)
+
+        gridMetis<-dplyr::bind_rows(gridMetis,gridx)
+
+      } # Close if pop file exists
+    } # close pop file loops
+
+  } # Close pop folder
+
 
 #----------------
 # Prepare gridded Agricultural Production
