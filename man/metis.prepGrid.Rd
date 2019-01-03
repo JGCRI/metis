@@ -12,8 +12,10 @@ metis.prepGrid(demeterFolder = NULL, demeterScenario = NULL,
   xanthosScenario = NULL, xanthosUnits = NULL, xanthosFiles = NULL,
   xanthosCoordinatesPath = paste(getwd(),
   "/dataFiles/grids/xanthosCoords/coordinates.csv", sep = ""),
-  scarcityXanthosRollMeanWindow = 10, dirOutputs = paste(getwd(),
-  "/outputs", sep = ""), reReadData = 1,
+  scarcityXanthosRollMeanWindow = 10, popFolder = paste(getwd(),
+  "/dataFiles/grids/griddedIDsPop/", sep = ""),
+  popFiles = "grid_pop_map", popUnits = "person",
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), reReadData = 1,
   gridMetisData = paste(dirOutputs, "/Grids/gridMetis.RData", sep = ""))
 }
 \arguments{
@@ -44,6 +46,12 @@ metis.prepGrid(demeterFolder = NULL, demeterScenario = NULL,
 \item{xanthosCoordinatesPath}{paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")}
 
 \item{scarcityXanthosRollMeanWindow}{Default = 10,}
+
+\item{popFolder}{Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")}
+
+\item{popFiles}{Default = <-"grid_pop_map"}
+
+\item{popUnits}{Default = <-"person"}
 
 \item{dirOutputs}{Default =paste(getwd(),"/outputs",sep=""),}
 
