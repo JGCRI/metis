@@ -40,12 +40,15 @@ date: January 2019
 - [Need](#Need)
 - [Framework](#Framework)
 - [Installation Guide](#InstallGuide)
-- [Metis 1.0 Step-by-step walkthrough](#WalkThrough) 
+- [Metis Step-by-step walkthrough](#WalkThrough) 
     + [metis.readgcam](#metis.readgcam)
-    + [mtis.chartsProcess](#metis.chartsProcess)
-    + [mtis.boundaries](#metis.boundaries)
-    + [mtis.grid2poly](#metis.grid2poly)
+    + [metis.chartsProcess](#metis.chartsProcess)
+    + [metis.boundaries](#metis.boundaries)
+    + [metis.grid2poly](#metis.grid2poly)
     + [metis.mapsProcess](#metis.mapsProcess)
+- [Under development](#underDevelopment) 
+    + [metis.io](#metis.io)
+    + [metis.irio](#metis.irio)
   
 <!-- ------------------------>
 <!-- ------------------------>
@@ -89,12 +92,23 @@ The motivation behind developing the Metis model is to bridge the gap between mo
 
 [Back to Contents](#Contents)
 
-Metis is envisioned to be developed in several phases with progressively more detail while maintainging ease-of-use and accesibility to a range of stakeholders with varying expertise and comfort from different sectors. The long-term vision of metis is shown in the figure below. This first version of metis provides the basic tools for stakeholders to visualize and aggregate data up to the relevant area of interest. Version 2 of the model will focus on understanding the links between different sectors and sub-regions to allow analyis of cross-sector dynamics. In version 3 of the model, infrastructure options will be included to allow exploration of various investments options such electricity grid, road and pipeline expansion. Version 1 of the model is composed of three main modules: "GCAM", "Charting" and "Mapping" which serve as a multi-sector accounting tool to visualize and analyze demands, supplies and distribution of various resources across multiple sectors at flexible sub-regional scales. The modules are designed to be flexible and easy to use by multiple stakeholders with varying needs.  
+Metis is designed to be accesible to a range of stakeholders with varying expertise and goals related to nexus analyses. The various functions of metis can be used independently for different purposes ranging from visualization, charting, spatial aggregation, mapping and inter-sectoral dynamics. The following lists and figure provides a summary of the existing and planned capabilities of metis. The lists and figure are updated as progress is made and new developments are planned. 
 
-<p align="center"> <b> Metis Long Term Vision</b> </p>
-<p align="center"> <img src="READMEfigs/metis_Vision.PNG"></p>
+<p align="left"> <b> Metis Module & Functions </b> </p>
 
-<p align="center"> <b> Metis 1.0 Framework </b> </p>
+- Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: metis.chart.R, metis.chartsProcess.R)
+- Maps: Various functions to vizualize spatial boundaries and data as rasters and polygon
+(functions: metis.boundaries.R, mets.map.R, metis.mapsProcess.R)
+- Spatial Aggregation: Functions to aggregate gridded data to different spatial boundaries.
+(functions: metis.grid2poly.R)
+- Data preparation: Functions to prepare data from other modules into the appropriate format.
+(functions: metis.readgcam.R, metis.prepGrid.R)
+
+<p align="left"> <b> Under Development </b> </p>
+
+- Input-Output Analysis: Input output tables to capture cross-sectoral and cross-regional feedbacks and links. (functions: metis.io.R, metis.irio.R)
+- Infrastructure: Optimization module to find infrastructure development options to address supply-demand gaps. (functions: metis.infra.R)
+
 <p align="center"> <img src="READMEfigs/metis_workflow1.png"></p>
 
 
@@ -166,7 +180,7 @@ Save and unzip the file in ./metis/datafiles/gis.
 
 <!-- ------------------------>
 <!-- ------------------------>
-# <a name="WalkThrough"></a> Metis 1.0 Step-by-step Walkthrough
+# <a name="WalkThrough"></a> Metis Step-by-step Walkthrough
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
 <!-- ------------------------>
 <!-- ------------------------>
@@ -197,7 +211,8 @@ This section walks through the different features of the metis package using the
 The workflow for data processing, charting and mapping is shown below. The following subsections will guide the user through each of these processes further expaning on the functionality within each of the functions.
 
 <p align="center"> <b> Metis chart and mapping processes </b> </p>
-<p align="center"> <img src="READMEfigs/metis_workflowChartMap.png"></p>
+<p align="center"> <img src="READMEfigs/metis_workflowChart.png"></p>
+<p align="center"> <img src="READMEfigs/metis_workflowMap.png"></p>
 
 </p>
 </details>
@@ -549,6 +564,47 @@ metis.mapProcess(polygonDataTables=examplePolygonTable,
 
 </p>
 </details>
+
+
+<!-- ------------------------>
+<!-- ------------------------>
+# <a name="underDevelopment"></a> Under development
+<p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
+<!-- ------------------------>
+<!-- ------------------------>
+
+[Back to Contents](#Contents)
+
+This section describes functions currently under development. Comments and suggestions are welcome. Functions under development include:
+
+- metis.io.R: Input Output analysis
+- metis.irio.R: Regional Input Output analysis
+
+<!-- ------------------------>
+<!-- ------------------------>
+## <a name="metis.io"></a> metis.io
+<p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
+<!-- ------------------------>
+<!-- ------------------------>
+
+[Back to Contents](#Contents)
+
+
+<b> Key Inputs </b>  
+
+
+<!-- ------------------------>
+<!-- ------------------------>
+## <a name="metis.irio"></a> metis.irio
+<p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
+<!-- ------------------------>
+<!-- ------------------------>
+
+[Back to Contents](#Contents)
+
+
+<b> Key Inputs </b>  
+
 
 
 
