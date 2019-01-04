@@ -96,18 +96,18 @@ Metis is designed to be accesible to a range of stakeholders with varying expert
 
 <p align="left"> <b> Metis Module & Functions </b> </p>
 
-i. Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: metis.chart.R, metis.chartsProcess.R)
-ii. Maps: Various functions to vizualize spatial boundaries and data as rasters and polygon
+- Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: metis.chart.R, metis.chartsProcess.R)
+- Maps: Various functions to vizualize spatial boundaries and data as rasters and polygon
 (functions: metis.boundaries.R, mets.map.R, metis.mapsProcess.R)
-iii. Spatial Aggregation: Functions to aggregate gridded data to different spatial boundaries.
+- Spatial Aggregation: Functions to aggregate gridded data to different spatial boundaries.
 (functions: metis.grid2poly.R)
-iii. Data preparation: Functions to prepare data from other modules into the appropriate format.
+- Data preparation: Functions to prepare data from other modules into the appropriate format.
 (functions: metis.readgcam.R, metis.prepGrid.R)
 
 <p align="left"> <b> Under Development </b> </p>
 
-i. Input-Output Analysis: Input output tables to capture cross-sectoral and cross-regional feedbacks and links. (functions: metis.io.R, metis.irio.R)
-ii. Infrastructure: Optimization module to find infrastructure development options to address supply-demand gaps. (functions: metis.infra.R)
+- Input-Output Analysis: Input output tables to capture cross-sectoral and cross-regional feedbacks and links. (functions: metis.io.R, metis.irio.R)
+- Infrastructure: Optimization module to find infrastructure development options to address supply-demand gaps. (functions: metis.infra.R)
 
 <p align="center"> <img src="READMEfigs/metis_workflow1.png"></p>
 
