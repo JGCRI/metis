@@ -95,6 +95,7 @@ The motivation behind developing the Metis model is to bridge the gap between mo
 Metis is designed to be accesible to a range of stakeholders with varying expertise and goals related to nexus analyses. The various functions of metis can be used independently for different purposes ranging from visualization, charting, spatial aggregation, mapping and inter-sectoral dynamics. The following lists and figure provides a summary of the existing and planned capabilities of metis. The lists and figure are updated as progress is made and new developments are planned. 
 
 <p align="left"> <b> Metis Module & Functions </b> </p>
+
 i. Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: metis.chart.R, metis.chartsProcess.R)
 ii. Maps: Various functions to vizualize spatial boundaries and data as rasters and polygon
 (functions: metis.boundaries.R, mets.map.R, metis.mapsProcess.R)
@@ -104,6 +105,7 @@ iii. Data preparation: Functions to prepare data from other modules into the app
 (functions: metis.readgcam.R, metis.prepGrid.R)
 
 <p align="left"> <b> Under Development </b> </p>
+
 i. Input-Output Analysis: Input output tables to capture cross-sectoral and cross-regional feedbacks and links. (functions: metis.io.R, metis.irio.R)
 ii. Infrastructure: Optimization module to find infrastructure development options to address supply-demand gaps. (functions: metis.infra.R)
 
