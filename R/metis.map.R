@@ -146,15 +146,6 @@ metis.map<-function(dataPolygon=NULL,
   # facetLabelSize=1.5
   # alpha=1
 
-#----------------
-# Load Libraries
-#---------------
-  requireNamespace("tmap",quietly = T)
-  requireNamespace("tidyr",quietly = T)
-  requireNamespace("dplyr",quietly = T)
-  requireNamespace("tibble",quietly = T)
-  requireNamespace("rgeos",quietly = T)
-  requireNamespace("methods",quietly = T)
 #------------------
 # Initialize variables to remove binding errors if needed
 # -----------------

@@ -2,6 +2,7 @@
 
 export(met.io)
 export(met.irio)
+export(met.mrio)
 export(metis.assumptions)
 export(metis.boundaries)
 export(metis.chart)

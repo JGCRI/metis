@@ -8,7 +8,7 @@ metis.grid2poly(grid = NULL, boundaryRegionsSelect = NULL,
   subRegShape = NULL, subRegShpFolder = NULL, subRegShpFile = NULL,
   subRegCol = NULL, subRegType = "subRegType", aggType = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
-  labelsSize = 1.2)
+  labelsSize = 1.2, paramsSelect = "All")
 }
 \arguments{
 \item{grid}{Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",}
@@ -32,6 +32,8 @@ metis.grid2poly(grid = NULL, boundaryRegionsSelect = NULL,
 \item{nameAppend}{Default="",}
 
 \item{labelsSize}{Default =1.2. Label size for the region names for the gridoverlay plot.}
+
+\item{paramsSelect}{Default ="All"}
 }
 \value{
 A table with data by polygon ID for each shapefile provided

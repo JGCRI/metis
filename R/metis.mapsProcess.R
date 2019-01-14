@@ -110,17 +110,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # extendedShape=NULL
 
 #------------------
-# Load required Libraries
-# -----------------
-  requireNamespace("tibble",quietly = T)
-  requireNamespace("dplyr",quietly = T)
-  requireNamespace("utils",quietly = T)
-  requireNamespace("tidyr",quietly = T)
-  requireNamespace("rlang",quietly = T)
-  requireNamespace("magrittr",quietly = T)
-  requireNamespace("stats",quietly = T)
-
-#------------------
 # Initialize variables to remove binding errors
 # -----------------
 
@@ -487,7 +476,7 @@ if(length(unique(shapeTbl$scenario))>1){
     print(paste("No reference scenario provided",sep=""))
     print(paste("Using ",unique(shapeTbl$scenario)[1]," as reference",sep=""))
     scenRef_i = unique(shapeTbl$scenario)[1]}else{
-      if(!scenRef %in% unique(shapeTbl$scenario)[1]){
+      if(!scenRef %in% unique(shapeTbl$scenario)){
         print(paste("scenario ",scenRef," not in scenarios",sep=""))
         print(paste("Using ",unique(shapeTbl$scenario)[1]," as reference",sep=""))
         scenRef_i = unique(shapeTbl$scenario)[1]}else{

@@ -175,7 +175,9 @@ metis.mapProcess(polygonDataTables=examplePolygonTable,
                  legendPosition=c("RIGHT","top"),
                  animateOn=T,
                  delay=100,
-                 scenRef="Eg1"
+                 scenRef="Eg1",
+                 #expandPercent = 6,
+                 extension=F
                  )
 
 # polygonDataTables=examplePolygonTable

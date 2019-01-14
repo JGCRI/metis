@@ -73,17 +73,6 @@ metis.chart<-function(data,
                          pdfpng="png")
                         {
 
-#----------------
-# Load Libraries
-#---------------
-
-  requireNamespace("tools",quietly = T)
-  requireNamespace("ggplot2",quietly = T)
-  requireNamespace("scales",quietly = T)
-  requireNamespace("dplyr",quietly = T)
-  requireNamespace("tibble",quietly = T)
-  requireNamespace("magrittr",quietly = T)
-
 #------------------
 # Initialize variables to remove binding errors if needed
 # -----------------

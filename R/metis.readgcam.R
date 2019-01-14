@@ -63,13 +63,6 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                          regionsSelect = NULL, queriesSelect="All",
                          paramsSelect="All"){
 
-#------------------
-# Load required Libraries
-# -----------------
-
-requireNamespace("rgcam",quietly = T)
-requireNamespace("tibble",quietly = T)
-requireNamespace("dplyr",quietly = T)
 
 #----------------
 # Initialize variables by setting to NULL

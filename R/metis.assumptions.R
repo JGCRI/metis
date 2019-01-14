@@ -22,14 +22,6 @@
 metis.assumptions <- function() {
 
   #------------------
-  # Load required Libraries
-  # -----------------
-
-  requireNamespace("tibble",quietly = T)
-  requireNamespace("utils",quietly = T)
-  requireNamespace("magrittr",quietly = T)
-
-  #------------------
   # Conversions
   #------------------
 

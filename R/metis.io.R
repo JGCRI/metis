@@ -18,13 +18,6 @@ met.io<-function(Z0=NULL,
                  dirOutputs=paste(getwd(),"/outputs",sep="")
                         ){
 
-#------------------
-# Load required Libraries
-# -----------------
-requireNamespace("tibble",quietly = T)
-requireNamespace("dplyr",quietly = T)
-requireNamespace("magrittr",quietly = T)
-
 #----------------
 # Initialize variables by setting to NULL
 #----------------

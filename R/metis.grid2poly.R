@@ -15,6 +15,7 @@
 #' @param dirOutputs  Default=paste(getwd(),"/outputs",sep  Default=""),
 #' @param nameAppend  Default="",
 #' @param labelsSize Default =1.2. Label size for the region names for the gridoverlay plot.
+#' @param paramsSelect Default ="All"
 #' @export
 
 metis.grid2poly<- function(grid=NULL,
@@ -27,8 +28,9 @@ metis.grid2poly<- function(grid=NULL,
                          aggType=NULL,
                          dirOutputs=paste(getwd(),"/outputs",sep=""),
                          nameAppend="",
-                         labelsSize=1.2) {
-#
+                         labelsSize=1.2,
+                         paramsSelect="All") {
+
   # grid=NULL
   # boundaryRegionsSelect=NULL
   # subRegShape=NULL
@@ -40,17 +42,6 @@ metis.grid2poly<- function(grid=NULL,
   # dirOutputs=paste(getwd(),"/outputs",sep="")
   # nameAppend=""
   # labelsSize=1.2
-
-#------------------
-# Load required Libraries
-# -----------------
-requireNamespace("raster",quietly = T)
-requireNamespace("rgdal",quietly = T)
-requireNamespace("tibble",quietly = T)
-requireNamespace("dplyr",quietly = T)
-requireNamespace("tidyr",quietly = T)
-requireNamespace("tmap",quietly = T)
-
 
 #----------------
 # Initialize variables by setting to NULL
@@ -124,6 +115,24 @@ dir=paste(dirOutputs, "/Maps/Boundaries/",boundaryRegionsSelect,sep = "")
 
 if(!is.null(grid)){
 
+  if(paramsSelect != "All"){
+    if(all(paramsSelect %in% unique(grid$param))){
+      grid<-grid%>%dplyr::filter(param %in% paramsSelect)
+      print(paste("Filtering grid to selected paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
+    }else{
+      if(any(paramsSelect %in% unique(grid$param))){
+        grid<-grid%>%dplyr::filter(param %in% paramsSelect)
+        print(paste("Only analyzing params ",paste((paramsSelect %in% unique(grid$param)),collapse=", "),
+                    " which are present in grid of all paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
+      }else{
+        print(paste("paramsSelect ",paste(paramsSelect,collapse=", "),
+                    " not present in unique(grid$param) ",
+                    unique(grid$param),". Going with all params in grid.",sep=""))
+      }
+    }
+
+  }
+
   gridCropped<-tibble::tibble()
 
   if(!"aggType" %in% names(grid)){
@@ -136,23 +145,25 @@ if(!is.null(grid)){
   print("setting grid columns ...")
   for(colx in names(grid)){
     if(is.character(grid[[colx]])){
-      grid[[colx]]<-gsub(" ","XSPACEX",grid[[colx]])
-      grid[[colx]]<-gsub("\\(","XLPARENTHX",grid[[colx]])
-      grid[[colx]]<-gsub("\\)","XRLPARENTHX",grid[[colx]])
-      grid[[colx]]<-gsub("pal\\_","XPALUNDERX",grid[[colx]])
+      grid[[colx]]<-gsub(" ","XSPACEX",grid[[colx]],perl = TRUE )
+      grid[[colx]]<-gsub("\\(","XLPARENTHX",grid[[colx]],perl = TRUE)
+      grid[[colx]]<-gsub("\\)","XRLPARENTHX",grid[[colx]],perl = TRUE)
+      grid[[colx]]<-gsub("pal\\_","XPALUNDERX",grid[[colx]],perl = TRUE)
     }
   }
+
+
 
   for (param_i in unique(grid$param)){
 
     gridx<-grid%>%dplyr::filter(param==param_i)
 
-  for (aggType_i in unique(grid$aggType)){
+  for (aggType_i in unique(gridx$aggType)){
 
   if(!unique(gridx$aggType) %in% c("depth","vol")){stop("Incorrect aggType in grid file")}
 
   gridx<-gridx%>%dplyr::filter(aggType==aggType_i)%>%
-    tidyr::unite(col="key",names(grid)[!names(grid) %in% c("lat","lon","value")],sep="_",remove=T)
+    tidyr::unite(col="key",names(gridx)[!names(gridx) %in% c("lat","lon","value")],sep="_",remove=T)
 
   gridx<-gridx%>%tidyr::spread(key=key,value=value)
 
@@ -173,6 +184,7 @@ if(!is.null(grid)){
     shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
     sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
 
+    print(paste("Cropping grid to shape file for parameter ", param_i,"...",sep=""))
     rcrop<-raster::crop(r,shapeExpandEtxent)
     rcropP<-raster::rasterToPolygons(rcrop)
 
@@ -199,7 +211,7 @@ if(!is.null(grid)){
     gridPolyLoop=1; # To prevent gridded map being produced multiple times
 
     if(aggType_i=="depth"){
-      print("Aggregating depth ...")
+      print(paste("Aggregating depth for parameter ", param_i,"...",sep=""))
       rcropPx@data$area<-raster::area(rcropPx)
       s1<-shape
       s1$subRegAreaSum<-raster::area(shape);
@@ -214,7 +226,7 @@ if(!is.null(grid)){
       polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(round(sum(.,na.rm=T),2)))
     }
     if(aggType_i=="vol"){
-      print("Aggregating vol ...")
+      print(paste("Aggregating volume for parameter ", param_i,"...",sep=""))
       w <- raster::extract(r,shape, method="simple",weights=T, normalizeWeights=F);
       dfx<-data.frame()
       for (i in seq(w)){
@@ -276,6 +288,7 @@ for(colx in names(gridCropped)){
   }
 }
 
+
 polyType=subRegType
 if (!dir.exists(paste(dirOutputs, "/Grids", sep = ""))){dir.create(paste(dirOutputs, "/Grids", sep = ""))}
 utils::write.csv(gridCropped%>%dplyr::mutate(region=boundaryRegionsSelect,polyType=polyType),
@@ -288,7 +301,6 @@ utils::write.csv(gridCropped%>%dplyr::mutate(region=boundaryRegionsSelect,polyTy
 #---------------
 
   if(nrow(poly)>0){
-
 
     if (!dir.exists(paste(getwd(),"/dataFiles", sep = ""))){
       dir.create(paste(getwd(),"/dataFiles", sep = ""))}  # dataFiles directory (should already exist)

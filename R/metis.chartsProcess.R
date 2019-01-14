@@ -101,16 +101,6 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   # nameAppend=""
 
 #------------------
-# Load required Libraries
-# -----------------
-  requireNamespace("tibble",quietly = T)
-  requireNamespace("dplyr",quietly = T)
-  requireNamespace("utils",quietly = T)
-  requireNamespace("tidyr",quietly = T)
-  requireNamespace("rlang",quietly = T)
-  requireNamespace("magrittr",quietly = T)
-
-#------------------
 # Initialize variables to remove binding errors
 # -----------------
 
@@ -198,9 +188,12 @@ if(!is.null(rTable)){
 tbl<-dplyr::bind_rows(tbl,rTable)
 }
 
-tbl<-tbl%>%unique()%>%dplyr::filter(region %in% regionsSelect)
+if(any(regionsSelect!="All")){
+  print("One or more items in regionsSelect is 'All' so running analysis for all regions.")
+  tbl<-tbl%>%unique()%>%dplyr::filter(region %in% regionsSelect)}
 if(any(xRange!="All")){if(is.numeric(tbl$x)){tbl<-tbl%>%dplyr::filter(x %in% xRange)}}
 
+if(any(is.na(unique(tbl$scenario)))){stop("NA scenario not valid. Please check your input scenarios.")}
 
 #------------------
 # Create Folders if needed
