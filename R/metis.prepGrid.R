@@ -47,13 +47,6 @@ metis.prepGrid<- function(demeterFolder=NULL,
                         gridMetisData=paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")
                         ){
 
-#------------------
-# Load required Libraries
-# -----------------
-requireNamespace("tibble",quietly = T)
-requireNamespace("dplyr",quietly = T)
-requireNamespace("utils",quietly = T)
-requireNamespace("zoo",quietly = T)
 
 #----------------
 # Initialize variables by setting to NULL

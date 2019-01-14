@@ -47,10 +47,6 @@
 
 metis.colors <- function(palx=NULL) {
 
-  #------------------
-  # Load required Libraries
-  # -----------------
-  requireNamespace("RColorBrewer",quietly = T)
 
   NULL->pie
 
@@ -146,13 +142,15 @@ metis.colors <- function(palx=NULL) {
     pal_Gas <- c(`gas (CC CCS)` = "black", `gas (CT)` = "red", `gas (steam)` = "green3", `gas (CC)` = "blue",
         "cyan", "magenta", "yellow", "gray")
 
-    pal_hot <- c('#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026')
+    pal_hot <- c('#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026','black')
 
-    pal_wet <- c('#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b')
+    pal_wet <- c('#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b','black')
 
-    pal_green <- c('#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529')
+    pal_green <- c('#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529','black')
 
     pal_div <- c('#67001f','#b2182b','#d6604d','#f4a582','#fddbc7','#ffffff','#e0e0e0','#bababa','#878787','#4d4d4d','#1a1a1a')
+
+    pal_seq <- c('lemonchiffon1','burlywood1','orange1','red1','purple4','black')
 
 
     # Color scheme for electricity generation by aggregate fuel
@@ -227,9 +225,12 @@ metis.colors <- function(palx=NULL) {
       a<-get(palx)
       if(palx=="pal_Basic" | palx=="pal_16"){a<-a[1:(length(a)/100)]}
       pie(rep(1,length(a)),label=names(a),col=a)
+      print(a)
     }}
 
-    return(list(pal_lu_type=pal_lu_type,pal_ag_type=pal_ag_type,pal_wat_dem=pal_wat_dem,pal_HDDCDD=pal_HDDCDD, pal_16 = pal_16, elec_tech_colors = elec_tech_colors, elec_renew_colors = elec_renew_colors,
+
+
+    invisible(list(pal_lu_type=pal_lu_type,pal_ag_type=pal_ag_type,pal_wat_dem=pal_wat_dem,pal_HDDCDD=pal_HDDCDD, pal_16 = pal_16, elec_tech_colors = elec_tech_colors, elec_renew_colors = elec_renew_colors,
         building_colors = building_colors, trn_fuel_colors = trn_fuel_colors, enduse_fuel_numbered = enduse_fuel_numbered,
         enduse_colors = enduse_colors, pal_pri_ene = pal_pri_ene, pal_pri_fuelcost = pal_pri_fuelcost,
         pal_emiss_sector = pal_emiss_sector, pal_landuse = pal_landuse, pal_hydrogen = pal_hydrogen,

@@ -52,10 +52,6 @@ metis.printPdfPng <- function(figure,dir,filename, figWidth = 13, figHeight = 9,
 
 metis.chartsThemeLight <- function(){
 
-#------------------
-# Load required Libraries
-# -----------------
-requireNamespace("ggplot2",quietly = T)
 
     x<- theme_bw() +
         theme(
