@@ -29,7 +29,7 @@ gcamdatabaseName_i = NULL
 gcamdataProjFile_i = "Example_dataProj.proj" # Default Value is "dataProj.proj"
 scenOrigNames_i = c("ExampleScen1","ExampleScen2")
 scenNewNames_i = c("Eg1","Eg2")
-gcamregionsSelect_i = c("India") # Default Value is NULL
+gcamregionsSelect_i = c("Colombia") # Default Value is NULL
 
 #dataProjLoaded <- loadProject(paste(gcamdatabasePath_i, "/", gcamdataProjFile_i, sep = ""))
 #listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
@@ -105,47 +105,41 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
 NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
              layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
 
-indiaNE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+colombiaNE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
                   layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
-indiaNE0<-indiaNE0[(indiaNE0$NAME=="India"),]
-head(indiaNE0@data)
-plot(indiaNE0)
-projX<-proj4string(indiaNE0)
+colombiaNE0<-colombiaNE0[(colombiaNE0$NAME=="Colombia"),]
+head(colombiaNE0@data)
+plot(colombiaNE0)
+projX<-proj4string(colombiaNE0)
 
-indiaGADM36_1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
                        layer="ne_10m_admin_1_states_provinces",use_iconv=T,encoding='UTF-8')
-indiaGADM36_1<-indiaGADM36_1[(indiaGADM36_1$NAME=="India"),]
-head(indiaGADM36_1@data)
-plot(indiaGADM36_1)
-projX<-proj4string(indiaGADM36_1)
-
-indiaLocal1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/admin_India",sep=""),
-                     layer="IND_adm1",use_iconv=T,encoding='UTF-8')
-indiaLocal1<-spTransform(indiaLocal1,CRS(projX))
-indiaLocal1 <- gBuffer(indiaLocal1, byid=TRUE, width=0)
-head(indiaLocal1@data)
-plot(indiaLocal1)
-writeOGR(obj=indiaLocal1, dsn=paste(getwd(),"/dataFiles/gis/admin_India",sep=""), layer=paste("indiaLocal1",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
-metis.map(dataPolygon=indiaLocal1,fillColumn = "NAME_1",printFig=F)
+colombiaNE1<-NE1[(NE1$admin=="Colombia"),]
+colombiaNE1<-colombiaNE1[(!colombiaNE1$name %in% "San Andrés y Providencia") & !is.na(colombiaNE1$name),]
+head(colombiaNE1@data)
+plot(colombiaNE1)
+colombiaNE1<-spTransform(colombiaNE1,CRS(projX))
+writeOGR(obj=colombiaNE1, dsn=paste(getwd(),"/dataFiles/gis/admin_Colombia",sep=""), layer=paste("colombiaNE1",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+metis.map(dataPolygon=colombiaNE1,fillColumn = "name",printFig=F)
 
 
-indiaLocal0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/admin_India",sep=""),
-                     layer="IND_adm0",use_iconv=T,encoding='UTF-8')
-indiaLocal0<-spTransform(indiaLocal0,CRS(projX))
-head(indiaLocal0@data)
-plot(indiaLocal0)
-writeOGR(obj=indiaLocal0, dsn=paste(getwd(),"/dataFiles/gis/admin_India",sep=""), layer=paste("indiaLocal0",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
-metis.map(dataPolygon=indiaLocal0,fillColumn = "NAME_FAO",printFig=F)
 
-
-indiaGCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
+GCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
                         layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
-indiaGCAMBasin<-spTransform(indiaGCAMBasin,CRS(projX))
-indiaGCAMBasin<-raster::crop(indiaGCAMBasin,indiaLocal0)
-head(indiaGCAMBasin@data)
-plot(indiaGCAMBasin)
-writeOGR(obj=indiaGCAMBasin, dsn=paste(getwd(),"/dataFiles/gis/admin_India",sep=""), layer=paste("indiaGCAMBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
-metis.map(dataPolygon=indiaGCAMBasin,fillColumn = "basin_name",printFig=F)
+GCAMBasin<-spTransform(GCAMBasin,CRS(projX))
+colombiaGCAMBasin<-raster::crop(GCAMBasin,colombiaNE0)
+head(colombiaGCAMBasin@data)
+plot(colombiaGCAMBasin)
+writeOGR(obj=colombiaGCAMBasin, dsn=paste(getwd(),"/dataFiles/gis/admin_Colombia",sep=""), layer=paste("colombiaGCAMBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+metis.map(dataPolygon=colombiaGCAMBasin,fillColumn = "basin_name",printFig=F)
+
+colombiaLocalBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/subbasin_colombia",sep=""),
+                            layer="Zonificacion_hidrografica_2013",use_iconv=T,encoding='UTF-8')
+colombiaLocalBasin<-spTransform(colombiaLocalBasin,CRS(projX))
+head(colombiaLocalBasin@data)
+plot(colombiaLocalBasin)
+writeOGR(obj=colombiaLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/admin_Colombia",sep=""), layer=paste("colombiaLocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+metis.map(dataPolygon=colombiaLocalBasin,fillColumn = "NOM_ZH",printFig=F)
 
 
 #-----------
@@ -153,27 +147,28 @@ metis.map(dataPolygon=indiaGCAMBasin,fillColumn = "basin_name",printFig=F)
 #-------------
 
 # Explore Shape Files
-examplePolyFolder<-paste(getwd(),"/dataFiles/gis/admin_India",sep = "")
-examplePolyFile<-paste("indiaGCAMBasin",sep= "")
+examplePolyFolder<-paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = "")
+examplePolyFile<-paste("colombiaNE1",sep= "")
 example=readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
 head(example@data)
-metis.map(dataPolygon=example,fillColumn = "basin_name",labels=T ,printFig=F,facetsON=F)
+metis.map(dataPolygon=example,fillColumn = "name",labels=T ,printFig=F,facetsON=F)
+
 boundaryRegShape_i = NULL
 boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
 boundaryRegShpFile_i=paste("ne_10m_admin_0_countries",sep="")
 boundaryRegCol_i="NAME"
-boundaryRegionsSelect_i="India"
+boundaryRegionsSelect_i="Colombia"
 subRegShape_i = NULL
-subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_India",sep = "")
-subRegShpFile_i = paste("indiaLocal1",sep= "")
-subRegCol_i = "NAME_1"
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = "")
+subRegShpFile_i = paste("colombiaNE1",sep= "")
+subRegCol_i = "name"
 subRegType_i = "state"
-nameAppend_i = "_indiaLocal"
-expandPercent_i = 5
+nameAppend_i = "_NE"
+expandPercent_i = 2
 overlapShpFile_i = "Global235_CLM_final_5arcmin_multipart"
 overlapShpFolder_i = paste(getwd(),"/dataFiles/gis/basin_gcam",sep= "")
 extension_i =  T
-cropSubShape2Bound_i = F
+cropSubShape2Bound_i = T
 
 
 boundariesX<- metis.boundaries(
@@ -197,10 +192,29 @@ boundariesX<- metis.boundaries(
   cropSubShape2Bound=cropSubShape2Bound_i
 )
 
-subRegShpFile_i = paste("indiaGCAMBasin",sep= "")
-subRegCol_i = "basin_name"
-subRegType_i = "basin"
-nameAppend_i = "_indiaLocal"
+# boundaryRegShape=boundaryRegShape_i
+# boundaryRegShpFolder=boundaryRegShpFolder_i
+# boundaryRegShpFile=boundaryRegShpFile_i
+# boundaryRegCol=boundaryRegCol_i
+# boundaryRegionsSelect=boundaryRegionsSelect_i
+# subRegShape=subRegShape_i
+# subRegShpFolder=subRegShpFolder_i
+# subRegShpFile=subRegShpFile_i
+# subRegCol=subRegCol_i
+# subRegType=subRegType_i
+# nameAppend=nameAppend_i
+# expandPercent=expandPercent_i
+# overlapShpFile=overlapShpFile_i
+# overlapShpFolder=overlapShpFolder_i
+# extension = extension_i
+# grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+#           paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""))
+# cropSubShape2Bound=cropSubShape2Bound_i
+
+subRegShpFile_i = paste("colombiaLocalBasin",sep= "")
+subRegCol_i = "NOM_ZH"
+subRegType_i = "subBasin"
+nameAppend_i = "_colombiaLocal"
 
 boundariesX<- metis.boundaries(
   boundaryRegShape=boundaryRegShape_i,
@@ -269,6 +283,7 @@ gridMetis<-metis.prepGrid(
   gridMetisData=gridMetisData)
 
 head(gridMetis)
+unique(gridMetis$param)
 
 #-----------
 # Grid to Poly
@@ -278,14 +293,14 @@ head(gridMetis)
 #grid_i<-paste(getwd(),"/outputs/Grids/gridMetis.csv",sep="")
 grid_i=gridMetis
 
-boundaryRegionsSelect_i="India"
-subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_India",sep = "")
-subRegShpFile_i = paste("indiaLocal1",sep= "")
-subRegCol_i = "NAME_1"
+boundaryRegionsSelect_i="Colombia"
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = "")
+subRegShpFile_i = paste("colombiaNE1",sep= "")
+subRegCol_i = "name"
 subRegType_i = "state"
-nameAppend_i = "_indiaLocal"
+nameAppend_i = "_NE"
 aggType_i = NULL
-paramsSelect_i= "All" #"demeterLandUse"
+paramsSelect_i= "xanthosRunoff" #"demeterLandUse"
 
 grid2polyX<-metis.grid2poly(grid=grid_i,
                                     boundaryRegionsSelect=boundaryRegionsSelect_i,
@@ -305,17 +320,40 @@ grid2polyX<-metis.grid2poly(grid=grid_i,
 # aggType=aggType_i
 # nameAppend=nameAppend_i
 
+grid_i=gridMetis
+
+boundaryRegionsSelect_i="Colombia"
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = "")
+subRegShpFile_i = paste("colombiaLocalBasin",sep= "")
+subRegCol_i = "NOM_ZH"
+subRegType_i = "subBasin"
+nameAppend_i = "_local"
+aggType_i = NULL
+paramsSelect_i= "xanthosRunoff" #"demeterLandUse"
+
+grid2polyX<-metis.grid2poly(grid=grid_i,
+                            boundaryRegionsSelect=boundaryRegionsSelect_i,
+                            subRegShpFolder=subRegShpFolder_i,
+                            subRegShpFile=subRegShpFile_i,
+                            subRegCol=subRegCol_i,
+                            subRegType = subRegType_i,
+                            aggType=aggType_i,
+                            nameAppend=nameAppend_i,
+                            paramsSelect = paramsSelect_i)
+
+
 #-----------
 # Mapping
 #-------------
 
 #examplePolygonTable<-paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_subRegType_origDownscaled_hydrobidBermeo3.csv",sep="")
 
-polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_state_origDownscaled_indiaLocal.csv",sep="")
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_state_origDownscaled_NE.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
-gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_India_state_indiaLocal.csv",sep="")
-xRange_i= c(2005,2010,2020,2030,2050)
-legendPosition_i=c("RIGHT","top")
+gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_Colombia_state_NE.csv",sep="")
+xRange_i= seq(from=1980,to=1985,by=5)
+legendPosition_i=c("LEFT","bottom")
+legendOutsideSingle_i=F
 animateOn_i=T
 delay_i=100
 scenRef_i="Eg1"
@@ -324,13 +362,13 @@ boundaryRegShape_i = NULL
 boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
 boundaryRegShpFile_i=paste("ne_10m_admin_0_countries",sep="")
 boundaryRegCol_i="NAME"
-boundaryRegionsSelect_i="India"
+boundaryRegionsSelect_i="Colombia"
 subRegShape_i = NULL
-subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_India",sep = "")
-subRegShpFile_i = paste("indiaLocal1",sep= "")
-subRegCol_i = "NAME_1"
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = "")
+subRegShpFile_i = paste("colombiaNE1",sep= "")
+subRegCol_i = "name"
 subRegType_i = "state"
-nameAppend_i = "_indiaLocal"
+nameAppend_i = "_NE"
 
 metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  gridDataTables=gridDataTables_i,
@@ -346,14 +384,82 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  subRegCol=subRegCol_i,
                  subRegType=subRegType_i,
                  nameAppend=nameAppend_i,
+                 legendOutsideSingle=legendOutsideSingle_i,
                  legendPosition=legendPosition_i,
                  animateOn=animateOn_i,
                  delay=delay_i,
                  scenRef=scenRef_i,
                  extension=T,
-                 expandPercent = 6
+                 expandPercent = 3
                  )
 
+# polygonDataTables=polygonDataTables_i
+# gridDataTables=gridDataTables_i
+# xRange=xRange_i
+# boundaryRegShape=boundaryRegShape_i
+# boundaryRegShpFolder=boundaryRegShpFolder_i
+# boundaryRegShpFile=boundaryRegShpFile_i
+# boundaryRegCol=boundaryRegCol_i
+# boundaryRegionsSelect=boundaryRegionsSelect_i
+# subRegShape=subRegShape_i
+# subRegShpFolder=subRegShpFolder_i
+# subRegShpFile=subRegShpFile_i
+# subRegCol=subRegCol_i
+# subRegType=subRegType_i
+# nameAppend=nameAppend_i
+# legendPosition=legendPosition_i
+# animateOn=animateOn_i
+# delay=delay_i
+# scenRef=scenRef_i
+# extension=T
+# expandPercent = 2
+# legendTextSize=legendTextSize_i
+# legendTitleSize=legendTitleSize_i
+
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_subBasin_origDownscaled_local.csv",sep="")
+a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+#gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_Colombia_state_NE.csv",sep="")
+xRange_i= seq(from=1980,to=1985,by=5)
+legendPosition_i=c("LEFT","bottom")
+legendOutsideSingle_i=F
+animateOn_i=T
+delay_i=100
+scenRef_i="Eg1"
+
+boundaryRegShape_i = NULL
+boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
+boundaryRegShpFile_i=paste("ne_10m_admin_0_countries",sep="")
+boundaryRegCol_i="NAME"
+boundaryRegionsSelect_i="Colombia"
+subRegShape_i = NULL
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = "")
+subRegShpFile_i = paste("colombiaLocalBasin",sep= "")
+subRegCol_i = "NOM_ZH"
+subRegType_i = "subBasin"
+nameAppend_i = "_local"
+
+metis.mapProcess(polygonDataTables=polygonDataTables_i,
+                 #gridDataTables=gridDataTables_i,
+                 xRange=xRange_i,
+                 boundaryRegShape=boundaryRegShape_i,
+                 boundaryRegShpFolder=boundaryRegShpFolder_i,
+                 boundaryRegShpFile=boundaryRegShpFile_i,
+                 boundaryRegCol=boundaryRegCol_i,
+                 boundaryRegionsSelect=boundaryRegionsSelect_i,
+                 subRegShape=subRegShape_i,
+                 subRegShpFolder=subRegShpFolder_i,
+                 subRegShpFile=subRegShpFile_i,
+                 subRegCol=subRegCol_i,
+                 subRegType=subRegType_i,
+                 nameAppend=nameAppend_i,
+                 legendOutsideSingle=legendOutsideSingle_i,
+                 legendPosition=legendPosition_i,
+                 animateOn=animateOn_i,
+                 delay=delay_i,
+                 scenRef=scenRef_i,
+                 extension=T,
+                 expandPercent = 3
+)
 
 
 

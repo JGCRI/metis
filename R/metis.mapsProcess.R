@@ -18,12 +18,16 @@
 #' @param subRegCol Default ="NAME_1",
 #' @param subRegType Default ="subRegType",
 #' @param nameAppend Default =""
+#' @param legendOutsideSingle Default =F, Single plots by default have legends inside. This can be moved out if wanted.
 #' @param legendOutsidePosition Default = NULL, # "right","left","top","bottom", "center"
 #' @param legendPosition Default = NULL, # c("RIGHT','top') - RIGHT LEFT TOP BOTTOM
 #' @param legendFixedBreaks Default = "5",
 #' @param animateOn Default = T,
 #' @param delay Default = 100,
-#' @param legendTitleSize Default = 1,
+#' @param legendTitleSizeO Default = 2,
+#' @param legendTextSizeO Default =1,
+#' @param legendTitleSizeI Default = 1,
+#' @param legendTextSizeI Default =0.5,
 #' @param scenRef Default = NULL
 #' @param extension Default =F,
 #' @param boundaryRegShape Default = NULL,
@@ -54,12 +58,16 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                          subRegCol=NULL,
                          subRegType="subRegType",
                          nameAppend="",
+                         legendOutsideSingle=F,
                          legendOutsidePosition=NULL,
                          legendPosition=NULL,
                          legendFixedBreaks=5,
+                         legendTitleSizeO=2,
+                         legendTextSizeO=1,
+                         legendTitleSizeI=1.5,
+                         legendTextSizeI=1,
                          animateOn=T,
                          delay=100,
-                         legendTitleSize=1,
                          scenRef=NULL,
                          extension=F,
                          boundaryRegShape=NULL,
@@ -85,9 +93,9 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # labels=F
   # labelsSize=1.2
   # subRegShape=NULL
-  # subRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36",sep="")
-  # subRegShpFile=paste("gadm36_1",sep="")
-  # subRegCol="NAME_1"
+  # subRegShpFolder=NULL
+  # subRegShpFile=NULL
+  # subRegCol=NULL
   # subRegType="subRegType"
   # nameAppend=""
   # legendOutsidePosition=NULL
@@ -103,11 +111,17 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # boundaryRegShpFile=NULL
   # boundaryRegCol=NULL
   # boundaryRegionsSelect=NULL
-  # cropSubShape=T
-  # saveShapes=F
   # fillcolorNA=NULL
-  # expandbboxPercent=2
+  # extendedFillColor="grey75"
+  # extendedBGColor="lightblue1"
+  # extendedHighLightColor="cornsilk1"
+  # extendedLabelsColor="grey30"
+  # extdendedLabelSize=0.7
   # extendedShape=NULL
+  # extendedShapeCol=NULL
+  # expandPercent=2
+  # projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+  # legendOutsideSingle=F
 
 #------------------
 # Initialize variables to remove binding errors
@@ -115,6 +129,10 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
   NULL->lat->lon->param->region->scenario->subRegion->
   value->x->year->gridID->underLayer
+
+  # Set legend size based on where legend is placed
+  if(legendOutsideSingle==T){legendTitleSizeS=legendTitleSizeO;legendTextSizeS=legendTextSizeO;legendPositionS=NULL}
+  if(legendOutsideSingle==F){legendTitleSizeS=legendTitleSizeI;legendTextSizeS=legendTextSizeI;legendPositionS=legendPosition}
 
 #------------------
 # Function for adding any missing columns if needed
@@ -324,10 +342,12 @@ bbox1<-as.data.frame(sp::bbox(boundaryRegShape))
 
 if(!is.null(bbox1)){
     bbox1$min;bbox1$max
-    bbox1$min[1]<-if(bbox1$min[1]<0){(1+expandPercent/100)*bbox1$min[1]}else{(1-expandPercent/100)*bbox1$min[1]};
-    bbox1$min[2]<-if(bbox1$min[2]<0){(1+expandPercent/100)*bbox1$min[2]}else{(1-expandPercent/100)*bbox1$min[2]};
-    bbox1$max[1]<-if(bbox1$max[1]<0){(1-expandPercent/100)*bbox1$max[1]}else{(1+expandPercent/100)*bbox1$max[1]};
-    bbox1$max[2]<-if(bbox1$max[2]<0){(1-expandPercent/100)*bbox1$max[2]}else{(1+expandPercent/100)*bbox1$max[2]};
+    rangeX<-abs(range(bbox1$min[1],bbox1$max[1])[2]-range(bbox1$min[1],bbox1$max[1])[1])
+    rangeY<-abs(range(bbox1$min[2],bbox1$max[2])[2]-range(bbox1$min[2],bbox1$max[2])[1])
+    bbox1$min[1]<-(-rangeX*expandPercent/100)+bbox1$min[1];
+    bbox1$min[2]<-(-rangeY*expandPercent/100)+bbox1$min[2];
+    bbox1$max[1]<-(rangeX*expandPercent/100)+bbox1$max[1];
+    bbox1$max[2]<-(rangeY*expandPercent/100)+bbox1$max[2];
     bbox1$min;bbox1$max;
     bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
     sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
@@ -375,14 +395,18 @@ if(!is.null(gridTbl)){if(any(xRange!="All")){gridTbl<-gridTbl%>%dplyr::filter(x 
 if(!is.null(gridTbl) & !is.null(shape)){
 
 shapeExpandEtxent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
-expandbboxPercent<-0.5; shapeExpandEtxent$min;shapeExpandEtxent$max
-shapeExpandEtxent$min[1]<-if(shapeExpandEtxent$min[1]<0){(1+expandbboxPercent/100)*shapeExpandEtxent$min[1]}else{(1-expandbboxPercent/100)*shapeExpandEtxent$min[1]};
-shapeExpandEtxent$min[2]<-if(shapeExpandEtxent$min[2]<0){(1+expandbboxPercent/100)*shapeExpandEtxent$min[2]}else{(1-expandbboxPercent/100)*shapeExpandEtxent$min[2]};
-shapeExpandEtxent$max[1]<-if(shapeExpandEtxent$max[1]<0){(1-expandbboxPercent/100)*shapeExpandEtxent$max[1]}else{(1+expandbboxPercent/100)*shapeExpandEtxent$max[1]};
-shapeExpandEtxent$max[2]<-if(shapeExpandEtxent$max[2]<0){(1-expandbboxPercent/100)*shapeExpandEtxent$max[2]}else{(1+expandbboxPercent/100)*shapeExpandEtxent$max[2]};
+expandbboxPercent<-expandPercent*0.9; shapeExpandEtxent$min;shapeExpandEtxent$max
+shapeExpandEtxent$min;shapeExpandEtxent$max
+rangeX<-abs(range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[2]-range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[1])
+rangeY<-abs(range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[2]-range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[1])
+shapeExpandEtxent$min[1]<-(-rangeX*expandbboxPercent/100)+shapeExpandEtxent$min[1];
+shapeExpandEtxent$min[2]<-(-rangeY*expandbboxPercent/100)+shapeExpandEtxent$min[2];
+shapeExpandEtxent$max[1]<-(rangeX*expandbboxPercent/100)+shapeExpandEtxent$max[1];
+shapeExpandEtxent$max[2]<-(rangeY*expandbboxPercent/100)+shapeExpandEtxent$max[2];
 shapeExpandEtxent$min;shapeExpandEtxent$max;
 shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
 sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
+
 
 gridTbl<-gridTbl%>%dplyr::mutate(gridID=seq(1:nrow(gridTbl)))
 croppedCoords<-gridTbl%>%dplyr::select(lat,lon,gridID)%>%unique()
@@ -638,7 +662,7 @@ if(!is.null(gridTbl)){
                     frameShow = T,
                     labels=labels,
                     labelsSize = labelsSize,
-                    legendTitle =legendTitle,
+                    legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
                     legendStyle="kmeans",
                     legendFixedBreaks=legendFixedBreaks,
                     legendDigits = legendDigits,
@@ -673,14 +697,18 @@ if(!is.null(gridTbl)){
             if(animateOn==T){
 
             if(length(names(mapx@data))==1){
-              legendOutsideAnimated=F
+              legendOutsideAnimated=legendOutsideSingle
               legendTitleAnimated=legendTitle
               panelLabelAnimated=paste(x_i)
-              legendAnimatedPosition=legendPosition}else{
+              legendAnimatedPosition=legendPositionS
+              legendTitleSizeAnim = legendTitleSizeS
+              legendTextSizeAnim = legendTextSizeS}else{
               legendOutsideAnimated=T
               legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
               panelLabelAnimated=NULL
               legendAnimatedPosition=NULL
+              legendTitleSizeAnim = legendTitleSizeO
+              legendTextSizeAnim = legendTextSizeO
             }
 
             metis.map(underLayer=underLayer,
@@ -695,6 +723,7 @@ if(!is.null(gridTbl)){
                     labels=labels,
                     labelsSize = labelsSize,
                     legendTitle =legendTitleAnimated,
+                    legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                     legendStyle="fixed",
                     legendBreaks = animKmeanBreaksGrid,
                     legendFixedBreaks=legendFixedBreaks,
@@ -717,6 +746,7 @@ if(!is.null(gridTbl)){
                     labels=labels,
                     labelsSize = labelsSize,
                     legendTitle =paste(x_i,"\n",legendTitle,sep=""),
+                    legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
                     legendStyle="pretty",
                     legendDigits = legendDigits,
                     legendOutsidePosition = legendOutsidePosition,
@@ -730,14 +760,18 @@ if(!is.null(gridTbl)){
 
 
               if(length(names(mapx@data))==1){
-                legendOutsideAnimated=F
+                legendOutsideAnimated=legendOutsideSingle
                 legendTitleAnimated=legendTitle
                 panelLabelAnimated=paste(x_i)
-                legendAnimatedPosition=legendPosition}else{
+                legendAnimatedPosition=legendPositionS
+                legendTitleSizeAnim = legendTitleSizeS
+                legendTextSizeAnim = legendTextSizeS}else{
                   legendOutsideAnimated=T
                   legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
                   panelLabelAnimated=NULL
                   legendAnimatedPosition=NULL
+                  legendTitleSizeAnim = legendTitleSizeO
+                  legendTextSizeAnim = legendTextSizeO
                 }
 
             metis.map(panelLabel=panelLabelAnimated,
@@ -751,6 +785,7 @@ if(!is.null(gridTbl)){
                     labels=labels,
                     labelsSize = labelsSize,
                     legendTitle =legendTitleAnimated,
+                    legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                     legendStyle="fixed",
                     legendBreaks = animPrettyBreaksGrid,
                     legendFixedBreaks=legendFixedBreaks,
@@ -772,7 +807,7 @@ if(!is.null(gridTbl)){
                     frameShow = T,
                     labels=labels,
                     labelsSize = labelsSize,
-                    legendTitle =legendTitle,
+                    legendTitle =legendTitle,legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
                     legendStyle="kmeans",
                     legendDigits = NULL,
                     legendFixedBreaks=legendFixedBreaks,
@@ -786,10 +821,16 @@ if(!is.null(gridTbl)){
             if(animateOn==T){
 
               if(length(names(mapx@data))==1){
-                legendOutsideAnimated=F
                 legendTitleAnimated=legendTitle
-                panelLabelAnimated=paste(x_i)}else{
-                  legendOutsideAnimated=T
+                panelLabelAnimated=paste(x_i)
+                legendOutsideAnimated=legendOutsideSingle
+                legendAnimatedPosition=legendPositionS
+                legendTitleSizeAnim = legendTitleSizeS
+                legendTextSizeAnim = legendTextSizeS}else{
+                  legendOutsideAnimated=F
+                  legendAnimatedPosition=NULL
+                  legendTitleSizeAnim = legendTitleSizeI
+                  legendTextSizeAnim = legendTextSizeI
                   legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
                   panelLabelAnimated=NULL
                 }
@@ -799,17 +840,18 @@ if(!is.null(gridTbl)){
                     dataGrid=mapx,
                     fillColumn = names(mapx@data),
                     legendShow = T,
-                    legendOutside = F,
+                    legendOutside = legendOutsideAnimated,
                     facetFreeScale = T,
                     frameShow = T,
                     labels=labels,
                     labelsSize = labelsSize,
+                    legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTitleSizeAnim,
                     legendTitle = legendTitleAnimated,
                     legendStyle="kmeans",
                     legendDigits = NULL,
                     legendFixedBreaks=legendFixedBreaks,
                     legendOutsidePosition = legendOutsidePosition,
-                    legendPosition = legendPosition,
+                    legendPosition = legendAnimatedPosition,
                     fillPalette = fillPalette,
                     bgColor = bgColorChosen,
                     fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE_ANIMATE",sep=""),
@@ -875,11 +917,14 @@ if(!is.null(gridTbl)){
             tidyr::spread(key=x,value=value)
 
           shapeExpandEtxent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
-          expandbboxPercent<-0.5; shapeExpandEtxent$min;shapeExpandEtxent$max
-          shapeExpandEtxent$min[1]<-if(shapeExpandEtxent$min[1]<0){(1+expandbboxPercent/100)*shapeExpandEtxent$min[1]}else{(1-expandbboxPercent/100)*shapeExpandEtxent$min[1]};
-          shapeExpandEtxent$min[2]<-if(shapeExpandEtxent$min[2]<0){(1+expandbboxPercent/100)*shapeExpandEtxent$min[2]}else{(1-expandbboxPercent/100)*shapeExpandEtxent$min[2]};
-          shapeExpandEtxent$max[1]<-if(shapeExpandEtxent$max[1]<0){(1-expandbboxPercent/100)*shapeExpandEtxent$max[1]}else{(1+expandbboxPercent/100)*shapeExpandEtxent$max[1]};
-          shapeExpandEtxent$max[2]<-if(shapeExpandEtxent$max[2]<0){(1-expandbboxPercent/100)*shapeExpandEtxent$max[2]}else{(1+expandbboxPercent/100)*shapeExpandEtxent$max[2]};
+          expandbboxPercent<-expandPercent*0.9; shapeExpandEtxent$min;shapeExpandEtxent$max
+          shapeExpandEtxent$min;shapeExpandEtxent$max
+          rangeX<-abs(range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[2]-range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[1])
+          rangeY<-abs(range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[2]-range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[1])
+          shapeExpandEtxent$min[1]<-(-rangeX*expandbboxPercent/100)+shapeExpandEtxent$min[1];
+          shapeExpandEtxent$min[2]<-(-rangeY*expandbboxPercent/100)+shapeExpandEtxent$min[2];
+          shapeExpandEtxent$max[1]<-(rangeX*expandbboxPercent/100)+shapeExpandEtxent$max[1];
+          shapeExpandEtxent$max[2]<-(rangeY*expandbboxPercent/100)+shapeExpandEtxent$max[2];
           shapeExpandEtxent$min;shapeExpandEtxent$max;
           shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
           sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
@@ -908,7 +953,7 @@ if(!is.null(gridTbl)){
                   frameShow = T,
                   labels=labels,
                   labelsSize = labelsSize,
-                  legendTitle =legendTitle,
+                  legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
                   legendStyle="kmeans",
                   legendFixedBreaks=legendFixedBreaks,
                   legendDigits = legendDigits,
@@ -928,7 +973,7 @@ if(!is.null(gridTbl)){
                   frameShow = T,
                   labels=labels,
                   labelsSize = labelsSize,
-                  legendTitle =legendTitle,
+                  legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
                   legendStyle="pretty",
                   legendFixedBreaks=legendFixedBreaks,
                   legendDigits = legendDigits,
@@ -948,7 +993,7 @@ if(!is.null(gridTbl)){
                   frameShow = T,
                   labels=labels,
                   labelsSize = labelsSize,
-                  legendTitle =legendTitle,
+                  legendTitle =legendTitle,legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
                   legendStyle="kmeans",
                   legendFixedBreaks=legendFixedBreaks,
                   legendDigits = NULL,
@@ -959,7 +1004,111 @@ if(!is.null(gridTbl)){
                   fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
                   dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
 
-          # Animate 2 : each param: If class == 1 { (Map x Anim Years}
+        } # if(nrow(datax)>1){
+
+          # Mean for all years provided
+
+          datax<-gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)
+          if(nrow(datax)>1){
+            legendTitle<-unique(datax$units)
+            fillPalette<-unique(datax$classPalette)
+
+            datax<-datax%>%dplyr::select(lat,lon,x,value)%>%
+              dplyr::group_by(lat,lon)%>%
+              dplyr::summarize(!!paste("Mean_",min(xRange),"to",max(xRange),sep=""):=mean(value))%>%
+              dplyr::ungroup()
+
+            shapeExpandEtxent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
+            expandbboxPercent<-expandPercent*0.9; shapeExpandEtxent$min;shapeExpandEtxent$max
+            shapeExpandEtxent$min;shapeExpandEtxent$max
+            rangeX<-abs(range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[2]-range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[1])
+            rangeY<-abs(range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[2]-range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[1])
+            shapeExpandEtxent$min[1]<-(-rangeX*expandbboxPercent/100)+shapeExpandEtxent$min[1];
+            shapeExpandEtxent$min[2]<-(-rangeY*expandbboxPercent/100)+shapeExpandEtxent$min[2];
+            shapeExpandEtxent$max[1]<-(rangeX*expandbboxPercent/100)+shapeExpandEtxent$max[1];
+            shapeExpandEtxent$max[2]<-(rangeY*expandbboxPercent/100)+shapeExpandEtxent$max[2];
+            shapeExpandEtxent$min;shapeExpandEtxent$max;
+            shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
+            sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
+
+            rasterx<-sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(datax$lon,datax$lat))),data=datax)
+            sp::proj4string(rasterx)<-sp::proj4string(shape)
+            rasterx<-raster::crop(rasterx,shapeExpandEtxent)
+            sp::gridded(rasterx)<-T
+
+            scaleData<-datax%>%dplyr::select(-lat,-lon)
+            if(mean(range(scaleData,na.rm=T),na.rm = T)<0.01 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.01)){legendDigits<-4}else{
+              if(mean(range(scaleData,na.rm=T),na.rm = T)<0.1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.1)){legendDigits<-3}else{
+                if(mean(range(scaleData,na.rm=T),na.rm = T)<1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-1)){legendDigits<-2}else{
+                  if(mean(range(scaleData,na.rm=T),na.rm = T)<10 & mean(range(scaleData,na.rm=T),na.rm = T)>(-10)){legendDigits<-1}else{legendDigits<-0}}}}
+
+            mapx<-rasterx
+            mapx@data<-mapx@data%>%dplyr::select(-lat,-lon)
+            names(mapx@data)<-paste("X",names(mapx@data),sep="")
+
+            metis.map(underLayer=underLayer, dataPolygon=shape,
+                      dataGrid=mapx,
+                      fillColumn = names(mapx@data),
+                      legendShow = T,
+                      legendOutside = legendOutsideSingle,
+                      facetFreeScale = F,
+                      frameShow = T,
+                      labels=labels,
+                      labelsSize = labelsSize,
+                      legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
+                      legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
+                      legendStyle="kmeans",
+                      legendFixedBreaks=legendFixedBreaks,
+                      legendDigits = legendDigits,
+                      legendOutsidePosition = legendOutsidePosition,
+                      legendPosition = legendPositionS,
+                      fillPalette = fillPalette,
+                      bgColor = bgColorChosen,
+                      fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
+                      dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
+
+            metis.map(underLayer=underLayer, dataPolygon=shape,
+                      dataGrid=mapx,
+                      fillColumn = names(mapx@data),
+                      legendShow = T,
+                      legendOutside = legendOutsideSingle,
+                      facetFreeScale = F,
+                      frameShow = T,
+                      labels=labels,
+                      labelsSize = labelsSize,
+                      legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
+                      legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
+                      legendStyle="pretty",
+                      legendFixedBreaks=legendFixedBreaks,
+                      legendDigits = legendDigits,
+                      legendOutsidePosition = legendOutsidePosition,
+                      legendPosition = legendPositionS,
+                      fillPalette = fillPalette,
+                      bgColor = bgColorChosen,
+                      fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
+                      dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
+
+            metis.map(underLayer=underLayer, dataPolygon=shape,
+                      dataGrid=mapx,
+                      fillColumn = names(mapx@data),
+                      legendShow = T,
+                      legendOutside = legendOutsideSingle,
+                      facetFreeScale = T,
+                      frameShow = T,
+                      labels=labels,
+                      labelsSize = labelsSize,
+                      legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
+                      legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
+                      legendStyle="kmeans",
+                      legendFixedBreaks=legendFixedBreaks,
+                      legendDigits = NULL,
+                      legendOutsidePosition = legendOutsidePosition,
+                      legendPosition = legendPositionS,
+                      fillPalette = fillPalette,
+                      bgColor = bgColorChosen,
+                      fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
+                      dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
+
 
         } # if(nrow(datax)>1){
         } # If number of classes == 1
@@ -1028,7 +1177,7 @@ metis.map(underLayer=underLayer,
         frameShow = T,
         labels=labels,
         labelsSize = labelsSize,
-        legendTitle =legendTitle,
+        legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
         legendStyle="kmeans",
         legendFixedBreaks=legendFixedBreaks,
         legendDigits = legendDigits,
@@ -1062,14 +1211,18 @@ metis.map(underLayer=underLayer,
 if(animateOn==T){
 
   if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
-    legendOutsideAnimated=F
+    legendOutsideAnimated=legendOutsideSingle
     legendTitleAnimated=legendTitle
     panelLabelAnimated=paste(x_i)
-    legendAnimatedPosition=legendPosition}else{
+    legendAnimatedPosition=legendPositionS
+    legendTitleSizeAnim = legendTitleSizeS
+    legendTextSizeAnim = legendTextSizeS}else{
       legendOutsideAnimated=T
       legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
       panelLabelAnimated=NULL
       legendAnimatedPosition=NULL
+      legendTitleSizeAnim = legendTitleSizeO
+      legendTextSizeAnim = legendTextSizeO
     }
 
 metis.map(panelLabel=panelLabelAnimated,
@@ -1081,6 +1234,7 @@ metis.map(panelLabel=panelLabelAnimated,
         frameShow = T,
         labels=labels,
         labelsSize = labelsSize,
+        legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
         legendTitle =legendTitleAnimated,
         legendStyle="fixed",
         legendBreaks = animKmeanBreaksPoly,
@@ -1102,7 +1256,7 @@ metis.map(underLayer=underLayer, dataPolygon=mapx,
         frameShow = T,
         labels=labels,
         labelsSize = labelsSize,
-        legendTitle =legendTitle,
+        legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
         legendStyle="pretty",
         legendFixedBreaks=legendFixedBreaks,
         legendDigits = legendDigits,
@@ -1116,14 +1270,18 @@ metis.map(underLayer=underLayer, dataPolygon=mapx,
 if(animateOn==T){
 
   if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
-    legendOutsideAnimated=F
+    legendOutsideAnimated=legendOutsideSingle
     legendTitleAnimated=legendTitle
     panelLabelAnimated=paste(x_i)
-    legendAnimatedPosition=legendPosition}else{
+    legendAnimatedPosition=legendPositionS
+    legendTitleSizeAnim = legendTitleSizeS
+    legendTextSizeAnim = legendTextSizeS}else{
       legendOutsideAnimated=T
       legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
       panelLabelAnimated=NULL
       legendAnimatedPosition=NULL
+      legendTitleSizeAnim = legendTitleSizeO
+      legendTextSizeAnim = legendTextSizeO
     }
 
   metis.map(panelLabel=panelLabelAnimated,
@@ -1136,6 +1294,7 @@ if(animateOn==T){
           labels=labels,
           labelsSize = labelsSize,
           legendTitle =legendTitleAnimated,
+          legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
           legendStyle="fixed",
           legendBreaks = animPrettyBreaksPoly,
           legendFixedBreaks=legendFixedBreaks,
@@ -1157,7 +1316,7 @@ metis.map(underLayer=underLayer, dataPolygon=mapx,
         frameShow = T,
         labels=labels,
         labelsSize = labelsSize,
-        legendTitle =legendTitle,
+        legendTitle =legendTitle,legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
         legendStyle="kmeans",
         legendFixedBreaks=legendFixedBreaks,
         legendDigits = NULL,
@@ -1171,28 +1330,35 @@ metis.map(underLayer=underLayer, dataPolygon=mapx,
 if(animateOn==T){
 
   if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
-    legendOutsideAnimated=F
     legendTitleAnimated=legendTitle
-    panelLabelAnimated=paste(x_i)}else{
-      legendOutsideAnimated=T
+    panelLabelAnimated=paste(x_i)
+    legendOutsideAnimated=legendOutsideSingle
+    legendAnimatedPosition=legendPositionS
+    legendTitleSizeAnim = legendTitleSizeS
+    legendTextSizeAnim = legendTextSizeS}else{
       legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
       panelLabelAnimated=NULL
+      legendOutsideAnimated=F
+      legendAnimatedPosition=NULL
+      legendTitleSizeAnim = legendTitleSizeI
+      legendTextSizeAnim = legendTextSizeI
     }
 
   metis.map(panelLabel= panelLabelAnimated,underLayer=underLayer, dataPolygon=mapx,
           fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
           legendShow = T,
-          legendOutside = F,
+          legendOutside = legendOutsideAnimated,
           facetFreeScale = T,
           frameShow = T,
           labels=labels,
           labelsSize = labelsSize,
           legendTitle =legendTitleAnimated,
+          legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
           legendStyle="kmeans",
           legendFixedBreaks=legendFixedBreaks,
           legendDigits = NULL,
           legendOutsidePosition = legendOutsidePosition,
-          legendPosition = legendPosition,
+          legendPosition = legendAnimatedPosition,
           fillPalette = fillPalette,
           bgColor = bgColorChosen,
           fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE_ANIMATE",sep=""),
@@ -1277,7 +1443,7 @@ if(length(unique(checkTbl$class))==1){
               frameShow = T,
               labels=labels,
               labelsSize = labelsSize,
-              legendTitle =legendTitle,
+              legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
               legendStyle="kmeans",
               legendFixedBreaks=legendFixedBreaks,
               legendDigits = legendDigits,
@@ -1296,7 +1462,7 @@ if(length(unique(checkTbl$class))==1){
               frameShow = T,
               labels=labels,
               labelsSize = labelsSize,
-              legendTitle =legendTitle,
+              legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
               legendStyle="pretty",
               legendFixedBreaks=legendFixedBreaks,
               legendDigits = legendDigits,
@@ -1315,7 +1481,7 @@ if(length(unique(checkTbl$class))==1){
               frameShow = T,
               labels=labels,
               labelsSize = labelsSize,
-              legendTitle =legendTitle,
+              legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
               legendStyle="kmeans",
               legendFixedBreaks=legendFixedBreaks,
               legendDigits = NULL,
@@ -1328,8 +1494,96 @@ if(length(unique(checkTbl$class))==1){
 
 # Animate 2 : each param: If class == 1 { (Map x Anim Years}
 
-
 }  #if(nrow(datax)>1){
+
+
+      # Calculate Mean
+
+      datax<-shapeTbl%>%dplyr::filter(region==boundaryRegionsSelect,scenario==scenario_i,subRegType==subRegType_i,param==param_i)
+      if(nrow(datax)>1){
+        legendTitle<-paste(unique(datax$units),sep="")
+        fillPalette<-unique(datax$classPalette)
+
+        datax<-datax%>%dplyr::select(subRegion,x,value)%>%
+          dplyr::group_by(subRegion)%>%
+          dplyr::summarize(!!paste("Mean_",min(xRange),"to",max(xRange),sep=""):=mean(value))%>%
+          dplyr::ungroup()
+
+        scaleData<-datax%>%dplyr::select(-subRegion)
+        if(mean(range(scaleData,na.rm=T),na.rm = T)<0.01 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.01)){legendDigits<-4}else{
+          if(mean(range(scaleData,na.rm=T),na.rm = T)<0.1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.1)){legendDigits<-3}else{
+            if(mean(range(scaleData,na.rm=T),na.rm = T)<1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-1)){legendDigits<-2}else{
+              if(mean(range(scaleData,na.rm=T),na.rm = T)<10 & mean(range(scaleData,na.rm=T),na.rm = T)>(-10)){legendDigits<-1}else{legendDigits<-0}}}}
+
+        mapx<-shape
+        mapx@data<-mapx@data%>%dplyr::left_join(datax)%>%
+          dplyr::select(names(datax))
+
+        metis.map(underLayer=underLayer, dataPolygon=mapx,
+                  fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
+                  legendShow = T,
+                  legendOutside = legendOutsideSingle,
+                  facetFreeScale = F,
+                  frameShow = T,
+                  labels=labels,
+                  labelsSize = labelsSize,
+                  legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("subRegion")],sep=""),
+                  legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
+                  legendStyle="kmeans",
+                  legendFixedBreaks=legendFixedBreaks,
+                  legendDigits = legendDigits,
+                  legendOutsidePosition = legendOutsidePosition,
+                  legendPosition = legendPositionS,
+                  fillPalette = fillPalette,
+                  bgColor = bgColorChosen,
+                  fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
+                  dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))
+
+        metis.map(underLayer=underLayer, dataPolygon=mapx,
+                  fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
+                  legendShow = T,
+                  legendOutside = legendOutsideSingle,
+                  facetFreeScale = F,
+                  frameShow = T,
+                  labels=labels,
+                  labelsSize = labelsSize,
+                  legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("subRegion")],sep=""),
+                  legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
+                  legendStyle="pretty",
+                  legendFixedBreaks=legendFixedBreaks,
+                  legendDigits = legendDigits,
+                  legendOutsidePosition = legendOutsidePosition,
+                  legendPosition = legendPositionS,
+                  fillPalette = fillPalette,
+                  bgColor = bgColorChosen,
+                  fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
+                  dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))
+
+        metis.map(underLayer=underLayer, dataPolygon=mapx,
+                  fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
+                  legendShow = T,
+                  legendOutside = legendOutsideSingle,
+                  facetFreeScale = T,
+                  frameShow = T,
+                  labels=labels,
+                  labelsSize = labelsSize,
+                  legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("subRegion")],sep=""),
+                  legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
+                  legendStyle="kmeans",
+                  legendFixedBreaks=legendFixedBreaks,
+                  legendDigits = NULL,
+                  legendOutsidePosition = legendOutsidePosition,
+                  legendPosition = legendPositionS,
+                  fillPalette = fillPalette,
+                  bgColor = bgColorChosen,
+                  fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
+                  dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))
+
+        # Animate 2 : each param: If class == 1 { (Map x Anim Years}
+
+
+      }  #if(nrow(datax)>1){
+
   } # If number of classes == 1
 
 } # close Params

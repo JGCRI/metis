@@ -461,7 +461,7 @@ rcrop<-raster::crop(r,shapeExpandEtxent)
 rcropP<-raster::rasterToPolygons(rcrop)
 sp::proj4string(rcropP)<-sp::proj4string(subRegShape)
 print("Intersecting grid with subRegShape...")
-rcropPx<-raster::crop(subRegShape,rcropP)
+rcropPx<-raster::crop(rcropP,subRegShape)
 
 if(grepl("025",grid_i)){add_grid_name="_25Grid"}else{
 if(grepl("050",grid_i)){add_grid_name="_50Grid"}else{add_grid_name=""}}

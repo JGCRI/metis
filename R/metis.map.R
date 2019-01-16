@@ -133,7 +133,7 @@ metis.map<-function(dataPolygon=NULL,
   # legendTitle="Legend"
   # legendStyle="pretty"
   # legendFixedBreaks=5
-  # legendBreaks=NULL,
+  # legendBreaks=NULL
   # pdfpng="png"
   # underLayer=NULL
   # overLayer=NULL
@@ -142,7 +142,7 @@ metis.map<-function(dataPolygon=NULL,
   # facetRows=NA
   # facetCols=3
   # facetBGColor="grey75"
-  # facetLabelColor = "black",
+  # facetLabelColor = "black"
   # facetLabelSize=1.5
   # alpha=1
 

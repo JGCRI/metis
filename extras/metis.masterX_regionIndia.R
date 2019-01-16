@@ -1,3 +1,4 @@
+
 #----------------------------
 # Install necessary packages
 #----------------------------
@@ -7,19 +8,98 @@ if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrar
 library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
-if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}
-library(tibble)
-if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dlpyr")}
-library(dplyr)
-if("rgdal" %in% rownames(installed.packages()) == F){install.packages("rgdal")}
-library(rgdal)
-if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}
-library(tmap)
-if("rgeos" %in% rownames(installed.packages()) == F){install.packages("rgeos")}
-library(rgeos)
+
+for(package_i in c("tibble","dplyr","rgdal","tmap")){
+if(package_i %in% rownames(installed.packages()) == F){install.packages(package_i)}
+library(package_i,character.only = TRUE)}
+
+
+
+#----------------------------
+# Read GCAM Data
+#---------------------------
+
+gcamparamsSelect_i = c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+                       "watConsumBySec", "watWithdrawBySec","gdp", "gdpGrowthRate", "pop",
+                       "agProdByCrop", "aggLandAlloc","co2emissionByEndUse")
+reReadData_i = F # Default Value is T
+
+gcamdatabasePath_i = paste(getwd(),"/dataFiles/gcam",sep="")
+gcamdatabaseName_i = NULL
+gcamdataProjFile_i = "Example_dataProj.proj" # Default Value is "dataProj.proj"
+scenOrigNames_i = c("ExampleScen1","ExampleScen2")
+scenNewNames_i = c("Eg1","Eg2")
+gcamregionsSelect_i = c("India") # Default Value is NULL
+
+#dataProjLoaded <- loadProject(paste(gcamdatabasePath_i, "/", gcamdataProjFile_i, sep = ""))
+#listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
+#queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
+
+
+dataGCAM<-metis.readgcam(reReadData=reReadData_i, # Default Value is T
+                         dataProj=gcamdataProjFile_i, # Default Value is "dataProj.proj"
+                         scenOrigNames=scenOrigNames_i,
+                         scenNewNames=scenNewNames_i,
+                         gcamdatabasePath=gcamdatabasePath_i,
+                         gcamdatabaseName=gcamdatabaseName_i,
+                         queryxml="metisQueries.xml",  # Default Value is "metisQueries.xml"
+                         dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
+                         regionsSelect=gcamregionsSelect_i, # Default Value is NULL
+                         paramsSelect=gcamparamsSelect_i, # Default value is "All"
+                         queriesSelect="All" # Default is "All"
+)
+
+
+dataGCAM<-tibble::as_tibble(dataGCAM$data)
+dataGCAM # To view the data read that was read.
+unique((dataGCAM%>%filter(value>0))$param)
+unique((dataGCAM%>%filter(value>0))$scenario)
+
+
+#----------------------------
+# Produce Data Charts
+#---------------------------
+
+# local data tables
+# dataTables<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Argentina.csv",sep=""))  # Need to create this before loading
+#a<-read.csv(dataTables)
+
+scenRef_i="Eg1"
+rTable_i=dataGCAM
+dataTables_i=NULL # Default is NULL
+chartregionsSelect_i= "All" # Default is "All"
+chartparamsSelect_i= "All" # Default is "All"
+xRange_i="All"
+xCompare_i= c("2015","2030","2050","2100")
+regionCompareOnly_i=0
+
+
+charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
+                            dataTables=dataTables_i, # Default is NULL
+                            paramsSelect=chartparamsSelect_i, # Default is "All"
+                            regionsSelect=chartregionsSelect_i, # Default is "All"
+                            xRange = xRange_i,
+                            xCompare=xCompare_i, # Default is c("2015","2030","2050","2100")
+                            scenRef=scenRef_i, # Default is NULL
+                            regionCompareOnly=regionCompareOnly_i, # Default is "0"
+                            dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
+                            pdfpng="png" # Default is "png"
+                            )
+
+# rTable=dataGCAM # Default is NULL
+# dataTables=dataTables_i # Default is NULL
+# paramsSelect=chartparamsSelect_i # Default is "All"
+# regionsSelect=chartregionsSelect_i # Default is "All"
+# xRange = xRange_i
+# xCompare=xCompare_i # Default is c("2015","2030","2050","2100")
+# scenRef=scenRef_i # Default is NULL
+# regionCompareOnly=regionCompareOnly_i # Default is "0"
+# dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+# pdfpng="png" # Default is "png"
+
 
 #------------
-# India Polygons
+# Prepare Polygons
 #----------------
 
 NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
@@ -61,239 +141,219 @@ metis.map(dataPolygon=indiaLocal0,fillColumn = "NAME_FAO",printFig=F)
 indiaGCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
                         layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
 indiaGCAMBasin<-spTransform(indiaGCAMBasin,CRS(projX))
-indiaGCAMBasin<-raster::intersect(indiaGCAMBasin,indiaLocal0)
+indiaGCAMBasin<-raster::crop(indiaGCAMBasin,indiaLocal0)
 head(indiaGCAMBasin@data)
 plot(indiaGCAMBasin)
 writeOGR(obj=indiaGCAMBasin, dsn=paste(getwd(),"/dataFiles/gis/admin_India",sep=""), layer=paste("indiaGCAMBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 metis.map(dataPolygon=indiaGCAMBasin,fillColumn = "basin_name",printFig=F)
 
 
+#-----------
 # Boundaries
-#-----------------
+#-------------
 
-indiaLocal1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/admin_India",sep=""),
-                     layer="indiaLocal1",use_iconv=T,encoding='UTF-8')
+# Explore Shape Files
+examplePolyFolder<-paste(getwd(),"/dataFiles/gis/admin_India",sep = "")
+examplePolyFile<-paste("indiaGCAMBasin",sep= "")
+example=readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+head(example@data)
+metis.map(dataPolygon=example,fillColumn = "basin_name",labels=T ,printFig=F,facetsON=F)
+boundaryRegShape_i = NULL
+boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
+boundaryRegShpFile_i=paste("ne_10m_admin_0_countries",sep="")
+boundaryRegCol_i="NAME"
+boundaryRegionsSelect_i="India"
+subRegShape_i = NULL
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_India",sep = "")
+subRegShpFile_i = paste("indiaLocal1",sep= "")
+subRegCol_i = "NAME_1"
+subRegType_i = "state"
+nameAppend_i = "_indiaLocal"
+expandPercent_i = 5
+overlapShpFile_i = "Global235_CLM_final_5arcmin_multipart"
+overlapShpFolder_i = paste(getwd(),"/dataFiles/gis/basin_gcam",sep= "")
+extension_i =  T
+cropSubShape2Bound_i = F
 
-indiaGCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/admin_India",sep=""),
-                        layer="indiaGCAMBasin",use_iconv=T,encoding='UTF-8')
 
-indiaStateBoundaries<- metis.boundaries(
-  boundaryRegShape=NULL,#
-  boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),#
-  boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),#
-  boundaryRegCol="NAME",#
-  boundaryRegionsSelect="India",#
-  subRegShape=indiaLocal1,#
-  #subRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),#
-  #subRegShpFile=paste("ne_10m_admin_1_states_provinces",sep=""),#
-  subRegCol="NAME_1",#
-  #subRegionsSelect=NULL,#
-  subRegType="State",#
-  #dirOutputs=paste(getwd(),"/outputs",sep=""),#
-  nameAppend="_local",#
-  expandPercent=6,#
-  overlapShape=indiaGCAMBasin,#
-  #overlapShpFile="Global235_CLM_final_5arcmin_multipart",#
-  #overlapShpFolder=paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),#
-  labelsSize=0.7,#
-  extension = T,
-  cropSubShape2Bound = F
+boundariesX<- metis.boundaries(
+  boundaryRegShape=boundaryRegShape_i,
+  boundaryRegShpFolder=boundaryRegShpFolder_i,
+  boundaryRegShpFile=boundaryRegShpFile_i,
+  boundaryRegCol=boundaryRegCol_i,
+  boundaryRegionsSelect=boundaryRegionsSelect_i,
+  subRegShape=subRegShape_i,
+  subRegShpFolder=subRegShpFolder_i,
+  subRegShpFile=subRegShpFile_i,
+  subRegCol=subRegCol_i,
+  subRegType=subRegType_i,
+  nameAppend=nameAppend_i,
+  expandPercent=expandPercent_i,
+  overlapShpFile=overlapShpFile_i,
+  overlapShpFolder=overlapShpFolder_i,
+  extension = extension_i,
+  grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+            paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+  cropSubShape2Bound=cropSubShape2Bound_i
+)
+
+subRegShpFile_i = paste("indiaGCAMBasin",sep= "")
+subRegCol_i = "basin_name"
+subRegType_i = "basin"
+nameAppend_i = "_indiaLocal"
+
+boundariesX<- metis.boundaries(
+  boundaryRegShape=boundaryRegShape_i,
+  boundaryRegShpFolder=boundaryRegShpFolder_i,
+  boundaryRegShpFile=boundaryRegShpFile_i,
+  boundaryRegCol=boundaryRegCol_i,
+  boundaryRegionsSelect=boundaryRegionsSelect_i,
+  subRegShape=subRegShape_i,
+  subRegShpFolder=subRegShpFolder_i,
+  subRegShpFile=subRegShpFile_i,
+  subRegCol=subRegCol_i,
+  subRegType=subRegType_i,
+  nameAppend=nameAppend_i,
+  expandPercent=expandPercent_i,
+  overlapShpFile=overlapShpFile_i,
+  overlapShpFolder=overlapShpFolder_i,
+  extension = extension_i,
+  grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+            paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+  cropSubShape2Bound=cropSubShape2Bound_i
 )
 
 
-GCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
-                   layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
-GCAMBasin<-spTransform(GCAMBasin,CRS(projX))
+#------------------------
+# Prepare Grids
+#------------------------
 
-indiaBasinBoundaries<- metis.boundaries(
-  boundaryRegShape=NULL,#
-  boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),#
-  boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),#
-  boundaryRegCol="NAME",#
-  boundaryRegionsSelect="India",#
-  subRegShape=indiaGCAMBasin,#
-  #subRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),#
-  #subRegShpFile=paste("ne_10m_admin_1_states_provinces",sep=""),#
-  subRegCol="basin_name",#
-  #subRegionsSelect=NULL,#
-  subRegType="Basin",#
-  #dirOutputs=paste(getwd(),"/outputs",sep=""),#
-  nameAppend="_local",#
-  expandPercent=6,#
-  overlapShape=indiaGCAMBasin,#
-  #overlapShpFile="Global235_CLM_final_5arcmin_multipart",#
-  #overlapShpFolder=paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),#
-  labelsSize=0.7,#
-  extension = T,
-  cropSubShape2Bound = F
-)
+dirOutputs=paste(getwd(),"/outputs",sep="")
+reReadData=0
+demeterFolder=paste(getwd(),"/dataFiles/grids/demeter/",sep="")
+demeterScenario="Eg1"
+demeterUnits="Landuse (Fraction)"
+demeterTimesteps<-seq(from=2005,to=2020,by=5)
+tethysFolder=paste(getwd(),"/dataFiles/grids/tethys/",sep="")
+tethysScenario="Eg1"
+tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
+tethysUnits="Water Withdrawals (mm)"
+xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthos/",sep="")
+xanthosScenario="Eg1"
+xanthosUnits="Runoff (mm)"
+xanthosFiles=c("q_mmperyear_Reference")
+xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")
+scarcityXanthosRollMeanWindow=10
+popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
+popFiles<-"grid_pop_map"
+popUnits<-"person"
+gridMetisData=paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")
 
-#------------
-# Grid to Shape
+gridMetis<-metis.prepGrid(
+  demeterFolder=demeterFolder,
+  demeterScenario=demeterScenario,
+  demeterTimesteps=demeterTimesteps,
+  demeterUnits=demeterUnits,
+  tethysFolder=tethysFolder,
+  tethysScenario=tethysScenario,
+  tethysFiles=tethysFiles,
+  tethysUnits=tethysUnits,
+  xanthosFolder=xanthosFolder,
+  xanthosScenario=xanthosScenario,
+  xanthosUnits=xanthosUnits,
+  xanthosFiles=xanthosFiles,
+  xanthosCoordinatesPath=xanthosCoordinatesPath,
+  scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow,
+  dirOutputs=paste(getwd(),"/outputs",sep=""),
+  reReadData=reReadData,
+  gridMetisData=gridMetisData)
 
+head(gridMetis)
 
-indiaLocal1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/admin_India",sep=""),
-                     layer="indiaLocal1",use_iconv=T,encoding='UTF-8')
+#-----------
+# Grid to Poly
+#-------------
 
-indiaGCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/admin_India",sep=""),
-                        layer="indiaGCAMBasin",use_iconv=T,encoding='UTF-8')
+#grid_i<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+#grid_i<-paste(getwd(),"/outputs/Grids/gridMetis.csv",sep="")
+grid_i=gridMetis
 
-gridMetisData<-paste(getwd(),"/outputs/Grids/gridMetis.RData",sep="")
-load(gridMetisData) # grid is called gridMetis
-gridSelect<-gridMetis%>%
-  filter(!class %in% c("Non Agriculture","Total"))
-head(gridSelect)
+boundaryRegionsSelect_i="India"
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_India",sep = "")
+subRegShpFile_i = paste("indiaLocal1",sep= "")
+subRegCol_i = "NAME_1"
+subRegType_i = "state"
+nameAppend_i = "_indiaLocal"
+aggType_i = NULL
+paramsSelect_i= "All" #"demeterLandUse"
 
-unique(gridMetis$param)
-gridTethysWatWithdrawTot<-gridMetis%>%dplyr::filter(param=="tethysWatWithdraw",class=="Total")%>%
-  mutate(param="tethysWatWithdrawTotal")
-head(gridTethysWatWithdrawTot)
+grid2polyX<-metis.grid2poly(grid=grid_i,
+                                    boundaryRegionsSelect=boundaryRegionsSelect_i,
+                                    subRegShpFolder=subRegShpFolder_i,
+                                    subRegShpFile=subRegShpFile_i,
+                                    subRegCol=subRegCol_i,
+                                    subRegType = subRegType_i,
+                                    aggType=aggType_i,
+                                    nameAppend=nameAppend_i,
+                                    paramsSelect = paramsSelect_i)
 
-unique(gridSelect$param)
-gridScarcityLim1<-gridSelect%>%dplyr::filter(param=="griddedScarcity")%>%
-  mutate(value=case_when(value>1~1,TRUE~value),
-         param="griddedScarcityLimit1")
-head(gridScarcityLim1)
+# grid=grid_i
+# boundaryRegionsSelect=boundaryRegionsSelect_i
+# subRegShpFolder=subRegShpFolder_i
+# subRegShpFile=subRegShpFile_i
+# subRegCol=subRegCol_i
+# aggType=aggType_i
+# nameAppend=nameAppend_i
 
-gridScarcityLim5<-gridSelect%>%dplyr::filter(param=="griddedScarcity")%>%
-  mutate(value=case_when(value>5~5,TRUE~value),
-         param="griddedScarcityLimit5")
-head(gridScarcityLim5)
+#-----------
+# Mapping
+#-------------
 
-gridXanthos<-gridSelect%>%dplyr::filter(param=="xanthosRunoff")
-head(gridXanthos)
+#examplePolygonTable<-paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_subRegType_origDownscaled_hydrobidBermeo3.csv",sep="")
 
-gridComb<-bind_rows(gridScarcityLim5,
-                    gridScarcityLim1,
-                    gridTethysWatWithdrawTot,
-                    gridXanthos)
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_state_origDownscaled_indiaLocal.csv",sep="")
+a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_India_state_indiaLocal.csv",sep="")
+xRange_i= c(2005,2010,2020,2030,2050)
+legendPosition_i=c("RIGHT","top")
+animateOn_i=T
+delay_i=100
+scenRef_i="Eg1"
 
-head(indiaLocal1@data)
-polyIndiaStates<-metis.grid2poly(grid=gridComb,
-                                 boundaryRegionsSelect="India",
-                                 subRegShape=indiaLocal1,
-                                 #subRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-                                 #subRegShpFile=paste("ne_10m_admin_1_states_provinces",sep=""),
-                                 subRegCol="NAME_1",
-                                 subRegType="State",
-                                 #aggType=NULL,
-                                 #dirOutputs=paste(getwd(),"/outputs",sep=""),
-                                 nameAppend="_local_gridComb")
+boundaryRegShape_i = NULL
+boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
+boundaryRegShpFile_i=paste("ne_10m_admin_0_countries",sep="")
+boundaryRegCol_i="NAME"
+boundaryRegionsSelect_i="India"
+subRegShape_i = NULL
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_India",sep = "")
+subRegShpFile_i = paste("indiaLocal1",sep= "")
+subRegCol_i = "NAME_1"
+subRegType_i = "state"
+nameAppend_i = "_indiaLocal"
 
-head(indiaGCAMBasin@data)
-polyIndiaBasins<-metis.grid2poly(grid=gridComb,
-                                 boundaryRegionsSelect="India",
-                                 subRegShape=indiaGCAMBasin,
-                                 #subRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-                                 #subRegShpFile=paste("ne_10m_admin_1_states_provinces",sep=""),
-                                 subRegCol="basin_name",
-                                 subRegType="Basin",
-                                 #aggType=NULL,
-                                 #dirOutputs=paste(getwd(),"/outputs",sep=""),
-                                 nameAppend="_local_gridComb")
-
-
-head(indiaLocal1@data)
-polyIndiaStates<-metis.grid2poly(grid=gridSelect,
-                                 boundaryRegionsSelect="India",
-                                 subRegShape=indiaLocal1,
-                                 #subRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-                                 #subRegShpFile=paste("ne_10m_admin_1_states_provinces",sep=""),
-                                 subRegCol="NAME_1",
-                                 subRegType="State",
-                                 #aggType=NULL,
-                                 #dirOutputs=paste(getwd(),"/outputs",sep=""),
-                                 nameAppend="_local_gridSelect")
-
-head(indiaGCAMBasin@data)
-polyIndiaBasins<-metis.grid2poly(grid=gridSelect,
-                                 boundaryRegionsSelect="India",
-                                 subRegShape=indiaGCAMBasin,
-                                 #subRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-                                 #subRegShpFile=paste("ne_10m_admin_1_states_provinces",sep=""),
-                                 subRegCol="basin_name",
-                                 subRegType="Basin",
-                                 #aggType=NULL,
-                                 #dirOutputs=paste(getwd(),"/outputs",sep=""),
-                                 nameAppend="_local_gridSelect")
-
-
-#-----------------
-# metis.mapsProcess
-#------------------
-
-IndiaExtended<-readOGR(dsn=paste(getwd(),"/outputs/Maps/Boundaries/India",sep=""),
-                       layer="India_Extended_local",use_iconv=T,encoding='UTF-8')
-
-
-subRegShape=indiaLocal1
-polygonDataTables=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_State_origDownscaled_local_gridSelect.csv",sep="")
-gridDataTables=paste(getwd(),"/outputs/Grids/gridCropped_India_State_local_gridSelect.csv",sep="")
-#polygonDataTables=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_State_origDownscaled_local_ScarcityLim1.csv",sep="")
-#gridDataTables=paste(getwd(),"/outputs/Grids/gridCropped_India_State_local_ScarcityLim1.csv",sep="")
-#polygonDataTables=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_State_origDownscaled_local_ScarcityLim5.csv",sep="")
-#gridDataTables=paste(getwd(),"/outputs/Grids/gridCropped_India_State_local_ScarcityLim5.csv",sep="")
-#polygonDataTables=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_State_origDownscaled_local_gridComb.csv",sep="")
-#gridDataTables=paste(getwd(),"/outputs/Grids/gridCropped_India_State_local_gridComb.csv",sep="")
-
-
-head(subRegShape@data)
-metis.mapProcess(polygonDataTables=polygonDataTables,
-                 gridDataTables=gridDataTables,
-                 subRegShape=subRegShape,
-                 xRange=c(2010,2020,2030,2040,2050),
-                 boundaryRegionsSelect="India",
-                 subRegCol="NAME_1",
-                 subRegType="State",
-                 nameAppend="_Local_all",
-                 legendPosition=c("RIGHT","bottom"),
+metis.mapProcess(polygonDataTables=polygonDataTables_i,
+                 gridDataTables=gridDataTables_i,
+                 xRange=xRange_i,
+                 boundaryRegShape=boundaryRegShape_i,
+                 boundaryRegShpFolder=boundaryRegShpFolder_i,
+                 boundaryRegShpFile=boundaryRegShpFile_i,
+                 boundaryRegCol=boundaryRegCol_i,
+                 boundaryRegionsSelect=boundaryRegionsSelect_i,
+                 subRegShape=subRegShape_i,
+                 subRegShpFolder=subRegShpFolder_i,
+                 subRegShpFile=subRegShpFile_i,
+                 subRegCol=subRegCol_i,
+                 subRegType=subRegType_i,
+                 nameAppend=nameAppend_i,
+                 legendPosition=legendPosition_i,
+                 animateOn=animateOn_i,
+                 delay=delay_i,
+                 scenRef=scenRef_i,
                  extension=T,
-                 boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-                 boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),
-                 boundaryRegCol="NAME",
                  expandPercent = 6
-                 #extendedShape = IndiaExtended,
-                 #extendedShapeCol="NAME"
-)
-
-# polygonDataTables=polygonDataTables
-# gridDataTables=gridDataTables
-# subRegShape=subRegShape
-# xRange=c(2010,2020,2030,2040,2050)
-# boundaryRegionsSelect="India"
-# subRegCol="NAME_1"
-# subRegType="State"
-# nameAppend="_Local"
-# legendPosition=c("RIGHT","bottom")
-# extension=T
-# shapeExtended = IndiaExtended
-
-subRegShape=indiaGCAMBasin
-polygonDataTables=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_Basin_origDownscaled_local_gridSelect.csv",sep="")
-gridDataTables=paste(getwd(),"/outputs/Grids/gridCropped_India_Basin_local_gridSelect.csv",sep="")
-#polygonDataTables=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_Basin_origDownscaled_local_ScarcityLim1.csv",sep="")
-#gridDataTables=paste(getwd(),"/outputs/Grids/gridCropped_India_Basin_local_ScarcityLim1.csv",sep="")
-#polygonDataTables=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_Basin_origDownscaled_local_ScarcityLim5.csv",sep="")
-#gridDataTables=paste(getwd(),"/outputs/Grids/gridCropped_India_Basin_local_ScarcityLim5.csv",sep="")
-#polygonDataTables=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_Basin_origDownscaled_local_gridComb.csv",sep="")
-#gridDataTables=paste(getwd(),"/outputs/Grids/gridCropped_India_Basin_local_gridComb.csv",sep="")
+                 )
 
 
-head(subRegShape@data)
-metis.mapProcess(polygonDataTables=polygonDataTables,
-                 #gridDataTables=gridDataTables,
-                 subRegShape=subRegShape,
-                 xRange=c(2010,2020,2030,2040,2050),
-                 boundaryRegionsSelect="India",
-                 subRegCol="basin_name",
-                 subRegType="Basin",
-                 nameAppend="_Local_all",
-                 legendPosition=c("RIGHT","bottom"),
-                 extension=T,
-                 boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-                 boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),
-                 boundaryRegCol="NAME",
-                 expandPercent = 6
-                 #extendedShape = IndiaExtended,
-                 #extendedShapeCol="NAME"
-)
+
+

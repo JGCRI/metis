@@ -9,9 +9,10 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   labels = F, labelsSize = 1.2, subRegShape = NULL,
   subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
   subRegType = "subRegType", nameAppend = "",
-  legendOutsidePosition = NULL, legendPosition = NULL,
-  legendFixedBreaks = 5, animateOn = T, delay = 100,
-  legendTitleSize = 1, scenRef = NULL, extension = F,
+  legendOutsideSingle = F, legendOutsidePosition = NULL,
+  legendPosition = NULL, legendFixedBreaks = 5, legendTitleSizeO = 2,
+  legendTextSizeO = 1, legendTitleSizeI = 1.5, legendTextSizeI = 1,
+  animateOn = T, delay = 100, scenRef = NULL, extension = F,
   boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   boundaryRegShpFile = NULL, boundaryRegCol = NULL,
   boundaryRegionsSelect = NULL, fillcolorNA = NULL,
@@ -46,17 +47,25 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{nameAppend}{Default =""}
 
+\item{legendOutsideSingle}{Default =F, Single plots by default have legends inside. This can be moved out if wanted.}
+
 \item{legendOutsidePosition}{Default = NULL, # "right","left","top","bottom", "center"}
 
 \item{legendPosition}{Default = NULL, # c("RIGHT','top') - RIGHT LEFT TOP BOTTOM}
 
 \item{legendFixedBreaks}{Default = "5",}
 
+\item{legendTitleSizeO}{Default = 2,}
+
+\item{legendTextSizeO}{Default =1,}
+
+\item{legendTitleSizeI}{Default = 1,}
+
+\item{legendTextSizeI}{Default =0.5,}
+
 \item{animateOn}{Default = T,}
 
 \item{delay}{Default = 100,}
-
-\item{legendTitleSize}{Default = 1,}
 
 \item{scenRef}{Default = NULL}
 
