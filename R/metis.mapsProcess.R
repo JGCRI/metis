@@ -487,7 +487,7 @@ if(length(unique(shapeTbl$scenario))>1){
     print(paste("No reference scenario provided",sep=""))
     print(paste("Using ",unique(shapeTbl$scenario)[1]," as reference",sep=""))
     scenRef_i = unique(shapeTbl$scenario)[1]}else{
-      if(!scenRef %in% unique(shapeTbl$scenario)[1]){
+      if(!scenRef %in% unique(shapeTbl$scenario)){
         print(paste("scenario ",scenRef," not in scenarios",sep=""))
         print(paste("Using ",unique(shapeTbl$scenario)[1]," as reference",sep=""))
         scenRef_i = unique(shapeTbl$scenario)[1]}else{
