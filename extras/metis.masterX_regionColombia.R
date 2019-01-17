@@ -300,7 +300,7 @@ subRegCol_i = "name"
 subRegType_i = "state"
 nameAppend_i = "_NE"
 aggType_i = NULL
-paramsSelect_i= "xanthosRunoff" #"demeterLandUse"
+paramsSelect_i= "All" #"demeterLandUse"
 
 grid2polyX<-metis.grid2poly(grid=grid_i,
                                     boundaryRegionsSelect=boundaryRegionsSelect_i,
@@ -329,7 +329,7 @@ subRegCol_i = "NOM_ZH"
 subRegType_i = "subBasin"
 nameAppend_i = "_local"
 aggType_i = NULL
-paramsSelect_i= "xanthosRunoff" #"demeterLandUse"
+paramsSelect_i= "All" #"demeterLandUse"
 
 grid2polyX<-metis.grid2poly(grid=grid_i,
                             boundaryRegionsSelect=boundaryRegionsSelect_i,
@@ -351,7 +351,7 @@ grid2polyX<-metis.grid2poly(grid=grid_i,
 polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_state_origDownscaled_NE.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
 gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_Colombia_state_NE.csv",sep="")
-xRange_i= seq(from=1980,to=1985,by=5)
+xRange_i= seq(from=1955,to=2000,by=5)
 legendPosition_i=c("LEFT","bottom")
 legendOutsideSingle_i=F
 animateOn_i=T
@@ -390,7 +390,9 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  delay=delay_i,
                  scenRef=scenRef_i,
                  extension=T,
-                 expandPercent = 3
+                 expandPercent = 3,
+                 figWidth=6,
+                 figHeight=7
                  )
 
 # polygonDataTables=polygonDataTables_i
@@ -419,7 +421,7 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
 polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_subBasin_origDownscaled_local.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
 #gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_Colombia_state_NE.csv",sep="")
-xRange_i= seq(from=1980,to=1985,by=5)
+xRange_i= seq(from=1950,to=2000,by=5)
 legendPosition_i=c("LEFT","bottom")
 legendOutsideSingle_i=F
 animateOn_i=T
@@ -458,7 +460,9 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  delay=delay_i,
                  scenRef=scenRef_i,
                  extension=T,
-                 expandPercent = 3
+                 expandPercent = 3,
+                 figWidth=6,
+                 figHeight=7
 )
 
 
