@@ -44,6 +44,8 @@
 #' @param extendedShapeCol Default =NULL,
 #' @param expandPercent Default =2
 #' @param projX Default = projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+#' @param figWidth Default =9
+#' @param figHeight Default =7
 #' @export
 
 metis.mapProcess<-function(polygonDataTables=NULL,
@@ -84,7 +86,9 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                          extendedShape=NULL,
                          extendedShapeCol=NULL,
                          expandPercent=2,
-                         projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"){
+                         projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
+                         figWidth=9,
+                         figHeight=7){
 
   # polygonDataTables=NULL
   # gridDataTables=NULL
@@ -362,7 +366,7 @@ if(!is.null(extendedShape)){
 underLayer<-metis.map(fillcolorNA=fillcolorNA, dataPolygon=extendedShape, printFig=F,
                       fillColumn = extendedShapeCol,labels=T, fillPalette = extendedFillColor,legendShow=F,
                       bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,
-                      facetsON=F)
+                      facetsON=F, figWidth=figWidth,figHeight=figHeight)
 bgColorChosen= extendedBGColor
   }else{ print(paste("boundaryRegCol provided: ",boundaryRegCol," is not a column in boundaryRegShape.",sep=""))
     print(paste("OR boundaryRegionsSelect provided: ",boundaryRegionsSelect," is not a region in boundaryRegShape.",sep=""))
@@ -669,6 +673,7 @@ if(!is.null(gridTbl)){
                     legendOutsidePosition = legendOutsidePosition,
                     legendPosition = NULL,
                     fillPalette = fillPalette,
+                    figWidth=figWidth,figHeight=figHeight,
                     fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
                     dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",sep = ""),
                     underLayer=underLayer,
@@ -732,6 +737,8 @@ if(!is.null(gridTbl)){
                     legendPosition = legendAnimatedPosition,
                     fillPalette = fillPalette,
                     bgColor = bgColorChosen,
+                    figWidth=figWidth,
+                    figHeight=figHeight,
                     fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS_ANIMATE",sep=""),
                     dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""))
             }
@@ -753,6 +760,7 @@ if(!is.null(gridTbl)){
                     legendPosition = NULL,
                     fillPalette = fillPalette,
                     bgColor = bgColorChosen,
+                    figWidth=figWidth,figHeight=figHeight,
                     fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
                     dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",sep = ""))
 
@@ -794,6 +802,8 @@ if(!is.null(gridTbl)){
                     legendPosition = legendAnimatedPosition,
                     fillPalette = fillPalette,
                     bgColor = bgColorChosen,
+                    figWidth=figWidth,
+                    figHeight=figHeight,
                     fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY_ANIMATE",sep=""),
                     dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""))
                  }
@@ -815,6 +825,7 @@ if(!is.null(gridTbl)){
                     legendPosition = legendPosition,
                     fillPalette = fillPalette,
                     bgColor = bgColorChosen,
+                    figWidth=figWidth,figHeight=figHeight,
                     fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
                     dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",sep = ""))
 
@@ -854,6 +865,8 @@ if(!is.null(gridTbl)){
                     legendPosition = legendAnimatedPosition,
                     fillPalette = fillPalette,
                     bgColor = bgColorChosen,
+                    figWidth=figWidth,
+                    figHeight=figHeight,
                     fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE_ANIMATE",sep=""),
                     dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""))
                  }
@@ -961,6 +974,7 @@ if(!is.null(gridTbl)){
                   legendPosition = NULL,
                   fillPalette = fillPalette,
                   bgColor = bgColorChosen,
+                  figWidth=figWidth,figHeight=figHeight,
                   fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
                   dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
 
@@ -981,6 +995,7 @@ if(!is.null(gridTbl)){
                   legendPosition = NULL,
                   fillPalette = fillPalette,
                   bgColor = bgColorChosen,
+                  figWidth=figWidth,figHeight=figHeight,
                   fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
                   dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
 
@@ -1001,6 +1016,7 @@ if(!is.null(gridTbl)){
                   legendPosition = legendPosition,
                   fillPalette = fillPalette,
                   bgColor = bgColorChosen,
+                  figWidth=figWidth,figHeight=figHeight,
                   fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
                   dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
 
@@ -1064,6 +1080,7 @@ if(!is.null(gridTbl)){
                       legendPosition = legendPositionS,
                       fillPalette = fillPalette,
                       bgColor = bgColorChosen,
+                      figWidth=figWidth,figHeight=figHeight,
                       fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
                       dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
 
@@ -1085,6 +1102,7 @@ if(!is.null(gridTbl)){
                       legendPosition = legendPositionS,
                       fillPalette = fillPalette,
                       bgColor = bgColorChosen,
+                      figWidth=figWidth,figHeight=figHeight,
                       fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
                       dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
 
@@ -1106,6 +1124,7 @@ if(!is.null(gridTbl)){
                       legendPosition = legendPositionS,
                       fillPalette = fillPalette,
                       bgColor = bgColorChosen,
+                      figWidth=figWidth,figHeight=figHeight,
                       fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
                       dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
 
@@ -1185,6 +1204,7 @@ metis.map(underLayer=underLayer,
         legendPosition = NULL,
         fillPalette = fillPalette,
         bgColor = bgColorChosen,
+        figWidth=figWidth,figHeight=figHeight,
         fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
         dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
 
@@ -1244,6 +1264,8 @@ metis.map(panelLabel=panelLabelAnimated,
         legendPosition = legendAnimatedPosition,
         fillPalette = fillPalette,
         bgColor = bgColorChosen,
+        figWidth=figWidth,
+        figHeight=figHeight,
         fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS_ANIMATE",sep=""),
         dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""))
 }
@@ -1264,6 +1286,7 @@ metis.map(underLayer=underLayer, dataPolygon=mapx,
         legendPosition = NULL,
         fillPalette = fillPalette,
         bgColor = bgColorChosen,
+        figWidth=figWidth,figHeight=figHeight,
         fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
         dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
 
@@ -1303,6 +1326,8 @@ if(animateOn==T){
           legendPosition = legendAnimatedPosition,
           fillPalette = fillPalette,
           bgColor = bgColorChosen,
+          figWidth=figWidth,
+          figHeight=figHeight,
           fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY_ANIMATE",sep=""),
           dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""))
 }
@@ -1323,7 +1348,7 @@ metis.map(underLayer=underLayer, dataPolygon=mapx,
         legendOutsidePosition = legendOutsidePosition,
         legendPosition = legendPosition,
         fillPalette = fillPalette,
-        bgColor = bgColorChosen,
+        bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
         fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
         dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
 
@@ -1361,6 +1386,8 @@ if(animateOn==T){
           legendPosition = legendAnimatedPosition,
           fillPalette = fillPalette,
           bgColor = bgColorChosen,
+          figWidth=figWidth,
+          figHeight=figHeight,
           fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE_ANIMATE",sep=""),
           dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""))
 }
@@ -1450,7 +1477,7 @@ if(length(unique(checkTbl$class))==1){
               legendOutsidePosition = legendOutsidePosition,
               legendPosition = NULL,
               fillPalette = fillPalette,
-              bgColor = bgColorChosen,
+              bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
               fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
               dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))
 
@@ -1469,7 +1496,7 @@ if(length(unique(checkTbl$class))==1){
               legendOutsidePosition = legendOutsidePosition,
               legendPosition = NULL,
               fillPalette = fillPalette,
-              bgColor = bgColorChosen,
+              bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
               fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
               dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))
 
@@ -1488,7 +1515,7 @@ if(length(unique(checkTbl$class))==1){
               legendOutsidePosition = legendOutsidePosition,
               legendPosition = legendPosition,
               fillPalette = fillPalette,
-              bgColor = bgColorChosen,
+              bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
               fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
               dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))
 
@@ -1535,7 +1562,7 @@ if(length(unique(checkTbl$class))==1){
                   legendOutsidePosition = legendOutsidePosition,
                   legendPosition = legendPositionS,
                   fillPalette = fillPalette,
-                  bgColor = bgColorChosen,
+                  bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
                   fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
                   dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))
 
@@ -1555,7 +1582,7 @@ if(length(unique(checkTbl$class))==1){
                   legendOutsidePosition = legendOutsidePosition,
                   legendPosition = legendPositionS,
                   fillPalette = fillPalette,
-                  bgColor = bgColorChosen,
+                  bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
                   fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
                   dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))
 
@@ -1575,7 +1602,7 @@ if(length(unique(checkTbl$class))==1){
                   legendOutsidePosition = legendOutsidePosition,
                   legendPosition = legendPositionS,
                   fillPalette = fillPalette,
-                  bgColor = bgColorChosen,
+                  bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
                   fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
                   dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))
 
