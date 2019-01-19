@@ -434,7 +434,7 @@ for(grid_i in grids){
       if(any(grepl(".csv",paste(grid_i)))){
         print(paste("Attempting to read grid csv file ",grid_i,sep=""))
         if(file.exists(grid_i)){
-          gridx<-utils::read.csv(grid_i, stringsAsFactors = F)
+          gridx<-data.table::fread(grid_i)
           gridx<-gridx%>%unique()}}}}else{
             print(paste("Grid file ",grid_i," does not exist. Skipping Grid Overlay",sep=""))
             gridx=NULL

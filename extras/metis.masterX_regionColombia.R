@@ -243,7 +243,7 @@ boundariesX<- metis.boundaries(
 #------------------------
 
 dirOutputs=paste(getwd(),"/outputs",sep="")
-reReadData=0
+reReadData=1
 demeterFolder=paste(getwd(),"/dataFiles/grids/demeter/",sep="")
 demeterScenario="Eg1"
 demeterUnits="Landuse (Fraction)"
@@ -252,16 +252,40 @@ tethysFolder=paste(getwd(),"/dataFiles/grids/tethys/",sep="")
 tethysScenario="Eg1"
 tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
 tethysUnits="Water Withdrawals (mm)"
-xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthos/",sep="")
-xanthosScenario="Eg1"
-xanthosUnits="Runoff (mm)"
-xanthosFiles=c("q_mmperyear_Reference")
+xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/",sep="")
+#xanthosScenario="Eg1"
+#xanthosUnits="Runoff (mm)"
+xanthosFiles=c("pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099.csv"
+               #"pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099.csv",
+               # "pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099.csv",
+               # "pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099.csv",
+               # "pm_abcd_mrtm_hadgem2-es_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp2p6_1950_2099.csv",
+               # "pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099.csv",
+               # "pm_abcd_mrtm_hadgem2-es_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp6p0_1950_2099.csv",
+               # "pm_abcd_mrtm_hadgem2-es_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp8p5_1950_2099.csv",
+               # "pm_abcd_mrtm_ipsl-cm5a-Ir_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-Ir_rcp2p6_1950_2099.csv",
+               # "pm_abcd_mrtm_ipsl-cm5a-Ir_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-Ir_rcp4p5_1950_2099.csv",
+               # "pm_abcd_mrtm_ipsl-cm5a-Ir_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-Ir_rcp6p0_1950_2099.csv",
+               # "pm_abcd_mrtm_ipsl-cm5a-Ir_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-Ir_rcp8p5_1950_2099.csv",
+               # "pm_abcd_mrtm_miroc-esm-chem_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp2p6_1950_2099.csv",
+               # "pm_abcd_mrtm_miroc-esm-chem_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp4p5_1950_2099.csv",
+               # "pm_abcd_mrtm_miroc-esm-chem_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp6p0_1950_2099.csv",
+               # "pm_abcd_mrtm_miroc-esm-chem_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp8p5_1950_2099.csv",
+               # "pm_abcd_mrtm_noresm1-m_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp2p6_1950_2099.csv",
+               # "pm_abcd_mrtm_noresm1-m_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp4p5_1950_2099.csv",
+               # "pm_abcd_mrtm_noresm1-m_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp6p0_1950_2099.csv",
+               # "pm_abcd_mrtm_noresm1-m_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp8p5_1950_2099.csv"
+               )
 xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")
+xanthosGridAreaHecsPath=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/reference/Grid_Areas_ID.csv",sep="")
 scarcityXanthosRollMeanWindow=10
+spanLowess=0.25
 popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 popFiles<-"grid_pop_map"
 popUnits<-"person"
-gridMetisData=paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")
+gridMetisData=paste(dirOutputs, "/Grids/gridMetisXanthos.RData", sep = "")
+sqliteUSE = T
+sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
 gridMetis<-metis.prepGrid(
   demeterFolder=demeterFolder,
@@ -273,17 +297,18 @@ gridMetis<-metis.prepGrid(
   tethysFiles=tethysFiles,
   tethysUnits=tethysUnits,
   xanthosFolder=xanthosFolder,
-  xanthosScenario=xanthosScenario,
-  xanthosUnits=xanthosUnits,
   xanthosFiles=xanthosFiles,
   xanthosCoordinatesPath=xanthosCoordinatesPath,
-  scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow,
+  xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
   dirOutputs=paste(getwd(),"/outputs",sep=""),
   reReadData=reReadData,
-  gridMetisData=gridMetisData)
+  gridMetisData=gridMetisData,
+  spanLowess=spanLowess,
+  sqliteUSE = sqliteUSE,
+  sqliteDBNamePath =sqliteDBNamePath)
 
 head(gridMetis)
-unique(gridMetis$param)
+unique(gridMetis$param); unique(gridMetis$scenario)
 
 #-----------
 # Grid to Poly
@@ -340,6 +365,16 @@ grid2polyX<-metis.grid2poly(grid=grid_i,
                             aggType=aggType_i,
                             nameAppend=nameAppend_i,
                             paramsSelect = paramsSelect_i)
+
+# grid=grid_i
+# boundaryRegionsSelect=boundaryRegionsSelect_i
+# subRegShpFolder=subRegShpFolder_i
+# subRegShpFile=subRegShpFile_i
+# subRegCol=subRegCol_i
+# subRegType = subRegType_i
+# aggType=aggType_i
+# nameAppend=nameAppend_i
+# paramsSelect = paramsSelect_i
 
 
 #-----------
@@ -409,14 +444,15 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
 # subRegCol=subRegCol_i
 # subRegType=subRegType_i
 # nameAppend=nameAppend_i
+# legendOutsideSingle=legendOutsideSingle_i
 # legendPosition=legendPosition_i
 # animateOn=animateOn_i
 # delay=delay_i
 # scenRef=scenRef_i
 # extension=T
-# expandPercent = 2
-# legendTextSize=legendTextSize_i
-# legendTitleSize=legendTitleSize_i
+# expandPercent = 3
+# figWidth=6
+# figHeight=7
 
 polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_subBasin_origDownscaled_local.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
