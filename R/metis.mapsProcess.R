@@ -102,12 +102,16 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # subRegCol=NULL
   # subRegType="subRegType"
   # nameAppend=""
+  # legendOutsideSingle=F
   # legendOutsidePosition=NULL
   # legendPosition=NULL
   # legendFixedBreaks=5
+  # legendTitleSizeO=2
+  # legendTextSizeO=1
+  # legendTitleSizeI=1.5
+  # legendTextSizeI=1
   # animateOn=T
   # delay=100
-  # legendTitleSize=1
   # scenRef=NULL
   # extension=F
   # boundaryRegShape=NULL
@@ -125,7 +129,9 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # extendedShapeCol=NULL
   # expandPercent=2
   # projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
-  # legendOutsideSingle=F
+  # figWidth=9
+  # figHeight=7
+
 
 #------------------
 # Initialize variables to remove binding errors
@@ -171,15 +177,16 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
     for(grid_i in gridDataTables){
       if(file.exists(grid_i)){
-        gridTblNew<-utils::read.csv(paste(grid_i), stringsAsFactors = F)%>%tibble::as.tibble()
+        gridTblNew<-data.table::fread(paste(grid_i))%>%tibble::as.tibble()
         gridTbl<-dplyr::bind_rows(gridTbl,gridTblNew)
+        rm(gridTblNew)
       } else {stop(paste(grid_i," does not exist"))}
     }
 
     # Join relevant colors and classes using the mapping file if it exists
-    if(!"classPalette" %in% names(gridTblNew)){
+    if(!"classPalette" %in% names(gridTbl)){
     if(file.exists(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))){
-      map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""), stringsAsFactors = F)%>%tibble::as.tibble()
+      map<-data.table::fread(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))%>%tibble::as.tibble()
       gridTbl<-gridTbl%>%dplyr::left_join(map,by=c("param","units","class"))
     }}
 
@@ -228,12 +235,12 @@ metis.mapProcess<-function(polygonDataTables=NULL,
       if(class(polygonDataTables)!="character"){stop("polygonDataTables neither .csv file path nor dataframe or tibble")}
     for(i in polygonDataTables){
       if(file.exists(i)){
-        shapeTblNew<-utils::read.csv(paste(i), stringsAsFactors = F)%>%tibble::as.tibble()
+        shapeTblNew<-data.table::fread(paste(i))%>%tibble::as.tibble()
 
         # Join relevant colors and classes using the mapping file if it exists
         if(!"classPalette" %in% names(shapeTblNew)){
         if(file.exists(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))){
-          map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""), stringsAsFactors = F)%>%tibble::as.tibble()
+          map<-data.table::fread(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))%>%tibble::as.tibble()
           shapeTblNew<-shapeTblNew%>%dplyr::left_join(map,by=c("param","units","class"))
         }else{"subregional mapping not found. Using defaults."}}
 
@@ -571,6 +578,9 @@ if(!"subRegType" %in% names(shapeTbl)){
       if (!dir.exists(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/raster",sep = ""))){
         dir.create(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/raster",sep = ""))}
 
+      if (!dir.exists(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/raster/compareScen",sep = ""))){
+          dir.create(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/raster/compareScen",sep = ""))}
+
         for (scenario_i in unique(gridTbl$scenario)) {
           if (!dir.exists(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))){
             dir.create(paste(dirOutputs,  "/Maps/",boundaryRegionsSelect,"/raster/",scenario_i,sep = ""))}
@@ -587,6 +597,10 @@ if(!"subRegType" %in% names(shapeTbl)){
       for (subRegion_i in unique(shapeTbl$subRegType)) {
         if (!dir.exists(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/",subRegion_i,sep = ""))){
           dir.create(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/",subRegion_i,sep = ""))
+
+          if (!dir.exists(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/compareScen",sep = ""))){
+            dir.create(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/compareScen",sep = ""))}
+
 
           for (scenario_i in unique(shapeTbl$scenario)) {
             if (!dir.exists(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))){

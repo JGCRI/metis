@@ -59,7 +59,7 @@ NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
     if(any(grepl(".csv",paste(grid)))){
     print(paste("Attempting to read grid csv file ",grid,sep=""))
       if(file.exists(grid)){
-    grid<-utils::read.csv(grid, stringsAsFactors = F)
+    grid<-data.table::fread(grid)
     grid<-grid%>%unique()}else{
       stop(paste("Grid file ",grid," does not exist",sep=""))
     }
@@ -142,16 +142,19 @@ if(!is.null(grid)){
       grid<-grid%>%dplyr::mutate(aggType=aggType)
     }}
 
+  # Temporary column names merge in order to aggregate params scenarios across sub-regions
   print("setting grid columns ...")
   for(colx in names(grid)){
     if(is.character(grid[[colx]])){
       grid[[colx]]<-gsub(" ","XSPACEX",grid[[colx]],perl = TRUE )
+      grid[[colx]]<-gsub("\\.","XPERIODX",grid[[colx]],perl = TRUE )
+      grid[[colx]]<-gsub("\\-","XDASHX",grid[[colx]],perl = TRUE )
       grid[[colx]]<-gsub("\\(","XLPARENTHX",grid[[colx]],perl = TRUE)
       grid[[colx]]<-gsub("\\)","XRLPARENTHX",grid[[colx]],perl = TRUE)
-      grid[[colx]]<-gsub("pal\\_","XPALUNDERX",grid[[colx]],perl = TRUE)
+      grid[[colx]]<-gsub("\\_","XUNDERX",grid[[colx]],perl = TRUE)
     }
   }
-
+  print("Grid Columns set.")
 
 
   for (param_i in unique(grid$param)){
@@ -162,8 +165,10 @@ if(!is.null(grid)){
 
   if(!unique(gridx$aggType) %in% c("depth","vol")){stop("Incorrect aggType in grid file")}
 
+  print("Uniting columns...")
   gridx<-gridx%>%dplyr::filter(aggType==aggType_i)%>%
     tidyr::unite(col="key",names(gridx)[!names(gridx) %in% c("lat","lon","value")],sep="_",remove=T)
+  print("Columns united.")
 
   gridx<-gridx%>%tidyr::spread(key=key,value=value)
 
@@ -174,24 +179,30 @@ if(!is.null(grid)){
     r<-raster::stack(spdf)
     raster::projection(r)<-sp::proj4string(shape)
 
-    shapeExpandEtxent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
-    expandbboxPercent<-0.5; shapeExpandEtxent$min;shapeExpandEtxent$max
-    shapeExpandEtxent$min[1]<-if(shapeExpandEtxent$min[1]<0){(1+expandbboxPercent/100)*shapeExpandEtxent$min[1]}else{(1-expandbboxPercent/100)*shapeExpandEtxent$min[1]};
-    shapeExpandEtxent$min[2]<-if(shapeExpandEtxent$min[2]<0){(1+expandbboxPercent/100)*shapeExpandEtxent$min[2]}else{(1-expandbboxPercent/100)*shapeExpandEtxent$min[2]};
-    shapeExpandEtxent$max[1]<-if(shapeExpandEtxent$max[1]<0){(1-expandbboxPercent/100)*shapeExpandEtxent$max[1]}else{(1+expandbboxPercent/100)*shapeExpandEtxent$max[1]};
-    shapeExpandEtxent$max[2]<-if(shapeExpandEtxent$max[2]<0){(1-expandbboxPercent/100)*shapeExpandEtxent$max[2]}else{(1+expandbboxPercent/100)*shapeExpandEtxent$max[2]};
-    shapeExpandEtxent$min;shapeExpandEtxent$max;
-    shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
-    sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
+    shapeExpandExtent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
+    expandPercent<-3; shapeExpandExtent$min;shapeExpandExtent$max
+    rangeX<-abs(range(shapeExpandExtent$min[1],shapeExpandExtent$max[1])[2]-range(shapeExpandExtent$min[1],shapeExpandExtent$max[1])[1])
+    rangeY<-abs(range(shapeExpandExtent$min[2],shapeExpandExtent$max[2])[2]-range(shapeExpandExtent$min[2],shapeExpandExtent$max[2])[1])
+    shapeExpandExtent$min[1]<-(-rangeX*expandPercent/100)+shapeExpandExtent$min[1];
+    shapeExpandExtent$min[2]<-(-rangeY*expandPercent/100)+shapeExpandExtent$min[2];
+    shapeExpandExtent$max[1]<-(rangeX*expandPercent/100)+shapeExpandExtent$max[1];
+    shapeExpandExtent$max[2]<-(rangeY*expandPercent/100)+shapeExpandExtent$max[2];
+    shapeExpandExtent<-methods::as(raster::extent(as.vector(t(shapeExpandExtent))), "SpatialPolygons")
+    sp::proj4string(shapeExpandExtent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
 
     print(paste("Cropping grid to shape file for parameter ", param_i,"...",sep=""))
-    rcrop<-raster::crop(r,shapeExpandEtxent)
+    rcrop<-raster::crop(r,shapeExpandExtent)
     rcropP<-raster::rasterToPolygons(rcrop)
 
     gridCropped<-dplyr::bind_rows(gridCropped,tibble::as_tibble(rcropP@data))
 
     sp::proj4string(rcropP)<-sp::proj4string(shape)
     rcropPx<-raster::intersect(shape,rcropP)
+
+    # rcropPx covers all the area available in the rasters which intersect with the shape
+    #plot(rcrop[[names(rcrop)[3]]]);plot(shape,add=T)
+    #plot(rcropP,col="cadetblue1");plot(shape,add=T)
+    #plot(rcropPx,col="cadetblue1");plot(shape,add=T)
 
     if(is.null(gridPolyLoop)){
     print("Printing Grid overlay...")
@@ -250,9 +261,11 @@ if(!is.null(grid)){
     for(colx in names(polyData)){
       if(is.character(polyData[[colx]])){
         polyData[[colx]]<-gsub("XSPACEX"," ",polyData[[colx]])
+        polyData[[colx]]<-gsub("XPERIODX","\\.",polyData[[colx]])
+        polyData[[colx]]<-gsub("XDASHX","\\-",polyData[[colx]])
         polyData[[colx]]<-gsub("XLPARENTHX","\\(",polyData[[colx]])
         polyData[[colx]]<-gsub("XRLPARENTHX","\\)",polyData[[colx]])
-        polyData[[colx]]<-gsub("XPALUNDERX","pal\\_",polyData[[colx]])
+        polyData[[colx]]<-gsub("XUNDERX","\\_",polyData[[colx]])
       }
     }
 
@@ -282,16 +295,18 @@ gridCropped<-tidyr::gather(gridCropped,key=key,value=value,-c(lat,lon))%>%
 for(colx in names(gridCropped)){
   if(is.character(gridCropped[[colx]])){
     gridCropped[[colx]]<-gsub("XSPACEX"," ",gridCropped[[colx]])
+    gridCropped[[colx]]<-gsub("XPERIODX","\\.",gridCropped[[colx]])
+    gridCropped[[colx]]<-gsub("XDASHX","\\-",gridCropped[[colx]])
     gridCropped[[colx]]<-gsub("XLPARENTHX","\\(",gridCropped[[colx]])
     gridCropped[[colx]]<-gsub("XRLPARENTHX","\\)",gridCropped[[colx]])
-    gridCropped[[colx]]<-gsub("XPALUNDERX","pal\\_",gridCropped[[colx]])
+    gridCropped[[colx]]<-gsub("XUNDERX","\\_",gridCropped[[colx]])
   }
 }
 
 
 polyType=subRegType
 if (!dir.exists(paste(dirOutputs, "/Grids", sep = ""))){dir.create(paste(dirOutputs, "/Grids", sep = ""))}
-utils::write.csv(gridCropped%>%dplyr::mutate(region=boundaryRegionsSelect,polyType=polyType),
+data.table::fwrite(gridCropped%>%dplyr::mutate(region=boundaryRegionsSelect,polyType=polyType),
                 file = paste(dirOutputs, "/Grids/gridCropped_",boundaryRegionsSelect,"_",polyType,nameAppend,".csv", sep = ""),row.names = F)
 }} # If null grid
 
@@ -306,17 +321,17 @@ utils::write.csv(gridCropped%>%dplyr::mutate(region=boundaryRegionsSelect,polyTy
       dir.create(paste(getwd(),"/dataFiles", sep = ""))}  # dataFiles directory (should already exist)
     if (!dir.exists(paste(getwd(),"/dataFiles/mapping", sep = ""))){
       dir.create(paste(getwd(),"/dataFiles/mapping", sep = ""))}  # mapping directory
-    utils::write.csv(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
+    data.table::fwrite(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
                        dplyr::select(param,units,class,classPalette),
                      file = paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""),row.names = F)
 
 
   for (boundaryRegionsSelect in boundaryRegionsSelect[(boundaryRegionsSelect %in% unique(poly$region))]) {
-    utils::write.csv(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
+    data.table::fwrite(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
                        dplyr::select(scenario,param,units,class,value,x,subRegion,subRegType,region)%>%
                        dplyr::mutate(value=0,x=2015)%>%unique,
                      file = paste(dirOutputs, "/Maps/Tables/subReg_",boundaryRegionsSelect,"_",subRegType,"_template",nameAppend,".csv", sep = ""),row.names = F)
-    utils::write.csv(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
+    data.table::fwrite(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
                        dplyr::select(scenario,param,units,class,value,x,subRegion,subRegType,region,classPalette),
                      file = paste(dirOutputs, "/Maps/Tables/subReg_origData_byClass_",boundaryRegionsSelect,"_",subRegType,"_origDownscaled",nameAppend,".csv", sep = ""),row.names = F)
     }

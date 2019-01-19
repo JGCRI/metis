@@ -20,7 +20,8 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   extendedHighLightColor = "cornsilk1", extendedLabelsColor = "grey30",
   extdendedLabelSize = 0.7, extendedShape = NULL,
   extendedShapeCol = NULL, expandPercent = 2,
-  projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+  projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
+  figWidth = 9, figHeight = 7)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -100,6 +101,10 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{expandPercent}{Default =2}
 
 \item{projX}{Default = projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"}
+
+\item{figWidth}{Default =9}
+
+\item{figHeight}{Default =7}
 }
 \value{
 Returns the formatted data used to produce chart
