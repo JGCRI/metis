@@ -9,14 +9,14 @@ metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
   demeterUnits = "NA", tethysFolder = "NA", tethysScenario = "NA",
   tethysUnits = "NA", tethysFiles = c("wddom", "wdelec", "wdirr",
   "wdliv", "wdmfg", "wdmin", "wdnonag", "wdtotal"), xanthosFolder = "NA",
-  xanthosFiles = "NA", xanthosCoordinatesPath = "NA",
-  xanthosGridAreaHecsPath = "NA", scarcityXanthosRollMeanWindow = 10,
-  spanLowess = 0.25, popFolder = "NA", popFiles = "NA",
-  popUnits = "NA", dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  reReadData = 1, gridMetisData = paste(getwd(),
-  "/outputs/Grids/gridMetis.RData", sep = ""), sqliteUSE = T,
-  sqliteDBNamePath = paste(getwd(), "/outputs/Grids/gridMetis.sqlite",
-  sep = ""))
+  xanthosFiles = "NA", xanthosScenarioAssign = "NA",
+  xanthosCoordinatesPath = "NA", xanthosGridAreaHecsPath = "NA",
+  scarcityXanthosRollMeanWindow = 10, spanLowess = 0.25,
+  popFolder = "NA", popFiles = "NA", popUnits = "NA",
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), reReadData = 1,
+  gridMetisData = paste(getwd(), "/outputs/Grids/gridMetis.RData", sep =
+  ""), sqliteUSE = T, sqliteDBNamePath = paste(getwd(),
+  "/outputs/Grids/gridMetis.sqlite", sep = ""))
 }
 \arguments{
 \item{demeterFolder}{Full path to demeter outputs}
@@ -38,6 +38,8 @@ metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
 \item{xanthosFolder}{Xanthos Folder Path}
 
 \item{xanthosFiles}{Xanthos Files to Read}
+
+\item{xanthosScenarioAssign}{Default "NA". Scenario name if testing single scenario.}
 
 \item{xanthosCoordinatesPath}{paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")}
 

@@ -229,7 +229,7 @@ boundariesX<- metis.boundaries(
 #------------------------
 
 dirOutputs=paste(getwd(),"/outputs",sep="")
-reReadData=0
+reReadData=1
 demeterFolder=paste(getwd(),"/dataFiles/grids/demeter/",sep="")
 demeterScenario="Eg1"
 demeterUnits="Landuse (Fraction)"
@@ -239,17 +239,20 @@ tethysScenario="Eg1"
 tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
 tethysUnits="Water Withdrawals (mm)"
 xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthos/",sep="")
-xanthosScenario="Eg1"
-xanthosUnits="Runoff (mm)"
-xanthosFiles=c("q_mmperyear_Reference")
+xanthosFiles=c("q_mmperyear_Reference.csv")
+xanthosScenarioAssign="Eg1"
 xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")
+xanthosGridAreaHecsPath=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/reference/Grid_Areas_ID.csv",sep="")
 scarcityXanthosRollMeanWindow=10
+spanLowess=0.25
 popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 popFiles<-"grid_pop_map"
 popUnits<-"person"
-gridMetisData=paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")
+gridMetisData=paste(dirOutputs, "/Grids/gridMetisIndia.RData", sep = "")
+sqliteUSE = F
+sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetisIndia.sqlite", sep = "")
 
-gridMetis<-metis.prepGrid(
+gridMetisIndia<-metis.prepGrid(
   demeterFolder=demeterFolder,
   demeterScenario=demeterScenario,
   demeterTimesteps=demeterTimesteps,
@@ -259,16 +262,38 @@ gridMetis<-metis.prepGrid(
   tethysFiles=tethysFiles,
   tethysUnits=tethysUnits,
   xanthosFolder=xanthosFolder,
-  xanthosScenario=xanthosScenario,
-  xanthosUnits=xanthosUnits,
   xanthosFiles=xanthosFiles,
+  xanthosScenarioAssign=xanthosScenarioAssign,
   xanthosCoordinatesPath=xanthosCoordinatesPath,
-  scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow,
+  xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
   dirOutputs=paste(getwd(),"/outputs",sep=""),
   reReadData=reReadData,
-  gridMetisData=gridMetisData)
+  gridMetisData=gridMetisData,
+  spanLowess=spanLowess,
+  sqliteUSE = sqliteUSE,
+  sqliteDBNamePath =sqliteDBNamePath)
 
-head(gridMetis)
+# demeterFolder=demeterFolder
+# demeterScenario=demeterScenario
+# demeterTimesteps=demeterTimesteps
+# demeterUnits=demeterUnits
+# tethysFolder=tethysFolder
+# tethysScenario=tethysScenario
+# tethysFiles=tethysFiles
+# tethysUnits=tethysUnits
+# xanthosFolder=xanthosFolder
+# xanthosFiles=xanthosFiles
+# xanthosScenarioAssign=xanthosScenarioAssign
+# xanthosCoordinatesPath=xanthosCoordinatesPath
+# xanthosGridAreaHecsPath=xanthosGridAreaHecsPath
+# dirOutputs=paste(getwd(),"/outputs",sep="")
+# reReadData=reReadData
+# gridMetisData=gridMetisData
+# spanLowess=spanLowess
+# sqliteUSE = sqliteUSE
+# sqliteDBNamePath =sqliteDBNamePath
+
+head(gridMetisIndia)
 
 #-----------
 # Grid to Poly
@@ -297,6 +322,31 @@ grid2polyX<-metis.grid2poly(grid=grid_i,
                                     nameAppend=nameAppend_i,
                                     paramsSelect = paramsSelect_i)
 
+
+
+#grid_i<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+#grid_i<-paste(getwd(),"/outputs/Grids/gridMetis.csv",sep="")
+grid_i=gridMetis
+
+boundaryRegionsSelect_i="India"
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_India",sep = "")
+subRegShpFile_i = paste("indiaGCAMBasin",sep= "")
+subRegCol_i = "basin_name"
+subRegType_i = "basin"
+nameAppend_i = "_indiaLocal"
+aggType_i = NULL
+paramsSelect_i= "All" #"demeterLandUse"
+
+grid2polyX<-metis.grid2poly(grid=grid_i,
+                            boundaryRegionsSelect=boundaryRegionsSelect_i,
+                            subRegShpFolder=subRegShpFolder_i,
+                            subRegShpFile=subRegShpFile_i,
+                            subRegCol=subRegCol_i,
+                            subRegType = subRegType_i,
+                            aggType=aggType_i,
+                            nameAppend=nameAppend_i,
+                            paramsSelect = paramsSelect_i)
+
 # grid=grid_i
 # boundaryRegionsSelect=boundaryRegionsSelect_i
 # subRegShpFolder=subRegShpFolder_i
@@ -311,14 +361,19 @@ grid2polyX<-metis.grid2poly(grid=grid_i,
 
 #examplePolygonTable<-paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_subRegType_origDownscaled_hydrobidBermeo3.csv",sep="")
 
+
 polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_state_origDownscaled_indiaLocal.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+a<-a%>%dplyr::filter(param %in% c("griddedScarcity","tethysWatWithdraw"))
 gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_India_state_indiaLocal.csv",sep="")
-xRange_i= c(2005,2010,2020,2030,2050)
-legendPosition_i=c("RIGHT","top")
+b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
+b<-b%>%dplyr::filter(param %in% c("griddedScarcity","tethysWatWithdraw"))
+xRange_i= c(2015,2050)
+legendPosition_i=c("RIGHT","bottom")
 animateOn_i=T
 delay_i=100
 scenRef_i="Eg1"
+legendOutsideSingle_i=T
 
 boundaryRegShape_i = NULL
 boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
@@ -332,8 +387,19 @@ subRegCol_i = "NAME_1"
 subRegType_i = "state"
 nameAppend_i = "_indiaLocal"
 
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
-                 gridDataTables=gridDataTables_i,
+scaleRange_i=data.frame(param=c("griddedScarcity"),
+                      maxScale=c(1),
+                      minScale=c(0))
+paramsSelect_i = c("griddedScarcity")
+
+# scaleRangeCat=data.frame(param=c("griddedScarcity"),
+#                         minRange=c(0,0.1,0.2,0.4),
+#                         maxRange=c(0.1,0.2,0.4,Inf),
+#                         newCat=c("None","Low","Moderate","Severe"),
+#                         newPal=c("blue","green","orange","red"))
+
+metis.mapProcess(polygonDataTables=a,
+                 gridDataTables=b,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,
                  boundaryRegShpFolder=boundaryRegShpFolder_i,
@@ -346,14 +412,49 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  subRegCol=subRegCol_i,
                  subRegType=subRegType_i,
                  nameAppend=nameAppend_i,
+                 legendOutsideSingle=legendOutsideSingle_i,
                  legendPosition=legendPosition_i,
                  animateOn=animateOn_i,
                  delay=delay_i,
                  scenRef=scenRef_i,
                  extension=T,
-                 expandPercent = 6
+                 expandPercent = 6,
+                 #paramsSelect = paramsSelect_i,
+                 scaleRange = scaleRange_i
                  )
 
 
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_India_basin_origDownscaled_indiaLocal.csv",sep="")
+a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+a<-a%>%dplyr::filter(param %in% c("griddedScarcity","tethysWatWithdraw")); head(a)
+subRegShpFile_i = paste("indiaGCAMBasin",sep= "")
+subRegCol_i = "basin_name"
+subRegType_i = "basin"
+nameAppend_i = "_indiaLocal"
 
+
+metis.mapProcess(polygonDataTables=a,
+                 #gridDataTables=b,
+                 xRange=xRange_i,
+                 boundaryRegShape=boundaryRegShape_i,
+                 boundaryRegShpFolder=boundaryRegShpFolder_i,
+                 boundaryRegShpFile=boundaryRegShpFile_i,
+                 boundaryRegCol=boundaryRegCol_i,
+                 boundaryRegionsSelect=boundaryRegionsSelect_i,
+                 subRegShape=subRegShape_i,
+                 subRegShpFolder=subRegShpFolder_i,
+                 subRegShpFile=subRegShpFile_i,
+                 subRegCol=subRegCol_i,
+                 subRegType=subRegType_i,
+                 nameAppend=nameAppend_i,
+                 legendOutsideSingle=legendOutsideSingle_i,
+                 legendPosition=legendPosition_i,
+                 animateOn=animateOn_i,
+                 delay=delay_i,
+                 scenRef=scenRef_i,
+                 extension=T,
+                 expandPercent = 6,
+                 #paramsSelect = paramsSelect_i,
+                 scaleRange = scaleRange_i
+)
 

@@ -46,6 +46,8 @@
 #' @param projX Default = projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
 #' @param figWidth Default =9
 #' @param figHeight Default =7
+#' @param scaleRange Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.
+#' @param paramsSelect Default ="All"
 #' @export
 
 metis.mapProcess<-function(polygonDataTables=NULL,
@@ -88,7 +90,9 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                          expandPercent=2,
                          projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
                          figWidth=9,
-                         figHeight=7){
+                         figHeight=7,
+                         scaleRange=NULL,
+                         paramsSelect="All"){
 
   # polygonDataTables=NULL
   # gridDataTables=NULL
@@ -131,6 +135,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
   # figWidth=9
   # figHeight=7
+  # scaleRange=NULL
+  # paramsSelect="All"
 
 
 #------------------
@@ -138,7 +144,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 # -----------------
 
   NULL->lat->lon->param->region->scenario->subRegion->
-  value->x->year->gridID->underLayer
+  value->x->year->gridID->underLayer->maxScale->minScale
 
   # Set legend size based on where legend is placed
   if(legendOutsideSingle==T){legendTitleSizeS=legendTitleSizeO;legendTextSizeS=legendTextSizeO;legendPositionS=NULL}
@@ -211,11 +217,11 @@ metis.mapProcess<-function(polygonDataTables=NULL,
     gridTbl<-gridTbl%>%dplyr::mutate(param="param")
   }
   if(!"classPalette" %in% names(gridTbl)){
-    print(paste("'classPalette' column not present in polygon data provided. Creating classPalette column 'classPalette'",sep=""))
+    print(paste("'classPalette' column not present in grid data provided. Creating classPalette column 'classPalette'",sep=""))
       gridTbl<-gridTbl%>%dplyr::mutate(classPalette="pal_hot")
     }
   if(!"value" %in% names(gridTbl)){
-    stop("'value' column not present in polygon data provided. Need to have values. Check data.",sep="")
+    stop("'value' column not present in grid data provided. Need to have values. Check data.",sep="")
   }
 
   if(!"lat" %in% names(gridTbl)){stop("'lat' column not present in grid data provided. Need to have lat. Check data.",sep="")}
@@ -319,6 +325,19 @@ if(!subRegCol %in% names(subRegShape)){stop(paste("SubRegCol: ",subRegCol," not 
 
 subRegShape@data<-subRegShape@data%>%dplyr::mutate(subRegion=get(subRegCol))
 
+
+#----------------
+# Check scaleRange
+#---------------
+
+scaleRange[is.na(scaleRange)]<-NA_real_
+scaleRange[scaleRange=="NA"]<-NA_real_
+if(!all(c("param","maxScale","minScale") %in% names(scaleRange))){
+  paste("Incorrect column names for scaleRange: ",names(scaleRange),". Should include param, maxScale, minscale.")
+  paste("Setting scaleRange to NULL.")
+  scaleRange=NULL
+}
+
 #----------------
 # Create Boundary and subRegional shapefiles
 #---------------
@@ -387,16 +406,65 @@ bgColorChosen= extendedBGColor
 # Subset Data
 #------------------
 
+
 if(nrow(shapeTbl)>0){
 if(any(!boundaryRegionsSelect %in% unique(shapeTbl$region))){
   stop(paste("boundaryRegionsSelect: ",boundaryRegionsSelect," not in shapeTbl regions"))}}
 
 
 if(!is.null(shapeTbl)){
-  shapeTbl<-shapeTbl%>%unique()%>%dplyr::filter(region %in% boundaryRegionsSelect)
-  if(any(xRange!="All")){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange)}}
+  shapeTbl<-shapeTbl%>%
+    unique()%>%
+    dplyr::filter(region %in% boundaryRegionsSelect)
+  if(any(xRange!="All")){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange);
+  paste("Subset shapeTbl x to xRange: ",xRange,sep="")}
+  if(any(paramsSelect!="All")){
+    if(any(paramsSelect %in% unique(shapeTbl$param))){
+      shapeTbl<-shapeTbl%>%dplyr::filter(param %in% paramsSelect);
+      paste("Subset shapeTbl param to paramsSelect: ",paramsSelect,sep="")}else{
+        paste("None of the paramsSelect: ",paste(paramsSelect,collapse=", ")," are present in shapeTbl params. Skipping subset.",sep="")
+      }
+  }
 
-if(!is.null(gridTbl)){if(any(xRange!="All")){gridTbl<-gridTbl%>%dplyr::filter(x %in% xRange)}}
+  if(!is.null(scaleRange) & any(unique(scaleRange$param) %in% unique(shapeTbl$param))){
+  shapeTbl<-shapeTbl%>%dplyr::left_join(scaleRange,by="param")%>%
+    dplyr::mutate(value=dplyr::case_when((!is.na(maxScale) & value>maxScale)~maxScale,
+                                  (!is.na(minScale) & value<minScale)~minScale,
+                                  TRUE~value))%>%
+    dplyr::select(-maxScale,-minScale)
+  paste("Used scaleRange to adjust value for params in shapeTbl: ",
+        paste(unique(scaleRange$param)[unique(scaleRange$param) %in% unique(shapeTbl$param)],collaspe=","),sep="")
+  print(scaleRange)
+}
+
+  shapeTbl<-droplevels(shapeTbl)
+  }
+
+if(!is.null(gridTbl)){
+  if(any(xRange!="All")){gridTbl<-gridTbl%>%dplyr::filter(x %in% xRange);
+  paste("Subset gridTbl x to xRange: ",xRange,sep="")}
+  if(any(paramsSelect!="All")){
+    if(any(paramsSelect %in% unique(gridTbl$param))){
+    gridTbl<-gridTbl%>%dplyr::filter(param %in% paramsSelect);
+  paste("Subset gridTbl param to paramsSelect: ",paramsSelect,sep="")}else{
+    paste("None of the paramsSelect: ",paste(paramsSelect,collapse=", ")," are present in gridTbl params. Skipping subset.",sep="")
+  }
+    }
+
+
+  if(!is.null(scaleRange) & any(unique(scaleRange$param) %in% unique(gridTbl$param))){
+    gridTbl<-gridTbl%>%dplyr::left_join(scaleRange,by="param")%>%
+      dplyr::mutate(value=dplyr::case_when((!is.na(maxScale) & value>maxScale)~maxScale,
+                                    (!is.na(minScale) & value<minScale)~minScale,
+                                    TRUE~value))%>%
+      dplyr::select(-maxScale,-minScale)
+    paste("Used scaleRange to adjust value for params in gridTbl: ",
+          paste(unique(scaleRange$param)[unique(scaleRange$param) %in% unique(gridTbl$param)],collaspe=","),sep="")
+    print(scaleRange)
+  }
+  gridTbl<-droplevels(gridTbl)
+  }
+
 
 
 #--------------------
@@ -405,20 +473,9 @@ if(!is.null(gridTbl)){if(any(xRange!="All")){gridTbl<-gridTbl%>%dplyr::filter(x 
 
 if(!is.null(gridTbl) & !is.null(shape)){
 
-shapeExpandEtxent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
-expandbboxPercent<-expandPercent*0.9; shapeExpandEtxent$min;shapeExpandEtxent$max
-shapeExpandEtxent$min;shapeExpandEtxent$max
-rangeX<-abs(range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[2]-range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[1])
-rangeY<-abs(range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[2]-range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[1])
-shapeExpandEtxent$min[1]<-(-rangeX*expandbboxPercent/100)+shapeExpandEtxent$min[1];
-shapeExpandEtxent$min[2]<-(-rangeY*expandbboxPercent/100)+shapeExpandEtxent$min[2];
-shapeExpandEtxent$max[1]<-(rangeX*expandbboxPercent/100)+shapeExpandEtxent$max[1];
-shapeExpandEtxent$max[2]<-(rangeY*expandbboxPercent/100)+shapeExpandEtxent$max[2];
-shapeExpandEtxent$min;shapeExpandEtxent$max;
+shapeExpandEtxent<-shape@bbox
 shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
 sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
-
-
 gridTbl<-gridTbl%>%dplyr::mutate(gridID=seq(1:nrow(gridTbl)))
 croppedCoords<-gridTbl%>%dplyr::select(lat,lon,gridID)%>%unique()
 croppedCoords<-sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(croppedCoords$lon,croppedCoords$lat))),data=croppedCoords)
@@ -561,7 +618,58 @@ if(!"subRegType" %in% names(shapeTbl)){
   shapeTbl<-shapeTbl%>%dplyr::mutate(subRegType="subRegion")
 }
 
-}
+  }
+
+
+#------------------
+# Re-Categorize Data
+#------------------
+
+# if(!is.null(shapeTbl)){
+#
+#     if(!is.null(scaleRangeCat) & any(unique(scaleRangeCat$param) %in% unique(shapeTbl$param))){
+#
+#     scaleRangeCat$newCat<-as.character(scaleRangeCat$newCat)
+#     scaleRangeCat$newPal<-as.character(scaleRangeCat$newPal)
+#
+#     shapeTbl<-shapeTbl%>%dplyr::mutate(valueCat=as.character(value),palCat=as.character(classPalette))
+#     for(i in 1:nrow(scaleRangeCat)){
+#     shapeTbl<-shapeTbl%>%dplyr::mutate(valueCat=dplyr::case_when((value>=scaleRangeCat[i,]$minRange & value<=scaleRangeCat[i,]$maxRange)~scaleRangeCat[i,]$newCat,
+#                                     TRUE~as.character(valueCat)),
+#                                     palCat=dplyr::case_when((value>=scaleRangeCat[i,]$minRange & value<=scaleRangeCat[i,]$maxRange)~scaleRangeCat[i,]$newPal,
+#                                                        TRUE~as.character(palCat)))
+#
+#     }
+#
+#     paste("Used scaleRangeCat to adjust valueCat and palCat for params in shapeTbl: ",
+#           paste(unique(scaleRangeCat$param)[unique(scaleRangeCat$param) %in% unique(shapeTbl$param)],collaspe=","),sep="")
+#   }
+#
+#   shapeTbl<-droplevels(shapeTbl)
+# }
+#
+# if(!is.null(gridTbl)){
+#
+#   if(!is.null(scaleRangeCat) & any(unique(scaleRangeCat$param) %in% unique(gridTbl$param))){
+#
+#     scaleRangeCat$newCat<-as.character(scaleRangeCat$newCat)
+#     scaleRangeCat$newPal<-as.character(scaleRangeCat$newPal)
+#
+#     gridTbl<-gridTbl%>%dplyr::mutate(valueCat=as.character(value),palCat=as.character(classPalette))
+#     for(i in 1:nrow(scaleRangeCat)){
+#       gridTbl<-gridTbl%>%dplyr::mutate(valueCat=dplyr::case_when((value>=scaleRangeCat[i,]$minRange & value<=scaleRangeCat[i,]$maxRange)~scaleRangeCat[i,]$newCat,
+#                                                             TRUE~as.character(valueCat)),
+#                                          palCat=dplyr::case_when((value>=scaleRangeCat[i,]$minRange & value<=scaleRangeCat[i,]$maxRange)~scaleRangeCat[i,]$newPal,
+#                                                           TRUE~as.character(palCat)))
+#
+#     }
+#
+#     paste("Used scaleRangeCat to adjust valueCat and palCat for params in gridTbl: ",
+#           paste(unique(scaleRangeCat$param)[unique(scaleRangeCat$param) %in% unique(gridTbl$param)],collaspe=","),sep="")
+#   }
+#
+#   gridTbl<-droplevels(gridTbl)
+# }
 
 
 #------------------
@@ -588,10 +696,6 @@ if(!"subRegType" %in% names(shapeTbl)){
           if (!dir.exists(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",sep = ""))){
             dir.create(paste(dirOutputs,  "/Maps/",boundaryRegionsSelect,"/raster/",scenario_i,"/byYear",sep = ""))}
 
-          for (param_i in unique(gridTbl$param)) {
-            if (!dir.exists(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/raster/",scenario_i,"/byYear/animate_",param_i,sep = ""))){
-              dir.create(paste(dirOutputs,  "/Maps/",boundaryRegionsSelect,"/raster/",scenario_i,"/byYear/animate_",param_i,sep = ""))}
-          }
         } # Close for scenario i
 
       for (subRegion_i in unique(shapeTbl$subRegType)) {
@@ -609,11 +713,6 @@ if(!"subRegType" %in% names(shapeTbl)){
             if (!dir.exists(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/",scenario_i,"/byYear",sep = ""))){
               dir.create(paste(dirOutputs,  "/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/",scenario_i,"/byYear",sep = ""))}
 
-            for (param_i in unique(shapeTbl$param)) {
-            if (!dir.exists(paste(dirOutputs, "/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/",scenario_i,"/byYear/animate_",param_i,sep = ""))){
-              dir.create(paste(dirOutputs,  "/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/",scenario_i,"/byYear/animate_",param_i,sep = ""))}
-             }
-
           } # Close for scenario i
 
         } # Close subRegion directory
@@ -630,6 +729,7 @@ if(!is.null(gridTbl)){
   for (scenario_i in unique(gridTbl$scenario)){
     for (param_i in unique(gridTbl$param)){
 
+      if(nrow(gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i))>0){
       animScaleGrid<-(gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i))$value
       animPrettyBreaksGrid<-scales::pretty_breaks(n=legendFixedBreaks)(animScaleGrid)
       animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,centers=legendFixedBreaks))$centers[,1]))
@@ -652,7 +752,7 @@ if(!is.null(gridTbl)){
             datax<-gridTblx%>%dplyr::filter(x==x_i)
         if(nrow(datax)>1){
             legendTitle<-unique(datax$units)
-            fillPalette<-unique(datax$classPalette)
+            fillPalette<-as.character(unique(datax$classPalette))
 
             datax<-datax%>%dplyr::select(lat,lon,class,value)%>%
               tidyr::spread(key=class,value=value)
@@ -671,49 +771,6 @@ if(!is.null(gridTbl)){
             mapx<-rasterx
             mapx@data<-mapx@data%>%dplyr::select(-lat,-lon)
 
-            metis.map(dataPolygon=shape,
-                    dataGrid=mapx,
-                    fillColumn = names(mapx@data),
-                    legendShow = T,
-                    legendOutside = T,
-                    facetFreeScale = F,
-                    frameShow = T,
-                    labels=labels,
-                    labelsSize = labelsSize,
-                    legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
-                    legendStyle="kmeans",
-                    legendFixedBreaks=legendFixedBreaks,
-                    legendDigits = legendDigits,
-                    legendOutsidePosition = legendOutsidePosition,
-                    legendPosition = NULL,
-                    fillPalette = fillPalette,
-                    figWidth=figWidth,figHeight=figHeight,
-                    fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-                    dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",sep = ""),
-                    underLayer=underLayer,
-                    bgColor = bgColorChosen)
-
-            # dataPolygon=shape
-            # dataGrid=mapx
-            # fillColumn = names(mapx@data)
-            # legendShow = T
-            # legendOutside = T
-            # facetFreeScale = F
-            # frameShow = T
-            # labels=labels
-            # labelsSize = labelsSize
-            # legendTitle =legendTitle
-            # legendStyle="kmeans"
-            # legendFixedBreaks=legendFixedBreaks
-            # legendDigits = legendDigits
-            # legendOutsidePosition = legendOutsidePosition
-            # legendPosition = NULL
-            # fillPalette = fillPalette
-            # fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-            # dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",sep = "")
-            # underLayer=underLayer
-
-            if(animateOn==T){
 
             if(length(names(mapx@data))==1){
               legendOutsideAnimated=legendOutsideSingle
@@ -721,169 +778,112 @@ if(!is.null(gridTbl)){
               panelLabelAnimated=paste(x_i)
               legendAnimatedPosition=legendPositionS
               legendTitleSizeAnim = legendTitleSizeS
-              legendTextSizeAnim = legendTextSizeS}else{
-              legendOutsideAnimated=T
-              legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
-              panelLabelAnimated=NULL
-              legendAnimatedPosition=NULL
-              legendTitleSizeAnim = legendTitleSizeO
-              legendTextSizeAnim = legendTextSizeO
-            }
+              legendTextSizeAnim = legendTextSizeS
+              legendBreaksAnim = animKmeanBreaksGrid
+              legendStyleAnim="fixed"}else{
+                legendStyleAnim="fixed"
+                legendBreaksAnim = animKmeanBreaksGrid
+                legendOutsideAnimated=legendOutsideSingle
+                legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
+                panelLabelAnimated=NULL
+                legendAnimatedPosition=legendPositionS
+                legendTitleSizeAnim = legendTitleSizeS
+                legendTextSizeAnim = legendTextSizeS
+              }
 
             metis.map(underLayer=underLayer,
                       panelLabel=panelLabelAnimated,
                       dataPolygon=shape,
-                    dataGrid=mapx,
-                    fillColumn = names(mapx@data),
-                    legendShow = T,
-                    legendOutside = legendOutsideAnimated,
-                    facetFreeScale = F,
-                    frameShow = T,
-                    labels=labels,
-                    labelsSize = labelsSize,
-                    legendTitle =legendTitleAnimated,
-                    legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
-                    legendStyle="fixed",
-                    legendBreaks = animKmeanBreaksGrid,
-                    legendFixedBreaks=legendFixedBreaks,
-                    legendDigits = animLegendDigits,
-                    legendOutsidePosition = legendOutsidePosition,
-                    legendPosition = legendAnimatedPosition,
-                    fillPalette = fillPalette,
-                    bgColor = bgColorChosen,
-                    figWidth=figWidth,
-                    figHeight=figHeight,
-                    fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS_ANIMATE",sep=""),
-                    dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""))
-            }
+                      dataGrid=mapx,
+                      fillColumn = names(mapx@data),
+                      legendShow = T,
+                      legendOutside = legendOutsideAnimated,
+                      facetFreeScale = F,
+                      frameShow = T,
+                      labels=labels,
+                      labelsSize = labelsSize,
+                      legendTitle =legendTitleAnimated,
+                      legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
+                      legendStyle=legendStyleAnim,
+                      legendBreaks = legendBreaksAnim,
+                      legendFixedBreaks=legendFixedBreaks,
+                      legendDigits = animLegendDigits,
+                      legendOutsidePosition = legendOutsidePosition,
+                      legendPosition = legendAnimatedPosition,
+                      fillPalette = fillPalette,
+                      bgColor = bgColorChosen,
+                      figWidth=figWidth,
+                      figHeight=figHeight,
+                    fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
+                    dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",sep = ""))
 
-            metis.map(underLayer=underLayer, dataPolygon=shape,
-                    dataGrid=mapx,
-                    fillColumn = names(mapx@data),
-                    legendShow = T,
-                    legendOutside = T,
-                    facetFreeScale = F,
-                    frameShow = T,
-                    labels=labels,
-                    labelsSize = labelsSize,
-                    legendTitle =paste(x_i,"\n",legendTitle,sep=""),
-                    legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
-                    legendStyle="pretty",
-                    legendDigits = legendDigits,
-                    legendOutsidePosition = legendOutsidePosition,
-                    legendPosition = NULL,
-                    fillPalette = fillPalette,
-                    bgColor = bgColorChosen,
-                    figWidth=figWidth,figHeight=figHeight,
+
+            if(length(names(mapx@data))==1){
+              legendBreaksAnim = animPrettyBreaksGrid
+              legendStyleAnim="fixed"}else{
+                legendStyleAnim="fixed"
+                legendBreaksAnim = animPrettyBreaksGrid
+              }
+
+            metis.map(panelLabel=panelLabelAnimated,
+                      underLayer=underLayer, dataPolygon=shape,
+                      dataGrid=mapx,
+                      fillColumn = names(mapx@data),
+                      legendShow = T,
+                      legendOutside = legendOutsideAnimated,
+                      facetFreeScale = F,
+                      frameShow = T,
+                      labels=labels,
+                      labelsSize = labelsSize,
+                      legendTitle =legendTitleAnimated,
+                      legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
+                      legendStyle=legendStyleAnim,
+                      legendBreaks = animPrettyBreaksGrid,
+                      legendFixedBreaks=legendFixedBreaks,
+                      legendDigits = animLegendDigits,
+                      legendOutsidePosition = legendOutsidePosition,
+                      legendPosition = legendAnimatedPosition,
+                      fillPalette = fillPalette,
+                      bgColor = bgColorChosen,
+                      figWidth=figWidth,
+                      figHeight=figHeight,
                     fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
                     dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",sep = ""))
 
-            if(animateOn==T){
-
-
-              if(length(names(mapx@data))==1){
-                legendOutsideAnimated=legendOutsideSingle
-                legendTitleAnimated=legendTitle
-                panelLabelAnimated=paste(x_i)
-                legendAnimatedPosition=legendPositionS
-                legendTitleSizeAnim = legendTitleSizeS
-                legendTextSizeAnim = legendTextSizeS}else{
-                  legendOutsideAnimated=T
-                  legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
-                  panelLabelAnimated=NULL
-                  legendAnimatedPosition=NULL
-                  legendTitleSizeAnim = legendTitleSizeO
-                  legendTextSizeAnim = legendTextSizeO
-                }
+            if(length(names(mapx@data))==1){
+              legendOutsideAnimated=legendOutsideSingle
+              legendTitleSizeAnim = legendTitleSizeS
+              legendTextSizeAnim = legendTextSizeS}else{
+                legendOutsideAnimated=F
+                legendAnimatedPosition=legendPosition
+                legendTitleSizeAnim = legendTitleSizeI
+                legendTextSizeAnim = legendTextSizeI
+              }
 
             metis.map(panelLabel=panelLabelAnimated,
                       underLayer=underLayer, dataPolygon=shape,
-                    dataGrid=mapx,
-                    fillColumn = names(mapx@data),
-                    legendShow = T,
-                    legendOutside = legendOutsideAnimated,
-                    facetFreeScale = F,
-                    frameShow = T,
-                    labels=labels,
-                    labelsSize = labelsSize,
-                    legendTitle =legendTitleAnimated,
-                    legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
-                    legendStyle="fixed",
-                    legendBreaks = animPrettyBreaksGrid,
-                    legendFixedBreaks=legendFixedBreaks,
-                    legendDigits = animLegendDigits,
-                    legendOutsidePosition = legendOutsidePosition,
-                    legendPosition = legendAnimatedPosition,
-                    fillPalette = fillPalette,
-                    bgColor = bgColorChosen,
-                    figWidth=figWidth,
-                    figHeight=figHeight,
-                    fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY_ANIMATE",sep=""),
-                    dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""))
-                 }
-
-            metis.map(underLayer=underLayer, dataPolygon=shape,
-                    dataGrid=mapx,
-                    fillColumn = names(mapx@data),
-                    legendShow = T,
-                    legendOutside = F,
-                    facetFreeScale = T,
-                    frameShow = T,
-                    labels=labels,
-                    labelsSize = labelsSize,
-                    legendTitle =legendTitle,legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
-                    legendStyle="kmeans",
-                    legendDigits = NULL,
-                    legendFixedBreaks=legendFixedBreaks,
-                    legendOutsidePosition = legendOutsidePosition,
-                    legendPosition = legendPosition,
-                    fillPalette = fillPalette,
-                    bgColor = bgColorChosen,
-                    figWidth=figWidth,figHeight=figHeight,
+                      dataGrid=mapx,
+                      fillColumn = names(mapx@data),
+                      legendShow = T,
+                      legendOutside = legendOutsideAnimated,
+                      facetFreeScale = T,
+                      frameShow = T,
+                      labels=labels,
+                      labelsSize = labelsSize,
+                      legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
+                      legendTitle = legendTitleAnimated,
+                      legendStyle="kmeans",
+                      legendDigits = animLegendDigits,
+                      legendFixedBreaks=legendFixedBreaks,
+                      legendOutsidePosition = legendOutsidePosition,
+                      legendPosition = legendAnimatedPosition,
+                      fillPalette = fillPalette,
+                      bgColor = bgColorChosen,
+                      figWidth=figWidth,
+                      figHeight=figHeight,
                     fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
                     dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",sep = ""))
 
-            if(animateOn==T){
-
-              if(length(names(mapx@data))==1){
-                legendTitleAnimated=legendTitle
-                panelLabelAnimated=paste(x_i)
-                legendOutsideAnimated=legendOutsideSingle
-                legendAnimatedPosition=legendPositionS
-                legendTitleSizeAnim = legendTitleSizeS
-                legendTextSizeAnim = legendTextSizeS}else{
-                  legendOutsideAnimated=F
-                  legendAnimatedPosition=NULL
-                  legendTitleSizeAnim = legendTitleSizeI
-                  legendTextSizeAnim = legendTextSizeI
-                  legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
-                  panelLabelAnimated=NULL
-                }
-
-            metis.map(panelLabel=panelLabelAnimated,
-                      underLayer=underLayer, dataPolygon=shape,
-                    dataGrid=mapx,
-                    fillColumn = names(mapx@data),
-                    legendShow = T,
-                    legendOutside = legendOutsideAnimated,
-                    facetFreeScale = T,
-                    frameShow = T,
-                    labels=labels,
-                    labelsSize = labelsSize,
-                    legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTitleSizeAnim,
-                    legendTitle = legendTitleAnimated,
-                    legendStyle="kmeans",
-                    legendDigits = NULL,
-                    legendFixedBreaks=legendFixedBreaks,
-                    legendOutsidePosition = legendOutsidePosition,
-                    legendPosition = legendAnimatedPosition,
-                    fillPalette = fillPalette,
-                    bgColor = bgColorChosen,
-                    figWidth=figWidth,
-                    figHeight=figHeight,
-                    fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE_ANIMATE",sep=""),
-                    dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""))
-                 }
             } # if nrow(datax) > 1
           }# Close years loop
 
@@ -897,8 +897,8 @@ if(!is.null(gridTbl)){
           animName<-paste("anim_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
           processed <- system("cmd.exe",input=paste("magick -delay ",
                                                     delay=delay,
-                                                    " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""),
-                                                    "/*PRETTY_ANIMATE.png \"",
+                                                    " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",
+                                                    "/*",param_i,"*PRETTY.png ",sep = ""),
                                                     paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/",
                                                           animName,sep = ""),
                                                     "\"",sep=""))
@@ -906,8 +906,8 @@ if(!is.null(gridTbl)){
           animName<-paste("anim_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
           processed <- system("cmd.exe",input=paste("magick -delay ",
                                                     delay=delay,
-                                                    " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""),
-                                                    "/*KMEANS_ANIMATE.png \"",
+                                                    " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",
+                                                               "/*",param_i,"*KMEANS.png ",sep = ""),
                                                     paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/",
                                                           animName,sep = ""),
                                                     "\"",sep=""))
@@ -915,13 +915,13 @@ if(!is.null(gridTbl)){
           animName<-paste("anim_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
           processed <- system("cmd.exe",input=paste("magick -delay ",
                                                     delay=delay,
-                                                    " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""),
-                                                    "/*FREESCALE_ANIMATE.png \"",
+                                                    " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",
+                                                               "/*",param_i,"*FREESCALE.png ",sep = ""),
                                                     paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/",
                                                           animName,sep = ""),
                                                     "\"",sep=""))
 
-          unlink(paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+          #unlink(paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
           } # If Animate ON==t
 
 
@@ -938,23 +938,10 @@ if(!is.null(gridTbl)){
           datax<-gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)
         if(nrow(datax)>1){
           legendTitle<-unique(datax$units)
-          fillPalette<-unique(datax$classPalette)
+          fillPalette<-as.character(unique(datax$classPalette))
 
           datax<-datax%>%dplyr::select(lat,lon,x,value)%>%
             tidyr::spread(key=x,value=value)
-
-          shapeExpandEtxent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
-          expandbboxPercent<-expandPercent*0.9; shapeExpandEtxent$min;shapeExpandEtxent$max
-          shapeExpandEtxent$min;shapeExpandEtxent$max
-          rangeX<-abs(range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[2]-range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[1])
-          rangeY<-abs(range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[2]-range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[1])
-          shapeExpandEtxent$min[1]<-(-rangeX*expandbboxPercent/100)+shapeExpandEtxent$min[1];
-          shapeExpandEtxent$min[2]<-(-rangeY*expandbboxPercent/100)+shapeExpandEtxent$min[2];
-          shapeExpandEtxent$max[1]<-(rangeX*expandbboxPercent/100)+shapeExpandEtxent$max[1];
-          shapeExpandEtxent$max[2]<-(rangeY*expandbboxPercent/100)+shapeExpandEtxent$max[2];
-          shapeExpandEtxent$min;shapeExpandEtxent$max;
-          shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
-          sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
 
           rasterx<-sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(datax$lon,datax$lat))),data=datax)
           sp::proj4string(rasterx)<-sp::proj4string(shape)
@@ -975,17 +962,17 @@ if(!is.null(gridTbl)){
                   dataGrid=mapx,
                   fillColumn = names(mapx@data),
                   legendShow = T,
-                  legendOutside = T,
+                  legendOutside = legendOutsideSingle,
                   facetFreeScale = F,
                   frameShow = T,
                   labels=labels,
                   labelsSize = labelsSize,
-                  legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
+                  legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
                   legendStyle="kmeans",
                   legendFixedBreaks=legendFixedBreaks,
                   legendDigits = legendDigits,
                   legendOutsidePosition = legendOutsidePosition,
-                  legendPosition = NULL,
+                  legendPosition = legendPositionS,
                   fillPalette = fillPalette,
                   bgColor = bgColorChosen,
                   figWidth=figWidth,figHeight=figHeight,
@@ -996,36 +983,46 @@ if(!is.null(gridTbl)){
                   dataGrid=mapx,
                   fillColumn = names(mapx@data),
                   legendShow = T,
-                  legendOutside = T,
+                  legendOutside = legendOutsideSingle,
                   facetFreeScale = F,
                   frameShow = T,
                   labels=labels,
                   labelsSize = labelsSize,
-                  legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
+                  legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
                   legendStyle="pretty",
                   legendFixedBreaks=legendFixedBreaks,
                   legendDigits = legendDigits,
                   legendOutsidePosition = legendOutsidePosition,
-                  legendPosition = NULL,
+                  legendPosition = legendPositionS,
                   fillPalette = fillPalette,
                   bgColor = bgColorChosen,
                   figWidth=figWidth,figHeight=figHeight,
                   fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
                   dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
 
+
+          if(length(names(mapx@data))==1){
+            legendOutsideAnimated=legendOutsideSingle
+            legendTitleSizeAnim = legendTitleSizeS
+            legendTextSizeAnim = legendTextSizeS}else{
+              legendOutsideAnimated=F
+              legendTitleSizeAnim = legendTitleSizeI
+              legendTextSizeAnim = legendTextSizeI
+            }
+
           metis.map(underLayer=underLayer, dataPolygon=shape,
                   dataGrid=mapx,
                   fillColumn = names(mapx@data),
                   legendShow = T,
-                  legendOutside = F,
+                  legendOutside = legendOutsideAnimated,
                   facetFreeScale = T,
                   frameShow = T,
                   labels=labels,
                   labelsSize = labelsSize,
-                  legendTitle =legendTitle,legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
+                  legendTitle =legendTitle,legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                   legendStyle="kmeans",
                   legendFixedBreaks=legendFixedBreaks,
-                  legendDigits = NULL,
+                  legendDigits = legendDigits,
                   legendOutsidePosition = legendOutsidePosition,
                   legendPosition = legendPosition,
                   fillPalette = fillPalette,
@@ -1041,25 +1038,12 @@ if(!is.null(gridTbl)){
           datax<-gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)
           if(nrow(datax)>1){
             legendTitle<-unique(datax$units)
-            fillPalette<-unique(datax$classPalette)
+            fillPalette<-as.character(unique(datax$classPalette))
 
             datax<-datax%>%dplyr::select(lat,lon,x,value)%>%
               dplyr::group_by(lat,lon)%>%
               dplyr::summarize(!!paste("Mean_",min(xRange),"to",max(xRange),sep=""):=mean(value))%>%
               dplyr::ungroup()
-
-            shapeExpandEtxent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
-            expandbboxPercent<-expandPercent*0.9; shapeExpandEtxent$min;shapeExpandEtxent$max
-            shapeExpandEtxent$min;shapeExpandEtxent$max
-            rangeX<-abs(range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[2]-range(shapeExpandEtxent$min[1],shapeExpandEtxent$max[1])[1])
-            rangeY<-abs(range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[2]-range(shapeExpandEtxent$min[2],shapeExpandEtxent$max[2])[1])
-            shapeExpandEtxent$min[1]<-(-rangeX*expandbboxPercent/100)+shapeExpandEtxent$min[1];
-            shapeExpandEtxent$min[2]<-(-rangeY*expandbboxPercent/100)+shapeExpandEtxent$min[2];
-            shapeExpandEtxent$max[1]<-(rangeX*expandbboxPercent/100)+shapeExpandEtxent$max[1];
-            shapeExpandEtxent$max[2]<-(rangeY*expandbboxPercent/100)+shapeExpandEtxent$max[2];
-            shapeExpandEtxent$min;shapeExpandEtxent$max;
-            shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
-            sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
 
             rasterx<-sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(datax$lon,datax$lat))),data=datax)
             sp::proj4string(rasterx)<-sp::proj4string(shape)
@@ -1085,7 +1069,8 @@ if(!is.null(gridTbl)){
                       frameShow = T,
                       labels=labels,
                       labelsSize = labelsSize,
-                      legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
+                      panelLabel = paste(names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
+                      legendTitle =paste(legendTitle,sep=""),
                       legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
                       legendStyle="kmeans",
                       legendFixedBreaks=legendFixedBreaks,
@@ -1107,8 +1092,8 @@ if(!is.null(gridTbl)){
                       frameShow = T,
                       labels=labels,
                       labelsSize = labelsSize,
-                      legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
-                      legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
+                      panelLabel = paste(names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
+                      legendTitle =paste(legendTitle,sep=""),legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
                       legendStyle="pretty",
                       legendFixedBreaks=legendFixedBreaks,
                       legendDigits = legendDigits,
@@ -1120,20 +1105,30 @@ if(!is.null(gridTbl)){
                       fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
                       dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,sep = ""))
 
+
+            if(length(names(mapx@data))==1){
+              legendOutsideAnimated=legendOutsideSingle
+              legendTitleSizeAnim = legendTitleSizeS
+              legendTextSizeAnim = legendTextSizeS}else{
+                legendOutsideAnimated=F
+                legendTitleSizeAnim = legendTitleSizeI
+                legendTextSizeAnim = legendTextSizeI
+              }
+
             metis.map(underLayer=underLayer, dataPolygon=shape,
                       dataGrid=mapx,
                       fillColumn = names(mapx@data),
                       legendShow = T,
-                      legendOutside = legendOutsideSingle,
+                      legendOutside = legendOutsideAnimated,
                       facetFreeScale = T,
                       frameShow = T,
                       labels=labels,
                       labelsSize = labelsSize,
-                      legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
-                      legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
+                      panelLabel = paste(names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
+                      legendTitle =paste(legendTitle,sep=""),legendTitleSize = legendTitleSizeAnim,legendTextSize =  legendTextSizeAnim,
                       legendStyle="kmeans",
                       legendFixedBreaks=legendFixedBreaks,
-                      legendDigits = NULL,
+                      legendDigits = legendDigits,
                       legendOutsidePosition = legendOutsidePosition,
                       legendPosition = legendPositionS,
                       fillPalette = fillPalette,
@@ -1146,6 +1141,7 @@ if(!is.null(gridTbl)){
         } # if(nrow(datax)>1){
         } # If number of classes == 1
 
+     } # If nrow greater than 0
       } # close Params
   } # Close scenario loop
 } # Close if gridTbl is Null
@@ -1159,6 +1155,8 @@ if(!is.null(shapeTbl)){
 for (scenario_i in unique(shapeTbl$scenario)){
 for (subRegType_i in unique(shapeTbl$subRegType)){
 for (param_i in unique(shapeTbl$param)){
+
+  if(nrow(shapeTbl%>%dplyr::filter(subRegType==subRegType_i,scenario==scenario_i,param==param_i))>0){
 
   animScalePoly<-(shapeTbl%>%dplyr::filter(subRegType==subRegType_i,scenario==scenario_i,param==param_i))$value
   animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
@@ -1186,7 +1184,7 @@ for (x_i in unique(shapeTbl$x)){
 
   if(nrow(datax)>1){
   legendTitle<-unique(datax$units)
-  fillPalette<-unique(datax$classPalette)
+  fillPalette<-as.character(unique(datax$classPalette))
 
   datax<-datax%>%dplyr::select(subRegion,class,value)%>%
   tidyr::spread(key=class,value=value)
@@ -1201,128 +1199,60 @@ mapx<-shape
 mapx@data<-mapx@data%>%dplyr::left_join(datax)%>%
   dplyr::select(names(datax))
 
-metis.map(underLayer=underLayer,
-        dataPolygon=mapx,
-        fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
-        legendShow = T,
-        legendOutside = T,
-        facetFreeScale = F,
-        frameShow = T,
-        labels=labels,
-        labelsSize = labelsSize,
-        legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
-        legendStyle="kmeans",
-        legendFixedBreaks=legendFixedBreaks,
-        legendDigits = legendDigits,
-        legendOutsidePosition = legendOutsidePosition,
-        legendPosition = NULL,
-        fillPalette = fillPalette,
-        bgColor = bgColorChosen,
-        figWidth=figWidth,figHeight=figHeight,
-        fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-        dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
 
-# underLayer=underLayer
-# dataPolygon=mapx
-# fillColumn = names(mapx@data%>%dplyr::select(-subRegion))
-# legendShow = T
-# legendOutside = T
-# facetFreeScale = F
-# frameShow = T
-# labels=labels
-# labelsSize = labelsSize
-# legendTitle =legendTitle
-# legendStyle="kmeans"
-# legendFixedBreaks=legendFixedBreaks
-# legendDigits = legendDigits
-# legendOutsidePosition = legendOutsidePosition
-# legendPosition = NULL
-# fillPalette = fillPalette
-# fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-# dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = "")
-
-
-if(animateOn==T){
-
-  if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
-    legendOutsideAnimated=legendOutsideSingle
-    legendTitleAnimated=legendTitle
-    panelLabelAnimated=paste(x_i)
+if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+  legendOutsideAnimated=legendOutsideSingle
+  legendTitleAnimated=legendTitle
+  panelLabelAnimated=paste(x_i)
+  legendAnimatedPosition=legendPositionS
+  legendTitleSizeAnim = legendTitleSizeS
+  legendTextSizeAnim = legendTextSizeS
+  legendBreaksAnim = animKmeanBreaksGrid
+  legendStyleAnim="fixed"}else{
+    legendStyleAnim="fixed"
+    legendBreaksAnim = animKmeanBreaksGrid
+    legendOutsideAnimated=T
+    legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
+    panelLabelAnimated=NULL
     legendAnimatedPosition=legendPositionS
     legendTitleSizeAnim = legendTitleSizeS
-    legendTextSizeAnim = legendTextSizeS}else{
-      legendOutsideAnimated=T
-      legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
-      panelLabelAnimated=NULL
-      legendAnimatedPosition=NULL
-      legendTitleSizeAnim = legendTitleSizeO
-      legendTextSizeAnim = legendTextSizeO
-    }
+    legendTextSizeAnim = legendTextSizeS
+  }
 
 metis.map(panelLabel=panelLabelAnimated,
           underLayer=underLayer, dataPolygon=mapx,
-        fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
-        legendShow = T,
-        legendOutside = legendOutsideAnimated,
-        facetFreeScale = F,
-        frameShow = T,
-        labels=labels,
-        labelsSize = labelsSize,
-        legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
-        legendTitle =legendTitleAnimated,
-        legendStyle="fixed",
-        legendBreaks = animKmeanBreaksPoly,
-        legendFixedBreaks=legendFixedBreaks,
-        legendDigits = animLegendDigits,
-        legendOutsidePosition = legendOutsidePosition,
-        legendPosition = legendAnimatedPosition,
-        fillPalette = fillPalette,
-        bgColor = bgColorChosen,
-        figWidth=figWidth,
-        figHeight=figHeight,
-        fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS_ANIMATE",sep=""),
-        dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""))
-}
-
-metis.map(underLayer=underLayer, dataPolygon=mapx,
-        fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
-        legendShow = T,
-        legendOutside = T,
-        facetFreeScale = F,
-        frameShow = T,
-        labels=labels,
-        labelsSize = labelsSize,
-        legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
-        legendStyle="pretty",
-        legendFixedBreaks=legendFixedBreaks,
-        legendDigits = legendDigits,
-        legendOutsidePosition = legendOutsidePosition,
-        legendPosition = NULL,
-        fillPalette = fillPalette,
-        bgColor = bgColorChosen,
-        figWidth=figWidth,figHeight=figHeight,
-        fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
+          fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
+          legendShow = T,
+          legendOutside = legendOutsideAnimated,
+          facetFreeScale = F,
+          frameShow = T,
+          labels=labels,
+          labelsSize = labelsSize,
+          legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
+          legendTitle =legendTitleAnimated,
+          legendStyle=legendStyleAnim,
+          legendBreaks = animKmeanBreaksPoly,
+          legendFixedBreaks=legendFixedBreaks,
+          legendDigits = animLegendDigits,
+          legendOutsidePosition = legendOutsidePosition,
+          legendPosition = legendAnimatedPosition,
+          fillPalette = fillPalette,
+          bgColor = bgColorChosen,
+          figWidth=figWidth,
+          figHeight=figHeight,
+        fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
         dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
 
-if(animateOn==T){
 
-  if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
-    legendOutsideAnimated=legendOutsideSingle
-    legendTitleAnimated=legendTitle
-    panelLabelAnimated=paste(x_i)
-    legendAnimatedPosition=legendPositionS
-    legendTitleSizeAnim = legendTitleSizeS
-    legendTextSizeAnim = legendTextSizeS}else{
-      legendOutsideAnimated=T
-      legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
-      panelLabelAnimated=NULL
-      legendAnimatedPosition=NULL
-      legendTitleSizeAnim = legendTitleSizeO
-      legendTextSizeAnim = legendTextSizeO
-    }
+if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+  legendBreaksAnim = animPrettyBreaksGrid
+  legendStyleAnim="fixed"}else{
+    legendStyleAnim="fixed"
+    legendBreaksAnim = animPrettyBreaksGrid
+  }
 
-  metis.map(panelLabel=panelLabelAnimated,
-            underLayer=underLayer, dataPolygon=mapx,
+metis.map(panelLabel=panelLabelAnimated,
+          underLayer=underLayer, dataPolygon=mapx,
           fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
           legendShow = T,
           legendOutside = legendOutsideAnimated,
@@ -1332,7 +1262,7 @@ if(animateOn==T){
           labelsSize = labelsSize,
           legendTitle =legendTitleAnimated,
           legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
-          legendStyle="fixed",
+          legendStyle=legendStyleAnim,
           legendBreaks = animPrettyBreaksPoly,
           legendFixedBreaks=legendFixedBreaks,
           legendDigits = animLegendDigits,
@@ -1342,48 +1272,21 @@ if(animateOn==T){
           bgColor = bgColorChosen,
           figWidth=figWidth,
           figHeight=figHeight,
-          fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY_ANIMATE",sep=""),
-          dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""))
-}
-
-
-metis.map(underLayer=underLayer, dataPolygon=mapx,
-        fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
-        legendShow = T,
-        legendOutside = F,
-        facetFreeScale = T,
-        frameShow = T,
-        labels=labels,
-        labelsSize = labelsSize,
-        legendTitle =legendTitle,legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
-        legendStyle="kmeans",
-        legendFixedBreaks=legendFixedBreaks,
-        legendDigits = NULL,
-        legendOutsidePosition = legendOutsidePosition,
-        legendPosition = legendPosition,
-        fillPalette = fillPalette,
-        bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
-        fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
+        fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
         dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
 
-if(animateOn==T){
+if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+  legendOutsideAnimated=legendOutsideSingle
+  legendAnimatedPosition
+  legendTitleSizeAnim = legendTitleSizeS
+  legendTextSizeAnim = legendTextSizeS}else{
+    legendOutsideAnimated=F
+    legendAnimatedPosition=legendPosition
+    legendTitleSizeAnim = legendTitleSizeI
+    legendTextSizeAnim = legendTextSizeI
+  }
 
-  if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
-    legendTitleAnimated=legendTitle
-    panelLabelAnimated=paste(x_i)
-    legendOutsideAnimated=legendOutsideSingle
-    legendAnimatedPosition=legendPositionS
-    legendTitleSizeAnim = legendTitleSizeS
-    legendTextSizeAnim = legendTextSizeS}else{
-      legendTitleAnimated=paste(x_i,"\n",legendTitle,sep="")
-      panelLabelAnimated=NULL
-      legendOutsideAnimated=F
-      legendAnimatedPosition=NULL
-      legendTitleSizeAnim = legendTitleSizeI
-      legendTextSizeAnim = legendTextSizeI
-    }
-
-  metis.map(panelLabel= panelLabelAnimated,underLayer=underLayer, dataPolygon=mapx,
+metis.map(panelLabel= panelLabelAnimated,underLayer=underLayer, dataPolygon=mapx,
           fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
           legendShow = T,
           legendOutside = legendOutsideAnimated,
@@ -1395,16 +1298,15 @@ if(animateOn==T){
           legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
           legendStyle="kmeans",
           legendFixedBreaks=legendFixedBreaks,
-          legendDigits = NULL,
+          legendDigits = animLegendDigits,
           legendOutsidePosition = legendOutsidePosition,
           legendPosition = legendAnimatedPosition,
           fillPalette = fillPalette,
           bgColor = bgColorChosen,
           figWidth=figWidth,
           figHeight=figHeight,
-          fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE_ANIMATE",sep=""),
-          dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""))
-}
+        fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
+        dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
 
 
 }# if(nrow(datax)>1){
@@ -1420,8 +1322,8 @@ if(animateOn==T){
     animName<-paste("anim_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
     processed <- system("cmd.exe",input=paste("magick -delay ",
                                               delay=delay,
-                                              " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""),
-                                              "/*PRETTY_ANIMATE.png \"",
+                                              " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",
+                                                         "/*",param_i,"*PRETTY.png ",sep = ""),
                                               paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/",
                                                     animName,sep = ""),
                                               "\"",sep=""))
@@ -1429,8 +1331,8 @@ if(animateOn==T){
     animName<-paste("anim_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
     processed <- system("cmd.exe",input=paste("magick -delay ",
                                               delay=delay,
-                                              " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""),
-                                              "/*KMEANS_ANIMATE.png \"",
+                                              " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",
+                                                         "/*",param_i,"*KMEANS.png ",sep = ""),
                                               paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/",
                                                     animName,sep = ""),
                                               "\"",sep=""))
@@ -1438,13 +1340,13 @@ if(animateOn==T){
     animName<-paste("anim_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
     processed <- system("cmd.exe",input=paste("magick -delay ",
                                               delay=delay,
-                                              " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""),
-                                              "/*FREESCALE_ANIMATE.png \"",
+                                              " ", paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",
+                                                         "/*",param_i,"*FREESCALE.png ",sep = ""),
                                               paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/",
                                                     animName,sep = ""),
                                               "\"",sep=""))
 
-    unlink(paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+    #unlink(paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
   } # If Animate ON==t
 
 
@@ -1461,7 +1363,7 @@ if(length(unique(checkTbl$class))==1){
       datax<-shapeTbl%>%dplyr::filter(region==boundaryRegionsSelect,scenario==scenario_i,subRegType==subRegType_i,param==param_i)
       if(nrow(datax)>1){
       legendTitle<-paste(unique(datax$units),sep="")
-      fillPalette<-unique(datax$classPalette)
+      fillPalette<-as.character(unique(datax$classPalette))
 
       datax<-datax%>%dplyr::select(subRegion,x,value)%>%
         tidyr::spread(key=x,value=value)
@@ -1479,12 +1381,12 @@ if(length(unique(checkTbl$class))==1){
       metis.map(underLayer=underLayer, dataPolygon=mapx,
               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
               legendShow = T,
-              legendOutside = T,
+              legendOutside = legendOutsideSingle,
               facetFreeScale = F,
               frameShow = T,
               labels=labels,
               labelsSize = labelsSize,
-              legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
+              legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
               legendStyle="kmeans",
               legendFixedBreaks=legendFixedBreaks,
               legendDigits = legendDigits,
@@ -1498,12 +1400,12 @@ if(length(unique(checkTbl$class))==1){
       metis.map(underLayer=underLayer, dataPolygon=mapx,
               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
               legendShow = T,
-              legendOutside = T,
+              legendOutside = legendOutsideSingle,
               facetFreeScale = F,
               frameShow = T,
               labels=labels,
               labelsSize = labelsSize,
-              legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
+              legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
               legendStyle="pretty",
               legendFixedBreaks=legendFixedBreaks,
               legendDigits = legendDigits,
@@ -1514,18 +1416,27 @@ if(length(unique(checkTbl$class))==1){
               fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
               dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))
 
+      if(length(names(mapx@data))==1){
+        legendOutsideAnimated=legendOutsideSingle
+        legendTitleSizeAnim = legendTitleSizeS
+        legendTextSizeAnim = legendTextSizeS}else{
+          legendOutsideAnimated=F
+          legendTitleSizeAnim = legendTitleSizeI
+          legendTextSizeAnim = legendTextSizeI
+        }
+
       metis.map(underLayer=underLayer, dataPolygon=mapx,
               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
               legendShow = T,
-              legendOutside = F,
+              legendOutside = legendOutsideAnimated,
               facetFreeScale = T,
               frameShow = T,
               labels=labels,
               labelsSize = labelsSize,
-              legendTitle =legendTitle,legendTitleSize = legendTitleSizeO,legendTextSize = legendTextSizeO,
+              legendTitle =legendTitle,legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
               legendStyle="kmeans",
               legendFixedBreaks=legendFixedBreaks,
-              legendDigits = NULL,
+              legendDigits = legendDigits,
               legendOutsidePosition = legendOutsidePosition,
               legendPosition = legendPosition,
               fillPalette = fillPalette,
@@ -1543,7 +1454,7 @@ if(length(unique(checkTbl$class))==1){
       datax<-shapeTbl%>%dplyr::filter(region==boundaryRegionsSelect,scenario==scenario_i,subRegType==subRegType_i,param==param_i)
       if(nrow(datax)>1){
         legendTitle<-paste(unique(datax$units),sep="")
-        fillPalette<-unique(datax$classPalette)
+        fillPalette<-as.character(unique(datax$classPalette))
 
         datax<-datax%>%dplyr::select(subRegion,x,value)%>%
           dplyr::group_by(subRegion)%>%
@@ -1568,7 +1479,8 @@ if(length(unique(checkTbl$class))==1){
                   frameShow = T,
                   labels=labels,
                   labelsSize = labelsSize,
-                  legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("subRegion")],sep=""),
+                  panelLabel = paste((names(datax%>%dplyr::select(-subRegion))[!names(datax%>%dplyr::select(-subRegion)) %in% c("lat","lon")]),sep=""),
+                  legendTitle =paste(legendTitle,sep=""),
                   legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
                   legendStyle="kmeans",
                   legendFixedBreaks=legendFixedBreaks,
@@ -1588,7 +1500,8 @@ if(length(unique(checkTbl$class))==1){
                   frameShow = T,
                   labels=labels,
                   labelsSize = labelsSize,
-                  legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("subRegion")],sep=""),
+                  panelLabel = paste((names(datax%>%dplyr::select(-subRegion))[!names(datax%>%dplyr::select(-subRegion)) %in% c("lat","lon")]),sep=""),
+                  legendTitle =paste(legendTitle,sep=""),
                   legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
                   legendStyle="pretty",
                   legendFixedBreaks=legendFixedBreaks,
@@ -1600,19 +1513,29 @@ if(length(unique(checkTbl$class))==1){
                   fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
                   dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,sep = ""))
 
+        if(length(names(mapx@data))==1){
+          legendOutsideAnimated=legendOutsideSingle
+          legendTitleSizeAnim = legendTitleSizeS
+          legendTextSizeAnim = legendTextSizeS}else{
+            legendOutsideAnimated=F
+            legendTitleSizeAnim = legendTitleSizeI
+            legendTextSizeAnim = legendTextSizeI
+          }
+
         metis.map(underLayer=underLayer, dataPolygon=mapx,
                   fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                   legendShow = T,
-                  legendOutside = legendOutsideSingle,
+                  legendOutside = legendOutsideAnimated,
                   facetFreeScale = T,
                   frameShow = T,
                   labels=labels,
                   labelsSize = labelsSize,
-                  legendTitle =paste(legendTitle,"\n",names(datax)[!names(datax) %in% c("subRegion")],sep=""),
-                  legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
+                  panelLabel = paste((names(datax%>%dplyr::select(-subRegion))[!names(datax%>%dplyr::select(-subRegion)) %in% c("lat","lon")]),sep=""),
+                  legendTitle =paste(legendTitle,sep=""),
+                  legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                   legendStyle="kmeans",
                   legendFixedBreaks=legendFixedBreaks,
-                  legendDigits = NULL,
+                  legendDigits = legendDigits,
                   legendOutsidePosition = legendOutsidePosition,
                   legendPosition = legendPositionS,
                   fillPalette = fillPalette,
@@ -1626,7 +1549,7 @@ if(length(unique(checkTbl$class))==1){
       }  #if(nrow(datax)>1){
 
   } # If number of classes == 1
-
+  } # If nrow greater than 0
 } # close Params
 } # Close subRegType loop
 } # Close scenario loop

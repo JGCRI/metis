@@ -16,6 +16,8 @@
 #' @param nameAppend  Default="",
 #' @param labelsSize Default =1.2. Label size for the region names for the gridoverlay plot.
 #' @param paramsSelect Default ="All"
+#' @param sqliteUSE Default = T,
+#' @param sqliteDBNamePath Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 #' @export
 
 metis.grid2poly<- function(grid=NULL,
@@ -29,7 +31,9 @@ metis.grid2poly<- function(grid=NULL,
                          dirOutputs=paste(getwd(),"/outputs",sep=""),
                          nameAppend="",
                          labelsSize=1.2,
-                         paramsSelect="All") {
+                         paramsSelect="All",
+                         sqliteUSE = T,
+                         sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")) {
 
   # grid=NULL
   # boundaryRegionsSelect=NULL
@@ -48,11 +52,35 @@ metis.grid2poly<- function(grid=NULL,
 #----------------
 
 NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
-  param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon->overlapShape->gridPolyLoop
+  param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon->overlapShape->
+    gridPolyLoop->dbHead
 
 #----------------
 # Check input data format
 #---------------
+
+   if(sqliteUSE==T){
+     paste("Using SQLite database...",sep="")
+     if(!file.exists(sqliteDBNamePath)){stop("SQLite file path provided does not exist: ", sqliteDBNamePath, sep="")}
+     dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)
+     #src_dbi(dbConn)
+     sqlGrid<-tbl(dbConn,"gridMetis"); utils::head(sqlGrid)
+     dbHead<-utils::head(sqlGrid,1)%>%dplyr::collect();dbHead
+     names(dbHead)
+     if(!all(c("param","scenario","lon","lat","value") %in% names(dbHead))){
+       stop("SQLite database must have columns for lon, lat, value, param and scenario. Sql Database cols are : ",
+            paste(names(dbHead),collapse=", "), sep="")}
+     paste("Finding unique params in sql database...",sep="")
+     params<-sqlGrid%>%dplyr::distinct(param)%>%dplyr::collect();
+     params=params$param
+     paste("Unique params found : ", paste(params,collapse=", "),sep="")
+     paste("Finding unique scenarios in sql database...",sep="")
+     scenarios<-sqlGrid%>%dplyr::distinct(scenario)%>%dplyr::collect();
+     scenarios=scenarios$scenario
+     paste("Unique scenarios found : ", paste(scenarios,collapse=", "),sep="")
+      } else {
+
+        # If not using SQL database
 
   if(!is.null(grid)){
   if(all(!class(grid) %in% c("tbl_df","tbl","data.frame"))){
@@ -66,12 +94,14 @@ NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
     }
   }
 
-
-  if(any(!c("lat","lon","value") %in% names(grid))){
-    stop(paste(grid," should have columns lon, lat and value. Missing columns: ",
-               names(grid)[!names(grid) %in% c("lat","lon","value")]))}
+  if(any(!c("lat","lon","value","param","scenario") %in% names(grid))){
+    stop(paste(grid," should have columns lon, lat, value, param and scenario. Missing columns: ",
+               names(grid)[!names(grid) %in% c("lat","lon","value")]))
+    params=unique(grid$param)
+    scenarios=unique(grid$scenario)}
   } # If !is.null(grid)
 
+      } # if not using sqlLite
 
 #----------------
 # Load Shapefile and save boundary maps
@@ -113,53 +143,90 @@ dir=paste(dirOutputs, "/Maps/Boundaries/",boundaryRegionsSelect,sep = "")
 # Read in shapefiles and check format
 #---------------
 
-if(!is.null(grid)){
-
-  if(paramsSelect != "All"){
-    if(all(paramsSelect %in% unique(grid$param))){
-      grid<-grid%>%dplyr::filter(param %in% paramsSelect)
-      print(paste("Filtering grid to selected paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
+if(!is.null(sqlGrid)){
+  if(!any(paramsSelect == "All")){
+    if(all(paramsSelect %in% params)){
+      sqlGrid<-sqlGrid%>%dplyr::filter(param %in% paramsSelect)
+      print(paste("Filtering sqlGrid to selected paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
     }else{
       if(any(paramsSelect %in% unique(grid$param))){
         grid<-grid%>%dplyr::filter(param %in% paramsSelect)
         print(paste("Only analyzing params ",paste((paramsSelect %in% unique(grid$param)),collapse=", "),
+                    " which are present in sqlGrid of all paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
+      }else{
+        print(paste("paramsSelect ",paste(paramsSelect,collapse=", "),
+                    " not present in unique(grid$param) ",
+                    unique(grid$param),". Using all params in sqlGrid.",sep=""))
+      }
+    }
+
+  } # closing if !is.null(grid)
+
+}
+
+if(!is.null(grid)){
+
+  if(!any(paramsSelect == "All")){
+    if(all(paramsSelect %in% params)){
+      grid<-grid%>%dplyr::filter(param %in% paramsSelect)
+      paramsSub<-params[params %in% paramsSelect]
+      print(paste("Filtering grid to selected paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
+    }else{
+      if(any(paramsSelect %in% params)){
+        grid<-grid%>%dplyr::filter(param %in% paramsSelect)
+        paramsSub<-params[params %in% paramsSelect]
+        print(paste("Only analyzing params ",paste((paramsSelect %in% params),collapse=", "),
                     " which are present in grid of all paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
       }else{
         print(paste("paramsSelect ",paste(paramsSelect,collapse=", "),
                     " not present in unique(grid$param) ",
-                    unique(grid$param),". Going with all params in grid.",sep=""))
+                    params,". Using all params in grid.",sep=""))
       }
     }
 
   }
+  }# closing if !is.null(grid)
 
   gridCropped<-tibble::tibble()
 
-  if(!"aggType" %in% names(grid)){
-    if(is.null(aggType)){
-    print("Column aggType is missing from grid data. Assigning aggType='depth'")
-    grid<-grid%>%dplyr::mutate(aggType="depth")}else{
-      grid<-grid%>%dplyr::mutate(aggType=aggType)
-    }}
+  if(!is.null(sqlGrid) | !is.null(grid)){
 
-  # Temporary column names merge in order to aggregate params scenarios across sub-regions
-  print("setting grid columns ...")
-  for(colx in names(grid)){
-    if(is.character(grid[[colx]])){
-      grid[[colx]]<-gsub(" ","XSPACEX",grid[[colx]],perl = TRUE )
-      grid[[colx]]<-gsub("\\.","XPERIODX",grid[[colx]],perl = TRUE )
-      grid[[colx]]<-gsub("\\-","XDASHX",grid[[colx]],perl = TRUE )
-      grid[[colx]]<-gsub("\\(","XLPARENTHX",grid[[colx]],perl = TRUE)
-      grid[[colx]]<-gsub("\\)","XRLPARENTHX",grid[[colx]],perl = TRUE)
-      grid[[colx]]<-gsub("\\_","XUNDERX",grid[[colx]],perl = TRUE)
+  for (param_i in paramsSub){
+    for (scenario_i in scenarios){
+
+      paste("Starting aggregation for param: ",param_i," and scenario: ",scenario_i,"...",sep="")
+
+    if(!is.null(sqlGrid)){
+        gridx<-sqlGrid%>%dplyr::filter(param==param_i, scenario==scenario_i)%>%dplyr::collect()
+      }else{
+    gridx<-grid%>%dplyr::filter(param==param_i,scenario==scenario_i)
     }
-  }
-  print("Grid Columns set.")
 
 
-  for (param_i in unique(grid$param)){
+    if(!"aggType" %in% names(gridx)){
+      if(is.null(aggType)){
+        print("Column aggType is missing from grid data. Assigning aggType='depth'")
+        gridx<-gridx%>%dplyr::mutate(aggType="depth")}else{
+          gridx<-gridx%>%dplyr::mutate(aggType=aggType)
+        }}
 
-    gridx<-grid%>%dplyr::filter(param==param_i)
+      namesGrid<-names(gridx)
+
+    # Temporary column names merge in order to aggregate params scenarios across sub-regions
+    print("setting grid columns ...")
+    for(colx in names(gridx)){
+      if(is.character(gridx[[colx]])){
+        gridx[[colx]]<-gsub(" ","XSPACEX",gridx[[colx]],perl = TRUE )
+        gridx[[colx]]<-gsub("\\.","XPERIODX",gridx[[colx]],perl = TRUE )
+        gridx[[colx]]<-gsub("\\-","XDASHX",gridx[[colx]],perl = TRUE )
+        gridx[[colx]]<-gsub("\\(","XLPARENTHX",gridx[[colx]],perl = TRUE)
+        gridx[[colx]]<-gsub("\\)","XRLPARENTHX",gridx[[colx]],perl = TRUE)
+        gridx[[colx]]<-gsub("\\_","XUNDERX",gridx[[colx]],perl = TRUE)
+      }
+    }
+    print("Grid Columns set.")
+
+
 
   for (aggType_i in unique(gridx$aggType)){
 
@@ -256,7 +323,7 @@ if(!is.null(grid)){
     }
 
     polyData<-tidyr::gather(polyDatax,key=key,value=value,-(subRegCol))%>%
-      tidyr::separate(col="key",into=names(grid)[!names(grid) %in% c("lat","lon","value")],sep="_")
+      tidyr::separate(col="key",into=namesGrid[!namesGrid %in% c("lat","lon","value")],sep="_")
 
     for(colx in names(polyData)){
       if(is.character(polyData[[colx]])){
@@ -282,14 +349,16 @@ if(!is.null(grid)){
 
   } # Close loop for aggType
 } # Close loop for param_i
+  } # Close loop for scenario_i
+
+  paste("Aggregation for all scenarios and params complete.")
 
 }else{print("No grid provided.")}
 
 # Save Cropped Grid
-if(!is.null(grid)){
 if(nrow(gridCropped)>0){
 gridCropped<-tidyr::gather(gridCropped,key=key,value=value,-c(lat,lon))%>%
-  tidyr::separate(col="key",into=names(grid)[!names(grid) %in% c("lat","lon","value")],sep="_")%>%
+  tidyr::separate(col="key",into=namesGrid[!namesGrid %in% c("lat","lon","value")],sep="_")%>%
   unique()
 
 for(colx in names(gridCropped)){
@@ -308,7 +377,9 @@ polyType=subRegType
 if (!dir.exists(paste(dirOutputs, "/Grids", sep = ""))){dir.create(paste(dirOutputs, "/Grids", sep = ""))}
 data.table::fwrite(gridCropped%>%dplyr::mutate(region=boundaryRegionsSelect,polyType=polyType),
                 file = paste(dirOutputs, "/Grids/gridCropped_",boundaryRegionsSelect,"_",polyType,nameAppend,".csv", sep = ""),row.names = F)
-}} # If null grid
+print(paste("Subregional grid data files written to: ",dirOutputs, "/Grids/gridCropped_",boundaryRegionsSelect,"_",polyType,nameAppend,".csv", sep = ""))
+
+} # If nrow(gridCropped)
 
 
 #----------------
@@ -332,7 +403,7 @@ data.table::fwrite(gridCropped%>%dplyr::mutate(region=boundaryRegionsSelect,poly
                        dplyr::mutate(value=0,x=2015)%>%unique,
                      file = paste(dirOutputs, "/Maps/Tables/subReg_",boundaryRegionsSelect,"_",subRegType,"_template",nameAppend,".csv", sep = ""),row.names = F)
     data.table::fwrite(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
-                       dplyr::select(scenario,param,units,class,value,x,subRegion,subRegType,region,classPalette),
+                       dplyr::select(dplyr::contains("scenario"),param,units,class,value,x,subRegion,subRegType,region,classPalette),
                      file = paste(dirOutputs, "/Maps/Tables/subReg_origData_byClass_",boundaryRegionsSelect,"_",subRegType,"_origDownscaled",nameAppend,".csv", sep = ""),row.names = F)
     }
 

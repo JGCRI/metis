@@ -153,6 +153,7 @@ metis.map<-function(dataPolygon=NULL,
 NULL->raster->shape->map->checkFacets
 
 legendTitle=gsub(" ","\n",legendTitle)
+tmap::tmap_mode(mode = c("plot"))
 
 #------------------------------------------
 # Read data and check inputs

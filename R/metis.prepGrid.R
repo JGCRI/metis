@@ -11,6 +11,7 @@
 #' @param demeterUnits No Default
 #' @param xanthosFolder Xanthos Folder Path
 #' @param xanthosFiles Xanthos Files to Read
+#' @param xanthosScenarioAssign Default "NA". Scenario name if testing single scenario.
 #' @param xanthosCoordinatesPath paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")
 #' @param xanthosGridAreaHecsPath =paste(getwd(),"/dataFiles/grids/xanthosRunsChris/reference/Grid_Areas_ID.csv",sep=""),
 #' @param scarcityXanthosRollMeanWindow Default = 10,
@@ -37,6 +38,7 @@ metis.prepGrid<- function(demeterFolder="NA",
                         tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal"),
                         xanthosFolder="NA",
                         xanthosFiles="NA",
+                        xanthosScenarioAssign="NA",
                         xanthosCoordinatesPath="NA",
                         xanthosGridAreaHecsPath="NA",
                         scarcityXanthosRollMeanWindow=10,
@@ -282,10 +284,15 @@ if(!dir.exists(xanthosFolder)){
           print(paste("Baed on xanthos filename: ", xanthosFile_i, " has mm data. Using mm.", sep=""))
           gridx<-dplyr::bind_cols(xanthosCoords,gridx)}
 
+        if(grepl("pm_abcd_mrtm",xanthosFile_i)){
         xanthosScenario<-sub("^pm_abcd_mrtm_", "", xanthosFile_i);xanthosScenario
         xanthosScenario<-sub("\\_[0-9].*", "", xanthosScenario);xanthosScenario
         xanthosGCM<-sub("_.*","",xanthosScenario); xanthosGCM
-        xanthosRCP<-sub(".*_","",xanthosScenario); xanthosRCP
+        xanthosRCP<-sub(".*_","",xanthosScenario); xanthosRCP}else{
+          xanthosScenario<-xanthosScenarioAssign
+          xanthosGCM=NA;xanthosRCP=NA
+        }
+
 
         if(grepl("mm",xanthosUnits)){aggType="depth"}else{aggType="vol"}
         print(paste("Gathering data for xanthos filename: ", xanthosFile_i, " into year columns...", sep=""))
@@ -330,7 +337,7 @@ if(!dir.exists(xanthosFolder)){
         metis.printPdfPng(figure=graphics::plot(gridC$x,gridC$value,type="l",
                              main=paste(unique(gridC$scenario),
                                        "\nlat = ",unique(gridC$lat),", lon = ", unique(gridC$lon),
-                                       ", Loess Span =  ",spanLowess,sep=""),
+                                       ", Lowess Span =  ",spanLowess,sep=""),
                              ylab=unique(gridC$units),xlab="Year")+
                              graphics::lines(gridC$x,gridC$lowess,type="l",col="red"),
                           dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
@@ -380,9 +387,9 @@ if(sqliteUSE==T){
   for(commonScenarios_i in commonScenarios){
       print(paste("Extracting data from sqlite database for common tethys/xanthos scenario: ",
                   commonScenarios_i,"...",sep=""))
-      gridMetisTethys<-gridMetis%>%dplyr::filter(class=="Total" & param=="tethysWatWithdraw" & x==commonYears_i)%>%dplyr::collect()%>%
+      gridMetisTethys<-gridMetis%>%dplyr::filter(class=="Total" & param=="tethysWatWithdraw" & x %in% commonYears)%>%dplyr::collect()%>%
         dplyr::rename(valueTethys=value)
-      gridMetisXanthos<-gridMetis%>%dplyr::filter(param=="xanthosRunoff" & x==commonYears_i)%>%dplyr::collect()%>%
+      gridMetisXanthos<-gridMetis%>%dplyr::filter(param=="xanthosRunoff" & x %in% commonYears)%>%dplyr::collect()%>%
         dplyr::rename(valueXanthos=value)
 
       gridx<-dplyr::left_join(gridMetisTethys,gridMetisXanthos%>%dplyr::select(lat,lon,x,scenario,valueXanthos),
@@ -421,6 +428,12 @@ if(!is.null(gridMetis)){
   if(any(grepl("xanthos",unique(gridMetis$param))) & any(grepl("tethys",unique(gridMetis$param)))){
 
   if(length(commonYears)>0 & length(commonScenarios)>0){
+
+    gridMetisTethys<-gridMetis%>%dplyr::filter(class=="Total" & param=="tethysWatWithdraw" & x %in% commonYears)%>%
+      dplyr::rename(valueTethys=value)
+    gridMetisXanthos<-gridMetis%>%dplyr::filter(param=="xanthosRunoff" & x %in% commonYears)%>%
+      dplyr::rename(valueXanthos=value)
+
 
          gridx<-dplyr::left_join(gridMetisTethys,gridMetisXanthos%>%dplyr::select(lat,lon,x,scenario,valueXanthos),
                                 by=c("lat","lon","x","scenario"))%>%
