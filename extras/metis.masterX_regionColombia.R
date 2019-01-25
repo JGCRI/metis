@@ -255,12 +255,12 @@ tethysUnits="Water Withdrawals (mm)"
 xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/",sep="")
 #xanthosScenario="Eg1"
 #xanthosUnits="Runoff (mm)"
-xanthosFiles=c("pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099.csv"
-               #"pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099.csv",
-               # "pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099.csv",
+xanthosFiles=c("pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099.csv",
+               "pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099.csv",
+               "pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099.csv"
                # "pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099.csv",
                # "pm_abcd_mrtm_hadgem2-es_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp2p6_1950_2099.csv",
-               # "pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099.csv",
+               # # "pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099.csv",
                # "pm_abcd_mrtm_hadgem2-es_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp6p0_1950_2099.csv",
                # "pm_abcd_mrtm_hadgem2-es_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp8p5_1950_2099.csv",
                # "pm_abcd_mrtm_ipsl-cm5a-Ir_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-Ir_rcp2p6_1950_2099.csv",
@@ -288,6 +288,7 @@ sqliteUSE = T
 sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
 gridMetis<-metis.prepGrid(
+  reReadData=reReadData,
   demeterFolder=demeterFolder,
   demeterScenario=demeterScenario,
   demeterTimesteps=demeterTimesteps,
@@ -301,7 +302,6 @@ gridMetis<-metis.prepGrid(
   xanthosCoordinatesPath=xanthosCoordinatesPath,
   xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
   dirOutputs=paste(getwd(),"/outputs",sep=""),
-  reReadData=reReadData,
   gridMetisData=gridMetisData,
   spanLowess=spanLowess,
   sqliteUSE = sqliteUSE,
@@ -317,7 +317,6 @@ unique(gridMetis$param); unique(gridMetis$scenario)
 #grid_i<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
 #grid_i<-paste(getwd(),"/outputs/Grids/gridMetis.csv",sep="")
 grid_i=gridMetis
-
 boundaryRegionsSelect_i="Colombia"
 subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = "")
 subRegShpFile_i = paste("colombiaNE1",sep= "")
@@ -326,8 +325,10 @@ subRegType_i = "state"
 nameAppend_i = "_NE"
 aggType_i = NULL
 paramsSelect_i= "All" #"demeterLandUse"
+sqliteUSE_i = T
+sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
-grid2polyX<-metis.grid2poly(grid=grid_i,
+grid2polyX<-metis.grid2poly(#grid=grid_i,
                                     boundaryRegionsSelect=boundaryRegionsSelect_i,
                                     subRegShpFolder=subRegShpFolder_i,
                                     subRegShpFile=subRegShpFile_i,
@@ -335,7 +336,9 @@ grid2polyX<-metis.grid2poly(grid=grid_i,
                                     subRegType = subRegType_i,
                                     aggType=aggType_i,
                                     nameAppend=nameAppend_i,
-                                    paramsSelect = paramsSelect_i)
+                                    paramsSelect = paramsSelect_i,
+                                    sqliteUSE = sqliteUSE_i,
+                                    sqliteDBNamePath = sqliteDBNamePath_i)
 
 # grid=grid_i
 # boundaryRegionsSelect=boundaryRegionsSelect_i
@@ -344,6 +347,8 @@ grid2polyX<-metis.grid2poly(grid=grid_i,
 # subRegCol=subRegCol_i
 # aggType=aggType_i
 # nameAppend=nameAppend_i
+# sqliteUSE = sqliteUSE_i
+# sqliteDBNamePath = sqliteDBNamePath_i
 
 grid_i=gridMetis
 
@@ -385,10 +390,13 @@ grid2polyX<-metis.grid2poly(grid=grid_i,
 
 polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_state_origDownscaled_NE.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x))}
 gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_Colombia_state_NE.csv",sep="")
-xRange_i= seq(from=1955,to=2000,by=5)
+b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
+for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x))}
+xRange_i= seq(from=2000,to=2020,by=5)
 legendPosition_i=c("LEFT","bottom")
-legendOutsideSingle_i=F
+legendOutsideSingle_i=T
 animateOn_i=T
 delay_i=100
 scenRef_i="Eg1"

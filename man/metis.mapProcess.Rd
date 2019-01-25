@@ -21,7 +21,8 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   extdendedLabelSize = 0.7, extendedShape = NULL,
   extendedShapeCol = NULL, expandPercent = 2,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
-  figWidth = 9, figHeight = 7)
+  figWidth = 9, figHeight = 7, scaleRange = NULL,
+  paramsSelect = "All")
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -105,6 +106,10 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{figWidth}{Default =9}
 
 \item{figHeight}{Default =7}
+
+\item{scaleRange}{Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.}
+
+\item{paramsSelect}{Default ="All"}
 }
 \value{
 Returns the formatted data used to produce chart
