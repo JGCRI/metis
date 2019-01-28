@@ -32,7 +32,7 @@ metis.grid2poly<- function(grid=NULL,
                          nameAppend="",
                          labelsSize=1.2,
                          paramsSelect="All",
-                         sqliteUSE = T,
+                         sqliteUSE = F,
                          sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")) {
 
   # grid=NULL
@@ -53,7 +53,7 @@ metis.grid2poly<- function(grid=NULL,
 
 NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
   param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon->overlapShape->
-    gridPolyLoop->dbHead
+    gridPolyLoop->dbHead->paramsSub->sqlGrid
 
 #----------------
 # Check input data format
@@ -91,14 +91,28 @@ NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
     grid<-grid%>%unique()}else{
       stop(paste("Grid file ",grid," does not exist",sep=""))
     }
+    }else{
+      if(any(grepl(".RData",paste(grid)))){
+        print(paste("Attempting to read grid Rdata file... ",grid,sep=""))
+        if(file.exists(grid)){
+          load(grid)
+          grid<-gridMetis
+          print("Grid data loaded.")}else{
+            stop(paste("Grid file ",grid," does not exist",sep=""))
+          }
+      }
     }
+  }else{
+    if(is.na(nrow(grid)) | nrow(grid)<1){
+    stop(paste("Grid file ",grid," does not exist or has 0 rows.",sep=""))
   }
+    }
 
   if(any(!c("lat","lon","value","param","scenario") %in% names(grid))){
     stop(paste(grid," should have columns lon, lat, value, param and scenario. Missing columns: ",
                names(grid)[!names(grid) %in% c("lat","lon","value")]))
-    params=unique(grid$param)
-    scenarios=unique(grid$scenario)}
+  } else {params=unique(grid$param)
+  scenarios=unique(grid$scenario)}
   } # If !is.null(grid)
 
       } # if not using sqlLite
@@ -147,10 +161,12 @@ if(!is.null(sqlGrid)){
   if(!any(paramsSelect == "All")){
     if(all(paramsSelect %in% params)){
       sqlGrid<-sqlGrid%>%dplyr::filter(param %in% paramsSelect)
+      paramsSub<-params[params %in% paramsSelect]
       print(paste("Filtering sqlGrid to selected paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
     }else{
       if(any(paramsSelect %in% unique(grid$param))){
         grid<-grid%>%dplyr::filter(param %in% paramsSelect)
+        paramsSub<-params[params %in% paramsSelect]
         print(paste("Only analyzing params ",paste((paramsSelect %in% unique(grid$param)),collapse=", "),
                     " which are present in sqlGrid of all paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
       }else{
@@ -160,7 +176,7 @@ if(!is.null(sqlGrid)){
       }
     }
 
-  } # closing if !is.null(grid)
+  }else {paramsSub<-params}
 
 }
 
@@ -184,7 +200,8 @@ if(!is.null(grid)){
       }
     }
 
-  }
+  } else {paramsSub<-params}
+
   }# closing if !is.null(grid)
 
   gridCropped<-tibble::tibble()

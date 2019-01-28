@@ -322,6 +322,9 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
 
 if(!subRegCol %in% names(subRegShape)){stop(paste("SubRegCol: ",subRegCol," not present in subRegShape",sep=""))}
+if(!all(unique(shapeTbl$subRegion) %in% unique(shape@data$subRegion))){stop(paste("subregions in polygon data table not present in shape file. : ",
+                                                                                  paste(unique(shapeTbl$subRegion)[!unique(shapeTbl$subRegion) %in% unique(shape@data$subRegion)],collapse=", "),sep=""))}
+
 
 subRegShape@data<-subRegShape@data%>%dplyr::mutate(subRegion=get(subRegCol))
 

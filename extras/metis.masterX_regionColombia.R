@@ -350,8 +350,8 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
 # sqliteUSE = sqliteUSE_i
 # sqliteDBNamePath = sqliteDBNamePath_i
 
-grid_i=gridMetis
-
+#grid_i=gridMetis
+grid_i=paste(getwd(),"/outputs/Grids/gridMetisXanthos.RData",sep = "")
 boundaryRegionsSelect_i="Colombia"
 subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = "")
 subRegShpFile_i = paste("colombiaLocalBasin",sep= "")
@@ -360,6 +360,8 @@ subRegType_i = "subBasin"
 nameAppend_i = "_local"
 aggType_i = NULL
 paramsSelect_i= "All" #"demeterLandUse"
+sqliteUSE_i = T
+sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
 grid2polyX<-metis.grid2poly(grid=grid_i,
                             boundaryRegionsSelect=boundaryRegionsSelect_i,
@@ -369,7 +371,9 @@ grid2polyX<-metis.grid2poly(grid=grid_i,
                             subRegType = subRegType_i,
                             aggType=aggType_i,
                             nameAppend=nameAppend_i,
-                            paramsSelect = paramsSelect_i)
+                            paramsSelect = paramsSelect_i,
+                            sqliteUSE = sqliteUSE_i,
+                            sqliteDBNamePath = sqliteDBNamePath_i)
 
 # grid=grid_i
 # boundaryRegionsSelect=boundaryRegionsSelect_i
@@ -380,6 +384,8 @@ grid2polyX<-metis.grid2poly(grid=grid_i,
 # aggType=aggType_i
 # nameAppend=nameAppend_i
 # paramsSelect = paramsSelect_i
+# sqliteUSE = sqliteUSE_i
+# sqliteDBNamePath = sqliteDBNamePath_i
 
 
 #-----------
@@ -462,12 +468,12 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
 # figWidth=6
 # figHeight=7
 
-polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_subBasin_origDownscaled_local.csv",sep="")
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_state_origDownscaled_NE.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
-#gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_Colombia_state_NE.csv",sep="")
+for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x))}
 xRange_i= seq(from=1950,to=2000,by=5)
 legendPosition_i=c("LEFT","bottom")
-legendOutsideSingle_i=F
+legendOutsideSingle_i=T
 animateOn_i=T
 delay_i=100
 scenRef_i="Eg1"
@@ -509,5 +515,29 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  figHeight=7
 )
 
+# polygonDataTables=polygonDataTables_i
+# gridDataTables=gridDataTables_i
+# xRange=xRange_i
+# boundaryRegShape=boundaryRegShape_i
+# boundaryRegShpFolder=boundaryRegShpFolder_i
+# boundaryRegShpFile=boundaryRegShpFile_i
+# boundaryRegCol=boundaryRegCol_i
+# boundaryRegionsSelect=boundaryRegionsSelect_i
+# subRegShape=subRegShape_i
+# subRegShpFolder=subRegShpFolder_i
+# subRegShpFile=subRegShpFile_i
+# subRegCol=subRegCol_i
+# subRegType=subRegType_i
+# nameAppend=nameAppend_i
+# legendOutsideSingle=legendOutsideSingle_i
+# legendPosition=legendPosition_i
+# animateOn=animateOn_i
+# delay=delay_i
+# scenRef=scenRef_i
+# extension=T
+# expandPercent = 3
+# figWidth=6
+# figHeight=7
+#
 
 
