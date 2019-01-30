@@ -35,17 +35,17 @@ tethysScenario="Eg1"
 tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
 tethysUnits="Water Withdrawals (mm)"
 xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthos/",sep="")
-xanthosScenario="Eg1"
-xanthosUnits="Runoff (mm)"
+xanthosScenarioAssign="Eg1"
 xanthosFiles=c("q_mmperyear_Reference")
-xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")
-scarcityXanthosRollMeanWindow=10
+xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosReference/coordinates.csv",sep="")
+xanthosGridAreaHecsPath=paste(getwd(),"/dataFiles/grids/xanthosReference/Grid_Areas_ID.csv",sep="")
+spanLowess=0.25
 popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 popFiles<-"grid_pop_map"
 popUnits<-"person"
-reReadData=1
-gridMetisData=paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")
-
+gridMetisData=paste(dirOutputs, "/Grids/gridMetisXanthos.RData", sep = "")
+sqliteUSE = T
+sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
 gridMetis<-metis.prepGrid(
              demeterFolder=demeterFolder,
