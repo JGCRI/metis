@@ -8,7 +8,7 @@ metis.grid2poly(grid = NULL, boundaryRegionsSelect = NULL,
   subRegShape = NULL, subRegShpFolder = NULL, subRegShpFile = NULL,
   subRegCol = NULL, subRegType = "subRegType", aggType = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
-  labelsSize = 1.2, paramsSelect = "All", sqliteUSE = T,
+  labelsSize = 1.2, paramsSelect = "All", sqliteUSE = F,
   sqliteDBNamePath = paste(getwd(), "/outputs/Grids/gridMetis.sqlite",
   sep = ""))
 }

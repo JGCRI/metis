@@ -131,7 +131,7 @@ metis.colors <- function(palx=NULL) {
 
     # Creating Colors getcol = colorRampPalette(brewer.pal(9, 'RdGy')) values=getcol(9); values
     # library(colorspace) pal<-choose_palette() pal(9)
-    # pie(rep(1,length(colx1)),label=names(colx1),col=colx1)
+    # colx1<-pal_wet_div;pie(rep(1,length(colx1)),label=names(colx1),col=colx1)
 
 
     # Basic Colors
@@ -145,6 +145,7 @@ metis.colors <- function(palx=NULL) {
     pal_hot <- c('#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026',"#4d0000")
 
     pal_wet <- c('#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b','#00004d')
+    pal_wet_div <- c("#624100", "#7D5D23" ,"#9C7F57", "#C0A88B",'white','#2171b5','#08519c','#08306b','#00004d')
 
     pal_green <- c('#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529','#003300')
 
@@ -218,7 +219,7 @@ metis.colors <- function(palx=NULL) {
 
     pal_lu_type <- c(urban="indianred2",tundra="antiquewhite1",shrubs="lightslateblue",`rock and desert`="black",
                 pasture="goldenrod1",otherarable="darkorange4",grass="darkolivegreen1",forest="darkgreen",
-                crops="yellow2",biomass="grey50")
+                crops="yellow2",biomass="grey50",naturalOther="grey75")
 
     if(!is.null(palx)){
     if(length(get(palx))>1){
@@ -238,5 +239,5 @@ metis.colors <- function(palx=NULL) {
         pal_Basic = pal_Basic, pal_Gas = pal_Gas, pal_elec_subsec = pal_elec_subsec,
         pal_elec_finalNrgFuel = pal_elec_finalNrgFuel, pal_elec_techs = pal_elec_techs, pal_elec_sec = pal_elec_sec,
         pal_finalNrg_sec = pal_finalNrg_sec, pal_pri_ene = pal_pri_ene, pal_elec_tech_colors = pal_elec_tech_colors,
-        pal_hot = pal_hot,pal_wet=pal_wet, pal_div=pal_div,pal_green=pal_green))
+        pal_hot = pal_hot,pal_wet=pal_wet, pal_wet_div=pal_wet_div,pal_div=pal_div,pal_green=pal_green))
 }

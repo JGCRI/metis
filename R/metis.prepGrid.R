@@ -49,9 +49,33 @@ metis.prepGrid<- function(demeterFolder="NA",
                         dirOutputs=paste(getwd(),"/outputs",sep=""),
                         reReadData=1,
                         gridMetisData=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = ""),
-                        sqliteUSE = T,
+                        sqliteUSE = F,
                         sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
                         ){
+
+  # demeterFolder="NA"
+  # demeterScenario="NA"
+  # demeterTimesteps=seq(from=2005,to=2100,by=5)
+  # demeterUnits="NA"
+  # tethysFolder="NA"
+  # tethysScenario="NA"
+  # tethysUnits="NA"
+  # tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
+  # xanthosFolder="NA"
+  # xanthosFiles="NA"
+  # xanthosScenarioAssign="NA"
+  # xanthosCoordinatesPath="NA"
+  # xanthosGridAreaHecsPath="NA"
+  # scarcityXanthosRollMeanWindow=10
+  # spanLowess=025
+  # popFolder="NA"
+  # popFiles="NA"
+  # popUnits="NA"
+  # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # reReadData=1
+  # gridMetisData=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = "")
+  # sqliteUSE = T
+  # sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
 
 #----------------
@@ -85,8 +109,13 @@ if(reReadData==1){
 gridMetis<-tibble::tibble()
 
 if(sqliteUSE==T){
-if(file.exists(sqliteDBNamePath)){unlink(sqliteDBNamePath)}
-DBI::dbDisconnect(DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath))}
+if(file.exists(sqliteDBNamePath)){file.remove(sqliteDBNamePath)}
+  dbConn<-DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)
+DBI::dbDisconnect(dbConn);dbConn
+}
+
+#library(RMySQL)
+#dbListConnections( dbDriver( drv = "MySQL"))
 
 #----------------
 # Prepare Demeter Files
@@ -379,10 +408,12 @@ commonScenarios
 
 if(sqliteUSE==T){
 
+  if(length(commonYears)>0 & length(commonScenarios)>0){
+
+  if(file.exists(sqliteDBNamePath)){
   dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)
   gridMetis<-dplyr::tbl(dbConn,"gridMetis")
 
- if(length(commonYears)>0 & length(commonScenarios)>0){
 
   for(commonScenarios_i in commonScenarios){
       print(paste("Extracting data from sqlite database for common tethys/xanthos scenario: ",
@@ -414,15 +445,10 @@ if(sqliteUSE==T){
 
    if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
 
-    } else { # Closing if xanthos & tethys checks have commonYears & commonScenarios
+  }} else { # Closing if xanthos & tethys checks have commonYears & commonScenarios
       print(paste("No common years or scenarios for Xanthos and Tethys. ",
                       " Skipping gridded scarcity calculation",sep=""))
-      if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
-      }
-
-  if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
-
-  } else{
+    }}else{
 
 if(!is.null(gridMetis)){
   if(any(grepl("xanthos",unique(gridMetis$param))) & any(grepl("tethys",unique(gridMetis$param)))){
@@ -451,9 +477,8 @@ if(!is.null(gridMetis)){
          rm(gridx)
 
 
-}}}else {print(paste("gridMetis is NULL, skipping gridded scracity calculation.",sep=""))}}
-
-
+  }}}else {print(paste("gridMetis is NULL, skipping gridded scracity calculation.",sep=""))}
+    } # Close sql Loop
 
 
 
@@ -463,14 +488,14 @@ if(!is.null(gridMetis)){
 
 if(!dir.exists(popFolder)){
 
-  if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
-
   print(paste("pop folder: ", popFolder ," is incorrect or doesn't exist.",sep=""))
   print(paste("Skipping pop runs",sep=""))}else {
 
+    if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
+
     for(popFile_i in popFiles){
 
-      class_i=gsub(".csv","",popFile_i)
+      popFile_i=gsub(".csv","",popFile_i)
       if(!grepl(".csv",popFile_i)){popFile_i=paste(popFile_i,".csv",sep="")}
 
       if(!file.exists(paste(popFolder,"/",popFile_i,sep=""))){
