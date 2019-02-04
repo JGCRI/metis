@@ -47,8 +47,14 @@
 #' @param facetLabelSize Default = 1.5,
 #' @param alpha Default = 1
 #' @param fillcolorNA Default =NULL
+#' @param fillcolorNULL Default =NULL
+#' @param fillshowNA Default =NA
 #' @param facetsON Default =F,
 #' @param panelLabel Default = NULL,
+#' @param multiFacetRows Default=NULL,
+#' @param multiFacetCols Default=NULL,
+#' @param mapTitle Default=NULL
+#' @param mapTitleSize Default=1
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
 #' @export
@@ -96,19 +102,23 @@ metis.map<-function(dataPolygon=NULL,
                   facetLabelColor = "white",
                   facetLabelSize=1.5,
                   alpha=1,
-                  fillcolorNA=NULL,
+                  fillcolorNA="grey30",
+                  fillshowNA=NA,
+                  fillcolorNULL="grey30",
                   facetsON=T,
-                  panelLabel=NULL
+                  panelLabel=NULL,
+                  multiFacetRows=NULL,
+                  multiFacetCols=NULL,
+                  mapTitle=NULL,
+                  mapTitleSize=1
                   ){
 
 
   # dataPolygon=NULL
   # dataGrid=NULL
-  # fileName="map"
   # dataRaster=NULL
-  # shpFolder=paste(getwd(),"/dataFiles/gis/admin_gadm36_1",sep="")
-  # shpFile=paste("gadm36_1",sep="")
-  # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # shpFolder=NULL
+  # shpFile=NULL
   # fillPalette="Spectral"
   # borderColor="gray20"
   # lwd=1
@@ -125,8 +135,8 @@ metis.map<-function(dataPolygon=NULL,
   # legendWidth=-1
   # legendShow=F
   # legendOutside=T
-  # legendTextSize=0.8
-  # legendTitleSize=1
+  # legendTextSize=1
+  # legendTitleSize=2
   # legendOutsidePosition=NULL
   # legendPosition=NULL
   # legendDigits=NULL
@@ -138,13 +148,20 @@ metis.map<-function(dataPolygon=NULL,
   # underLayer=NULL
   # overLayer=NULL
   # printFig=T
+  # fileName="map"
+  # dirOutputs=paste(getwd(),"/outputs",sep="")
   # facetFreeScale=F
   # facetRows=NA
   # facetCols=3
-  # facetBGColor="grey75"
-  # facetLabelColor = "black"
+  # facetBGColor="grey30"
+  # facetLabelColor = "white"
   # facetLabelSize=1.5
   # alpha=1
+  # fillcolorNA=NULL
+  # facetsON=T
+  # panelLabel=NULL
+  # multiFacetRows=NULL
+  # multiFacetCols=NULL
 
 #------------------
 # Initialize variables to remove binding errors if needed
@@ -250,7 +267,7 @@ if(is.null(legendBreaks)){
 #names(shape)[names(shape) %in% fillColumn]<-gsub(" ","_",names(shape)[names(shape) %in% fillColumn])
 map<-map + tmap::tm_fill(col=fillColumn, palette = fillPalette, title=legendTitle,
                    style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks,alpha=alpha,colorNA=fillcolorNA,
-                   legend.show = legendShow) +
+                   legend.show = legendShow, showNA=fillshowNA) +
            tmap::tm_borders(col=borderColor,lwd=lwd, lty=lty)
 }else{
   map<-map + tmap::tm_borders(col=borderColor,lwd=lwd, lty=lty)
@@ -273,7 +290,19 @@ map<-map + tmap::tm_fill(col=fillColumn, palette = fillPalette, title=legendTitl
 if(!is.null(legendOutsidePosition)){map <- map + tmap::tm_layout(legend.outside.position = legendOutsidePosition)}
 if(!is.null(legendPosition)){map <- map + tmap::tm_layout(legend.position = legendPosition)}
 
+if(!is.null(multiFacetRows) & !is.null(multiFacetCols)){
+  map<- map + tmap::tm_facets(by=c(multiFacetRows,multiFacetCols),free.coords = FALSE,drop.units=T,free.scales=facetFreeScale)
+}else{
+  if(!is.null(multiFacetRows) & is.null(multiFacetCols)){
+    map<- map + tmap::tm_facets(by=c(multiFacetRows),free.coords = FALSE,drop.units=T,free.scales=facetFreeScale)
+  }else{
+    if(is.null(multiFacetRows) & !is.null(multiFacetCols)){
+      map<- map + tmap::tm_facets(by=c(multiFacetCols),free.coords = FALSE,drop.units=T,free.scales=facetFreeScale)
+    }
+  } # Close multifacetRows
+} # Close multiFacetCols
 
+if(is.null(multiFacetRows) & is.null(multiFacetCols)){
 if(facetsON==T){
 if(is.null(raster)){if(!is.null(shape)){checkFacets=length(names(shape))-1}
 if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
@@ -295,6 +324,9 @@ if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
                       panel.label.size = facetLabelSize)
   }
 
+}
+
+
   map<- map +
     tmap::tm_layout(
               legend.outside=legendOutside,
@@ -304,7 +336,12 @@ if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
     tmap::tm_layout(main.title.position="left",main.title.size=1.5,
               inner.margins = rep(0,4),outer.margins=rep(0.01,4))
 
+  if(!is.null(multiFacetRows) | !is.null(multiFacetCols)){map<-map+tmap::tm_layout(asp=1)}else{
+    map<-map+tmap::tm_layout(asp=NA)
+  }
+
 if(!is.null(legendDigits)){map<- map + tmap::tm_layout(legend.format = list(digits = legendDigits))}
+  if(!is.null(mapTitle)){map<- map + tmap::tm_layout(main.title = mapTitle, main.title.size = mapTitleSize)}
 
 
 if(!is.null(overLayer)){
@@ -331,5 +368,3 @@ print(paste("Figure saved as: ",fileName,".",pdfpng," in folder: ", paste(dirOut
 
   return(map)
 }
-
-

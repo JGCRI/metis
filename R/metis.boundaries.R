@@ -294,6 +294,18 @@ if(!is.null(bbox1)){
 # Save boundary maps
 #---------------
 
+# fillcolorNA=fillcolorNA
+# dataPolygon=extendedShape
+# printFig=F
+# fillColumn = boundaryRegCol
+# labels=T
+# fillPalette = extendedFillColor
+# bgColor = extendedBGColor
+# frameShow=T
+# labelsSize=extdendedLabelSize
+# labelsColor=extendedLabelsColor
+# facetsON = F
+
 # Extended underLayer and Regional Highlights
 if(!is.null(extendedShape)){
   if(!is.null(extendedBoundary)){
@@ -332,6 +344,9 @@ if(!is.null(extendedShape)){
   }
 }
 
+# fillcolorNA=fillcolorNA; labelsSize=labelsSize; dataPolygon=boundaryHighlight;
+# fileName = paste(boundaryRegionsSelect,"_highlight_region_",subRegType,nameAppend,sep="");dirOutputs = dir;
+# underLayer = underLayer;bgColor=extendedBGColor;frameShow=T;facetsON = F;labels=F
 
 # Regional highlights
 if(!is.null(boundaryHighlight) & !is.null(underLayer)){

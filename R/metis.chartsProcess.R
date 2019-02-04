@@ -238,14 +238,12 @@ if(regionCompareOnly!=1){
 # Aggregate across classes
 tblAggsums<-tbl%>%
   dplyr::filter(aggregate=="sum")%>%
-  dplyr::select(-tidyselect::contains("class"))%>%
-  dplyr::select(scenario,region,param,units,x, value, vintage)%>%
+  dplyr::select(scenario,region,param,units,x,value)%>%
   dplyr::group_by_at(dplyr::vars(-value))%>%
   dplyr::summarize_at(c("value"),dplyr::funs(sum))
 tblAggmeans<-tbl%>%
   dplyr::filter(aggregate=="mean")%>%
-  dplyr::select(-tidyselect::contains("class"))%>%
-  dplyr::select(scenario,region,param,units,x, value, vintage)%>%
+  dplyr::select(scenario,region,param,units,x, value)%>%
   dplyr::group_by_at(dplyr::vars(-value))%>%
   dplyr::summarize_at(c("value"),dplyr::funs(mean))
 tblAgg<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
@@ -317,8 +315,23 @@ if(length(unique(tbl$region))>1){
 
         if(length(unique(tbl_sp$class1))>1){figWMult=1.3}else{figWmult=1}
 
+        # Aggregated Class 1
+        # Aggregate across classes
+        tblAggsums<-tbl_sp%>%
+          dplyr::filter(aggregate=="sum")%>%
+          dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),dplyr::funs(sum))
+        tblAggmeans<-tbl_sp%>%
+          dplyr::filter(aggregate=="mean")%>%
+          dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),dplyr::funs(mean))
+        tbl_spC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
+
+
         # Bar Chart
-       metis.chart(tbl_sp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+       metis.chart(tbl_spC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows="none",
           dirOutputs = paste(dirOutputs, "/Charts/compareRegions","/", j,sep = ""),
           fileName = paste(k,"_figBar_",j,"_compareRegions",nameAppend,sep=""),
@@ -326,12 +339,36 @@ if(length(unique(tbl$region))>1){
         )
 
         # Line Chart
-        metis.chart(tbl_sp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_spC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows="none",
           dirOutputs = paste(dirOutputs, "/Charts/compareRegions","/", j,sep = ""),
           fileName = paste(k,"_figLines_",j,"_compareRegions",nameAppend,sep=""),
           figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult,pdfpng=pdfpng
         )
+
+        # If class 2 available
+        if(length(unique(tbl_sp$class2))>1){
+
+          # Bar Chart
+          metis.chart(tbl_sp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+                      sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows="class2",
+                      dirOutputs = paste(dirOutputs, "/Charts/compareRegions","/", j,sep = ""),
+                      fileName = paste(k,"_figBar_",j,"_compareRegionsClass2",nameAppend,sep=""),
+                      figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult,
+                      figHeight = 9*max((length(unique(tbl_sp$class2))/2),1),pdfpng=pdfpng
+          )
+
+          # Line Chart
+          metis.chart(tbl_sp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+                      sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows="class2",
+                      dirOutputs = paste(dirOutputs, "/Charts/compareRegions","/", j,sep = ""),
+                      fileName = paste(k,"_figLines_",j,"_compareRegionsClass2",nameAppend,sep=""),
+                      figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult,
+                      figHeight = 9*max((length(unique(tbl_sp$class2))/2),1),pdfpng=pdfpng
+          )
+
+
+        }
 
       } # Close if(nrow(tbl_sp)>0)
 
@@ -356,8 +393,22 @@ if(length(unique(tbl$scenario))>1){
 
         if(length(unique(tbl_p$class1))>1){figWMult=1.3}else{figWmult=1}
 
+        # Aggregated Class 1
+        # Aggregate across classes
+        tblAggsums<-tbl_p%>%
+          dplyr::filter(aggregate=="sum")%>%
+          dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),dplyr::funs(sum))
+        tblAggmeans<-tbl_p%>%
+          dplyr::filter(aggregate=="mean")%>%
+          dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),dplyr::funs(mean))
+        tbl_pC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
+
         # Bar Chart
-        metis.chart(tbl_p, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="scenario",facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegions",nameAppend,sep=""),
@@ -366,7 +417,7 @@ if(length(unique(tbl$scenario))>1){
         )
 
         # Line Chart
-        metis.chart(tbl_p,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="scenario",facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
           fileName = paste(j,"_figLine_compareScenRegions",nameAppend,sep=""),
@@ -394,8 +445,24 @@ if(length(unique(tbl$scenario))>1){
 
         if(length(unique(tbl_py$class1))>1){figWMult=1.3}else{figWmult=1}
 
+        # Aggregated Class 1
+        # Aggregate across classes
+        tblAggsums<-tbl_py%>%
+          dplyr::filter(aggregate=="sum")%>%
+          dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),dplyr::funs(sum))
+        tblAggmeans<-tbl_py%>%
+          dplyr::filter(aggregate=="mean")%>%
+          dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),dplyr::funs(mean))
+        tbl_pyC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
+
+
+
         # Bar Chart
-        metis.chart(tbl_py, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData, facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegion_xScenSelectYears",nameAppend,sep=""),
@@ -411,12 +478,12 @@ if(length(unique(tbl$scenario))>1){
         # Aggregate across classes
         tbl_pAggsums<-tbl_p%>%
           dplyr::filter(aggregate=="sum")%>%
-          dplyr::select(-tidyselect::contains(class))%>%
+          dplyr::select(-tidyselect::contains("class"),-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-yData,-origValue))%>%
           dplyr::summarize_at(c(yData),dplyr::funs(sum))
         tbl_pAggmeans<-tbl_p%>%
           dplyr::filter(aggregate=="mean")%>%
-          dplyr::select(-tidyselect::contains(class))%>%
+          dplyr::select(-tidyselect::contains("class"),-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-yData,-origValue))%>%
           dplyr::summarize_at(c(yData),dplyr::funs(mean))
         tbl_pAgg<-dplyr::bind_rows(tbl_pAggsums,tbl_pAggmeans)%>%dplyr::ungroup()
@@ -486,8 +553,24 @@ if(length(unique(tbl$scenario))>1){
 
         if(length(unique(tbl_pd$class1))>1){figWMult=1.3}else{figWmult=1}
 
+        # Aggregated Class 1
+        # Aggregate across classes
+        tblAggsums<-tbl_pd%>%
+          dplyr::filter(aggregate=="sum")%>%
+          dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),dplyr::funs(sum))
+        tblAggmeans<-tbl_pd%>%
+          dplyr::filter(aggregate=="mean")%>%
+          dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),dplyr::funs(mean))
+        tbl_pdC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
+
+
+
         # Bar Chart
-        metis.chart(tbl_pd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
           fileName = paste(j,"_figBarDiff_compareScenRegion",nameAppend,sep=""),
@@ -496,7 +579,7 @@ if(length(unique(tbl$scenario))>1){
         )
 
         # Line Chart
-        metis.chart(tbl_pd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
           fileName = paste(j,"_figLineDiff_compareScenRegion",nameAppend,sep=""),
@@ -530,17 +613,51 @@ for(i in unique(tbl$region)){
 
       if(length(unique(tbl_rsp$class1))>1){figWMult=1.3}else{figWmult=1}
 
+      # Aggregated Class 1
+      # Aggregate across classes
+      tblAggsums<-tbl_rsp%>%
+        dplyr::filter(aggregate=="sum")%>%
+        dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+        dplyr::group_by_at(dplyr::vars(-value))%>%
+        dplyr::summarize_at(c("value"),dplyr::funs(sum))
+      tblAggmeans<-tbl_rsp%>%
+        dplyr::filter(aggregate=="mean")%>%
+        dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+        dplyr::group_by_at(dplyr::vars(-value))%>%
+        dplyr::summarize_at(c("value"),dplyr::funs(mean))
+      tbl_rspC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
+
+
     # Bar Chart
-    metis.chart(tbl_rsp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+    metis.chart(tbl_rspC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
     dirOutputs = paste(dirOutputs, "/Charts/", i, "/", j,sep = ""),
     fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng
     )
 
     # Line Chart
-    metis.chart(tbl_rsp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+    metis.chart(tbl_rspC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
       dirOutputs = paste(dirOutputs, "/Charts/", i, "/", j,sep = ""),
       fileName = paste(k,"_figLine_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng
     )
+
+    # Class 2 Charts
+    if(length(unique(tbl_rsp$class2))>1){
+
+      # Bar Chart
+      metis.chart(tbl_rsp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+                  facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/", i, "/", j,sep = ""),
+                  fileName = paste(k,"_figBar_",i,"_Class2_",j,nameAppend,sep="")
+      )
+
+      # Line Chart
+      metis.chart(tbl_rsp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+                  facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/", i, "/", j,sep = ""),
+                  fileName = paste(k,"_figLine_",i,"_Class2_",j,nameAppend,sep="")
+      )
+    }
+
+
+
 
     } # Close if(nrow(tbl_rsp)>0)
 
@@ -567,8 +684,23 @@ for(i in unique(tbl$region)){
 
         if(length(unique(tbl_rp$class1))>1){figWMult=1.3}else{figWmult=1}
 
+        # Aggregated Class 1
+        # Aggregate across classes
+        tblAggsums<-tbl_rp%>%
+          dplyr::filter(aggregate=="sum")%>%
+          dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),dplyr::funs(sum))
+        tblAggmeans<-tbl_rp%>%
+          dplyr::filter(aggregate=="mean")%>%
+          dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),dplyr::funs(mean))
+        tbl_rpC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
+
+
       # Bar Chart
-      metis.chart(tbl_rp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
         dirOutputs = paste(dirOutputs, "/Charts/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figBar_",i,"_compareScen",nameAppend,sep=""),
         figWidth = 13*max((length(unique(tbl_rp$scenario))/2),1)*figWMult,
@@ -576,7 +708,7 @@ for(i in unique(tbl$region)){
       )
 
       # Line Chart
-      metis.chart(tbl_rp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+      metis.chart(tbl_rpC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
         dirOutputs = paste(dirOutputs, "/Charts/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figLine_",i,"_compareScen",nameAppend,sep=""),
         figWidth = 13*max((length(unique(tbl_rp$scenario))/2),1)*figWMult,
@@ -603,8 +735,23 @@ for(i in unique(tbl$region)){
 
       if(length(unique(tbl_rpy$class1))>1){figWMult=1.3}else{figWmult=1}
 
+      # Aggregated Class 1
+      # Aggregate across classes
+      tblAggsums<-tbl_rpy%>%
+        dplyr::filter(aggregate=="sum")%>%
+        dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+        dplyr::group_by_at(dplyr::vars(-value))%>%
+        dplyr::summarize_at(c("value"),dplyr::funs(sum))
+      tblAggmeans<-tbl_rpy%>%
+        dplyr::filter(aggregate=="mean")%>%
+        dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+        dplyr::group_by_at(dplyr::vars(-value))%>%
+        dplyr::summarize_at(c("value"),dplyr::funs(mean))
+      tbl_rpyC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
+
+
       # Bar Chart
-      metis.chart(tbl_rpy, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData,
+      metis.chart(tbl_rpyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData,
         dirOutputs = paste(dirOutputs, "/Charts/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figBar_",i,"_compareScen_xScenSelectYears",nameAppend,sep=""),
         figWidth = 13*max((length(unique(tbl_rpy$x)[unique(tbl_rpy$x) %in% xCompare])/3),1)*figWMult,
@@ -619,13 +766,13 @@ for(i in unique(tbl$region)){
       # Aggregate across classes
       tbl_rpAggsums<-tbl_rp%>%
         dplyr::filter(aggregate=="sum")%>%
-        dplyr::select(-tidyselect::contains(class))%>%
-        dplyr::group_by_at(dplyr::vars(-yData,-origValue))%>%
+        dplyr::select(-tidyselect::contains("class"),-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+        dplyr::group_by_at(dplyr::vars(-yData))%>%
         dplyr::summarize_at(c(yData),dplyr::funs(sum))
       tbl_rpAggmeans<-tbl_rp%>%
         dplyr::filter(aggregate=="mean")%>%
-        dplyr::select(-tidyselect::contains(class))%>%
-        dplyr::group_by_at(dplyr::vars(-yData,-origValue))%>%
+        dplyr::select(-tidyselect::contains("class"),-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
+        dplyr::group_by_at(dplyr::vars(-yData))%>%
         dplyr::summarize_at(c(yData),dplyr::funs(mean))
       tbl_rpAgg<-dplyr::bind_rows(tbl_rpAggsums,tbl_rpAggmeans)%>%dplyr::ungroup()
 
@@ -694,8 +841,23 @@ for(i in unique(tbl$region)){
 
       if(length(unique(tbl_rpd$class1))>1){figWMult=1.3}else{figWmult=1}
 
+      # Aggregated Class 1
+      # Aggregate across classes
+      tblAggsums<-tbl_rpd%>%
+        dplyr::filter(aggregate=="sum")%>%
+        dplyr::select(-class2,-classLabel2,-classPalette2)%>%
+        dplyr::group_by_at(dplyr::vars(-value))%>%
+        dplyr::summarize_at(c("value"),dplyr::funs(sum))
+      tblAggmeans<-tbl_rpd%>%
+        dplyr::filter(aggregate=="mean")%>%
+        dplyr::select(-class2,-classLabel2,-classPalette2)%>%
+        dplyr::group_by_at(dplyr::vars(-value))%>%
+        dplyr::summarize_at(c("value"),dplyr::funs(mean))
+      tbl_rpdC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
+
+
       # Bar Chart
-      metis.chart(tbl_rpd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
         dirOutputs = paste(dirOutputs, "/Charts/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figBarDiff_",i,"_compareScen",nameAppend,sep=""),
         figWidth = 13*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,
@@ -703,7 +865,7 @@ for(i in unique(tbl$region)){
       )
 
       # Line Chart
-     metis.chart(tbl_rpd, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+     metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
         dirOutputs = paste(dirOutputs, "/Charts/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figLineDiff_",i,"_compareScen",nameAppend,sep=""),
         figWidth = 13*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,

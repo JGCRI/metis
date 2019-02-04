@@ -53,7 +53,7 @@ metis.grid2poly<- function(grid=NULL,
 
 NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
   param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon->overlapShape->
-    gridPolyLoop->dbHead->paramsSub->sqlGrid
+    gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis
 
 #----------------
 # Check input data format
@@ -211,13 +211,14 @@ if(!is.null(grid)){
   for (param_i in paramsSub){
     for (scenario_i in scenarios){
 
-      paste("Starting aggregation for param: ",param_i," and scenario: ",scenario_i,"...",sep="")
-
     if(!is.null(sqlGrid)){
         gridx<-sqlGrid%>%dplyr::filter(param==param_i, scenario==scenario_i)%>%dplyr::collect()
       }else{
     gridx<-grid%>%dplyr::filter(param==param_i,scenario==scenario_i)
     }
+
+    if(nrow(gridx>0)){
+      print(paste("Starting aggregation for param: ",param_i," and scenario: ",scenario_i,"...",sep=""))}
 
 
     if(!"aggType" %in% names(gridx)){
@@ -274,7 +275,7 @@ if(!is.null(grid)){
     shapeExpandExtent<-methods::as(raster::extent(as.vector(t(shapeExpandExtent))), "SpatialPolygons")
     sp::proj4string(shapeExpandExtent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
 
-    print(paste("Cropping grid to shape file for parameter ", param_i,"...",sep=""))
+    print(paste("Cropping grid to shape file for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
     rcrop<-raster::crop(r,shapeExpandExtent)
     rcropP<-raster::rasterToPolygons(rcrop)
 
@@ -306,7 +307,7 @@ if(!is.null(grid)){
     gridPolyLoop=1; # To prevent gridded map being produced multiple times
 
     if(aggType_i=="depth"){
-      print(paste("Aggregating depth for parameter ", param_i,"...",sep=""))
+      print(paste("Aggregating depth for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
       rcropPx@data$area<-raster::area(rcropPx)
       s1<-shape
       s1$subRegAreaSum<-raster::area(shape);
@@ -321,7 +322,7 @@ if(!is.null(grid)){
       polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(round(sum(.,na.rm=T),2)))
     }
     if(aggType_i=="vol"){
-      print(paste("Aggregating volume for parameter ", param_i,"...",sep=""))
+      print(paste("Aggregating volume for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
       w <- raster::extract(r,shape, method="simple",weights=T, normalizeWeights=F);
       dfx<-data.frame()
       for (i in seq(w)){
@@ -368,7 +369,7 @@ if(!is.null(grid)){
 } # Close loop for param_i
   } # Close loop for scenario_i
 
-  paste("Aggregation for all scenarios and params complete.")
+  print(paste("Aggregation for all scenarios and params complete."))
 
 }else{print("No grid provided.")}
 

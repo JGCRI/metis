@@ -419,7 +419,7 @@ metis.mapProcess(polygonDataTables=a,
                  scenRef=scenRef_i,
                  extension=T,
                  expandPercent = 6,
-                 #paramsSelect = paramsSelect_i,
+                 paramsSelect = paramsSelect_i,
                  scaleRange = scaleRange_i
                  )
 
@@ -431,7 +431,10 @@ subRegShpFile_i = paste("indiaGCAMBasin",sep= "")
 subRegCol_i = "basin_name"
 subRegType_i = "basin"
 nameAppend_i = "_indiaLocal"
-
+scaleRange_i=data.frame(param=c("griddedScarcity"),
+                        maxScale=c(1),
+                        minScale=c(0))
+paramsSelect_i = c("griddedScarcity")
 
 metis.mapProcess(polygonDataTables=a,
                  #gridDataTables=b,
@@ -454,7 +457,7 @@ metis.mapProcess(polygonDataTables=a,
                  scenRef=scenRef_i,
                  extension=T,
                  expandPercent = 6,
-                 #paramsSelect = paramsSelect_i,
+                 paramsSelect = paramsSelect_i,
                  scaleRange = scaleRange_i
 )
 

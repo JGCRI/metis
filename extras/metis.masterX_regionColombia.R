@@ -245,11 +245,11 @@ boundariesX<- metis.boundaries(
 dirOutputs=paste(getwd(),"/outputs",sep="")
 reReadData=1
 demeterFolder=paste(getwd(),"/dataFiles/grids/demeter/",sep="")
-demeterScenario="Eg1"
+demeterScenario="gfdl-esm2m_rcp2p6"
 demeterUnits="Landuse (Fraction)"
 demeterTimesteps<-seq(from=2005,to=2020,by=5)
 tethysFolder=paste(getwd(),"/dataFiles/grids/tethys/",sep="")
-tethysScenario="Eg1"
+tethysScenario="gfdl-esm2m_rcp2p6"
 tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
 tethysUnits="Water Withdrawals (mm)"
 xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/",sep="")
@@ -301,14 +301,37 @@ gridMetis<-metis.prepGrid(
   xanthosFiles=xanthosFiles,
   xanthosCoordinatesPath=xanthosCoordinatesPath,
   xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
+  spanLowess=spanLowess,
   dirOutputs=paste(getwd(),"/outputs",sep=""),
   gridMetisData=gridMetisData,
-  spanLowess=spanLowess,
+  popFolder=popFolder,
+  popFiles=popFiles,
+  popUnits=popUnits,
   sqliteUSE = sqliteUSE,
   sqliteDBNamePath =sqliteDBNamePath)
 
-head(gridMetis)
-unique(gridMetis$param); unique(gridMetis$scenario)
+# reReadData=reReadData
+# demeterFolder=demeterFolder
+# demeterScenario=demeterScenario
+# demeterTimesteps=demeterTimesteps
+# demeterUnits=demeterUnits
+# tethysFolder=tethysFolder
+# tethysScenario=tethysScenario
+# tethysFiles=tethysFiles
+# tethysUnits=tethysUnits
+# xanthosFolder=xanthosFolder
+# xanthosFiles=xanthosFiles
+# xanthosCoordinatesPath=xanthosCoordinatesPath
+# xanthosGridAreaHecsPath=xanthosGridAreaHecsPath
+# spanLowess=spanLowess
+# dirOutputs=paste(getwd(),"/outputs",sep="")
+# gridMetisData=gridMetisData
+# popFolder=popFolder
+# popFiles=popFiles
+# popUnits=popUnits
+# sqliteUSE = sqliteUSE
+# sqliteDBNamePath =sqliteDBNamePath
+
 
 #-----------
 # Grid to Poly
@@ -316,7 +339,7 @@ unique(gridMetis$param); unique(gridMetis$scenario)
 
 #grid_i<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
 #grid_i<-paste(getwd(),"/outputs/Grids/gridMetis.csv",sep="")
-grid_i=gridMetis
+#grid_i=gridMetis
 boundaryRegionsSelect_i="Colombia"
 subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = "")
 subRegShpFile_i = paste("colombiaNE1",sep= "")
@@ -351,7 +374,7 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
 # sqliteDBNamePath = sqliteDBNamePath_i
 
 #grid_i=gridMetis
-grid_i=paste(getwd(),"/outputs/Grids/gridMetisXanthos.RData",sep = "")
+#grid_i=paste(getwd(),"/outputs/Grids/gridMetisXanthos.RData",sep = "")
 boundaryRegionsSelect_i="Colombia"
 subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = "")
 subRegShpFile_i = paste("colombiaLocalBasin",sep= "")
@@ -363,7 +386,7 @@ paramsSelect_i= "All" #"demeterLandUse"
 sqliteUSE_i = T
 sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
-grid2polyX<-metis.grid2poly(grid=grid_i,
+grid2polyX<-metis.grid2poly(#grid=grid_i,
                             boundaryRegionsSelect=boundaryRegionsSelect_i,
                             subRegShpFolder=subRegShpFolder_i,
                             subRegShpFile=subRegShpFile_i,
@@ -406,6 +429,11 @@ legendOutsideSingle_i=T
 animateOn_i=T
 delay_i=100
 scenRef_i="Eg1"
+scaleRange_i=data.frame(param=c("griddedScarcity"),
+                        maxScale=c(1),
+                        minScale=c(0))
+paramsSelect_i = c("xanthosRunoff")
+
 
 boundaryRegShape_i = NULL
 boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
@@ -441,42 +469,40 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  extension=T,
                  expandPercent = 3,
                  figWidth=6,
-                 figHeight=7
-                 )
+                 figHeight=7,
+                 paramsSelect = paramsSelect_i,
+                 scaleRange = scaleRange_i,
+                 indvScenarios=F,
+                 GCMRCPSSPPol=T,
+                 multiFacetCols="scenarioRCP",
+                 multiFacetRows="scenarioGCM",
+                 legendOutsideMulti=NULL,
+                 legendPositionMulti=NULL,
+                 legendTitleSizeMulti=NULL,
+                 legendTextSizeAnim=NULL,
+                 legendTextSizeMulti=NULL,
+                 refGCM="gfdl-esm2m",
+                 refRCP="rcp2p6",
+                 chosenRefMeanYears=c(2000:2020))
 
-# polygonDataTables=polygonDataTables_i
-# gridDataTables=gridDataTables_i
-# xRange=xRange_i
-# boundaryRegShape=boundaryRegShape_i
-# boundaryRegShpFolder=boundaryRegShpFolder_i
-# boundaryRegShpFile=boundaryRegShpFile_i
-# boundaryRegCol=boundaryRegCol_i
-# boundaryRegionsSelect=boundaryRegionsSelect_i
-# subRegShape=subRegShape_i
-# subRegShpFolder=subRegShpFolder_i
-# subRegShpFile=subRegShpFile_i
-# subRegCol=subRegCol_i
-# subRegType=subRegType_i
-# nameAppend=nameAppend_i
-# legendOutsideSingle=legendOutsideSingle_i
-# legendPosition=legendPosition_i
-# animateOn=animateOn_i
-# delay=delay_i
-# scenRef=scenRef_i
-# extension=T
-# expandPercent = 3
-# figWidth=6
-# figHeight=7
 
-polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_state_origDownscaled_NE.csv",sep="")
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_subBasin_origDownscaled_local.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
 for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x))}
-xRange_i= seq(from=1950,to=2000,by=5)
+gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_Colombia_subBasin_local.csv",sep="")
+b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
+for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x))}
+xRange_i= seq(from=2000,to=2020,by=5)
 legendPosition_i=c("LEFT","bottom")
 legendOutsideSingle_i=T
 animateOn_i=T
 delay_i=100
 scenRef_i="Eg1"
+scaleRange_i=data.frame(param=c("griddedScarcity"),
+                        maxScale=c(1),
+                        minScale=c(0))
+paramsSelect_i = c("griddedScarcity")
+
 
 boundaryRegShape_i = NULL
 boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
@@ -490,8 +516,12 @@ subRegCol_i = "NOM_ZH"
 subRegType_i = "subBasin"
 nameAppend_i = "_local"
 
+c1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = ""),
+                     layer="colombiaLocalBasin",use_iconv=T,encoding='UTF-8')
+
+
 metis.mapProcess(polygonDataTables=polygonDataTables_i,
-                 #gridDataTables=gridDataTables_i,
+                 gridDataTables=gridDataTables_i,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,
                  boundaryRegShpFolder=boundaryRegShpFolder_i,
@@ -512,32 +542,19 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  extension=T,
                  expandPercent = 3,
                  figWidth=6,
-                 figHeight=7
-)
-
-# polygonDataTables=polygonDataTables_i
-# gridDataTables=gridDataTables_i
-# xRange=xRange_i
-# boundaryRegShape=boundaryRegShape_i
-# boundaryRegShpFolder=boundaryRegShpFolder_i
-# boundaryRegShpFile=boundaryRegShpFile_i
-# boundaryRegCol=boundaryRegCol_i
-# boundaryRegionsSelect=boundaryRegionsSelect_i
-# subRegShape=subRegShape_i
-# subRegShpFolder=subRegShpFolder_i
-# subRegShpFile=subRegShpFile_i
-# subRegCol=subRegCol_i
-# subRegType=subRegType_i
-# nameAppend=nameAppend_i
-# legendOutsideSingle=legendOutsideSingle_i
-# legendPosition=legendPosition_i
-# animateOn=animateOn_i
-# delay=delay_i
-# scenRef=scenRef_i
-# extension=T
-# expandPercent = 3
-# figWidth=6
-# figHeight=7
-#
-
+                 figHeight=7,
+                 paramsSelect = paramsSelect_i,
+                 scaleRange = scaleRange_i,
+                 indvScenarios=F,
+                 GCMRCPSSPPol=T,
+                 multiFacetCols="scenarioRCP",
+                 multiFacetRows="scenarioGCM",
+                 legendOutsideMulti=NULL,
+                 legendPositionMulti=NULL,
+                 legendTitleSizeMulti=NULL,
+                 legendTextSizeAnim=NULL,
+                 legendTextSizeMulti=NULL,
+                 refGCM="gfdl-esm2m",
+                 refRCP="rcp2p6",
+                 chosenRefMeanYears=c(2000:2020))
 

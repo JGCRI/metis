@@ -22,7 +22,12 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   extendedShapeCol = NULL, expandPercent = 2,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 9, figHeight = 7, scaleRange = NULL,
-  paramsSelect = "All")
+  paramsSelect = "All", indvScenarios = T, GCMRCPSSPPol = F,
+  multiFacetCols = "scenarioRCP", multiFacetRows = "scenarioGCM",
+  legendOutsideMulti = T, legendPositionMulti = NULL,
+  legendTitleSizeMulti = NULL, legendTextSizeAnim = NULL,
+  legendTextSizeMulti = NULL, refGCM = NULL, refRCP = NULL,
+  chosenRefMeanYears = NULL)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -110,6 +115,30 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{scaleRange}{Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.}
 
 \item{paramsSelect}{Default ="All"}
+
+\item{indvScenarios}{Default =T,}
+
+\item{GCMRCPSSPPol}{Default = F,}
+
+\item{multiFacetCols}{Default ="scenarioRCP",}
+
+\item{multiFacetRows}{Default ="scenarioGCM",}
+
+\item{legendOutsideMulti}{Default = NULL,}
+
+\item{legendPositionMulti}{Default = NULL,}
+
+\item{legendTitleSizeMulti}{Default = NULL,}
+
+\item{legendTextSizeAnim}{Default = NULL,}
+
+\item{legendTextSizeMulti}{Default = NULL,}
+
+\item{refGCM}{Default = NULL , eg. "gfdl-esm2m"}
+
+\item{refRCP}{Default = NULL , eg. "rcp2p6"}
+
+\item{chosenRefMeanYears}{Default=NULL}
 }
 \value{
 Returns the formatted data used to produce chart

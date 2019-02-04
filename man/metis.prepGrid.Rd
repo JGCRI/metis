@@ -15,7 +15,7 @@ metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
   popFolder = "NA", popFiles = "NA", popUnits = "NA",
   dirOutputs = paste(getwd(), "/outputs", sep = ""), reReadData = 1,
   gridMetisData = paste(getwd(), "/outputs/Grids/gridMetis.RData", sep =
-  ""), sqliteUSE = T, sqliteDBNamePath = paste(getwd(),
+  ""), sqliteUSE = F, sqliteDBNamePath = paste(getwd(),
   "/outputs/Grids/gridMetis.sqlite", sep = ""))
 }
 \arguments{

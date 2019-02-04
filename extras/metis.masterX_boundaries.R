@@ -134,6 +134,29 @@ boundaries<- metis.boundaries(
                                       paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""))
                           )
 
+# boundaryRegShape=NE0 #
+# #boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="") #
+# #boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep="") #
+# boundaryRegCol="NAME"
+# boundaryRegionsSelect=country_i #
+# subRegShape=countryXNE1 #
+# #subRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="") #
+# #subRegShpFile=paste("ne_10m_admin_1_states_provinces",sep="") #
+# subRegCol="name" #
+# #subRegionsSelect=NULL #
+# subRegType="States" #
+# #dirOutputs=paste(getwd(),"/outputs",sep="") #
+# nameAppend="_local" #
+# expandPercent=2 #
+# overlapShape=countryXGCAMBasins #
+# #overlapShpFile="Global235_CLM_final_5arcmin_multipart" #
+# #overlapShpFolder=paste(getwd(),"/dataFiles/gis/basin_gcam",sep="") #
+# labelsSize=0.7 #
+# extension = T
+# cropSubShape2Bound = F
+# grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+#           paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""))
+
 } # Close country loop
 
 
@@ -148,7 +171,7 @@ countriesSelectA=c("Canada","United States of America","Colombia","Argentina","U
 
 countriesSelectB=c("Canada","United States of America","Colombia","Argentina","Uruguay","Russia",
                    "Kazakhstan","Ukraine","China","India","Vietnam","Brazil",
-                   "Norway","Austria","Germany","Netherlands","Italy","Japan")
+                   "Norway","Austria","Germany","Netherlands","Italy","Japan","Pakistan","South Africa")
 
 data(World)
 unique(World$name)
