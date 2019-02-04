@@ -60,6 +60,7 @@
 #' @param refGCM Default = NULL , eg. "gfdl-esm2m"
 #' @param refRCP Default = NULL , eg. "rcp2p6"
 #' @param chosenRefMeanYears Default=NULL
+#' @param mapTitleSize Default=0.5
 #' @export
 
 metis.mapProcess<-function(polygonDataTables=NULL,
@@ -116,7 +117,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                          legendTextSizeMulti=NULL,
                          refGCM=NULL,
                          refRCP=NULL,
-                         chosenRefMeanYears=NULL){
+                         chosenRefMeanYears=NULL,
+                         mapTitleSize=0.5){
 
   # polygonDataTables=NULL
   # gridDataTables=NULL
@@ -170,6 +172,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # legendTextSizeMulti=NULL
   # refGCM=NULL
   # refRCP=NULL
+  # chosenRefMeanYears=NULL
 
 
 #------------------
@@ -1367,6 +1370,35 @@ if(!is.null(shapeTbl)){
                         fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_MEAN_KMEANS",sep=""),
                         dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,sep = ""))
 
+
+              # panelLabel=panelLabelMulti
+              # underLayer=NULL
+              # dataPolygon=mapx
+              # fillColumn = names(mapx@data%>%dplyr::select(-subRegion,-scenarioGCM,-scenarioRCP))
+              # legendShow = T
+              # legendOutside = legendOutsideMulti
+              # facetFreeScale = F
+              # frameShow = T
+              # labels=labels
+              # labelsSize = labelsSize
+              # legendTitleSize = legendTitleSizeMulti
+              # legendTextSize = legendTextSizeMulti
+              # legendTitle =legendTitleMulti
+              # legendStyle=legendStyleMulti
+              # legendBreaks = animKmeanBreaksPoly
+              # legendFixedBreaks=legendFixedBreaks
+              # legendDigits = animLegendDigits
+              # legendOutsidePosition = legendOutsidePosition
+              # legendPosition = legendPositionMulti
+              # fillPalette = fillPalette
+              # bgColor = "white"
+              # figWidth=figWidth*max(1,min(2,length(unique(mapx@data[[multiFacetCols]]))/2))
+              # figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2))
+              # multiFacetRows=multiFacetRows
+              # multiFacetCols=multiFacetCols
+              # fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_MEAN_KMEANS",sep="")
+              # dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,sep = "")
+
               metis.map(panelLabel=panelLabelMulti,
                         underLayer=NULL, dataPolygon=mapx,
                         fillColumn = names(mapx@data%>%dplyr::select(-subRegion,-scenarioGCM,-scenarioRCP)),
@@ -1409,7 +1441,7 @@ if(!is.null(shapeTbl)){
                         legendFixedBreaks=legendFixedBreaks,
                         legendDigits = animLegendDigits,
                         legendOutsidePosition = legendOutsidePosition,
-                        legendPosition = legendPositionMulti,
+                        legendPosition = legendPosition,
                         fillPalette = fillPalette,
                         bgColor = "white",
                         figWidth=figWidth*max(1,min(2,length(unique(mapx@data[[multiFacetCols]]))/2)),
@@ -1550,7 +1582,7 @@ if(!is.null(shapeTbl)){
                           legendFixedBreaks=legendFixedBreaks,
                           legendDigits = animLegendDigits,
                           legendOutsidePosition = legendOutsidePosition,
-                          legendPosition = legendPositionMulti,
+                          legendPosition = legendPosition,
                           fillPalette = fillPalette,
                           bgColor = "white",
                           figWidth=figWidth*max(1,min(2,length(unique(mapx@data[[multiFacetCols]]))/2)),
@@ -1657,8 +1689,8 @@ if(!is.null(shapeTbl)){
                 legendTitleMulti=paste(x_i,"\n",legendTitle,sep="")
                 panelLabelMulti=NULL
                 mapTitle=paste("Absolute Difference (Scenario less Reference Mean)\nRef GCM: ",
-                               refGCM," Ref RCP:",refRCP,"\n",
-                               "Reference mean years: ",min(chosenRefMeanYearsX),"to",max(chosenRefMeanYearsX))
+                               refGCM," Ref RCP:",refRCP,
+                               "\nReference mean years: ",min(chosenRefMeanYearsX),"to",max(chosenRefMeanYearsX))
 
                 metis.map(mapTitle = mapTitle,panelLabel=panelLabelMulti,
                           underLayer=NULL, dataPolygon=mapx,
@@ -1683,6 +1715,7 @@ if(!is.null(shapeTbl)){
                           figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                           multiFacetRows=multiFacetRows,
                           multiFacetCols=multiFacetCols,
+                          mapTitleSize=mapTitleSize,
                           fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_KMEANS",sep=""),
                           dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep = ""))
 
@@ -1710,6 +1743,7 @@ if(!is.null(shapeTbl)){
                           figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                           multiFacetRows=multiFacetRows,
                           multiFacetCols=multiFacetCols,
+                          mapTitleSize=mapTitleSize,
                           fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_PRETTY",sep=""),
                           dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep = ""))
 
@@ -1729,13 +1763,14 @@ if(!is.null(shapeTbl)){
                           legendFixedBreaks=legendFixedBreaks,
                           legendDigits = animLegendDigits,
                           legendOutsidePosition = legendOutsidePosition,
-                          legendPosition = legendPositionMulti,
+                          legendPosition = legendPosition,
                           fillPalette = fillPalette,
                           bgColor = "white",
                           figWidth=figWidth*max(1,min(2,length(unique(mapx@data[[multiFacetCols]]))/2)),
                           figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                           multiFacetRows=multiFacetRows,
                           multiFacetCols=multiFacetCols,
+                          mapTitleSize=mapTitleSize,
                           fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_FREESCALE",sep=""),
                           dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep = ""))
 
