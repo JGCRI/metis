@@ -4,7 +4,7 @@
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
+if("metis" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/metis")}
 library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
@@ -36,7 +36,7 @@ paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 #gcamdatabaseName <-"database_basexdb_LAC"
 gcamdataProjFile <-"LAC_dataProj.proj"
-regionsSelect <- c("Colombia","Argentina")
+regionsSelect <- c("Colombia")
 #regionsSelect <- NULL
 
 # Use function localDBConn from package rgcam to get a list of scenarios if needed.
@@ -111,7 +111,7 @@ rTable <- dataGCAM;
 regionsSelect=c("Uruguay")
 
 charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
-                            dataTables=dataTables, # Default is NULL
+                            #dataTables=dataTables, # Default is NULL
                             paramsSelect=paramsSelect, # Default is "All"
                             regionsSelect=regionsSelect, # Default is "All"
                             xCompare=c("2015","2035","2050","2100"), # Default is c("2015","2030","2050","2100")
