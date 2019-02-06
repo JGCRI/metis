@@ -58,6 +58,7 @@
 #' "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
 #' "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
 #' @param regionsSelect Default = "All". Select regions to create charts for.
+#' @param scensSelect Default = "All". Select regions to create charts for.
 #' @param xRange Default "All". Range of x values eg. c(2001:2005)
 #' @param nameAppend Default =""
 #' @keywords charts, diffplots
@@ -75,7 +76,8 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        aggregate="sum",class="class", classPalette="pal_Basic",
                        regionCompareOnly=1,useNewLabels=0,
                        sizeBarLines=0,sizeLines=1.5,
-                       nameAppend="") {
+                       nameAppend="",
+                       scensSelect="All") {
 
 
   # dataTables=NULL
@@ -99,6 +101,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   # sizeBarLines=0
   # sizeLines=1.5
   # nameAppend=""
+  # scensSelect="All"
 
 #------------------
 # Initialize variables to remove binding errors
@@ -170,7 +173,7 @@ for(i in dataTables){
 # Join relevant colors and classes using the mapping file if it exists
 if(file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
   map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""), stringsAsFactors = F)%>%tibble::as.tibble()
-  tbl<-tbl%>%dplyr::left_join(map%>%dplyr::select(-class1,-class2),by=c("param","units"))
+  tbl<-tbl%>%dplyr::left_join(map%>%dplyr::select(-class1,-class2)%>%distinct(),by=c("param","units"))
   }
 
 # Add missing columns
@@ -188,10 +191,55 @@ if(!is.null(rTable)){
 tbl<-dplyr::bind_rows(tbl,rTable)
 }
 
+
+#------------------------
+# Subset Data
+#------------------------
+
+if(any(paramsSelect!="All")){
+  if(all(paramsSelect %in% unique(tbl$param))){
+    print(paste("Running paramaters: ",  paste(paramsSelect[(paramsSelect %in% unique(tbl$param))],collapse=", "), sep=""))
+    tbl<-tbl%>%dplyr::filter(param %in% paramsSelect[(paramsSelect %in% unique(tbl$param))])
+  }else{
+    print(paste("Parameters not available in data: ", paste(paramsSelect[!(paramsSelect %in% unique(tbl$param))],collapse=", "), sep=""))
+    print(paste("Running remaining paramaters: ",  paste(paramsSelect[(paramsSelect %in% unique(tbl$param))],collapse=", "), sep=""))
+    tbl<-tbl%>%dplyr::filter(param %in% paramsSelect[(paramsSelect %in% unique(tbl$param))])
+  }
+}else{print("One or more items in paramsSelect is 'All' so running analysis for all params:")
+      print(paste(unique(tbl$param),collapse=", "))}
+
 if(any(regionsSelect!="All")){
-  print("One or more items in regionsSelect is 'All' so running analysis for all regions.")
-  tbl<-tbl%>%unique()%>%dplyr::filter(region %in% regionsSelect)}
-if(any(xRange!="All")){if(is.numeric(tbl$x)){tbl<-tbl%>%dplyr::filter(x %in% xRange)}}
+  if(all(regionsSelect %in% unique(tbl$region))){
+    print(paste("Running regions: ",  paste(regionsSelect[(regionsSelect %in% unique(tbl$region))],collapse=", "), sep=""))
+    tbl<-tbl%>%dplyr::filter(region %in% regionsSelect[(regionsSelect %in% unique(tbl$region))])
+  }else{
+    print(paste("Regions not available in data: ", paste(regionsSelect[!(regionsSelect %in% unique(tbl$region))],collapse=", "), sep=""))
+    print(paste("Running remaining regions: ",  paste(regionsSelect[(regionsSelect %in% unique(tbl$region))],collapse=", "), sep=""))
+    tbl<-tbl%>%dplyr::filter(region %in% regionsSelect[(regionsSelect %in% unique(tbl$region))])
+  }
+}else{print("One or more items in regionsSelect is 'All' so running analysis for all regions.")
+       print(paste(unique(tbl$region),collapse=", "))}
+
+if(any(scensSelect!="All")){
+  if(all(scensSelect %in% unique(tbl$scenario))){
+    print(paste("Running scenarios: ",  paste(scensSelect[(scensSelect %in% unique(tbl$scenario))],collapse=", "), sep=""))
+    tbl<-tbl%>%dplyr::filter(scenario %in% scensSelect[(scensSelect %in% unique(tbl$scenario))])
+  }else{
+    print(paste("Scenarios not available in data: ", paste(scensSelect[!(scensSelect %in% unique(tbl$scenario))],collapse=", "), sep=""))
+    print(paste("Running remaining scenarios: ",  paste(scensSelect[(scensSelect %in% unique(tbl$scenario))],collapse=", "), sep=""))
+    tbl<-tbl%>%dplyr::filter(scenario %in% scensSelect[(scensSelect %in% unique(tbl$scenario))])
+  }
+}else{print("One or more items in scensSelect is 'All' so running analysis for all scenarios.")
+       print(paste(unique(tbl$scenario),collapse=", "))}
+
+
+
+if(any(xRange!="All")){if(is.numeric(tbl$x)){tbl<-tbl%>%dplyr::filter(x %in% xRange)
+                       print(paste("Running analysis for chosen years: ",paste(xRange,collapse=", ")))}}else{
+                         print("One or more items in xRange is 'All' so running analysis for all years.")
+                         print(paste(unique(tbl$x),collapse=", "))
+                       }
+
 
 if(any(is.na(unique(tbl$scenario)))){stop("NA scenario not valid. Please check your input scenarios.")}
 
@@ -271,32 +319,6 @@ utils::write.csv(tblAgg%>%
                    tidyr::spread(scenario,yData),
                  file = paste(dirOutputs, "/Charts/Tables_regional_allRegions_aggClass.csv", sep = ""),row.names = F)
 
-
-#------------------------
-# Print which parameters and regions if selected are available
-#------------------------
-
-if(any(paramsSelect!="All")){
-  if(all(paramsSelect %in% unique(tbl$param))){
-    print(paste("Running paramaters: ",  paste(paramsSelect[(paramsSelect %in% unique(tbl$param))],collapse=", "), sep=""))
-    tbl<-tbl%>%dplyr::filter(param %in% paramsSelect[(paramsSelect %in% unique(tbl$param))])
-  }else{
-    print(paste("Parameters not available in data: ", paste(paramsSelect[!(paramsSelect %in% unique(tbl$param))],collapse=", "), sep=""))
-    print(paste("Running remaining paramaters: ",  paste(paramsSelect[(paramsSelect %in% unique(tbl$param))],collapse=", "), sep=""))
-  tbl<-tbl%>%dplyr::filter(param %in% paramsSelect[(paramsSelect %in% unique(tbl$param))])
-  }
-}
-
-if(any(regionsSelect!="All")){
-  if(all(regionsSelect %in% unique(tbl$region))){
-    print(paste("Running regions: ",  paste(regionsSelect[(regionsSelect %in% unique(tbl$region))],collapse=", "), sep=""))
-    tbl<-tbl%>%dplyr::filter(region %in% regionsSelect[(regionsSelect %in% unique(tbl$region))])
-  }else{
-    print(paste("Regions not available in data: ", paste(regionsSelect[!(regionsSelect %in% unique(tbl$region))],collapse=", "), sep=""))
-    print(paste("Running remaining regions: ",  paste(regionsSelect[(regionsSelect %in% unique(tbl$region))],collapse=", "), sep=""))
-tbl<-tbl%>%dplyr::filter(region %in% regionsSelect[(regionsSelect %in% unique(tbl$region))])
-}
-}
 
 
 #------------------
@@ -433,14 +455,8 @@ if(length(unique(tbl$scenario))>1){
           print(paste("xCompare not available in data: ", paste(xCompare[!(xCompare %in% unique(tbl_p[[xData]]))],collapse=", "), sep=""))
           print(paste("Comparing for only: ",  paste(xCompare[(xCompare %in% unique(tbl_p[[xData]]))],collapse=", "), sep=""))
           tbl_py <- tbl_p%>%dplyr::filter(x %in% xCompare)}else{
-            if(length(unique(tbl_p[[xData]]))<5){
-              tbl_py <- tbl_p}else{
-                xCompare<-c(unique(tbl_p[[xData]])[1],
-                            unique(tbl_p[[xData]])[round(length(unique(tbl_p[[xData]]))/2)],
-                            utils::tail(unique(tbl_p[[xData]]),n=1)
-                )
-                tbl_py <- tbl_p%>%dplyr::filter(x %in% xCompare)
-              }
+            print(paste("Comparing for only: ",  paste(xCompare,collapse=", "), sep=""))
+            tbl_py <- tbl_py%>%dplyr::filter(x %in% xCompare)
           }
 
         if(length(unique(tbl_py$class1))>1){figWMult=1.3}else{figWmult=1}
@@ -719,18 +735,12 @@ for(i in unique(tbl$region)){
 # Plot with Scenarios on X for Chosen Years
 #------------------------
 
-      if(any(!xCompare %in% unique(tbl_rp[[xData]]))){
+      if(!all(xCompare %in% unique(tbl_rp[[xData]]))){
       print(paste("xCompare not available in data: ", paste(xCompare[!(xCompare %in% unique(tbl_rp[[xData]]))],collapse=", "), sep=""))
       print(paste("Comparing for only: ",  paste(xCompare[(xCompare %in% unique(tbl_rp[[xData]]))],collapse=", "), sep=""))
       tbl_rpy <- tbl_rp%>%dplyr::filter(x %in% xCompare)}else{
-        if(length(unique(tbl_rp[[xData]]))<5){
-          tbl_rpy <- tbl_rp}else{
-        xCompare<-c(unique(tbl_rp[[xData]])[1],
-                        unique(tbl_rp[[xData]])[round(length(unique(tbl_rp[[xData]]))/2)],
-                        utils::tail(unique(tbl_rp[[xData]]),n=1)
-                        )
+        print(paste("Comparing for only: ",  paste(xCompare,collapse=", "), sep=""))
         tbl_rpy <- tbl_rp%>%dplyr::filter(x %in% xCompare)
-        }
       }
 
       if(length(unique(tbl_rpy$class1))>1){figWMult=1.3}else{figWmult=1}
