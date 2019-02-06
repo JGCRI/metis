@@ -5,7 +5,7 @@
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
+#if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
 library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)

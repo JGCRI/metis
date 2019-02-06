@@ -27,7 +27,7 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   legendOutsideMulti = T, legendPositionMulti = NULL,
   legendTitleSizeMulti = NULL, legendTextSizeAnim = NULL,
   legendTextSizeMulti = NULL, refGCM = NULL, refRCP = NULL,
-  chosenRefMeanYears = NULL)
+  chosenRefMeanYears = NULL, mapTitleSize = 0.5)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -139,6 +139,8 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{refRCP}{Default = NULL , eg. "rcp2p6"}
 
 \item{chosenRefMeanYears}{Default=NULL}
+
+\item{mapTitleSize}{Default=0.5}
 }
 \value{
 Returns the formatted data used to produce chart
