@@ -4,7 +4,7 @@
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
+#if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}    #andym : should this be changed to JGCRI/metis ?_?
 library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
@@ -39,32 +39,69 @@ xanthosScenarioAssign="Eg1"
 xanthosFiles=c("q_mmperyear_Reference")
 xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosReference/coordinates.csv",sep="")
 xanthosGridAreaHecsPath=paste(getwd(),"/dataFiles/grids/xanthosReference/Grid_Areas_ID.csv",sep="")
+biaFolder=paste(getwd(),"/dataFiles/grids/bia/",sep="")
+biaScenarioAssign="Eg1"
+biaFiles=c("global_power_plant_database")
+biaUnits="Capacity (MW)"
 spanLowess=0.25
 popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 popFiles<-"grid_pop_map"
 popUnits<-"person"
 gridMetisData=paste(dirOutputs, "/Grids/gridMetisXanthos.RData", sep = "")
-sqliteUSE = T
+#sqliteUSE = T andym
+sqliteUSE = F #andym
 sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
+xanthosUnits="Runoff (mm)"  #andym  I thought that xanthosUnits was supposed to be taken out of prepGrid entirely, but it seems to be needed
+reReadData=T  #andym
+scarcityXanthosRollMeanWindow=10   #andym
+
 gridMetis<-metis.prepGrid(
-             demeterFolder=demeterFolder,
-             demeterScenario=demeterScenario,
-             demeterTimesteps=demeterTimesteps,
-             demeterUnits=demeterUnits,
-             tethysFolder=tethysFolder,
-             tethysScenario=tethysScenario,
-             tethysFiles=tethysFiles,
-             tethysUnits=tethysUnits,
+             # demeterFolder=demeterFolder,
+             # demeterScenario=demeterScenario,
+             # demeterTimesteps=demeterTimesteps,
+             # demeterUnits=demeterUnits,
+             # tethysFolder=tethysFolder,
+             # tethysScenario=tethysScenario,
+             # tethysFiles=tethysFiles,
+             # tethysUnits=tethysUnits,
              xanthosFolder=xanthosFolder,
-             xanthosScenario=xanthosScenario,
-             xanthosUnits=xanthosUnits,
+             xanthosScenarioAssign=xanthosScenarioAssign,   #andym from xanthosScenario=xanthosScenario,
+             #xanthosUnits=xanthosUnits,
              xanthosFiles=xanthosFiles,
              xanthosCoordinatesPath=xanthosCoordinatesPath,
+             xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
+             biaFolder=biaFolder,
+             biaFiles=biaFiles,
+             biaScenarioAssign=biaScenarioAssign,
+             biaUnits=biaUnits,
              scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow,
              dirOutputs=dirOutputs,
              reReadData=reReadData,
-             gridMetisData=gridMetisData)
+             gridMetisData=gridMetisData,
+             sqliteUSE = sqliteUSE,
+             sqliteDBNamePath = sqliteDBNamePath
+             )
+
+
+
+# demeterFolder=demeterFolder
+# demeterScenario=demeterScenario
+# demeterTimesteps=demeterTimesteps
+# demeterUnits=demeterUnits
+# tethysFolder=tethysFolder
+# tethysScenario=tethysScenario
+# tethysFiles=tethysFiles
+# tethysUnits=tethysUnits
+# xanthosFolder=xanthosFolder
+# xanthosScenario=xanthosScenario
+# xanthosUnits=xanthosUnits
+# xanthosFiles=xanthosFiles
+# xanthosCoordinatesPath=xanthosCoordinatesPath
+# scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow
+# dirOutputs=dirOutputs
+# reReadData=reReadData
+# gridMetisData=gridMetisData
 
 
 # Grid to Shape

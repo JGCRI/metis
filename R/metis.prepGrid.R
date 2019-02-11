@@ -14,6 +14,14 @@
 #' @param xanthosScenarioAssign Default "NA". Scenario name if testing single scenario.
 #' @param xanthosCoordinatesPath paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")
 #' @param xanthosGridAreaHecsPath =paste(getwd(),"/dataFiles/grids/xanthosRunsChris/reference/Grid_Areas_ID.csv",sep=""),
+#' @param biaFolder andym Bia Folder Path
+#' @param biaFiles andym Bia Files to Read
+#' @param biaScenarioAssign andym Default "NA". Scenario name if testing a single scenario.
+#' @param biaUnits andym No Default
+#' @param zelusFolder andym Full path to zelus outputs
+#' @param zelusFiles andym Default =c(?_?'edtrnsp','edbld','edindus'?_?)
+#' @param zelusScenario andym Scenario name for zelus run
+#' @param zelusUnits andym No Default
 #' @param scarcityXanthosRollMeanWindow Default = 10,
 #' @param popFolder Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 #' @param popFiles Default = <-"grid_pop_map"
@@ -41,6 +49,14 @@ metis.prepGrid<- function(demeterFolder="NA",
                         xanthosScenarioAssign="NA",
                         xanthosCoordinatesPath="NA",
                         xanthosGridAreaHecsPath="NA",
+                        biaFolder="NA",
+                        biaFiles="NA",
+                        biaScenarioAssign="NA",
+                        biaUnits="NA",
+                        zelusFolder="NA",
+                        zelusScenario="NA",
+                        zelusUnits="NA",
+                        zelusFiles="NA",
                         scarcityXanthosRollMeanWindow=10,
                         spanLowess=0.25,
                         popFolder="NA",
@@ -53,29 +69,6 @@ metis.prepGrid<- function(demeterFolder="NA",
                         sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
                         ){
 
-  # demeterFolder="NA"
-  # demeterScenario="NA"
-  # demeterTimesteps=seq(from=2005,to=2100,by=5)
-  # demeterUnits="NA"
-  # tethysFolder="NA"
-  # tethysScenario="NA"
-  # tethysUnits="NA"
-  # tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
-  # xanthosFolder="NA"
-  # xanthosFiles="NA"
-  # xanthosScenarioAssign="NA"
-  # xanthosCoordinatesPath="NA"
-  # xanthosGridAreaHecsPath="NA"
-  # scarcityXanthosRollMeanWindow=10
-  # spanLowess=025
-  # popFolder="NA"
-  # popFiles="NA"
-  # popUnits="NA"
-  # dirOutputs=paste(getwd(),"/outputs",sep="")
-  # reReadData=1
-  # gridMetisData=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = "")
-  # sqliteUSE = T
-  # sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
 
 #----------------
@@ -84,8 +77,8 @@ metis.prepGrid<- function(demeterFolder="NA",
 
 NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
   ilon->ilat->param->V2->V3->scenario->classPalette->rollingMean->x->scarcity->value->id->
-    tethysScenarios->tethysYears->xanthosScenarios->xanthosYears->commonYears->commonScenarios->
-    V1->Area_hec->Area_km2->lowess->valueXanthos->valueTethys->commonYears_i
+    tethysScenarios->tethysYears->xanthosScenarios->xanthosYears->biaScenarios->biaYears->zelusScenarios->zelusYears->
+    commonYears->commonScenarios->V1->Area_hec->Area_km2->lowess->valueXanthos->valueTethys->valueBia->valueZelus->commonYears_i
 
 
 #------------------
@@ -124,7 +117,8 @@ DBI::dbDisconnect(dbConn);dbConn
 if(!dir.exists(demeterFolder)){
 
   print(paste("Demeter folder: ", demeterFolder ," is incorrect or doesn't exist.",sep=""))
-  print(paste("Skipping demeter runs",sep=""))}else {
+  print(paste("Skipping demeter runs",sep=""))
+  }else {
 
     if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
 
@@ -310,7 +304,7 @@ if(!dir.exists(xanthosFolder)){
         xanthosUnits="Runoff (mm)"
         print(paste("km3 data converted to mm.", sep=""))
         }else{
-          print(paste("Baed on xanthos filename: ", xanthosFile_i, " has mm data. Using mm.", sep=""))
+          print(paste("Based on xanthos filename: ", xanthosFile_i, " has mm data. Using mm.", sep=""))
           gridx<-dplyr::bind_cols(xanthosCoords,gridx)}
 
         if(grepl("pm_abcd_mrtm",xanthosFile_i)){
@@ -393,6 +387,229 @@ if(!dir.exists(xanthosFolder)){
     if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
 
 } # close If xanthosGridAreaHecsPath path exists
+
+
+
+#----------------
+# Prepare Zelus Files
+#---------------
+
+# if(!dir.exists(zelusFolder)){
+#   print(paste("zelus folder: ", zelusFolder ," is incorrect or doesn't exist.",sep=""))
+#   print(paste("Skipping zelus runs",sep=""))}else {
+#
+#     if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
+#
+#     zelusScenarios<-character()
+#     zelusYears<-numeric()
+#
+#     for(zelusFile_i in zelusFiles){
+#
+#       class_i=gsub(".csv","",zelusFile_i)
+#       if(!grepl(".csv",zelusFile_i)){zelusFile_i=paste(zelusFile_i,".csv",sep="")}
+#
+#       if(!file.exists(paste(zelusFolder,"/",zelusFile_i,sep=""))){
+#         print(paste("zelus file: ", zelusFolder,"/",zelusFile_i," is incorrect or doesn't exist.",sep=""))
+#         print(paste("Skipping file: ",zelusFolder,"/",zelusFile_i,sep=""))
+#       }else{
+#         print(paste("Reading zelus data file: ",zelusFile_i,"...",sep=""))
+#         gridx<-data.table::fread(paste(zelusFolder,"/",zelusFile_i,sep=""),fill=T)%>%
+#           tibble::as_tibble()%>%dplyr::select(-'# ID',-ilon,-ilat)                      andym this is where I stopped replacing 'tethys' with 'zelus'
+#         print("File read.")
+#         names(gridx)<-gsub("X","",names(gridx))
+#         if(grepl("mm",tethysUnits)){aggType="depth"}else{aggType="vol"}
+#         gridx<-gridx%>%dplyr::select(-dplyr::contains("Unit"))
+#         gridx<-gridx%>%
+#           dplyr::mutate(lat=lat,lon=lon,
+#                         scenarioGCM=NA,
+#                         scenarioRCP=NA,
+#                         scenarioSSP=NA,
+#                         scenarioPolicy=NA,
+#                         scenario=tethysScenario,
+#                         param="tethysWatWithdraw",
+#                         units=tethysUnits,
+#                         aggType=aggType,
+#                         classPalette="pal_wet",
+#                         class=class_i)%>%
+#           tidyr::gather(key="x",value="value",-c("lat","lon","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","classPalette","class"))
+#
+#         gridx$x<-as.numeric(gridx$x)
+#
+#         gridx<-gridx%>%
+#           dplyr::mutate(class=dplyr::case_when(grepl("wddom",class)~"Domestic",
+#                                                grepl("elec",class)~"Electric",
+#                                                grepl("irr",class)~"Irrigation",
+#                                                grepl("liv",class)~"Livestock",
+#                                                grepl("mfg",class)~"Manufacturing",
+#                                                grepl("min",class)~"Mining",
+#                                                grepl("nonag",class)~"Non Agriculture",
+#                                                grepl("total",class)~"Total",
+#                                                TRUE~class))
+#
+#         tethysScenarios<-c(tethysScenarios,tethysScenario)
+#         tethysYears<-unique(gridx$x)
+#
+#         if(sqliteUSE==T){
+#           DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
+#           print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
+#         }else{
+#           print(paste("Using .Rdata format to save data.",sep=""))
+#           gridMetis<-dplyr::bind_rows(gridMetis,gridx)
+#         }
+#
+#         rm(gridx)
+#
+#       } # Close if tethys file exists
+#     } # close tethys file loops
+#
+#     if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
+#
+#   } # Close tethys folder
+
+#
+
+#----------------
+# Prepare Bia Files
+#---------------
+
+#
+#
+#
+# if(!dir.exists(biaFolder)){
+#   print(paste("bia folder: ", biaFolder ," is incorrect or doesn't exist.",sep=""))
+#   print(paste("Skipping bia runs",sep=""))}else {
+#
+#     if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
+#
+#     biaScenarios<-character()
+#     biaYears<-numeric()
+#
+#     for(biaFile_i in biaFiles){
+#
+#       if(!grepl(".csv",biaFile_i)){biaFile_i=paste(biaFile_i,".csv",sep="")}
+#
+#       if(!file.exists(paste(biaFolder,"/",biaFile_i,sep=""))){
+#         print(paste("bia file: ", biaFolder,"/",biaFile_i," is incorrect or doesn't exist.",sep=""))
+#         print(paste("Skipping file: ",biaFolder,"/",biaFile_i,sep=""))
+#       }else{
+#
+#         #biaCoords<-data.table::fread(biaCoordinatesPath, header=F);
+#         #biaCoords<-biaCoords%>%dplyr::rename(lon=V2,lat=V3)%>%dplyr::select(lon,lat)
+#         #biaGridArea<-data.table::fread(biaGridAreaHecsPath, header=F);
+#         #biaGridArea<-biaGridArea%>%dplyr::rename(Area_hec=V1)%>%dplyr::mutate(Area_km2=Area_hec)%>%
+#         #  dplyr::select(Area_hec,Area_km2)
+#
+#         print(paste("Reading bia data file: ",biaFile_i,"...",sep=""))
+#         gridx<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""), header=T,stringsAsFactors = T)%>%     #andym  from sAsF = F
+#           tibble::as_tibble()%>%dplyr::select(-country,-name,-country_long,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh)
+#         print(paste("Bia data file: ",biaFile_i," read.",sep=""))
+#
+#         #names(gridx)<-gsub("X","",names(gridx))
+#
+#         # if(nrow(gridx)!=nrow(biaCoords)){
+#         #   stop(paste("Rows in bia file: ", biaFolder,"/",biaFile_i,
+#         #              " not equal to rows in bia coords file: ",
+#         #              biaCoordinatesPath,sep=""))}
+#
+#         # if(nrow(gridx)!=nrow(biaGridArea)){
+#         #   stop(paste("Rows in bia file: ", biaFolder,"/",biaFile_i,
+#         #              " not equal to rows in bia coords file: ",
+#         #              biaCoordinatesPath,sep=""))}
+#
+#
+#         if(grepl("km3",biaFile_i)){
+#           print(paste("Based on bia file name: ", biaFile_i, " has km3 data. Converting to mm...", sep=""))
+#           gridx<-gridx/(biaGridArea$Area_km2/1000000)
+#           gridx<-dplyr::bind_cols(biaCoords,gridx)
+#           biaUnits="Runoff (mm)"
+#           print(paste("km3 data converted to mm.", sep=""))
+#         }else{
+#           print(paste("Based on bia filename: ", biaFile_i, " has mm data. Using mm.", sep=""))
+#           gridx<-dplyr::bind_cols(biaCoords,gridx)}
+#
+#         if(grepl("pm_abcd_mrtm",biaFile_i)){
+#           biaScenario<-sub("^pm_abcd_mrtm_", "", biaFile_i);biaScenario
+#           biaScenario<-sub("\\_[0-9].*", "", biaScenario);biaScenario
+#           biaGCM<-sub("_.*","",biaScenario); biaGCM
+#           biaRCP<-sub(".*_","",biaScenario); biaRCP}else{
+#             biaScenario<-biaScenarioAssign
+#             biaGCM=NA;biaRCP=NA
+#           }
+#
+#
+#         if(grepl("mm",biaUnits)){aggType="depth"}else{aggType="vol"}
+#         print(paste("Gathering data for bia filename: ", biaFile_i, " into year columns...", sep=""))
+#         gridx<-gridx%>%dplyr::mutate(scenario=biaScenario,
+#                                      scenarioGCM=biaGCM,
+#                                      scenarioRCP=biaRCP,
+#                                      scenarioSSP=NA,
+#                                      scenarioPolicy=NA,
+#                                      param="biaRunoff",
+#                                      units=biaUnits,
+#                                      aggType=aggType,
+#                                      classPalette="pal_wet",
+#                                      class="Runoff")%>%
+#           tidyr::gather(key="x",value="value",
+#                         -c("lat","lon","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","classPalette","class"))%>%
+#           tibble::as_tibble()
+#         print(paste("Data for bia file gathered into columns.", sep=""))
+#
+#         gridx$x<-as.numeric(gridx$x)
+#
+#         biaScenarios<-c(biaScenarios,biaScenario)
+#         biaYears<-unique(gridx$x)
+#
+#         # Apply Lowess Filter
+#         # https://stat.ethz.ch/pipermail/bioconductor/2003-September/002337.html
+#         # https://www.rdocumentation.org/packages/gplots/versions/3.0.1/topics/lowess
+#
+#
+#         print(paste("Applying lowess filter to file: ", biaFile_i, " using lowess span of ",spanLowess,"...", sep=""))
+#         gridx <- gridx %>%
+#           dplyr::group_by(lat,lon,scenario,param,units,aggType,classPalette,class) %>%
+#           dplyr::arrange(lat,lon) %>%
+#           dplyr::mutate(lowess = stats::lowess(y=value, x=x, f=spanLowess )$y)
+#         print(paste("Lowess filter applied.", sep=""))
+#
+#
+#         for(i in c(1,5,40,100,149,180)){
+#           gridC<-gridx[(gridx$lat==unique(gridx$lat)[i] & gridx$lon==unique(gridx$lon)[i]),]
+#           fname=paste(unique(gridC$scenario),"_",unique(gridC$param),
+#                       "_lat",unique(gridC$lat),"_lon", unique(gridC$lon),
+#                       "_lowessSpan",spanLowess,sep="")
+#           metis.printPdfPng(figure=graphics::plot(gridC$x,gridC$value,type="l",
+#                                                   main=paste(unique(gridC$scenario),
+#                                                              "\nlat = ",unique(gridC$lat),", lon = ", unique(gridC$lon),
+#                                                              ", Lowess Span =  ",spanLowess,sep=""),
+#                                                   ylab=unique(gridC$units),xlab="Year")+
+#                               graphics::lines(gridC$x,gridC$lowess,type="l",col="red"),
+#                             dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
+#         }
+#
+#         gridx<-gridx%>%dplyr::mutate(value=lowess)%>%dplyr::select(-lowess)
+#
+#         if(sqliteUSE==T){
+#           DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
+#           print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
+#         }else{
+#           print(paste("Using .Rdata format to save data.",sep=""))
+#           gridMetis<-dplyr::bind_rows(gridMetis,gridx)
+#         }
+#
+#         rm(gridx)
+#
+#
+#       } # Close if bia file exists
+#     } # close bia file loops
+#
+#     if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
+#
+#   } # Close bia folder
+#
+#
+#
+
+
 
 #----------------
 # Prepare Gridded Scarcity

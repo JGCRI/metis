@@ -5,19 +5,33 @@
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
+<<<<<<< HEAD
 #if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
 library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
+=======
+>>>>>>> Edits to prepGrid and to installing packages, so that I can use two machines at once
 if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}
 library(tibble)
-if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dlpyr")}
-library(dplyr)
 if("rgdal" %in% rownames(installed.packages()) == F){install.packages("rgdal")}
 library(rgdal)
 if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}
 library(tmap)
-
+if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dplyr")}             #andym dplyr was misspelled
+library(dplyr)
+if("zoo" %in% rownames(installed.packages()) == F){install.packages("zoo")}            #andym added this package to install
+library(zoo)
+if("dbplyr" %in% rownames(installed.packages()) == F){install.packages("dbplyr")}            #andym added this package to install
+library(dbplyr)
+if("RSQLite" %in% rownames(installed.packages()) == F){install.packages("RSQLite")}            #andym added this package to install
+library(RSQLite)
+if("data.table" %in% rownames(installed.packages()) == F){install.packages("data.table")}            #andym added this package to install
+library(data.table)
+#if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
+library(metis)
+if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}            #andym I re-ordered installation of rgcam, dplyr, and metis so that the other packages installed first
+library(rgcam)
 
 #----------------------------
 # Read GCAM Data
