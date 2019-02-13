@@ -173,6 +173,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # refGCM=NULL
   # refRCP=NULL
   # chosenRefMeanYears=NULL
+  # mapTitleSize=0.5
 
 
 #------------------
@@ -573,7 +574,7 @@ if(length(unique(gridTbl$scenario))>1){
   for (scenario_i in unique(gridTbl$scenario)[unique(gridTbl$scenario)!=scenRef_i]){
     tbl_temp1 <-gridTblDiff%>%
       dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
-                    classPalette="pal_div")%>%
+                    classPalette="pal_div_BlRd")%>%
       dplyr::select(-dplyr::one_of(c(unique(gridTbl$scenario))))
     tbl_temp1<-tbl_temp1%>%
       tidyr::gather(key=scenario,value=value,
@@ -582,7 +583,7 @@ if(length(unique(gridTbl$scenario))>1){
 
     tbl_temp2 <-gridTblDiff%>%
       dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
-                    classPalette="pal_div")%>%
+                    classPalette="pal_div_BlRd")%>%
       dplyr::select(-dplyr::one_of(c(unique(gridTbl$scenario))))
     tbl_temp2<-tbl_temp2%>%
       tidyr::gather(key=scenario,value=value,
@@ -639,7 +640,7 @@ if(length(unique(shapeTbl$scenario))>1){
   for (scenario_i in unique(shapeTbl$scenario)[unique(shapeTbl$scenario)!=scenRef_i]){
     tbl_temp1 <-shapeTblDiff%>%
       dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
-                    classPalette="pal_div")%>%
+                    classPalette="pal_div_BlRd")%>%
       dplyr::select(-dplyr::one_of(c(unique(shapeTbl$scenario))))
     tbl_temp1<-tbl_temp1%>%
       tidyr::gather(key=scenario,value=value,
@@ -648,7 +649,7 @@ if(length(unique(shapeTbl$scenario))>1){
 
     tbl_temp2 <-shapeTblDiff%>%
      dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
-                    classPalette="pal_div")%>%
+                    classPalette="pal_div_BlRd")%>%
       dplyr::select(-dplyr::one_of(c(unique(shapeTbl$scenario))))
     tbl_temp2<-tbl_temp2%>%
       tidyr::gather(key=scenario,value=value,
@@ -1657,8 +1658,10 @@ if(!is.null(shapeTbl)){
 
               datax<-shapeTblMultxDiff%>%dplyr::filter(x==x_i)%>%dplyr::mutate(value=valueDiff)%>%dplyr::select(-valueDiff)
 
-              if(any(unique(datax$classPalette) %in% "pal_wet")){
-                datax <- datax %>% dplyr:: mutate(classPalette = dplyr::case_when(classPalette=="pal_wet"~"pal_wet_div",
+              if(any(unique(datax$classPalette) %in% c("pal_wet","pal_hot","pal_green"))){
+                datax <- datax %>% dplyr:: mutate(classPalette = dplyr::case_when(classPalette=="pal_wet"~"pal_div_wet",
+                                                                                  classPalette=="pal_hot"~"pal_div_BlRd",
+                                                                                  classPalette=="pal_green"~"pal_div_BrGn",
                                                                            TRUE~classPalette))
               }
 
@@ -1718,6 +1721,7 @@ if(!is.null(shapeTbl)){
                           mapTitleSize=mapTitleSize,
                           fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_KMEANS",sep=""),
                           dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep = ""))
+
 
 
                 metis.map(mapTitle = mapTitle,panelLabel=panelLabelMulti,
