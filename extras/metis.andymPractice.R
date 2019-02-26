@@ -457,8 +457,9 @@ for(biaFile_i in biaFiles){
 
 
   gridARGCOL <- gridaP%>%
-    dplyr::group_by(value, country, class)%>%
-    dplyr::summarise(total_capacity=sum(value))
+    dplyr::group_by(country, class)%>%
+    dplyr::summarise(total_capacity=sum(value))%>%
+    dplyr::filter(country %in% c("ARG","COL"))
 
 
   gridx<-gridx%>%
