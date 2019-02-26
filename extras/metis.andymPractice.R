@@ -456,11 +456,35 @@ for(biaFile_i in biaFiles){
 #---------------
 
 
-  gridARGCOL <- gridaP%>%
+  gridWRI <- gridaP%>%
     dplyr::group_by(country, class)%>%
     dplyr::summarise(total_capacity=sum(value))%>%
-    dplyr::filter(country %in% c("ARG","COL"))
+    dplyr::filter(country %in% c("ARG","COL"))%>%
+    dplyr::mutate(class=toupper(class))
 
+
+
+  gridGCAMelec<-data.table::fread(paste(biaFolder,"/elec_gen_by_subsector_Col_Arg_gcam.csv",sep=""), header=T,stringsAsFactors = F)
+
+  gGeSlim<-gridGCAMelec%>%tibble::as_tibble()%>%dplyr::select(country=region, class=subsector, Elec_Gen_GCAM_2015="2015")%>%
+    dplyr::mutate(class=toupper(class))
+  gGeSlim[gGeSlim=="Argentina"]<-"ARG"
+  gGeSlim[gGeSlim=="Colombia"]<-"COL"
+  gGeSlim[gGeSlim=="REFINED LIQUIDS"]<-"OIL"
+
+  GCAMcapFactors<-gridbP
+  GCAMcapFactors$gcamCapFactor[GCAMcapFactors$technology=="CSP_storage"]<-NA
+  GCAMcapFactors<-GCAMcapFactors%>%dplyr::group_by(class)%>%dplyr::summarise(gcamCapFactorAv=mean(gcamCapFactor, na.rm = TRUE))
+
+  gGeSlim<-merge(gGeSlim,GCAMcapFactors)
+  gGeSlim<-gGeSlim%>%dplyr::mutate(GCAMestCapVals=Elec_Gen_GCAM_2015/gcamCapFactorAv*(10^12)/(365*24*3600))
+
+
+
+  gridComparingCapacity<-merge(gridWRI,gGeSlim)            #THIS IS WHERE I AM FEB 26 - Start with Fixing this line
+
+
+  print(paste("Bia data file: ",biaFile_i," read.",sep=""))
 
   gridx<-gridx%>%
     dplyr::mutate(lat=lat,lon=lon,
