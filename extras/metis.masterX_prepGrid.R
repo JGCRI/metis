@@ -41,8 +41,8 @@ xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosReference/coordina
 xanthosGridAreaHecsPath=paste(getwd(),"/dataFiles/grids/xanthosReference/Grid_Areas_ID.csv",sep="")
 biaFolder=paste(getwd(),"/dataFiles/grids/bia/",sep="")
 biaScenarioAssign="Eg1"
-biaFiles=c("global_power_plant_database")
-biaUnits="Capacity (MW)"
+biaFiles=c("global_power_plant_database_MW")
+#biaUnits="Capacity (MW)"   #andym   ?Should we have biaUnits?
 spanLowess=0.25
 popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 popFiles<-"grid_pop_map"
@@ -74,7 +74,6 @@ gridMetis<-metis.prepGrid(
              biaFolder=biaFolder,
              biaFiles=biaFiles,
              biaScenarioAssign=biaScenarioAssign,
-             biaUnits=biaUnits,
              scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow,
              dirOutputs=dirOutputs,
              reReadData=reReadData,

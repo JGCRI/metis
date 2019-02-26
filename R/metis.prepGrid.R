@@ -17,7 +17,6 @@
 #' @param biaFolder andym Bia Folder Path
 #' @param biaFiles andym Bia Files to Read
 #' @param biaScenarioAssign andym Default "NA". Scenario name if testing a single scenario.
-#' @param biaUnits andym No Default
 #' @param zelusFolder andym Full path to zelus outputs
 #' @param zelusFiles andym Default =c(?_?'edtrnsp','edbld','edindus'?_?)
 #' @param zelusScenario andym Scenario name for zelus run
@@ -52,7 +51,6 @@ metis.prepGrid<- function(demeterFolder="NA",
                         biaFolder="NA",
                         biaFiles="NA",
                         biaScenarioAssign="NA",
-                        biaUnits="NA",
                         zelusFolder="NA",
                         zelusScenario="NA",
                         zelusUnits="NA",
@@ -472,142 +470,129 @@ if(!dir.exists(xanthosFolder)){
 # Prepare Bia Files
 #---------------
 
-#
-#
-#
-# if(!dir.exists(biaFolder)){
-#   print(paste("bia folder: ", biaFolder ," is incorrect or doesn't exist.",sep=""))
-#   print(paste("Skipping bia runs",sep=""))}else {
-#
-#     if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
-#
-#     biaScenarios<-character()
-#     biaYears<-numeric()
-#
-#     for(biaFile_i in biaFiles){
-#
-#       if(!grepl(".csv",biaFile_i)){biaFile_i=paste(biaFile_i,".csv",sep="")}
-#
-#       if(!file.exists(paste(biaFolder,"/",biaFile_i,sep=""))){
-#         print(paste("bia file: ", biaFolder,"/",biaFile_i," is incorrect or doesn't exist.",sep=""))
-#         print(paste("Skipping file: ",biaFolder,"/",biaFile_i,sep=""))
-#       }else{
-#
-#         #biaCoords<-data.table::fread(biaCoordinatesPath, header=F);
-#         #biaCoords<-biaCoords%>%dplyr::rename(lon=V2,lat=V3)%>%dplyr::select(lon,lat)
-#         #biaGridArea<-data.table::fread(biaGridAreaHecsPath, header=F);
-#         #biaGridArea<-biaGridArea%>%dplyr::rename(Area_hec=V1)%>%dplyr::mutate(Area_km2=Area_hec)%>%
-#         #  dplyr::select(Area_hec,Area_km2)
-#
-#         print(paste("Reading bia data file: ",biaFile_i,"...",sep=""))
-#         gridx<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""), header=T,stringsAsFactors = T)%>%     #andym  from sAsF = F
-#           tibble::as_tibble()%>%dplyr::select(-country,-name,-country_long,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh)
-#         print(paste("Bia data file: ",biaFile_i," read.",sep=""))
-#
-#         #names(gridx)<-gsub("X","",names(gridx))
-#
-#         # if(nrow(gridx)!=nrow(biaCoords)){
-#         #   stop(paste("Rows in bia file: ", biaFolder,"/",biaFile_i,
-#         #              " not equal to rows in bia coords file: ",
-#         #              biaCoordinatesPath,sep=""))}
-#
-#         # if(nrow(gridx)!=nrow(biaGridArea)){
-#         #   stop(paste("Rows in bia file: ", biaFolder,"/",biaFile_i,
-#         #              " not equal to rows in bia coords file: ",
-#         #              biaCoordinatesPath,sep=""))}
-#
-#
-#         if(grepl("km3",biaFile_i)){
-#           print(paste("Based on bia file name: ", biaFile_i, " has km3 data. Converting to mm...", sep=""))
-#           gridx<-gridx/(biaGridArea$Area_km2/1000000)
-#           gridx<-dplyr::bind_cols(biaCoords,gridx)
-#           biaUnits="Runoff (mm)"
-#           print(paste("km3 data converted to mm.", sep=""))
-#         }else{
-#           print(paste("Based on bia filename: ", biaFile_i, " has mm data. Using mm.", sep=""))
-#           gridx<-dplyr::bind_cols(biaCoords,gridx)}
-#
-#         if(grepl("pm_abcd_mrtm",biaFile_i)){
-#           biaScenario<-sub("^pm_abcd_mrtm_", "", biaFile_i);biaScenario
-#           biaScenario<-sub("\\_[0-9].*", "", biaScenario);biaScenario
-#           biaGCM<-sub("_.*","",biaScenario); biaGCM
-#           biaRCP<-sub(".*_","",biaScenario); biaRCP}else{
-#             biaScenario<-biaScenarioAssign
-#             biaGCM=NA;biaRCP=NA
-#           }
-#
-#
-#         if(grepl("mm",biaUnits)){aggType="depth"}else{aggType="vol"}
-#         print(paste("Gathering data for bia filename: ", biaFile_i, " into year columns...", sep=""))
-#         gridx<-gridx%>%dplyr::mutate(scenario=biaScenario,
-#                                      scenarioGCM=biaGCM,
-#                                      scenarioRCP=biaRCP,
-#                                      scenarioSSP=NA,
-#                                      scenarioPolicy=NA,
-#                                      param="biaRunoff",
-#                                      units=biaUnits,
-#                                      aggType=aggType,
-#                                      classPalette="pal_wet",
-#                                      class="Runoff")%>%
-#           tidyr::gather(key="x",value="value",
-#                         -c("lat","lon","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","classPalette","class"))%>%
-#           tibble::as_tibble()
-#         print(paste("Data for bia file gathered into columns.", sep=""))
-#
-#         gridx$x<-as.numeric(gridx$x)
-#
-#         biaScenarios<-c(biaScenarios,biaScenario)
-#         biaYears<-unique(gridx$x)
-#
-#         # Apply Lowess Filter
-#         # https://stat.ethz.ch/pipermail/bioconductor/2003-September/002337.html
-#         # https://www.rdocumentation.org/packages/gplots/versions/3.0.1/topics/lowess
-#
-#
-#         print(paste("Applying lowess filter to file: ", biaFile_i, " using lowess span of ",spanLowess,"...", sep=""))
-#         gridx <- gridx %>%
-#           dplyr::group_by(lat,lon,scenario,param,units,aggType,classPalette,class) %>%
-#           dplyr::arrange(lat,lon) %>%
-#           dplyr::mutate(lowess = stats::lowess(y=value, x=x, f=spanLowess )$y)
-#         print(paste("Lowess filter applied.", sep=""))
-#
-#
-#         for(i in c(1,5,40,100,149,180)){
-#           gridC<-gridx[(gridx$lat==unique(gridx$lat)[i] & gridx$lon==unique(gridx$lon)[i]),]
-#           fname=paste(unique(gridC$scenario),"_",unique(gridC$param),
-#                       "_lat",unique(gridC$lat),"_lon", unique(gridC$lon),
-#                       "_lowessSpan",spanLowess,sep="")
-#           metis.printPdfPng(figure=graphics::plot(gridC$x,gridC$value,type="l",
-#                                                   main=paste(unique(gridC$scenario),
-#                                                              "\nlat = ",unique(gridC$lat),", lon = ", unique(gridC$lon),
-#                                                              ", Lowess Span =  ",spanLowess,sep=""),
-#                                                   ylab=unique(gridC$units),xlab="Year")+
-#                               graphics::lines(gridC$x,gridC$lowess,type="l",col="red"),
-#                             dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
-#         }
-#
-#         gridx<-gridx%>%dplyr::mutate(value=lowess)%>%dplyr::select(-lowess)
-#
-#         if(sqliteUSE==T){
-#           DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
-#           print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
-#         }else{
-#           print(paste("Using .Rdata format to save data.",sep=""))
-#           gridMetis<-dplyr::bind_rows(gridMetis,gridx)
-#         }
-#
-#         rm(gridx)
-#
-#
-#       } # Close if bia file exists
-#     } # close bia file loops
-#
-#     if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
-#
-#   } # Close bia folder
-#
-#
-#
+
+
+
+if(!dir.exists(biaFolder)){
+  print(paste("bia folder: ", biaFolder ," is incorrect or doesn't exist.",sep=""))
+  print(paste("Skipping bia runs",sep=""))}else {
+
+    if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
+
+    biaScenarios<-character()
+    biaYears<-numeric()
+
+    for(biaFile_i in biaFiles){
+
+      if(!grepl(".csv",biaFile_i)){biaFile_i=paste(biaFile_i,".csv",sep="")}
+
+      if(!file.exists(paste(biaFolder,"/",biaFile_i,sep=""))){
+        print(paste("bia file: ", biaFolder,"/",biaFile_i," is incorrect or doesn't exist.",sep=""))
+        print(paste("Skipping file: ",biaFolder,"/",biaFile_i,sep=""))
+      }else{
+
+        #biaCoords<-data.table::fread(biaCoordinatesPath, header=F);
+        #biaCoords<-biaCoords%>%dplyr::rename(lon=V2,lat=V3)%>%dplyr::select(lon,lat)
+        #biaGridArea<-data.table::fread(biaGridAreaHecsPath, header=F);
+        #biaGridArea<-biaGridArea%>%dplyr::rename(Area_hec=V1)%>%dplyr::mutate(Area_km2=Area_hec)%>%
+        #  dplyr::select(Area_hec,Area_km2)
+
+        print(paste("Reading bia data file: ",biaFile_i,"...",sep=""))
+        gridx<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""), header=T,stringsAsFactors = F)%>%
+          tibble::as_tibble()%>%dplyr::select(-country,-name,-country_long,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh)
+        print(paste("Bia data file: ",biaFile_i," read.",sep=""))
+
+        #names(gridx)<-gsub("X","",names(gridx))
+
+        # if(nrow(gridx)!=nrow(biaCoords)){
+        #   stop(paste("Rows in bia file: ", biaFolder,"/",biaFile_i,
+        #              " not equal to rows in bia coords file: ",
+        #              biaCoordinatesPath,sep=""))}
+
+        # if(nrow(gridx)!=nrow(biaGridArea)){
+        #   stop(paste("Rows in bia file: ", biaFolder,"/",biaFile_i,
+        #              " not equal to rows in bia coords file: ",
+        #              biaCoordinatesPath,sep=""))}
+
+
+        if(grepl("GW",biaFile_i)){
+          print(paste("Based on bia file name: ", biaFile_i, " has GW capacity data. Converting to MW...", sep=""))
+          gridx<-gridx%>%dplyr::mutate(capacity_gw = capacity_gw*1000)%>%
+            dplyr::rename(capacity_mw=capacity_gw)
+        #  gridx<-dplyr::bind_cols(biaCoords,gridx)
+        #  biaUnits="Runoff (mm)"                       #andym ?should we make biaUnits?
+          print(paste("GW data converted to MW", sep=""))
+        }else{
+          print(paste("Based on bia filename: ", biaFile_i, " has MW data. Using MW.", sep=""))
+        #  gridx<-dplyr::bind_cols(biaCoords,gridx)
+          }
+
+        # if(grepl("pm_abcd_mrtm",biaFile_i)){                                #andym add these to inspect biafiles for infromation on scenario
+        #   biaScenario<-sub("^pm_abcd_mrtm_", "", biaFile_i);biaScenario
+        #   biaScenario<-sub("\\_[0-9].*", "", biaScenario);biaScenario
+        #   biaGCM<-sub("_.*","",biaScenario); biaGCM
+        #   biaRCP<-sub(".*_","",biaScenario); biaRCP}else{
+        #     biaScenario<-biaScenarioAssign
+        #     biaGCM=NA;biaRCP=NA
+        #   }
+
+        biaScenario<-biaScenarioAssign       #andym take this out if use the code above. And should this be biaScenarios instead?
+        biaGCM=NA;biaRCP=NA
+
+        aggType="vol"
+
+        #print(paste("Gathering data for bia filename: ", biaFile_i, " into year columns...", sep=""))
+
+        gridx<-gridx%>%dplyr::mutate(lat=latitude,
+                                     lon=longitude,
+                                     scenario=biaScenario,
+                                     scenarioGCM=biaGCM,
+                                     scenarioRCP=biaRCP,
+                                     scenarioSSP=NA,
+                                     scenarioPolicy=NA,
+                                     param="biaElecGen",
+                                     units= "Capacity (MW)",
+                                     aggType=aggType,
+                                     classPalette="pal_elec_subsec",
+                                     class=fuel1,
+                                     value=capacity_mw,
+                                     x=NA)%>%
+          tibble::as_tibble()%>%dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw)%>%
+          #tidyr::gather(key="x",value="value",
+           #             -c("lat","lon","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","classPalette","class","commissioning_year","year_of_capacity_data"))  #%>%
+
+
+          tibble::as_tibble()
+        print(paste("Data for bia file gathered into columns.", sep=""))
+
+        gridx$x<-as.numeric(gridx$x)
+
+        biaScenarios<-c(biaScenarios,biaScenario)
+        biaYears<-unique(gridx$x)
+
+
+        if(sqliteUSE==T){
+          DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
+          print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
+        }else{
+          print(paste("Using .Rdata format to save data.",sep=""))
+          gridMetis<-dplyr::bind_rows(gridMetis,gridx)
+          }
+
+
+
+        rm(gridx)
+
+
+      } # Close if bia file exists
+    } # close bia file loops
+
+    if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
+
+  } # Close bia folder
+
+
+
 
 
 
