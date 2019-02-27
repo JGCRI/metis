@@ -481,7 +481,7 @@ for(biaFile_i in biaFiles){
 
 
 
-  gridComparingCapacity<-merge(gridWRI,gGeSlim)            #THIS IS WHERE I AM FEB 26 - Start with Fixing this line
+  gridComparingCapacity<-merge(gridWRI,gGeSlim)
 
   gridComparingCapacityARG<-gridComparingCapacity%>%dplyr::filter(country %in% c("ARG"))%>%
     dplyr::select(-c("gcamCapFactorAv","Elec_Gen_GCAM_2015"))%>%
