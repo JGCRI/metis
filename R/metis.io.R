@@ -20,6 +20,12 @@ metis.io<-function(Z0=NULL,
                  dirOutputs=paste(getwd(),"/outputs",sep="")
                         ){
 
+  # Z0=NULL
+  # D0=NULL
+  # X0=NULL
+  # D=NULL
+  # A0=NULL
+  # dirOutputs=paste(getwd(),"/outputs",sep="")
 #----------------
 # Initialize variables by setting to NULL
 #----------------
