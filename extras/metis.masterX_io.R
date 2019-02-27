@@ -4,7 +4,7 @@
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
+if("metis" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/metis")}
 library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
@@ -40,12 +40,12 @@ X0=tibble::tribble( # Initial total demand
 );X0
 
 
-io<-met.io(Z0=Z0,X0=X0,D=c(200,100))
+io<-metis.io(Z0=Z0,X0=X0,D=c(200,100))
 io$A
 io$L
 
 #Problem 2.1b
-(diag(nrow(io$ioTbl)) + io$A + io$A%*%io$A + io$A%*%io$A%*%io$A + io$A%*%io$A%*%io$A%*%io$A)%*%as.matrix(io$D)
+#(diag(nrow(io$ioTbl)) + io$A + io$A%*%io$A + io$A%*%io$A%*%io$A + io$A%*%io$A%*%io$A%*%io$A)%*%as.matrix(io$D)
 #i. [794.9863,613.7669]
 #ii. [1139,844]
 
@@ -65,7 +65,7 @@ X0=tibble::tribble( # Initial total demand
 );X0
 
 
-io<-met.io(Z0=Z0,X0=X0,D=c(1300,100,200))
+io<-metis.io(Z0=Z0,X0=X0,D=c(1300,100,200))
 io$A
 io$L
 
@@ -86,7 +86,7 @@ X0=tibble::tribble( # Initial total demand
 );X0
 
 
-io<-met.io(Z0=Z0,X0=X0,D=c(110,50,100))
+io<-metis.io(Z0=Z0,X0=X0,D=c(110,50,100))
 io$A
 io$L
 
@@ -106,7 +106,7 @@ X0=tibble::tribble( # Initial total demand
 );X0
 
 
-io<-met.io(Z0=Z0,X0=X0,D=c(35*0.75,40*0.9,25*0.95))
+io<-metis.io(Z0=Z0,X0=X0,D=c(35*0.75,40*0.9,25*0.95))
 io$A
 io$L
 
@@ -124,7 +124,7 @@ D0=tibble::tribble( # Initial total demand
 );D0
 
 
-io<-met.io(Z0=Z0,D0=D0,D=c(15,18))
+io<-metis.io(Z0=Z0,D0=D0,D=c(15,18))
 io$A
 io$L
 
@@ -142,7 +142,7 @@ X0=tibble::tribble( # Initial total demand
 );X0
 
 
-io<-met.io(Z0=Z0,X0=X0)
+io<-metis.io(Z0=Z0,X0=X0)
 io$A
 io$L
 
@@ -162,7 +162,7 @@ X0=tibble::tribble( # Initial total demand
 );X0
 
 
-io<-met.io(Z0=Z0,X0=X0)
+io<-metis.io(Z0=Z0,X0=X0)
 io$A
 io$L
 
@@ -192,7 +192,7 @@ X0=tibble::tribble( # Initial total demand
   800
 );X0
 
-irio<-met.irio(Z0=Z0,X0=X0, D=c(100,0,0,0,0))
+irio<-metis.irio(Z0=Z0,X0=X0, D=c(100,0,0,0,0))
 
 # Problem 3.2
 Z0=tibble::tribble( # Initial Flows
@@ -212,7 +212,7 @@ D0=tibble::tribble( # Initial total demand
   400
 );D0
 
-irio<-met.irio(Z0=Z0,D0=D0, D=c(280,360,0,0))
+irio<-metis.irio(Z0=Z0,D0=D0, D=c(280,360,0,0))
 
 # Problem 3.3
 Z0=tibble::tribble( # Initial Flows
@@ -239,8 +239,93 @@ D0=tibble::tribble( # Initial total demand
   400
 );D0
 
-irio<-met.irio(Z0=Z0,D0=D0, D=c(280,360,0,0))
+irio<-metis.irio(Z0=Z0,D0=D0, D=c(280,360,0,0))
 
 
 
+#-------------
+# Workflow for Metis I/O Analysis
+
+# Small Example
+
+# Problem 2.1
+Z0=tibble::tribble( # Initial Flows
+  ~sector ,    ~ag,         ~w,
+  "ag"     ,    0,         0,
+  "w"     ,    10,        0);Z0
+
+A0=tibble::tribble( # Initial Flows
+  ~sector ,    ~ag,         ~w,
+  "ag"     ,    0,         0,
+  "w"     ,    0.3,        0);A0
+
+
+X0=tibble::tribble( # Initial total demand
+  ~total,
+  1000,
+  1000
+);X0
+
+
+io<-metis.io(Z0=Z0,X0=X0,A0=A0,D=c(1,20))
+io$A
+io$L
+
+# Commodities
+# 1. Water demands
+# 2. Agricultural production by Crop
+# 3. Electricity Production by Type
+
+# Downscaled Outputs:
+# 1. Ag production by crop
+# 2. Elec production by fuel
+# 3. Water demands by ag, elec, other
+
+# Initial Coefficient Assumptions
+# A0
+
+# Steps
+# 1. Use A0 and D0 (Demand other) to find Intermediate flows and total production
+# 2. Compare Aggregated demands to initial assumption
+# 3. Adjust A to reflect actual data
+# 4.
+
+
+A0=tibble::tribble( # Initial Flows
+  ~sector     ,    ~W,   ~Ag_corn,  ~Ag_rice, ~E_coal, ~E_solar, ~E,
+  "W"         ,    0,       0.1,     2,     0.5,    0.01,   0,
+  "Ag_corn"     ,    0,        0,      0,     0,      0,      0,
+  "Ag_rice"     ,    0,        0,      0,     0,      0,      0,
+  "E_coal"     ,    0,        0,      0,     0,      0,      0,
+  "E_solar"    ,    0,        0,      0,     0,      0,      0,
+  "E"         ,    1,      0.3,    0.4,   0,      0,      0);A0
+
+Dreal = tibble::tribble( # From tethys
+  ~sector, ~W,
+  "Ag"   ,  1000,
+  "E"    ,    20);Dreal
+
+
+
+D0=tibble::tribble( # Other demands (Not internal flows)
+  ~other,
+  1000, # W
+  10,  # Acorn
+  10,  # Arice
+  50, # Ecoal
+  50,   # Esolar
+  100 # E
+);D0
+
+
+io<-metis.io(D0=D0,A0=A0, D=c(10,0,0,0,1,1))
+io$A
+io$L
+
+install.packages("corrplot")
+library(corrplot)
+M<-as.matrix(A0%>%dplyr::select(-sector))
+rownames(M)<-colnames(M);M
+col<- colorRampPalette(metis.colors()$pal_div_wet)(20)
+corrplot(M, method="circle", is.corr=F, type="upper",addCoef.col="red", col=col, add=F, cl.length=20, cl.lim=c(0,2))
 

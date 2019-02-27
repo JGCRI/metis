@@ -6,15 +6,17 @@
 #' @param D0 Default = NULL,
 #' @param X0 Default = NULL,
 #' @param D Default = NULL,
+#' @param A0 Default = NULL,
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @export
 
 
-met.io<-function(Z0=NULL,
+metis.io<-function(Z0=NULL,
                  D0=NULL,
                  X0=NULL,
                  D=NULL,
+                 A0=NULL,
                  dirOutputs=paste(getwd(),"/outputs",sep="")
                         ){
 
@@ -22,7 +24,7 @@ met.io<-function(Z0=NULL,
 # Initialize variables by setting to NULL
 #----------------
 
-NULL->year->sector->domestic->export->total->V1->value->.->other->production->external
+NULL->year->sector->domestic->export->total->V1->value->.->other->production->other
 
 #------------------
 # Create Folders if needed
@@ -56,24 +58,52 @@ addMissing<-function(data){
   # Check Columns
   if(is.null(Z0) & is.null(D0) & is.null(X0)){stop("Need to provide atleast two of Z0, X0, D0")}
 
+  if(!is.null(A0)){
+
+    if(is.null(X0) & is.null(D0)){
+      stop("Need to provide atleast one either X0 or D0")
+    } else {
+      if(is.null(X0)){
+         print("Calculating X0 based on D0 provided")
+          A<-as.matrix(A0%>%dplyr::select(-sector))
+          L<-solve(diag(nrow(A))-A);
+          X0<-L%*%as.matrix(D0)}
+
+      print("Using X0 provided")
+    # Calculate z0 based on X0
+    if(!is.null(Z0)){ print(paste("Recaclulating Z0 based on A0 and X0 provided. Orig Z0 provided = ",sep="")); print(Z0)}
+    Z0 <- as.matrix(A0%>%dplyr::select(-sector)) %*% diag(as.vector(t(X0)))
+    if(!"sector" %in% names(A0)){stop(
+      paste("Need to format A0 to have a 'sector' column corresponding to each sector. eg. ",
+            tibble::tibble(sector=c("ag","wat"),ag=c(5,0),wat=c(10,2)),sep=""))}
+    Z0 <- bind_cols(A0%>%dplyr::select(sector),tibble::as_tibble(Z0))
+    names(Z0)<-names(A0)
+    print(paste("Calculated Z0 based on A0 and X0 provided  = ",sep=""))
+    print("Z0");print(Z0);print("A0");print(A0);print("X0");print(X0);
+    }
+  }
+
   if(!is.null(Z0)){
     if(!"sector" %in% names(Z0)){stop(
       paste("Need to format Z0 to have a 'sector' column corresponding to each sector. eg. ",
             tibble::tibble(sector=c("ag","wat"),ag=c(5,0),wat=c(10,2)),sep=""))}
   if(is.null(D0)){
     names(X0)="total"
-    external=(X0-rowSums(Z0%>%dplyr::select(-sector)))%>%dplyr::rename(external=names(X0))
-    D0=external
-    ioTbl<-dplyr::bind_cols(Z0,external,X0)
+    other=(X0-rowSums(Z0%>%dplyr::select(-sector)))%>%dplyr::rename(other=names(X0))
+    D0=other
+    ioTbl<-dplyr::bind_cols(Z0,other,X0)
   }else{
-    names(D0)="external"
+    names(D0)="other"
     total=(D0+rowSums(Z0%>%dplyr::select(-sector)))%>%dplyr::rename(total=names(D0))
-    ioTbl<-dplyr::bind_cols(Z0,D0,total)};ioTbl
+    ioTbl<-dplyr::bind_cols(Z0,D0,total)
+    };ioTbl
   }else{stop("No intermediate flow matrix provided")}
 
   # Calculate technological co-efficient matrix A
+  if(is.null(A0)){
   A<-as.matrix(Z0%>%dplyr::select(-sector)) %*% as.matrix(ioTbl$total^-1*diag(nrow(Z0)));
-  L<-solve(diag(nrow(ioTbl))-A);
+  } else { A<-as.matrix(A0%>%dplyr::select(-sector)) }
+  L<-solve(diag(nrow(A))-A);
 
   X <- tibble::as_tibble(L%*%as.matrix(D0)) # Total Production
   names(X)="total";X
@@ -85,9 +115,9 @@ addMissing<-function(data){
   solOrig<-solOrig%>%
     dplyr::mutate(sector=ioTbl$sector)%>%
     dplyr::bind_cols(X,D0,intermediateOutput,valueAdded)%>%
-    dplyr::select(sector,ioTbl$sector,external,total,intermediateOutput,valueAdded)
+    dplyr::select(sector,ioTbl$sector,other,total,intermediateOutput,valueAdded)
 
-  if(!is.null(D)){D=tibble::as_tibble(D);names(D)="external";
+  if(!is.null(D)){D=tibble::as_tibble(D);names(D)="other";
   X <- tibble::as_tibble(L%*%as.matrix(D)) # Total Production
   names(X)="total";X
   Z<-A%*%diag(x=(as.vector(L%*%as.matrix(D))));Z  # Internal flows
@@ -98,7 +128,7 @@ addMissing<-function(data){
   sol<-sol%>%
     dplyr::mutate(sector=ioTbl$sector)%>%
     dplyr::bind_cols(X,D,intermediateOutput,valueAdded)%>%
-    dplyr::select(sector,ioTbl$sector,external,total,intermediateOutput,valueAdded)
+    dplyr::select(sector,ioTbl$sector,other,total,intermediateOutput,valueAdded)
   }else{
       sol<-"No change from original solOrig"}
 

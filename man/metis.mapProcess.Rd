@@ -22,12 +22,13 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   extendedShapeCol = NULL, expandPercent = 2,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 9, figHeight = 7, scaleRange = NULL,
-  paramsSelect = "All", indvScenarios = T, GCMRCPSSPPol = F,
+  paramsSelect = "All", indvScenarios = NULL, GCMRCPSSPPol = F,
   multiFacetCols = "scenarioRCP", multiFacetRows = "scenarioGCM",
   legendOutsideMulti = T, legendPositionMulti = NULL,
   legendTitleSizeMulti = NULL, legendTextSizeAnim = NULL,
   legendTextSizeMulti = NULL, refGCM = NULL, refRCP = NULL,
-  chosenRefMeanYears = NULL, mapTitleSize = 0.5)
+  chosenRefMeanYears = NULL, mapTitleSize = 0.5,
+  facetLabelSizeMulti = 3)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}

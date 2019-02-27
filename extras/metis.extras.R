@@ -72,3 +72,15 @@ library(formatR)
 
 install_github(repo="zarrarkhan/metis",'dev_metis')
 
+
+#--------------
+# Size of Objects in Evnvironment
+#----------------
+
+size = 0
+for (x in ls() ){
+  thisSize = object.size(get(x))
+  size = size + thisSize
+  message(x, " = ", appendLF = F); print(thisSize, units='auto')
+}
+message("total workspace is ",appendLF = F); print(size, units='auto')

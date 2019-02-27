@@ -36,6 +36,7 @@ metis.prepGrid<- function(demeterFolder="NA",
                         tethysScenario="NA",
                         tethysUnits="NA",
                         tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal"),
+                        copySingleTethysScenbyXanthos=NULL,
                         xanthosFolder="NA",
                         xanthosFiles="NA",
                         xanthosScenarioAssign="NA",
@@ -182,6 +183,7 @@ if(!dir.exists(tethysFolder)){
     if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
 
     tethysScenarios<-character()
+    tethysGCMRCPs<-tibble()
     tethysYears<-numeric()
 
     for(tethysFile_i in tethysFiles){
@@ -206,7 +208,7 @@ if(!dir.exists(tethysFolder)){
                             scenarioRCP=NA,
                             scenarioSSP=NA,
                             scenarioPolicy=NA,
-                            scenario=tethysScenario,
+                            scenario=paste(tethysScenario,scenarioSSP,scenarioPolicy,sep="_"),
                             param="tethysWatWithdraw",
                             units=tethysUnits,
                             aggType=aggType,
@@ -217,17 +219,23 @@ if(!dir.exists(tethysFolder)){
         gridx$x<-as.numeric(gridx$x)
 
         gridx<-gridx%>%
-          dplyr::mutate(class=dplyr::case_when(grepl("wddom",class)~"Domestic",
-                                               grepl("elec",class)~"Electric",
-                                               grepl("irr",class)~"Irrigation",
-                                               grepl("liv",class)~"Livestock",
-                                               grepl("mfg",class)~"Manufacturing",
-                                               grepl("min",class)~"Mining",
-                                               grepl("nonag",class)~"Non Agriculture",
-                                               grepl("total",class)~"Total",
+          dplyr::mutate(param=dplyr::case_when(grepl("nonag",class,ignore.case = T)~paste(param,"_nonAg",sep=""),
+                                               grepl("total",class,ignore.case = T)~paste(param,"_total",sep=""),
+                                               TRUE~param),
+                        class=dplyr::case_when(grepl("wddom",class,ignore.case = T)~"Domestic",
+                                               grepl("elec",class,ignore.case = T)~"Electric",
+                                               grepl("irr",class,ignore.case = T)~"Irrigation",
+                                               grepl("liv",class,ignore.case = T)~"Livestock",
+                                               grepl("mfg",class,ignore.case = T)~"Manufacturing",
+                                               grepl("min",class,ignore.case = T)~"Mining",
+                                               grepl("nonag",class,ignore.case = T)~"Non Agriculture",
+                                               grepl("total",class,ignore.case = T)~"Total",
                                                TRUE~class))
 
-        tethysScenarios<-c(tethysScenarios,tethysScenario)
+        tethysScenarios<-unique(c(tethysScenarios,unique(gridx$scenario)))
+        tethysGCMRCP<-gridx %>%
+          dplyr::select(scenarioGCM,scenarioRCP) %>% distinct()
+        tethysGCMRCPs<-dplyr::bind_rows(tethysGCMRCPs,tethysGCMRCP)
         tethysYears<-unique(gridx$x)
 
         if(sqliteUSE==T){
@@ -268,6 +276,7 @@ if(!dir.exists(xanthosFolder)){
     if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
 
     xanthosScenarios<-character()
+    xanthosGCMRCPs<-tibble()
     xanthosYears<-numeric()
 
     for(xanthosFile_i in xanthosFiles){
@@ -282,7 +291,7 @@ if(!dir.exists(xanthosFolder)){
         xanthosCoords<-data.table::fread(xanthosCoordinatesPath, header=F);
         xanthosCoords<-xanthosCoords%>%dplyr::rename(lon=V2,lat=V3)%>%dplyr::select(lon,lat)
         xanthosGridArea<-data.table::fread(xanthosGridAreaHecsPath, header=F);
-        xanthosGridArea<-xanthosGridArea%>%dplyr::rename(Area_hec=V1)%>%dplyr::mutate(Area_km2=Area_hec)%>%
+        xanthosGridArea<-xanthosGridArea%>%dplyr::rename(Area_hec=V1)%>%dplyr::mutate(Area_km2=0.01*Area_hec)%>%
           dplyr::select(Area_hec,Area_km2)
 
         print(paste("Reading xanthos data file: ",xanthosFile_i,"...",sep=""))
@@ -306,6 +315,7 @@ if(!dir.exists(xanthosFolder)){
         if(grepl("km3",xanthosFile_i)){
           print(paste("Based on xanthos file name: ", xanthosFile_i, " has km3 data. Converting to mm...", sep=""))
         gridx<-gridx/(xanthosGridArea$Area_km2/1000000)
+        gridx[gridx<0]=0
         gridx<-dplyr::bind_cols(xanthosCoords,gridx)
         xanthosUnits="Runoff (mm)"
         print(paste("km3 data converted to mm.", sep=""))
@@ -325,11 +335,12 @@ if(!dir.exists(xanthosFolder)){
 
         if(grepl("mm",xanthosUnits)){aggType="depth"}else{aggType="vol"}
         print(paste("Gathering data for xanthos filename: ", xanthosFile_i, " into year columns...", sep=""))
-        gridx<-gridx%>%dplyr::mutate(scenario=xanthosScenario,
+        gridx<-gridx%>%dplyr::mutate(
                         scenarioGCM=xanthosGCM,
                         scenarioRCP=xanthosRCP,
                         scenarioSSP=NA,
                         scenarioPolicy=NA,
+                        scenario=paste(xanthosScenario,scenarioSSP,scenarioPolicy,sep="_"),
                         param="xanthosRunoff",
                         units=xanthosUnits,
                         aggType=aggType,
@@ -342,7 +353,10 @@ if(!dir.exists(xanthosFolder)){
 
         gridx$x<-as.numeric(gridx$x)
 
-        xanthosScenarios<-c(xanthosScenarios,xanthosScenario)
+        xanthosScenarios<-unique(c(xanthosScenarios,unique(gridx$scenario)))
+        xanthosGCMRCP<-gridx %>%
+                       dplyr::select(scenarioGCM,scenarioRCP) %>% distinct()
+        xanthosGCMRCPs<-dplyr::bind_rows(xanthosGCMRCPs,xanthosGCMRCP)
         xanthosYears<-unique(gridx$x)
 
         # Apply Lowess Filter
@@ -397,40 +411,71 @@ if(!dir.exists(xanthosFolder)){
 #----------------
 # Prepare Gridded Scarcity
 #---------------
+tethysGCMRCPs<-tethysGCMRCPs%>%unique()%>%dplyr::mutate(GCMRCP=paste(scenarioGCM,scenarioRCP,sep="_"))
+xanthosGCMRCPs<-xanthosGCMRCPs%>%unique()%>%dplyr::mutate(GCMRCP=paste(scenarioGCM,scenarioRCP,sep="_"))
 
-xanthosScenarios<-unique(xanthosScenarios);tethysScenarios<-unique(tethysScenarios)
-commonYears<-tethysYears[tethysYears %in% xanthosYears]
-commonScenarios<-tethysScenarios[tethysScenarios %in% xanthosScenarios]
-tethysYears;xanthosYears;tethysScenarios;xanthosScenarios
-commonYears
-commonScenarios
+xanthosScenarios;tethysScenarios;
+xanthosGCMRCPs;tethysGCMRCPs;
+xanthosYears;tethysYears;
+commonYears<-tethysYears[tethysYears %in% xanthosYears];commonYears
+commonScenarios<-tethysScenarios[tethysScenarios %in% xanthosScenarios];commonScenarios
+commonGCMRCPs<-xanthosGCMRCPs %>% dplyr::filter(GCMRCP %in% unique(tethysGCMRCPs$GCMRCP));commonGCMRCPs
+
+if(!is.null(copySingleTethysScenbyXanthos)){
+  commonGCMRCPsX<-xanthosGCMRCPs}else{
+    commonGCMRCPsX<-commonGCMRCPs}
+
+uniqueGCMs<-unique(commonGCMRCPsX$scenarioGCM)
+uniqueRCPs<-unique(commonGCMRCPsX$scenarioRCP)
 
 
 if(sqliteUSE==T){
 
-  if(length(commonYears)>0 & length(commonScenarios)>0){
+  if(length(commonYears)>0 & any(length(commonGCMRCPs)>0,!is.null(copySingleTethysScenbyXanthos))){
 
   if(file.exists(sqliteDBNamePath)){
   dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)
   gridMetis<-dplyr::tbl(dbConn,"gridMetis")
 
+      print(paste("Extracting data from sqlite database for tethys/xanthos scenarios...",sep=""))
+      gridMetisTethys<-gridMetis%>%
+        dplyr::filter(class=="Total" & param=="tethysWatWithdraw" & x %in% commonYears)%>%dplyr::collect()%>%
+        dplyr::rename(valueTethys=value, scenarioTethys=scenario)
+      gridMetisXanthos<-gridMetis%>%dplyr::filter(param=="xanthosRunoff" & x %in% commonYears &
+                                                    scenarioGCM %in% uniqueGCMs &
+                                                    scenarioRCP %in% uniqueRCPs)%>%dplyr::collect()%>%
+        dplyr::rename(valueXanthos=value, scenarioXanthos=scenario)
 
-  for(commonScenarios_i in commonScenarios){
-      print(paste("Extracting data from sqlite database for common tethys/xanthos scenario: ",
-                  commonScenarios_i,"...",sep=""))
-      gridMetisTethys<-gridMetis%>%dplyr::filter(class=="Total" & param=="tethysWatWithdraw" & x %in% commonYears)%>%dplyr::collect()%>%
-        dplyr::rename(valueTethys=value)
-      gridMetisXanthos<-gridMetis%>%dplyr::filter(param=="xanthosRunoff" & x %in% commonYears)%>%dplyr::collect()%>%
-        dplyr::rename(valueXanthos=value)
+      if(!is.null(copySingleTethysScenbyXanthos)){
+        if(grepl(copySingleTethysScenbyXanthos,unique(gridMetisTethys$scenarioTethys))){
 
-      gridx<-dplyr::left_join(gridMetisTethys,gridMetisXanthos%>%dplyr::select(lat,lon,x,scenario,valueXanthos),
-                              by=c("lat","lon","x","scenario"))%>%
+          gridMetisTethysX<-tibble()
+
+          paste("Copying tethys results for all xanthos GCM and RCPs...")
+          for(row_i in 1:nrow(xanthosGCMRCPs)){
+            gridMetisTethysX<-dplyr::bind_rows(gridMetisTethysX,
+                                                gridMetisTethys %>%
+                                                  dplyr::filter(grepl(copySingleTethysScenbyXanthos,scenarioTethys)) %>%
+                                                  dplyr::mutate(scenarioGCM=xanthosGCMRCPs[row_i,]$scenarioGCM,
+                                                                scenarioRCP=xanthosGCMRCPs[row_i,]$scenarioRCP))
+          }
+          gridMetisTethys<-gridMetisTethysX
+          rm(gridMetisTethysX)
+          paste("Tethys results for all xanthos GCM and RCPs copied.")
+
+        } else {paste(copySingleTethysScenbyXanthos, " not present in tethys scenarios: ",
+                      paste(unique(gridMetisTethys$scenarioTethys),collapse=", "))}
+      }
+
+      gridx<-dplyr::left_join(gridMetisTethys,gridMetisXanthos%>%dplyr::select(lat,lon,x,scenarioGCM,scenarioRCP,valueXanthos,scenarioXanthos),
+                              by=c("lat","lon","x","scenarioGCM","scenarioRCP"))%>%
         dplyr::mutate(scarcity=valueTethys/valueXanthos,
                       units="Gridded Scarcity (Fraction)",
                       param="griddedScarcity",
                       class="Scarcity",
-                      classPalette="pal_hot")%>%
-        dplyr::select(-valueXanthos,-valueTethys)%>%
+                      classPalette="pal_hot",
+                      scenario=paste("T",scenarioTethys,"X",scenarioXanthos,sep=""))%>%
+        dplyr::select(-valueXanthos,-valueTethys,-scenarioTethys,-scenarioXanthos)%>%
         dplyr::rename(value=scarcity)%>%
         dplyr::filter(!is.na(value));
       print(paste("Data extracted and saved.",sep=""))
@@ -441,7 +486,6 @@ if(sqliteUSE==T){
 
       rm(gridx)
 
-    } # Closing for loops
 
    if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
 
@@ -456,19 +500,45 @@ if(!is.null(gridMetis)){
   if(length(commonYears)>0 & length(commonScenarios)>0){
 
     gridMetisTethys<-gridMetis%>%dplyr::filter(class=="Total" & param=="tethysWatWithdraw" & x %in% commonYears)%>%
-      dplyr::rename(valueTethys=value)
-    gridMetisXanthos<-gridMetis%>%dplyr::filter(param=="xanthosRunoff" & x %in% commonYears)%>%
-      dplyr::rename(valueXanthos=value)
+      dplyr::rename(valueTethys=value,scenarioTethys=scenario)
+    gridMetisXanthos<-gridMetis%>%dplyr::filter(param=="xanthosRunoff" & x %in% commonYears &
+                                                  scenarioGCM %in% uniqueGCMs &
+                                                  scenarioRCP %in% uniqueRCPs)%>%
+      dplyr::rename(valueXanthos=value, scenarioXanthos=scenario)
 
 
-         gridx<-dplyr::left_join(gridMetisTethys,gridMetisXanthos%>%dplyr::select(lat,lon,x,scenario,valueXanthos),
+    if(!is.null(copySingleTethysScenbyXanthos)){
+      if(grepl(copySingleTethysScenbyXanthos,unique(gridMetisTethys$scenarioTethys))){
+
+        gridMetisTethysX<-tibble()
+
+        paste("Copying tethys results for all xanthos GCM and RCPs...")
+        for(row_i in 1:nrow(xanthosGCMRCPs)){
+          gridMetisTethysX<-dplyr::bind_rows(gridMetisTethysX,
+                                             gridMetisTethys %>%
+                                               dplyr::filter(grepl(copySingleTethysScenbyXanthos,scenarioTethys)) %>%
+                                               dplyr::mutate(scenarioGCM=xanthosGCMRCPs[row_i,]$scenarioGCM,
+                                                             scenarioRCP=xanthosGCMRCPs[row_i,]$scenarioRCP))
+        }
+        gridMetisTethys<-gridMetisTethysX
+        rm(gridMetisTethysX)
+        paste("Tethys results for all xanthos GCM and RCPs copied.")
+
+      } else {paste(copySingleTethysScenbyXanthos, " not present in tethys scenarios: ",
+                    paste(unique(gridMetisTethys$scenarioTethys),collapse=", "))}
+    }
+
+
+
+         gridx<-dplyr::left_join(gridMetisTethys,gridMetisXanthos%>%dplyr::select(lat,lon,x,scenarioXanthos,valueXanthos),
                                 by=c("lat","lon","x","scenario"))%>%
           dplyr::mutate(scarcity=valueTethys/valueXanthos,
                         units="Gridded Scarcity (Fraction)",
                         param="griddedScarcity",
                         class="Scarcity",
-                        classPalette="pal_hot")%>%
-          dplyr::select(-valueXanthos,-valueTethys)%>%
+                        classPalette="pal_hot",
+                        scenario=paste("T",scenarioTethys,"X",scenarioXanthos,sep="")) %>%
+          dplyr::select(-valueXanthos,-valueTethys, -scenarioTethys,-scenarioXanthos) %>%
           dplyr::rename(value=scarcity)%>%
           dplyr::filter(!is.na(value));
 

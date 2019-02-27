@@ -10,5 +10,8 @@
 ^outputs$
 ^gis$
 ^grids$
-^dataFiles$
-^README_metis2.md
+^gcam$
+^database_basexdb$
+^database_basexdb_Uruguay$
+^LAC_dataProj.proj$
+^Uruguay_datProj.proj

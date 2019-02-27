@@ -162,6 +162,7 @@ metis.map<-function(dataPolygon=NULL,
   # panelLabel=NULL
   # multiFacetRows=NULL
   # multiFacetCols=NULL
+  # fillshowNA=NA
 
 #------------------
 # Initialize variables to remove binding errors if needed
@@ -309,19 +310,13 @@ if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
   map<- map + tmap::tm_facets(free.scales.fill=facetFreeScale,
                         nrow=facetRows,
                         ncol=min(facetCols,length(fillColumn))) +
-              tmap::tm_layout(panel.labels=gsub("X","",fillColumn),
-                        panel.label.bg.color = facetBGColor,
-                        panel.label.color = facetLabelColor,
-                        panel.label.size = facetLabelSize)
+              tmap::tm_layout(panel.labels=gsub("X","",fillColumn))
   figWidth=figWidth*1.2
 }}}
 
   if(!is.null(panelLabel)){
     map<- map + tmap::tm_facets(nrow=1,ncol=1) +
-      tmap::tm_layout(panel.labels=gsub("X","",panelLabel),
-                      panel.label.bg.color = facetBGColor,
-                      panel.label.color = facetLabelColor,
-                      panel.label.size = facetLabelSize)
+      tmap::tm_layout(panel.labels=gsub("X","",panelLabel))
   }
 
 }
@@ -334,7 +329,10 @@ if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
               legend.text.size = legendTextSize)+
     tmap::tm_layout(frame = frameShow,bg.color=bgColor)+
     tmap::tm_layout(main.title.position="left",main.title.size=1.5,
-              inner.margins = rep(0,4),outer.margins=rep(0.01,4))
+              inner.margins = rep(0,4),outer.margins=rep(0.01,4)) +
+    tmap::tm_layout(panel.label.bg.color = facetBGColor,
+                    panel.label.color = facetLabelColor,
+                    panel.label.size = facetLabelSize)
 
   if(!is.null(multiFacetRows) | !is.null(multiFacetCols)){map<-map+tmap::tm_layout(asp=1)}else{
     map<-map+tmap::tm_layout(asp=NA)

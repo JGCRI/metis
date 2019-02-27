@@ -32,6 +32,7 @@ demeterUnits="Landuse (Fraction)"
 demeterTimesteps<-seq(from=2005,to=2020,by=5)
 tethysFolder=paste(getwd(),"/dataFiles/grids/tethys/",sep="")
 tethysScenario="Eg1"
+copySingleTethysScenbyXanthos=NULL
 tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
 tethysUnits="Water Withdrawals (mm)"
 xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthos/",sep="")
@@ -54,6 +55,7 @@ gridMetis<-metis.prepGrid(
              demeterUnits=demeterUnits,
              tethysFolder=tethysFolder,
              tethysScenario=tethysScenario,
+             copySingleTethysScenbyXanthos=copySingleTethysScenbyXanthos,
              tethysFiles=tethysFiles,
              tethysUnits=tethysUnits,
              xanthosFolder=xanthosFolder,
@@ -64,7 +66,10 @@ gridMetis<-metis.prepGrid(
              scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow,
              dirOutputs=dirOutputs,
              reReadData=reReadData,
-             gridMetisData=gridMetisData)
+             gridMetisData=gridMetisData,
+             sqliteUSE = T,
+             sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+             )
 
 
 # Grid to Shape
