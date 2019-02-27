@@ -458,7 +458,7 @@ for(biaFile_i in biaFiles){
 
   gridWRI <- gridaP%>%
     dplyr::group_by(country, class)%>%
-    dplyr::summarise(total_capacity=sum(value))%>%
+    dplyr::summarise(WRI_total_capacity=sum(value))%>%
     dplyr::filter(country %in% c("ARG","COL"))%>%
     dplyr::mutate(class=toupper(class))
 
@@ -483,55 +483,24 @@ for(biaFile_i in biaFiles){
 
   gridComparingCapacity<-merge(gridWRI,gGeSlim)            #THIS IS WHERE I AM FEB 26 - Start with Fixing this line
 
-
-  print(paste("Bia data file: ",biaFile_i," read.",sep=""))
-
-  gridx<-gridx%>%
-    dplyr::mutate(lat=lat,lon=lon,
-                  scenarioGCM=NA,
-                  scenarioRCP=NA,
-                  scenarioSSP=NA,
-                  scenarioPolicy=NA,
-                  scenario=tethysScenario,
-                  param="tethysWatWithdraw",
-                  units=tethysUnits,
-                  aggType=aggType,
-                  classPalette="pal_wet",
-                  class=class_i)%>%
-    tidyr::gather(key="x",value="value",-c("lat","lon","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","classPalette","class"))
+  gridComparingCapacityARG<-gridComparingCapacity%>%dplyr::filter(country %in% c("ARG"))%>%
+    dplyr::select(-c("gcamCapFactorAv","Elec_Gen_GCAM_2015"))%>%
+    tidyr::gather(key="data_source",value="est_installed_capacity",-c("country", "class"))
 
 
-
-  gridARGCOL <- gridaP[country=="COL"]
-
-  grideP <- griddP[,.(BCCFmean=mean(BackCalcCapFactor,na.rm=TRUE)),by=class]
-  gridfP <- merge(grideP,griddP[,.(ArgEst=median(BackCalcCapFactor,na.rm=TRUE)),by=class])
-  gridgP <- merge(gridfP,griddP[,.(BCCF_gen2015mean=mean(BCCF_gen2015,na.rm=TRUE)),by=class])
-  gridhP <- merge(gridgP,griddP[,.(BCCF_gen2015median=median(BCCF_gen2015,na.rm=TRUE)),by=class])
-  gridjP <- merge(gridhP,griddP[,.(BCCF_gen2016mean=mean(BCCF_gen2016,na.rm=TRUE)),by=class])
-  gridkP <- merge(gridjP,griddP[,.(BCCF_gen2016median=median(BCCF_gen2016,na.rm=TRUE)),by=class])%>%
-    dplyr::mutate(class=toupper(class))
-
-  #gridbP[,class]=gridbP[,gsub("(?<=\\b)([a-z])", "\\U\\1", tolower(class), perl=TRUE)]
-  gridbP<-gridbP%>%dplyr::mutate(class=toupper(class))
-  gridbP[gridbP=="REFINED LIQUIDS"]<-"OIL"
-
-  gridiP <- merge(gridkP,gridbP)
-
-  chrt <- ggplot(data = gridiP, aes(class, gcamCapFactor))+geom_point()+coord_cartesian(ylim = c(0, 1))
-  chrt<-chrt+geom_point(data = gridiP, aes(class, BCCFmean), color="green", shape=6)
-  chrt<-chrt+geom_point(data = gridiP, aes(class, BCCFmedian), color="green", shape=1)
-  chrt<-chrt+geom_point(data = gridiP, aes(class, BCCF_gen2015mean), color="yellow", shape=6)
-  chrt<-chrt+geom_point(data = gridiP, aes(class, BCCF_gen2015median), color="yellow", shape=1)
-  chrt<-chrt+geom_point(data = gridiP, aes(class, BCCF_gen2016mean), color="blue", shape=6)
-  chrt<-chrt+geom_point(data = gridiP, aes(class, BCCF_gen2016median), color="blue", shape=1)
-  chrt
+  gridComparingCapacityCOL<-gridComparingCapacity%>%dplyr::filter(country %in% c("COL"))%>%
+    dplyr::select(-c("gcamCapFactorAv","Elec_Gen_GCAM_2015"))%>%
+    tidyr::gather(key="data_source",value="est_installed_capacity",-c("country", "class"))
 
 
+  chrt2 <- ggplot(data = gridComparingCapacity, aes(fill = country, x = class, y = WRI_total_capacity))+geom_bar(position = "dodge", stat="identity")
 
 
+  chrt3<-ggplot(data = gridComparingCapacityARG, aes(fill = data_source, x = class, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
+  chrt3
 
-
+  chrt4<-ggplot(data = gridComparingCapacityCOL, aes(fill = data_source, x = class, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
+  chrt4
 
 
 #----------------
