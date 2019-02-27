@@ -258,24 +258,24 @@ xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/",sep="")
 #xanthosUnits="Runoff (mm)"
 xanthosFiles=c(
               "pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099.csv",
-               "pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099.csv",
-               "pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099.csv",
-               "pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099.csv",
-               "pm_abcd_mrtm_hadgem2-es_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp2p6_1950_2099.csv",
-                "pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099.csv",
-               "pm_abcd_mrtm_hadgem2-es_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp6p0_1950_2099.csv",
-               "pm_abcd_mrtm_hadgem2-es_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp8p5_1950_2099.csv",
-               "pm_abcd_mrtm_ipsl-cm5a-lr_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp2p6_1950_2099.csv",
-               "pm_abcd_mrtm_ipsl-cm5a-lr_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp4p5_1950_2099.csv",
-               "pm_abcd_mrtm_ipsl-cm5a-lr_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp6p0_1950_2099.csv",
-               "pm_abcd_mrtm_ipsl-cm5a-lr_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp8p5_1950_2099.csv",
-               "pm_abcd_mrtm_miroc-esm-chem_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp2p6_1950_2099.csv",
-               "pm_abcd_mrtm_miroc-esm-chem_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp4p5_1950_2099.csv",
-               "pm_abcd_mrtm_miroc-esm-chem_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp6p0_1950_2099.csv",
-               "pm_abcd_mrtm_miroc-esm-chem_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp8p5_1950_2099.csv",
-               "pm_abcd_mrtm_noresm1-m_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp2p6_1950_2099.csv",
-               "pm_abcd_mrtm_noresm1-m_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp4p5_1950_2099.csv",
-               "pm_abcd_mrtm_noresm1-m_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp6p0_1950_2099.csv",
+               # "pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099.csv",
+               # "pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099.csv",
+               # "pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099.csv",
+               # "pm_abcd_mrtm_hadgem2-es_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp2p6_1950_2099.csv",
+               #  "pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099.csv",
+               # "pm_abcd_mrtm_hadgem2-es_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp6p0_1950_2099.csv",
+               # "pm_abcd_mrtm_hadgem2-es_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp8p5_1950_2099.csv",
+               # "pm_abcd_mrtm_ipsl-cm5a-lr_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp2p6_1950_2099.csv",
+               # "pm_abcd_mrtm_ipsl-cm5a-lr_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp4p5_1950_2099.csv",
+               # "pm_abcd_mrtm_ipsl-cm5a-lr_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp6p0_1950_2099.csv",
+               # "pm_abcd_mrtm_ipsl-cm5a-lr_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp8p5_1950_2099.csv",
+               # "pm_abcd_mrtm_miroc-esm-chem_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp2p6_1950_2099.csv",
+               # "pm_abcd_mrtm_miroc-esm-chem_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp4p5_1950_2099.csv",
+               # "pm_abcd_mrtm_miroc-esm-chem_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp6p0_1950_2099.csv",
+               # "pm_abcd_mrtm_miroc-esm-chem_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp8p5_1950_2099.csv",
+               # "pm_abcd_mrtm_noresm1-m_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp2p6_1950_2099.csv",
+               # "pm_abcd_mrtm_noresm1-m_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp4p5_1950_2099.csv",
+               # "pm_abcd_mrtm_noresm1-m_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp6p0_1950_2099.csv",
                "pm_abcd_mrtm_noresm1-m_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp8p5_1950_2099.csv"
                )
 xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosReference/coordinates.csv",sep="")
@@ -371,6 +371,7 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
 # subRegShpFolder=subRegShpFolder_i
 # subRegShpFile=subRegShpFile_i
 # subRegCol=subRegCol_i
+# subRegType = subRegType_i
 # aggType=aggType_i
 # nameAppend=nameAppend_i
 # sqliteUSE = sqliteUSE_i
@@ -401,7 +402,7 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
                             sqliteUSE = sqliteUSE_i,
                             sqliteDBNamePath = sqliteDBNamePath_i)
 
-# grid=grid_i
+#grid=grid_i
 # boundaryRegionsSelect=boundaryRegionsSelect_i
 # subRegShpFolder=subRegShpFolder_i
 # subRegShpFile=subRegShpFile_i
@@ -422,10 +423,10 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
 
 polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_state_origDownscaled_NE.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
-for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x))}
+for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
 gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_Colombia_state_NE.csv",sep="")
 b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
-for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x))}
+for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x));print(unique((b%>%dplyr::filter(param==param_i))$scenario))}
 xRange_i= seq(from=2000,to=2050,by=5)
 legendPosition_i=c("LEFT","bottom")
 legendOutsideSingle_i=T
@@ -436,6 +437,7 @@ scaleRange_i=data.frame(param=c("griddedScarcity"),
                         maxScale=c(1),
                         minScale=c(0))
 paramsSelect_i = c("All")
+indvScenarios_i = "Eg1_NA_NA"
 
 
 boundaryRegShape_i = NULL
@@ -475,8 +477,8 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  figHeight=7,
                  paramsSelect = paramsSelect_i,
                  scaleRange = scaleRange_i,
-                 indvScenarios=T,
-                 GCMRCPSSPPol=F,
+                 indvScenarios=ndvScenarios_i,
+                 GCMRCPSSPPol=T,
                  multiFacetCols="scenarioRCP",
                  multiFacetRows="scenarioGCM",
                  legendOutsideMulti=T,
@@ -543,7 +545,8 @@ scenRef_i="Eg1"
 scaleRange_i=data.frame(param=c("griddedScarcity"),
                         maxScale=c(1),
                         minScale=c(0))
-paramsSelect_i = c("griddedScarcity")
+paramsSelect_i = c("All")
+indvScenarios_i = "Eg1_NA_NA"
 
 
 boundaryRegShape_i = NULL
@@ -563,7 +566,7 @@ c1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/admin_Colombia",sep = ""),
 
 
 metis.mapProcess(polygonDataTables=polygonDataTables_i,
-                 gridDataTables=gridDataTables_i,
+                 #gridDataTables=gridDataTables_i,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,
                  boundaryRegShpFolder=boundaryRegShpFolder_i,
@@ -587,7 +590,7 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  figHeight=7,
                  paramsSelect = paramsSelect_i,
                  scaleRange = scaleRange_i,
-                 indvScenarios=F,
+                 #indvScenarios=indvScenarios_i,
                  GCMRCPSSPPol=T,
                  multiFacetCols="scenarioRCP",
                  multiFacetRows="scenarioGCM",
@@ -598,15 +601,45 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  legendTextSizeMulti=NULL,
                  refGCM="gfdl-esm2m",
                  refRCP="rcp2p6",
-                 chosenRefMeanYears=c(2000:2020))
+                 chosenRefMeanYears=c(2000:2020),
+                 facetLabelSizeMulti=1.5)
+
+# polygonDataTables=polygonDataTables_i
+# gridDataTables=gridDataTables_i
+# xRange=xRange_i
+# boundaryRegShape=boundaryRegShape_i
+# boundaryRegShpFolder=boundaryRegShpFolder_i
+# boundaryRegShpFile=boundaryRegShpFile_i
+# boundaryRegCol=boundaryRegCol_i
+# boundaryRegionsSelect=boundaryRegionsSelect_i
+# subRegShape=subRegShape_i
+# subRegShpFolder=subRegShpFolder_i
+# subRegShpFile=subRegShpFile_i
+# subRegCol=subRegCol_i
+# subRegType=subRegType_i
+# nameAppend=nameAppend_i
+# legendOutsideSingle=legendOutsideSingle_i
+# legendPosition=legendPosition_i
+# animateOn=animateOn_i
+# delay=delay_i
+# scenRef=scenRef_i
+# extension=T
+# expandPercent = 3
+# figWidth=6
+# figHeight=7
+# paramsSelect = paramsSelect_i
+# scaleRange = scaleRange_i
+# indvScenarios=indvScenarios_i
+# GCMRCPSSPPol=F
+# multiFacetCols="scenarioRCP"
+# multiFacetRows="scenarioGCM"
+# legendOutsideMulti=T
+# legendPositionMulti=NULL
+# legendTitleSizeMulti=NULL
+# legendTextSizeAnim=NULL
+# legendTextSizeMulti=NULL
+# refGCM="gfdl-esm2m"
+# refRCP="rcp2p6"
+# chosenRefMeanYears=c(2000:2020)
 
 
-size = 0
-sizes=tibble()
-for (x in ls() ){
-  thisSize = object.size(get(x))
-  size = size + thisSize
-  message(x, " = ", appendLF = F); print(thisSize, units='auto')
-  sizes = bind_rows(sizes,data.frame(obj=as.character(x),objSize=as.numeric(thisSize)))
-}
-sizes%>%dplyr::arrange(-objSize)%>%head(20)

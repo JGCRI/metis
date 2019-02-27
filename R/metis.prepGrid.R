@@ -219,14 +219,17 @@ if(!dir.exists(tethysFolder)){
         gridx$x<-as.numeric(gridx$x)
 
         gridx<-gridx%>%
-          dplyr::mutate(class=dplyr::case_when(grepl("wddom",class)~"Domestic",
-                                               grepl("elec",class)~"Electric",
-                                               grepl("irr",class)~"Irrigation",
-                                               grepl("liv",class)~"Livestock",
-                                               grepl("mfg",class)~"Manufacturing",
-                                               grepl("min",class)~"Mining",
-                                               grepl("nonag",class)~"Non Agriculture",
-                                               grepl("total",class)~"Total",
+          dplyr::mutate(param=dplyr::case_when(grepl("nonag",class,ignore.case = T)~paste(param,"_nonAg",sep=""),
+                                               grepl("total",class,ignore.case = T)~paste(param,"_total",sep=""),
+                                               TRUE~param),
+                        class=dplyr::case_when(grepl("wddom",class,ignore.case = T)~"Domestic",
+                                               grepl("elec",class,ignore.case = T)~"Electric",
+                                               grepl("irr",class,ignore.case = T)~"Irrigation",
+                                               grepl("liv",class,ignore.case = T)~"Livestock",
+                                               grepl("mfg",class,ignore.case = T)~"Manufacturing",
+                                               grepl("min",class,ignore.case = T)~"Mining",
+                                               grepl("nonag",class,ignore.case = T)~"Non Agriculture",
+                                               grepl("total",class,ignore.case = T)~"Total",
                                                TRUE~class))
 
         tethysScenarios<-unique(c(tethysScenarios,unique(gridx$scenario)))
@@ -288,7 +291,7 @@ if(!dir.exists(xanthosFolder)){
         xanthosCoords<-data.table::fread(xanthosCoordinatesPath, header=F);
         xanthosCoords<-xanthosCoords%>%dplyr::rename(lon=V2,lat=V3)%>%dplyr::select(lon,lat)
         xanthosGridArea<-data.table::fread(xanthosGridAreaHecsPath, header=F);
-        xanthosGridArea<-xanthosGridArea%>%dplyr::rename(Area_hec=V1)%>%dplyr::mutate(Area_km2=Area_hec)%>%
+        xanthosGridArea<-xanthosGridArea%>%dplyr::rename(Area_hec=V1)%>%dplyr::mutate(Area_km2=0.01*Area_hec)%>%
           dplyr::select(Area_hec,Area_km2)
 
         print(paste("Reading xanthos data file: ",xanthosFile_i,"...",sep=""))
@@ -312,6 +315,7 @@ if(!dir.exists(xanthosFolder)){
         if(grepl("km3",xanthosFile_i)){
           print(paste("Based on xanthos file name: ", xanthosFile_i, " has km3 data. Converting to mm...", sep=""))
         gridx<-gridx/(xanthosGridArea$Area_km2/1000000)
+        gridx[gridx<0]=0
         gridx<-dplyr::bind_cols(xanthosCoords,gridx)
         xanthosUnits="Runoff (mm)"
         print(paste("km3 data converted to mm.", sep=""))
