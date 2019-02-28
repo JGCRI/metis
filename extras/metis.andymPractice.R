@@ -476,12 +476,12 @@ for(biaFile_i in biaFiles){
   GCAMcapFactors$gcamCapFactor[GCAMcapFactors$technology=="CSP_storage"]<-NA
   GCAMcapFactors<-GCAMcapFactors%>%dplyr::group_by(class)%>%dplyr::summarise(gcamCapFactorAv=mean(gcamCapFactor, na.rm = TRUE))
 
-  gGeSlim<-merge(gGeSlim,GCAMcapFactors)
+  gGeSlim<-dplyr::full_join(gGeSlim,GCAMcapFactors, by="class")
   gGeSlim<-gGeSlim%>%dplyr::mutate(GCAMestCapVals=Elec_Gen_GCAM_2015/gcamCapFactorAv*(10^12)/(365*24*3600))
 
 
 
-  gridComparingCapacity<-merge(gridWRI,gGeSlim)
+  gridComparingCapacity<-dplyr::full_join(gridWRI,gGeSlim, by = c("country", "class"))
 
   gridComparingCapacityARG<-gridComparingCapacity%>%dplyr::filter(country %in% c("ARG"))%>%
     dplyr::select(-c("gcamCapFactorAv","Elec_Gen_GCAM_2015"))%>%

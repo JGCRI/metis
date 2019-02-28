@@ -592,9 +592,19 @@ if(!dir.exists(biaFolder)){
   } # Close bia folder
 
 
+#----------------
+# Function for comparing electricity generation data
+#---------------
 
-
-
+nationalelecgen<-function(biaFolder,){             #FIX this function starting from right here (what the inputs are)
+  if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
+  if(!"x"%in%names(data)){if("year"%in%names(data)){
+    data<-data%>%dplyr::mutate(x=year)}else{data<-data%>%dplyr::mutate(x="x")}}
+  if(!"region"%in%names(data)){data<-data%>%dplyr::mutate(region="region")}
+  if(!"classPalette"%in%names(data)){data<-data%>%dplyr::mutate(classPalette="pal_hot")}
+  if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}
+  return(data)
+}
 
 #----------------
 # Prepare Gridded Scarcity
