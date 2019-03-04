@@ -34,9 +34,10 @@ gcamdatabaseName <-"example_database_basexdb"
 gcamdataProjFile <-"Example_dataProj.proj"
 regionsSelect <- c("Colombia","Argentina")
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
-               "watConsumBySec", "watWithdrawBySec","gdp", "gdpGrowthRate", "pop",
-               "agProdByCrop", "aggLandAlloc","co2emissionByEndUse")
+#paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+#               "watConsumBySec", "watWithdrawBySec","gdp", "gdpGrowthRate", "pop",
+#              "agProdByCrop", "aggLandAlloc","co2emissionByEndUse")
+paramsSelect = "All"
 
 # Use function localDBConn from package rgcam to get a list of scenarios if needed.
 # localDBConn(gcamdatabasePath,gcamdatabaseName)
@@ -57,6 +58,18 @@ dataGCAM<-metis.readgcam(reReadData=F, # Default Value is T
                        paramsSelect=paramsSelect, # Default value is "All"
                        queriesSelect="All" # Default is "All"
                        )
+
+# reReadData=T # Default Value is T
+# dataProj=gcamdataProjFile # Default Value is "dataProj.proj"
+# scenOrigNames=c("ExampleScen1","ExampleScen2")
+# scenNewNames=c("Eg1","Eg2")
+# gcamdatabasePath=gcamdatabasePath
+# gcamdatabaseName=gcamdatabaseName
+# queryxml="metisQueries.xml"  # Default Value is "metisQueries.xml"
+# dirOutputs= paste(getwd(),"/outputs",sep="") # Default Value is paste(getwd(),"/outputs",sep="")
+# regionsSelect=regionsSelect # Default Value is NULL
+# paramsSelect=paramsSelect # Default value is "All"
+# queriesSelect="All" # Default is "All"
 
 dataGCAM$data # To view the data read that was read.
 
