@@ -596,19 +596,19 @@ if(!dir.exists(biaFolder)){
 # Function for comparing electricity generation data
 #---------------
 #
-for(i in c(1,5,40,100,149,180)){
-  gridC<-gridx[(gridx$lat==unique(gridx$lat)[i] & gridx$lon==unique(gridx$lon)[i]),]
-  fname=paste(unique(gridC$scenario),"_",unique(gridC$param),
-              "_lat",unique(gridC$lat),"_lon", unique(gridC$lon),
-              "_lowessSpan",spanLowess,sep="")
-  metis.printPdfPng(figure=graphics::plot(gridC$x,gridC$value,type="l",
-                                          main=paste(unique(gridC$scenario),
-                                                     "\nlat = ",unique(gridC$lat),", lon = ", unique(gridC$lon),
-                                                     ", Lowess Span =  ",spanLowess,sep=""),
-                                          ylab=unique(gridC$units),xlab="Year")+
-                      graphics::lines(gridC$x,gridC$lowess,type="l",col="red"),
-                    dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
-}
+# for(i in c(1,5,40,100,149,180)){
+#   gridC<-gridx[(gridx$lat==unique(gridx$lat)[i] & gridx$lon==unique(gridx$lon)[i]),]
+#   fname=paste(unique(gridC$scenario),"_",unique(gridC$param),
+#               "_lat",unique(gridC$lat),"_lon", unique(gridC$lon),
+#               "_lowessSpan",spanLowess,sep="")
+#   metis.printPdfPng(figure=graphics::plot(gridC$x,gridC$value,type="l",
+#                                           main=paste(unique(gridC$scenario),
+#                                                      "\nlat = ",unique(gridC$lat),", lon = ", unique(gridC$lon),
+#                                                      ", Lowess Span =  ",spanLowess,sep=""),
+#                                           ylab=unique(gridC$units),xlab="Year")+
+#                       graphics::lines(gridC$x,gridC$lowess,type="l",col="red"),
+#                     dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
+# }
 
 
 # nationalelecgen<-function(biaFolder,){             #andym FIX this function starting from right here (what the inputs are)
@@ -621,52 +621,52 @@ for(i in c(1,5,40,100,149,180)){
 #   return(data)
 # }
 
-gridWRI <- gridx%>%
-  dplyr::group_by(country, class)%>%
-  dplyr::summarise(WRI_total_capacity=sum(value))%>%
-  dplyr::filter(country %in% c("ARG","COL"))%>%
-  dplyr::mutate(class=toupper(class))
-
-
-
-gridGCAMelec<-data.table::fread(paste(biaFolder,"/elec_gen_by_subsector_Col_Arg_gcam.csv",sep=""), header=T,stringsAsFactors = F)
-
-gGeSlim<-gridGCAMelec%>%tibble::as_tibble()%>%dplyr::select(country=region, class=subsector, Elec_Gen_GCAM_2015="2015")%>%
-  dplyr::mutate(class=toupper(class))
-gGeSlim[gGeSlim=="Argentina"]<-"ARG"
-gGeSlim[gGeSlim=="Colombia"]<-"COL"
-gGeSlim[gGeSlim=="REFINED LIQUIDS"]<-"OIL"
-
-GCAMcapFactors<-gridbP
-GCAMcapFactors$gcamCapFactor[GCAMcapFactors$technology=="CSP_storage"]<-NA
-GCAMcapFactors<-GCAMcapFactors%>%dplyr::group_by(class)%>%dplyr::summarise(gcamCapFactorAv=mean(gcamCapFactor, na.rm = TRUE))
-
-gGeSlim<-dplyr::full_join(gGeSlim,GCAMcapFactors, by="class")
-gGeSlim<-gGeSlim%>%dplyr::mutate(GCAMestCapVals=Elec_Gen_GCAM_2015/gcamCapFactorAv*(10^12)/(365*24*3600))
-
-
-
-gridComparingCapacity<-dplyr::full_join(gridWRI,gGeSlim, by = c("country", "class"))
-
-gridComparingCapacityARG<-gridComparingCapacity%>%dplyr::filter(country %in% c("ARG"))%>%
-  dplyr::select(-c("gcamCapFactorAv","Elec_Gen_GCAM_2015"))%>%
-  tidyr::gather(key="data_source",value="est_installed_capacity",-c("country", "class"))
-
-
-gridComparingCapacityCOL<-gridComparingCapacity%>%dplyr::filter(country %in% c("COL"))%>%
-  dplyr::select(-c("gcamCapFactorAv","Elec_Gen_GCAM_2015"))%>%
-  tidyr::gather(key="data_source",value="est_installed_capacity",-c("country", "class"))
-
-
-chrt2 <- ggplot(data = gridComparingCapacity, aes(fill = country, x = class, y = WRI_total_capacity))+geom_bar(position = "dodge", stat="identity")
-
-
-chrt3<-ggplot(data = gridComparingCapacityARG, aes(fill = data_source, x = class, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
-chrt3
-
-chrt4<-ggplot(data = gridComparingCapacityCOL, aes(fill = data_source, x = class, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
-chrt4
-
+# gridWRI <- gridx%>%
+#   dplyr::group_by(country, class)%>%
+#   dplyr::summarise(WRI_total_capacity=sum(value))%>%
+#   dplyr::filter(country %in% c("ARG","COL"))%>%
+#   dplyr::mutate(class=toupper(class))
+#
+#
+#
+# gridGCAMelec<-data.table::fread(paste(biaFolder,"/elec_gen_by_subsector_Col_Arg_gcam.csv",sep=""), header=T,stringsAsFactors = F)
+#
+# gGeSlim<-gridGCAMelec%>%tibble::as_tibble()%>%dplyr::select(country=region, class=subsector, Elec_Gen_GCAM_2015="2015")%>%
+#   dplyr::mutate(class=toupper(class))
+# gGeSlim[gGeSlim=="Argentina"]<-"ARG"
+# gGeSlim[gGeSlim=="Colombia"]<-"COL"
+# gGeSlim[gGeSlim=="REFINED LIQUIDS"]<-"OIL"
+#
+# GCAMcapFactors<-gridbP
+# GCAMcapFactors$gcamCapFactor[GCAMcapFactors$technology=="CSP_storage"]<-NA
+# GCAMcapFactors<-GCAMcapFactors%>%dplyr::group_by(class)%>%dplyr::summarise(gcamCapFactorAv=mean(gcamCapFactor, na.rm = TRUE))
+#
+# gGeSlim<-dplyr::full_join(gGeSlim,GCAMcapFactors, by="class")
+# gGeSlim<-gGeSlim%>%dplyr::mutate(GCAMestCapVals=Elec_Gen_GCAM_2015/gcamCapFactorAv*(10^12)/(365*24*3600))
+#
+#
+#
+# gridComparingCapacity<-dplyr::full_join(gridWRI,gGeSlim, by = c("country", "class"))
+#
+# gridComparingCapacityARG<-gridComparingCapacity%>%dplyr::filter(country %in% c("ARG"))%>%
+#   dplyr::select(-c("gcamCapFactorAv","Elec_Gen_GCAM_2015"))%>%
+#   tidyr::gather(key="data_source",value="est_installed_capacity",-c("country", "class"))
+#
+#
+# gridComparingCapacityCOL<-gridComparingCapacity%>%dplyr::filter(country %in% c("COL"))%>%
+#   dplyr::select(-c("gcamCapFactorAv","Elec_Gen_GCAM_2015"))%>%
+#   tidyr::gather(key="data_source",value="est_installed_capacity",-c("country", "class"))
+#
+#
+# chrt2 <- ggplot(data = gridComparingCapacity, aes(fill = country, x = class, y = WRI_total_capacity))+geom_bar(position = "dodge", stat="identity")
+#
+#
+# chrt3<-ggplot(data = gridComparingCapacityARG, aes(fill = data_source, x = class, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
+# chrt3
+#
+# chrt4<-ggplot(data = gridComparingCapacityCOL, aes(fill = data_source, x = class, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
+# chrt4
+#
 
 
 
