@@ -577,11 +577,12 @@ if(!dir.exists(biaFolder)){
         }else{
           print(paste("Using .Rdata format to save data.",sep=""))
           gridMetis<-dplyr::bind_rows(gridMetis,gridx)
-          }
+        }
 
 
 
         rm(gridx)
+
 
 
       } # Close if bia file exists
@@ -595,78 +596,99 @@ if(!dir.exists(biaFolder)){
 #----------------
 # Function for comparing electricity generation data
 #---------------
-#
-# for(i in c(1,5,40,100,149,180)){
-#   gridC<-gridx[(gridx$lat==unique(gridx$lat)[i] & gridx$lon==unique(gridx$lon)[i]),]
-#   fname=paste(unique(gridC$scenario),"_",unique(gridC$param),
-#               "_lat",unique(gridC$lat),"_lon", unique(gridC$lon),
-#               "_lowessSpan",spanLowess,sep="")
-#   metis.printPdfPng(figure=graphics::plot(gridC$x,gridC$value,type="l",
-#                                           main=paste(unique(gridC$scenario),
-#                                                      "\nlat = ",unique(gridC$lat),", lon = ", unique(gridC$lon),
-#                                                      ", Lowess Span =  ",spanLowess,sep=""),
-#                                           ylab=unique(gridC$units),xlab="Year")+
-#                       graphics::lines(gridC$x,gridC$lowess,type="l",col="red"),
-#                     dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
-# }
 
 
-# nationalelecgen<-function(biaFolder,){             #andym FIX this function starting from right here (what the inputs are)
-#   if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
-#   if(!"x"%in%names(data)){if("year"%in%names(data)){
-#     data<-data%>%dplyr::mutate(x=year)}else{data<-data%>%dplyr::mutate(x="x")}}
-#   if(!"region"%in%names(data)){data<-data%>%dplyr::mutate(region="region")}
-#   if(!"classPalette"%in%names(data)){data<-data%>%dplyr::mutate(classPalette="pal_hot")}
-#   if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}
-#   return(data)
-# }
+gridWRI<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""), header=T,stringsAsFactors = F)%>%
+  tibble::as_tibble()%>%dplyr::select(-name,-country,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source)
 
-# gridWRI <- gridx%>%
-#   dplyr::group_by(country, class)%>%
-#   dplyr::summarise(WRI_total_capacity=sum(value))%>%
-#   dplyr::filter(country %in% c("ARG","COL"))%>%
-#   dplyr::mutate(class=toupper(class))
-#
-#
-#
-# gridGCAMelec<-data.table::fread(paste(biaFolder,"/elec_gen_by_subsector_Col_Arg_gcam.csv",sep=""), header=T,stringsAsFactors = F)
-#
-# gGeSlim<-gridGCAMelec%>%tibble::as_tibble()%>%dplyr::select(country=region, class=subsector, Elec_Gen_GCAM_2015="2015")%>%
-#   dplyr::mutate(class=toupper(class))
-# gGeSlim[gGeSlim=="Argentina"]<-"ARG"
-# gGeSlim[gGeSlim=="Colombia"]<-"COL"
-# gGeSlim[gGeSlim=="REFINED LIQUIDS"]<-"OIL"
-#
-# GCAMcapFactors<-gridbP
-# GCAMcapFactors$gcamCapFactor[GCAMcapFactors$technology=="CSP_storage"]<-NA
-# GCAMcapFactors<-GCAMcapFactors%>%dplyr::group_by(class)%>%dplyr::summarise(gcamCapFactorAv=mean(gcamCapFactor, na.rm = TRUE))
-#
-# gGeSlim<-dplyr::full_join(gGeSlim,GCAMcapFactors, by="class")
-# gGeSlim<-gGeSlim%>%dplyr::mutate(GCAMestCapVals=Elec_Gen_GCAM_2015/gcamCapFactorAv*(10^12)/(365*24*3600))
-#
-#
-#
-# gridComparingCapacity<-dplyr::full_join(gridWRI,gGeSlim, by = c("country", "class"))
-#
-# gridComparingCapacityARG<-gridComparingCapacity%>%dplyr::filter(country %in% c("ARG"))%>%
-#   dplyr::select(-c("gcamCapFactorAv","Elec_Gen_GCAM_2015"))%>%
-#   tidyr::gather(key="data_source",value="est_installed_capacity",-c("country", "class"))
-#
-#
-# gridComparingCapacityCOL<-gridComparingCapacity%>%dplyr::filter(country %in% c("COL"))%>%
-#   dplyr::select(-c("gcamCapFactorAv","Elec_Gen_GCAM_2015"))%>%
-#   tidyr::gather(key="data_source",value="est_installed_capacity",-c("country", "class"))
-#
-#
-# chrt2 <- ggplot(data = gridComparingCapacity, aes(fill = country, x = class, y = WRI_total_capacity))+geom_bar(position = "dodge", stat="identity")
-#
-#
-# chrt3<-ggplot(data = gridComparingCapacityARG, aes(fill = data_source, x = class, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
+biaScenario<-biaScenarioAssign
+biaGCM=NA;biaRCP=NA
+
+aggType="vol"
+
+gridWRI<-gridWRI%>%dplyr::mutate(lat=latitude,
+                               lon=longitude,
+                               scenario=biaScenario,
+                               scenarioGCM=biaGCM,
+                               scenarioRCP=biaRCP,
+                               scenarioSSP=NA,
+                               scenarioPolicy=NA,
+                               param="biaElecGen",
+                               units= "Capacity (GW)",
+                               aggType=aggType,
+                               classPalette="pal_elec_subsec",
+                               class1=fuel1,
+                               value=capacity_mw/1000,
+                               x=NA,
+                               BackCalcCapFactor=estimated_generation_gwh/capacity_mw*(1000/(365*24)),
+                               BCCF_gen2015=generation_gwh_2015/capacity_mw*(1000/(365*24)),
+                               BCCF_gen2016=(1000/(365*24))*generation_gwh_2016/capacity_mw,
+                               est_gen_gwh=estimated_generation_gwh,
+                               gen_gwh_2013=generation_gwh_2013,
+                               gen_gwh_2014=generation_gwh_2014,
+                               gen_gwh_2015=generation_gwh_2015,
+                               gen_gwh_2016=generation_gwh_2016,
+                               region=country_long)%>%
+  tibble::as_tibble()%>%dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)
+
+#andym in the future can figure out which countries are grouped into the non-nation regions
+
+gridWRI <- gridWRI%>%
+  dplyr::group_by(region, class1)%>%
+  dplyr::summarise(WRI_total_capacity=sum(value))%>%
+  dplyr::filter(region %in% regionsSelect)
+gridWRI[gridWRI=="Coal"]<-"a Coal"
+gridWRI[gridWRI=="Gas"]<-"c Gas"
+gridWRI[gridWRI=="Oil"]<-"e Oil"
+gridWRI[gridWRI=="Biomass"]<-"g Biomass"
+gridWRI[gridWRI=="Nuclear"]<-"i Nuclear"
+gridWRI[gridWRI=="Geothermal"]<-"j Geothermal"
+gridWRI[gridWRI=="Hydro"]<-"k Hydro"
+gridWRI[gridWRI=="Wind"]<-"l Wind"
+gridWRI[gridWRI=="Solar"]<-"m Solar"
+
+
+
+gridGCAMelecCap<-datax%>%dplyr::filter(region %in% regionsSelect, param=="elecCapBySubsector", x==2015)%>%
+  dplyr::mutate(GCAM_total_capacity=value)%>%
+  dplyr::select(-c(value))
+
+
+gridCapComparison<-dplyr::full_join(gridGCAMelecCap,gridWRI, by = c("region", "class1"))%>%
+  tidyr::gather(key="data_source",value="est_installed_capacity",-c("region","class1","aggregate","units","vintage","x","xLabel","class2","sources","param","scenario","origValue","origX","origUnits","origQuery","origScen","classPalette1","classLabel1","classPalette2","classLabel2"))
+
+
+#gGeSlim<-gGeSlim%>%dplyr::mutate(GCAMestCapVals=Elec_Gen_GCAM_2015/gcamCapFactorAv*(10^12)/(365*24*3600))
+
+
+
+gridCapComparisonARG<-gridCapComparison%>%dplyr::filter(region %in% c("Argentina"))%>%
+  dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
+
+
+gridCapComparisonCol<-gridCapComparison%>%dplyr::filter(region %in% c("Colombia"))%>%
+  dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
+
+
+# chrt3<-ggplot(data = gridCapComparisonARG, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
 # chrt3
 #
-# chrt4<-ggplot(data = gridComparingCapacityCOL, aes(fill = data_source, x = class, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
+# chrt4<-ggplot(data = gridCapComparisonCol, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
 # chrt4
-#
+
+#andym for the next part, if it is important, I can nest this within another for loop, which does through the different scenarios
+#andym put some line so that it doesn't re-make graphs that it already made
+#andym change the name of some countries, like USA, so that they both match up (WRI and GCAM)
+
+for(regioni in regionsSelect){
+  gridR<-gridCapComparison%>%dplyr::filter(region==regioni)
+  fname=paste(unique(gridR$region),"_est_installed_capacity")
+  metis.printPdfPng(figure=ggplot(data = gridR, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity"),
+                    dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
+
+}     #close metis.printPdfPng
+
+
 
 
 

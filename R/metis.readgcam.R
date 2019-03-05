@@ -428,7 +428,7 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
       queryx <- "Electricity generation by aggregate technology"
       if (queryx %in% queriesx) {
         tbl <- tblElecbyTech  # Tibble
-        #rm(tblElecbyTech)
+        rm(tblElecbyTech)
         if (!is.null(regionsSelect)) {
           tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
         }
@@ -450,6 +450,7 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
         print(paste("Query '", queryx, "' not found in database", sep = ""))
       }}
     } else {print(paste("Electricity capacity factor file capacity_factor_by_elec_gen_subsector.csv not found. Skipping param elecCapbySubSector."))}
+
 
     # metis.chart(tbl,xData="x",yData="value",useNewLabels = 0)
 
