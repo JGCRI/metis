@@ -503,6 +503,36 @@ for(biaFile_i in biaFiles){
   chrt4
 
 
+
+
+#----------------
+# Creating a nation -> region list
+#---------------
+
+region32list<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/xanthosReference/region32_grids.csv",sep=""), header=T,stringsAsFactors = F)
+countrylist<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/xanthosReference/country.csv",sep=""), header=T,stringsAsFactors = F)
+regionnames<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/xanthosReference/Rgn32Names.csv",sep=""), header=T,stringsAsFactors = F)%>%
+  rename(region_32_code = region_id)
+countrynames<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/xanthosReference/country-names.csv",sep=""), header=F,stringsAsFactors = F)%>%
+  rename(ctry_code=V1,ctry_name=V2)
+
+
+countrytoregion<-dplyr::bind_cols(region32list,countrylist)%>%
+  dplyr::left_join(regionnames,by="region_32_code")%>%
+  dplyr::left_join(countrynames,by="ctry_code")%>%
+  unique()%>%
+  remove_rownames()
+
+
+#countrynames[!(unique(countrynames$ctry_name)%in%unique(countrytoregion$ctry_name))]
+#filter(countrynames,ctry_name=="Canada")
+#unique(filter(countrylist,ctry_code==34))
+#it seems like the Netherlands is in the countrytoregion but not in countrynames?? - no it is
+
+
+write.csv(countrytoregion,paste(getwd(),"/dataFiles/grids/xanthosReference/country_to_region.csv",sep=""), row.names=F)
+
+
 #----------------
 # Prepare gridded Population
 #---------------

@@ -18,6 +18,8 @@ if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}
 library(tmap)
 if("rgeos" %in% rownames(installed.packages()) == F){install.packages("rgeos")}
 library(rgeos)
+if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("rgeos")}
+library(ggplot2)
 
 
 

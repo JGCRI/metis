@@ -631,6 +631,9 @@ gridWRI<-gridWRI%>%dplyr::mutate(lat=latitude,
                                region=country_long)%>%
   tibble::as_tibble()%>%dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)
 
+gridWRI[gridWRI=="United States of America"]<-"USA"
+
+
 #andym in the future can figure out which countries are grouped into the non-nation regions
 
 gridWRI <- gridWRI%>%
