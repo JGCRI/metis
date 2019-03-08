@@ -1,0 +1,25 @@
+subsector,technology,cf_1971,cf_2100
+coal,coal (conv pul),0.85,0.85
+coal,coal (conv pul CCS),0.8,0.8
+coal,coal (IGCC),0.8,0.8
+coal,coal (IGCC CCS),0.8,0.8
+gas,gas (steam/CT),0.8,0.8
+gas,gas (CC),0.85,0.85
+gas,gas (CC CCS),0.8,0.8
+refined liquids,refined liquids (steam/CT),0.8,0.8
+refined liquids,refined liquids (CC),0.85,0.85
+refined liquids,refined liquids (CC CCS),0.8,0.8
+biomass,biomass (conv),0.85,0.85
+biomass,biomass (conv CCS),0.85,0.85
+biomass,biomass (IGCC),0.8,0.8
+biomass,biomass (IGCC CCS),0.8,0.8
+nuclear,Gen_II_LWR,0.9,0.9
+nuclear,Gen_III,0.9,0.9
+wind,wind,0.37,0.37
+wind,wind_storage,0.37,0.37
+solar,PV,0.2,0.2
+solar,PV_storage,0.2,0.2
+solar,CSP,0.25,0.25
+solar,CSP_storage,0.65,0.65
+geothermal,geothermal,0.9,0.9
+rooftop_pv,rooftop_pv,0.2,0.2
