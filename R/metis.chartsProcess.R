@@ -173,7 +173,7 @@ for(i in dataTables){
 # Join relevant colors and classes using the mapping file if it exists
 if(file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
   map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""), stringsAsFactors = F)%>%tibble::as.tibble()
-  tbl<-tbl%>%dplyr::left_join(map%>%dplyr::select(-class1,-class2)%>%distinct(),by=c("param","units"))
+  tbl<-tbl%>%dplyr::left_join(map%>%dplyr::select(-class1,-class2)%>%dplyr::distinct(),by=c("param","units"))
   }
 
 # Add missing columns

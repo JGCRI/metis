@@ -27,23 +27,29 @@ library(rgeos)
 # ?metis.readgcam # For more help
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
-               "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop",
-               "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
-               "agProdbyIrrRfd","agProdByCrop",
-               "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissByGHGGROUPS")
+# paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+#                "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop",
+#                "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
+#                "agProdbyIrrRfd","agProdByCrop",
+#                "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissByGHGGROUPS")
+
+paramsSelect="All"
 
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 #gcamdatabaseName <-"database_basexdb_LAC"
 gcamdataProjFile <-"LAC_dataProj.proj"
 regionsSelect <- c("Colombia")
 #regionsSelect <- NULL
+#gcamdatabaseName <-"example_database_basexdb"
+#gcamdataProjFile <-"Example_dataProj.proj"
 
 # Use function localDBConn from package rgcam to get a list of scenarios if needed.
 # localDBConn(gcamdatabasePath,gcamdatabaseName)
 # dataProjLoaded <- loadProject(paste(gcamdatabasePath, "/", dataProj, sep = ""))
 #  listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 # queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
+
+#queriesSelect = "All"      #andym
 
 
 dataGCAM_LAC<-metis.readgcam(reReadData=F, # Default Value is T

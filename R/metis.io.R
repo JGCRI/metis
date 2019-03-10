@@ -20,6 +20,12 @@ metis.io<-function(Z0=NULL,
                  dirOutputs=paste(getwd(),"/outputs",sep="")
                         ){
 
+  # Z0=NULL
+  # D0=NULL
+  # X0=NULL
+  # D=NULL
+  # A0=NULL
+  # dirOutputs=paste(getwd(),"/outputs",sep="")
 #----------------
 # Initialize variables by setting to NULL
 #----------------
@@ -76,7 +82,7 @@ addMissing<-function(data){
     if(!"sector" %in% names(A0)){stop(
       paste("Need to format A0 to have a 'sector' column corresponding to each sector. eg. ",
             tibble::tibble(sector=c("ag","wat"),ag=c(5,0),wat=c(10,2)),sep=""))}
-    Z0 <- bind_cols(A0%>%dplyr::select(sector),tibble::as_tibble(Z0))
+    Z0 <- dplyr::bind_cols(A0%>%dplyr::select(sector),tibble::as_tibble(Z0))
     names(Z0)<-names(A0)
     print(paste("Calculated Z0 based on A0 and X0 provided  = ",sep=""))
     print("Z0");print(Z0);print("A0");print(A0);print("X0");print(X0);

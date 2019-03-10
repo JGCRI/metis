@@ -71,7 +71,7 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
     NULL -> vintage -> year -> xLabel -> x -> value -> sector -> scenario -> region -> param -> origX -> origValue ->
     origUnits -> origScen -> origQuery -> classPalette2 -> classPalette1 -> classLabel2 -> classLabel1 -> class2 ->
     class1 -> connx -> aggregate -> Units -> sources -> paramx -> fuel -> technology -> input -> output -> water ->
-    landleaf -> ghg -> Convert
+    landleaf -> ghg -> Convert -> regionsSelectAll->cf1971to2100->gcamCapacityFactor
 
     # Create necessary directories if they dont exist.
     if (!dir.exists(dirOutputs)){
@@ -114,6 +114,12 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
     scenarios <- rgcam::listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
     queries <- rgcam::listQueries(dataProjLoaded)  # List of Queries in queryxml
 
+    # Get All Regions
+    if(length(queries)==0){stop("No queries found. PLease check data.")}
+    tbl <- rgcam::getQuery(dataProjLoaded, queries[1])  # Tibble
+    regionsAll<-unique(tbl$region)
+    if(any(regionsSelect=="All" | regionsSelect=="all" )){regionsSelect<-regionsAll; regionsSelectAll=T}
+
 
     # Read in paramaters from query file to create formatted table
     datax <- tibble::tibble()
@@ -129,7 +135,7 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
 
 
     if(any(paramsSelect=="All")){
-      paramsSelectx=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+      paramsSelectx=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech","elecCapBySubsector",
                      "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
                      "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
                      "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
@@ -173,8 +179,9 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                         origScen, origQuery, origValue, origUnits, origX)%>%
           dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                    aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                   origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-          dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                   origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%
+          dplyr::ungroup()%>%
+          dplyr::filter(!is.na(value))
         datax <- dplyr::bind_rows(datax, tbl)
     } else {
         print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -217,8 +224,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                          origScen, origQuery, origValue, origUnits, origX)%>%
            dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                            aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                           origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-           dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                           origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+           dplyr::filter(!is.na(value))
          datax <- dplyr::bind_rows(datax, tbl)
        } else {
          print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -264,8 +271,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                          origScen, origQuery, origValue, origUnits, origX)%>%
            dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                            aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                           origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-           dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                           origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+           dplyr::filter(!is.na(value))
          datax <- dplyr::bind_rows(datax, tbl)
        } else {
          print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -318,8 +325,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                          origScen, origQuery, origValue, origUnits, origX)%>%
            dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                            aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                           origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-           dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                           origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+           dplyr::filter(!is.na(value))
          datax <- dplyr::bind_rows(datax, tbl)
        } else {
          print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -361,8 +368,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -405,12 +412,45 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
+      tblElecbyTech<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
+
+    if(file.exists(paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""))){
+      capfactors <- data.table::fread(file=paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""),skip=3)
+    paramx <- "elecCapBySubsector"
+    if(paramx %in% paramsSelectx){
+      # Electricity Capacity by Subsector
+      queryx <- "Electricity generation by aggregate technology"
+      if (queryx %in% queriesx) {
+        tbl <- tblElecbyTech  # Tibble
+        rm(tblElecbyTech)
+        if (!is.null(regionsSelect)) {
+          tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+        }
+        tbl <- tbl %>%
+          dplyr::full_join(capfactors, by="class1")%>%
+          dplyr::mutate(param = "elecCapBySubsector",
+                        gcamCapacityFactor=cf1971to2100,
+                        value = value*metis.assumptions()$convEJ2GW/metis.assumptions()$convEJ2TWh/gcamCapacityFactor,
+                        origValue = value,
+                        units = "Electricity Capacity (GW)",
+                        origUnits = units) %>%
+          dplyr::filter(!is.na(value))%>%
+          dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origValue, origUnits, origX)
+
+        datax <- dplyr::bind_rows(datax, tbl)
+      } else {
+        print(paste("Query '", queryx, "' not found in database", sep = ""))
+      }}
+    } else {print(paste("Electricity capacity factor file capacity_factor_by_elec_gen_subsector.csv not found. Skipping param elecCapbySubSector."))}
+
 
     # metis.chart(tbl,xData="x",yData="value",useNewLabels = 0)
 
@@ -450,8 +490,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -493,8 +533,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -538,8 +578,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -581,8 +621,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -628,8 +668,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -676,8 +716,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -720,8 +760,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -763,8 +803,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -796,8 +836,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Paramater 'GDP MER by region' not found in database, so
@@ -840,8 +880,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -887,8 +927,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -1054,8 +1094,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -1109,8 +1149,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -1152,8 +1192,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       tblLUEmiss<-tbl
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
@@ -1197,8 +1237,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -1241,8 +1281,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
 
        # Add LU Change Emissions
        tblLUEmiss <- rgcam::getQuery(dataProjLoaded, "Land Use Change Emission (future)")  # Tibble
@@ -1276,8 +1316,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                         origScen, origQuery, origValue, origUnits, origX)%>%
           dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                    aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                   origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-          dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                   origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+          dplyr::filter(!is.na(value))
 
 
       dfLUCAbs<-tblLUEmiss%>%dplyr::filter(value<0)%>%dplyr::mutate(class1="LUC_Absorption")
@@ -1336,8 +1376,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -1389,8 +1429,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -1427,11 +1467,16 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
     utils::write.csv(fullTemplateMap, file = paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""),
                      row.names = F)
 
-    if (is.null(regionsSelect)) {
+    if (is.null(regionsSelect) | regionsSelectAll==T) {
         utils::write.csv(datax, file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
             "to", max(range(datax$x)), ".csv", sep = ""), row.names = F)
+        print(paste("GCAM data table saved to: ", paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
+                                                      "to", max(range(datax$x)), ".csv", sep = "")))
+
         utils::write.csv(dataTemplate, file = paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = ""),
                          row.names = F)
+        print(paste("GCAM data template saved to: ", paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = "")))
+
     } else {
 
        if(!all(regionsSelect %in% unique(datax$region))){
@@ -1440,6 +1485,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
        }
 
         for (region_i in regionsSelect[(regionsSelect %in% unique(datax$region))]) {
+
+          print(paste("Saving data table for region: ",region_i,"...", sep = ""))
             utils::write.csv(datax %>% dplyr::filter(region == region_i),
                              file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_", min(range(datax$x)),
                                           "to", max(range(datax$x)), ".csv", sep = ""),row.names = F)
@@ -1465,6 +1512,8 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                              file = paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_",region_i,".csv", sep = ""),row.names = F)
             #utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
             #                 file = paste(dirOutputs, "/Tables/Tables_Local/local_Regional_",region_i,".csv", sep = ""),row.names = F)
+
+            print(paste("Table saved.", sep = ""))
         }
     }
 

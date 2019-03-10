@@ -74,7 +74,7 @@ metis.grid2poly<- function(grid=NULL,
     params<-sqlGrid%>%dplyr::distinct(param)%>%dplyr::collect();
     params=params$param
     print(paste("Unique params found : ", paste(params,collapse=", "),sep=""))
-    paramScenarios<-tibble()
+    paramScenarios<-tibble::tibble()
     for(param_i in params){
       print(paste("Finding unique scenarios in sql database for param: ",param_i,"...",sep=""))
       scenarios<-sqlGrid%>%dplyr::filter(param==param_i)%>%dplyr::distinct(scenario)%>%dplyr::collect();
@@ -304,7 +304,7 @@ metis.grid2poly<- function(grid=NULL,
             gridCroppedX<-tidyr::gather(gridCropped,key=key,value=value,-c(lat,lon))%>%
               tidyr::separate(col="key",into=namesGrid[!namesGrid %in% c("lat","lon","value")],sep="_")%>%
               unique()%>%
-              filter(!is.na(value))
+              dplyr::filter(!is.na(value))
 
             for(colx in names(gridCroppedX)){
               if(is.character(gridCroppedX[[colx]])){
@@ -458,7 +458,7 @@ metis.grid2poly<- function(grid=NULL,
 
   if(length(list.files(paste(dirOutputs, "/Grids/temp", sep = "")))>0){
 
-  #gridCroppedCompiled <- tibble()
+  #gridCroppedCompiled <- tibble::tibble()
   grid_fnameComp<-paste(dirOutputs, "/Grids/gridCropped_",boundaryRegionsSelect,"_",subRegType,nameAppend,".csv", sep = "")
   for (file_i in list.files(paste(dirOutputs, "/Grids/temp", sep = ""))){
     print(paste("Compiling grid file",file_i,"...",sep=""))

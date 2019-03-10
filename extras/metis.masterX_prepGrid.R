@@ -4,7 +4,7 @@
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
+#if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}    #andym : should this be changed to JGCRI/metis ?_?
 library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
@@ -18,6 +18,8 @@ if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}
 library(tmap)
 if("rgeos" %in% rownames(installed.packages()) == F){install.packages("rgeos")}
 library(rgeos)
+if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("rgeos")}
+library(ggplot2)
 
 
 
@@ -40,37 +42,58 @@ xanthosScenarioAssign="Eg1"
 xanthosFiles=c("q_mmperyear_Reference")
 xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosReference/coordinates.csv",sep="")
 xanthosGridAreaHecsPath=paste(getwd(),"/dataFiles/grids/xanthosReference/Grid_Areas_ID.csv",sep="")
+biaFolder=paste(getwd(),"/dataFiles/grids/bia/",sep="")
+biaScenarioAssign="Eg1"
+biaFiles=c("global_power_plant_database_MW")
+#biaUnits="Capacity (MW)"   #andym   ?Should we have biaUnits?
 spanLowess=0.25
 popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 popFiles<-"grid_pop_map"
 popUnits<-"person"
-gridMetisData=paste(dirOutputs, "/Grids/gridMetisXanthos.RData", sep = "")
-sqliteUSE = T
-sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+gridMetisData=paste(dirOutputs, "/Grids/gridMetisBIA.RData", sep = "")
+#sqliteUSE = T andym
+sqliteUSE = F #andym
+sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridBIA.sqlite", sep = "")
+
+xanthosUnits="Runoff (mm)"  #andym  I thought that xanthosUnits was supposed to be taken out of prepGrid entirely, but it seems to be needed
+reReadData=T  #andym
+scarcityXanthosRollMeanWindow=10   #andym
 
 gridMetis<-metis.prepGrid(
-             demeterFolder=demeterFolder,
-             demeterScenario=demeterScenario,
-             demeterTimesteps=demeterTimesteps,
-             demeterUnits=demeterUnits,
-             tethysFolder=tethysFolder,
-             tethysScenario=tethysScenario,
-             copySingleTethysScenbyXanthos=copySingleTethysScenbyXanthos,
-             tethysFiles=tethysFiles,
-             tethysUnits=tethysUnits,
-             xanthosFolder=xanthosFolder,
-             xanthosScenario=xanthosScenario,
-             xanthosUnits=xanthosUnits,
-             xanthosFiles=xanthosFiles,
-             xanthosCoordinatesPath=xanthosCoordinatesPath,
-             scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow,
+             #demeterFolder=demeterFolder,
+             #demeterScenario=demeterScenario,
+             #demeterTimesteps=demeterTimesteps,
+             #demeterUnits=demeterUnits,
+             #tethysFolder=tethysFolder,
+             #tethysScenario=tethysScenario,
+             #copySingleTethysScenbyXanthos=copySingleTethysScenbyXanthos,
+             #tethysFiles=tethysFiles,
+             #tethysUnits=tethysUnits,
+             #xanthosFolder=xanthosFolder,
+             #xanthosScenarioAssign=xanthosScenarioAssign,   #andym from xanthosScenario=xanthosScenario,
+             #xanthosFiles=xanthosFiles,
+             #xanthosCoordinatesPath=xanthosCoordinatesPath,
+             #xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
+             #scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow,
+             biaFolder=biaFolder,
+             biaFiles=biaFiles,
+             biaScenarioAssign=biaScenarioAssign,
              dirOutputs=dirOutputs,
              reReadData=reReadData,
              gridMetisData=gridMetisData,
-             sqliteUSE = T,
-             sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+             sqliteUSE = sqliteUSE,
+             sqliteDBNamePath = sqliteDBNamePath
              )
 
+
+# biaFolder=biaFolder
+# biaFiles=biaFiles
+# biaScenarioAssign=biaScenarioAssign
+# dirOutputs=dirOutputs
+# reReadData=reReadData
+# gridMetisData=gridMetisData
+# sqliteUSE = sqliteUSE
+# sqliteDBNamePath = sqliteDBNamePath
 
 # Grid to Shape
 # gridMetisData<-paste(getwd(),"/outputs/Grids/gridMetis.RData",sep="")

@@ -250,24 +250,53 @@ irio<-metis.irio(Z0=Z0,D0=D0, D=c(280,360,0,0))
 
 # Problem 2.1
 Z0=tibble::tribble( # Initial Flows
-  ~sector ,    ~ag,         ~w,
-  "ag"     ,    0,         0,
-  "w"     ,    10,        0);Z0
+  ~sector ,    ~W,         ~E,
+  "W"     ,    0,           0.5,
+  "E"     ,    0.3,         0);A0
+
+
+D0=tibble::tribble( # Initial total demand
+  ~total,
+  1,
+  1
+);D0
+
+
+io<-metis.io(Z0=Z0,D0=D0,D=c(0,1))
+io$A
+io$L
+
+# Problem 2.1
+Z0=tibble::tribble( # Initial Flows
+  ~sector ,    ~Wgw,      ~Ws, ~ W,   ~Ebio, ~ Esol, ~ E,
+  "Wgw"   ,    0,         0,    0.5,  0,         0,    0,
+  "Ws"    ,    0,         0,    0.5,  0,         0,    0,
+  "W"     ,    0,         0,    0,    0.5,       0.5,   0,
+  "Ebio"  ,    0,         0,    0,    0,         0,    0.3,
+  "Esol"  ,    0,         0,    0,    0,         0,    0.7,
+  "E"     ,    0,         0,    0.1,    0,         0,    0);Z0
 
 A0=tibble::tribble( # Initial Flows
-  ~sector ,    ~ag,         ~w,
-  "ag"     ,    0,         0,
-  "w"     ,    0.3,        0);A0
+  ~sector ,    ~Wgw,      ~Ws, ~ W,   ~Ebio, ~ Esol, ~ E,
+  "Wgw"   ,    0,         0,    0.5,  0,         0,    0,
+  "Ws"    ,    0,         0,    0.5,  0,         0,    0,
+  "W"     ,    0,         0,    0,    1,         1,    0,
+  "Ebio"  ,    0,         0,    0,    0,         0,    1,
+  "Esol"  ,    0,         0,    0,    0,         0,    0,
+  "E"     ,    0,         0,    10,   0,         0,    0);A0
 
-
-X0=tibble::tribble( # Initial total demand
+D0=tibble::tribble( # Initial total demand
   ~total,
-  1000,
-  1000
-);X0
+  0,
+  0,
+  1,
+  0,
+  0,
+  1
+);D0
 
 
-io<-metis.io(Z0=Z0,X0=X0,A0=A0,D=c(1,20))
+io<-metis.io(Z0=Z0,D0=D0,D=c(0,0,1,0,0,0))
 io$A
 io$L
 
