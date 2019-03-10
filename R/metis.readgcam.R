@@ -71,7 +71,7 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
     NULL -> vintage -> year -> xLabel -> x -> value -> sector -> scenario -> region -> param -> origX -> origValue ->
     origUnits -> origScen -> origQuery -> classPalette2 -> classPalette1 -> classLabel2 -> classLabel1 -> class2 ->
     class1 -> connx -> aggregate -> Units -> sources -> paramx -> fuel -> technology -> input -> output -> water ->
-    landleaf -> ghg -> Convert -> regionsSelectAll
+    landleaf -> ghg -> Convert -> regionsSelectAll->cf1971to2100->gcamCapacityFactor
 
     # Create necessary directories if they dont exist.
     if (!dir.exists(dirOutputs)){

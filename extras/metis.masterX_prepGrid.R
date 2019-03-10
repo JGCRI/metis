@@ -50,41 +50,50 @@ spanLowess=0.25
 popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 popFiles<-"grid_pop_map"
 popUnits<-"person"
-gridMetisData=paste(dirOutputs, "/Grids/gridMetisXanthos.RData", sep = "")
+gridMetisData=paste(dirOutputs, "/Grids/gridMetisBIA.RData", sep = "")
 #sqliteUSE = T andym
 sqliteUSE = F #andym
-sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridBIA.sqlite", sep = "")
 
 xanthosUnits="Runoff (mm)"  #andym  I thought that xanthosUnits was supposed to be taken out of prepGrid entirely, but it seems to be needed
 reReadData=T  #andym
 scarcityXanthosRollMeanWindow=10   #andym
 
 gridMetis<-metis.prepGrid(
-             demeterFolder=demeterFolder,
-             demeterScenario=demeterScenario,
-             demeterTimesteps=demeterTimesteps,
-             demeterUnits=demeterUnits,
-             tethysFolder=tethysFolder,
-             tethysScenario=tethysScenario,
-             copySingleTethysScenbyXanthos=copySingleTethysScenbyXanthos,
-             tethysFiles=tethysFiles,
-             tethysUnits=tethysUnits,
-             xanthosFolder=xanthosFolder,
-             xanthosScenarioAssign=xanthosScenarioAssign,   #andym from xanthosScenario=xanthosScenario,
-             #xanthosUnits=xanthosUnits,
-             xanthosFiles=xanthosFiles,
-             xanthosCoordinatesPath=xanthosCoordinatesPath,
-             xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
+             #demeterFolder=demeterFolder,
+             #demeterScenario=demeterScenario,
+             #demeterTimesteps=demeterTimesteps,
+             #demeterUnits=demeterUnits,
+             #tethysFolder=tethysFolder,
+             #tethysScenario=tethysScenario,
+             #copySingleTethysScenbyXanthos=copySingleTethysScenbyXanthos,
+             #tethysFiles=tethysFiles,
+             #tethysUnits=tethysUnits,
+             #xanthosFolder=xanthosFolder,
+             #xanthosScenarioAssign=xanthosScenarioAssign,   #andym from xanthosScenario=xanthosScenario,
+             #xanthosFiles=xanthosFiles,
+             #xanthosCoordinatesPath=xanthosCoordinatesPath,
+             #xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
+             #scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow,
              biaFolder=biaFolder,
              biaFiles=biaFiles,
              biaScenarioAssign=biaScenarioAssign,
-             scarcityXanthosRollMeanWindow=scarcityXanthosRollMeanWindow,
              dirOutputs=dirOutputs,
              reReadData=reReadData,
              gridMetisData=gridMetisData,
-             sqliteUSE = T,
+             sqliteUSE = sqliteUSE,
              sqliteDBNamePath = sqliteDBNamePath
              )
+
+
+# biaFolder=biaFolder
+# biaFiles=biaFiles
+# biaScenarioAssign=biaScenarioAssign
+# dirOutputs=dirOutputs
+# reReadData=reReadData
+# gridMetisData=gridMetisData
+# sqliteUSE = sqliteUSE
+# sqliteDBNamePath = sqliteDBNamePath
 
 # Grid to Shape
 # gridMetisData<-paste(getwd(),"/outputs/Grids/gridMetis.RData",sep="")

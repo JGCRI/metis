@@ -61,6 +61,7 @@
 #' @param refRCP Default = NULL , eg. "rcp2p6"
 #' @param chosenRefMeanYears Default=NULL
 #' @param mapTitleSize Default=0.5
+#' @param facetLabelSizeMulti Default =3
 #' @export
 
 metis.mapProcess<-function(polygonDataTables=NULL,
@@ -184,7 +185,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
   NULL->lat->lon->param->region->scenario->subRegion->
     value->x->year->gridID->underLayer->maxScale->minScale->scenarioGCM->scenarioRCP->scenarioSSP->
-    scenarioPolicy->valueDiff
+    scenarioPolicy->valueDiff->rowid
 
   # Set legend size based on where legend is placed
   if(legendOutsideSingle==T){legendTitleSizeS=legendTitleSizeO;legendTextSizeS=legendTextSizeO;legendPositionS=NULL}

@@ -142,6 +142,8 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{chosenRefMeanYears}{Default=NULL}
 
 \item{mapTitleSize}{Default=0.5}
+
+\item{facetLabelSizeMulti}{Default =3}
 }
 \value{
 Returns the formatted data used to produce chart

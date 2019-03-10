@@ -31,6 +31,7 @@
 #' @param spanLowess Default = 0.25
 #' @param sqliteUSE Default = T,
 #' @param sqliteDBNamePath Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+#' @param copySingleTethysScenbyXanthos Default=NULL,
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @export
@@ -69,6 +70,38 @@ metis.prepGrid<- function(demeterFolder="NA",
                         ){
 
 
+  # demeterFolder="NA"
+  # demeterScenario="NA"
+  # demeterTimesteps=seq(from=2005,to=2100,by=5)
+  # demeterUnits="NA"
+  # tethysFolder="NA"
+  # tethysScenario="NA"
+  # tethysUnits="NA"
+  # tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
+  # copySingleTethysScenbyXanthos=NULL
+  # xanthosFolder="NA"
+  # xanthosFiles="NA"
+  # xanthosScenarioAssign="NA"
+  # xanthosCoordinatesPath="NA"
+  # xanthosGridAreaHecsPath="NA"
+  # biaFolder="NA"
+  # biaFiles="NA"
+  # biaScenarioAssign="NA"
+  # zelusFolder="NA"
+  # zelusScenario="NA"
+  # zelusUnits="NA"
+  # zelusFiles="NA"
+  # scarcityXanthosRollMeanWindow=10
+  # spanLowess=0.25
+  # popFolder="NA"
+  # popFiles="NA"
+  # popUnits="NA"
+  # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # reReadData=1
+  # gridMetisData=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = "")
+  # sqliteUSE = F
+  # sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+
 
 #----------------
 # Initialize variables by setting to NULL
@@ -77,7 +110,13 @@ metis.prepGrid<- function(demeterFolder="NA",
 NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
   ilon->ilat->param->V2->V3->scenario->classPalette->rollingMean->x->scarcity->value->id->
     tethysScenarios->tethysYears->xanthosScenarios->xanthosYears->biaScenarios->biaYears->zelusScenarios->zelusYears->
-    commonYears->commonScenarios->V1->Area_hec->Area_km2->lowess->valueXanthos->valueTethys->valueBia->valueZelus->commonYears_i
+    commonYears->commonScenarios->V1->Area_hec->Area_km2->lowess->valueXanthos->valueTethys->valueBia->valueZelus->commonYears_i->
+    tethysGCMRCPs->xanthosGCMRCPs->scenarioSSP->scenarioPolicy->scenarioGCM->scenarioRCP->
+    country->name->country_long_gppd_idnr->fuel1->fuel2->fuel3->fuel4->owner->geolocation_source->
+    GCMRCP->capacity_gw->capacity_mw->cf1971to2100->class1->data_source->datax->est_installed_capacity->
+    estimated_generation_gwh->gcamCapacityFactor->generation_gwh_2013->generation_gwh_2014->
+    generation_gwh_2015->generation_gwh_2016->
+    owner->region->regionsSelect->rowid->scenarioTethys->scenarioXanthos->country_long->gppd_idnr
 
 
 #------------------
@@ -175,7 +214,7 @@ if(!dir.exists(tethysFolder)){
     if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
 
     tethysScenarios<-character()
-    tethysGCMRCPs<-tibble()
+    tethysGCMRCPs<-tibble::tibble()
     tethysYears<-numeric()
 
     for(tethysFile_i in tethysFiles){
@@ -226,7 +265,7 @@ if(!dir.exists(tethysFolder)){
 
         tethysScenarios<-unique(c(tethysScenarios,unique(gridx$scenario)))
         tethysGCMRCP<-gridx %>%
-          dplyr::select(scenarioGCM,scenarioRCP) %>% distinct()
+          dplyr::select(scenarioGCM,scenarioRCP) %>% dplyr::distinct()
         tethysGCMRCPs<-dplyr::bind_rows(tethysGCMRCPs,tethysGCMRCP)
         tethysYears<-unique(gridx$x)
 
@@ -268,7 +307,7 @@ if(!dir.exists(xanthosFolder)){
     if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
 
     xanthosScenarios<-character()
-    xanthosGCMRCPs<-tibble()
+    xanthosGCMRCPs<-tibble::tibble()
     xanthosYears<-numeric()
 
     for(xanthosFile_i in xanthosFiles){
@@ -347,7 +386,7 @@ if(!dir.exists(xanthosFolder)){
 
         xanthosScenarios<-unique(c(xanthosScenarios,unique(gridx$scenario)))
         xanthosGCMRCP<-gridx %>%
-                       dplyr::select(scenarioGCM,scenarioRCP) %>% distinct()
+                       dplyr::select(scenarioGCM,scenarioRCP) %>% dplyr::distinct()
         xanthosGCMRCPs<-dplyr::bind_rows(xanthosGCMRCPs,xanthosGCMRCP)
         xanthosYears<-unique(gridx$x)
 
@@ -485,8 +524,6 @@ if(!dir.exists(xanthosFolder)){
 #---------------
 
 
-
-
 if(!dir.exists(biaFolder)){
   print(paste("bia folder: ", biaFolder ," is incorrect or doesn't exist.",sep=""))
   print(paste("Skipping bia runs",sep=""))}else {
@@ -611,7 +648,7 @@ if(!dir.exists(biaFolder)){
 # Function for comparing electricity generation data
 #---------------
 
-
+if(F){
 gridWRI<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""), header=T,stringsAsFactors = F)%>%
   tibble::as_tibble()%>%dplyr::select(-name,-country,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source)
 
@@ -704,7 +741,7 @@ for(regioni in regionsSelect){
                     dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
 
 }     #close metis.printPdfPng
-
+} # Close if FALSE
 
 
 
@@ -712,6 +749,8 @@ for(regioni in regionsSelect){
 #----------------
 # Prepare Gridded Scarcity
 #---------------
+
+if(!is.null(tethysGCMRCPs) & !is.null(xanthosGCMRCPs)){
 tethysGCMRCPs<-tethysGCMRCPs%>%unique()%>%dplyr::mutate(GCMRCP=paste(scenarioGCM,scenarioRCP,sep="_"))
 xanthosGCMRCPs<-xanthosGCMRCPs%>%unique()%>%dplyr::mutate(GCMRCP=paste(scenarioGCM,scenarioRCP,sep="_"))
 
@@ -750,7 +789,7 @@ if(sqliteUSE==T){
       if(!is.null(copySingleTethysScenbyXanthos)){
         if(grepl(copySingleTethysScenbyXanthos,unique(gridMetisTethys$scenarioTethys))){
 
-          gridMetisTethysX<-tibble()
+          gridMetisTethysX<-tibble::tibble()
 
           paste("Copying tethys results for all xanthos GCM and RCPs...")
           for(row_i in 1:nrow(xanthosGCMRCPs)){
@@ -811,7 +850,7 @@ if(!is.null(gridMetis)){
     if(!is.null(copySingleTethysScenbyXanthos)){
       if(grepl(copySingleTethysScenbyXanthos,unique(gridMetisTethys$scenarioTethys))){
 
-        gridMetisTethysX<-tibble()
+        gridMetisTethysX<-tibble::tibble()
 
         paste("Copying tethys results for all xanthos GCM and RCPs...")
         for(row_i in 1:nrow(xanthosGCMRCPs)){
@@ -850,7 +889,7 @@ if(!is.null(gridMetis)){
 
   }}}else {print(paste("gridMetis is NULL, skipping gridded scracity calculation.",sep=""))}
     } # Close sql Loop
-
+} # Closing loop to check for tethys and xanthos GCMRCPs
 
 
 #----------------
