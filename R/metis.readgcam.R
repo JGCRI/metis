@@ -118,7 +118,9 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
     if(length(queries)==0){stop("No queries found. PLease check data.")}
     tbl <- rgcam::getQuery(dataProjLoaded, queries[1])  # Tibble
     regionsAll<-unique(tbl$region)
-    if(any(regionsSelect=="All" | regionsSelect=="all" )){regionsSelect<-regionsAll; regionsSelectAll=T}
+    if(any(regionsSelect=="All" | regionsSelect=="all" )){regionsSelect<-regionsAll; regionsSelectAll=T}else{
+      regionsSelectAll=F
+    }
 
 
     # Read in paramaters from query file to create formatted table
@@ -823,7 +825,7 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
       tbl <- tbl %>%
         dplyr::mutate(param = "gdpGrowthRate",
                sources = "Sources",
-               value = (value-dplyr::lag(value,order_by=year))*100/dplyr::lag(value,order_by=x),
+               value = (value-dplyr::lag(value,order_by=x))*100/(5*dplyr::lag(value,order_by=x)),
                units = "GDP Growth Rate (Percent)",
                vintage = paste("Vint_", x, sep = ""),
                classLabel1 = "GDP growth rate",
@@ -906,6 +908,7 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
                origQuery = queryx,
                origUnits = Units,
                origX = year,
+               origValue = value,
                scenario = scenNewNames,
                value = value,
                units = "Ag Production (Mt)",
