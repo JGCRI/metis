@@ -50,7 +50,7 @@ regionsSelect <- c("Colombia")
 # queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
 #queriesSelect = "All"      #andym
-
+#regionsSelect = "All"      #andym
 
 dataGCAM_LAC<-metis.readgcam(reReadData=F, # Default Value is T
                              dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
