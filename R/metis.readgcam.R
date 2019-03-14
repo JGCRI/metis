@@ -92,14 +92,24 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
 
     # Read gcam database or existing dataProj.proj
     if (!reReadData) {
+
+       #### Check for proj file path and folder if incorrect give error
+      # if(!file.exists){stop(paste("message"))}
+
         if (file.exists(paste(gcamdatabasePath, "/", dataProj, sep = ""))) {
             dataProjLoaded <- rgcam::loadProject(paste(gcamdatabasePath, "/", dataProj, sep = ""))
         } else {
             stop(paste("No ", dataProj, " file exists. Please set reReadData=T to create dataProj.proj"))
         }
     } else {
-        if (file.exists(dataProj)){
-                file.remove(dataProj)}  # Delete old project file
+        if (file.exists(paste(gcamdatabasePath, "/", dataProj, sep = ""))){
+                file.remove(paste(gcamdatabasePath, "/", dataProj, sep = ""))}  # Delete old project file
+
+      #### Check for query file and folder if incorrect give error
+      # if(!file.exists){stop(paste("message"))}
+      #### Check for gcamdatbasePath and gcamdatabasename
+      # if(!file.exists){stop(paste("message"))}
+
         for (scenario_i in scenOrigNames) {
             dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = dataProj,
                 scenario = scenario_i, queryFile = paste(gcamdatabasePath, "/", queryxml, sep = ""))  # Check your queries file
