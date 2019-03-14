@@ -44,12 +44,16 @@ sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridBIA.sqlite", sep = "")
 
 
 
-#gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
+gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 gcamdatabaseName <-"example_database_basexdb"
-gcamdatabasePath <-paste("D:/ESSIC/my_gcam_workspace/output",sep="")
+#gcamdatabasePath <-paste("D:/ESSIC/my_gcam_workspace/output",sep="")
 #gcamdatabaseName <-"database_basexdb"
 
-gcamdataProjFile <-"Example_dataProj.proj"
+#gcamdataProjFile <-"Example_dataProj.proj"
+gcamdataProjFile <-"example_from_example_database_Proj.proj"    #andym
+
+scenOrigNames=c("ExampleScen1","ExampleScen2")
+scenNewNames=c("Eg1","Eg2")
 
 
 # Use function localDBConn from package rgcam to get a list of scenarios if needed.
