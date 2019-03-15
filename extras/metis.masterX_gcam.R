@@ -33,10 +33,13 @@ library(rgeos)
 #                "agProdbyIrrRfd","agProdByCrop",
 #                "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissByGHGGROUPS")
 
+
 paramsSelect="All"
 
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 #gcamdatabaseName <-"database_basexdb_LAC"
+dataProjPath<-gcamdatabasePath
+queryPath<-gcamdatabasePath
 gcamdataProjFile <-"LAC_dataProj.proj"
 regionsSelect <- c("Colombia")
 #regionsSelect <- NULL
@@ -49,16 +52,15 @@ regionsSelect <- c("Colombia")
 #  listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 # queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
-#queriesSelect = "All"      #andym
-#regionsSelect = "All"      #andym
-
 dataGCAM_LAC<-metis.readgcam(reReadData=F, # Default Value is T
-                             dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
-                             scenOrigNames=c("GCAMOrig","GCAMModified"),
-                             scenNewNames=c("GCAMOrig","GCAMModified"),
                              gcamdatabasePath=gcamdatabasePath,
                              gcamdatabaseName=gcamdatabaseName,
+                             dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
+                             dataProjPath=dataProjPath, #Default Value is gcamdatabasePath
+                             scenOrigNames=c("GCAMOrig","GCAMModified"),
+                             scenNewNames=c("GCAMOrig","GCAMModified"),
                              queryxml="metisQueries.xml",  # Default Value is "metisQueries.xml"
+                             queryPath<-queryPath, #Default Value is gcamdatabasePath
                              dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
                              regionsSelect=regionsSelect, # Default Value is NULL
                              paramsSelect=paramsSelect # Default value is "All"
@@ -75,20 +77,69 @@ regionsSelect <- c("Uruguay")
 #queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
 dataGCAM_Uruguay<-metis.readgcam(reReadData=F, # Default Value is T
+                                 gcamdatabasePath=gcamdatabasePath,
+                                 gcamdatabaseName=gcamdatabaseName,
+                                 dataProjPath=dataProjPath, #Default Value is gcamdatabasePath
                                  dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
                                  scenOrigNames=c("GCAMOrig"),
                                  scenNewNames=c("GCAMOrig"),
-                                 gcamdatabasePath=gcamdatabasePath,
-                                 gcamdatabaseName=gcamdatabaseName,
                                  queryxml="metisQueries.xml",  # Default Value is "metisQueries.xml"
+                                 queryPath<-queryPath, #Default Value is gcamdatabasePath
                                  dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
                                  regionsSelect=regionsSelect, # Default Value is NULL
                                  paramsSelect=paramsSelect # Default value is "All"
 )
 
+
 dataGCAM<-bind_rows(dataGCAM_LAC$data,dataGCAM_Uruguay$data)
 dataGCAM # To view the data read that was read.
 unique((dataGCAM%>%filter(value>0))$param)
+
+
+
+
+
+gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
+dataProjPath<-gcamdatabasePath
+queryPath<-gcamdatabasePath
+gcamdatabaseName <-"example_database_basexdb"
+gcamdataProjFile <-"Example_dataProj.proj"
+scenOrigNames=c("ExampleScen1","ExampleScen2")
+scenNewNames=c("Eg1","Eg2")
+
+# Use function localDBConn from package rgcam to get a list of scenarios if needed.
+# localDBConn(gcamdatabasePath,gcamdatabaseName)
+# dataProjLoaded <- loadProject(paste(gcamdatabasePath, "/", dataProj, sep = ""))
+#  listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
+# queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
+
+queryxml="metisQueries.xml"
+queriesSelect = "All"      #andym
+#regionsSelect = "All"      #andym
+regionsSelect <- c("Colombia")
+#regionsSelect <- NULL
+#paramsSelect<-"All"
+paramsSelect<-c("elecByTech")
+
+
+
+dataGCAM_ExampleElec<-metis.readgcam(reReadData=F, # Default Value is T
+                                gcamdatabasePath=gcamdatabasePath,
+                                gcamdatabaseName=gcamdatabaseName,
+                                dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
+                                #dataProjPath=dataProjPath, #Default Value is gcamdatabasePath
+                                scenOrigNames=scenOrigNames,
+                                scenNewNames=scenNewNames,
+                                queryxml=queryxml,  # Default Value is "metisQueries.xml"
+                                #queryPath<-queryPath, #Default Value is gcamdatabasePath
+                                dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
+                                regionsSelect=regionsSelect, # Default Value is NULL
+                                paramsSelect=paramsSelect # Default value is "All"
+)
+
+
+
+
 
 #----------------------------
 # Produce Data Charts

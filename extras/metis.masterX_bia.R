@@ -47,8 +47,12 @@ sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridBIA.sqlite", sep = "")
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 gcamdatabaseName <-"example_database_basexdb"
 #gcamdatabasePath <-paste("D:/ESSIC/my_gcam_workspace/output",sep="")
+#dataProjPath<-paste("D:/ESSIC/my_gcam_workspace/output",sep="")
+#queryPath<-paste("D:/ESSIC/my_gcam_workspace/output",sep="")
 #gcamdatabaseName <-"database_basexdb"
 
+
+dataProjPath<-paste(getwd(),"/dataFiles/gcam",sep="")
 #gcamdataProjFile <-"Example_dataProj.proj"
 gcamdataProjFile <-"example_from_example_database_Proj.proj"    #andym
 

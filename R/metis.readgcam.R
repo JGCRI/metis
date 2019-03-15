@@ -5,7 +5,9 @@
 #' @param dirOutputs Full path to directory for outputs
 #' @param gcamdatabasePath Path to gcam database folder
 #' @param gcamdatabaseName Name of gcam database
-#' @param queryxml Full path to query.xml file
+#' @param queryxml Name of the query.xml file. By default it is "metisQueries.xml"
+#' @param queryPath Folder that contains the query.xml file.By default it is
+#' the same folder as specified by gcamdatabasePath
 #' @param scenOrigNames Original Scenarios names in GCAM database in a string vector.
 #' For example c('scenario1','scenario2).
 #' @param scenNewNames New Names which may be shorter and more useful for figures etc.
@@ -15,6 +17,8 @@
 #' with full path is provided otherwise it will search for a dataProj.proj file in the existing
 #' folder which may have been created from an old run.
 #' @param dataProj Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.
+#' @param dataProjPath Folder that contains the dataProj or where it will be produced.
+#' By default it is the same folder as specified by gcamdatabasePath
 #' @param regionsSelect The regions to analyze in a vector. Example c('Colombia','Argentina')
 #' @param queriesSelect Default = "All". Vector of queries to read from the queryxml for example
 #' c("Total final energy by aggregate end-use sector", "Population by region"). The queries must be
@@ -57,11 +61,19 @@
 #' @keywords gcam, gcam database, query
 #' @export
 
-metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metisQueries.xml",
-                         scenOrigNames, scenNewNames = NULL,
-                         reReadData = T, dataProj = "dataProj.proj", dirOutputs = paste(getwd(), "/outputs", sep = ""),
-                         regionsSelect = NULL, queriesSelect="All",
-                         paramsSelect="All"){
+metis.readgcam <- function(gcamdatabasePath,
+                           gcamdatabaseName,
+                           queryxml = "metisQueries.xml",
+                           queryPath = gcamdatabasePath,
+                           scenOrigNames,
+                           scenNewNames = NULL,
+                           reReadData = T,
+                           dataProj = "dataProj.proj",
+                           dataProjPath = gcamdatabasePath,
+                           dirOutputs = paste(getwd(), "/outputs", sep = ""),
+                           regionsSelect = NULL, queriesSelect="All",
+                           paramsSelect="All"
+                           ){
 
 
 #----------------
@@ -93,31 +105,32 @@ metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metis
     # Read gcam database or existing dataProj.proj
     if (!reReadData) {
 
-       #### Check for proj file path and folder if incorrect give error
-      # if(!file.exists){stop(paste("message"))}
+       # Check for proj file path and folder if incorrect give error
+        if(!file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){stop(paste("dataProj file: ", dataProjPath,"/",dataProj," is incorrect or doesn't exist.",sep=""))}
 
-        if (file.exists(paste(gcamdatabasePath, "/", dataProj, sep = ""))) {
-            dataProjLoaded <- rgcam::loadProject(paste(gcamdatabasePath, "/", dataProj, sep = ""))
+        if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))) {
+            dataProjLoaded <- rgcam::loadProject(paste(dataProjPath, "/", dataProj, sep = ""))
         } else {
             stop(paste("No ", dataProj, " file exists. Please set reReadData=T to create dataProj.proj"))
         }
     } else {
-        if (file.exists(paste(gcamdatabasePath, "/", dataProj, sep = ""))){
-                file.remove(paste(gcamdatabasePath, "/", dataProj, sep = ""))}  # Delete old project file
+        if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){
+                file.remove(paste(dataProjPath, "/", dataProj, sep = ""))}  # Delete old project file
 
-      #### Check for query file and folder if incorrect give error
-      # if(!file.exists){stop(paste("message"))}
-      #### Check for gcamdatbasePath and gcamdatabasename
-      # if(!file.exists){stop(paste("message"))}
+        # Check for query file and folder if incorrect give error
+        if(!file.exists(paste(queryPath, "/", queryxml, sep = ""))){stop(paste("query file: ", queryPath,"/",queryxml," is incorrect or doesn't exist.",sep=""))}
+
+        # Check for gcamdatbasePath and gcamdatabasename
+        if(!file.exists(paste(gcamdatabasePath, "/", gcamdatabaseName, sep = ""))){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
 
         for (scenario_i in scenOrigNames) {
             dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = dataProj,
-                scenario = scenario_i, queryFile = paste(gcamdatabasePath, "/", queryxml, sep = ""))  # Check your queries file
+                scenario = scenario_i, queryFile = paste(queryPath, "/", queryxml, sep = ""))  # Check your queries file
         }
-        file.copy(from = paste(getwd(), "/", dataProj, sep = ""), to = gcamdatabasePath, overwrite = T,
+        file.copy(from = paste(getwd(), "/", dataProj, sep = ""), to = dataProjPath, overwrite = T,
                   copy.mode = TRUE)
         file.remove(dataProj)
-        dataProjLoaded <- rgcam::loadProject(paste(gcamdatabasePath, "/", dataProj, sep = ""))
+        dataProjLoaded <- rgcam::loadProject(paste(dataProjPath, "/", dataProj, sep = ""))
     }
 
     # Save list of scenarios and queries
