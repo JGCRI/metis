@@ -47,7 +47,9 @@ sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridBIA.sqlite", sep = "")
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
 gcamdatabaseName <-"example_database_basexdb"
 #gcamdatabasePath <-paste("D:/ESSIC/my_gcam_workspace/output",sep="")
+#gcamdatabasePath <-paste("D:/ESSIC",sep="")
 #dataProjPath<-paste("D:/ESSIC/my_gcam_workspace/output",sep="")
+#queryPath<-paste(getwd(),"/dataFiles/gcam",sep="")
 #queryPath<-paste("D:/ESSIC/my_gcam_workspace/output",sep="")
 #gcamdatabaseName <-"database_basexdb"
 
@@ -71,9 +73,9 @@ regionsSelect = "All"      #andym
 #regionsSelect <- c("Colombia")
 #regionsSelect <- NULL
 
-reReadData=T  #andym
+#reReadData=T  #andym
 
-#reReadData=F   #andym
+reReadData=F   #andym
 
 
 biaDistElecGen<-metis.bia(

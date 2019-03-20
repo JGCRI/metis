@@ -98,7 +98,7 @@ metis.bia<- function(biaInputsFolder="NA",
 
 
   #------------------
-  # Create Folders if needed
+  # Create Folders if needed and read in GCAM data
   #------------------
   if (!dir.exists(biaOutputsFolder)){
     dir.create(biaOutputsFolder)}
@@ -107,46 +107,29 @@ metis.bia<- function(biaInputsFolder="NA",
     dir.create(paste(biaOutputsFolder, "/biadiagnostics",sep=""))}
 
 
+  readgcamdata<-vector("list", length = 4)
 
-
-
-
-  # Check for new scenario names
-  if (is.null(scenNewNames)) {
-    scenNewNames <- scenOrigNames}
-
-  # Read gcam database or existing dataProj.proj
-  if (!reReadData) {
-    if (file.exists(paste(gcamdatabasePath, "/", dataProj, sep = ""))) {
-      dataProjLoaded <- rgcam::loadProject(paste(gcamdatabasePath, "/", dataProj, sep = ""))
-    } else {
-      stop(paste("No ", dataProj, " file exists. Please set reReadData=T to create dataProj.proj"))
-    }
-  } else {
-    if (file.exists(paste(gcamdatabasePath, "/", dataProj, sep = ""))){
-      file.remove(paste(gcamdatabasePath, "/", dataProj, sep = ""))}  # Delete old project file
-    for (scenario_i in scenOrigNames) {
-      dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = dataProj,
-                                          scenario = scenario_i, queryFile = paste(gcamdatabasePath, "/", queryxml, sep = ""))  # Check your queries file
-    }
-    file.copy(from = paste(getwd(), "/", dataProj, sep = ""), to = gcamdatabasePath, overwrite = T,
-              copy.mode = TRUE)
-    file.remove(dataProj)
-    dataProjLoaded <- rgcam::loadProject(paste(gcamdatabasePath, "/", dataProj, sep = ""))
-  }
-
+  readgcamdata<-metis.readgcam(gcamdatabasePath = gcamdatabasePath, gcamdatabaseName = gcamdatabaseName,
+                               queryxml = queryxml, queryPath = queryPath,
+                               scenOrigNames = scenOrigNames, scenNewNames = scenNewNames, reReadData = reReadData,
+                               dataProj = gcamdataProjFile, dataProjPath = dataProjPath, dirOutputs = biaOutputsFolder,
+                               regionsSelect = regionsSelect, queriesSelect = queriesSelect , paramsSelect = paramsSelect)
 
 
   # Save list of scenarios and queries
-  scenarios <- rgcam::listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
-  queries <- rgcam::listQueries(dataProjLoaded)  # List of Queries in queryxml
+  scenarios <- readgcamdata$scenarios  # List of Scenarios in the GCAM database pulled in through metis.readgcam
+  queries <- readgcamdata$queries  # List of Queries in the GCAM database pulled in through metis.readgcam
+
+  if(length(queries)==0){stop("No queries found. PLease check data.")}
+
+  dataBia <- readgcamdata$data
 
 
-
+  #andym Mar 20 - figure out how to get the regions list, etc, then carry on
 
 
   # Get All Regions
-  if(length(queries)==0){stop("No queries found. PLease check data.")}
+
   tbl <- rgcam::getQuery(dataProjLoaded, queries[1])  # Tibble
   regionsAll<-unique(tbl$region)
   if(any(regionsSelect=="All" | regionsSelect=="all" )){regionsSelect<-regionsAll; regionsSelectAll=T}else{
