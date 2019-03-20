@@ -28,7 +28,7 @@ library(rgeos)
 # ?metis.readgcam # For more help
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech", "elecCapBySubsector",
                "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop",
                "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
                "agProdbyIrrRfd","agProdByCrop",
@@ -47,7 +47,7 @@ regionsSelect <- c("Argentina")
 # queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
 
-dataGCAM_LAC<-metis.readgcam(reReadData=F, # Default Value is T
+dataGCAM_LAC<-metis.readgcam(reReadData=T, # Default Value is T
                              dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
                              scenOrigNames=c("GCAMOrig","GCAMModified"),
                              scenNewNames=c("GCAMOrig","GCAMModified"),
@@ -92,31 +92,31 @@ unique(rTable$x)
 #                "agProdbyIrrRfd","agProdByCrop",
 #                "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissionByGHG")
 
-paramsSelect=c("primNrgConsumByFuel")
+paramsSelect=c("All")
 regionsSelect=c("Argentina")
 
 charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
                             dataTables=dataTables, # Default is NULL
                             paramsSelect=paramsSelect, # Default is "All"
                             regionsSelect=regionsSelect, # Default is "All"
-                            xCompare=c(1990,2005,2010,2015), # Default is c("2015","2030","2050","2100")
+                            xCompare=c(2005,2010,2015,2030), # Default is c("2015","2030","2050","2100")
                             scenRef="GCAMOrig", # Default is NULL
                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                             pdfpng="png", # Default is "png"
                             regionCompareOnly=0, # Default is "0"
                             useNewLabels=0,
-                            xRange=c(1975,1990,2005,2010,2015) # Default is All
+                            xRange=c(1975,1990,2005,2010,2015,2030) # Default is All
 )
 
 
-rTable=rTable # Default is NULL
-dataTables=dataTables # Default is NULL
-paramsSelect=paramsSelect # Default is "All"
-regionsSelect=regionsSelect # Default is "All"
-xCompare=c(1990,2005,2010,2015) # Default is c("2015","2030","2050","2100")
-scenRef="GCAMOrig" # Default is NULL
-dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
-pdfpng="png" # Default is "png"
-regionCompareOnly=0 # Default is "0"
-useNewLabels=0
-xRange=c(1975,1990,2005,2010,2015) # Default is All
+# rTable=rTable # Default is NULL
+# dataTables=dataTables # Default is NULL
+# paramsSelect=paramsSelect # Default is "All"
+# regionsSelect=regionsSelect # Default is "All"
+# xCompare=c(1990,2005,2010,2015) # Default is c("2015","2030","2050","2100")
+# scenRef="GCAMOrig" # Default is NULL
+# dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+# pdfpng="png" # Default is "png"
+# regionCompareOnly=0 # Default is "0"
+# useNewLabels=0
+# xRange=c(1975,1990,2005,2010,2015) # Default is All

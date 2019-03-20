@@ -27,7 +27,7 @@ library(rgeos)
 # ?metis.readgcam # For more help
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech", "elecCapBySubsector",
                "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
                "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
                "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
@@ -57,7 +57,7 @@ dataGCAM<-metis.readgcam(reReadData=T, # Default Value is T
 )
 
 
-# reReadData=T # Default Value is T
+# reReadData=F # Default Value is T
 # dataProj=gcamdataProjFile # Default Value is "dataProj.proj"
 # scenOrigNames=c("GCAMOrig")
 # scenNewNames=c("GCAMOrig")
@@ -94,7 +94,7 @@ rTable <- dataGCAM$data;
 #                "agProdbyIrrRfd","agProdByCrop",
 #                "landIrrRfd", "aggLandAlloc","co2emissionByEndUse", "ghgEmissionByGHG")
 
-#paramsSelect=c("elecByTech")
+#paramsSelect=c("gdpGrowthRate")
 
 regionsSelect=c("Uruguay")
 
@@ -102,13 +102,13 @@ charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
                             dataTables=dataTables, # Default is NULL
                             paramsSelect=paramsSelect, # Default is "All"
                             regionsSelect=regionsSelect, # Default is "All"
-                            xCompare=c("2010"), # Default is c("2015","2030","2050","2100")
-                            scenRef="GCAMModified", # Default is NULL
+                            xCompare=c("2010","2020","2030","2035"), # Default is c("2015","2030","2050","2100")
+                            scenRef="GCAMOrig", # Default is NULL
                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                             pdfpng="png", # Default is "png"
                             regionCompareOnly=0, # Default is "0"
                             useNewLabels=0,
-                            xRange=c(2010,2020,2030,2040) # Default is All
+                            xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050) # Default is All
 )
 
 # rTable=rTable # Default is NULL

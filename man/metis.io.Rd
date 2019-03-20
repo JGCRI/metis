@@ -4,7 +4,8 @@
 \alias{metis.io}
 \title{metis.io}
 \usage{
-metis.io(Z0 = NULL, D0 = NULL, X0 = NULL, D = NULL, A0 = NULL,
+metis.io(Z0 = NULL, D0 = NULL, X0 = NULL, A0 = NULL, DNew = NULL,
+  XNew = NULL, ZNew = NULL, ANew = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""))
 }
 \arguments{
@@ -14,11 +15,11 @@ metis.io(Z0 = NULL, D0 = NULL, X0 = NULL, D = NULL, A0 = NULL,
 
 \item{X0}{Default = NULL,}
 
-\item{D}{Default = NULL,}
-
 \item{A0}{Default = NULL,}
 
 \item{dirOutputs}{Default =paste(getwd(),"/outputs",sep=""),}
+
+\item{D}{Default = NULL,}
 }
 \value{
 A table with data by polygon ID for each shapefile provided
