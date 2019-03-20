@@ -122,22 +122,28 @@ regionsSelect <- c("Colombia")
 paramsSelect<-c("elecByTech")
 
 
+dataProj=gcamdataProjFile  #andym     # Default Value is "dataProj.proj"
+reReadData=F #andym    # Default Value is T
+dirOutputs= paste(getwd(),"/outputs",sep="") # Default Value is paste(getwd(),"/outputs",sep="")
+
 
 dataGCAM_ExampleElec<-metis.readgcam(reReadData=F, # Default Value is T
                                 gcamdatabasePath=gcamdatabasePath,
                                 gcamdatabaseName=gcamdatabaseName,
                                 dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
-                                #dataProjPath=dataProjPath, #Default Value is gcamdatabasePath
+                                dataProjPath=dataProjPath, #Default Value is gcamdatabasePath
                                 scenOrigNames=scenOrigNames,
                                 scenNewNames=scenNewNames,
                                 queryxml=queryxml,  # Default Value is "metisQueries.xml"
-                                #queryPath<-queryPath, #Default Value is gcamdatabasePath
+                                queryPath<-queryPath, #Default Value is gcamdatabasePath
                                 dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
                                 regionsSelect=regionsSelect, # Default Value is NULL
                                 paramsSelect=paramsSelect # Default value is "All"
 )
 
-
+metis.readgcam(reReadData = reReadData, gcamdatabasePath = gcamdatabasePath, gcamdatabaseName = gcamdatabaseName,
+               dataProj = gcamdataProjFile, dataProjPath = dataProjPath, scenOrigNames = scenOrigNames, scenNewNames = scenNewNames,
+               queryPath = queryPath, regionsSelect = regionsSelect, paramsSelect = paramsSelect)
 
 
 

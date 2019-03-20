@@ -71,7 +71,8 @@ metis.readgcam <- function(gcamdatabasePath,
                            dataProj = "dataProj.proj",
                            dataProjPath = gcamdatabasePath,
                            dirOutputs = paste(getwd(), "/outputs", sep = ""),
-                           regionsSelect = NULL, queriesSelect="All",
+                           regionsSelect = NULL,
+                           queriesSelect="All",
                            paramsSelect="All"
                            ){
 
@@ -114,14 +115,15 @@ metis.readgcam <- function(gcamdatabasePath,
             stop(paste("No ", dataProj, " file exists. Please set reReadData=T to create dataProj.proj"))
         }
     } else {
-        if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){
-                file.remove(paste(dataProjPath, "/", dataProj, sep = ""))}  # Delete old project file
-
         # Check for query file and folder if incorrect give error
         if(!file.exists(paste(queryPath, "/", queryxml, sep = ""))){stop(paste("query file: ", queryPath,"/",queryxml," is incorrect or doesn't exist.",sep=""))}
 
         # Check for gcamdatbasePath and gcamdatabasename
         if(!file.exists(paste(gcamdatabasePath, "/", gcamdatabaseName, sep = ""))){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
+
+        if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){
+        file.remove(paste(dataProjPath, "/", dataProj, sep = ""))}  # Delete old project file
+
 
         for (scenario_i in scenOrigNames) {
             dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = dataProj,
