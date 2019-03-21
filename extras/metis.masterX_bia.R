@@ -27,21 +27,9 @@ library(ggplot2)
 # Run Bia to create distributed electricity generation
 #------------------------
 
+
 biaOutputsFolder=paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep="")
 biaInputsFolder=paste(getwd(),"/dataFiles/grids/bia/biaInputs",sep="")
-
-biaScenarioAssign="Eg1"
-biaInputsFiles=c("global_power_plant_database_MW")
-#biaUnits="Capacity (MW)"   #andym   ?Should we have biaUnits?
-popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
-popFiles<-"grid_pop_map"
-popUnits<-"person"
-#gridMetisData=paste(dirOutputs, "/Grids/gridMetisBIA.RData", sep = "")
-#sqliteUSE = T andym
-sqliteUSE = F #andym
-sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridBIA.sqlite", sep = "")
-
-
 
 
 gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
@@ -54,13 +42,20 @@ gcamdatabaseName <-"example_database_basexdb"
 #gcamdatabaseName <-"database_basexdb"
 
 
-dataProjPath<-paste(getwd(),"/dataFiles/gcam",sep="")
-#gcamdataProjFile <-"Example_dataProj.proj"
-gcamdataProjFile <-"example_from_example_database_Proj.proj"    #andym
-
+gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
+dataProjPath<-gcamdatabasePath
+#dataProjPath<-paste(getwd(),"/dataFiles/gcam",sep="")
+queryPath<-gcamdatabasePath
+gcamdatabaseName <-"example_database_basexdb"
+gcamdataProjFile <-"Example_dataProj.proj"
+#gcamdataProjFile <-"example_from_example_database_Proj.proj"    #andym
+dataProj=gcamdataProjFile  #andym
 scenOrigNames=c("ExampleScen1","ExampleScen2")
 scenNewNames=c("Eg1","Eg2")
 
+
+scenOrigNames=c("ExampleScen1","ExampleScen2")
+scenNewNames=c("Eg1","Eg2")
 
 # Use function localDBConn from package rgcam to get a list of scenarios if needed.
 # localDBConn(gcamdatabasePath,gcamdatabaseName)
@@ -68,14 +63,29 @@ scenNewNames=c("Eg1","Eg2")
 #  listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 # queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
+queryxml="metisQueries.xml"
 queriesSelect = "All"      #andym
-regionsSelect = "All"      #andym
-#regionsSelect <- c("Colombia")
+#regionsSelect = "All"      #andym
+regionsSelect <- c("Colombia", "Argentina", "Japan")
 #regionsSelect <- NULL
+#paramsSelect<-"All"
+paramsSelect<-c("elecByTech")
 
-#reReadData=T  #andym
+reReadData=F
 
-reReadData=F   #andym
+
+#
+# biaScenarioAssign="Eg1"
+# biaInputsFiles=c("global_power_plant_database_MW")
+# #biaUnits="Capacity (MW)"   #andym   ?Should we have biaUnits?
+# popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
+# popFiles<-"grid_pop_map"
+# popUnits<-"person"
+# #gridMetisData=paste(dirOutputs, "/Grids/gridMetisBIA.RData", sep = "")
+# #sqliteUSE = T andym
+# sqliteUSE = F #andym
+# sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridBIA.sqlite", sep = "")
+
 
 
 biaDistElecGen<-metis.bia(
@@ -88,7 +98,7 @@ biaDistElecGen<-metis.bia(
             sqliteDBNamePath = sqliteDBNamePath,
             regionsSelect=regionsSelect, # Default Value is NULL
             reReadData=reReadData, # Default Value is T
-            dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
+            dataProj=dataProj, # Default Value is "dataProj.proj"
             scenOrigNames=c("GCAMOrig","GCAMModified"),
             scenNewNames=c("GCAMOrig","GCAMModified"),
             gcamdatabasePath=gcamdatabasePath,
