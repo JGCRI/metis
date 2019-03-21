@@ -649,8 +649,19 @@ if(!dir.exists(biaFolder)){
 #---------------
 
 if(F){
-gridWRI<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""), header=T,stringsAsFactors = F)%>%
-  tibble::as_tibble()%>%dplyr::select(-name,-country,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source)
+
+ctor<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/xanthosReference/country_to_region.csv",sep=""), header=T,stringsAsFactors = F)%>%
+  tibble::as.tibble()%>%
+  dplyr::mutate(country_long=ctry_name)
+
+gridWRI<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""), header=T,stringsAsFactors = F)
+
+gridWRI[gridWRI=="United States of America"]<-"United States"
+
+gridWRI<-gridWRI%>%tibble::as_tibble()%>%dplyr::select(-name,-country,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source)%>%
+  dplyr::left_join(ctor,by="country_long")
+
+
 
 biaScenario<-biaScenarioAssign
 biaGCM=NA;biaRCP=NA
@@ -678,11 +689,11 @@ gridWRI<-gridWRI%>%dplyr::mutate(lat=latitude,
                                gen_gwh_2013=generation_gwh_2013,
                                gen_gwh_2014=generation_gwh_2014,
                                gen_gwh_2015=generation_gwh_2015,
-                               gen_gwh_2016=generation_gwh_2016,
-                               region=country_long)%>%
+                               gen_gwh_2016=generation_gwh_2016
+                               #region=country_long
+                               )%>%
   tibble::as_tibble()%>%dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)
 
-gridWRI[gridWRI=="United States of America"]<-"USA"
 
 
 #andym in the future can figure out which countries are grouped into the non-nation regions
@@ -716,12 +727,12 @@ gridCapComparison<-dplyr::full_join(gridGCAMelecCap,gridWRI, by = c("region", "c
 
 
 
-gridCapComparisonARG<-gridCapComparison%>%dplyr::filter(region %in% c("Argentina"))%>%
-  dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
-
-
-gridCapComparisonCol<-gridCapComparison%>%dplyr::filter(region %in% c("Colombia"))%>%
-  dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
+# gridCapComparisonARG<-gridCapComparison%>%dplyr::filter(region %in% c("Argentina"))%>%
+#   dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
+#
+#
+# gridCapComparisonCol<-gridCapComparison%>%dplyr::filter(region %in% c("Colombia"))%>%
+#   dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
 
 
 # chrt3<-ggplot(data = gridCapComparisonARG, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
@@ -732,7 +743,10 @@ gridCapComparisonCol<-gridCapComparison%>%dplyr::filter(region %in% c("Colombia"
 
 #andym for the next part, if it is important, I can nest this within another for loop, which does through the different scenarios
 #andym put some line so that it doesn't re-make graphs that it already made
-#andym change the name of some countries, like USA, so that they both match up (WRI and GCAM)
+
+#andym so it doesn't look like China got doubled
+
+
 
 for(regioni in regionsSelect){
   gridR<-gridCapComparison%>%dplyr::filter(region==regioni)

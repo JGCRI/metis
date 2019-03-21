@@ -516,18 +516,38 @@ regionnames<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/xanthosRefer
 countrynames<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/xanthosReference/country-names.csv",sep=""), header=F,stringsAsFactors = F)%>%
   rename(ctry_code=V1,ctry_name=V2)
 
+countrylistFixed<-countrylist %>%
+  mutate(ctry_code = as.numeric(ctry_code),
+         ctry_code = case_when((ctry_code>-1)~(ctry_code-1),
+                               TRUE~ctry_code))
 
-countrytoregion<-dplyr::bind_cols(region32list,countrylist)%>%
+
+
+countrytoregion<-dplyr::bind_cols(region32list,countrylistFixed)%>%
+  filter(ctry_code>(-1))%>%
   dplyr::left_join(regionnames,by="region_32_code")%>%
   dplyr::left_join(countrynames,by="ctry_code")%>%
   unique()%>%
   remove_rownames()
+
+# countrytoregion<-dplyr::bind_cols(region32list,countrylist)
+# x<-regionnames%>%dplyr::left_join(countrytoregion,by="region_32_code")
+#   dplyr::left_join(countrynames,by="ctry_code")%>%
+#   unique()%>%
+#   remove_rownames()
 
 
 #countrynames[!(unique(countrynames$ctry_name)%in%unique(countrytoregion$ctry_name))]
 #filter(countrynames,ctry_name=="Canada")
 #unique(filter(countrylist,ctry_code==34))
 #it seems like the Netherlands is in the countrytoregion but not in countrynames?? - no it is
+#unique(b1$ctry_name)[!unique(b1$ctry_name) %in% unique(b$ctry_name)]->missingNames
+#countrynames%>%filter(ctry_name %in% missingNames)
+#a<-a[-1,]
+#summary(compare(a,regionnames))
+#summary(arsenal::compare(a,regionnames))
+#unique(countrytoregion%>%select(ctry_code,ctry_name))%>%arrange(ctry_code)->b
+
 
 
 write.csv(countrytoregion,paste(getwd(),"/dataFiles/grids/xanthosReference/country_to_region.csv",sep=""), row.names=F)
