@@ -4,28 +4,41 @@
 \alias{metis.io}
 \title{metis.io}
 \usage{
-metis.io(Z0 = NULL, D0 = NULL, X0 = NULL, A0 = NULL, DNew = NULL,
-  XNew = NULL, ZNew = NULL, ANew = NULL,
+metis.io(Z0i = NULL, D0i = NULL, X0i = NULL, A0i = NULL,
+  Trade0i = NULL, Cap0i = NULL, DNewi = NULL, XNewi = NULL,
+  ZNewi = NULL, ANewi = NULL, ZPartiali = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""))
 }
 \arguments{
-\item{Z0}{Default = NULL,}
+\item{Z0i}{Default = NULL,}
 
-\item{D0}{Default = NULL,}
+\item{D0i}{Default = NULL,}
 
-\item{X0}{Default = NULL,}
+\item{X0i}{Default = NULL,}
 
-\item{A0}{Default = NULL,}
+\item{A0i}{Default = NULL,}
+
+\item{Trade0i}{Default =NULL,}
+
+\item{Cap0i}{Default =NULL,}
+
+\item{DNewi}{Default =NULL,}
+
+\item{XNewi}{Default =NULL,}
+
+\item{ZNewi}{Default =NULL,}
+
+\item{ANewi}{Default =NULL,}
+
+\item{ZPartiali}{Default =NULL,}
 
 \item{dirOutputs}{Default =paste(getwd(),"/outputs",sep=""),}
-
-\item{D}{Default = NULL,}
 }
 \value{
 A table with data by polygon ID for each shapefile provided
 }
 \description{
-This function prepares gridded data for use with other metis modules.
+This function prepares gridded data for use with domestic metis modules.
 }
 \keyword{database,}
 \keyword{gcam}

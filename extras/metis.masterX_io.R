@@ -59,8 +59,8 @@ Cap0=tibble::tribble( # Initial total demand
 
 Trade0=tibble::tribble( # Initial total demand
   ~sector, ~trade,
-  "W",    -10,
-  "E",    100
+  "W",    0,
+  "E",    0
 );Trade0
 
 DNew=tibble::tribble( # Initial processed demand
@@ -85,14 +85,18 @@ XNew=tibble::tribble( # Initial processed demand
   "E",    500
 );XNew
 
+A0i=A0;
+D0i=D0;
+Cap0i=Cap0;
+Trade0i=Trade0
 
 
-
-io1<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Trade0=Trade0)
+io1<-metis.io(A0i=A0,D0i=D0, Cap0i=Cap0, Trade0i=Trade0)
 io2<-metis.io(A0=A0,X0=X0, Cap0=Cap0)
 io3<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0)
 io4<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0)
 io5<-metis.io(X0=X0,Z0=Z0,ANew=ANew, DNew=DNew, XNew=XNew, ZNew=ZNew, Cap0=Cap0)
+#io2<-metis.io(D0=D0,X0=X0, Cap0=Cap0)
 io$A_Orig
 io$L_Orig
 
@@ -264,17 +268,108 @@ g<-ggplot(as.data.frame(dfx%>%filter(value!=0)),
 # Real Example With metis Outputs
 #--------------------------------
 
+library(dplyr);library(magrittr)library(tidyr)
+
 # Tethys (Water Demands)
-Water_E
-Water_Ag
-Water_domestic
-Water_processed
+#Water_E
+#Water_Ag
+#Water_domestic
+#Water_processed
 
 # Demeter + GCAM (Ag Demands)
-Ag_processed # Ag All
+#Ag_processed # Ag All
 
 # GCAM (Elec Demands)
-E_processed # Buildings, Industry, Transport
+#E_processed # Buildings, Industry, Transport
+
+
+dataTables<-c(paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_subBasin_origDownscaled_local.csv",sep=""))
+a<-read.csv(dataTables);
+head(a); s<-unique(a$scenario); p<-unique(a$param); y<-unique(a$x); r<-unique(a$subRegion)
+# Choose 2 scenarios, 3 regions, tethys, xanthos, 2010, 2030
+a1 <- a %>%
+  dplyr::select(scenario,param,units,class,value,x,subRegion,region) %>%
+  dplyr::filter(scenario %in% c("Eg1_NA_NA","gfdl-esm2m_rcp4p5_NA_NA"),
+                param %in% c("tethysWatWithdraw_indv","tethysWatWithdraw_total","xanthosRunoff"),
+                subRegion %in% r[3:5],
+                x %in% c(2010,2030)) %>%
+  dplyr::left_join(data.frame(subRegion=r[3:5],subRegionN=c("bermejo1","bermejo2","sanFransisco"))) %>%
+  dplyr::mutate(subRegion=subRegionN, region="Argentina") %>% dplyr::select(-subRegionN) %>%
+  dplyr::left_join(data.frame(class=c("Domestic", "Electric", "Irrigation", "Livestock", "Manufacturing","Mining", "Total", "Runoff"),
+                              ioClass=c("domestic","E","Ag","domestic","domestic","domestic","processed","cap"),
+                              sector=c("W","W","W","W","W","W","W","W"))) %>%
+  dplyr::left_join(data.frame(scenario=c("Eg1_NA_NA","gfdl-esm2m_rcp4p5_NA_NA"),
+                              scenarioN=c("Scenario_Ref","Scenario_Impact"))) %>%
+  dplyr::mutate(scenario=scenarioN) %>% dplyr::select(-scenarioN) %>%
+  dplyr::select(-class) %>%
+  dplyr::group_by_at(dplyr::vars(-value))%>%
+  dplyr::summarize_at(c("value"),dplyr::funs(sum)) %>%
+  ungroup() %>%
+  unique(); a1
+
+a2 <- a1 %>% bind_rows(a1 %>%
+                         filter(ioClass %in% c("Ag","E")) %>%
+                         dplyr::select(-ioClass,-sector,-value) %>%
+                         unique %>%
+                         mutate (ioClass="W",sector="W",value=0))
+a3 <- a2 %>% bind_rows(a2 %>%
+                         filter(ioClass %in% c("Ag","E","W")) %>%
+                         mutate(scenario="Scenario_Impact", value=value*2*runif(1)));a3
+
+z <- tidyr::spread(a3 %>% filter(ioClass %in% c("Ag","E","W")), key=ioClass, value=value);
+z1 <- z %>%
+  mutate(param="Flows", units="m3") %>%
+  bind_rows(z %>%
+             mutate(sector="E",
+                    param="Flows",
+                    units ="TWh",
+                    Ag=0,
+                    E=0,
+                    W=0)) %>%
+  bind_rows(z %>%
+             mutate(sector="Ag",
+                    param="Flows",
+                    units="kg",
+                    Ag=0,
+                    E=E*2*runif(1),
+                    W=0));z1
+
+x <- tidyr::spread(a1 %>% filter(ioClass %in% c("processed")), key=ioClass, value=value);x
+x <- x %>% bind_rows(x %>%
+                       mutate(scenario="Scenario_Impact",
+                                       processed=processed*2*runif(1)));x
+
+x1 <- x %>%
+  mutate(param="processed", units="m3") %>%
+  bind_rows(x %>%
+              mutate(sector="E",
+                     units="TWh",
+                     param="processed",
+                     processed=processed*3*runif(1))) %>%
+  bind_rows(x %>%
+              mutate(sector="Ag",
+                     units="kg",
+                     param="processed",
+                     processed=processed*2*runif(1))); x1
+
+cap <- tidyr::spread(a1 %>% filter(ioClass %in% c("cap")), key=ioClass, value=value);cap
+cap <- cap %>% bind_rows(cap %>%
+                       mutate(scenario="Scenario_Ref",
+                              cap=cap*2*runif(1)));cap
+
+
+cap1 <- cap %>%
+  mutate(param="cap", units="m3") %>%
+  bind_rows(cap %>%
+              mutate(sector="E",
+                     units="TWh",
+                     param="cap",
+                     cap=cap*2*runif(1))) %>%
+  bind_rows(cap %>%
+              mutate(sector="Ag",
+                     units="kg",
+                     param="cap",
+                     cap=cap*1*runif(1))); cap1
 
 
 A0=tibble::tribble( # Initial Flows
@@ -283,38 +378,18 @@ A0=tibble::tribble( # Initial Flows
   "E"     ,    0.002,         0,   0.0005,
   "Ag"    ,    0,         0.005,    0);A0
 
-Z0=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,       ~E,     ~ Ag,
-  "W"     ,    0,         5,      7.5,
-  "E"     ,    1,         0,      1.5,
-  "Ag"    ,    0,         0.1,    0);Z0
+a1<- z1 %>% select(-c(unique(z1$sector))) %>% unique() %>%
+  dplyr::left_join(A0,by=c("sector")); a1
 
-X0=tibble::tribble( # Initial processed demand
-  ~sector, ~processed,
-  "W",    1000,
-  "E",    20,
-  "Ag",   4000
-);X0
+A0i=a1;
+X0i=x1;
+ZPartiali=z1
+Cap0i=cap1
 
-
-D0=tibble::tribble( # Initial processed demand
-  ~sector, ~domestic,
-  "W",    1000,
-  "E",    20,
-  "Ag",   4000
-);D0
-
-Cap0=tibble::tribble( # Initial processed demand
-  ~sector, ~cap,
-  "W",    500,
-  "E",    30,
-  "Ag",   3000
-);Cap0
-
-
-
-io<-metis.io(A0=A0,X0=X0)
+io<-metis.io(A0i=A0i,X0i=X0i,ZPartiali=ZPartiali)
 io$A_Orig
+
+z1
 
 ZPartial=tibble::tribble( # Known Flows
   ~sector ,    ~W,       ~E,     ~ Ag,
