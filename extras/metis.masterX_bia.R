@@ -74,8 +74,13 @@ paramsSelect<-c("elecByTech")
 reReadData=F
 
 
-#
-# biaScenarioAssign="Eg1"
+biaInputsFiles=c("global_power_plant_database_MW")
+
+biaScenarioAssign="Eg1"
+
+gridChoice<-"grid_050"
+
+
 # biaInputsFiles=c("global_power_plant_database_MW")
 # #biaUnits="Capacity (MW)"   #andym   ?Should we have biaUnits?
 # popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
