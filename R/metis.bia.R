@@ -141,7 +141,10 @@ metis.bia<- function(biaInputsFolder = "NA",
     dplyr::mutate(country_long=ctry_name)
 
   listOfGridCells<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/emptyGrids/",gridChoice,".csv",sep=""), header=T,stringsAsFactors = F)%>%
-    tibble::as_tibble()
+    tibble::as_tibble()%>%
+    rename(gridlat = lat,
+           gridlon = lon,
+           gridID = id)
 
 
   #------------------
@@ -215,14 +218,17 @@ metis.bia<- function(biaInputsFolder = "NA",
                                              classPalette="pal_elec_subsec",
                                              class1=fuel1,
                                              value=capacity_mw/1000,
-                                             x=NA)%>%
-              tibble::as_tibble()%>%dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)
+                                             x=NA,
+                                             gridlat = 1/2*round(latitude*2+0.5)-0.25,
+                                             gridlon = 1/2*round(longitude*2+0.5)-0.25)%>%
+              tibble::as_tibble()%>%
+              dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)%>%
+              dplyr::left_join(listOfGridCells,by = c("gridlat","gridlon"))
 
 
+###This is where I am Mar 26 ---- now I think that I should just be able to summarize (sum) by either gridID or the combo of gridlat and gridlon! Stuff below prob junk, further below may be goodstuff
 
 
-#####andym Mar 25 - here. I was just going to try to sum them up into their respective grid cells. Don't forget the rest of the gridWRI modification
-            ###stuff down below....and this pipe thing immediately below is most likely junk
 
 
 
