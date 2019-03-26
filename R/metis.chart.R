@@ -73,6 +73,36 @@ metis.chart<-function(data,
                          pdfpng="png")
                         {
 
+
+  # chartType="bar"
+  # position="stack"
+  # xData="x"
+  # yData="value"
+  # class="class1"
+  # group="scenario"
+  # classPalette="classPalette1"
+  # classLabel="classLabel1"
+  # xLabel="xLabel"
+  # yLabel="yLabel"
+  # facet_rows="region"
+  # facet_columns="scenario"
+  # ncolrow=4
+  # scales="fixed"
+  # useNewLabels=0
+  # units="units"
+  # xBreaksMaj=10
+  # xBreaksMin=5
+  # yBreaksMajn=5
+  # yBreaksMinn=10
+  # sizeBarLines=0.5
+  # sizeLines=1.5
+  # printFig = T
+  # fileName = "chart"
+  # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # figWidth=13
+  # figHeight=9
+  # pdfpng="png"
+
 #------------------
 # Initialize variables to remove binding errors if needed
 # -----------------
@@ -113,8 +143,10 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
   if(useNewLabels==1){
     if(!is.null(names(paletteX))){
-      names(paletteX)<-tools::toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",names(paletteX)))}
+      names(paletteX)<-tools::toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",names(paletteX)))
+      paletteX <- paletteX[rev(order(names(paletteX)))]}
     l1[[class]]<-tools::toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",l1[[class]]))
+    l1<-l1%>%arrange(!! rlang::sym(class))
   }
 
   p <- ggplot(l1,aes(x=get(xData),y=get(yData),group=get(group))) +
