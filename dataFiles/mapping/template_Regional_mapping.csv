@@ -140,7 +140,7 @@
 "Population (Millions)","pop","class1","class2","Year","sum","Population","pal_16","classLabel2","classPalette2"
 "Ag Production (Mt)","agProdbyIrrRfd","irrigation","class2","Year","sum","Water Source","pal_16","classLabel2","classPalette2"
 "Ag Production (Mt)","agProdbyIrrRfd","rainfed","class2","Year","sum","Water Source","pal_16","classLabel2","classPalette2"
-"Biomass Production (EJ)","agProdBiomass","biomass","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
+"Biomass Production (TWh)","agProdBiomass","biomass","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
 "Agricultural Production (billion m3)","agProdForest","Forest","class2","Year","sum","Forest","pal_ag_type","classLabel2","classPalette2"
 "Agricultural Production (billion m3)","agProdForest","NonFoodDemand_Forest","class2","Year","sum","Forest","pal_ag_type","classLabel2","classPalette2"
 "Agricultural Production (Mt)","agProdByCrop","Corn","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"

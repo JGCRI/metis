@@ -494,3 +494,47 @@ rownames(M)<-colnames(M);M
 col<- colorRampPalette(metis.colors()$pal_div_wet)(20)
 corrplot(M, method="circle", is.corr=F, type="upper",addCoef.col="red", col=col, add=F, cl.length=20, cl.lim=c(0,2))
 
+
+# Test non-square I/O
+
+# Small Example
+Z=tibble::tribble( # Initial Flows
+  ~sector, ~subSector ,    ~W,         ~E,
+  "W",      "W"     ,    0,           50,
+  "E",      "E_gas" ,    20,          0,
+  "E",      "E_nuc" ,    100,         0);Z
+
+
+X=tibble::tribble( # Initial total demand
+  ~sector, ~subSector, ~processed,
+  "W",    "W",      1000,
+  "E",    "E_gas",  2000,
+  "E",    "E_coal", 2000
+);X
+
+
+Z=rbind(c(0,5),c(0,100),c(5,0));Z
+Xh=rbind(c(1/400,0),c(0,1/500),c(0.1/500));Xh
+A<-Z * Xh;A
+L<-solve(diag(nrow(A))-A)
+
+
+# Small Example
+Z=tibble::tribble( # Initial Flows
+  ~sector ,    ~W,         ~E,
+  "W"     ,    0,           50,
+  "E"     ,    20,          0);Z
+
+X=tibble::tribble( # Initial total demand
+  ~sector, ~processed,
+  "W",    1000,
+  "E",    2000
+);X
+
+
+A<-as.matrix(Z%>%dplyr::select(c(unique(Z$sector)))) %*% as.matrix(X$processed^-1*diag(nrow(Z)));A
+L<-solve(diag(nrow(A))-A);L
+
+
+
+

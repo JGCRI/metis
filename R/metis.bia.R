@@ -409,11 +409,9 @@ metis.bia<- function(biaInputsFolder="NA",
             tblAgg<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
 
 
-            basically its  something to group_by(subregions) and then the aggregation function (sum or mean)   dplyr::group_by_at(dplyr::vars(-value))%>%
-              dplyr::summarize_at(c("value"),dplyr::funs(sum))
-
-
-            you could probably just group_by the subregion instead of what I do here where I group by everything instead of value
+            # basically its  something to group_by(subregions) and then the aggregation function (sum or mean)   dplyr::group_by_at(dplyr::vars(-value))%>%
+            # dplyr::summarize_at(c("value"),dplyr::funs(sum))
+            # you could probably just group_by the subregion instead of what I do here where I group by everything instead of value
 
 
 
