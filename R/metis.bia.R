@@ -140,11 +140,21 @@ metis.bia<- function(biaInputsFolder = "NA",
     tibble::as_tibble()%>%
     dplyr::mutate(country_long=ctry_name)
 
+
+
+
+  if(gridChoice=="grid_050"){gridDim<-0.5
+  }else{
+    if(gridChoice=="grid_025"){gridDim<-0.25}
+  }
+
   listOfGridCells<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/emptyGrids/",gridChoice,".csv",sep=""), header=T,stringsAsFactors = F)%>%
     tibble::as_tibble()%>%
     rename(gridlat = lat,
            gridlon = lon,
            gridID = id)
+
+
 
 
   #------------------
@@ -219,11 +229,49 @@ metis.bia<- function(biaInputsFolder = "NA",
                                              class1=fuel1,
                                              value=capacity_mw/1000,
                                              x=NA,
-                                             gridlat = 1/2*round(latitude*2+0.5)-0.25,
-                                             gridlon = 1/2*round(longitude*2+0.5)-0.25)%>%
+                                             #gridlat = 1/2*round(latitude*2+0.5)-0.25,
+                                             #gridlon = 1/2*round(longitude*2+0.5)-0.25
+                                             gridlat = gridDim*round(latitude*(1/gridDim)+0.5)-(1/2*gridDim),
+                                             gridlon = gridDim*round(longitude*(1/gridDim)+0.5)-(1/2*gridDim))%>%
               tibble::as_tibble()%>%
               dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)%>%
-              dplyr::left_join(listOfGridCells,by = c("gridlat","gridlon"))
+              dplyr::left_join(listOfGridCells,by = c("gridlat","gridlon"))%>%
+              dplyr::group_by(gridlat, gridlon, class1, gridID, ctry_name, ctry_code, region, region_32_code, param, units)%>%    #andym This group_by, and the following summarise get rid of a few columns
+              dplyr::summarise(gridCellCapacity = sum(value))%>%
+              dplyr::group_by(class1,region,region_32_code)%>%
+              dplyr::mutate(regionCapSum = sum(gridCellCapacity),
+                            gridCellPercentage = gridCellCapacity/regionCapSum)
+
+
+
+            gridWRI[gridWRI=="Coal"]<-"a Coal"
+            gridWRI[gridWRI=="Gas"]<-"c Gas"
+            gridWRI[gridWRI=="Oil"]<-"e Oil"
+            gridWRI[gridWRI=="Biomass"]<-"g Biomass"
+            gridWRI[gridWRI=="Nuclear"]<-"i Nuclear"
+            gridWRI[gridWRI=="Geothermal"]<-"j Geothermal"
+            gridWRI[gridWRI=="Hydro"]<-"k Hydro"
+            gridWRI[gridWRI=="Wind"]<-"l Wind"
+            gridWRI[gridWRI=="Solar"]<-"m Solar"
+
+
+
+
+
+
+
+            gridWRI <- gridWRI%>%
+              dplyr::group_by(region, class1)%>%
+              dplyr::summarise(WRI_total_capacity=sum(value))%>%
+              dplyr::filter(region %in% regionsSelect)
+
+
+
+
+            gridCapComparison<-dplyr::full_join(gridGCAMelecCap,gridWRI, by = c("region", "class1"))%>%
+              tidyr::gather(key="data_source",value="est_installed_capacity",-c("region","class1","aggregate","units","vintage","x","xLabel","class2","sources","param","scenario","origValue","origX","origUnits","origQuery","origScen","classPalette1","classLabel1","classPalette2","classLabel2"))
+
+
 
 
 ###This is where I am Mar 26 ---- now I think that I should just be able to summarize (sum) by either gridID or the combo of gridlat and gridlon! Stuff below prob junk, further below may be goodstuff
@@ -306,29 +354,6 @@ metis.bia<- function(biaInputsFolder = "NA",
 
 
 
-            gridWRI <- gridWRI%>%
-              dplyr::group_by(region, class1)%>%
-              dplyr::summarise(WRI_total_capacity=sum(value))%>%
-              dplyr::filter(region %in% regionsSelect)
-            gridWRI[gridWRI=="Coal"]<-"a Coal"
-            gridWRI[gridWRI=="Gas"]<-"c Gas"
-            gridWRI[gridWRI=="Oil"]<-"e Oil"
-            gridWRI[gridWRI=="Biomass"]<-"g Biomass"
-            gridWRI[gridWRI=="Nuclear"]<-"i Nuclear"
-            gridWRI[gridWRI=="Geothermal"]<-"j Geothermal"
-            gridWRI[gridWRI=="Hydro"]<-"k Hydro"
-            gridWRI[gridWRI=="Wind"]<-"l Wind"
-            gridWRI[gridWRI=="Solar"]<-"m Solar"
-
-
-
-            gridGCAMelecCap<-datax%>%dplyr::filter(region %in% regionsSelect, param=="elecCapBySubsector", x==2015)%>%
-              dplyr::mutate(GCAM_total_capacity=value)%>%
-              dplyr::select(-c(value))
-
-
-            gridCapComparison<-dplyr::full_join(gridGCAMelecCap,gridWRI, by = c("region", "class1"))%>%
-              tidyr::gather(key="data_source",value="est_installed_capacity",-c("region","class1","aggregate","units","vintage","x","xLabel","class2","sources","param","scenario","origValue","origX","origUnits","origQuery","origScen","classPalette1","classLabel1","classPalette2","classLabel2"))
 
 
             #gGeSlim<-gGeSlim%>%dplyr::mutate(GCAMestCapVals=Elec_Gen_GCAM_2015/gcamCapFactorAv*(10^12)/(365*24*3600))
