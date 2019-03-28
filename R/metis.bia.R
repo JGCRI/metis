@@ -142,17 +142,39 @@ metis.bia<- function(biaInputsFolder = "NA",
 
 
 
+  listOfGridCells<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/emptyGrids/",gridChoice,".csv",sep=""), header=T,stringsAsFactors = F)%>%
+    tibble::as_tibble()%>%
+    rename(gridlat = lat,
+           gridlon = lon,
+           gridID = id)
+
+  latmin<-min(listOfGridCells$gridlat)
+  latmax<-max(listOfGridCells$gridlat)
+  lonmin<-min(listOfGridCells$gridlon)
+  lonmax<-max(listOfGridCells$gridlon)
+
+  latranked<-listOfGridCells$gridlat[sort.list(listOfGridCells$gridlat)]%>%
+    unique()
+  lonranked<-listOfGridCells$gridlon[sort.list(listOfGridCells$gridlon)]%>%
+    unique()
+
+  gridDimlat<-min(abs(latranked[2:length(latranked)]-latranked[1:length(latranked)-1]))
+  gridDimlon<-min(abs(lonranked[2:length(lonranked)]-lonranked[1:length(lonranked)-1]))
+
+  gridShiftlat<-latranked[sort.list(abs(latranked))][1]  # The latitude of the center of the grid cells closest to the equator
+  gridShiftlon<-lonranked[sort.list(abs(lonranked))][1]  # The longitude of the center of the grid cells closest to prime meridian, Greenwich Meridian
+
+
+  if(!(sum(round(latranked, digits = 4) %in% round(seq(latmin,latmax,length.out = (round((latmax-latmin)/gridDimlat)+1)),digits = 4))==length(latranked))){
+    stop(paste("grid file ", getwd(),"/dataFiles/grids/emptyGrids/",gridChoice,".csv"," does not appear to contain the centers of regurlarly-spaced lat lon grid cells.",sep=""))}
+
 
   if(gridChoice=="grid_050"){gridDim<-0.5
   }else{
     if(gridChoice=="grid_025"){gridDim<-0.25}
   }
 
-  listOfGridCells<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/emptyGrids/",gridChoice,".csv",sep=""), header=T,stringsAsFactors = F)%>%
-    tibble::as_tibble()%>%
-    rename(gridlat = lat,
-           gridlon = lon,
-           gridID = id)
+
 
 
 
