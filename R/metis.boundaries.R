@@ -91,21 +91,9 @@ metis.boundaries<- function(boundaryRegShape=NULL,
   # extendedBGColor="lightblue1"
   # extendedHighLightColor="cornsilk1"
   # extendedLabelsColor="grey30"
-  # extdendedLabelSize=0.7,
+  # extdendedLabelSize=0.7
   # extension=T
   # cropSubShape2Bound=T
-
-
-#------------------
-# Load required Libraries
-# -----------------
-requireNamespace("raster",quietly = T)
-requireNamespace("rgdal",quietly = T)
-requireNamespace("tibble",quietly = T)
-requireNamespace("dplyr",quietly = T)
-requireNamespace("tidyr",quietly = T)
-requireNamespace("tmap",quietly = T)
-requireNamespace("rgeos",quietly = T)
 
 
 #----------------
@@ -159,6 +147,12 @@ NULL->bbox1->extendedBoundary->extendedSubReg->shape->boundaryHighlight->
     print(paste("Overlap Shape : ",overlapShpFolder,"/",overlapShpFile,".shp",sep=""))
     print(raster::head(overlapShape))
   }} # if(!is.null(overlapShpFolder) & !is.null(overlapShpFile)){
+
+
+# Buffer region boundaries
+overlapShape=rgeos::gBuffer(overlapShape, byid=TRUE, width=0)
+boundaryRegShape=rgeos::gBuffer(boundaryRegShape, byid=TRUE, width=0)
+subRegShape=rgeos::gBuffer(subRegShape, byid=TRUE, width=0)
 
 
 
@@ -300,6 +294,18 @@ if(!is.null(bbox1)){
 # Save boundary maps
 #---------------
 
+# fillcolorNA=fillcolorNA
+# dataPolygon=extendedShape
+# printFig=F
+# fillColumn = boundaryRegCol
+# labels=T
+# fillPalette = extendedFillColor
+# bgColor = extendedBGColor
+# frameShow=T
+# labelsSize=extdendedLabelSize
+# labelsColor=extendedLabelsColor
+# facetsON = F
+
 # Extended underLayer and Regional Highlights
 if(!is.null(extendedShape)){
   if(!is.null(extendedBoundary)){
@@ -338,6 +344,9 @@ if(!is.null(extendedShape)){
   }
 }
 
+# fillcolorNA=fillcolorNA; labelsSize=labelsSize; dataPolygon=boundaryHighlight;
+# fileName = paste(boundaryRegionsSelect,"_highlight_region_",subRegType,nameAppend,sep="");dirOutputs = dir;
+# underLayer = underLayer;bgColor=extendedBGColor;frameShow=T;facetsON = F;labels=F
 
 # Regional highlights
 if(!is.null(boundaryHighlight) & !is.null(underLayer)){
@@ -379,7 +388,9 @@ if(!is.null(overlapShape)){
 
 if(!is.null(boundaryRegShape)){
 
-  if(length(unique(boundaryRegShape@data[[boundaryRegCol]]))<2){fillPalette=extendedHighLightColor}
+  if(length(unique(boundaryRegShape@data[[boundaryRegCol]]))<2){fillPalette=extendedHighLightColor}else{
+    fillPalette="Spectral"
+  }
 
   boundaryRegShapeBlank<-metis.map(fillcolorNA=fillcolorNA,bgColor="white",frameShow=F,
                               labelsSize=labelsSize, facetsON = F,dataPolygon=boundaryRegShape,fileName = paste(boundaryRegionsSelect,"_detail_regional_map_blank",nameAppend,sep=""),dirOutputs = dir)
@@ -406,7 +417,7 @@ if(!is.null(boundaryRegShape)){
 
 if(!is.null(subRegShape)){
 
-  if(length(unique(subRegShape@data[[subRegCol]]))<2){fillPalette=extendedHighLightColor}
+  if(length(unique(subRegShape@data[[subRegCol]]))<2){fillPalette=extendedHighLightColor}else{fillPalette="Spectral"}
 
 # SubRegion Maps No Extension
 subRegShapeBlank<-metis.map(fillcolorNA=fillcolorNA,bgColor="white",frameShow=F,
@@ -438,7 +449,7 @@ for(grid_i in grids){
       if(any(grepl(".csv",paste(grid_i)))){
         print(paste("Attempting to read grid csv file ",grid_i,sep=""))
         if(file.exists(grid_i)){
-          gridx<-utils::read.csv(grid_i, stringsAsFactors = F)
+          gridx<-data.table::fread(grid_i)
           gridx<-gridx%>%unique()}}}}else{
             print(paste("Grid file ",grid_i," does not exist. Skipping Grid Overlay",sep=""))
             gridx=NULL
@@ -465,7 +476,7 @@ rcrop<-raster::crop(r,shapeExpandEtxent)
 rcropP<-raster::rasterToPolygons(rcrop)
 sp::proj4string(rcropP)<-sp::proj4string(subRegShape)
 print("Intersecting grid with subRegShape...")
-rcropPx<-raster::crop(subRegShape,rcropP)
+rcropPx<-raster::crop(rcropP,subRegShape)
 
 if(grepl("025",grid_i)){add_grid_name="_25Grid"}else{
 if(grepl("050",grid_i)){add_grid_name="_50Grid"}else{add_grid_name=""}}

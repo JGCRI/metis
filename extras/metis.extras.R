@@ -72,3 +72,35 @@ library(formatR)
 
 install_github(repo="zarrarkhan/metis",'dev_metis')
 
+
+#--------------
+# Size of Objects in Evnvironment
+#----------------
+
+size = 0
+for (x in ls() ){
+  thisSize = object.size(get(x))
+  size = size + thisSize
+  message(x, " = ", appendLF = F); print(thisSize, units='auto')
+}
+message("total workspace is ",appendLF = F); print(size, units='auto')
+
+
+#--------------
+# Custom Legends for presentations
+#-------------
+
+df= data.frame(subsec=c("wind","solar","refined liquids","nuclear","hydro","geothermal","gas","coal","biomass"),
+               value=c(1:9))
+
+order=c("wind","solar","refined liquids","nuclear","hydro","geothermal","gas","coal","biomass")
+
+df$subsec <- factor( as.character(df$subsec), levels= order )
+
+ggplot(data=df)+
+  geom_bar(aes(x=subsec,fill=subsec))+
+  scale_fill_manual(name="",values=metis.colors()$pal_elec_subsec)+
+  theme(legend.position="bottom")+
+  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+
+

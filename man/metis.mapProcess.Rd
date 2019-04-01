@@ -9,9 +9,10 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   labels = F, labelsSize = 1.2, subRegShape = NULL,
   subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
   subRegType = "subRegType", nameAppend = "",
-  legendOutsidePosition = NULL, legendPosition = NULL,
-  legendFixedBreaks = 5, animateOn = T, delay = 100,
-  legendTitleSize = 1, scenRef = NULL, extension = F,
+  legendOutsideSingle = F, legendOutsidePosition = NULL,
+  legendPosition = NULL, legendFixedBreaks = 5, legendTitleSizeO = 2,
+  legendTextSizeO = 1, legendTitleSizeI = 1.5, legendTextSizeI = 1,
+  animateOn = T, delay = 100, scenRef = NULL, extension = F,
   boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   boundaryRegShpFile = NULL, boundaryRegCol = NULL,
   boundaryRegionsSelect = NULL, fillcolorNA = NULL,
@@ -19,7 +20,15 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   extendedHighLightColor = "cornsilk1", extendedLabelsColor = "grey30",
   extdendedLabelSize = 0.7, extendedShape = NULL,
   extendedShapeCol = NULL, expandPercent = 2,
-  projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+  projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
+  figWidth = 9, figHeight = 7, scaleRange = NULL,
+  paramsSelect = "All", indvScenarios = NULL, GCMRCPSSPPol = F,
+  multiFacetCols = "scenarioRCP", multiFacetRows = "scenarioGCM",
+  legendOutsideMulti = T, legendPositionMulti = NULL,
+  legendTitleSizeMulti = NULL, legendTextSizeAnim = NULL,
+  legendTextSizeMulti = NULL, refGCM = NULL, refRCP = NULL,
+  chosenRefMeanYears = NULL, mapTitleSize = 0.5,
+  facetLabelSizeMulti = 3)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -46,17 +55,25 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{nameAppend}{Default =""}
 
+\item{legendOutsideSingle}{Default =F, Single plots by default have legends inside. This can be moved out if wanted.}
+
 \item{legendOutsidePosition}{Default = NULL, # "right","left","top","bottom", "center"}
 
 \item{legendPosition}{Default = NULL, # c("RIGHT','top') - RIGHT LEFT TOP BOTTOM}
 
 \item{legendFixedBreaks}{Default = "5",}
 
+\item{legendTitleSizeO}{Default = 2,}
+
+\item{legendTextSizeO}{Default =1,}
+
+\item{legendTitleSizeI}{Default = 1,}
+
+\item{legendTextSizeI}{Default =0.5,}
+
 \item{animateOn}{Default = T,}
 
 \item{delay}{Default = 100,}
-
-\item{legendTitleSize}{Default = 1,}
 
 \item{scenRef}{Default = NULL}
 
@@ -91,6 +108,42 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{expandPercent}{Default =2}
 
 \item{projX}{Default = projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"}
+
+\item{figWidth}{Default =9}
+
+\item{figHeight}{Default =7}
+
+\item{scaleRange}{Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.}
+
+\item{paramsSelect}{Default ="All"}
+
+\item{indvScenarios}{Default =T,}
+
+\item{GCMRCPSSPPol}{Default = F,}
+
+\item{multiFacetCols}{Default ="scenarioRCP",}
+
+\item{multiFacetRows}{Default ="scenarioGCM",}
+
+\item{legendOutsideMulti}{Default = NULL,}
+
+\item{legendPositionMulti}{Default = NULL,}
+
+\item{legendTitleSizeMulti}{Default = NULL,}
+
+\item{legendTextSizeAnim}{Default = NULL,}
+
+\item{legendTextSizeMulti}{Default = NULL,}
+
+\item{refGCM}{Default = NULL , eg. "gfdl-esm2m"}
+
+\item{refRCP}{Default = NULL , eg. "rcp2p6"}
+
+\item{chosenRefMeanYears}{Default=NULL}
+
+\item{mapTitleSize}{Default=0.5}
+
+\item{facetLabelSizeMulti}{Default =3}
 }
 \value{
 Returns the formatted data used to produce chart

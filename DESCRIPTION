@@ -7,8 +7,37 @@ Depends:
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Suggests: testthat, knitr, rmarkdown
-RoxygenNote: 6.1.0
-Imports:  raster, RColorBrewer, rgcam, tibble, dplyr, tmap, ggplot2, scales, utils,tidyr, rlang, grDevices, processx, rgdal, magrittr, sp, methods, tidyselect, rgeos, zoo, stats
+RoxygenNote: 6.1.1
+Imports: 
+	raster (>= 2.7.15),
+	RColorBrewer (>= 1.1.2), 
+	rgcam (>= 0.5.0), 
+	tibble (>= 1.4.2),
+	ggalluvial (>= 0.9.1),
+	dplyr (>= 0.7.7), 
+	tmap (>= 2.1.1),
+	ggplot2 (>= 3.1.0), 
+	scales (>= 0.5.0), 
+	utils (>= 3.5.0),
+	tidyr (>= 0.8.1), 
+	rlang (>= 0.3.0), 
+	grDevices (>= 3.5.0), 
+	processx (>= 3.2.0), 
+	rgdal (>= 1.2.20), 
+	magrittr (>= 1.5),
+	sp (>= 1.2.7), 	
+	methods (>= 3.5.0),
+	tidyselect (>= 0.2.5), 
+	rgeos (>= 0.3.26), 
+	zoo (>= 1.8.4), 
+	stats (>= 3.5.0), 
+        dbplyr (>= 1.3.0),
+        RSQLite (>= 2.1.1),
+	data.table,
+	DBI
+Suggests: 
+	testthat (>= 2.0.1), 
+	knitr (>= 1.20), 
+	rmarkdown (>= 1.10) 
 Remotes: github::JGCRI/rgcam
 VignetteBuilder: knitr

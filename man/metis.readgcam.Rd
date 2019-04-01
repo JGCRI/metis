@@ -5,8 +5,9 @@
 \title{metis.readgcam}
 \usage{
 metis.readgcam(gcamdatabasePath, gcamdatabaseName,
-  queryxml = "metisQueries.xml", scenOrigNames, scenNewNames = NULL,
-  reReadData = T, dataProj = "dataProj.proj",
+  queryxml = "metisQueries.xml", queryPath = gcamdatabasePath,
+  scenOrigNames, scenNewNames = NULL, reReadData = T,
+  dataProj = "dataProj.proj", dataProjPath = gcamdatabasePath,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
   regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All")
 }
@@ -15,7 +16,10 @@ metis.readgcam(gcamdatabasePath, gcamdatabaseName,
 
 \item{gcamdatabaseName}{Name of gcam database}
 
-\item{queryxml}{Full path to query.xml file}
+\item{queryxml}{Name of the query.xml file. By default it is "metisQueries.xml"}
+
+\item{queryPath}{Folder that contains the query.xml file.By default it is
+the same folder as specified by gcamdatabasePath}
 
 \item{scenOrigNames}{Original Scenarios names in GCAM database in a string vector.
 For example c('scenario1','scenario2).}
@@ -29,6 +33,9 @@ with full path is provided otherwise it will search for a dataProj.proj file in 
 folder which may have been created from an old run.}
 
 \item{dataProj}{Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.}
+
+\item{dataProjPath}{Folder that contains the dataProj or where it will be produced.
+By default it is the same folder as specified by gcamdatabasePath}
 
 \item{dirOutputs}{Full path to directory for outputs}
 

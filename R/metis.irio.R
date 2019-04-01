@@ -11,19 +11,12 @@
 #' @export
 
 
-met.irio<-function(Z0=NULL,
+metis.irio<-function(Z0=NULL,
                  D0=NULL,
                  X0=NULL,
                  D=NULL,
                  dirOutputs=paste(getwd(),"/outputs",sep="")
                         ){
-
-#------------------
-# Load required Libraries
-# -----------------
-requireNamespace("tibble",quietly = T)
-requireNamespace("dplyr",quietly = T)
-requireNamespace("magrittr",quietly = T)
 
 #----------------
 # Initialize variables by setting to NULL

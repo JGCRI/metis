@@ -5,7 +5,9 @@
 #' @param dirOutputs Full path to directory for outputs
 #' @param gcamdatabasePath Path to gcam database folder
 #' @param gcamdatabaseName Name of gcam database
-#' @param queryxml Full path to query.xml file
+#' @param queryxml Name of the query.xml file. By default it is "metisQueries.xml"
+#' @param queryPath Folder that contains the query.xml file.By default it is
+#' the same folder as specified by gcamdatabasePath
 #' @param scenOrigNames Original Scenarios names in GCAM database in a string vector.
 #' For example c('scenario1','scenario2).
 #' @param scenNewNames New Names which may be shorter and more useful for figures etc.
@@ -15,6 +17,8 @@
 #' with full path is provided otherwise it will search for a dataProj.proj file in the existing
 #' folder which may have been created from an old run.
 #' @param dataProj Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.
+#' @param dataProjPath Folder that contains the dataProj or where it will be produced.
+#' By default it is the same folder as specified by gcamdatabasePath
 #' @param regionsSelect The regions to analyze in a vector. Example c('Colombia','Argentina')
 #' @param queriesSelect Default = "All". Vector of queries to read from the queryxml for example
 #' c("Total final energy by aggregate end-use sector", "Population by region"). The queries must be
@@ -57,19 +61,21 @@
 #' @keywords gcam, gcam database, query
 #' @export
 
-metis.readgcam <- function(gcamdatabasePath, gcamdatabaseName, queryxml = "metisQueries.xml",
-                         scenOrigNames, scenNewNames = NULL,
-                         reReadData = T, dataProj = "dataProj.proj", dirOutputs = paste(getwd(), "/outputs", sep = ""),
-                         regionsSelect = NULL, queriesSelect="All",
-                         paramsSelect="All"){
+metis.readgcam <- function(gcamdatabasePath,
+                           gcamdatabaseName,
+                           queryxml = "metisQueries.xml",
+                           queryPath = gcamdatabasePath,
+                           scenOrigNames,
+                           scenNewNames = NULL,
+                           reReadData = T,
+                           dataProj = "dataProj.proj",
+                           dataProjPath = gcamdatabasePath,
+                           dirOutputs = paste(getwd(), "/outputs", sep = ""),
+                           regionsSelect = NULL,
+                           queriesSelect="All",
+                           paramsSelect="All"
+                           ){
 
-#------------------
-# Load required Libraries
-# -----------------
-
-requireNamespace("rgcam",quietly = T)
-requireNamespace("tibble",quietly = T)
-requireNamespace("dplyr",quietly = T)
 
 #----------------
 # Initialize variables by setting to NULL
@@ -78,7 +84,7 @@ requireNamespace("dplyr",quietly = T)
     NULL -> vintage -> year -> xLabel -> x -> value -> sector -> scenario -> region -> param -> origX -> origValue ->
     origUnits -> origScen -> origQuery -> classPalette2 -> classPalette1 -> classLabel2 -> classLabel1 -> class2 ->
     class1 -> connx -> aggregate -> Units -> sources -> paramx -> fuel -> technology -> input -> output -> water ->
-    landleaf -> ghg -> Convert
+    landleaf -> ghg -> Convert -> regionsSelectAll->cf1971to2100->gcamCapacityFactor
 
     # Create necessary directories if they dont exist.
     if (!dir.exists(dirOutputs)){
@@ -99,27 +105,47 @@ requireNamespace("dplyr",quietly = T)
 
     # Read gcam database or existing dataProj.proj
     if (!reReadData) {
-        if (file.exists(paste(gcamdatabasePath, "/", dataProj, sep = ""))) {
-            dataProjLoaded <- rgcam::loadProject(paste(gcamdatabasePath, "/", dataProj, sep = ""))
+
+       # Check for proj file path and folder if incorrect give error
+        if(!file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){stop(paste("dataProj file: ", dataProjPath,"/",dataProj," is incorrect or doesn't exist.",sep=""))}
+
+        if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))) {
+            dataProjLoaded <- rgcam::loadProject(paste(dataProjPath, "/", dataProj, sep = ""))
         } else {
             stop(paste("No ", dataProj, " file exists. Please set reReadData=T to create dataProj.proj"))
         }
     } else {
-        if (file.exists(dataProj)){
-                file.remove(dataProj)}  # Delete old project file
+        # Check for query file and folder if incorrect give error
+        if(!file.exists(paste(queryPath, "/", queryxml, sep = ""))){stop(paste("query file: ", queryPath,"/",queryxml," is incorrect or doesn't exist.",sep=""))}
+
+        # Check for gcamdatbasePath and gcamdatabasename
+        if(!file.exists(paste(gcamdatabasePath, "/", gcamdatabaseName, sep = ""))){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
+
+        if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){
+        file.remove(paste(dataProjPath, "/", dataProj, sep = ""))}  # Delete old project file
+
+
         for (scenario_i in scenOrigNames) {
             dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = dataProj,
-                scenario = scenario_i, queryFile = paste(gcamdatabasePath, "/", queryxml, sep = ""))  # Check your queries file
+                scenario = scenario_i, queryFile = paste(queryPath, "/", queryxml, sep = ""))  # Check your queries file
         }
-        file.copy(from = paste(getwd(), "/", dataProj, sep = ""), to = gcamdatabasePath, overwrite = T,
+        file.copy(from = paste(getwd(), "/", dataProj, sep = ""), to = dataProjPath, overwrite = T,
                   copy.mode = TRUE)
         file.remove(dataProj)
-        dataProjLoaded <- rgcam::loadProject(paste(gcamdatabasePath, "/", dataProj, sep = ""))
+        dataProjLoaded <- rgcam::loadProject(paste(dataProjPath, "/", dataProj, sep = ""))
     }
 
     # Save list of scenarios and queries
     scenarios <- rgcam::listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
     queries <- rgcam::listQueries(dataProjLoaded)  # List of Queries in queryxml
+
+    # Get All Regions
+    if(length(queries)==0){stop("No queries found. PLease check data.")}
+    tbl <- rgcam::getQuery(dataProjLoaded, queries[1])  # Tibble
+    regionsAll<-unique(tbl$region)
+    if(any(regionsSelect=="All" | regionsSelect=="all" )){regionsSelect<-regionsAll; regionsSelectAll=T}else{
+      regionsSelectAll=F
+    }
 
 
     # Read in paramaters from query file to create formatted table
@@ -136,11 +162,12 @@ requireNamespace("dplyr",quietly = T)
 
 
     if(any(paramsSelect=="All")){
-      paramsSelectx=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+      paramsSelectx=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech","elecCapBySubsector",
                      "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
                      "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
                      "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-                     "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
+                     "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS",
+                     "finalNrgbySecDet","finalElecbySecDet","finalElecbyServiceDet")
     }else{paramsSelectx=paramsSelect}
 
      paramx<-"finalNrgbySec"
@@ -179,12 +206,158 @@ requireNamespace("dplyr",quietly = T)
                         origScen, origQuery, origValue, origUnits, origX)%>%
           dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                    aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                   origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-          dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                   origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%
+          dplyr::ungroup()%>%
+          dplyr::filter(!is.na(value))
         datax <- dplyr::bind_rows(datax, tbl)
     } else {
         print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
+
+
+     paramx<-"finalNrgbySecDet"
+     # Total final energy by aggregate end-use sector
+     if(paramx %in% paramsSelectx){
+       queryx <- "Final energy by detailed end-use sector and fuel"
+       if (queryx %in% queriesx) {
+         tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+         if (!is.null(regionsSelect)) {
+           tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+         }
+         tbl <- tbl %>%
+           dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+           dplyr::mutate(param = "finalNrgbySecDet",
+                         sources = "Sources",
+                         origScen = scenario,
+                         origQuery = queryx,
+                         origValue = value,
+                         origUnits = Units,
+                         origX = year,
+                         scenario = scenNewNames,
+                         value = value * metis.assumptions()$convEJ2TWh,
+                         units = "Final Energy (TWh)",
+                         vintage = paste("Vint_", year, sep = ""),
+                         x = year,
+                         xLabel = "Year",
+                         aggregate = "sum",
+                         class1 = sector,
+                         classLabel1 = "Sector",
+                         classPalette1 = "pal_16",
+                         class2 = input,
+                         classLabel2 = "classLabel2",
+                         classPalette2 = "classPalette2")%>%
+           dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                         origScen, origQuery, origValue, origUnits, origX)%>%
+           dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                           aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                           origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+           dplyr::filter(!is.na(value))
+         datax <- dplyr::bind_rows(datax, tbl)
+       } else {
+         print(paste("Query '", queryx, "' not found in database", sep = ""))
+       }}
+
+     paramx<-"finalElecbySecDet"
+     # Total final energy by aggregate end-use sector
+     if(paramx %in% paramsSelectx){
+       queryx <- "Final energy by detailed end-use sector and fuel"
+       if (queryx %in% queriesx) {
+         tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+         if (!is.null(regionsSelect)) {
+           tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+         }
+         tbl <- tbl %>%
+           dplyr::filter(grepl("elect",input))%>%
+           dplyr::mutate(input=gsub("elect\\_td\\_ind","industry",input),
+                         input=gsub("elect\\_td\\_bld","building",input),
+                         input=gsub("elect\\_td\\_trn","transport",input))%>%
+           dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+           dplyr::mutate(param = "finalElecbySecDet",
+                         sources = "Sources",
+                         origScen = scenario,
+                         origQuery = queryx,
+                         origValue = value,
+                         origUnits = Units,
+                         origX = year,
+                         scenario = scenNewNames,
+                         value = value * metis.assumptions()$convEJ2TWh,
+                         units = "Final Electricity (TWh)",
+                         vintage = paste("Vint_", year, sep = ""),
+                         x = year,
+                         xLabel = "Year",
+                         aggregate = "sum",
+                         class1 = input,
+                         classLabel1 = "Sector",
+                         classPalette1 = "pal_finalNrg_sec",
+                         class2 = sector,
+                         classLabel2 = "classLabel2",
+                         classPalette2 = "classPalette2")%>%
+           dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                         origScen, origQuery, origValue, origUnits, origX)%>%
+           dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                           aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                           origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+           dplyr::filter(!is.na(value))
+         datax <- dplyr::bind_rows(datax, tbl)
+       } else {
+         print(paste("Query '", queryx, "' not found in database", sep = ""))
+       }}
+
+
+     paramx<-"finalElecbyServiceDet"
+     # Total final energy by aggregate end-use sector
+     if(paramx %in% paramsSelectx){
+       queryx <- "Final energy by detailed end-use sector and fuel"
+       if (queryx %in% queriesx) {
+         tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+         if (!is.null(regionsSelect)) {
+           tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+         }
+         tbl <- tbl %>%
+           dplyr::filter(grepl("elect",input))%>%
+           dplyr::mutate(sector=gsub("cement","industry",sector),
+                         sector=gsub("industrial energy use","industry",sector),
+                         sector=gsub("trn_pass","transport",sector),
+                         sector=gsub("trn_pass","industry",sector),
+                         sector=gsub("trn_pass_road_LDV_2W","industry",sector),
+                         sector=gsub("trn_pass_road_LDV_4W","industry",sector))%>%
+           dplyr::mutate(input=gsub("elect\\_td\\_ind","industry",input),
+                         input=gsub("elect\\_td\\_bld","building",input),
+                         input=gsub("elect\\_td\\_trn","transport",input))%>%
+           dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+           dplyr::mutate(param = "finalElecbyServiceDet",
+                         sources = "Sources",
+                         origScen = scenario,
+                         origQuery = queryx,
+                         origValue = value,
+                         origUnits = Units,
+                         origX = year,
+                         scenario = scenNewNames,
+                         value = value * metis.assumptions()$convEJ2TWh,
+                         units = "Final Electricity (TWh)",
+                         vintage = paste("Vint_", year, sep = ""),
+                         x = year,
+                         xLabel = "Year",
+                         aggregate = "sum",
+                         class1 = sector,
+                         classLabel1 = "Sector",
+                         classPalette1 = "pal_16",
+                         class2 = input,
+                         classLabel2 = "classLabel2",
+                         classPalette2 = "classPalette2")%>%
+           dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                         origScen, origQuery, origValue, origUnits, origX)%>%
+           dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                           aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                           origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+           dplyr::filter(!is.na(value))
+         datax <- dplyr::bind_rows(datax, tbl)
+       } else {
+         print(paste("Query '", queryx, "' not found in database", sep = ""))
+       }}
 
     paramx<-"primNrgConsumByFuel"
     # primary energy consumption by region (direct equivalent)
@@ -222,8 +395,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -266,12 +439,45 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
+      tblElecbyTech<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
+
+    if(file.exists(paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""))){
+      capfactors <- data.table::fread(file=paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""),skip=3)
+    paramx <- "elecCapBySubsector"
+    if(paramx %in% paramsSelectx){
+      # Electricity Capacity by Subsector
+      queryx <- "Electricity generation by aggregate technology"
+      if (queryx %in% queriesx) {
+        tbl <- tblElecbyTech  # Tibble
+        rm(tblElecbyTech)
+        if (!is.null(regionsSelect)) {
+          tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+        }
+        tbl <- tbl %>%
+          dplyr::full_join(capfactors, by="class1")%>%
+          dplyr::mutate(param = "elecCapBySubsector",
+                        gcamCapacityFactor=cf1971to2100,
+                        value = value*metis.assumptions()$convEJ2GW/metis.assumptions()$convEJ2TWh/gcamCapacityFactor,
+                        origValue = value,
+                        units = "Electricity Capacity (GW)",
+                        origUnits = units) %>%
+          dplyr::filter(!is.na(value))%>%
+          dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origValue, origUnits, origX)
+
+        datax <- dplyr::bind_rows(datax, tbl)
+      } else {
+        print(paste("Query '", queryx, "' not found in database", sep = ""))
+      }}
+    } else {print(paste("Electricity capacity factor file capacity_factor_by_elec_gen_subsector.csv not found. Skipping param elecCapbySubSector."))}
+
 
     # metis.chart(tbl,xData="x",yData="value",useNewLabels = 0)
 
@@ -294,7 +500,7 @@ requireNamespace("dplyr",quietly = T)
                origUnits = Units,
                origX = year,
                scenario = scenNewNames,
-               value = value * metis.assumptions()$convEJ2TWh,
+               value = value,
                units = "Water Consumption (km^3)",
                vintage = paste("Vint_", year, sep = ""),
                x = year,
@@ -311,8 +517,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -337,7 +543,7 @@ requireNamespace("dplyr",quietly = T)
                origUnits = Units,
                origX = year,
                scenario = scenNewNames,
-               value = value * metis.assumptions()$convEJ2TWh,
+               value = value,
                units = "Water Withdrawals (km^3)",
                vintage = paste("Vint_", year, sep = ""),
                x = year,
@@ -354,8 +560,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -382,7 +588,7 @@ requireNamespace("dplyr",quietly = T)
                origUnits = Units,
                origX = year,
                scenario = scenNewNames,
-               value = value * metis.assumptions()$convEJ2TWh,
+               value = value,
                units = "Water Withdrawals (km^3)",
                vintage = paste("Vint_", year, sep = ""),
                x = year,
@@ -399,8 +605,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -442,8 +648,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -489,8 +695,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -537,8 +743,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -581,8 +787,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -624,8 +830,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -644,7 +850,7 @@ requireNamespace("dplyr",quietly = T)
       tbl <- tbl %>%
         dplyr::mutate(param = "gdpGrowthRate",
                sources = "Sources",
-               value = (value-dplyr::lag(value,order_by=year))*100/dplyr::lag(value,order_by=x),
+               value = (value-dplyr::lag(value,order_by=x))*100/(5*dplyr::lag(value,order_by=x)),
                units = "GDP Growth Rate (Percent)",
                vintage = paste("Vint_", x, sep = ""),
                classLabel1 = "GDP growth rate",
@@ -657,8 +863,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Paramater 'GDP MER by region' not found in database, so
@@ -701,8 +907,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -727,6 +933,7 @@ requireNamespace("dplyr",quietly = T)
                origQuery = queryx,
                origUnits = Units,
                origX = year,
+               origValue = value,
                scenario = scenNewNames,
                value = value,
                units = "Ag Production (Mt)",
@@ -748,8 +955,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -778,7 +985,7 @@ requireNamespace("dplyr",quietly = T)
                origX = year,
                scenario = scenNewNames,
                value = value * metis.assumptions()$convEJ2TWh,
-               units = "Biomass Production (EJ)",
+               units = "Biomass Production (TWh)",
                vintage = paste("Vint_", year, sep = ""),
                x = year,
                xLabel = "Year",
@@ -817,7 +1024,7 @@ requireNamespace("dplyr",quietly = T)
                origUnits = Units,
                origX = year,
                scenario = scenNewNames,
-               value = value * metis.assumptions()$convEJ2TWh,
+               value = value,
                units = "Agricultural Production (billion m3)",
                vintage = paste("Vint_", year, sep = ""),
                x = year,
@@ -858,7 +1065,7 @@ requireNamespace("dplyr",quietly = T)
                origUnits = Units,
                origX = year,
                scenario = scenNewNames,
-               value = value * metis.assumptions()$convEJ2TWh,
+               value = value,
                units = "Agricultural Production (Mt)",
                vintage = paste("Vint_", year, sep = ""),
                x = year,
@@ -915,8 +1122,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -933,10 +1140,18 @@ requireNamespace("dplyr",quietly = T)
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
-        dplyr::mutate(landleaf=gsub("forest\\s\\(managed\\)","forest",landleaf),
+        dplyr::mutate(
+               class2=landleaf,
+               landleaf=gsub("forest\\s\\(managed\\)","forest",landleaf),
                landleaf=gsub("forest\\s\\(unmanaged\\)","forest",landleaf),
                landleaf=gsub("pasture\\s\\(grazed\\)","pasture",landleaf),
-               landleaf=gsub("pasture\\s\\(other\\)","pasture",landleaf))%>%
+               landleaf=gsub("pasture\\s\\(other\\)","pasture",landleaf),
+               landleaf=gsub("otherarable","crops",landleaf),
+               landleaf=gsub("biomass","naturalOther",landleaf),
+               landleaf=gsub("grass","naturalOther",landleaf),
+               landleaf=gsub("shrubs","naturalOther",landleaf),
+               landleaf=gsub("rock\\sand\\sdesert","naturalOther",landleaf),
+               landleaf=gsub("tundra","naturalOther",landleaf))%>%
         dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "aggLandAlloc",
                sources = "Sources",
@@ -955,7 +1170,6 @@ requireNamespace("dplyr",quietly = T)
                class1 = landleaf,
                classLabel1 = "Land Type",
                classPalette1 = "pal_lu_type",
-               class2 = "class2",
                classLabel2 = "classLabel2",
                classPalette2 = "classPalette2") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
@@ -963,10 +1177,9 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -1007,8 +1220,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       tblLUEmiss<-tbl
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
@@ -1052,8 +1265,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
@@ -1096,8 +1309,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
 
        # Add LU Change Emissions
        tblLUEmiss <- rgcam::getQuery(dataProjLoaded, "Land Use Change Emission (future)")  # Tibble
@@ -1131,8 +1344,8 @@ requireNamespace("dplyr",quietly = T)
                         origScen, origQuery, origValue, origUnits, origX)%>%
           dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                    aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                   origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-          dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                   origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+          dplyr::filter(!is.na(value))
 
 
       dfLUCAbs<-tblLUEmiss%>%dplyr::filter(value<0)%>%dplyr::mutate(class1="LUC_Absorption")
@@ -1191,8 +1404,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -1244,8 +1457,8 @@ requireNamespace("dplyr",quietly = T)
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at("value",dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::mutate(origValue = value)%>%dplyr::filter(!is.na(value))
+                 origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
@@ -1282,11 +1495,16 @@ requireNamespace("dplyr",quietly = T)
     utils::write.csv(fullTemplateMap, file = paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""),
                      row.names = F)
 
-    if (is.null(regionsSelect)) {
+    if (is.null(regionsSelect) | regionsSelectAll==T) {
         utils::write.csv(datax, file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
             "to", max(range(datax$x)), ".csv", sep = ""), row.names = F)
+        print(paste("GCAM data table saved to: ", paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
+                                                      "to", max(range(datax$x)), ".csv", sep = "")))
+
         utils::write.csv(dataTemplate, file = paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = ""),
                          row.names = F)
+        print(paste("GCAM data template saved to: ", paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = "")))
+
     } else {
 
        if(!all(regionsSelect %in% unique(datax$region))){
@@ -1295,6 +1513,8 @@ requireNamespace("dplyr",quietly = T)
        }
 
         for (region_i in regionsSelect[(regionsSelect %in% unique(datax$region))]) {
+
+          print(paste("Saving data table for region: ",region_i,"...", sep = ""))
             utils::write.csv(datax %>% dplyr::filter(region == region_i),
                              file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_", min(range(datax$x)),
                                           "to", max(range(datax$x)), ".csv", sep = ""),row.names = F)
@@ -1320,6 +1540,8 @@ requireNamespace("dplyr",quietly = T)
                              file = paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_",region_i,".csv", sep = ""),row.names = F)
             #utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
             #                 file = paste(dirOutputs, "/Tables/Tables_Local/local_Regional_",region_i,".csv", sep = ""),row.names = F)
+
+            print(paste("Table saved.", sep = ""))
         }
     }
 

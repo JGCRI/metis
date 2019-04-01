@@ -10,7 +10,7 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   frameShow = F, fillColumn = NULL, labels = F, labelsSize = 1.2,
   labelsColor = "black", labelsAutoPlace = F, figWidth = 9,
   figHeight = 7, legendWidth = -1, legendShow = F,
-  legendOutside = T, legendTextSize = 1, legendTitleSize = 2,
+  legendOutside = F, legendTextSize = 1, legendTitleSize = 2,
   legendOutsidePosition = NULL, legendPosition = NULL,
   legendDigits = NULL, legendTitle = "Legend",
   legendStyle = "pretty", legendFixedBreaks = 5, legendBreaks = NULL,
@@ -18,8 +18,10 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   printFig = T, fileName = "map", dirOutputs = paste(getwd(),
   "/outputs", sep = ""), facetFreeScale = F, facetRows = NA,
   facetCols = 3, facetBGColor = "grey30", facetLabelColor = "white",
-  facetLabelSize = 1.5, alpha = 1, fillcolorNA = NULL,
-  facetsON = T, panelLabel = NULL)
+  facetLabelSize = 1.5, alpha = 1, fillcolorNA = "grey30",
+  fillshowNA = NA, fillcolorNULL = "grey30", facetsON = T,
+  panelLabel = NULL, multiFacetRows = NULL, multiFacetCols = NULL,
+  mapTitle = NULL, mapTitleSize = 1)
 }
 \arguments{
 \item{dataPolygon}{Default = NULL,}
@@ -110,9 +112,21 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
 
 \item{fillcolorNA}{Default =NULL}
 
+\item{fillshowNA}{Default =NA}
+
+\item{fillcolorNULL}{Default =NULL}
+
 \item{facetsON}{Default =F,}
 
 \item{panelLabel}{Default = NULL,}
+
+\item{multiFacetRows}{Default=NULL,}
+
+\item{multiFacetCols}{Default=NULL,}
+
+\item{mapTitle}{Default=NULL}
+
+\item{mapTitleSize}{Default=1}
 }
 \value{
 Returns the formatted data used to produce chart

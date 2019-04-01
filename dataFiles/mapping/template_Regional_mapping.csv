@@ -1,67 +1,219 @@
-"units","param","class1","class2","xLabel","aggregate","classLabel1","classPalette1","classLabel2","classPalette2"
-"Final Energy (TWh)","finalNrgbySec","building","class2","Year","sum","Sector","pal_finalNrg_sec","classLabel2","classPalette2"
-"Final Energy (TWh)","finalNrgbySec","industry","class2","Year","sum","Sector","pal_finalNrg_sec","classLabel2","classPalette2"
-"Final Energy (TWh)","finalNrgbySec","transportation","class2","Year","sum","Sector","pal_finalNrg_sec","classLabel2","classPalette2"
-"Primary Energy Consumption (TWh)","primNrgConsumByFuel","a oil","class2","Year","sum","Fuel","pal_pri_ene","classLabel2","classPalette2"
-"Primary Energy Consumption (TWh)","primNrgConsumByFuel","b natural gas","class2","Year","sum","Fuel","pal_pri_ene","classLabel2","classPalette2"
-"Primary Energy Consumption (TWh)","primNrgConsumByFuel","c coal","class2","Year","sum","Fuel","pal_pri_ene","classLabel2","classPalette2"
-"Primary Energy Consumption (TWh)","primNrgConsumByFuel","d biomass","class2","Year","sum","Fuel","pal_pri_ene","classLabel2","classPalette2"
-"Primary Energy Consumption (TWh)","primNrgConsumByFuel","e nuclear","class2","Year","sum","Fuel","pal_pri_ene","classLabel2","classPalette2"
-"Primary Energy Consumption (TWh)","primNrgConsumByFuel","f hydro","class2","Year","sum","Fuel","pal_pri_ene","classLabel2","classPalette2"
-"Primary Energy Consumption (TWh)","primNrgConsumByFuel","g wind","class2","Year","sum","Fuel","pal_pri_ene","classLabel2","classPalette2"
-"Primary Energy Consumption (TWh)","primNrgConsumByFuel","h solar","class2","Year","sum","Fuel","pal_pri_ene","classLabel2","classPalette2"
-"Primary Energy Consumption (TWh)","primNrgConsumByFuel","i geothermal","class2","Year","sum","Fuel","pal_pri_ene","classLabel2","classPalette2"
-"Primary Energy Consumption (TWh)","primNrgConsumByFuel","j traditional biomass","class2","Year","sum","Fuel","pal_pri_ene","classLabel2","classPalette2"
-"Electricity Generation (TWh)","elecByTech","a Coal","class2","Year","sum","Fuel","pal_elec_tech_colors","classLabel2","classPalette2"
-"Electricity Generation (TWh)","elecByTech","c Gas","class2","Year","sum","Fuel","pal_elec_tech_colors","classLabel2","classPalette2"
-"Electricity Generation (TWh)","elecByTech","e Oil","class2","Year","sum","Fuel","pal_elec_tech_colors","classLabel2","classPalette2"
-"Electricity Generation (TWh)","elecByTech","g Biomass","class2","Year","sum","Fuel","pal_elec_tech_colors","classLabel2","classPalette2"
-"Electricity Generation (TWh)","elecByTech","i Nuclear","class2","Year","sum","Fuel","pal_elec_tech_colors","classLabel2","classPalette2"
-"Electricity Generation (TWh)","elecByTech","j Geothermal","class2","Year","sum","Fuel","pal_elec_tech_colors","classLabel2","classPalette2"
-"Electricity Generation (TWh)","elecByTech","k Hydro","class2","Year","sum","Fuel","pal_elec_tech_colors","classLabel2","classPalette2"
-"Electricity Generation (TWh)","elecByTech","l Wind","class2","Year","sum","Fuel","pal_elec_tech_colors","classLabel2","classPalette2"
-"Electricity Generation (TWh)","elecByTech","m Solar","class2","Year","sum","Fuel","pal_elec_tech_colors","classLabel2","classPalette2"
-"Electricity Generation (TWh)","elecByTech","n CHP","class2","Year","sum","Fuel","pal_elec_tech_colors","classLabel2","classPalette2"
-"Water Consumption (km^3)","watConsumBySec","agriculture","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"Water Consumption (km^3)","watConsumBySec","electricity","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"Water Consumption (km^3)","watConsumBySec","industry","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"Water Consumption (km^3)","watConsumBySec","livestock","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"Water Consumption (km^3)","watConsumBySec","mining","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"Water Consumption (km^3)","watConsumBySec","municipal","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"Water Withdrawals (km^3)","watWithdrawBySec","agriculture","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"Water Withdrawals (km^3)","watWithdrawBySec","electricity","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"Water Withdrawals (km^3)","watWithdrawBySec","industry","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"Water Withdrawals (km^3)","watWithdrawBySec","livestock","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"Water Withdrawals (km^3)","watWithdrawBySec","mining","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"Water Withdrawals (km^3)","watWithdrawBySec","municipal","class2","Year","sum","Sector","pal_wat_dem","classLabel2","classPalette2"
-"GDP (Billion 1990 USD)","gdp","class1","class2","Year","sum","GDP","pal_16","classLabel2","classPalette2"
-"GDP Growth Rate (Percent)","gdpGrowthRate","class1","class2","Year","sum","GDP growth rate","pal_16","classLabel2","classPalette2"
-"Population (Millions)","pop","class1","class2","Year","sum","Population","pal_16","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","Corn","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","FiberCrop","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","FodderGrass","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","FodderHerb","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","MiscCrop","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","OilCrop","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","OtherGrain","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","Rice","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","Root_Tuber","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","SugarCrop","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","Wheat","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Agricultural Production (Mt)","agProdByCrop","PalmFruit","class2","Year","sum","Crop","pal_ag_type","classLabel2","classPalette2"
-"Land Allocation (1000 km^2)","aggLandAlloc","biomass","class2","Year","sum","Land Type","pal_lu_type","classLabel2","classPalette2"
-"Land Allocation (1000 km^2)","aggLandAlloc","crops","class2","Year","sum","Land Type","pal_lu_type","classLabel2","classPalette2"
-"Land Allocation (1000 km^2)","aggLandAlloc","forest","class2","Year","sum","Land Type","pal_lu_type","classLabel2","classPalette2"
-"Land Allocation (1000 km^2)","aggLandAlloc","grass","class2","Year","sum","Land Type","pal_lu_type","classLabel2","classPalette2"
-"Land Allocation (1000 km^2)","aggLandAlloc","otherarable","class2","Year","sum","Land Type","pal_lu_type","classLabel2","classPalette2"
-"Land Allocation (1000 km^2)","aggLandAlloc","pasture","class2","Year","sum","Land Type","pal_lu_type","classLabel2","classPalette2"
-"Land Allocation (1000 km^2)","aggLandAlloc","rock and desert","class2","Year","sum","Land Type","pal_lu_type","classLabel2","classPalette2"
-"Land Allocation (1000 km^2)","aggLandAlloc","shrubs","class2","Year","sum","Land Type","pal_lu_type","classLabel2","classPalette2"
-"Land Allocation (1000 km^2)","aggLandAlloc","tundra","class2","Year","sum","Land Type","pal_lu_type","classLabel2","classPalette2"
-"Land Allocation (1000 km^2)","aggLandAlloc","urban","class2","Year","sum","Land Type","pal_lu_type","classLabel2","classPalette2"
-"CO2 Emission by Enduse (MTCO2 Eq.)","co2emissionByEndUse","buildings","class2","Year","sum","Type","pal_finalNrg_sec","classLabel2","classPalette2"
-"CO2 Emission by Enduse (MTCO2 Eq.)","co2emissionByEndUse","electricity","class2","Year","sum","Type","pal_finalNrg_sec","classLabel2","classPalette2"
-"CO2 Emission by Enduse (MTCO2 Eq.)","co2emissionByEndUse","industry","class2","Year","sum","Type","pal_finalNrg_sec","classLabel2","classPalette2"
-"CO2 Emission by Enduse (MTCO2 Eq.)","co2emissionByEndUse","transportation","class2","Year","sum","Type","pal_finalNrg_sec","classLabel2","classPalette2"
-"CO2 Emission by Enduse (MTCO2 Eq.)","co2emissionByEndUse","LUC Absorption","class2","Year","sum","Type","pal_finalNrg_sec","classLabel2","classPalette2"
-"CO2 Emission by Enduse (MTCO2 Eq.)","co2emissionByEndUse","LUC Emission","class2","Year","sum","Type","pal_finalNrg_sec","classLabel2","classPalette2"
+units,param,class1,class2,xLabel,aggregate,classLabel1,classPalette1,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySec,building,class2,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySec,industry,class2,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySec,transportation,class2,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,cement,elect_td_ind,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,comm cooling,delivered gas,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,comm cooling,elect_td_bld,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,comm heating,delivered biomass,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,comm heating,delivered gas,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,comm heating,elect_td_bld,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,comm heating,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,comm others,delivered biomass,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,comm others,delivered gas,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,comm others,elect_td_bld,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,comm others,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,industrial energy use,delivered biomass,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,industrial energy use,elect_td_ind,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,industrial energy use,H2 enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,industrial energy use,refined liquids industrial,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,industrial energy use,wholesale gas,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,industrial feedstocks,refined liquids industrial,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,N fertilizer,wholesale gas,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,process heat cement,delivered biomass,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,process heat cement,delivered coal,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,process heat cement,refined liquids industrial,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,process heat cement,wholesale gas,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,resid cooling,elect_td_bld,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,resid heating,delivered biomass,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,resid heating,delivered gas,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,resid heating,elect_td_bld,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,resid heating,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,resid heating,traditional biomass,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,resid others,delivered biomass,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,resid others,delivered gas,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,resid others,elect_td_bld,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,resid others,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,resid others,traditional biomass,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_aviation_intl,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_freight,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_freight_road,delivered gas,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_freight_road,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_pass,elect_td_trn,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_pass,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_pass_road,delivered gas,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_pass_road,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_pass_road_LDV_2W,elect_td_trn,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_pass_road_LDV_2W,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_pass_road_LDV_4W,delivered gas,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_pass_road_LDV_4W,elect_td_trn,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_pass_road_LDV_4W,H2 enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_pass_road_LDV_4W,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Energy (TWh),finalNrgbySecDet,trn_shipping_intl,refined liquids enduse,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbySecDet,building,comm cooling,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbySecDet,building,comm heating,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbySecDet,building,comm others,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbySecDet,building,resid cooling,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbySecDet,building,resid heating,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbySecDet,building,resid others,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbySecDet,industry,cement,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbySecDet,industry,industrial energy use,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbySecDet,transport,trn_pass,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbySecDet,transport,trn_pass_road_LDV_2W,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbySecDet,transport,trn_pass_road_LDV_4W,Year,sum,Sector,pal_finalNrg_sec,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbyServiceDet,comm cooling,building,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbyServiceDet,comm heating,building,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbyServiceDet,comm others,building,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbyServiceDet,industry,industry,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbyServiceDet,resid cooling,building,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbyServiceDet,resid heating,building,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbyServiceDet,resid others,building,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbyServiceDet,transport,transport,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbyServiceDet,transport_road_LDV_2W,transport,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Final Electricity (TWh),finalElecbyServiceDet,transport_road_LDV_4W,transport,Year,sum,Sector,pal_16,classLabel2,classPalette2
+Primary Energy Consumption (TWh),primNrgConsumByFuel,a oil,class2,Year,sum,Fuel,pal_pri_ene,classLabel2,classPalette2
+Primary Energy Consumption (TWh),primNrgConsumByFuel,b natural gas,class2,Year,sum,Fuel,pal_pri_ene,classLabel2,classPalette2
+Primary Energy Consumption (TWh),primNrgConsumByFuel,c coal,class2,Year,sum,Fuel,pal_pri_ene,classLabel2,classPalette2
+Primary Energy Consumption (TWh),primNrgConsumByFuel,d biomass,class2,Year,sum,Fuel,pal_pri_ene,classLabel2,classPalette2
+Primary Energy Consumption (TWh),primNrgConsumByFuel,e nuclear,class2,Year,sum,Fuel,pal_pri_ene,classLabel2,classPalette2
+Primary Energy Consumption (TWh),primNrgConsumByFuel,f hydro,class2,Year,sum,Fuel,pal_pri_ene,classLabel2,classPalette2
+Primary Energy Consumption (TWh),primNrgConsumByFuel,g wind,class2,Year,sum,Fuel,pal_pri_ene,classLabel2,classPalette2
+Primary Energy Consumption (TWh),primNrgConsumByFuel,h solar,class2,Year,sum,Fuel,pal_pri_ene,classLabel2,classPalette2
+Primary Energy Consumption (TWh),primNrgConsumByFuel,i geothermal,class2,Year,sum,Fuel,pal_pri_ene,classLabel2,classPalette2
+Primary Energy Consumption (TWh),primNrgConsumByFuel,j traditional biomass,class2,Year,sum,Fuel,pal_pri_ene,classLabel2,classPalette2
+Electricity Generation (TWh),elecByTech,a Coal,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Generation (TWh),elecByTech,c Gas,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Generation (TWh),elecByTech,e Oil,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Generation (TWh),elecByTech,g Biomass,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Generation (TWh),elecByTech,i Nuclear,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Generation (TWh),elecByTech,j Geothermal,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Generation (TWh),elecByTech,k Hydro,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Generation (TWh),elecByTech,l Wind,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Generation (TWh),elecByTech,m Solar,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Generation (TWh),elecByTech,n CHP,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Capacity (GW),elecCapBySubsector,a Coal,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Capacity (GW),elecCapBySubsector,c Gas,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Capacity (GW),elecCapBySubsector,e Oil,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Capacity (GW),elecCapBySubsector,g Biomass,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Capacity (GW),elecCapBySubsector,i Nuclear,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Capacity (GW),elecCapBySubsector,j Geothermal,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Capacity (GW),elecCapBySubsector,k Hydro,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Capacity (GW),elecCapBySubsector,l Wind,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Electricity Capacity (GW),elecCapBySubsector,m Solar,class2,Year,sum,Fuel,pal_elec_tech_colors,classLabel2,classPalette2
+Water Consumption (km^3),watConsumBySec,agriculture,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Consumption (km^3),watConsumBySec,electricity,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Consumption (km^3),watConsumBySec,industry,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Consumption (km^3),watConsumBySec,livestock,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Consumption (km^3),watConsumBySec,mining,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Consumption (km^3),watConsumBySec,municipal,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawBySec,agriculture,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawBySec,electricity,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawBySec,industry,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawBySec,livestock,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawBySec,mining,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawBySec,municipal,class2,Year,sum,Sector,pal_wat_dem,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawByCrop,biomass,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawByCrop,Corn,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawByCrop,MiscCrop,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawByCrop,OilCrop,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawByCrop,OtherGrain,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawByCrop,Rice,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawByCrop,Root_Tuber,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawByCrop,SugarCrop,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Water Withdrawals (km^3),watWithdrawByCrop,Wheat,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Biophysical Water Consumption (km^3),watBioPhysCons,biomass,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Biophysical Water Consumption (km^3),watBioPhysCons,Corn,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Biophysical Water Consumption (km^3),watBioPhysCons,MiscCrop,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Biophysical Water Consumption (km^3),watBioPhysCons,OilCrop,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Biophysical Water Consumption (km^3),watBioPhysCons,OtherGrain,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Biophysical Water Consumption (km^3),watBioPhysCons,Rice,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Biophysical Water Consumption (km^3),watBioPhysCons,Root_Tuber,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Biophysical Water Consumption (km^3),watBioPhysCons,SugarCrop,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Biophysical Water Consumption (km^3),watBioPhysCons,Wheat,class2,Year,sum,Crop,pal_16,classLabel2,classPalette2
+Irrigation Water Withdrawal (km^3),irrWatWithBasin,BrzCstS,class2,Year,sum,Basin,pal_16,classLabel2,classPalette2
+Irrigation Water Withdrawal (km^3),irrWatWithBasin,RioLaPlata,class2,Year,sum,Basin,pal_16,classLabel2,classPalette2
+Irrigation Water Consumption (km^3),irrWatConsBasin,BrzCstS,class2,Year,sum,Basin,pal_16,classLabel2,classPalette2
+Irrigation Water Consumption (km^3),irrWatConsBasin,RioLaPlata,class2,Year,sum,Basin,pal_16,classLabel2,classPalette2
+GDP per Capita (Thousand 1990 USD per Person),gdpPerCapita,class1,class2,Year,sum,GDP Per Capita,pal_16,classLabel2,classPalette2
+GDP (Billion 1990 USD),gdp,class1,class2,Year,sum,GDP,pal_16,classLabel2,classPalette2
+GDP Growth Rate (Percent),gdpGrowthRate,class1,class2,Year,sum,GDP growth rate,pal_16,classLabel2,classPalette2
+Population (Millions),pop,class1,class2,Year,sum,Population,pal_16,classLabel2,classPalette2
+Ag Production (Mt),agProdbyIrrRfd,irrigation,class2,Year,sum,Water Source,pal_16,classLabel2,classPalette2
+Ag Production (Mt),agProdbyIrrRfd,rainfed,class2,Year,sum,Water Source,pal_16,classLabel2,classPalette2
+Biomass Production (TWh),agProdBiomass,biomass,class2,Year,sum,Crop,pal_ag_type,classLabel2,classPalette2
+Agricultural Production (billion m3),agProdForest,Forest,class2,Year,sum,Forest,pal_ag_type,classLabel2,classPalette2
+Agricultural Production (billion m3),agProdForest,NonFoodDemand_Forest,class2,Year,sum,Forest,pal_ag_type,classLabel2,classPalette2
+Agricultural Production (Mt),agProdByCrop,Corn,class2,Year,sum,Crop,pal_ag_type,classLabel2,classPalette2
+Agricultural Production (Mt),agProdByCrop,MiscCrop,class2,Year,sum,Crop,pal_ag_type,classLabel2,classPalette2
+Agricultural Production (Mt),agProdByCrop,OilCrop,class2,Year,sum,Crop,pal_ag_type,classLabel2,classPalette2
+Agricultural Production (Mt),agProdByCrop,OtherGrain,class2,Year,sum,Crop,pal_ag_type,classLabel2,classPalette2
+Agricultural Production (Mt),agProdByCrop,Rice,class2,Year,sum,Crop,pal_ag_type,classLabel2,classPalette2
+Agricultural Production (Mt),agProdByCrop,Root_Tuber,class2,Year,sum,Crop,pal_ag_type,classLabel2,classPalette2
+Agricultural Production (Mt),agProdByCrop,SugarCrop,class2,Year,sum,Crop,pal_ag_type,classLabel2,classPalette2
+Agricultural Production (Mt),agProdByCrop,Wheat,class2,Year,sum,Crop,pal_ag_type,classLabel2,classPalette2
+Crop Land Allocation (1000 km^2),landIrrRfd,IRR,class2,Year,sum,Water Source,pal_16,classLabel2,classPalette2
+Crop Land Allocation (1000 km^2),landIrrRfd,RFD,class2,Year,sum,Water Source,pal_16,classLabel2,classPalette2
+Land Allocation (1000 km^2),aggLandAlloc,crops,crops,Year,sum,Land Type,pal_lu_type,classLabel2,classPalette2
+Land Allocation (1000 km^2),aggLandAlloc,crops,otherarable,Year,sum,Land Type,pal_lu_type,classLabel2,classPalette2
+Land Allocation (1000 km^2),aggLandAlloc,forest,forest (managed),Year,sum,Land Type,pal_lu_type,classLabel2,classPalette2
+Land Allocation (1000 km^2),aggLandAlloc,forest,forest (unmanaged),Year,sum,Land Type,pal_lu_type,classLabel2,classPalette2
+Land Allocation (1000 km^2),aggLandAlloc,naturalOther,biomass,Year,sum,Land Type,pal_lu_type,classLabel2,classPalette2
+Land Allocation (1000 km^2),aggLandAlloc,naturalOther,grass,Year,sum,Land Type,pal_lu_type,classLabel2,classPalette2
+Land Allocation (1000 km^2),aggLandAlloc,pasture,pasture (grazed),Year,sum,Land Type,pal_lu_type,classLabel2,classPalette2
+Land Allocation (1000 km^2),aggLandAlloc,pasture,pasture (other),Year,sum,Land Type,pal_lu_type,classLabel2,classPalette2
+Land Allocation (1000 km^2),aggLandAlloc,urban,urban,Year,sum,Land Type,pal_lu_type,classLabel2,classPalette2
+LUC CO2 Emissions (MTCO2 Eq.),LUCemiss,class1,class2,Year,sum,Land Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,backup_electricity,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,cement,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,comm cooling,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,comm heating,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,comm others,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,csp_backup,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,elec_biomass (conv),class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,elec_biomass (IGCC),class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,elec_coal (conv pul),class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,elec_coal (IGCC),class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,elec_gas (CC),class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,elec_gas (steam/CT),class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,elec_refined liquids (CC),class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,elec_refined liquids (steam/CT),class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,gas pipeline,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,gas processing,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,H2 central production,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,H2 forecourt production,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,industrial energy use,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,N fertilizer,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,process heat cement,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,refining,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,regional biomass,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,regional biomassOil,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,regional corn for ethanol,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,resid heating,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,resid others,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,trn_aviation_intl,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,trn_freight,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,trn_freight_road,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,trn_pass,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,trn_pass_road,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,trn_pass_road_LDV_2W,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,trn_pass_road_LDV_4W,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,trn_shipping_intl,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emissions by Sector (MTCO2 Eq.),co2emission,unconventional oil production,class2,Year,sum,Type,pal_16,classLabel2,classPalette2
+CO2 Emission by Enduse (MTCO2 Eq.),co2emissionByEndUse,buildings,class2,Year,sum,Type,pal_finalNrg_sec,classLabel2,classPalette2
+CO2 Emission by Enduse (MTCO2 Eq.),co2emissionByEndUse,electricity,class2,Year,sum,Type,pal_finalNrg_sec,classLabel2,classPalette2
+CO2 Emission by Enduse (MTCO2 Eq.),co2emissionByEndUse,industry,class2,Year,sum,Type,pal_finalNrg_sec,classLabel2,classPalette2
+CO2 Emission by Enduse (MTCO2 Eq.),co2emissionByEndUse,transportation,class2,Year,sum,Type,pal_finalNrg_sec,classLabel2,classPalette2
+CO2 Emission by Enduse (MTCO2 Eq.),co2emissionByEndUse,LUC Absorption,class2,Year,sum,Type,pal_finalNrg_sec,classLabel2,classPalette2
+CO2 Emission by Enduse (MTCO2 Eq.),co2emissionByEndUse,LUC Emission,class2,Year,sum,Type,pal_finalNrg_sec,classLabel2,classPalette2
+GHG Emissions (MTCO2 Eq.),ghgEmissionByGHG,CH4,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2
+GHG Emissions (MTCO2 Eq.),ghgEmissionByGHG,CO2,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2
+GHG Emissions (MTCO2 Eq.),ghgEmissionByGHG,HFC125,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2
+GHG Emissions (MTCO2 Eq.),ghgEmissionByGHG,HFC134a,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2
+GHG Emissions (MTCO2 Eq.),ghgEmissionByGHG,HFC143a,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2
+GHG Emissions (MTCO2 Eq.),ghgEmissionByGHG,HFC152a,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2
+GHG Emissions (MTCO2 Eq.),ghgEmissionByGHG,HFC227ea,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2
+GHG Emissions (MTCO2 Eq.),ghgEmissionByGHG,HFC245fa,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2
+GHG Emissions (MTCO2 Eq.),ghgEmissionByGHG,HFC32,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2
+GHG Emissions (MTCO2 Eq.),ghgEmissionByGHG,HFC365mfc,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2
+GHG Emissions by Group (MTCO2 Eq.),ghgEmissByGHGGROUPS,CO2,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2
+GHG Emissions by Group (MTCO2 Eq.),ghgEmissByGHGGROUPS,HFCs,class2,Year,sum,GHG,pal_16,classLabel2,classPalette2

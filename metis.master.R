@@ -5,18 +5,24 @@
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
+#if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
 library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
 if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}
 library(tibble)
-if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dlpyr")}
-library(dplyr)
 if("rgdal" %in% rownames(installed.packages()) == F){install.packages("rgdal")}
 library(rgdal)
 if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}
 library(tmap)
+if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dplyr")}             #andym dplyr was misspelled
+library(dplyr)
+if("zoo" %in% rownames(installed.packages()) == F){install.packages("zoo")}            #andym added this package to install
+library(zoo)
+if("dbplyr" %in% rownames(installed.packages()) == F){install.packages("dbplyr")}            #andym added this package to install
+library(dbplyr)
+if("RSQLite" %in% rownames(installed.packages()) == F){install.packages("RSQLite")}            #andym added this package to install
+library(RSQLite)
 
 
 #----------------------------
@@ -28,9 +34,10 @@ gcamdatabaseName <-"example_database_basexdb"
 gcamdataProjFile <-"Example_dataProj.proj"
 regionsSelect <- c("Colombia","Argentina")
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
-               "watConsumBySec", "watWithdrawBySec","gdp", "gdpGrowthRate", "pop",
-               "agProdByCrop", "aggLandAlloc","co2emissionByEndUse")
+#paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+#               "watConsumBySec", "watWithdrawBySec","gdp", "gdpGrowthRate", "pop",
+#              "agProdByCrop", "aggLandAlloc","co2emissionByEndUse")
+paramsSelect = "All"
 
 # Use function localDBConn from package rgcam to get a list of scenarios if needed.
 # localDBConn(gcamdatabasePath,gcamdatabaseName)
@@ -51,6 +58,18 @@ dataGCAM<-metis.readgcam(reReadData=F, # Default Value is T
                        paramsSelect=paramsSelect, # Default value is "All"
                        queriesSelect="All" # Default is "All"
                        )
+
+# reReadData=T # Default Value is T
+# dataProj=gcamdataProjFile # Default Value is "dataProj.proj"
+# scenOrigNames=c("ExampleScen1","ExampleScen2")
+# scenNewNames=c("Eg1","Eg2")
+# gcamdatabasePath=gcamdatabasePath
+# gcamdatabaseName=gcamdatabaseName
+# queryxml="metisQueries.xml"  # Default Value is "metisQueries.xml"
+# dirOutputs= paste(getwd(),"/outputs",sep="") # Default Value is paste(getwd(),"/outputs",sep="")
+# regionsSelect=regionsSelect # Default Value is NULL
+# paramsSelect=paramsSelect # Default value is "All"
+# queriesSelect="All" # Default is "All"
 
 dataGCAM$data # To view the data read that was read.
 
@@ -175,7 +194,9 @@ metis.mapProcess(polygonDataTables=examplePolygonTable,
                  legendPosition=c("RIGHT","top"),
                  animateOn=T,
                  delay=100,
-                 scenRef="Eg1"
+                 scenRef="Eg1",
+                 #expandPercent = 6,
+                 extension=F
                  )
 
 # polygonDataTables=examplePolygonTable
