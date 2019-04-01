@@ -39,8 +39,6 @@
 #' @param extendedShape Default =NULL,
 #' @param extendedShapeCol Default =NULL,
 #' @param expandPercent Default =2
-#' @param scaleRange Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.
-#' @param paramsSelect Default ="All"
 #' @param projX Default = projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
 #' @export
 
@@ -78,8 +76,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                          extendedShape=NULL,
                          extendedShapeCol=NULL,
                          expandPercent=2,
-                         scaleRange=NULL,
-                         paramsSelect="All",
                          projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"){
 
   # polygonDataTables=NULL
@@ -305,20 +301,6 @@ if(!subRegCol %in% names(subRegShape)){stop(paste("SubRegCol: ",subRegCol," not 
 
 subRegShape@data<-subRegShape@data%>%dplyr::mutate(subRegion=get(subRegCol))
 
-
-
-#----------------
-# Check scaleRange
-#---------------
-
-scaleRange[is.na(scaleRange)]<-NA_real_
-scaleRange[scaleRange=="NA"]<-NA_real_
-if(!all(c("param","maxScale","minScale") %in% names(scaleRange))){
-  paste("Incorrect column names for scaleRange: ",names(scaleRange),". Should include param, maxScale, minscale.")
-  paste("Setting scaleRange to NULL.")
-  scaleRange=NULL
-}
-
 #----------------
 # Create Boundary and subRegional shapefiles
 #---------------
@@ -381,70 +363,20 @@ bgColorChosen= extendedBGColor
 }
 
 
-
 #------------------
 # Subset Data
 #------------------
 
-
 if(nrow(shapeTbl)>0){
-  if(any(!boundaryRegionsSelect %in% unique(shapeTbl$region))){
-    stop(paste("boundaryRegionsSelect: ",boundaryRegionsSelect," not in shapeTbl regions"))}}
+if(any(!boundaryRegionsSelect %in% unique(shapeTbl$region))){
+  stop(paste("boundaryRegionsSelect: ",boundaryRegionsSelect," not in shapeTbl regions"))}}
 
 
 if(!is.null(shapeTbl)){
-  shapeTbl<-shapeTbl%>%
-    unique()%>%
-    dplyr::filter(region %in% boundaryRegionsSelect)
-  if(any(xRange!="All")){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange);
-  print(paste("Subset shapeTbl x to xRange: ",paste(xRange,collapse=", "),sep=""))}
-  if(any(paramsSelect!="All")){
-    if(any(paramsSelect %in% unique(shapeTbl$param))){
-      shapeTbl<-shapeTbl%>%dplyr::filter(param %in% paramsSelect);
-      print(paste("Subset shapeTbl param to paramsSelect: ",paramsSelect,sep=""))}else{
-        print(paste("None of the paramsSelect: ",paste(paramsSelect,collapse=", ")," are present in shapeTbl params. Skipping subset.",sep=""))
-      }
-  }
+  shapeTbl<-shapeTbl%>%unique()%>%dplyr::filter(region %in% boundaryRegionsSelect)
+  if(any(xRange!="All")){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange)}}
 
-  if(!is.null(scaleRange) & any(unique(scaleRange$param) %in% unique(shapeTbl$param))){
-    shapeTbl<-shapeTbl%>%dplyr::left_join(scaleRange,by="param")%>%
-      dplyr::mutate(value=dplyr::case_when((!is.na(maxScale) & value>maxScale)~maxScale,
-                                           (!is.na(minScale) & value<minScale)~minScale,
-                                           TRUE~value))%>%
-      dplyr::select(-maxScale,-minScale)
-    print(paste("Used scaleRange to adjust value for params in shapeTbl: ",
-                paste(unique(scaleRange$param)[unique(scaleRange$param) %in% unique(shapeTbl$param)],collaspe=","),sep=""))
-    print(scaleRange)
-  }
-
-  shapeTbl<-droplevels(shapeTbl)
-}
-
-if(!is.null(gridTbl)){
-  if(any(xRange!="All")){gridTbl<-gridTbl%>%dplyr::filter(x %in% xRange);
-  print(paste("Subset gridTbl x to xRange: ",xRange,sep=""))}
-  if(any(paramsSelect!="All")){
-    if(any(paramsSelect %in% unique(gridTbl$param))){
-      gridTbl<-gridTbl%>%dplyr::filter(param %in% paramsSelect);
-      print(paste("Subset gridTbl param to paramsSelect: ",paramsSelect,sep=""))}else{
-        print(paste("None of the paramsSelect: ",paste(paramsSelect,collapse=", ")," are present in gridTbl params. Skipping subset.",sep=""))
-      }
-  }
-
-
-  if(!is.null(scaleRange) & any(unique(scaleRange$param) %in% unique(gridTbl$param))){
-    gridTbl<-gridTbl%>%dplyr::left_join(scaleRange,by="param")%>%
-      dplyr::mutate(value=dplyr::case_when((!is.na(maxScale) & value>maxScale)~maxScale,
-                                           (!is.na(minScale) & value<minScale)~minScale,
-                                           TRUE~value))%>%
-      dplyr::select(-maxScale,-minScale)
-    print(paste("Used scaleRange to adjust value for params in gridTbl: ",
-                paste(unique(scaleRange$param)[unique(scaleRange$param) %in% unique(gridTbl$param)],collaspe=","),sep=""))
-    print(scaleRange)
-  }
-
-  gridTbl<-droplevels(gridTbl)
-}
+if(!is.null(gridTbl)){if(any(xRange!="All")){gridTbl<-gridTbl%>%dplyr::filter(x %in% xRange)}}
 
 
 #--------------------

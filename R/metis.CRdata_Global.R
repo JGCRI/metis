@@ -87,8 +87,12 @@ unique(a$scenario)
 # ------------------------
 
 x<-GCAMBasins@data
-a1<-a[1:235,]
+#a1<-a[1:235,]
 a1 <- left_join(a,x, by = c("subRegion" = "basin_name")) %>% mutate(param="param"); head(a1)
+
+scaleRange_i=data.frame(param=c("param"),
+                        maxScale=c(1),
+                        minScale=c(0))
 
 metis.mapProcess(polygonDataTables=a1,
                  #gridDataTables=exampleGridTable,
@@ -101,6 +105,7 @@ metis.mapProcess(polygonDataTables=a1,
                  subRegType="subBasin",
                  nameAppend="_test",
                  legendPosition=c("RIGHT","top"),
+                 scaleRange = scaleRange_i,
                  animateOn=T,
                  delay=100,
                  scenRef="SSP2_Ref"
