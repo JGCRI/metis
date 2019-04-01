@@ -256,8 +256,12 @@ metis.bia<- function(biaInputsFolder = "NA",
                                              #gridlon = 1/2*round(longitude*2+0.5)-0.25
                                              #gridlat = gridDim*round(latitude*(1/gridDim)+0.5)-(1/2*gridDim),
                                              #gridlon = gridDim*round(longitude*(1/gridDim)+0.5)-(1/2*gridDim),
-                                             gridlat = gridDimlat*round(latitude*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat,
-                                             gridlon = gridDimlon*round(longitude*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon)%>%
+                                             #gridlat = gridDimlat*round(latitude*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat,
+                                             #gridlon = gridDimlon*round(longitude*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon)%>%
+                                             #gridlat = round(gridDimlat*round(latitude*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat, digits = 10),
+                                             #gridlon = round(gridDimlon*round(longitude*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon, digits = 10))%>%
+                                             gridlat = round(gridDimlat*round(latitude*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat, digits = 3),
+                                             gridlon = round(gridDimlon*round(longitude*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon, digits = 3))%>%
               tibble::as_tibble()%>%
               dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)%>%
               dplyr::left_join(listOfGridCells,by = c("gridlat","gridlon"))%>%
@@ -279,11 +283,21 @@ metis.bia<- function(biaInputsFolder = "NA",
             gridWRI[gridWRI=="Wind"]<-"l Wind"
             gridWRI[gridWRI=="Solar"]<-"m Solar"
 
+#andym cccc<-dplyr::filter(gridWRI, gridlat == round(-1/4*2/3+0.11-1/3-43, digits = 10), gridlon==round(1/4*2/3-1/3-0.11-65, digits = 10))
+
+#andym  aaaa<-dplyr::filter(listOfGridCells,(0)>gridlat, gridlat>(-60), (0)>gridlon,gridlon>(-70))
+
+###Apr 1: In order to find a specific grid cell within gridWRI I have to do the round (___,digits = 10) - necessary for numbers with repeating digits like 1/3.
+
+###Apr 1: STILL having slight issues with getting the gridID to come through---just rounding issues
+            ##I was using the digits = 10, until I started to try to get the gridIDs to come through
+              ##It seems like it works OK without having gridIDs, but it could be nice to have them
+                    #Using: listOfGridCells$gridlon<-round(listOfGridCells$gridlon*5/3-0.17, digits = 3)
+                    #        listOfGridCells$gridlat<-round(listOfGridCells$gridlat*7/3+0.12, digits = 3)
+                      #so, I would put  sdfsdfsf<-round(sdfsdfsdf, digits = 3)   after getting the dim and shift...but it doesn't work perfectly yet
 
 
-###Mar 28th: Next thing to do is to run this with shifted and scaled grids, and make sure that the elec supply points end up in the correct new grid cells
-
-
+            dataBia<-left_join(gridWRI,dataBia, by = c("class1", "region", ))
 
 #
 #             gridWRI <- gridWRI%>%
