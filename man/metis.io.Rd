@@ -4,35 +4,37 @@
 \alias{metis.io}
 \title{metis.io}
 \usage{
-metis.io(Z0i = NULL, D0i = NULL, X0i = NULL, A0i = NULL,
-  Trade0i = NULL, Cap0i = NULL, DNewi = NULL, XNewi = NULL,
-  ZNewi = NULL, ANewi = NULL, ZPartiali = NULL,
-  dirOutputs = paste(getwd(), "/outputs", sep = ""))
+metis.io(Z0 = NULL, D0 = NULL, X0 = NULL, A0 = NULL,
+  Import0 = NULL, Cap0 = NULL, DNew = NULL, XNew = NULL,
+  ZNew = NULL, ANew = NULL, ZPartial = NULL,
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "")
 }
 \arguments{
-\item{Z0i}{Default = NULL,}
+\item{Z0}{Initial Nexus Flows (i.e. Supply sectors which also have demands).Default = NULL,}
 
-\item{D0i}{Default = NULL,}
+\item{D0}{Intiial Other flows. (All other sectors which have demands but do not supply resources). Default = NULL,}
 
-\item{X0i}{Default = NULL,}
+\item{X0}{Initial Total Demands. Default = NULL,}
 
-\item{A0i}{Default = NULL,}
+\item{A0}{Initial Intensity Matrix. Default = NULL,}
 
-\item{Trade0i}{Default =NULL,}
+\item{Import0}{Default =NULL,}
 
-\item{Cap0i}{Default =NULL,}
+\item{Cap0}{Capacity. Default =NULL,}
 
-\item{DNewi}{Default =NULL,}
+\item{DNew}{Modified other flows. Default =NULL,}
 
-\item{XNewi}{Default =NULL,}
+\item{XNew}{Modified total demands. Default =NULL,}
 
-\item{ZNewi}{Default =NULL,}
+\item{ZNew}{Modified Nexus flows. Default =NULL,}
 
-\item{ANewi}{Default =NULL,}
+\item{ANew}{Modified intensity matrix. Default =NULL,}
 
-\item{ZPartiali}{Default =NULL,}
+\item{ZPartial}{Nexus flows to replace in calibrated dataset. Default =NULL,}
 
 \item{dirOutputs}{Default =paste(getwd(),"/outputs",sep=""),}
+
+\item{nameAppend}{Modified intensity matrix. Default =NULL,}
 }
 \value{
 A table with data by polygon ID for each shapefile provided
