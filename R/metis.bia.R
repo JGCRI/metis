@@ -124,13 +124,13 @@ metis.bia<- function(biaInputsFolder = "NA",
 
   if(length(queries)==0){stop("No queries found. PLease check data.")}
 
-  dataBia <- readgcamdata$data%>%
+  dataFromGCAM <- readgcamdata$data%>%
     tibble::as_tibble()
 
   # Get All Regions
 
   #tbl <- rgcam::getQuery(dataProjLoaded, queries[1])  # Tibble
-  regionsAll<-unique(dataBia$region)
+  regionsAll<-unique(dataFromGCAM$region)
   if(any(regionsSelect=="All" | regionsSelect=="all" )){regionsSelect<-regionsAll; regionsSelectAll=T}else{
     regionsSelectAll=F
   }
@@ -164,6 +164,10 @@ metis.bia<- function(biaInputsFolder = "NA",
 
   gridShiftlat<-latranked[sort.list(abs(latranked))][1]  # The latitude of the center of the grid cells closest to the equator
   gridShiftlon<-lonranked[sort.list(abs(lonranked))][1]  # The longitude of the center of the grid cells closest to prime meridian, Greenwich Meridian
+
+
+  listOfGridCells$gridlat<-round(listOfGridCells$gridlat, digits = 10)
+  listOfGridCells$gridlon<-round(listOfGridCells$gridlon, digits = 10)
 
 
   if(!(sum(round(latranked, digits = 4) %in% round(seq(latmin,latmax,length.out = (round((latmax-latmin)/gridDimlat)+1)),digits = 4))==length(latranked))){
@@ -258,10 +262,10 @@ metis.bia<- function(biaInputsFolder = "NA",
                                              #gridlon = gridDim*round(longitude*(1/gridDim)+0.5)-(1/2*gridDim),
                                              #gridlat = gridDimlat*round(latitude*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat,
                                              #gridlon = gridDimlon*round(longitude*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon)%>%
-                                             #gridlat = round(gridDimlat*round(latitude*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat, digits = 10),
-                                             #gridlon = round(gridDimlon*round(longitude*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon, digits = 10))%>%
-                                             gridlat = round(gridDimlat*round(latitude*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat, digits = 3),
-                                             gridlon = round(gridDimlon*round(longitude*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon, digits = 3))%>%
+                                             gridlat = round(gridDimlat*round(latitude*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat, digits = 10),
+                                             gridlon = round(gridDimlon*round(longitude*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon, digits = 10))%>%
+                                             #gridlat = round(gridDimlat*round(latitude*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat, digits = 3),
+                                             #gridlon = round(gridDimlon*round(longitude*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon, digits = 3))%>%
               tibble::as_tibble()%>%
               dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)%>%
               dplyr::left_join(listOfGridCells,by = c("gridlat","gridlon"))%>%
@@ -297,7 +301,9 @@ metis.bia<- function(biaInputsFolder = "NA",
                       #so, I would put  sdfsdfsf<-round(sdfsdfsdf, digits = 3)   after getting the dim and shift...but it doesn't work perfectly yet
 
 
-            dataBia<-left_join(gridWRI,dataBia, by = c("class1", "region", ))
+            dataBia<-gridWRI%>%dplyr::filter(region %in% regionsSelect)%>%
+              dplyr::select(gridlat, gridlon, gridID, class1, region, region_32_code, ctry_name, ctry_code, gridCellPercentage)%>%
+              left_join(dataFromGCAM, by = c("class1", "region"))
 
 #
 #             gridWRI <- gridWRI%>%
