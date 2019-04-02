@@ -290,3 +290,96 @@ tmBL<- tmB + tm_text(colName, size=labelTextSize, col="black"); tmBL
   tmap_save(tmAL, filename = paste(dirOutputs, "/Maps/Boundaries/",folderName,"/ArgentinaBermejoColorado_Labels.png", sep = ""),width = widthX, height = heightX, units = "in")
 
 
+
+
+  # Check Argentina Subbasins
+
+  ProvinciasCoirco<-readOGR(dsn=paste("D:/Projects/003b_IDBLAC_Argentina/Data/shapefiles",sep=""),
+                            layer="ProvinciasCoirco",use_iconv=T,encoding='UTF-8')
+  head(ProvinciasCoirco@data); names(ProvinciasCoirco@data)
+  qtm(ProvinciasCoirco,fill="JURISDICCI",text= "JURISDICCI")
+  plot(ProvinciasCoirco)
+
+  Subcuencas<-readOGR(dsn=paste("D:/Projects/003b_IDBLAC_Argentina/Data/shapefiles",sep=""),
+                      layer="Subcuencas",use_iconv=T,encoding='UTF-8')
+  head(Subcuencas@data); names(Subcuencas@data)
+  qtm(Subcuencas,fill="cuenca")
+  plot(Subcuencas)
+
+  projX<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+  ProvinciasCoirco<-spTransform(ProvinciasCoirco,CRS(projX))
+  Subcuencas<-spTransform(Subcuencas,CRS(projX))
+
+  qtm(ProvinciasCoirco,fill="JURISDICCI",lines.col= "red") +
+    qtm(Subcuencas,line="cuenca",lines.col= "blue")
+
+  themeMain <- tm_shape(ProvinciasCoirco) +
+    tm_borders("grey10") +
+    tm_layout(bg.color = "white", inner.margins = c(0, .02, .02, .02)) +
+    tm_polygons("grey95") + tm_layout(frame=F) +
+    tm_text("JURISDICCI", size=0.7, col="grey10"); themeMain
+
+  tmA<-  themeMain +
+    tm_shape(Subcuencas) +
+    tm_borders("red") +
+    tm_polygons("yellow", alpha=0.2); tmA
+
+  tmAL <- tmA +    tm_text(colName, size=0.7, col="red");
+  tmAL
+
+dirOutputs=paste(getwd(),"/outputs",sep="")
+folderName="COIRCOSubCuencas"
+if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
+if (!dir.exists(paste(dirOutputs, "/Maps", sep = ""))){dir.create(paste(dirOutputs, "/Maps", sep = ""))}
+if (!dir.exists(paste(dirOutputs, "/Maps/Boundaries", sep = ""))){dir.create(paste(dirOutputs, "/Maps/Boundaries", sep = ""))}
+if (!dir.exists(paste(dirOutputs, "/Maps/Boundaries/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/Maps/Boundaries/",folderName,sep = ""))}
+widthX = 13; heightX = 10
+tmap_save(tmAL, filename = paste(dirOutputs, "/Maps/Boundaries/",folderName,"/SubcuencasLabels.png", sep = ""),width = widthX, height = heightX, units = "in")
+
+coircoProvinceCropped <- raster::intersect(ProvinciasCoirco,Subcuencas);
+head(coircoProvinceCropped@data); plot(coircoProvinceCropped)
+coircoProvinceCropped@data<-coircoProvinceCropped@data %>%
+  mutate(cuenca_provincia)
+
+#-------------COREBE
+
+DEPARTAMENTOS_COREBE<-readOGR(dsn=paste("D:/Projects/003b_IDBLAC_Argentina/Data/shapefilesCOREBE",sep=""),
+                          layer="DEPARTAMENTOS_COREBE",use_iconv=T)
+head(DEPARTAMENTOS_COREBE@data); names(DEPARTAMENTOS_COREBE@data)
+qtm(DEPARTAMENTOS_COREBE,fill="FNA")
+plot(DEPARTAMENTOS_COREBE)
+
+Cuenca_Bermejo_Total<-readOGR(dsn=paste("D:/Projects/003b_IDBLAC_Argentina/Data/shapefilesCOREBE",sep=""),
+                    layer="Cuenca_Bermejo_Total",use_iconv=T,encoding='UTF-8')
+head(Cuenca_Bermejo_Total@data); names(Cuenca_Bermejo_Total@data)
+qtm(Cuenca_Bermejo_Total,fill="Descriptio")
+plot(Cuenca_Bermejo_Total)
+
+projX<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+DEPARTAMENTOS_COREBE<-spTransform(DEPARTAMENTOS_COREBE,CRS(projX))
+Cuenca_Bermejo_Total<-spTransform(Cuenca_Bermejo_Total,CRS(projX))
+
+themeMain <- tm_shape(DEPARTAMENTOS_COREBE) +
+  tm_borders("grey10") +
+  tm_layout(bg.color = "white", inner.margins = c(0, .02, .02, .02)) +
+  tm_polygons("grey95") + tm_layout(frame=F) +
+  tm_text("FNA", size=0.7, col="grey10"); themeMain
+
+tmA<-  themeMain +
+  tm_shape(Cuenca_Bermejo_Total) +
+  tm_borders("red") +
+  tm_polygons("yellow", alpha=0.2); tmA
+
+tmAL <- tmA +    tm_text("Descriptio", size=0.7, col="red");
+tmAL
+
+dirOutputs=paste(getwd(),"/outputs",sep="")
+folderName="COIRCOSubCuencas"
+if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
+if (!dir.exists(paste(dirOutputs, "/Maps", sep = ""))){dir.create(paste(dirOutputs, "/Maps", sep = ""))}
+if (!dir.exists(paste(dirOutputs, "/Maps/Boundaries", sep = ""))){dir.create(paste(dirOutputs, "/Maps/Boundaries", sep = ""))}
+if (!dir.exists(paste(dirOutputs, "/Maps/Boundaries/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/Maps/Boundaries/",folderName,sep = ""))}
+widthX = 13; heightX = 10
+tmap_save(tmAL, filename = paste(dirOutputs, "/Maps/Boundaries/",folderName,"/SubcuencasLabels.png", sep = ""),width = widthX, height = heightX, units = "in")
+
+
