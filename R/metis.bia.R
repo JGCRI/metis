@@ -13,12 +13,14 @@
 #' @param popUnits Default = <-"person"
 #' @param biaOutputsFolder Default =paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep=""),
 #' @param reReadData Default =1,
-#' @param gridMetisData Default = paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")
 #' @param sqliteUSE Default = T,
 #' @param sqliteDBNamePath Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 #' @param gcamdatabasePath Path to gcam database folder
 #' @param gcamdatabaseName Name of gcam database
 #' @param queryxml Full path to query.xml file
+#' @param queryPath Folder that contains the query.xml file.By default it is
+#' the same folder as specified by gcamdatabasePath
+#' @param queriesSelect Default = "All". Vector of queries to read from the queryxml for example
 #' @param scenOrigNames Original Scenarios names in GCAM database in a string vector.
 #' For example c('scenario1','scenario2).
 #' @param scenNewNames New Names which may be shorter and more useful for figures etc.
@@ -28,9 +30,9 @@
 #' with full path is provided otherwise it will search for a dataProj.proj file in the existing
 #' folder which may have been created from an old run.
 #' @param dataProj Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.
+#' @param dataProjPath Folder that contains the dataProj or where it will be produced.
 #' @param regionsSelect The regions to analyze in a vector. Example c('Colombia','Argentina')
-#' @param queriesSelect Default = "All". Vector of queries to read from the queryxml for example
-#' @param paramsSelect Default = c("elecByTech") . Vector of parameters to be read from the GCAM database
+#' @param paramsSelect Default = c("elecByTech", "elecCapBySubsector") . Vector of parameters to be read from the GCAM database
 #' @param gridChoice Default = "grid_050" . Choice of whether to use 50 km x 50 km grid cells ("grid_050") or 25 km x 25 km ("grid_025").
 #' @return #andym a tibble with GCAM electricity generation distributed on a grid for a selected region
 #' @keywords electricity, generation, gcam, gridded, downscale, downscaling, downscaled
@@ -48,18 +50,19 @@ metis.bia<- function(biaInputsFolder = "NA",
                      popUnits = "NA",
                      biaOutputsFolder = paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep=""),
                      reReadData = 1,
-                     gridMetisData = paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = ""),
                      sqliteUSE = F,
                      sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = ""),
                      regionsSelect = NULL,
-                     queriesSelect = "All",
                      dataProj = "dataProj.proj",
+                     dataProjPath = gcamdatabasePath,
                      scenOrigNames = c("GCAMOrig","GCAMModified"),
                      scenNewNames = c("GCAMOrig","GCAMModified"),
-                     gcamdatabasePath = gcamdatabasePath,
-                     gcamdatabaseName = gcamdatabaseName,
+                     gcamdatabasePath = "NA",
+                     gcamdatabaseName = "NA",
                      queryxml = "metisQueries.xml",
-                     paramsSelect = c("elecByTech"),
+                     queryPath = gcamdatabasePath,
+                     queriesSelect = "All",
+                     paramsSelect = c("elecByTech", "elecCapBySubsector"),
                      gridChoice = "grid_050"
 ){
 
@@ -93,14 +96,43 @@ metis.bia<- function(biaInputsFolder = "NA",
     commonYears->commonScenarios->V1->Area_hec->Area_km2->valueBia->valueZelus->commonYears_i->
     scenarioSSP->scenarioPolicy->scenarioGCM->scenarioRCP->
     country->name->country_long_gppd_idnr->fuel1->fuel2->fuel3->fuel4->owner->geolocation_source->
-    GCMRCP->capacity_gw->capacity_mw->cf1971to2100->class1->data_source->datax->est_installed_capacity->
+    GCMRCP->capacity_gw->capacity_mw->cf1971to2100->class1->data_source->dataBia->est_installed_capacity->
     estimated_generation_gwh->gcamCapacityFactor->generation_gwh_2013->generation_gwh_2014->
     generation_gwh_2015->generation_gwh_2016->
-    owner->region->regionsSelect->rowid->country_long->gppd_idnr->regionsSelectAll
+    owner->region->regionsSelectAll->rowid->country_long->gppd_idnr->regionsSelectAll->
+    vintage -> year -> xLabel -> x -> value -> sector -> scenario -> param -> origX -> origValue ->
+    origUnits -> origScen -> origQuery -> classPalette2 -> classPalette1 -> classLabel2 -> classLabel1 -> class2 ->
+    class1 -> connx -> aggregate -> Units -> sources -> paramx -> technology -> input -> output -> gcamCapacityFactor ->
+    gridlat -> gridlon -> gridID -> region_32_code -> ctry_name -> ctry_code -> gridCellPercentage -> aggregate ->
+    valueDistrib -> origValueDistrib
+
+
+
 
 
   #------------------
-  # Create Folders if needed and read in GCAM data
+  # If reread data
+  #------------------
+
+  reReadBiaData<-1
+  if(reReadBiaData==1){
+
+    #andym   not sure about whether we should even have this SQLite stuff at all
+    if(sqliteUSE==T){
+      if(file.exists(sqliteDBNamePath)){file.remove(sqliteDBNamePath)}
+      dbConn<-DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)
+      DBI::dbDisconnect(dbConn);dbConn
+    }
+
+    #library(RMySQL)
+    #dbListConnections( dbDriver( drv = "MySQL"))
+
+
+
+
+
+  #------------------
+  # Create folders if needed, read in GCAM data, load grid cell file
   #------------------
   if (!dir.exists(biaOutputsFolder)){
     dir.create(biaOutputsFolder)}
@@ -178,28 +210,6 @@ metis.bia<- function(biaInputsFolder = "NA",
 #   }else{
 #     if(gridChoice=="grid_025"){gridDim<-0.25}
 #   }
-
-
-
-
-
-
-  #------------------
-  # If reread data
-  #------------------
-
-  reReadBiaData<-1
-  if(reReadBiaData==1){
-
-    #andym   not sure about whether we should even have this SQLite stuff at all
-    if(sqliteUSE==T){
-      if(file.exists(sqliteDBNamePath)){file.remove(sqliteDBNamePath)}
-      dbConn<-DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)
-      DBI::dbDisconnect(dbConn);dbConn
-    }
-
-    #library(RMySQL)
-    #dbListConnections( dbDriver( drv = "MySQL"))
 
 
 
@@ -287,18 +297,8 @@ metis.bia<- function(biaInputsFolder = "NA",
             gridWRI[gridWRI=="Wind"]<-"l Wind"
             gridWRI[gridWRI=="Solar"]<-"m Solar"
 
-#andym cccc<-dplyr::filter(gridWRI, gridlat == round(-1/4*2/3+0.11-1/3-43, digits = 10), gridlon==round(1/4*2/3-1/3-0.11-65, digits = 10))
-
-#andym  aaaa<-dplyr::filter(listOfGridCells,(0)>gridlat, gridlat>(-60), (0)>gridlon,gridlon>(-70))
 
 ###Apr 1: In order to find a specific grid cell within gridWRI I have to do the round (___,digits = 10) - necessary for numbers with repeating digits like 1/3.
-
-###Apr 1: STILL having slight issues with getting the gridID to come through---just rounding issues
-            ##I was using the digits = 10, until I started to try to get the gridIDs to come through
-              ##It seems like it works OK without having gridIDs, but it could be nice to have them
-                    #Using: listOfGridCells$gridlon<-round(listOfGridCells$gridlon*5/3-0.17, digits = 3)
-                    #        listOfGridCells$gridlat<-round(listOfGridCells$gridlat*7/3+0.12, digits = 3)
-                      #so, I would put  sdfsdfsf<-round(sdfsdfsdf, digits = 3)   after getting the dim and shift...but it doesn't work perfectly yet
 
 
             dataBia<-gridWRI%>%dplyr::filter(region %in% regionsSelect)%>%
@@ -307,169 +307,7 @@ metis.bia<- function(biaInputsFolder = "NA",
               dplyr::mutate(valueDistrib = gridCellPercentage*value, origValueDistrib = gridCellPercentage*origValue)
 
 #
-#             gridWRI <- gridWRI%>%
-#               dplyr::group_by(region, class1)%>%
-#               dplyr::summarise(WRI_total_capacity=sum(value))%>%
-#               dplyr::filter(region %in% regionsSelect)
-#
-#
-#
-#
-#             gridCapComparison<-dplyr::full_join(gridGCAMelecCap,gridWRI, by = c("region", "class1"))%>%
-#               tidyr::gather(key="data_source",value="est_installed_capacity",-c("region","class1","aggregate","units","vintage","x","xLabel","class2","sources","param","scenario","origValue","origX","origUnits","origQuery","origScen","classPalette1","classLabel1","classPalette2","classLabel2"))
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#             %>%
-#               tibble::as_tibble()%>%dplyr::select(-country,-name,-country_long,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh)
-#             print(paste("Bia data file: ",biaInputsFile_i," read.",sep=""))
-#
-#
-#             if(grepl("GW",biaInputsFile_i)){
-#               print(paste("Based on bia file name: ", biaInputsFile_i, " has GW capacity data. Converting to MW...", sep=""))
-#               gridx<-gridx%>%dplyr::mutate(capacity_gw = capacity_gw*1000)%>%
-#                 dplyr::rename(capacity_mw=capacity_gw)
-#               #  gridx<-dplyr::bind_cols(biaCoords,gridx)
-#               #  biaUnits="Runoff (mm)"                       #andym ?should we make biaUnits?
-#               print(paste("GW data converted to MW", sep=""))
-#             }else{
-#               print(paste("Based on bia filename: ", biaInputsFile_i, " has MW data. Using MW.", sep=""))
-#               #  gridx<-dplyr::bind_cols(biaCoords,gridx)
-#             }
-#
-#             # if(grepl("pm_abcd_mrtm",biaFile_i)){                                #andym add these to inspect biafiles for infromation on scenario
-#             #   biaScenario<-sub("^pm_abcd_mrtm_", "", biaFile_i);biaScenario
-#             #   biaScenario<-sub("\\_[0-9].*", "", biaScenario);biaScenario
-#             #   biaGCM<-sub("_.*","",biaScenario); biaGCM
-#             #   biaRCP<-sub(".*_","",biaScenario); biaRCP}else{
-#             #     biaScenario<-biaScenarioAssign
-#             #     biaGCM=NA;biaRCP=NA
-#             #   }
-#
-#
-#
-#
-#
-#
-#
-#
-#             #print(paste("Gathering data for bia filename: ", biaFile_i, " into year columns...", sep=""))
-#
-#
-#             # andym from chartsProcess Aggregate across classes
-#             gridxsums<-gridx%>%
-#               dplyr::filter(aggregate=="sum")%>%
-#               dplyr::select(scenario,region,param,units,x,value)%>%
-#               dplyr::group_by_at(dplyr::vars(-value))%>%
-#               dplyr::summarize_at(c("value"),dplyr::funs(sum))
-#             tblAggmeans<-tbl%>%
-#               dplyr::filter(aggregate=="mean")%>%
-#               dplyr::select(scenario,region,param,units,x, value)%>%
-#               dplyr::group_by_at(dplyr::vars(-value))%>%
-#               dplyr::summarize_at(c("value"),dplyr::funs(mean))
-#             tblAgg<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
-#
-#
-#             #basically its  something to group_by(subregions) and then the aggregation function (sum or mean)   dplyr::group_by_at(dplyr::vars(-value))%>%
-#             #dplyr::summarize_at(c("value"),dplyr::funs(sum))
-#
-#
-#             #you could probably just group_by the subregion instead of what I do here where I group by everything instead of value
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#             #gGeSlim<-gGeSlim%>%dplyr::mutate(GCAMestCapVals=Elec_Gen_GCAM_2015/gcamCapFactorAv*(10^12)/(365*24*3600))
-#
-#
-#
-#             # gridCapComparisonARG<-gridCapComparison%>%dplyr::filter(region %in% c("Argentina"))%>%
-#             #   dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
-#             #
-#             #
-#             # gridCapComparisonCol<-gridCapComparison%>%dplyr::filter(region %in% c("Colombia"))%>%
-#             #   dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
-#
-#
-#             # chrt3<-ggplot(data = gridCapComparisonARG, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
-#             # chrt3
-#             #
-#             # chrt4<-ggplot(data = gridCapComparisonCol, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
-#             # chrt4
-#
-#             #andym for the next part, if it is important, I can nest this within another for loop, which does through the different scenarios
-#             #andym put some line so that it doesn't re-make graphs that it already made
-#
-#             #andym so it doesn't look like China got doubled
-#
-#
-#
-#             for(regioni in regionsSelect){
-#               gridR<-gridCapComparison%>%dplyr::filter(region==regioni)
-#               fname=paste(unique(gridR$region),"_est_installed_capacity")
-#               metis.printPdfPng(figure=ggplot(data = gridR, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity"),
-#                                 dir=paste(biaOutputsFolder, "/biadiagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
-#
-#             }     #close metis.printPdfPng
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#             gridx<-gridx%>%dplyr::mutate(lat=latitude,
-#                                          lon=longitude,
-#                                          scenario=biaScenario,
-#                                          scenarioGCM=biaGCM,
-#                                          scenarioRCP=biaRCP,
-#                                          scenarioSSP=NA,
-#                                          scenarioPolicy=NA,
-#                                          param="biaElecGen",
-#                                          units= "Capacity (MW)",
-#                                          aggType=aggType,
-#                                          classPalette="pal_elec_subsec",
-#                                          class=fuel1,
-#                                          value=capacity_mw,
-#                                          x=NA)%>%
-#               tibble::as_tibble()%>%dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw)%>%
-#               #tidyr::gather(key="x",value="value",
-#               #             -c("lat","lon","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","classPalette","class","commissioning_year","year_of_capacity_data"))  #%>%
-#
-#
-#               tibble::as_tibble()
+
 #             print(paste("Data for bia file gathered into columns.", sep=""))
 #
 #             gridx$x<-as.numeric(gridx$x)
@@ -592,115 +430,115 @@ metis.bia<- function(biaInputsFolder = "NA",
     # Function for comparing electricity generation data
     #---------------
 
-    # if(F){
-    #
-    #   ctor<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/xanthosReference/country_to_region.csv",sep=""), header=T,stringsAsFactors = F)%>%
-    #     tibble::as.tibble()%>%
-    #     dplyr::mutate(country_long=ctry_name)
-    #
-    #   gridWRI<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""), header=T,stringsAsFactors = F)
-    #
-    #   gridWRI[gridWRI=="United States of America"]<-"United States"
-    #
-    #   gridWRI<-gridWRI%>%tibble::as_tibble()%>%dplyr::select(-name,-country,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source)%>%
-    #     dplyr::left_join(ctor,by="country_long")
-    #
-    #
-    #
-    #   biaScenario<-biaScenarioAssign
-    #   biaGCM=NA;biaRCP=NA
-    #
-    #   aggType="vol"
-    #
-    #   gridWRI<-gridWRI%>%dplyr::mutate(lat=latitude,
-    #                                    lon=longitude,
-    #                                    scenario=biaScenario,
-    #                                    scenarioGCM=biaGCM,
-    #                                    scenarioRCP=biaRCP,
-    #                                    scenarioSSP=NA,
-    #                                    scenarioPolicy=NA,
-    #                                    param="biaElecGen",
-    #                                    units= "Capacity (GW)",
-    #                                    aggType=aggType,
-    #                                    classPalette="pal_elec_subsec",
-    #                                    class1=fuel1,
-    #                                    value=capacity_mw/1000,
-    #                                    x=NA,
-    #                                    BackCalcCapFactor=estimated_generation_gwh/capacity_mw*(1000/(365*24)),
-    #                                    BCCF_gen2015=generation_gwh_2015/capacity_mw*(1000/(365*24)),
-    #                                    BCCF_gen2016=(1000/(365*24))*generation_gwh_2016/capacity_mw,
-    #                                    est_gen_gwh=estimated_generation_gwh,
-    #                                    gen_gwh_2013=generation_gwh_2013,
-    #                                    gen_gwh_2014=generation_gwh_2014,
-    #                                    gen_gwh_2015=generation_gwh_2015,
-    #                                    gen_gwh_2016=generation_gwh_2016
-    #                                    #region=country_long
-    #   )%>%
-    #     tibble::as_tibble()%>%dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)
-    #
-    #
-    #
-    #   #andym in the future can figure out which countries are grouped into the non-nation regions
-    #
-    #   gridWRI <- gridWRI%>%
-    #     dplyr::group_by(region, class1)%>%
-    #     dplyr::summarise(WRI_total_capacity=sum(value))%>%
-    #     dplyr::filter(region %in% regionsSelect)
-    #   gridWRI[gridWRI=="Coal"]<-"a Coal"
-    #   gridWRI[gridWRI=="Gas"]<-"c Gas"
-    #   gridWRI[gridWRI=="Oil"]<-"e Oil"
-    #   gridWRI[gridWRI=="Biomass"]<-"g Biomass"
-    #   gridWRI[gridWRI=="Nuclear"]<-"i Nuclear"
-    #   gridWRI[gridWRI=="Geothermal"]<-"j Geothermal"
-    #   gridWRI[gridWRI=="Hydro"]<-"k Hydro"
-    #   gridWRI[gridWRI=="Wind"]<-"l Wind"
-    #   gridWRI[gridWRI=="Solar"]<-"m Solar"
-    #
-    #
-    #
-    #   gridGCAMelecCap<-datax%>%dplyr::filter(region %in% regionsSelect, param=="elecCapBySubsector", x==2015)%>%
-    #     dplyr::mutate(GCAM_total_capacity=value)%>%
-    #     dplyr::select(-c(value))
-    #
-    #
-    #   gridCapComparison<-dplyr::full_join(gridGCAMelecCap,gridWRI, by = c("region", "class1"))%>%
-    #     tidyr::gather(key="data_source",value="est_installed_capacity",-c("region","class1","aggregate","units","vintage","x","xLabel","class2","sources","param","scenario","origValue","origX","origUnits","origQuery","origScen","classPalette1","classLabel1","classPalette2","classLabel2"))
-    #
-    #
-    #   #gGeSlim<-gGeSlim%>%dplyr::mutate(GCAMestCapVals=Elec_Gen_GCAM_2015/gcamCapFactorAv*(10^12)/(365*24*3600))
-    #
-    #
-    #
-    #   # gridCapComparisonARG<-gridCapComparison%>%dplyr::filter(region %in% c("Argentina"))%>%
-    #   #   dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
-    #   #
-    #   #
-    #   # gridCapComparisonCol<-gridCapComparison%>%dplyr::filter(region %in% c("Colombia"))%>%
-    #   #   dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
-    #
-    #
-    #   # chrt3<-ggplot(data = gridCapComparisonARG, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
-    #   # chrt3
-    #   #
-    #   # chrt4<-ggplot(data = gridCapComparisonCol, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
-    #   # chrt4
-    #
-    #   #andym for the next part, if it is important, I can nest this within another for loop, which does through the different scenarios
-    #   #andym put some line so that it doesn't re-make graphs that it already made
-    #
-    #   #andym so it doesn't look like China got doubled
-    #
-    #
-    #
-    #   for(regioni in regionsSelect){
-    #     gridR<-gridCapComparison%>%dplyr::filter(region==regioni)
-    #     fname=paste(unique(gridR$region),"_est_installed_capacity")
-    #     metis.printPdfPng(figure=ggplot(data = gridR, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity"),
-    #                       dir=paste(biaOutputsFolder, "/biadiagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
-    #
-    #   }     #close metis.printPdfPng
-    # } # Close if FALSE
-    #
+     if(F){
+
+      ctor<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/xanthosReference/country_to_region.csv",sep=""), header=T,stringsAsFactors = F)%>%
+        tibble::as.tibble()%>%
+        dplyr::mutate(country_long=ctry_name)
+
+      gridWRI<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""), header=T,stringsAsFactors = F)
+
+      gridWRI[gridWRI=="United States of America"]<-"United States"
+
+      gridWRI<-gridWRI%>%tibble::as_tibble()%>%dplyr::select(-name,-country,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source)%>%
+        dplyr::left_join(ctor,by="country_long")
+
+
+
+      biaScenario<-biaScenarioAssign
+      biaGCM=NA;biaRCP=NA
+
+      aggType="vol"
+
+      gridWRI<-gridWRI%>%dplyr::mutate(lat=latitude,
+                                       lon=longitude,
+                                       scenario=biaScenario,
+                                       scenarioGCM=biaGCM,
+                                       scenarioRCP=biaRCP,
+                                       scenarioSSP=NA,
+                                       scenarioPolicy=NA,
+                                       param="biaElecGen",
+                                       units= "Capacity (GW)",
+                                       aggType=aggType,
+                                       classPalette="pal_elec_subsec",
+                                       class1=fuel1,
+                                       value=capacity_mw/1000,
+                                       x=NA,
+                                       BackCalcCapFactor=estimated_generation_gwh/capacity_mw*(1000/(365*24)),
+                                       BCCF_gen2015=generation_gwh_2015/capacity_mw*(1000/(365*24)),
+                                       BCCF_gen2016=(1000/(365*24))*generation_gwh_2016/capacity_mw,
+                                       est_gen_gwh=estimated_generation_gwh,
+                                       gen_gwh_2013=generation_gwh_2013,
+                                       gen_gwh_2014=generation_gwh_2014,
+                                       gen_gwh_2015=generation_gwh_2015,
+                                       gen_gwh_2016=generation_gwh_2016
+                                       #region=country_long
+      )%>%
+        tibble::as_tibble()%>%dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)
+
+
+
+      #andym in the future can figure out which countries are grouped into the non-nation regions
+
+      gridWRI <- gridWRI%>%
+        dplyr::group_by(region, class1)%>%
+        dplyr::summarise(WRI_total_capacity=sum(value))%>%
+        dplyr::filter(region %in% regionsSelect)
+      gridWRI[gridWRI=="Coal"]<-"a Coal"
+      gridWRI[gridWRI=="Gas"]<-"c Gas"
+      gridWRI[gridWRI=="Oil"]<-"e Oil"
+      gridWRI[gridWRI=="Biomass"]<-"g Biomass"
+      gridWRI[gridWRI=="Nuclear"]<-"i Nuclear"
+      gridWRI[gridWRI=="Geothermal"]<-"j Geothermal"
+      gridWRI[gridWRI=="Hydro"]<-"k Hydro"
+      gridWRI[gridWRI=="Wind"]<-"l Wind"
+      gridWRI[gridWRI=="Solar"]<-"m Solar"
+
+
+
+      gridGCAMelecCap<-datax%>%dplyr::filter(region %in% regionsSelect, param=="elecCapBySubsector", x==2015)%>%
+        dplyr::mutate(GCAM_total_capacity=value)%>%
+        dplyr::select(-c(value))
+
+
+      gridCapComparison<-dplyr::full_join(gridGCAMelecCap,gridWRI, by = c("region", "class1"))%>%
+        tidyr::gather(key="data_source",value="est_installed_capacity",-c("region","class1","aggregate","units","vintage","x","xLabel","class2","sources","param","scenario","origValue","origX","origUnits","origQuery","origScen","classPalette1","classLabel1","classPalette2","classLabel2"))
+
+
+      #gGeSlim<-gGeSlim%>%dplyr::mutate(GCAMestCapVals=Elec_Gen_GCAM_2015/gcamCapFactorAv*(10^12)/(365*24*3600))
+
+
+
+      # gridCapComparisonARG<-gridCapComparison%>%dplyr::filter(region %in% c("Argentina"))%>%
+      #   dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
+      #
+      #
+      # gridCapComparisonCol<-gridCapComparison%>%dplyr::filter(region %in% c("Colombia"))%>%
+      #   dplyr::select(c("region","est_installed_capacity","data_source","class1","origScen"))
+
+
+      # chrt3<-ggplot(data = gridCapComparisonARG, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
+      # chrt3
+      #
+      # chrt4<-ggplot(data = gridCapComparisonCol, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity")
+      # chrt4
+
+      #andym for the next part, if it is important, I can nest this within another for loop, which does through the different scenarios
+      #andym put some line so that it doesn't re-make graphs that it already made
+
+      #andym so it doesn't look like China got doubled
+
+
+
+      for(regioni in regionsSelect){
+        gridR<-gridCapComparison%>%dplyr::filter(region==regioni)
+        fname=paste(unique(gridR$region),"_est_installed_capacity")
+        metis.printPdfPng(figure=ggplot(data = gridR, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity"),
+                          dir=paste(biaOutputsFolder, "/biadiagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
+
+      }     #close metis.printPdfPng
+    } # Close if FALSE
+
 
 
 
@@ -708,53 +546,53 @@ metis.bia<- function(biaInputsFolder = "NA",
     # Prepare gridded Population
     #---------------
 
-    if(!dir.exists(popFolder)){
-
-      print(paste("pop folder: ", popFolder ," is incorrect or doesn't exist.",sep=""))
-      print(paste("Skipping pop runs",sep=""))}else {
-
-        if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
-
-        for(popFile_i in popFiles){
-
-          popFile_i=gsub(".csv","",popFile_i)
-          if(!grepl(".csv",popFile_i)){popFile_i=paste(popFile_i,".csv",sep="")}
-
-          if(!file.exists(paste(popFolder,"/",popFile_i,sep=""))){
-            print(paste("pop file: ", popFolder,"/",popFile_i," is incorrect or doesn't exist.",sep=""))
-            print(paste("Skipping file: ",popFolder,"/",popFile_i,sep=""))
-          }else{
-            print(paste("Reading population data file: ",popFile_i,"...",sep=""))
-
-            gridx<-data.table::fread(paste(popFolder,"/",popFile_i,sep=""))%>%
-              tibble::as_tibble()%>%dplyr::select(lon,lat,dplyr::contains("popGWP"))%>%
-              tidyr::gather(key="key",value="value",-c("lat","lon"))%>%
-              tidyr::separate(col="key",into=c("scenario","x"),sep="_")%>%
-              dplyr::mutate(param="population",
-                            units=popUnits,
-                            aggType="vol",
-                            classPalette="pal_hot",
-                            class="class")
-            gridx$x<-as.numeric(gridx$x)
-
-            print("File read.")
-
-            if(sqliteUSE==T){
-              DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
-              print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
-            }else{
-              print(paste("Using .Rdata format to save data.",sep=""))
-              gridMetis<-dplyr::bind_rows(gridMetis,gridx)
-            }
-
-            rm(gridx)
-
-          } # Close if pop file exists
-        } # close pop file loops
-
-        if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
-
-      } # Close pop folder
+    # if(!dir.exists(popFolder)){
+    #
+    #   print(paste("pop folder: ", popFolder ," is incorrect or doesn't exist.",sep=""))
+    #   print(paste("Skipping pop runs",sep=""))}else {
+    #
+    #     if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
+    #
+    #     for(popFile_i in popFiles){
+    #
+    #       popFile_i=gsub(".csv","",popFile_i)
+    #       if(!grepl(".csv",popFile_i)){popFile_i=paste(popFile_i,".csv",sep="")}
+    #
+    #       if(!file.exists(paste(popFolder,"/",popFile_i,sep=""))){
+    #         print(paste("pop file: ", popFolder,"/",popFile_i," is incorrect or doesn't exist.",sep=""))
+    #         print(paste("Skipping file: ",popFolder,"/",popFile_i,sep=""))
+    #       }else{
+    #         print(paste("Reading population data file: ",popFile_i,"...",sep=""))
+    #
+    #         gridx<-data.table::fread(paste(popFolder,"/",popFile_i,sep=""))%>%
+    #           tibble::as_tibble()%>%dplyr::select(lon,lat,dplyr::contains("popGWP"))%>%
+    #           tidyr::gather(key="key",value="value",-c("lat","lon"))%>%
+    #           tidyr::separate(col="key",into=c("scenario","x"),sep="_")%>%
+    #           dplyr::mutate(param="population",
+    #                         units=popUnits,
+    #                         aggType="vol",
+    #                         classPalette="pal_hot",
+    #                         class="class")
+    #         gridx$x<-as.numeric(gridx$x)
+    #
+    #         print("File read.")
+    #
+    #         if(sqliteUSE==T){
+    #           DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
+    #           print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
+    #         }else{
+    #           print(paste("Using .Rdata format to save data.",sep=""))
+    #           gridMetis<-dplyr::bind_rows(gridMetis,gridx)
+    #         }
+    #
+    #         rm(gridx)
+    #
+    #       } # Close if pop file exists
+    #     } # close pop file loops
+    #
+    #     if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
+    #
+    #   } # Close pop folder
 
 
 
@@ -789,29 +627,31 @@ metis.bia<- function(biaInputsFolder = "NA",
     # Save RData and csv.
     #----------------
 
-    if(sqliteUSE==F){
-      if(nrow(gridMetis)>0){
-        save(gridMetis,file=gridMetisData)}
-      #data.table::fwrite(gridMetis,file = paste(dirOutputs, "/Grids/gridMetis.csv", sep = ""),row.names = F)
-      print(paste("gridMetis params: ", paste(unique(gridMetis$param),collapse=", "),sep=""))
-      #print(paste("gridMetis.csv saved in: ", paste(dirOutputs, "/Grids/gridMetis.csv", sep = ""),sep=""))
-    }else{
-      if(file.exists(sqliteDBNamePath)){paste("Gridded data saved in SQLite database : ",sqliteDBNamePath, sep="")}else{
-        print("No data added to gridMetis. Check datafiles folders to see if data is available.")}
-    }
+    # if(sqliteUSE==F){
+    #   if(nrow(gridMetis)>0){
+    #     save(gridMetis,file=gridMetisData)}
+    #   #data.table::fwrite(gridMetis,file = paste(dirOutputs, "/Grids/gridMetis.csv", sep = ""),row.names = F)
+    #   print(paste("gridMetis params: ", paste(unique(gridMetis$param),collapse=", "),sep=""))
+    #   #print(paste("gridMetis.csv saved in: ", paste(dirOutputs, "/Grids/gridMetis.csv", sep = ""),sep=""))
+    # }else{
+    #   if(file.exists(sqliteDBNamePath)){paste("Gridded data saved in SQLite database : ",sqliteDBNamePath, sep="")}else{
+    #     print("No data added to gridMetis. Check datafiles folders to see if data is available.")}
+    # }
 
 
   }else{ # Close if reReadBiaData==1
 
     if(sqliteUSE==T){
-      if(file.exists(sqliteDBNamePath)){paste("Re-read set to 0. Use data saved in SQLite database : ",sqliteDBNamePath, sep="")}}else{
-        if(!file.exists(gridMetisData)){stop(paste("File gridMetisData not found: ",gridMetisData,sep=""))}else{
-          load(gridMetisData)
-          paste("Re-read set to 0. Usig saved data from .R data : ",gridMetisData, sep="")}
+      # if(file.exists(sqliteDBNamePath)){paste("Re-read set to 0. Use data saved in SQLite database : ",sqliteDBNamePath, sep="")}}else{
+      #   if(!file.exists(gridMetisData)){stop(paste("File gridMetisData not found: ",gridMetisData,sep=""))}else{
+      #     load(gridMetisData)
+      #     paste("Re-read set to 0. Usig saved data from .R data : ",gridMetisData, sep="")}
       }}
 
 
-  return(gridMetis)
+  print("About to return data for distributed electricity generation data")
+
+  return(dataBia)
 
 
 } # Close Function
