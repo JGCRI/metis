@@ -303,7 +303,8 @@ metis.bia<- function(biaInputsFolder = "NA",
 
             dataBia<-gridWRI%>%dplyr::filter(region %in% regionsSelect)%>%
               dplyr::select(gridlat, gridlon, gridID, class1, region, region_32_code, ctry_name, ctry_code, gridCellPercentage)%>%
-              left_join(dataFromGCAM, by = c("class1", "region"))
+              left_join(dataFromGCAM, by = c("class1", "region"))%>%
+              dplyr::mutate(valueDistrib = gridCellPercentage*value, origValueDistrib = gridCellPercentage*origValue)
 
 #
 #             gridWRI <- gridWRI%>%
