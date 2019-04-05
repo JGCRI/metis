@@ -96,18 +96,153 @@ XNew=tibble::tribble( # Initial processed demand
 );XNew
 
 
-io1<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg1"); io1$sol_Orig1
+io1<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg1"); io1$sol_Orig1; io1$A_Orig1; A0; D0
 io1p<-metis.io(A0=A0,D0=D0, ZPartial = ZPartial, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg1Partial"); io1$sol_Orig1
 
-io2<-metis.io(A0=A0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg2"); io2$sol_Orig1
-io3<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg3"); io3$sol_Orig1
-io4<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg4"); io4$sol_Orig1
+io2<-metis.io(A0=A0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg2"); io2$sol_Orig1; io2$A_Orig1; A0; X0
+io3<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg3"); io3$sol_Orig1; io3$A_Orig1; Z0;D0
+io4<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg4"); io4$sol_Orig1; io4$A_Orig1; Z0;X0
 #io5<-metis.io(X0=X0,Z0=Z0,ANew=ANew, DNew=DNew, XNew=XNew, ZNew=ZNew, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg"); io5$sol_Orig1
 
 io1$sol_Orig1;
 io2$sol_Orig1;
 io3$sol_Orig1;
 io4$sol_Orig1;
+
+
+#---------------------
+# Multi Scenario Examples
+#----------------------
+
+A0=tibble::tribble( # Initial Flows
+  ~sector ,    ~W,         ~E,    ~scenario,  ~subRegion,  ~year,
+  "W"     ,    0,           0.23,  "ScenA",   "SubRegA",  2010,
+  "E"     ,    0.13,          0,   "ScenA",   "SubRegA",  2010,
+  "W"     ,    0,           0.3,  "ScenB",   "SubRegA",  2010,
+  "E"     ,    0.2,          0,   "ScenB",   "SubRegA",  2010,
+  "W"     ,    0,           0.1,  "ScenA",   "SubRegB",  2010,
+  "E"     ,    0.05,          0,   "ScenA",   "SubRegB",  2010,
+  "W"     ,    0,           0.15,  "ScenB",   "SubRegB",  2010,
+  "E"     ,    0.25,          0,   "ScenB",   "SubRegB",  2010,
+  "W"     ,    0,           0.4,  "ScenA",   "SubRegA",  2015,
+  "E"     ,    0.1,          0,   "ScenA",   "SubRegA",  2015,
+  "W"     ,    0,           0.35,  "ScenB",   "SubRegA",  2015,
+  "E"     ,    0.25,          0,   "ScenB",   "SubRegA",  2015,
+  "W"     ,    0,           0.17,  "ScenA",   "SubRegB",  2015,
+  "E"     ,    0.15,          0,   "ScenA",   "SubRegB",  2015,
+  "W"     ,    0,           0.45,  "ScenB",   "SubRegB",  2015,
+  "E"     ,    0.03,          0,   "ScenB",   "SubRegB",  2015
+);A0
+
+
+Z0=tibble::tribble( # Initial Flows
+  ~sector ,    ~W,         ~E,    ~scenario,  ~subRegion,  ~year,
+  "W"     ,    0,           50,  "ScenA",   "SubRegA",  2010,
+  "E"     ,    13,          0,   "ScenA",   "SubRegA",  2010,
+  "W"     ,    0,           40,  "ScenB",   "SubRegA",  2010,
+  "E"     ,    20,          0,   "ScenB",   "SubRegA",  2010,
+  "W"     ,    0,           100,  "ScenA",   "SubRegB",  2010,
+  "E"     ,    5,           0,   "ScenA",   "SubRegB",  2010,
+  "W"     ,    0,           70,  "ScenB",   "SubRegB",  2010,
+  "E"     ,    25,          0,   "ScenB",   "SubRegB",  2010,
+  "W"     ,    0,           60,  "ScenA",   "SubRegA",  2015,
+  "E"     ,    10,          0,   "ScenA",   "SubRegA",  2015,
+  "W"     ,    0,           65,  "ScenB",   "SubRegA",  2015,
+  "E"     ,    25,          0,   "ScenB",   "SubRegA",  2015,
+  "W"     ,    0,           35,  "ScenA",   "SubRegB",  2015,
+  "E"     ,    20,          0,   "ScenA",   "SubRegB",  2015,
+  "W"     ,    0,           25,  "ScenB",   "SubRegB",  2015,
+  "E"     ,    10,          0,   "ScenB",   "SubRegB",  2015
+);Z0
+
+
+D0=tibble::tribble( # Initial total demand
+  ~sector, ~other, ~industry, ~domestic,  ~scenario,  ~subRegion,  ~year,
+  "W",    50,     25, 25,  "ScenA",   "SubRegA",  2010,
+  "E",    100,    50, 50, "ScenA",   "SubRegA",  2010,
+  "W",    20,     30, 35,  "ScenB",   "SubRegA",  2010,
+  "E",    10,     70, 70, "ScenB",   "SubRegA",  2010,
+  "W",    30,     30, 85,  "ScenA",   "SubRegB",  2010,
+  "E",    70,     25, 30, "ScenA",   "SubRegB",  2010,
+  "W",    55,     30, 45,  "ScenB",   "SubRegB",  2010,
+  "E",    50,     60, 60, "ScenB",   "SubRegB",  2010,
+  "W",    20,     45, 25,  "ScenA",   "SubRegA",  2015,
+  "E",    15,     50, 40, "ScenA",   "SubRegA",  2015,
+  "W",    55,     25, 65,  "ScenB",   "SubRegA",  2015,
+  "E",    75,     50, 80, "ScenB",   "SubRegA",  2015,
+  "W",    500,    25, 95,  "ScenA",   "SubRegB",  2015,
+  "E",    10,     50, 20, "ScenA",   "SubRegB",  2015,
+  "W",    55,     25, 45,  "ScenB",   "SubRegB",  2015,
+  "E",    110,    50, 60, "ScenB",   "SubRegB",  2015
+);D0
+
+Cap0=tibble::tribble( # Initial total demand
+  ~sector ,    ~cap,        ~scenario,  ~subRegion,  ~year,
+  "W"     ,    100,           "ScenA",   "SubRegA",  2010,
+  "E"     ,    130,          "ScenA",   "SubRegA",  2010,
+  "W"     ,    10,           "ScenB",   "SubRegA",  2010,
+  "E"     ,    200,          "ScenB",   "SubRegA",  2010,
+  "W"     ,    10,           "ScenA",   "SubRegB",  2010,
+  "E"     ,    150,           "ScenA",   "SubRegB",  2010,
+  "W"     ,    0,           "ScenB",   "SubRegB",  2010,
+  "E"     ,    250,          "ScenB",   "SubRegB",  2010,
+  "W"     ,    110,           "ScenA",   "SubRegA",  2015,
+  "E"     ,    110,          "ScenA",   "SubRegA",  2015,
+  "W"     ,    250,           "ScenB",   "SubRegA",  2015,
+  "E"     ,    250,          "ScenB",   "SubRegA",  2015,
+  "W"     ,    200,           "ScenA",   "SubRegB",  2015,
+  "E"     ,    2000,          "ScenA",   "SubRegB",  2015,
+  "W"     ,    1000,           "ScenB",   "SubRegB",  2015,
+  "E"     ,    100,          "ScenB",   "SubRegB",  2015
+);Cap0
+
+
+Import0=tibble::tribble( # Initial total demand
+  ~sector ,    ~import,        ~scenario,  ~subRegion,  ~year,
+  "W"     ,    10,           "ScenA",   "SubRegA",  2010,
+  "E"     ,    10,          "ScenA",   "SubRegA",  2010,
+  "W"     ,    0,           "ScenB",   "SubRegA",  2010,
+  "E"     ,    20,          "ScenB",   "SubRegA",  2010,
+  "W"     ,    0,           "ScenA",   "SubRegB",  2010,
+  "E"     ,    150,           "ScenA",   "SubRegB",  2010,
+  "W"     ,    0,           "ScenB",   "SubRegB",  2010,
+  "E"     ,    20,          "ScenB",   "SubRegB",  2010,
+  "W"     ,    0,           "ScenA",   "SubRegA",  2015,
+  "E"     ,    0,          "ScenA",   "SubRegA",  2015,
+  "W"     ,    20,           "ScenB",   "SubRegA",  2015,
+  "E"     ,    20,          "ScenB",   "SubRegA",  2015,
+  "W"     ,    20,           "ScenA",   "SubRegB",  2015,
+  "E"     ,    0,          "ScenA",   "SubRegB",  2015,
+  "W"     ,    10,           "ScenB",   "SubRegB",  2015,
+  "E"     ,    10,          "ScenB",   "SubRegB",  2015
+);Import0
+
+X0=tibble::tribble( # Initial total demand
+  ~sector ,    ~processed,        ~scenario,  ~subRegion,  ~year,
+  "W"     ,    1000,           "ScenA",   "SubRegA",  2010,
+  "E"     ,    130,          "ScenA",   "SubRegA",  2010,
+  "W"     ,    10,           "ScenB",   "SubRegA",  2010,
+  "E"     ,    200,          "ScenB",   "SubRegA",  2010,
+  "W"     ,    100,           "ScenA",   "SubRegB",  2010,
+  "E"     ,    150,           "ScenA",   "SubRegB",  2010,
+  "W"     ,    100,           "ScenB",   "SubRegB",  2010,
+  "E"     ,    20,          "ScenB",   "SubRegB",  2010,
+  "W"     ,    10,           "ScenA",   "SubRegA",  2015,
+  "E"     ,    110,          "ScenA",   "SubRegA",  2015,
+  "W"     ,    250,           "ScenB",   "SubRegA",  2015,
+  "E"     ,    250,          "ScenB",   "SubRegA",  2015,
+  "W"     ,    200,           "ScenA",   "SubRegB",  2015,
+  "E"     ,    200,          "ScenA",   "SubRegB",  2015,
+  "W"     ,    100,           "ScenB",   "SubRegB",  2015,
+  "E"     ,    10,          "ScenB",   "SubRegB",  2015
+);X0
+
+
+io0<-metis.io(A0=A0,D0=D0, Cap0=Cap0, nameAppend = "_multiEg0"); io0$sol_Orig1;
+io1<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg1"); io1$sol_Orig1; io1$A_Orig1; A0; D0
+io2<-metis.io(A0=A0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg2"); io2$sol_Orig1%>%as.data.frame; io2$A_Orig1; A0; X0
+io3<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg3"); io3$sol_Orig1; io3$A_Orig1; Z0;D0
+io4<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg4"); io4$sol_Orig1; io4$A_Orig1; Z0;X0
 
 
 #--------------------------------
