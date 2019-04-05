@@ -116,7 +116,7 @@ NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
     GCMRCP->capacity_gw->capacity_mw->cf1971to2100->class1->data_source->datax->est_installed_capacity->
     estimated_generation_gwh->gcamCapacityFactor->generation_gwh_2013->generation_gwh_2014->
     generation_gwh_2015->generation_gwh_2016->
-    owner->region->regionsSelect->rowid->scenarioTethys->scenarioXanthos->country_long->gppd_idnr
+    owner->region->regionsSelect->rowid->scenarioTethys->scenarioXanthos->country_long->gppd_idnr->ctry_name
 
 
 #------------------
