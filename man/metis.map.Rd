@@ -18,8 +18,8 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   printFig = T, fileName = "map", dirOutputs = paste(getwd(),
   "/outputs", sep = ""), facetFreeScale = F, facetRows = NA,
   facetCols = 3, facetBGColor = "grey30", facetLabelColor = "white",
-  facetLabelSize = 1.5, alpha = 1, fillcolorNA = "grey30",
-  fillshowNA = NA, fillcolorNULL = "grey30", facetsON = T,
+  facetLabelSize = 1.5, alpha = 1, fillcolorNA = "white",
+  fillshowNA = FALSE, fillcolorNULL = "white", facetsON = T,
   panelLabel = NULL, multiFacetRows = NULL, multiFacetCols = NULL,
   mapTitle = NULL, mapTitleSize = 1)
 }

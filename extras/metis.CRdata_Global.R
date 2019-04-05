@@ -76,9 +76,12 @@ head(ChinaGCAMBasin@data)
 #-----------
 # Mapping
 #-------------
-
+library(tidyr)
 #exampleGridTable<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+# This is the Production file
+examplePolygonTable<-paste(getwd(),"/dataFiles/gcam/GlobalAgProduction.csv",sep="")
 examplePolygonTable<-paste(getwd(),"/dataFiles/gcam/GlobalAgProd.csv",sep="")
+
 a<-read.csv(examplePolygonTable,header=T);
 head(a);
 unique(a$scenario)
@@ -90,13 +93,26 @@ x<-GCAMBasins@data
 #a1<-a[1:235,]
 a1 <- left_join(a,x, by = c("subRegion" = "basin_name")) %>% mutate(param="param"); head(a1)
 
-scaleRange_i=data.frame(param=c("param"),
-                        maxScale=c(1),
-                        minScale=c(0))
+a1 %>%
+  spread(class,value) %>%
+  gather(class, value, -scenario, -region, -subRegion, -units, -x, -subRegType, -classPalette, -gridcode, -basin_id, -param) %>%
+  mutate(units = "Agricultural Productivity (Mt/thous km2)") -> a2
 
-metis.mapProcess(polygonDataTables=a1,
+  a2 %>%
+    mutate(value = replace_na(value, 0)) -> a3
+
+head(a3)
+
+#Optionally fix scalerange to subdivide legend and data to conform across maps or to allow metis default process
+#scaleRange_i=data.frame(param=c("param"),
+#                        maxScale=c(2.00),
+#                        minScale=c(-3.50))
+
+scaleRange_i = NULL
+
+metis.mapProcess(polygonDataTables=a3,
                  #gridDataTables=exampleGridTable,
-                 xRange="All",
+                 xRange=c("2030", "2050", "2100"),
                  boundaryRegionsSelect="Global",
                  subRegShape=GCAMBasins,
                  #subRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_China",sep=""),
@@ -104,16 +120,19 @@ metis.mapProcess(polygonDataTables=a1,
                  subRegCol="basin_name",
                  subRegType="subBasin",
                  nameAppend="_test",
-                 legendPosition=c("RIGHT","top"),
+                 legendPosition=c("LEFT","top"),
                  scaleRange = scaleRange_i,
                  animateOn=T,
                  delay=100,
-                 scenRef="SSP2_Ref"
+                 scenRef="SSP2_Ref",
+                # indvScenarios = c("SSP2_Ref", "SSP2_CI_AgWat", "SSP2_ipsl_epic", "Diff_PRCNT_SSP2_CI_AgWat_SSP2_Ref", "Diff_PRCNT_SSP2_ipsl_epic_SSP2_Ref", "Diff_ABS_SSP2_CI_AgWat_SSP2_Ref", "Diff_ABS_SSP2_ipsl_epic_SSP2_Ref"),
+                 indvScenarios = c("Diff_ABS_SSP2_CI_AgWat_SSP2_Ref", "Diff_ABS_SSP2_ipsl_epic_SSP2_Ref"),
+                 legendFixedBreaks = 9
 )
 
-# polygonDataTables=a2
+# polygonDataTables=a3
 # #gridDataTables=exampleGridTable
-# xRange=c(2100)
+# xRange=c("2030", "2100")
 # boundaryRegionsSelect="Global"
 # subRegShape=GCAMBasins
 # #subRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_China",sep="")
@@ -121,11 +140,32 @@ metis.mapProcess(polygonDataTables=a1,
 # subRegCol="basin_name"
 # subRegType="subBasin"
 # nameAppend="_test"
-# legendPosition=c("RIGHT","top")
+# legendPosition=c("LEFT","top")
+# scaleRange = scaleRange_i
 # animateOn=T
-# delay=100#
-# #scenRef="SSP2_Ref"
+# delay=100
+# scenRef="SSP2_Ref"
+# indvScenarios = c("Diff_ABS_SSP2_ipsl_epic_SSP2_Ref")
+# legendFixedBreaks = 11
 
+polygonDataTables=a3
+#gridDataTables=exampleGridTable,
+xRange=c("2030", "2050", "2100")
+boundaryRegionsSelect="Global"
+subRegShape=GCAMBasins
+#subRegShpFolder=paste(getwd(),"/dataFiles/gis/admin_China",sep=""),
+#subRegShpFile=paste("ChinaGCAMBasin",sep=""),
+subRegCol="basin_name"
+subRegType="subBasin"
+nameAppend="_test"
+legendPosition=c("LEFT","top")
+scaleRange = scaleRange_i
+animateOn=T
+delay=100
+scenRef="SSP2_Ref"
+# indvScenarios = c("SSP2_Ref", "SSP2_CI_AgWat", "SSP2_ipsl_epic", "Diff_PRCNT_SSP2_CI_AgWat_SSP2_Ref", "Diff_PRCNT_SSP2_ipsl_epic_SSP2_Ref", "Diff_ABS_SSP2_CI_AgWat_SSP2_Ref", "Diff_ABS_SSP2_ipsl_epic_SSP2_Ref"),
+indvScenarios = c("Diff_ABS_SSP2_ipsl_epic_SSP2_Ref","Diff_ABS_SSP2_CI_AgWat_SSP2_Ref")
+legendFixedBreaks = 11
 
 # to add outside of map
 # extension=T,

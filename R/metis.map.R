@@ -102,9 +102,9 @@ metis.map<-function(dataPolygon=NULL,
                   facetLabelColor = "white",
                   facetLabelSize=1.5,
                   alpha=1,
-                  fillcolorNA="grey30",
-                  fillshowNA=NA,
-                  fillcolorNULL="grey30",
+                  fillcolorNA="white",
+                  fillshowNA=FALSE,
+                  fillcolorNULL="white",
                   facetsON=T,
                   panelLabel=NULL,
                   multiFacetRows=NULL,
@@ -134,7 +134,7 @@ metis.map<-function(dataPolygon=NULL,
   # figHeight=7
   # legendWidth=-1
   # legendShow=F
-  # legendOutside=T
+  # legendOutside=F
   # legendTextSize=1
   # legendTitleSize=2
   # legendOutsidePosition=NULL
@@ -157,12 +157,15 @@ metis.map<-function(dataPolygon=NULL,
   # facetLabelColor = "white"
   # facetLabelSize=1.5
   # alpha=1
-  # fillcolorNA=NULL
+  # fillcolorNA="white"
+  # fillshowNA=NA
+  # fillcolorNULL="white"
   # facetsON=T
   # panelLabel=NULL
   # multiFacetRows=NULL
   # multiFacetCols=NULL
-  # fillshowNA=NA
+  # mapTitle=NULL
+  # mapTitleSize=1
 
 #------------------
 # Initialize variables to remove binding errors if needed
@@ -327,12 +330,12 @@ if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
               legend.outside=legendOutside,
               legend.title.size = legendTitleSize,
               legend.text.size = legendTextSize)+
-    tmap::tm_layout(frame = frameShow,bg.color=bgColor)+
-    tmap::tm_layout(main.title.position="left",main.title.size=1.5,
-              inner.margins = rep(0,4),outer.margins=rep(0.01,4)) +
+    tmap::tm_layout(frame = frameShow,bg.color=bgColor) +
     tmap::tm_layout(panel.label.bg.color = facetBGColor,
                     panel.label.color = facetLabelColor,
-                    panel.label.size = facetLabelSize)
+                    panel.label.size = facetLabelSize) +
+    tmap::tm_layout(main.title.position="left",main.title.size=1.5,
+                    inner.margins = rep(0,4),outer.margins=rep(0.01,4))
 
   if(!is.null(multiFacetRows) | !is.null(multiFacetCols)){map<-map+tmap::tm_layout(asp=1)}else{
     map<-map+tmap::tm_layout(asp=NA)

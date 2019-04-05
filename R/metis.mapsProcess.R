@@ -167,9 +167,11 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # figHeight=7
   # scaleRange=NULL
   # paramsSelect="All"
-  # indvScenarios=T
-  # GCMRCPSSPPol=T
-  # legendOutsideMulti=NULL
+  # indvScenarios=NULL
+  # GCMRCPSSPPol=F
+  # multiFacetCols="scenarioRCP"
+  # multiFacetRows="scenarioGCM"
+  # legendOutsideMulti=T
   # legendPositionMulti=NULL
   # legendTitleSizeMulti=NULL
   # legendTextSizeAnim=NULL
@@ -207,6 +209,10 @@ metis.mapProcess<-function(polygonDataTables=NULL,
     if(!"region"%in%names(data)){data<-data%>%dplyr::mutate(region="region")}
     if(!"classPalette"%in%names(data)){data<-data%>%dplyr::mutate(classPalette="pal_hot")}
     if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}
+    if(!"scenarioGCM"%in%names(data)){data<-data%>%dplyr::mutate(scenarioGCM="scenarioGCM")}
+    if(!"scenarioRCP"%in%names(data)){data<-data%>%dplyr::mutate(scenarioRCP="scenarioRCP")}
+    if(!"scenarioSSP"%in%names(data)){data<-data%>%dplyr::mutate(scenarioSSP="scenarioSSP")}
+    if(!"scenarioPolicy)"%in%names(data)){data<-data%>%dplyr::mutate(scenarioPolicy="scenarioPolicy")}
     return(data)
   }
 
@@ -242,9 +248,10 @@ metis.mapProcess<-function(polygonDataTables=NULL,
           gridTbl<-gridTbl%>%dplyr::left_join(map,by=c("param","units","class"))
         }}
 
-      # Add missing columns
-      gridTbl<-addMissing(gridTbl)
     }else{gridTbl<-gridDataTables}
+
+    # Add missing columns
+    gridTbl<-addMissing(gridTbl)
 
     if(!"subRegType" %in% names(gridTbl)){
       print(paste("'subRegType' column not present in grid data provided. Creating class column 'subRegType'",sep=""))
@@ -303,10 +310,10 @@ metis.mapProcess<-function(polygonDataTables=NULL,
         } else {stop(paste(i," does not exist"))}
       }
 
-
-      # Add missing columns
-      shapeTbl<-addMissing(shapeTbl)
     }else{shapeTbl<-polygonDataTables}}
+
+  # Add missing columns
+  shapeTbl<-addMissing(shapeTbl)
 
   if(nrow(shapeTbl)>0){
     if(!"class" %in% names(shapeTbl)){
@@ -589,7 +596,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
       for (scenario_i in unique(gridTbl$scenario)[unique(gridTbl$scenario)!=scenRef_i]){
         tbl_temp1 <-gridTblDiff%>%
           dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBl")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(gridTbl$scenario))))
         tbl_temp1<-tbl_temp1%>%
           tidyr::gather(key=scenario,value=value,
@@ -598,7 +605,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
         tbl_temp2 <-gridTblDiff%>%
           dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBl")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(gridTbl$scenario))))
         tbl_temp2<-tbl_temp2%>%
           tidyr::gather(key=scenario,value=value,
@@ -649,14 +656,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
       shapeTblDiff<-shapeTbl%>%
         dplyr::select(-scenarioGCM,-scenarioRCP,-scenarioSSP,-scenarioPolicy)%>%
-        tibble::rowid_to_column()%>%
-        tidyr::spread(scenario,value)%>%
-        dplyr::select(-rowid)
+        #tibble::rowid_to_column()%>%
+        tidyr::spread(scenario,value)
+        #dplyr::select(-rowid)
 
       for (scenario_i in unique(shapeTbl$scenario)[unique(shapeTbl$scenario)!=scenRef_i]){
         tbl_temp1 <-shapeTblDiff%>%
           dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBl")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(shapeTbl$scenario))))
         tbl_temp1<-tbl_temp1%>%
           tidyr::gather(key=scenario,value=value,
@@ -665,7 +672,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
         tbl_temp2 <-shapeTblDiff%>%
           dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBl")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(shapeTbl$scenario))))
         tbl_temp2<-tbl_temp2%>%
           tidyr::gather(key=scenario,value=value,
@@ -875,7 +882,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
             print(paste("Running for selected indvScenarios: ", paste(indvScenarios,collapse=", "),sep=""))
             scenarios <- unique((shapeTbl%>%dplyr::filter(scenario %in% indvScenarios))$scenario)
           } else {if(!all(indvScenarios %in% unique(shapeTbl$scenario))){
-            print(paste("Running for indvScenarios: ", paste(indvScenarios,collapse=", "), "available in unique shapeTbl scenarios : ",
+            print(paste("Running for indvScenarios: ", paste(indvScenarios,collapse=", "), " available in unique shapeTbl scenarios : ",
                         paste(indvScenarios[indvScenarios %in% unique(shapeTbl$scenario)],collapse=", "),sep=""))
             scenarios <- unique((shapeTbl%>%dplyr::filter(scenario %in% indvScenarios[indvScenarios %in% unique(shapeTbl$scenario)]))$scenario)
           }
@@ -924,8 +931,16 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
           if(nrow(gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i))>0){
             animScaleGrid<-(gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i))$value
+            if(!is.null(scaleRange)){
+              if(max(animScaleGrid) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
+                animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)}
+              if(min(animScaleGrid) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
+                animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$minScale)}
+            }
             animPrettyBreaksGrid<-scales::pretty_breaks(n=legendFixedBreaks)(animScaleGrid)
-            animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,centers=legendFixedBreaks))$centers[,1]))
+            animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,centers=(legendFixedBreaks-2)))$centers[,1]))
+            animKmeanBreaksGrid <- sort(c(min(animScaleGrid),animKmeanBreaksGrid,max(animScaleGrid)))
+
 
             if((max(range(animScaleGrid))-min(range(animScaleGrid)))<1E-10 &
                (max(range(animScaleGrid))-min(range(animScaleGrid)))>-1E-10){animScaleGridRange=min(animScaleGrid)}else{
@@ -1365,8 +1380,16 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                                                 scenarioPolicy==policy_i,param==param_i,class==class_i)
 
                     animScalePoly<-(shapeTblMultx)$value
+                    if(!is.null(scaleRange)){
+                      if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
+                        animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)}
+                      if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
+                        animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)}
+                    }
                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
-                    animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,centers=legendFixedBreaks))$centers[,1]))
+                    animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,centers=(legendFixedBreaks-2)))$centers[,1]))
+                    animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly,max(animScalePoly)))
+
 
                     if((max(range(animScalePoly))-min(range(animScalePoly)))<1E-10 &
                        (max(range(animScalePoly))-min(range(animScalePoly)))>-1E-10){animScalePolyRange=min(animScalePoly)}else{
@@ -1723,8 +1746,16 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     # Plot For Each Year Diff
 
                     animScalePoly<-shapeTblMultxDiff$valueDiff
+                    if(!is.null(scaleRange)){
+                      if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
+                        animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)}
+                      if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
+                        animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)}
+                    }
                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
-                    animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,centers=legendFixedBreaks))$centers[,1]))
+                    animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,centers=(legendFixedBreaks-2)))$centers[,1]))
+                    animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly,max(animScalePoly)))
+
 
                     if((max(range(animScalePoly))-min(range(animScalePoly)))<1E-10 &
                        (max(range(animScalePoly))-min(range(animScalePoly)))>-1E-10){animScalePolyRange=min(animScalePoly)}else{
@@ -1743,7 +1774,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
                       if(any(unique(datax$classPalette) %in% c("pal_wet","pal_hot","pal_green"))){
                         datax <- datax %>% dplyr:: mutate(classPalette = dplyr::case_when(classPalette=="pal_wet"~"pal_div_wet",
-                                                                                          classPalette=="pal_hot"~"pal_div_BlRd",
+                                                                                          classPalette=="pal_hot"~"pal_div_RdBl",
                                                                                           classPalette=="pal_green"~"pal_div_BrGn",
                                                                                           TRUE~classPalette))
                       }
@@ -1923,7 +1954,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
     if(!is.null(indvScenarios)){
 
-      if(indvScenarios=="All"){
+      if(any(indvScenarios=="All")){
         print(paste("indvScenarios set to 'All', running for all scenarios.",sep=""))
         scenarios <- unique(shapeTbl$scenario)} else {
 
@@ -1945,8 +1976,15 @@ metis.mapProcess<-function(polygonDataTables=NULL,
             if(nrow(shapeTbl%>%dplyr::filter(subRegType==subRegType_i,scenario==scenario_i,param==param_i))>0){
 
               animScalePoly<-(shapeTbl%>%dplyr::filter(subRegType==subRegType_i,scenario==scenario_i,param==param_i))$value
+             if(!is.null(scaleRange)){
+               if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
+                animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)}
+              if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
+                animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)}
+             }
               animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
-              animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,centers=legendFixedBreaks))$centers[,1]))
+              animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,centers=(legendFixedBreaks-2)))$centers[,1]))
+              animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly,max(animScalePoly)))
 
               if((max(range(animScalePoly))-min(range(animScalePoly)))<1E-10 &
                  (max(range(animScalePoly))-min(range(animScalePoly)))>-1E-10){animScalePolyRange=min(animScalePoly)}else{
@@ -2030,6 +2068,33 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
 
 
+                  # panelLabel=panelLabelAnimated
+                  # underLayer=underLayer
+                  # dataPolygon=mapx
+                  # fillColumn = names(mapx@data%>%dplyr::select(-subRegion))
+                  # legendShow = T
+                  # legendOutside = legendOutsideAnimated
+                  # facetFreeScale = F
+                  # frameShow = T
+                  # labels=labels
+                  # labelsSize = labelsSize
+                  # legendTitleSize = legendTitleSizeAnim
+                  # legendTextSize = legendTextSizeAnim
+                  # legendTitle =legendTitleAnimated
+                  # legendStyle=legendStyleAnim
+                  # legendBreaks = animKmeanBreaksPoly
+                  # legendFixedBreaks=legendFixedBreaks
+                  # legendDigits = animLegendDigits
+                  # legendOutsidePosition = legendOutsidePosition
+                  # legendPosition = legendAnimatedPosition
+                  # fillPalette = fillPalette
+                  # bgColor = bgColorChosen
+                  # figWidth=figWidth
+                  # figHeight=figHeight
+                  # fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
+                  # dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = "")
+
+
                   if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
                     legendBreaksAnim = animPrettyBreaksPoly
                     legendStyleAnim="fixed"}else{
@@ -2060,6 +2125,32 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             figHeight=figHeight,
                             fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
                             dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
+
+                  # panelLabel=panelLabelAnimated
+                  # underLayer=underLayer
+                  # dataPolygon=mapx
+                  # fillColumn = names(mapx@data%>%dplyr::select(-subRegion))
+                  # legendShow = T
+                  # legendOutside = legendOutsideAnimated
+                  # facetFreeScale = F
+                  # frameShow = T
+                  # labels=labels
+                  # labelsSize = labelsSize
+                  # legendTitle =legendTitleAnimated
+                  # legendTitleSize = legendTitleSizeAnim
+                  # legendTextSize = legendTextSizeAnim
+                  # legendStyle=legendStyleAnim
+                  # legendBreaks = animPrettyBreaksPoly
+                  # legendFixedBreaks=legendFixedBreaks
+                  # legendDigits = animLegendDigits
+                  # legendOutsidePosition = legendOutsidePosition
+                  # legendPosition = legendAnimatedPosition
+                  # fillPalette = fillPalette
+                  # bgColor = bgColorChosen
+                  # figWidth=figWidth
+                  # figHeight=figHeight
+                  # fileName = paste("map_",boundaryRegionsSelect,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep="")
+                  # dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/",subRegion_i,"/", scenario_i,"/byYear",sep = "")
 
                   if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
                     legendOutsideAnimated=legendOutsideSingle
