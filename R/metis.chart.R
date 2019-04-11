@@ -146,7 +146,7 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
       names(paletteX)<-tools::toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",names(paletteX)))
       paletteX <- paletteX[rev(order(names(paletteX)))]}
     l1[[class]]<-tools::toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",l1[[class]]))
-    l1<-l1%>%arrange(!! rlang::sym(class))
+    l1<-l1%>%dplyr::arrange(!! rlang::sym(class))
   }
 
   p <- ggplot(l1,aes(x=get(xData),y=get(yData),group=get(group))) +

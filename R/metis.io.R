@@ -353,9 +353,9 @@ if(T){
    if(!is.null(Import0)){
    D0imp <- D0 %>%
      dplyr::left_join(Import0) %>%
-     dplyr::mutate(miscAdjust = case_when((otherTotal-import)<0~miscAdjust+(import-otherTotal),
+     dplyr::mutate(miscAdjust = dplyr::case_when((otherTotal-import)<0~miscAdjust+(import-otherTotal),
                                           TRUE~miscAdjust),
-                   otherTotal = case_when((otherTotal-import)<0~otherTotal+(import-otherTotal),
+                   otherTotal = dplyr::case_when((otherTotal-import)<0~otherTotal+(import-otherTotal),
                                           TRUE~otherTotal),
                    localTotal = otherTotal - import) %>%
      dplyr::select(-import)
@@ -482,9 +482,9 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
           solTbl <- Z %>%
             dplyr::left_join(Zi %>% dplyr::select(sector,nexusTotali)) %>%
             dplyr::left_join(X) %>%
-            dplyr::mutate(import = case_when(import>(nexusTotali-nexusTotal)~import - (nexusTotali-nexusTotal),
+            dplyr::mutate(import = dplyr::case_when(import>(nexusTotali-nexusTotal)~import - (nexusTotali-nexusTotal),
                                              TRUE~import),
-                          processed = case_when(import<(nexusTotali-nexusTotal)~ processed - (nexusTotali-nexusTotal),
+                          processed = dplyr::case_when(import<(nexusTotali-nexusTotal)~ processed - (nexusTotali-nexusTotal),
                                                 TRUE~processed),
                           surplus = cap-processed,
                           otherTotal = processed - nexusTotal + import,
@@ -532,9 +532,9 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
         solTbl <- Z %>%
           dplyr::select(c("sector",Z$sector,"nexusTotal")) %>%
           dplyr::left_join(X) %>%
-          dplyr::mutate(otherTotal = case_when((processed + import)>nexusTotal~(processed + import - nexusTotal),
+          dplyr::mutate(otherTotal = dplyr::case_when((processed + import)>nexusTotal~(processed + import - nexusTotal),
                                                TRUE~0),
-                        import = case_when((processed + import)<nexusTotal~(nexusTotal-(processed + import)),
+                        import = dplyr::case_when((processed + import)<nexusTotal~(nexusTotal-(processed + import)),
                                            TRUE~import),
                         totalDemands = otherTotal + nexusTotal); solTbl %>% as.data.frame
 
@@ -592,9 +592,9 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
       solTbl <- Z %>%
         dplyr::select(c("sector",Z$sector,"nexusTotal")) %>%
         dplyr::left_join(X) %>%
-        dplyr::mutate(otherTotal = case_when((processed + import)>nexusTotal~(processed + import - nexusTotal),
+        dplyr::mutate(otherTotal = dplyr::case_when((processed + import)>nexusTotal~(processed + import - nexusTotal),
                                              TRUE~0),
-                      import = case_when((processed + import)<nexusTotal~(nexusTotal-(processed + import)),
+                      import = dplyr::case_when((processed + import)<nexusTotal~(nexusTotal-(processed + import)),
                                          TRUE~import),
                       totalDemands = processed + import); solTbl %>% as.data.frame
 
@@ -985,6 +985,7 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
   sol<-sol_list$ioTblImports_Orig1 %>%
     dplyr::filter(scenario==scenario_i)
 
+
   df_Mn<-sol %>%
     #dplyr::select (-processed,processed) %>% # to place processed last for following function
     dplyr::mutate_at(vars(-c("sector",addedColumns[addedColumns %in% names(sol)])),dplyr::funs(./totalDemands)); df_Mn
@@ -995,26 +996,45 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
     dplyr::arrange(sectorFrom)  %>%
     dplyr::filter(!is.nan(value),value!=0, !is.na(value));solx
 
+
   df_Mnx <- df_Mn %>%
     tidyr::gather(-c("sector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
     dplyr::rename (sectorFrom=sector) %>%
     dplyr::arrange(sectorFrom) %>%
     dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)); df_Mnx
 
+  sectorFromOrder <- NULL
+  sectorFromOrder_local <- sort(unique(df_Mnx$sectorFrom)[!grepl("import_",unique(df_Mnx$sectorFrom))]); sectorFromOrder_local
+  sectorFromOrder_import <- sort(unique(df_Mnx$sectorFrom)[grepl("import_",unique(df_Mnx$sectorFrom))]); sectorFromOrder_import
+  for(i in (1:max(length(sectorFromOrder_local),length(sectorFromOrder_import)))) {
+    if(length(sectorFromOrder_local)>=i){sectorFromOrder <- c(sectorFromOrder,sectorFromOrder_local[i])}
+    if(length(sectorFromOrder_import)>=i){sectorFromOrder <- c(sectorFromOrder,sectorFromOrder_import[i])}
+  }; sectorFromOrder
+
+  sectorToOrder <-
+    c(sort(unique(df_Mnx$sectorTo)[unique(df_Mnx$sectorTo) %in% sectorFromOrder]),
+      sort(unique(df_Mnx$sectorTo)[!unique(c(df_Mnx$sectorTo)) %in% c(sectorFromOrder,"otherTotal","totalDemands")]),
+      unique(df_Mnx$sectorTo)[unique(c(df_Mnx$sectorTo)) %in% c("otherTotal","totalDemands")]
+    ); sectorToOrder
+
+
   # ioTable normalized bubbles
 
   fname = paste(scenario_i,"_solOrig1_flowTbl_norm_bubble",nameAppend,sep="")
   ga <- ggplot(df_Mnx, aes(y = sectorFrom, x = sectorTo)) +
     theme_bw() +
-    labs(subtitle="test",
-         title=fname) +
+    labs(title=fname) +
     geom_point(data=df_Mnx%>%dplyr::filter(sectorTo!="totalDemands"),aes(col=value, size=value)) +
     scale_color_gradient(low = "white", high = "indianred1", guide="none") +
-    geom_text(aes(label=round(value,2)),col="black") +
+    geom_text(aes(label=round(value,2)),col="black", size=5) +
     coord_fixed(ratio = 1) +
-    scale_x_discrete(limits = c(unique(c(df_Mnx$sectorTo))[!unique(c(df_Mnx$sectorTo)) %in% c("otherTotal","totalDemands")],"otherTotal","totalDemands"), expand = c(0.1,0.1)) +
+    scale_x_discrete(limits = sectorToOrder, expand = c(0.1,0.1)) +
+    scale_y_discrete(limits = rev(sectorFromOrder), expand = c(0.1,0.1)) +
     scale_size_continuous(range = c(1,20), guide="none") +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1))+
+    theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
+          axis.text.y = element_text(size = 15),
+          strip.text  = element_text(size = 15),
+          axis.title = element_text(size = 15))+
     facet_grid(x~subRegion); ga
 
   printf(figure=ga,fileName = fname, dir=dir)
@@ -1025,16 +1045,19 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
   fname = paste(scenario_i,"_solOrig1_flowTbl_abs_bubble",nameAppend,sep="")
   ga <- ggplot(solx, aes(y = sectorFrom, x = sectorTo)) +
     theme_bw() +
-    labs(subtitle="test",
-         title=fname) +
+    labs(title=fname) +
     geom_point(data=df_Mnx%>%dplyr::filter(sectorTo!="totalDemands"),aes(col=value, size=value)) +
     scale_color_gradient(low = "white", high = "indianred1", guide="none") +
-    geom_text(data=solx,aes(label=round(value,2)),col="black") +
+    geom_text(aes(label=round(value,2)),col="black", size=5) +
     coord_fixed(ratio = 1) +
-    scale_x_discrete(limits = c(unique(c(solx$sectorTo))[!unique(c(solx$sectorTo)) %in% c("otherTotal","totalDemands")],"otherTotal","totalDemands"), expand = c(0.1,0.1)) +
-    scale_size_continuous(range = c(1,20), guide='none') +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-    facet_grid(x~subRegion) ; ga
+    scale_x_discrete(limits = sectorToOrder, expand = c(0.1,0.1)) +
+    scale_y_discrete(limits = rev(sectorFromOrder), expand = c(0.1,0.1)) +
+    scale_size_continuous(range = c(1,20), guide="none") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
+          axis.text.y = element_text(size = 15),
+          strip.text  = element_text(size = 15),
+          axis.title = element_text(size = 15))+
+    facet_grid(x~subRegion); ga
 
   printf(figure=ga,fileName = fname, dir=dir)
 
@@ -1060,16 +1083,32 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
     unique() %>%
     dplyr::arrange(sectorFrom); dfx
 
+  sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx$sectorFrom)]; sectorFromOrderSankey
+  sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx$sectorTo)]; sectorToOrderSankey
+
+  dfx$sectorFrom <- factor( as.character(dfx$sectorFrom), levels=sectorFromOrderSankey )
+  dfx$sectorTo <- factor( as.character(dfx$sectorTo), levels=sectorToOrderSankey )
+
+  if(all(unique(dfx$sectorFrom) %in% names(metis.colors()$pal_sankey))){
+    fillcolors = metis.colors()$pal_sankey} else {
+      fillcolors = metis.colors()$pal_Basic
+    }; fillcolors
+
   fname = paste(scenario_i,"_solOrig1_sankey_abs_DisAggDemands",nameAppend,sep="")
   g<-ggplot(as.data.frame(dfx%>%dplyr::filter(value!=0)),
             aes(y = value, axis1 = sectorFrom, axis2 = sectorTo, group=subRegion)) +
     theme_bw() +
-    ggalluvial::geom_alluvium(aes(fill = sectorFrom), width = 1/12, color="black") +
+    ggalluvial::geom_alluvium(aes(fill = sectorFrom), width = 1/12, color="black", alpha=0.6) +
     ggalluvial::geom_stratum(width = 1/12, fill = "grey30", color = "grey", alpha=1) +
     geom_label(stat = "stratum", label.strata = TRUE) +
     scale_x_discrete(limits = c("From", "To"), expand = c(.05, .05)) +
-    scale_fill_brewer(type = "qual", palette = "Set1") +
+    #scale_fill_brewer(type = "qual", palette = "Set1", name="From") +
+    scale_fill_manual(values=fillcolors, name="From") +
     facet_grid(x~subRegion) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
+          axis.text.y = element_text(size = 15),
+          strip.text  = element_text(size = 15),
+          axis.title = element_text(size = 15))+
     ggtitle(fname);g
 
 
@@ -1089,16 +1128,32 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
     unique() %>%
     dplyr::arrange(sectorFrom); dfx
 
+  sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx$sectorFrom)]; sectorFromOrderSankey
+  sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx$sectorTo)]; sectorToOrderSankey
+
+  dfx$sectorFrom <- factor( as.character(dfx$sectorFrom), levels=sectorFromOrderSankey )
+  dfx$sectorTo <- factor( as.character(dfx$sectorTo), levels=sectorToOrderSankey )
+
+  if(all(unique(dfx$sectorFrom) %in% names(metis.colors()$pal_sankey))){
+    fillcolors = metis.colors()$pal_sankey} else {
+      fillcolors = metis.colors()$pal_Basic
+    }; fillcolors
+
   fname = paste(scenario_i,"_solOrig1_sankey_abs_AggDemands",nameAppend,sep="")
   g<-ggplot(as.data.frame(dfx%>%dplyr::filter(value!=0)),
             aes(y = value, axis1 = sectorFrom, axis2 = sectorTo, group=subRegion)) +
     theme_bw() +
-    ggalluvial::geom_alluvium(aes(fill = sectorFrom), width = 1/12, color="black") +
+    ggalluvial::geom_alluvium(aes(fill = sectorFrom), width = 1/12, color="black", alpha=0.6) +
     ggalluvial::geom_stratum(width = 1/12, fill = "grey30", color = "grey", alpha=1) +
     geom_label(stat = "stratum", label.strata = TRUE) +
     scale_x_discrete(limits = c("From", "To"), expand = c(.05, .05)) +
-    scale_fill_brewer(type = "qual", palette = "Set1") +
+    #scale_fill_brewer(type = "qual", palette = "Set1", name="From") +
+    scale_fill_manual(values=fillcolors, name="From") +
     facet_grid(x~subRegion) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
+          axis.text.y = element_text(size = 15),
+          strip.text  = element_text(size = 15),
+          axis.title = element_text(size = 15))+
     ggtitle(fname);g
 
 
@@ -1133,20 +1188,38 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
       dplyr::arrange(sectorFrom) %>%
       dplyr::filter(!is.nan(value),value!=0, !is.na(value)); df_Mnx
 
+    sectorFromOrder <- NULL
+    sectorFromOrder_local <- sort(unique(df_Mnx$sectorFrom)[!grepl("import_",unique(df_Mnx$sectorFrom))]); sectorFromOrder_local
+    sectorFromOrder_import <- sort(unique(df_Mnx$sectorFrom)[grepl("import_",unique(df_Mnx$sectorFrom))]); sectorFromOrder_import
+    for(i in (1:max(length(sectorFromOrder_local),length(sectorFromOrder_import)))) {
+      if(length(sectorFromOrder_local)>=i){sectorFromOrder <- c(sectorFromOrder,sectorFromOrder_local[i])}
+      if(length(sectorFromOrder_import)>=i){sectorFromOrder <- c(sectorFromOrder,sectorFromOrder_import[i])}
+    }; sectorFromOrder
+
+    sectorToOrder <-
+      c(sort(unique(df_Mnx$sectorTo)[unique(df_Mnx$sectorTo) %in% sectorFromOrder]),
+        sort(unique(df_Mnx$sectorTo)[!unique(c(df_Mnx$sectorTo)) %in% c(sectorFromOrder,"otherTotal","totalDemands")]),
+        unique(df_Mnx$sectorTo)[unique(c(df_Mnx$sectorTo)) %in% c("otherTotal","totalDemands")]
+      ); sectorToOrder
+
+
     # ioTable normalized bubbles
 
     fname = paste(scenario_i,"_solCalibrated1_flowTbl_norm_bubble",nameAppend,sep="")
     ga <- ggplot(df_Mnx, aes(y = sectorFrom, x = sectorTo)) +
-      labs(subtitle="test",
-           title=fname) +
       theme_bw() +
+      labs(title=fname) +
       geom_point(data=df_Mnx%>%dplyr::filter(sectorTo!="totalDemands"),aes(col=value, size=value)) +
       scale_color_gradient(low = "white", high = "indianred1", guide="none") +
-      geom_text(aes(label=round(value,2)),col="black") +
+      geom_text(aes(label=round(value,2)),col="black", size=5) +
       coord_fixed(ratio = 1) +
-      scale_x_discrete(limits = c(unique(c(df_Mnx$sectorTo))[!unique(c(df_Mnx$sectorTo)) %in% c("otherTotal","totalDemands")],"otherTotal","totalDemands"), expand = c(0.1,0.1)) +
+      scale_x_discrete(limits = sectorToOrder, expand = c(0.1,0.1)) +
+      scale_y_discrete(limits = rev(sectorFromOrder), expand = c(0.1,0.1)) +
       scale_size_continuous(range = c(1,20), guide="none") +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1))+
+      theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
+            axis.text.y = element_text(size = 15),
+            strip.text  = element_text(size = 15),
+            axis.title = element_text(size = 15))+
       facet_grid(x~subRegion); ga
 
     printf(figure=ga,fileName = fname, dir=dir)
@@ -1156,16 +1229,19 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
 
     fname = paste(scenario_i,"_solCalibrated1_flowTbl_abs_bubble",nameAppend,sep="")
     ga <- ggplot(solx, aes(y = sectorFrom, x = sectorTo)) +
-      labs(subtitle="test",
-           title=fname) +
       theme_bw() +
+      labs(title=fname) +
       geom_point(data=df_Mnx%>%dplyr::filter(sectorTo!="totalDemands"),aes(col=value, size=value)) +
       scale_color_gradient(low = "white", high = "indianred1", guide="none") +
-      geom_text(data=solx,aes(label=round(value,2)),col="black") +
+      geom_text(aes(label=round(value,2)),col="black", size=5) +
       coord_fixed(ratio = 1) +
-      scale_x_discrete(limits = c(unique(c(solx$sectorTo))[!unique(c(solx$sectorTo)) %in% c("otherTotal","totalDemands")],"otherTotal","totalDemands"), expand = c(0.1,0.1)) +
-      scale_size_continuous(range = c(1,20), guide='none') +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+      scale_x_discrete(limits = sectorToOrder, expand = c(0.1,0.1)) +
+      scale_y_discrete(limits = rev(sectorFromOrder), expand = c(0.1,0.1)) +
+      scale_size_continuous(range = c(1,20), guide="none") +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
+            axis.text.y = element_text(size = 15),
+            strip.text  = element_text(size = 15),
+            axis.title = element_text(size = 15))+
       facet_grid(x~subRegion); ga
 
     printf(figure=ga,fileName = fname, dir=dir)
@@ -1192,6 +1268,18 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
       unique() %>%
       dplyr::arrange(sectorFrom); dfx
 
+    sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx$sectorFrom)]; sectorFromOrderSankey
+    sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx$sectorTo)]; sectorToOrderSankey
+
+    dfx$sectorFrom <- factor( as.character(dfx$sectorFrom), levels=sectorFromOrderSankey )
+    dfx$sectorTo <- factor( as.character(dfx$sectorTo), levels=sectorToOrderSankey )
+
+    if(all(unique(dfx$sectorFrom) %in% names(metis.colors()$pal_sankey))){
+      fillcolors = metis.colors()$pal_sankey} else {
+        fillcolors = metis.colors()$pal_Basic
+      }; fillcolors
+
+
     fname = paste(scenario_i,"_solCalibrated1_sankey_abs_DisAggDemands",nameAppend,sep="")
     g<-ggplot(as.data.frame(dfx%>%dplyr::filter(value!=0)),
               aes(y = value, axis1 = sectorFrom, axis2 = sectorTo, group=subRegion)) +
@@ -1200,8 +1288,13 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
       ggalluvial::geom_stratum(width = 1/12, fill = "grey30", color = "grey", alpha=1) +
       geom_label(stat = "stratum", label.strata = TRUE) +
       scale_x_discrete(limits = c("From", "To"), expand = c(.05, .05)) +
-      scale_fill_brewer(type = "qual", palette = "Set1") +
+      scale_x_discrete(limits = c("From", "To"), expand = c(.05, .05)) +
+      #scale_fill_brewer(type = "qual", palette = "Set1", name="From") +
       facet_grid(x~subRegion) +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
+            axis.text.y = element_text(size = 15),
+            strip.text  = element_text(size = 15),
+            axis.title = element_text(size = 15))+
       ggtitle(fname);g
 
 
@@ -1221,6 +1314,18 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
       unique() %>%
       dplyr::arrange(sectorFrom); dfx
 
+    sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx$sectorFrom)]; sectorFromOrderSankey
+    sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx$sectorTo)]; sectorToOrderSankey
+
+    dfx$sectorFrom <- factor( as.character(dfx$sectorFrom), levels=sectorFromOrderSankey )
+    dfx$sectorTo <- factor( as.character(dfx$sectorTo), levels=sectorToOrderSankey )
+
+    if(all(unique(dfx$sectorFrom) %in% names(metis.colors()$pal_sankey))){
+      fillcolors = metis.colors()$pal_sankey} else {
+        fillcolors = metis.colors()$pal_Basic
+      }; fillcolors
+
+
     fname = paste(scenario_i,"_solOrig1_sankey_abs_AggDemands",nameAppend,sep="")
     g<-ggplot(as.data.frame(dfx%>%dplyr::filter(value!=0)),
               aes(y = value, axis1 = sectorFrom, axis2 = sectorTo, group=subRegion)) +
@@ -1229,8 +1334,13 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
       ggalluvial::geom_stratum(width = 1/12, fill = "grey30", color = "grey", alpha=1) +
       geom_label(stat = "stratum", label.strata = TRUE) +
       scale_x_discrete(limits = c("From", "To"), expand = c(.05, .05)) +
-      scale_fill_brewer(type = "qual", palette = "Set1") +
+      scale_x_discrete(limits = c("From", "To"), expand = c(.05, .05)) +
+      #scale_fill_brewer(type = "qual", palette = "Set1", name="From") +
       facet_grid(x~subRegion) +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
+            axis.text.y = element_text(size = 15),
+            strip.text  = element_text(size = 15),
+            axis.title = element_text(size = 15))+
       ggtitle(fname);g
 
 
