@@ -65,6 +65,7 @@ regionsSelect <- c('Colombia', 'Argentina', 'Japan')
 #regionsSelect <- NULL
 #paramsSelect<-"All"
 paramsSelect<- c("elecByTech", "elecCapBySubsector")
+#paramsSelect<- c("elecByTech")
 
 reReadData=F
 
