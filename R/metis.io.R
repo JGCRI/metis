@@ -241,7 +241,7 @@ if(T){
    if(!any(grepl(c("sector"),colnames(D0)))){
       stop(print(paste("Column names in D0: ",paste(colnames(D0),collapse=", ")," must include 'sector'.",sep="")))}
   if(!any(grepl(c("miscAdjust"),colnames(D0)))){
-      print(paste("Column names in D0: ",paste(colnames(D0),collapse=", ")," must include 'sector'.",sep=""))
+      print(paste("Column names in D0: ",paste(colnames(D0),collapse=", ")," missing 'miscAdjust'. Adding miscAdjust.",sep=""))
       D0 <- D0 %>% dplyr::mutate(miscAdjust=0)}
    # Remove any columns which are not numeric
    colsNumeric <- names(D0 %>% dplyr::select_if(is.numeric))[!names(D0 %>% dplyr::select_if(is.numeric)) %in% c("year","x")]
@@ -262,9 +262,9 @@ if(T){
       stop(print(paste("Column names in DNew: ",paste(colnames(DNew),collapse=", ")," must include 'sector'.",sep="")))}
     # Remove any columns which are not numeric
     if(!any(grepl(c("miscAdjust"),colnames(DNew)))){
-      print(paste("Column names in D0: ",paste(colnames(D0),collapse=", ")," must include 'sector'.",sep=""))
+      print(paste("Column names in DNew: ",paste(colnames(D0),collapse=", ")," missing 'miscAdjust'. Adding miscAdjust.",sep=""))
       DNew <- DNew %>% dplyr::mutate(miscAdjust=0)}
-    colsNumericNew <- names(D0 %>% dplyr::select_if(is.numeric))[!names(D0 %>% dplyr::select_if(is.numeric)) %in% c("year","x")]
+    colsNumericNew <- names(DNew %>% dplyr::select_if(is.numeric))[!names(DNew %>% dplyr::select_if(is.numeric)) %in% c("year","x")]
     if(length(colsNumericNew)>0){
       DNew <- DNew %>%
         dplyr::mutate(otherTotal=rowSums(.[colsNumericNew], na.rm=T))
@@ -641,251 +641,6 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
     } # if A0i not provided loop.
 
 
-    #---------------------------------------
-    # Calibrated Solution Based on ZPartial
-    #---------------------------------------
-
-    if(!is.null(ZPartial)){
-
-      Z_Origl<-tidyr::gather(tmpSol$Z_Tmp,-sector,-addedColumns,key="To",value="value");Z_Origl
-      ZPartiall<-tidyr::gather(ZPartial,-sector,-addedColumns,key="To",value="valueP");ZPartiall
-      Z_Calibl<-dplyr::left_join(Z_Origl,ZPartiall) %>%
-        dplyr::mutate(value=dplyr::case_when(!is.na(valueP)~as.numeric(valueP),
-                                      TRUE~as.numeric(value))) %>%
-        dplyr::select(-valueP);Z_Calibl
-
-      Z_Calib <- tidyr::spread(Z_Calibl, key="To",value="value");Z_Calib
-
-      Z = Z_Calib
-      # Calculate ioTbl
-      solTbl_Calib <- Z %>%
-        dplyr::mutate(nexusTotal= Z %>%
-                        dplyr::select(c(Z$sector)) %>%
-                        rowSums) %>%
-        dplyr::bind_cols(X) %>%
-        dplyr::mutate(local = processed - nexusTotal,
-                      otherTotal = local + import,
-                      totalDemands = nexusTotal+otherTotal) %>%
-        addMissing()
-
-      tmpSol_Calib <- ioTblSolOrganize(solTbl_Calib,D0i,colsNumeric)
-
-    }
-
-
-
-
-    #---------------------------------------
-    # New solutions based on DNewi, XNewi, ANewi or ZNewi
-    #---------------------------------------
-
-    #---------------------------------------
-    # DNewi
-    # Will calculate new X, Z and solTblNewi based on existing A and L
-    #---------------------------------------
-
-  if(!is.null(DNewi)){
-
-      D = tibble::as_tibble(DNewi);
-      Z <- tibble::as_tibble(A_Orig%*%diag(x=(as.vector(L_Orig%*%as.matrix(D$otherTotal)))))
-      names(Z)=solTbl$sector;
-      Z <- Z %>% dplyr::bind_cols(D %>% dplyr::select(sector))
-
-      X <- Z %>%
-        dplyr::mutate(nexusTotal= Z %>%
-                        dplyr::select(c(Z$sector)) %>%
-                        rowSums) %>%
-        dplyr::left_join(D %>%
-                           dplyr::select(otherTotal,sector)) %>%
-        dplyr::mutate(processed = otherTotal + nexusTotal) %>%
-        dplyr::left_join(Cap0i%>%dplyr::select(sector,cap), by=c("sector")) %>%
-        dplyr::left_join(Import0i%>%dplyr::select(sector,import), by=c("sector")) %>%
-        dplyr::mutate(cap = dplyr::case_when(cap<0~processed,
-                                      TRUE~cap),
-                      import = dplyr::case_when(processed>cap~(processed-cap)+import,
-                                        TRUE~import),
-                      processed = dplyr::case_when(processed>cap~cap,
-                                            TRUE~processed),
-                      surplus = cap-processed)
-
-      # Calculate solTbl
-      solTblNewi <- Z %>%
-        dplyr::mutate(nexusTotal= Z %>%
-                        dplyr::select(c(Z$sector)) %>%
-                        rowSums) %>%
-        dplyr::bind_cols(X) %>%
-        dplyr::mutate(local = processed - nexusTotal,
-                      otherTotal = local + import) %>%
-        addMissing()
-
-
-      A_DNewi <-as.matrix(Z%>%dplyr::select(c(Z$sector))) %*% as.matrix(solTblNewi$processed^-1*diag(nrow(Z)))
-      L_DNewi <-solve(diag(nrow(A_DNewi))-A_DNewi);
-      D_DNewi <-DNewi %>% dplyr::select(sector,otherTotal);
-      Z_DNewi <-Z %>% dplyr::select(c(sector,Z$sector));
-      X_DNewi <-solTblNewi %>% dplyr::select(sector,processed);
-      sol_DNewi <-solTblNewi %>%
-        dplyr::select(c(sector,solTblNewi$sector,nexusTotal,local, processed, cap, surplus, import, otherTotal,
-                        names(solTblNewi)[!names(solTblNewi) %in% c("sector",solTblNewi$sector,
-                                                                nexusTotal,local, processed, cap, surplus, import, otherTotal)]));
-  }
-
-
-    #---------------------------------------
-    # ANewi
-    # Will calculate new L, Z, X and solTblNewi based on existing D
-    #---------------------------------------
-
-    if(!is.null(ANewi)){
-
-      A1 <- as.matrix(ANewi %>% dplyr::select(c(solTbl$sector)))
-      L1 <- solve(diag(nrow(A1))-A1);
-      D <- D_Orig
-      Z <- tibble::as_tibble(A1%*%diag(x=(as.vector(L1%*%as.matrix(D$otherTotal)))))
-      names(Z)=solTbl$sector;
-      Z <- Z %>% dplyr::bind_cols(D %>% dplyr::select(sector))
-
-      X <- Z %>%
-        dplyr::mutate(nexusTotal= Z %>%
-                        dplyr::select(c(Z$sector)) %>%
-                        rowSums) %>%
-        dplyr::left_join(D %>%
-                           dplyr::select(otherTotal,sector)) %>%
-        dplyr::mutate(processed = otherTotal + nexusTotal) %>%
-        dplyr::left_join(Cap0i%>%dplyr::select(sector,cap), by=c("sector")) %>%
-        dplyr::left_join(Import0i%>%dplyr::select(sector,import), by=c("sector")) %>%
-        dplyr::mutate(cap = dplyr::case_when(cap<0~processed,
-                                      TRUE~cap),
-                      import = dplyr::case_when(processed>cap~(processed-cap)+import,
-                                        TRUE~import),
-                      processed = dplyr::case_when(processed>cap~cap,
-                                            TRUE~processed),
-                      surplus = cap-processed)
-
-      # Calculate solTbl
-      solTblNewi <- Z %>%
-        dplyr::mutate(nexusTotal= Z %>%
-                        dplyr::select(c(Z$sector)) %>%
-                        rowSums) %>%
-        dplyr::left_join(X) %>%
-        dplyr::mutate(local = processed - nexusTotal,
-                      otherTotal = local + import) %>%
-        addMissing()
-
-      A_ANewi <-as.matrix(Z%>%dplyr::select(c(Z$sector))) %*% as.matrix(solTblNewi$processed^-1*diag(nrow(Z)))
-      L_ANewi <-solve(diag(nrow(A_ANewi))-A_ANewi);
-      D_ANewi <-solTblNewi %>% dplyr::select(sector,otherTotal);
-      Z_ANewi <-Z %>% dplyr::select(c(sector,Z$sector));
-      X_ANewi <-solTblNewi %>% dplyr::select(sector,processed);
-      sol_ANewi <- solTblNewi %>%
-        dplyr::select(c(sector,solTblNewi$sector,nexusTotal,local, processed, cap, surplus, import, otherTotal,
-                        names(solTblNewi)[!names(solTblNewi) %in% c("sector",solTblNewi$sector,
-                                                                nexusTotal,local, processed, cap, surplus, import, otherTotal)]));
-
-    }
-
-    #---------------------------------------
-    # ZNewi
-    # Will calculate new A, L, Z, X and solTblNewi based on existing D
-    #---------------------------------------
-
-    if(!is.null(ZNewi)){
-
-      Z = ZNewi
-
-      X <- Z %>%
-        dplyr::mutate(nexusTotal= Z %>%
-                        dplyr::select(c(Z$sector)) %>%
-                        rowSums) %>%
-        dplyr::left_join(D_Orig %>%
-                           dplyr::select(otherTotal,sector)) %>%
-        dplyr::mutate(processed = otherTotal + nexusTotal) %>%
-        dplyr::left_join(Cap0i%>%dplyr::select(sector,cap), by=c("sector")) %>%
-        dplyr::left_join(Import0i%>%dplyr::select(sector,import), by=c("sector")) %>%
-        dplyr::mutate(cap = dplyr::case_when(cap<0~processed,
-                                      TRUE~cap),
-                      import = dplyr::case_when(processed>cap~(processed-cap)+import,
-                                        TRUE~import),
-                      processed = dplyr::case_when(processed>cap~cap,
-                                            TRUE~processed),
-                      surplus = cap-processed)
-
-      # Calculate solTbl
-      solTblNewi <- Z %>%
-        dplyr::mutate(nexusTotal= Z %>%
-                        dplyr::select(c(Z$sector)) %>%
-                        rowSums) %>%
-        dplyr::left_join(X) %>%
-        dplyr::mutate(local = processed - nexusTotal,
-                      otherTotal = local + import) %>%
-        addMissing()
-
-
-        A_ZNewi<-as.matrix(Z%>%dplyr::select(c(Z$sector))) %*% as.matrix(solTblNewi$processed^-1*diag(nrow(Z)))
-        L_ZNewi<-solve(diag(nrow(A_ZNewi))-A_ZNewi);
-        D_ZNewi<-solTblNewi %>% dplyr::select(sector,otherTotal);
-        Z_ZNewi<- Z %>% dplyr::select(c(sector,Z$sector));
-        X_ZNewi<-solTblNewi %>% dplyr::select(sector,processed);
-        sol_ZNewi <- solTblNewi %>%
-          dplyr::select(c(sector,solTblNewi$sector,nexusTotal,local, processed, cap, surplus, import, otherTotal,
-                          names(solTblNewi)[!names(solTblNewi) %in% c("sector",solTblNewi$sector,
-                                                                  nexusTotal,local, processed, cap, surplus, import, otherTotal)]));
-
-    }
-
-      #---------------------------------------
-      # XNewi
-      # Will calculate new Z, A, L and solTblNewi based on existing D, A and L
-      #---------------------------------------
-
-      if(!is.null(XNewi)){
-
-        D = tibble::as_tibble(D_Orig);
-        Z <- (A_Orig %*% diag(as.vector(t(as.matrix(XNewi$processed))))) %>% tibble::as_tibble()
-        names(Z)<-sol_Orig$sector
-        Z <- dplyr::bind_cols(sol_Orig%>%dplyr::select(sector),Z)
-
-        X <- Z %>%
-          dplyr::mutate(nexusTotal= Z %>%
-                          dplyr::select(c(Z$sector)) %>%
-                          rowSums) %>%
-          dplyr::left_join(D_Orig %>%
-                             dplyr::select(otherTotal,sector)) %>%
-          dplyr::mutate(processed = otherTotal + nexusTotal) %>%
-          dplyr::left_join(Cap0i%>%dplyr::select(sector,cap), by=c("sector")) %>%
-          dplyr::left_join(Import0i%>%dplyr::select(sector,import), by=c("sector")) %>%
-          dplyr::mutate(cap = dplyr::case_when(cap<0~processed,
-                                        TRUE~cap),
-                        import = dplyr::case_when(processed>cap~(processed-cap)+import,
-                                          TRUE~import),
-                        processed = dplyr::case_when(processed>cap~cap,
-                                              TRUE~processed),
-                        surplus = cap-processed)
-
-        # Calculate solTbl
-        solTblNewi <- Z %>%
-          dplyr::mutate(nexusTotal= Z %>%
-                          dplyr::select(c(Z$sector)) %>%
-                          rowSums) %>%
-          dplyr::left_join(X %>%
-                             dplyr::select(processed, cap, import, surplus,sector)) %>%
-          dplyr::mutate(local = processed - nexusTotal,
-                        otherTotal = local + import) %>%
-          addMissing()
-
-        A_XNewi <-as.matrix(Z%>%dplyr::select(c(Z$sector))) %*% as.matrix(solTblNewi$processed^-1*diag(nrow(Z)))
-        L_XNewi <-solve(diag(nrow(A_XNewi))-A_XNewi);
-        D_XNewi <-XNewi %>% dplyr::select(sector,otherTotal);
-        Z_XNewi <-Z %>% dplyr::select(c(sector,Z$sector));
-        X_XNewi <-solTblNewi %>% dplyr::select(sector,processed);
-        sol_XNewi <- solTblNewi %>%
-          dplyr::select(c(sector,solTblNewi$sector,nexusTotal,local, processed, cap, surplus, import, otherTotal,
-                          names(solTblNewi)[!names(solTblNewi) %in% c("sector",solTblNewi$sector,
-                                                                  nexusTotal,local, processed, cap, surplus, import, otherTotal)]));
-
-      }
-
-
       # Prepare final data list
 
       A_Orig = tmpSol$A_Tmp
@@ -894,32 +649,8 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
       ioTblImports_Orig = tmpSol$ioTblImports_Tmp
       sol_Orig = tmpSol$sol_Tmp
 
-      if(!is.null(ZPartial)){
-      A_Calibrated = tmpSol_Calib$A_Tmp
-      L_Calibrated = tmpSol_Calib$L_Tmp
-      ioTbl_Calibrated = tmpSol_Calib$ioTbl_Tmp
-      ioTblImports_Calibrated = tmpSol_Calib$ioTblImports_Tmp
-      sol_Calibrated = tmpSol_Calib$sol_Tmp}
-
 
      if(TRUE){
-      A_ANew1= A_ANew1 %>% dplyr::bind_rows(A_ANewi %>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      L_ANew1 = L_ANew1 %>% dplyr::bind_rows(L_ANewi%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      sol_ANew1 = sol_ANew1 %>% dplyr::bind_rows(sol_ANewi%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      A_DNew1 = A_DNew1 %>% dplyr::bind_rows(A_DNewi%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      L_DNew1 = L_DNew1 %>% dplyr::bind_rows(A_DNewi%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      sol_DNew1 = sol_DNew1 %>% dplyr::bind_rows(sol_DNewi%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      A_ZNew1 = A_ZNew1 %>% dplyr::bind_rows(A_ZNewi%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      L_ZNew1 = L_ZNew1 %>% dplyr::bind_rows(L_ZNewi%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      sol_ZNew1 = sol_ZNew1 %>% dplyr::bind_rows(sol_ZNewi%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      A_XNew1 = A_XNew1 %>% dplyr::bind_rows(A_XNewi%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      L_XNew1 = L_XNew1 %>% dplyr::bind_rows(L_XNewi%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      sol_XNew1 = sol_XNew1 %>% dplyr::bind_rows(sol_XNewi%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      A_Calibrated1 = A_Calibrated1 %>% dplyr::bind_rows(A_Calibrated%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      L_Calibrated1 = L_Calibrated1 %>% dplyr::bind_rows(L_Calibrated%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      sol_Calibrated1 = sol_Calibrated1 %>% dplyr::bind_rows(sol_Calibrated%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      ioTbl_Calibrated1 = ioTbl_Calibrated1 %>% dplyr::bind_rows(ioTbl_Calibrated%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
-      ioTblImports_Calibrated1 = ioTblImports_Calibrated1 %>% dplyr::bind_rows(ioTblImports_Calibrated%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
       A_Orig1 = A_Orig1 %>% dplyr::bind_rows(A_Orig%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
       L_Orig1 = L_Orig1 %>% dplyr::bind_rows(L_Orig%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
       ioTbl_Orig1 = ioTbl_Orig1 %>% dplyr::bind_rows(ioTbl_Orig%>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i))
@@ -931,13 +662,11 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
   } # close loop subRegion
 } # close loop year
 
-    sol_list<-list(A_ANew1=A_ANew1, L_ANew1=L_ANew1, sol_ANew1=sol_ANew1,
-                   A_DNew1=A_DNew1, L_DNew1=L_DNew1, sol_DNew1=sol_DNew1,
-                   A_ZNew1=A_ZNew1, L_ZNew1=L_ZNew1, sol_ZNew1=sol_ZNew1,
-                   A_XNew1=A_XNew1, L_XNew1=L_XNew1, sol_XNew1=sol_XNew1,
-                   A_Calibrated1=A_Calibrated1, L_Calibrated1=L_Calibrated1, sol_Calibrated1=sol_Calibrated1,
-                   ioTbl_Calibrated1=ioTbl_Calibrated1, ioTblImports_Calibrated1=ioTblImports_Calibrated1,
-                   A_Orig1=A_Orig1, L_Orig1=L_Orig1, ioTbl_Orig1=ioTbl_Orig1, ioTblImports_Orig1=ioTblImports_Orig1, sol_Orig1=sol_Orig1
+    sol_list<-list(A_Orig1=A_Orig1,
+                   L_Orig1=L_Orig1,
+                   ioTbl_Orig1=ioTbl_Orig1,
+                   ioTblImports_Orig1=ioTblImports_Orig1,
+                   sol_Orig1=sol_Orig1
     )
 
   sol_list<-sol_list[sapply(sol_list, function(x) dim(x)[1]) > 0]
@@ -1159,194 +888,6 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
 
   printf(figure=g,fileName = fname, dir=dir)
 
-
-  #---------------------
-  # sol_Calibrated1
-  #---------------------
-
-
-  if(nrow(sol_Calibrated1)>0){
-
-    # ioTable normalized
-
-    sol<-sol_list$ioTblImports_Calibrated1 %>%
-      dplyr::filter(scenario==scenario_i)
-
-    df_Mn<-sol %>%
-      #dplyr::select (-processed,processed) %>% # to place processed last for following function
-      dplyr::mutate_at(vars(-c("sector",addedColumns[addedColumns %in% names(sol)])),dplyr::funs(./totalDemands)); df_Mn
-
-    solx <- sol %>%
-      tidyr::gather(-c("sector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
-      dplyr::rename (sectorFrom=sector) %>%
-      dplyr::arrange(sectorFrom)  %>%
-      dplyr::filter(!is.nan(value),value!=0, !is.na(value));
-
-    df_Mnx <- df_Mn %>%
-      tidyr::gather(-c("sector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
-      dplyr::rename (sectorFrom=sector) %>%
-      dplyr::arrange(sectorFrom) %>%
-      dplyr::filter(!is.nan(value),value!=0, !is.na(value)); df_Mnx
-
-    sectorFromOrder <- NULL
-    sectorFromOrder_local <- sort(unique(df_Mnx$sectorFrom)[!grepl("import_",unique(df_Mnx$sectorFrom))]); sectorFromOrder_local
-    sectorFromOrder_import <- sort(unique(df_Mnx$sectorFrom)[grepl("import_",unique(df_Mnx$sectorFrom))]); sectorFromOrder_import
-    for(i in (1:max(length(sectorFromOrder_local),length(sectorFromOrder_import)))) {
-      if(length(sectorFromOrder_local)>=i){sectorFromOrder <- c(sectorFromOrder,sectorFromOrder_local[i])}
-      if(length(sectorFromOrder_import)>=i){sectorFromOrder <- c(sectorFromOrder,sectorFromOrder_import[i])}
-    }; sectorFromOrder
-
-    sectorToOrder <-
-      c(sort(unique(df_Mnx$sectorTo)[unique(df_Mnx$sectorTo) %in% sectorFromOrder]),
-        sort(unique(df_Mnx$sectorTo)[!unique(c(df_Mnx$sectorTo)) %in% c(sectorFromOrder,"otherTotal","totalDemands")]),
-        unique(df_Mnx$sectorTo)[unique(c(df_Mnx$sectorTo)) %in% c("otherTotal","totalDemands")]
-      ); sectorToOrder
-
-
-    # ioTable normalized bubbles
-
-    fname = paste(scenario_i,"_solCalibrated1_flowTbl_norm_bubble",nameAppend,sep="")
-    ga <- ggplot(df_Mnx, aes(y = sectorFrom, x = sectorTo)) +
-      theme_bw() +
-      labs(title=fname) +
-      geom_point(data=df_Mnx%>%dplyr::filter(sectorTo!="totalDemands"),aes(col=value, size=value)) +
-      scale_color_gradient(low = "white", high = "indianred1", guide="none") +
-      geom_text(aes(label=round(value,2)),col="black", size=5) +
-      coord_fixed(ratio = 1) +
-      scale_x_discrete(limits = sectorToOrder, expand = c(0.1,0.1)) +
-      scale_y_discrete(limits = rev(sectorFromOrder), expand = c(0.1,0.1)) +
-      scale_size_continuous(range = c(1,20), guide="none") +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
-            axis.text.y = element_text(size = 15),
-            strip.text  = element_text(size = 15),
-            axis.title = element_text(size = 15))+
-      facet_grid(x~subRegion); ga
-
-    printf(figure=ga,fileName = fname, dir=dir)
-
-
-    # ioTable absolute bubbles
-
-    fname = paste(scenario_i,"_solCalibrated1_flowTbl_abs_bubble",nameAppend,sep="")
-    ga <- ggplot(solx, aes(y = sectorFrom, x = sectorTo)) +
-      theme_bw() +
-      labs(title=fname) +
-      geom_point(data=df_Mnx%>%dplyr::filter(sectorTo!="totalDemands"),aes(col=value, size=value)) +
-      scale_color_gradient(low = "white", high = "indianred1", guide="none") +
-      geom_text(aes(label=round(value,2)),col="black", size=5) +
-      coord_fixed(ratio = 1) +
-      scale_x_discrete(limits = sectorToOrder, expand = c(0.1,0.1)) +
-      scale_y_discrete(limits = rev(sectorFromOrder), expand = c(0.1,0.1)) +
-      scale_size_continuous(range = c(1,20), guide="none") +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
-            axis.text.y = element_text(size = 15),
-            strip.text  = element_text(size = 15),
-            axis.title = element_text(size = 15))+
-      facet_grid(x~subRegion); ga
-
-    printf(figure=ga,fileName = fname, dir=dir)
-
-
-    #-----------------
-    # Sankey
-    #--------------
-
-
-    if(any(!is.na(sol %>%
-                  dplyr::select(colsNumeric[!colsNumeric %in% c("totalDemands","localTotal","otherTotal","x",addedColumns)])))){
-      solFlows <- sol %>%
-        dplyr::select(-!!names(sol)[names(sol) %in% c("totalDemands","localTotal","otherTotal")])} else {
-          solFlows <- sol %>%
-            dplyr::select(-!!names(sol)[names(sol) %in% c("totalDemands","localTotal")])
-        }
-    df <- solFlows;df
-
-    dfx <- df %>%
-      tidyr::gather(-c("sector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
-      dplyr::rename (sectorFrom=sector) %>%
-      dplyr::filter(value>0) %>%
-      unique() %>%
-      dplyr::arrange(sectorFrom); dfx
-
-    sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx$sectorFrom)]; sectorFromOrderSankey
-    sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx$sectorTo)]; sectorToOrderSankey
-
-    dfx$sectorFrom <- factor( as.character(dfx$sectorFrom), levels=sectorFromOrderSankey )
-    dfx$sectorTo <- factor( as.character(dfx$sectorTo), levels=sectorToOrderSankey )
-
-    if(all(unique(dfx$sectorFrom) %in% names(metis.colors()$pal_sankey))){
-      fillcolors = metis.colors()$pal_sankey} else {
-        fillcolors = metis.colors()$pal_Basic
-      }; fillcolors
-
-
-    fname = paste(scenario_i,"_solCalibrated1_sankey_abs_DisAggDemands",nameAppend,sep="")
-    g<-ggplot(as.data.frame(dfx%>%dplyr::filter(value!=0)),
-              aes(y = value, axis1 = sectorFrom, axis2 = sectorTo, group=subRegion)) +
-      theme_bw() +
-      ggalluvial::geom_alluvium(aes(fill = sectorFrom), width = 1/12, color="black") +
-      ggalluvial::geom_stratum(width = 1/12, fill = "grey30", color = "grey", alpha=1) +
-      geom_label(stat = "stratum", label.strata = TRUE) +
-      scale_x_discrete(limits = c("From", "To"), expand = c(.05, .05)) +
-      scale_x_discrete(limits = c("From", "To"), expand = c(.05, .05)) +
-      #scale_fill_brewer(type = "qual", palette = "Set1", name="From") +
-      facet_grid(x~subRegion) +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
-            axis.text.y = element_text(size = 15),
-            strip.text  = element_text(size = 15),
-            axis.title = element_text(size = 15))+
-      ggtitle(fname);g
-
-
-    printf(figure=g,fileName = fname, dir=dir)
-
-
-    #-------- Aggregated Demands
-
-    solFlows <- sol %>%
-      dplyr::select(!!c("sector",names(sol)[names(sol) %in% c("totalDemands",addedColumns)]))
-    df <- solFlows;df
-
-    dfx <- df %>%
-      tidyr::gather(-c("sector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
-      dplyr::rename (sectorFrom=sector) %>%
-      dplyr::filter(value>0) %>%
-      unique() %>%
-      dplyr::arrange(sectorFrom); dfx
-
-    sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx$sectorFrom)]; sectorFromOrderSankey
-    sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx$sectorTo)]; sectorToOrderSankey
-
-    dfx$sectorFrom <- factor( as.character(dfx$sectorFrom), levels=sectorFromOrderSankey )
-    dfx$sectorTo <- factor( as.character(dfx$sectorTo), levels=sectorToOrderSankey )
-
-    if(all(unique(dfx$sectorFrom) %in% names(metis.colors()$pal_sankey))){
-      fillcolors = metis.colors()$pal_sankey} else {
-        fillcolors = metis.colors()$pal_Basic
-      }; fillcolors
-
-
-    fname = paste(scenario_i,"_solOrig1_sankey_abs_AggDemands",nameAppend,sep="")
-    g<-ggplot(as.data.frame(dfx%>%dplyr::filter(value!=0)),
-              aes(y = value, axis1 = sectorFrom, axis2 = sectorTo, group=subRegion)) +
-      theme_bw() +
-      ggalluvial::geom_alluvium(aes(fill = sectorFrom), width = 1/12, color="black") +
-      ggalluvial::geom_stratum(width = 1/12, fill = "grey30", color = "grey", alpha=1) +
-      geom_label(stat = "stratum", label.strata = TRUE) +
-      scale_x_discrete(limits = c("From", "To"), expand = c(.05, .05)) +
-      scale_x_discrete(limits = c("From", "To"), expand = c(.05, .05)) +
-      #scale_fill_brewer(type = "qual", palette = "Set1", name="From") +
-      facet_grid(x~subRegion) +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 15),
-            axis.text.y = element_text(size = 15),
-            strip.text  = element_text(size = 15),
-            axis.title = element_text(size = 15))+
-      ggtitle(fname);g
-
-
-    printf(figure=g,fileName = fname, dir=dir)
-
-  } # If sol_Calibrated1 is null
 
   } # For Scenario i
 
