@@ -55,6 +55,8 @@
 #' @param multiFacetCols Default=NULL,
 #' @param mapTitle Default=NULL
 #' @param mapTitleSize Default=1
+#' @param numeric2Cat_list Default=NULL,
+#' @param catParam Default=NULL
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
 #' @export
@@ -110,7 +112,9 @@ metis.map<-function(dataPolygon=NULL,
                   multiFacetRows=NULL,
                   multiFacetCols=NULL,
                   mapTitle=NULL,
-                  mapTitleSize=1
+                  mapTitleSize=1,
+                  numeric2Cat_list=NULL,
+                  catParam=NULL
                   ){
 
 
@@ -163,15 +167,25 @@ metis.map<-function(dataPolygon=NULL,
   # multiFacetRows=NULL
   # multiFacetCols=NULL
   # fillshowNA=NA
+  # fillcolorNULL="grey30"
+  # facetsON=T
+  # panelLabel=NULL
+  # multiFacetRows=NULL
+  # multiFacetCols=NULL
+  # mapTitle=NULL
+  # mapTitleSize=1
+  # numeric2Cat_list=NULL
+  # catParam=NULL
 
 #------------------
 # Initialize variables to remove binding errors if needed
 # -----------------
 
-NULL->raster->shape->map->checkFacets
+NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette
 
 legendTitle=gsub(" ","\n",legendTitle)
 tmap::tmap_mode(mode = c("plot"))
+
 
 #------------------------------------------
 # Read data and check inputs
@@ -206,18 +220,102 @@ if(!is.null(dataGrid)){
     raster@data<-Filter(function(x)!all(is.na(x)), raster@data)
     fillColumn<-fillColumn[c(fillColumn %in% names(raster@data))]
     }
+}
+
+
+if(!is.null(numeric2Cat_list)){
+     if(all(c("numeric2Cat_param","numeric2Cat_breaks","numeric2Cat_labels","numeric2Cat_palette","numeric2Cat_legendTextSize") %in% names(numeric2Cat_list))){
+       if(catParam %in% unique(unlist(numeric2Cat_list$numeric2Cat_param))) {
+       list_index <- which(numeric2Cat_list$numeric2Cat_param==catParam)
+       catBreaks <- numeric2Cat_list$numeric2Cat_breaks[[list_index]]
+       catLabels <- numeric2Cat_list$numeric2Cat_labels[[list_index]]
+       catPalette <- numeric2Cat_list$numeric2Cat_palette[[list_index]]
+       legendTextSize <- numeric2Cat_list$numeric2Cat_legendTextSize[[list_index]]
+       }
+     } else {print("numerc2Cat_list does not contain the appropriate sublists: 'numeric2Cat_param','numeric2Cat_breaks','numeric2Cat_labels','numeric2Cat_catPalette'. Skipping conversion to Categorical")}
+   } else {print("numerc2Cat_list is not a list. Skipping conversion to Categorical")}
+
+
+# If categorical data then set as factor
+if(!is.null(raster)){
+  if(!is.null(catBreaks) & !is.null(catLabels)){
+
+  if(catPalette %in% names(metis.colors())){
+
+    fillPalette <- metis.colors()[[catPalette]]
+
+
+    for(i in 1:length(fillColumn)){
+      fillColumn_i <- fillColumn[i]
+
+      if(is.numeric(raster@data[[fillColumn_i]])){
+
+        legendStyleOrig <- legendStyle; legendBreaksOrig <- legendBreaks;
+        legendStyle <- "cat"
+        legendBreaks <- NULL
+
+        raster@data[[fillColumn_i]] <- cut( raster@data[[fillColumn_i]],
+                                           breaks=catBreaks,
+                                           labels=catLabels)
+      }
+
+
+      if(any(unique(raster@data[[fillColumn_i]]) %in% names(metis.colors()[[catPalette]]))){
+        raster@data %>%
+          dplyr::mutate(!!fillColumn_i := factor(raster@data[[fillColumn_i]], levels = names(metis.colors()[[catPalette]]))) ->
+          raster@data
+      } else { raster@data %>%
+          dplyr::mutate(!!fillColumn_i := as.factor(raster@data[[fillColumn_i]])) -> raster@data}
+    }
   }
+  }
+} else{
+if(!is.null(shape)){
+  if(!is.null(catBreaks) & !is.null(catLabels)){
+
+    if(catPalette %in% names(metis.colors())){
+
+      fillPalette <- metis.colors()[[catPalette]]
+
+      for(i in 1:length(fillColumn)){
+        fillColumn_i <- fillColumn[i]
+
+        if(is.numeric(shape@data[[fillColumn_i]])){
+
+            legendStyle <- "cat"
+            legendBreaks <- NULL
+
+          shape@data[[fillColumn_i]] <- cut( shape@data[[fillColumn_i]],
+                                              breaks=catBreaks,
+                                              labels=catLabels)
+        } else {
+          legendStyleOrig -> legendStyle
+          legendBreaksOrig -> legendBreaks;
+        }
+
+
+        if(any(unique(shape@data[[fillColumn_i]]) %in% names(metis.colors()[[catPalette]]))){
+          shape@data %>%
+            dplyr::mutate(!!fillColumn_i := factor(shape@data[[fillColumn_i]], levels = names(metis.colors()[[catPalette]]))) ->
+            shape@data
+        } else { shape@data %>%
+            dplyr::mutate(!!fillColumn_i := as.factor(shape@data[[fillColumn_i]])) -> shape@data}
+      }
+    }
+  }
+}
+}
 
 
 if(length(fillPalette)==1){
  if(fillPalette %in% names(metis.colors())){
-            fillPalette<-metis.colors()[[fillPalette]]}}else{
-             fillPalette<-fillPalette}
+            fillPalette<-metis.colors()[[fillPalette]]}}
 
 #-----------------
 #----------------
 
 if(!is.null(raster)){
+
 
   if(is.null(legendBreaks)){legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(dataGrid@data%>%dplyr::select(fillColumn)%>%as.matrix())}
   map<-tmap::tm_shape(raster) + tmap::tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
@@ -251,6 +349,7 @@ if(is.null(underLayer)){
   }
 
 if(!is.null(shape)){
+
 
 if(grepl("line",class(shape)[1],ignore.case=T)){
   map=map +  tmap::tm_lines(col=borderColor,lwd=lwd, lty=lty)}
@@ -346,8 +445,17 @@ if(!is.null(overLayer)){
   map<-map+overLayer
 }
 
+
 if(printFig!=F){
 fname<-paste(fileName,sep="")
+
+if(nchar(paste(dirOutputs,"/",fname,sep=""))>250){
+  print("Save path for figure larger than 250 characters. Clipping name.")
+  print(paste("Orig name: ",dirOutputs,"/",fname,sep=""))
+  print(paste("New name: ", dirOutputs,"/",strtrim(fname, (250-nchar(paste(dirOutputs,"/",sep="")))),sep=""))
+  fname<-strtrim(fname, (250-nchar(paste(dirOutputs,"/",sep=""))))
+}
+
 if(!dir.exists(dirOutputs)){
   print(paste("dirOutputs provided: ",dirOutputs," does not exist. Saving to: ", getwd(),sep=""))
   diroutputs=getwd()}else{

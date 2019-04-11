@@ -30,46 +30,53 @@ library(ggalluvial)
 
 # Small Example
 Z0=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,         ~E,
-  "W"     ,    0,           50,
-  "E"     ,    20,          0);Z0
+  ~sector ,    ~W,         ~E,   ~Ag,
+  "W"     ,    0,           50,   100,
+  "E"     ,    20,          0,     10,
+  "Ag"    ,     0,          5,     0);Z0
 
 # Small Example
 ZPartial=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,         ~E,
-  "W"     ,    0,           50,
-  "E"     ,    40,          0);ZPartial
+  ~sector ,    ~W,         ~E,   ~Ag,
+  "W"     ,    0,           50,   100,
+  "E"     ,    40,          0,     10,
+  "Ag"    ,     0,          5,     0);ZPartial
 
 
 A0=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,         ~E,
-  "W"     ,    0,           0.23,
-  "E"     ,    0.13,          0);A0
+  ~sector ,    ~W,         ~E,     ~Ag,
+  "W"     ,    0,           0.4,    0.5,
+  "E"     ,    0.2,         0,     0.0513,
+  "Ag"    ,    0,           0.1,     0);A0
 
 
 D0=tibble::tribble( # Initial total demand
   ~sector, ~other, ~industry, ~domestic,
-      "W",    50,     25, 25,
-      "E",    100, 50, 50
+      "W",    50,     25,      25,
+      "E",    100,    50,      50,
+      "Ag",   150,    30,      10
 );D0
 
 Cap0=tibble::tribble( # Initial total demand
   ~sector, ~cap,
   "W",    100,
-  "E",    50
+  "E",    50,
+  "Ag",   200
 );Cap0
 
 
 Import0=tibble::tribble( # Initial total demand
   ~sector, ~import,
-  "W",    10,
-  "E",    0
+  "W",    20,
+  "E",    30,
+  "Ag",   30
 );Import0
 
 X0=tibble::tribble( # Initial total demand
   ~sector, ~processed,
   "W",    140,
-  "E",    220
+  "E",    220,
+  "Ag",   300
 );X0
 
 

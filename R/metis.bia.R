@@ -94,7 +94,10 @@ metis.bia<- function(biaInputsFolder="NA",
     GCMRCP->capacity_gw->capacity_mw->cf1971to2100->class1->data_source->datax->est_installed_capacity->
     estimated_generation_gwh->gcamCapacityFactor->generation_gwh_2013->generation_gwh_2014->
     generation_gwh_2015->generation_gwh_2016->
-    owner->region->regionsSelect->rowid->country_long->gppd_idnr->regionsSelectAll
+    owner->region->regionsSelect->rowid->country_long->gppd_idnr->regionsSelectAll->
+    aggregate->arrange->case_when->commissioning_year->
+    ctry_name->dataProjLoaded->dataProjPath->gcamdataProjFile->
+    queryPath->year_of_capacity_data
 
 
   #------------------
