@@ -80,32 +80,7 @@ X0=tibble::tribble( # Initial total demand
 );X0
 
 
-DNew=tibble::tribble( # Initial processed demand
-  ~sector, ~other,
-  "W",    150,
-  "E",    250
-);DNew
-
-ANew=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,         ~E,
-  "W"     ,    0,           0.4,
-  "E"     ,    0.2,          0);ANew
-
-ZNew=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,         ~E,
-  "W"     ,    0,           500,
-  "E"     ,    20,          0);ZNew
-
-XNew=tibble::tribble( # Initial processed demand
-  ~sector, ~processed,
-  "W",    300,
-  "E",    500
-);XNew
-
-
 io1<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg1"); io1$sol_Orig1; io1$A_Orig1; A0; D0
-io1p<-metis.io(A0=A0,D0=D0, ZPartial = ZPartial, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg1Partial"); io1$sol_Orig1
-
 io2<-metis.io(A0=A0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg2"); io2$sol_Orig1; io2$A_Orig1; A0; X0
 io3<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg3"); io3$sol_Orig1; io3$A_Orig1; Z0;D0
 io4<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg4"); io4$sol_Orig1; io4$A_Orig1; Z0;X0
