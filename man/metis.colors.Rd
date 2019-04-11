@@ -48,7 +48,17 @@ List of Color Palettes
 \item pal_elec_sec
 \item pal_finalNrg_sec
 \item pal_pri_ene
-\item pal_elec_tech_colors}
+\item pal_elec_tech_colors
+\item pal_hot
+\item pal_wet
+\item pal_div_wet
+\item pal_div_RdBl
+\item pal_green
+\item pal_div_BrGn
+\item pal_div_BlRd
+\item pal_sankey
+\item pal_spectral
+\item pal_ScarcityCat}
 }
 \examples{
 library(metis)

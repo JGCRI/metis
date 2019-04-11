@@ -467,6 +467,11 @@ metis.grid2poly<- function(grid=NULL,
                        file = grid_fnameComp,row.names = F, append=T)
   }
 
+  gridTempAll <- (data.table::fread(grid_fnameComp))%>%unique()
+
+  data.table::fwrite(gridTempAll,
+                     file = grid_fnameComp,row.names = F, append=F)
+
   print(paste("Subregional grid data files written to: ",grid_fnameComp, sep = ""))
 
  # Delete temporary grid folder

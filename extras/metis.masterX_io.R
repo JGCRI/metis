@@ -30,75 +30,57 @@ library(ggalluvial)
 
 # Small Example
 Z0=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,         ~E,
-  "W"     ,    0,           50,
-  "E"     ,    20,          0);Z0
+  ~sector ,    ~W,         ~E,   ~Ag,
+  "W"     ,    0,           50,   100,
+  "E"     ,    20,          0,     10,
+  "Ag"    ,     0,          5,     0);Z0
 
 # Small Example
 ZPartial=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,         ~E,
-  "W"     ,    0,           50,
-  "E"     ,    40,          0);ZPartial
+  ~sector ,    ~W,         ~E,   ~Ag,
+  "W"     ,    0,           50,   100,
+  "E"     ,    40,          0,     10,
+  "Ag"    ,     0,          5,     0);ZPartial
 
 
 A0=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,         ~E,
-  "W"     ,    0,           0.23,
-  "E"     ,    0.13,          0);A0
+  ~sector ,    ~W,         ~E,     ~Ag,
+  "W"     ,    0,           0.4,    0.5,
+  "E"     ,    0.2,         0,     0.0513,
+  "Ag"    ,    0,           0.1,     0);A0
 
 
 D0=tibble::tribble( # Initial total demand
   ~sector, ~other, ~industry, ~domestic,
-      "W",    50,     25, 25,
-      "E",    100, 50, 50
+      "W",    50,     25,      25,
+      "E",    100,    50,      50,
+      "Ag",   150,    30,      10
 );D0
 
 Cap0=tibble::tribble( # Initial total demand
   ~sector, ~cap,
   "W",    100,
-  "E",    50
+  "E",    50,
+  "Ag",   200
 );Cap0
 
 
 Import0=tibble::tribble( # Initial total demand
   ~sector, ~import,
-  "W",    10,
-  "E",    0
+  "W",    20,
+  "E",    30,
+  "Ag",   30
 );Import0
 
 X0=tibble::tribble( # Initial total demand
   ~sector, ~processed,
   "W",    140,
-  "E",    220
+  "E",    220,
+  "Ag",   300
 );X0
 
 
-DNew=tibble::tribble( # Initial processed demand
-  ~sector, ~other,
-  "W",    150,
-  "E",    250
-);DNew
-
-ANew=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,         ~E,
-  "W"     ,    0,           0.4,
-  "E"     ,    0.2,          0);ANew
-
-ZNew=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,         ~E,
-  "W"     ,    0,           500,
-  "E"     ,    20,          0);ZNew
-
-XNew=tibble::tribble( # Initial processed demand
-  ~sector, ~processed,
-  "W",    300,
-  "E",    500
-);XNew
-
-
 io1<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg1"); io1$sol_Orig1; io1$A_Orig1; A0; D0
-io1p<-metis.io(A0=A0,D0=D0, ZPartial = ZPartial, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg1Partial"); io1$sol_Orig1
-
 io2<-metis.io(A0=A0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg2"); io2$sol_Orig1; io2$A_Orig1; A0; X0
 io3<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg3"); io3$sol_Orig1; io3$A_Orig1; Z0;D0
 io4<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg4"); io4$sol_Orig1; io4$A_Orig1; Z0;X0
