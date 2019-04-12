@@ -229,7 +229,10 @@ if(!is.null(numeric2Cat_list)){
        list_index <- which(numeric2Cat_list$numeric2Cat_param==catParam)
        catBreaks <- numeric2Cat_list$numeric2Cat_breaks[[list_index]]
        catLabels <- numeric2Cat_list$numeric2Cat_labels[[list_index]]
-       catPalette <- numeric2Cat_list$numeric2Cat_palette[[list_index]]
+       if(grepl("c\\(",numeric2Cat_list$numeric2Cat_palette[[list_index]])){
+         catPalette <- eval(parse(text=paste(numeric2Cat_list$numeric2Cat_palette[[list_index]])))}else{
+           catPalette <- numeric2Cat_list$numeric2Cat_palette[[list_index]]}
+
        legendTextSize <- numeric2Cat_list$numeric2Cat_legendTextSize[[list_index]]
        }
      } else {print("numerc2Cat_list does not contain the appropriate sublists: 'numeric2Cat_param','numeric2Cat_breaks','numeric2Cat_labels','numeric2Cat_catPalette'. Skipping conversion to Categorical")}
@@ -240,9 +243,14 @@ if(!is.null(numeric2Cat_list)){
 if(!is.null(raster)){
   if(!is.null(catBreaks) & !is.null(catLabels)){
 
-  if(catPalette %in% names(metis.colors())){
-
-    fillPalette <- metis.colors()[[catPalette]]
+    if(!is.null(catPalette)){
+      if(length(catPalette)>1){
+        fillPalette <- c(catPalette,metis.colors()$pal_16)
+      }else{
+      if(catPalette %in% names(metis.colors())){
+        fillPalette <- metis.colors()[[catPalette]]}
+      }
+  }
 
 
     for(i in 1:length(fillColumn)){
@@ -260,22 +268,28 @@ if(!is.null(raster)){
       }
 
 
-      if(any(unique(raster@data[[fillColumn_i]]) %in% names(metis.colors()[[catPalette]]))){
+      if(any(unique(raster@data[[fillColumn_i]]) %in% names(fillPalette))){
         raster@data %>%
-          dplyr::mutate(!!fillColumn_i := factor(raster@data[[fillColumn_i]], levels = names(metis.colors()[[catPalette]]))) ->
+          dplyr::mutate(!!fillColumn_i := factor(raster@data[[fillColumn_i]],
+                                                 levels = names(fillPalette)[1:max(length(unique(raster@data[[fillColumn_i]])),
+                                                                                    length(names(fillPalette)))]))->
           raster@data
       } else { raster@data %>%
           dplyr::mutate(!!fillColumn_i := as.factor(raster@data[[fillColumn_i]])) -> raster@data}
     }
   }
-  }
 } else{
 if(!is.null(shape)){
   if(!is.null(catBreaks) & !is.null(catLabels)){
 
-    if(catPalette %in% names(metis.colors())){
-
-      fillPalette <- metis.colors()[[catPalette]]
+    if(!is.null(catPalette)){
+      if(length(catPalette)>1){
+        fillPalette <- c(catPalette,metis.colors()$pal_16)
+      }else{
+        if(catPalette %in% names(metis.colors())){
+          fillPalette <- metis.colors()[[catPalette]]}
+      }
+    }
 
       for(i in 1:length(fillColumn)){
         fillColumn_i <- fillColumn[i]
@@ -294,14 +308,15 @@ if(!is.null(shape)){
         }
 
 
-        if(any(unique(shape@data[[fillColumn_i]]) %in% names(metis.colors()[[catPalette]]))){
+        if(any(unique(shape@data[[fillColumn_i]]) %in% names(fillPalette))){
           shape@data %>%
-            dplyr::mutate(!!fillColumn_i := factor(shape@data[[fillColumn_i]], levels = names(metis.colors()[[catPalette]]))) ->
+            dplyr::mutate(!!fillColumn_i := factor(shape@data[[fillColumn_i]],
+                                                   levels = names(fillPalette)[1:max(length(unique(shape@data[[fillColumn_i]])),
+                                                                                     length(names(fillPalette)))])) ->
             shape@data
         } else { shape@data %>%
             dplyr::mutate(!!fillColumn_i := as.factor(shape@data[[fillColumn_i]])) -> shape@data}
       }
-    }
   }
 }
 }

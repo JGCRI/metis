@@ -12,7 +12,6 @@
 # 7. Produce Maps
 
 
-
 #----------------------------
 # Install necessary packages
 #----------------------------
@@ -86,7 +85,7 @@ unique(dataGCAM$data$param)
 dataTables<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
 
 # Read in the data from the function metis.readgcam
-rTable <- dataGCAM$data;
+rTable <- dataGCAM$data
 
 regionsSelect=c("Uruguay")
 
@@ -98,7 +97,7 @@ charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
                             scenRef="GCAMOrig", # Default is NULL
                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                             pdfpng="png", # Default is "png"
-                            regionCompareOnly=0, # Default is "0"
+                            regionCompareOnly=1, # Default is "0"
                             useNewLabels=1,
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050) # Default is All
 )
@@ -168,6 +167,13 @@ plot(countryLocalBasin)
 writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste("colombiaLocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
 
+# dataPolygon=countryLocalBasin
+# fillColumn = localBasinsShapeFileColName
+# printFig=F
+# facetsON = F
+# labels=T
+# legendStyle = "cat"
+# fillPalette = eval(parse(text=paste(b[1,2])))
 
 #-----------
 # Boundaries
@@ -466,8 +472,11 @@ scaleRange_i=data.frame(param=c("griddedScarcity"),
 
 numeric2Cat_param <- list("griddedScarcity","param2")
 numeric2Cat_breaks <- list(c(-Inf, 0.1, 0.2, 0.4,Inf),c(0,1,2))
-numeric2Cat_labels <- list(c("None (0<WSI<0.1)","Low (0.1<WSI<0.2)","Moderate (0.2<WSI<0.4)","Severe (WSI>0.4)"),c("a","b","c","d"))
-numeric2Cat_palette <- list(c("pal_ScarcityCat"),c("pal_x"))
+numeric2Cat_labels <- list(c("None (0<WSI<0.1)","Low (0.1<WSI<0.2)","Moderate (0.2<WSI<0.4)","Severe (WSI>0.4)"),
+                           c("a","b","c","d"))
+numeric2Cat_palette <- list(c("pal_ScarcityCat"),
+                            #c("c('None (0<WSI<0.1)'='black','Low (0.1<WSI<0.2)'='blue','Moderate (0.2<WSI<0.4)'='purple','Severe (WSI>0.4)'='yellow')"),
+                            c("Spectral")) # Can be a custom scale or an R brewer paletter or a metis.pal
 numeric2Cat_legendTextSize <- list(c(0.7),c(NULL))
 numeric2Cat_list <-list(numeric2Cat_param=numeric2Cat_param,
                         numeric2Cat_breaks=numeric2Cat_breaks,
