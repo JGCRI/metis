@@ -13,6 +13,7 @@ Imports:
 	RColorBrewer (>= 1.1.2), 
 	rgcam (>= 0.5.0), 
 	tibble (>= 1.4.2),
+	ggalluvial (>= 0.9.1),
 	dplyr (>= 0.7.7), 
 	tmap (>= 2.1.1),
 	ggplot2 (>= 3.1.0), 

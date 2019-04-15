@@ -650,6 +650,10 @@ for(i in unique(tbl$region)){
     fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng
     )
 
+    # data=tbl_rspC1; xData=xData;yData=yData;xLabel=xLabel;yLabel=yLabel;sizeBarLines=sizeBarLines;useNewLabels=useNewLabels;sizeLines=sizeLines; chartType = "bar";
+    # dirOutputs = paste(dirOutputs, "/Charts/", i, "/", j,sep = "");
+    # fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep="");pdfpng=pdfpng
+
     # Line Chart
     metis.chart(tbl_rspC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
       dirOutputs = paste(dirOutputs, "/Charts/", i, "/", j,sep = ""),
@@ -804,7 +808,7 @@ for(i in unique(tbl$region)){
                   class ="scenario", classPalette = classPalette,
         dirOutputs = paste(dirOutputs, "/Charts/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep=""),
-        figWidth = 13*max((length(unique(tbl_rpAgg$scenario))/2),1)*figWMult,pdfpng=pdfpng
+        pdfpng=pdfpng
       )
       }
 

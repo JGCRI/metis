@@ -116,7 +116,7 @@ NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
     GCMRCP->capacity_gw->capacity_mw->cf1971to2100->class1->data_source->datax->est_installed_capacity->
     estimated_generation_gwh->gcamCapacityFactor->generation_gwh_2013->generation_gwh_2014->
     generation_gwh_2015->generation_gwh_2016->
-    owner->region->regionsSelect->rowid->scenarioTethys->scenarioXanthos->country_long->gppd_idnr
+    owner->region->regionsSelect->rowid->scenarioTethys->scenarioXanthos->country_long->gppd_idnr->ctry_name
 
 
 #------------------
@@ -252,7 +252,7 @@ if(!dir.exists(tethysFolder)){
         gridx<-gridx%>%
           dplyr::mutate(param=dplyr::case_when(grepl("nonag",class,ignore.case = T)~paste(param,"_nonAg",sep=""),
                                                grepl("total",class,ignore.case = T)~paste(param,"_total",sep=""),
-                                               TRUE~param),
+                                               TRUE~paste(param,"_indv",sep="")),
                         class=dplyr::case_when(grepl("wddom",class,ignore.case = T)~"Domestic",
                                                grepl("elec",class,ignore.case = T)~"Electric",
                                                grepl("irr",class,ignore.case = T)~"Irrigation",
@@ -267,6 +267,7 @@ if(!dir.exists(tethysFolder)){
         tethysGCMRCP<-gridx %>%
           dplyr::select(scenarioGCM,scenarioRCP) %>% dplyr::distinct()
         tethysGCMRCPs<-dplyr::bind_rows(tethysGCMRCPs,tethysGCMRCP)
+        tethysGCMRCPs<-tethysGCMRCPs[stats::complete.cases(tethysGCMRCPs),]
         tethysYears<-unique(gridx$x)
 
         if(sqliteUSE==T){
@@ -388,6 +389,7 @@ if(!dir.exists(xanthosFolder)){
         xanthosGCMRCP<-gridx %>%
                        dplyr::select(scenarioGCM,scenarioRCP) %>% dplyr::distinct()
         xanthosGCMRCPs<-dplyr::bind_rows(xanthosGCMRCPs,xanthosGCMRCP)
+        xanthosGCMRCPs<-xanthosGCMRCPs[stats::complete.cases(xanthosGCMRCPs),]
         xanthosYears<-unique(gridx$x)
 
         # Apply Lowess Filter
@@ -793,7 +795,7 @@ if(sqliteUSE==T){
 
       print(paste("Extracting data from sqlite database for tethys/xanthos scenarios...",sep=""))
       gridMetisTethys<-gridMetis%>%
-        dplyr::filter(class=="Total" & param=="tethysWatWithdraw" & x %in% commonYears)%>%dplyr::collect()%>%
+        dplyr::filter(class=="Total" & param=="tethysWatWithdraw_total" & x %in% commonYears)%>%dplyr::collect()%>%
         dplyr::rename(valueTethys=value, scenarioTethys=scenario)
       gridMetisXanthos<-gridMetis%>%dplyr::filter(param=="xanthosRunoff" & x %in% commonYears &
                                                     scenarioGCM %in% uniqueGCMs &
@@ -801,6 +803,7 @@ if(sqliteUSE==T){
         dplyr::rename(valueXanthos=value, scenarioXanthos=scenario)
 
       if(!is.null(copySingleTethysScenbyXanthos)){
+        if(length(unique(gridMetisTethys$scenarioTethys))>0){
         if(grepl(copySingleTethysScenbyXanthos,unique(gridMetisTethys$scenarioTethys))){
 
           gridMetisTethysX<-tibble::tibble()
@@ -817,7 +820,7 @@ if(sqliteUSE==T){
           rm(gridMetisTethysX)
           paste("Tethys results for all xanthos GCM and RCPs copied.")
 
-        } else {paste(copySingleTethysScenbyXanthos, " not present in tethys scenarios: ",
+        }} else {paste(copySingleTethysScenbyXanthos, " not present in tethys scenarios: ",
                       paste(unique(gridMetisTethys$scenarioTethys),collapse=", "))}
       }
 
@@ -832,6 +835,17 @@ if(sqliteUSE==T){
         dplyr::select(-valueXanthos,-valueTethys,-scenarioTethys,-scenarioXanthos)%>%
         dplyr::rename(value=scarcity)%>%
         dplyr::filter(!is.na(value));
+
+      scarcityCat<-gridx %>%
+        dplyr::mutate(param = paste(param,"_cat",sep=""),
+                value = dplyr::case_when((value<=0.1) ~ "No (0<WSI<0.1)",
+                                  (value>0.1 & value<=0.2) ~ "Low (0.1<WSI<0.2)",
+                                  (value>0.2 & value<=0.3) ~ "Moderate (0.2<WSI<0.4)",
+                                  (value>0.4) ~ "Severe (WSI>0.4)",
+                                  TRUE~"NA"),
+                classPalette="pal_ScarcityCat");
+
+
       print(paste("Data extracted and saved.",sep=""))
       if(sqliteUSE==T){
         DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
@@ -904,7 +918,6 @@ if(!is.null(gridMetis)){
   }}}else {print(paste("gridMetis is NULL, skipping gridded scracity calculation.",sep=""))}
     } # Close sql Loop
 } # Closing loop to check for tethys and xanthos GCMRCPs
-
 
 #----------------
 # Prepare gridded Population

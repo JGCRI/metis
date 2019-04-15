@@ -4,27 +4,43 @@
 \alias{metis.io}
 \title{metis.io}
 \usage{
-metis.io(Z0 = NULL, D0 = NULL, X0 = NULL, D = NULL, A0 = NULL,
-  dirOutputs = paste(getwd(), "/outputs", sep = ""))
+metis.io(Z0 = NULL, D0 = NULL, X0 = NULL, A0 = NULL,
+  Import0 = NULL, Cap0 = NULL, DNew = NULL, XNew = NULL,
+  ZNew = NULL, ANew = NULL, ZPartial = NULL,
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "")
 }
 \arguments{
-\item{Z0}{Default = NULL,}
+\item{Z0}{Initial Nexus Flows (i.e. Supply sectors which also have demands).Default = NULL,}
 
-\item{D0}{Default = NULL,}
+\item{D0}{Intiial Other flows. (All other sectors which have demands but do not supply resources). Default = NULL,}
 
-\item{X0}{Default = NULL,}
+\item{X0}{Initial Total Demands. Default = NULL,}
 
-\item{D}{Default = NULL,}
+\item{A0}{Initial Intensity Matrix. Default = NULL,}
 
-\item{A0}{Default = NULL,}
+\item{Import0}{Default =NULL,}
+
+\item{Cap0}{Capacity. Default =NULL,}
+
+\item{DNew}{Modified other flows. Default =NULL,}
+
+\item{XNew}{Modified total demands. Default =NULL,}
+
+\item{ZNew}{Modified Nexus flows. Default =NULL,}
+
+\item{ANew}{Modified intensity matrix. Default =NULL,}
+
+\item{ZPartial}{Nexus flows to replace in calibrated dataset. Default =NULL,}
 
 \item{dirOutputs}{Default =paste(getwd(),"/outputs",sep=""),}
+
+\item{nameAppend}{Modified intensity matrix. Default =NULL,}
 }
 \value{
 A table with data by polygon ID for each shapefile provided
 }
 \description{
-This function prepares gridded data for use with other metis modules.
+This function prepares gridded data for use with domestic metis modules.
 }
 \keyword{database,}
 \keyword{gcam}

@@ -34,7 +34,17 @@
 #' \item pal_elec_sec
 #' \item pal_finalNrg_sec
 #' \item pal_pri_ene
-#' \item pal_elec_tech_colors}
+#' \item pal_elec_tech_colors
+#' \item pal_hot
+#' \item pal_wet
+#' \item pal_div_wet
+#' \item pal_div_RdBl
+#' \item pal_green
+#' \item pal_div_BrGn
+#' \item pal_div_BlRd
+#' \item pal_sankey
+#' \item pal_spectral
+#' \item pal_ScarcityCat}
 #' @param palx Palette name to view the palette colors. Eg. metis.colors("pal_Basic")
 #' @keywords colors, palette
 #' @return A list of color palettes.
@@ -58,6 +68,10 @@ metis.colors <- function(palx=NULL) {
     # General purpose color scheme where sequentail colors do not clash too much
     pal_16 <- rep(c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
         "#333333", "#FFCC00", "#CC6600", "#006600", "#3333CC", "#CC0033", "#0099CC", "#999966"),100)
+
+    # Spectral colors
+    pal_spectral <- rep(c("#9E0142", "#D53E4F", "#F46D43", "#FDAE61", "#FEE08B", "#FFFFBF", "#E6F598",
+                          "#ABDDA4", "#66C2A5", "#3288BD", "#5E4FA2"),100)
 
     # Color scheme for electricity generation by aggregate fuel
     elec_tech_colors <- c(`a Coal` = "#a0237c", `b Coal w/CCS` = "#dab4c7", `c Gas` = "#25a9e0", `d Gas w/CCS` = "#84e7f9",
@@ -223,6 +237,16 @@ metis.colors <- function(palx=NULL) {
                 pasture="goldenrod1",otherarable="darkorange4",grass="darkolivegreen1",forest="darkgreen",
                 crops="yellow2",biomass="grey50",naturalOther="grey75")
 
+    pal_sankey <- c(Ag = "forestgreen", import_Ag = "chartreuse",
+                    E = "red", import_E = "orange",
+                    W = "dodgerblue4", import_W = "cadetblue1"); pal_sankey
+
+    pal_ScarcityCat <- c("None (0<WSI<0.1)" = "#3288BD",
+                         "Low (0.1<WSI<0.2)" = "#ABDDA4",
+                         "Moderate (0.2<WSI<0.4)" = "#FDAE61",
+                         "Severe (WSI>0.4)" = "#9E0142"); pal_ScarcityCat
+
+
     if(!is.null(palx)){
     if(length(get(palx))>1){
       a<-get(palx)
@@ -242,5 +266,5 @@ metis.colors <- function(palx=NULL) {
         pal_elec_finalNrgFuel = pal_elec_finalNrgFuel, pal_elec_techs = pal_elec_techs, pal_elec_sec = pal_elec_sec,
         pal_finalNrg_sec = pal_finalNrg_sec, pal_pri_ene = pal_pri_ene, pal_elec_tech_colors = pal_elec_tech_colors,
         pal_hot = pal_hot,pal_wet=pal_wet, pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,pal_green=pal_green,
-        pal_div_BrGn=pal_div_BrGn,pal_div_BlRd=pal_div_BlRd))
+        pal_div_BrGn=pal_div_BrGn,pal_div_BlRd=pal_div_BlRd,pal_sankey=pal_sankey, pal_spectral=pal_spectral, pal_ScarcityCat=pal_ScarcityCat))
 }
