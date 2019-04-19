@@ -5,8 +5,8 @@
 \title{metis.io}
 \usage{
 metis.io(Z0 = NULL, D0 = NULL, X0 = NULL, A0 = NULL,
-  Import0 = NULL, Cap0 = NULL, DNew = NULL, XNew = NULL,
-  ZNew = NULL, ANew = NULL, ZPartial = NULL,
+  priorityZvsA = c(Z0 = 1, A0 = 2), priorityXvsCap = c(X0 = 1, Cap0 =
+  2), Import0 = NULL, Export0 = NULL, Cap0 = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "")
 }
 \arguments{
@@ -18,19 +18,15 @@ metis.io(Z0 = NULL, D0 = NULL, X0 = NULL, A0 = NULL,
 
 \item{A0}{Initial Intensity Matrix. Default = NULL,}
 
+\item{priorityZvsA}{Default = c(Z0=1, A0=2),}
+
+\item{priorityXvsCap}{Default = c(X0=1, Cap0=2)}
+
 \item{Import0}{Default =NULL,}
 
+\item{Export0}{Default =NULL,}
+
 \item{Cap0}{Capacity. Default =NULL,}
-
-\item{DNew}{Modified other flows. Default =NULL,}
-
-\item{XNew}{Modified total demands. Default =NULL,}
-
-\item{ZNew}{Modified Nexus flows. Default =NULL,}
-
-\item{ANew}{Modified intensity matrix. Default =NULL,}
-
-\item{ZPartial}{Nexus flows to replace in calibrated dataset. Default =NULL,}
 
 \item{dirOutputs}{Default =paste(getwd(),"/outputs",sep=""),}
 

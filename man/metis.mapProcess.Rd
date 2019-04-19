@@ -146,10 +146,6 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{facetLabelSizeMulti}{Default =3}
 
 \item{numeric2Cat_list}{Default=NULL,}
-
-\item{scaleRange}{Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.}
-
-\item{paramsSelect}{Default ="All"}
 }
 \value{
 Returns the formatted data used to produce chart
