@@ -24,7 +24,6 @@ if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggaa
 library(ggalluvial)
 
 
-
 #-------------
 # Workflow for Metis I/O Analysis
 
@@ -34,13 +33,6 @@ Z0=tibble::tribble( # Initial Flows
   "W"     ,    0,           50,   100,
   "E"     ,    20,          0,     10,
   "Ag"    ,     0,          5,     0);Z0
-
-# Small Example
-ZPartial=tibble::tribble( # Initial Flows
-  ~sector ,    ~W,         ~E,   ~Ag,
-  "W"     ,    0,           50,   100,
-  "E"     ,    40,          0,     10,
-  "Ag"    ,     0,          5,     0);ZPartial
 
 
 A0=tibble::tribble( # Initial Flows
@@ -67,29 +59,52 @@ Cap0=tibble::tribble( # Initial total demand
 
 Import0=tibble::tribble( # Initial total demand
   ~sector, ~import,
-  "W",    20,
+  "W",    1000,
   "E",    30,
-  "Ag",   30
+  "Ag",   0
 );Import0
 
+Export0=tibble::tribble( # Initial total demand
+  ~sector, ~export,
+  "W",    5000,
+  "E",    0,
+  "Ag",   0
+);Export0
+
 X0=tibble::tribble( # Initial total demand
-  ~sector, ~processed,
-  "W",    140,
-  "E",    220,
-  "Ag",   300
+  ~sector, ~localProduction,
+  "W",    320,
+  "E",    225,
+  "Ag",   220
 );X0
 
 
-io1<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg1"); io1$sol_Orig1; io1$A_Orig1; A0; D0
-io2<-metis.io(A0=A0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg2"); io2$sol_Orig1; io2$A_Orig1; A0; X0
-io3<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg3"); io3$sol_Orig1; io3$A_Orig1; Z0;D0
-io4<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg4"); io4$sol_Orig1; io4$A_Orig1; Z0;X0
-#io5<-metis.io(X0=X0,Z0=Z0,ANew=ANew, DNew=DNew, XNew=XNew, ZNew=ZNew, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg"); io5$sol_Orig1
+io1<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, nameAppend = "_smallEg1"); io1$sol_Output%>%as.data.frame(); io1$A_Output%>%as.data.frame(); Z0;D0; io1$ioTblImports_Output%>%as.data.frame()
+io2<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, nameAppend = "_smallEg2"); io2$sol_Output%>%as.data.frame(); io2$A_Output%>%as.data.frame(); Z0;X0; io2$ioTblImports_Output%>%as.data.frame()
+io3<-metis.io(A0=A0,D0=D0, Cap0=Cap0, nameAppend = "_smallEg3"); io3$sol_Output%>%as.data.frame(); io3$A_Output%>%as.data.frame(); A0; D0; io3$ioTblImports_Output%>%as.data.frame()
+io4<-metis.io(A0=A0,X0=X0, Cap0=Cap0, nameAppend = "_smallEg4"); io4$sol_Output%>%as.data.frame(); io4$A_Output%>%as.data.frame(); A0; X0; io4$ioTblImports_Output%>%as.data.frame()
+# Combinations of only A0 & Z0 or D0 & X0 not enogh to solve for nexus flows.
+#io5<-metis.io(D0=D0,X0=X0, Cap0=Cap0, Export0=Export0, Import0=Import0,nameAppend = "_smallEg5"); io5$sol_Output%>%as.data.frame(); io5$A_Output%>%as.data.frame(); Z0;X0; io5$ioTblImports_Output%>%as.data.frame()
+#io6<-metis.io(A0=A0,Z0=Z0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEg6"); io6$sol_Output%>%as.data.frame(); io6$A_Output%>%as.data.frame(); Z0;X0; io6$ioTblImports_Output%>%as.data.frame()
 
-io1$sol_Orig1;
-io2$sol_Orig1;
-io3$sol_Orig1;
-io4$sol_Orig1;
+# With Exports
+io1<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, Export0=Export0, nameAppend = "_smallEgExp1"); io1$sol_Output%>%as.data.frame(); io1$A_Output%>%as.data.frame(); Z0;D0; io1$ioTblImports_Output%>%as.data.frame()
+io2<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Export0=Export0, nameAppend = "_smallEgExp2"); io2$sol_Output%>%as.data.frame(); io2$A_Output%>%as.data.frame(); Z0;X0; io2$ioTblImports_Output%>%as.data.frame()
+io3<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Export0=Export0, nameAppend = "_smallEgExp3"); io3$sol_Output%>%as.data.frame(); io3$A_Output%>%as.data.frame(); A0; D0; io3$ioTblImports_Output%>%as.data.frame()
+io4<-metis.io(A0=A0,X0=X0, Cap0=Cap0, Export0=Export0, nameAppend = "_smallEgExp4"); io4$sol_Output%>%as.data.frame(); io4$A_Output%>%as.data.frame(); A0; X0; io4$ioTblImports_Output%>%as.data.frame()
+
+# With Imports
+io1<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEgImp1"); io1$sol_Output%>%as.data.frame(); io1$A_Output%>%as.data.frame(); Z0;D0; io1$ioTblImports_Output%>%as.data.frame()
+io2<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEgImp2"); io2$sol_Output%>%as.data.frame(); io2$A_Output%>%as.data.frame(); Z0;X0; io2$ioTblImports_Output%>%as.data.frame()
+io3<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEgImp3"); io3$sol_Output%>%as.data.frame(); io3$A_Output%>%as.data.frame(); A0; D0; io3$ioTblImports_Output%>%as.data.frame()
+io4<-metis.io(A0=A0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_smallEgImp4"); io4$sol_Output%>%as.data.frame(); io4$A_Output%>%as.data.frame(); A0; X0; io4$ioTblImports_Output%>%as.data.frame()
+
+# With Exports & Imports
+io1<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, Export0=Export0, Import0=Import0,nameAppend = "_smallEgImpExp1"); io1$sol_Output%>%as.data.frame(); io1$A_Output%>%as.data.frame(); Z0;D0; io1$ioTblImports_Output%>%as.data.frame()
+io2<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Export0=Export0, Import0=Import0,nameAppend = "_smallEgImpExp2"); io2$sol_Output%>%as.data.frame(); io2$A_Output%>%as.data.frame(); Z0;X0; io2$ioTblImports_Output%>%as.data.frame()
+io3<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Export0=Export0, Import0=Import0,nameAppend = "_smallEgImpExp3"); io3$sol_Output%>%as.data.frame(); io3$A_Output%>%as.data.frame(); A0; D0; io3$ioTblImports_Output%>%as.data.frame()
+io4<-metis.io(A0=A0,X0=X0, Cap0=Cap0, Export0=Export0, Import0=Import0,nameAppend = "_smallEgImpExp4"); io4$sol_Output%>%as.data.frame(); io4$A_Output%>%as.data.frame(); A0; X0; io4$ioTblImports_Output%>%as.data.frame()
+
 
 
 #---------------------
@@ -200,7 +215,7 @@ Import0=tibble::tribble( # Initial total demand
 );Import0
 
 X0=tibble::tribble( # Initial total demand
-  ~sector ,    ~processed,        ~scenario,  ~subRegion,  ~year,
+  ~sector ,    ~localProduction,        ~scenario,  ~subRegion,  ~year,
   "W"     ,    1000,           "ScenA",   "SubRegA",  2010,
   "E"     ,    130,          "ScenA",   "SubRegA",  2010,
   "W"     ,    10,           "ScenB",   "SubRegA",  2010,
@@ -220,11 +235,11 @@ X0=tibble::tribble( # Initial total demand
 );X0
 
 
-io0<-metis.io(A0=A0,D0=D0, Cap0=Cap0, nameAppend = "_multiEg0"); io0$sol_Orig1;
-io1<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg1"); io1$sol_Orig1; io1$A_Orig1; A0; D0
-io2<-metis.io(A0=A0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg2"); io2$sol_Orig1%>%as.data.frame; io2$A_Orig1; A0; X0
-io3<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg3"); io3$sol_Orig1; io3$A_Orig1; Z0;D0
-io4<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg4"); io4$sol_Orig1; io4$A_Orig1; Z0;X0
+io0<-metis.io(A0=A0,D0=D0, Cap0=Cap0, nameAppend = "_multiEg0"); io0$sol_Output;
+io1<-metis.io(A0=A0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg1"); io1$sol_Output; io1$A_Output; A0; D0
+io2<-metis.io(A0=A0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg2"); io2$sol_Output%>%as.data.frame; io2$A_Output; A0; X0
+io3<-metis.io(Z0=Z0,D0=D0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg3"); io3$sol_Output; io3$A_Output; Z0;D0
+io4<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg4"); io4$sol_Output; io4$A_Output; Z0;X0
 
 
 #--------------------------------
@@ -235,13 +250,13 @@ io4<-metis.io(Z0=Z0,X0=X0, Cap0=Cap0, Import0=Import0,nameAppend = "_multiEg4");
 #Water_E
 #Water_Ag
 #Water_domestic
-#Water_processed
+#Water_localProduction
 
 # Demeter + GCAM (Ag Demands)
-#Ag_processed # Ag All
+#Ag_localProduction # Ag All
 
 # GCAM (Elec Demands)
-#E_processed # Buildings, Industry, Transport
+#E_localProduction # Buildings, Industry, Transport
 
 
 dataTables<-c(paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Colombia_subBasin_origDownscaled_local.csv",sep=""))
@@ -257,7 +272,7 @@ a1 <- a %>%
   dplyr::left_join(data.frame(subRegion=r[3:5],subRegionN=c("bermejo1","bermejo2","sanFransisco"))) %>%
   dplyr::mutate(subRegion=subRegionN, region="Argentina") %>% dplyr::select(-subRegionN) %>%
   dplyr::left_join(data.frame(class=c("Domestic", "Electric", "Irrigation", "Livestock", "Manufacturing","Mining", "Total", "Runoff"),
-                              ioClass=c("domestic","E","Ag","domestic","domestic","domestic","processed","cap"),
+                              ioClass=c("domestic","E","Ag","domestic","domestic","domestic","localProduction","cap"),
                               sector=c("W","W","W","W","W","W","W","W"))) %>%
   dplyr::left_join(data.frame(scenario=c("Eg1_NA_NA","gfdl-esm2m_rcp4p5_NA_NA"),
                               scenarioN=c("Scenario_Ref","Scenario_Impact"))) %>%
@@ -295,23 +310,23 @@ z1 <- z %>%
                     E=E*2*runif(1),
                     W=0));z1
 
-x <- tidyr::spread(a1 %>% filter(ioClass %in% c("processed")), key=ioClass, value=value);x
+x <- tidyr::spread(a1 %>% filter(ioClass %in% c("localProduction")), key=ioClass, value=value);x
 x <- x %>% bind_rows(x %>%
                        mutate(scenario="Scenario_Impact",
-                                       processed=processed*2*runif(1)));x
+                                       localProduction=localProduction*2*runif(1)));x
 
 x1 <- x %>%
-  mutate(param="processed", units="m3") %>%
+  mutate(param="localProduction", units="m3") %>%
   bind_rows(x %>%
               mutate(sector="E",
                      units="TWh",
-                     param="processed",
-                     processed=processed*3*runif(1))) %>%
+                     param="localProduction",
+                     localProduction=localProduction*3*runif(1))) %>%
   bind_rows(x %>%
               mutate(sector="Ag",
                      units="kg",
-                     param="processed",
-                     processed=processed*2*runif(1))); x1
+                     param="localProduction",
+                     localProduction=localProduction*2*runif(1))); x1
 
 cap <- tidyr::spread(a1 %>% filter(ioClass %in% c("cap")), key=ioClass, value=value);cap
 cap <- cap %>% bind_rows(cap %>%
@@ -347,53 +362,7 @@ X0=x1;
 ZPartial=z1
 Cap0=cap1
 
-io<-metis.io(A0=A0,X0=X0,ZPartial=NULL,nameAppend = "_test")
-io$A_Orig
-
-z1
-
-ZPartial=tibble::tribble( # Known Flows
-  ~sector ,    ~W,       ~E,     ~ Ag,
-  "W"     ,    NA,         NA,       20,
-  "E"     ,    NA,         NA,      NA,
-  "Ag"    ,    NA,         NA,      NA);ZPartial
+io<-metis.io(A0=A0,X0=X0,nameAppend = "_test")
 
 
-ioCal<-metis.io(A0=A0,ZPartial=ZPartial,X0=X0)
-ioCal$sol_Orig
-ioCal$sol_ZPartial
-
-# Problem 2.1
-Z0=tibble::tribble( # Initial Flows
-  ~sector ,    ~Wgw,      ~Ws, ~ W,   ~Ebio, ~ Esol, ~ E,
-  "Wgw"   ,    0,         0,    0.5,  0,         0,    0,
-  "Ws"    ,    0,         0,    0.5,  0,         0,    0,
-  "W"     ,    0,         0,    0,    0.5,       0.5,   0,
-  "Ebio"  ,    0,         0,    0,    0,         0,    0.3,
-  "Esol"  ,    0,         0,    0,    0,         0,    0.7,
-  "E"     ,    0,         0,    0.1,    0,         0,    0);Z0
-
-A0=tibble::tribble( # Initial Flows
-  ~sector ,    ~Wgw,      ~Ws, ~ W,   ~Ebio, ~ Esol, ~ E,
-  "Wgw"   ,    0,         0,    0.5,  0,         0,    0,
-  "Ws"    ,    0,         0,    0.5,  0,         0,    0,
-  "W"     ,    0,         0,    0,    1,         1,    0,
-  "Ebio"  ,    0,         0,    0,    0,         0,    1,
-  "Esol"  ,    0,         0,    0,    0,         0,    0,
-  "E"     ,    0,         0,    10,   0,         0,    0);A0
-
-D0=tibble::tribble( # Initial processed demand
-  ~processed,
-  0,
-  0,
-  1,
-  0,
-  0,
-  1
-);D0
-
-
-io<-metis.io(Z0=Z0,D0=D0,D=c(0,0,1,0,0,0))
-io$A
-io$L
 

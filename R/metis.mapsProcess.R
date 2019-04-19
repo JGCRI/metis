@@ -43,13 +43,11 @@
 #' @param extendedShape Default =NULL,
 #' @param extendedShapeCol Default =NULL,
 #' @param expandPercent Default =2
-#' @param scaleRange Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.
 #' @param paramsSelect Default ="All"
 #' @param projX Default = projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
 #' @param figWidth Default =9
 #' @param figHeight Default =7
 #' @param scaleRange Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.
-#' @param paramsSelect Default ="All"
 #' @param indvScenarios Default =T,
 #' @param GCMRCPSSPPol Default = F,
 #' @param multiFacetCols Default ="scenarioRCP",
