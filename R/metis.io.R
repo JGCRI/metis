@@ -660,7 +660,7 @@ print(paste("Solving for scenario: ", scenario_i, ", year:", year_i, " and sub-r
     dplyr::filter(scenario==scenario_i); A_mat
 
   A_matx <- A_mat %>%
-    tidyr::gather(-c("sector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
+    tidyr::gather(-c("sector",addedColumns[addedColumns %in% names(A_mat)]),key="sectorTo",value="value") %>%
     dplyr::rename (sectorFrom=sector) %>%
     dplyr::arrange(sectorFrom) %>%
     dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)); A_matx
