@@ -1,5 +1,7 @@
 
 
+
+
 #-----------------------------
 # Over all steps
 #-----------------------------
@@ -37,82 +39,11 @@ library(tools)
 
 
 
-#----------------------------
-# Read GCAM Data
-#---------------------------
-
-# ?metis.readgcam # For more help
-
-# Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech", "elecCapBySubsector",
-               "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
-               "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
-               "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-               "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS",
-               "finalNrgbySecDet","finalElecbySecDet","finalElecbyServiceDet")
-
-
-gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
-gcamdatabaseName <-"database_basexdb_Uruguay"
-gcamdataProjFile <-"Uruguay_dataProj.proj"
-regionsSelect <- c("Uruguay")
-
-#dataProjLoaded <- loadProject(paste(gcamdatabasePath, "/", gcamdataProjFile, sep = ""))
-#listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
-#queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
-
-dataGCAM<-metis.readgcam(reReadData=F, # Default Value is T
-                                 dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
-                                 scenOrigNames=c("GCAMOrig"),
-                                 scenNewNames=c("GCAMOrig"),
-                                 gcamdatabasePath=gcamdatabasePath,
-                                 gcamdatabaseName=gcamdatabaseName,
-                                 queryxml="metisQueries.xml",  # Default Value is "metisQueries.xml"
-                                 dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
-                                 regionsSelect=regionsSelect, # Default Value is NULL
-                                 paramsSelect="All" # Default value is "All"
-)
-
-
-dataGCAM # To view the data read that was read.
-dataGCAM$data
-unique(dataGCAM$data$param)
-
-#----------------------------
-# Produce Data Charts
-#---------------------------
-
-# Read in Tables (If exist)
-dataTables<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
-
-# Read in the data from the function metis.readgcam
-rTable <- dataGCAM$data;
-
-regionsSelect=c("Uruguay")
-
-charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
-                            dataTables=dataTables, # Default is NULL
-                            paramsSelect=paramsSelect, # Default is "All"
-                            regionsSelect=regionsSelect, # Default is "All"
-                            xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
-                            scenRef="GCAMOrig", # Default is NULL
-                            dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
-                            pdfpng="png", # Default is "png"
-                            regionCompareOnly=0, # Default is "0"
-                            useNewLabels=1,
-                            xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050) # Default is All
-)
-
-
-
 #------------
 # Prepare Polygons
 #----------------
 
-countryName= "Uruguay"
-localBasinShapeFileFolder = paste(getwd(),"/dataFiles/gis/shapefiles_Uruguay",sep="")
-localBasinShapeFile = "c097Polygon"
-localBasinsShapeFileColName = "codcuenca" # Will need to load the file to see which name this would be
+countryName= "Argentina"
 countryName <- tools::toTitleCase(countryName); countryName
 
 
@@ -128,7 +59,7 @@ NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
 if(!countryName %in% unique(NE0@data$NAME)){stop(print(paste(countryName, " not in NE0 countries. Please check data.", sep="")))}
 
 countryNE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-                     layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
+                    layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
 countryNE0<-countryNE0[(countryNE0$NAME==countryName),]
 head(countryNE0@data)
 plot(countryNE0)
@@ -157,16 +88,6 @@ head(countryGCAMBasin@data)
 plot(countryGCAMBasin)
 writeOGR(obj=countryGCAMBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"GCAMBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 metis.map(dataPolygon=countryGCAMBasin,fillColumn = "basin_name",printFig=F,facetsON = F, labels=T, legendStyle = "cat")
-
-
-# Local basin Shapefiles
-countryLocalBasin<-readOGR(dsn=localBasinShapeFileFolder,
-                            layer=localBasinShapeFile,use_iconv=T,encoding='UTF-8')
-countryLocalBasin<-spTransform(countryLocalBasin,CRS(projX))
-head(countryLocalBasin@data)
-plot(countryLocalBasin)
-writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste("colombiaLocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
-metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
 
 
 #-----------
