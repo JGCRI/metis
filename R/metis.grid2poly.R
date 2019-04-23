@@ -59,6 +59,8 @@ metis.grid2poly<- function(grid=NULL,
   # Check input data format
   #---------------
 
+  paramScenarios<-tibble::tibble()
+
   if(sqliteUSE==T){
     paste("Using SQLite database...",sep="")
     if(!file.exists(sqliteDBNamePath)){stop("SQLite file path provided does not exist: ", sqliteDBNamePath, sep="")}
@@ -96,7 +98,8 @@ metis.grid2poly<- function(grid=NULL,
           print(paste("Attempting to read grid csv file ",grid,sep=""))
           if(file.exists(grid)){
             grid<-data.table::fread(grid)
-            grid<-grid%>%unique()}else{
+            grid<-grid%>%unique()
+            }else{
               stop(paste("Grid file ",grid," does not exist",sep=""))
             }
         }else{
@@ -119,11 +122,34 @@ metis.grid2poly<- function(grid=NULL,
       if(any(!c("lat","lon","value","param","scenario") %in% names(grid))){
         stop(paste(grid," should have columns lon, lat, value, param and scenario. Missing columns: ",
                    names(grid)[!names(grid) %in% c("lat","lon","value")]))
-      } else {params=unique(grid$param)
-      scenarios=unique(grid$scenario)}
+      } else {
+        grid <- grid %>% ungroup()
+        params <- unique(grid$param)
+        for(param_i in params){
+          print(paste("Finding unique scenarios in grid for param: ",param_i,"...",sep=""))
+          scenarios<-grid%>%dplyr::filter(param==param_i)%>%dplyr::distinct(scenario);
+          scenarios=scenarios$scenario
+          paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
+          print(paste("Unique scenarios found : ", paste(scenarios,collapse=", "),sep=""))
+        }
+        paramScenarios<-paramScenarios%>%unique()
+        print("paramScenarios found: ")
+        print(paramScenarios)
+        scenarios<-unique(paramScenarios$scenario)
+
+        }
     } # If !is.null(grid)
 
   } # if not using sqlLite
+
+  # Check Scenarios
+  if(nrow(paramScenarios)>0){
+    if(any(is.na(unique(paramScenarios$scenario)))){
+      print("Removing NA scenarios. Remaining Scenarios:")
+      paramScenarios <- paramScenarios %>% filter(!is.na(scenario))
+      print(paramScenarios)
+    }
+  }
 
   #----------------
   # Load Shapefile and save boundary maps
