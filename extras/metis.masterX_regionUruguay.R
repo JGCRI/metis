@@ -151,7 +151,8 @@ metis.map(dataPolygon=countryNE1,fillColumn = "name",printFig=F, facetsON = F, l
 GCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
                    layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
 GCAMBasin<-spTransform(GCAMBasin,CRS(projX))
-countryGCAMBasin<-raster::crop(GCAMBasin,countryNE0)
+countryGCAMBasin<-raster::crop(GCAMBasin,countryNE1)
+countryLocalBasin@data <- droplevels(countryLocalBasin@data)
 head(countryGCAMBasin@data)
 plot(countryGCAMBasin)
 writeOGR(obj=countryGCAMBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"GCAMBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
@@ -162,10 +163,12 @@ metis.map(dataPolygon=countryGCAMBasin,fillColumn = "basin_name",printFig=F,face
 countryLocalBasin<-readOGR(dsn=localBasinShapeFileFolder,
                             layer=localBasinShapeFile,use_iconv=T,encoding='UTF-8')
 countryLocalBasin<-spTransform(countryLocalBasin,CRS(projX))
+countryLocalBasin<-raster::crop(countryLocalBasin,countryNE1)
+countryLocalBasin@data <- droplevels(countryLocalBasin@data)
 head(countryLocalBasin@data)
 plot(countryLocalBasin)
-writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste("colombiaLocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
-metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
+writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+metis.map(dataPolygon=countryLocalBasin,label,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
 
 # dataPolygon=countryLocalBasin
 # fillColumn = localBasinsShapeFileColName
