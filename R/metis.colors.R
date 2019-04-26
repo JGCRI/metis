@@ -28,13 +28,8 @@
 #' \item pal_Absolute
 #' \item pal_Absolute5
 #' \item pal_Unassigned
-#' \item pal_elec_subsec
-#' \item pal_elec_finalNrgFuel
-#' \item pal_elec_techs
-#' \item pal_elec_sec
-#' \item pal_finalNrg_sec
 #' \item pal_pri_ene
-#' \item pal_elec_tech_colors
+#' \item pal_nrg
 #' \item pal_hot
 #' \item pal_wet
 #' \item pal_div_wet
@@ -170,53 +165,62 @@ metis.colors <- function(palx=NULL) {
     pal_seq <- c('lemonchiffon1','burlywood1','orange1','red1','purple4','black')
 
 
-    # Color scheme for electricity generation by aggregate fuel
-    pal_elec_subsec <- c(coal = "#a0237c", gas = "#25a9e0", oil = "#d01c2a", biomass = "#00931d",
-        nuclear = "#ef8e27", geothermal = "#ad440c", hydro = "#fdfa28", wind = "#0000ff", solar = "#fdd67b",
-        `refined liquids` = "#000000", electricity = "lavender", other = "grey70", `gas (CC CCS)` = "#25c9e0",
-        `gas (CC)` = "#25a9e0", `gas (CT)` = "#25e9e0", `gas (steam)` = "greenyellow")
-
-    # Color scheme for final energy by fuel
-    pal_elec_finalNrgFuel <- c(`3 coal` = "#a0237c", `2 gas` = "#25a9e0", `4 biomass` = "#00931d",
-        `1 liquids` = "#000000", `5 electricity` = "lavender", `6 hydrogen` = "orange", "grey60")
-
-    pal_elec_techs <- c(nuclear = "#af8e27", Gen_III = "#af8e27", Gen_II_LWR = "#ef8e27", CSP = "#cdd67b",
-        PV = "#fdd67b", `biomass (IGCC CCS)` = "#00a31d", `biomass (IGCC)` = "#00c31d", `biomass (conv CCS)` = "#00e31d",
-        `biomass (conv)` = "#00f31d", `coal (IGCC CCS)` = "#c0237c", `coal (IGCC)` = "#f0237c", `coal (conv pul CCS)` = "#e0237c",
-        `coal (conv pul)` = "#a0237c", `gas (CC CCS)` = "#25c9e0", `gas (CC)` = "#25a9e0", `gas (CT)` = "#25e9e0",
-        `gas (steam)` = "greenyellow", hydro = "#fdfa28", `refined liquids` = "#000000", `refined liquids (CC CCS)` = "#000000",
-        `refined liquids (CC)` = "#000000", `refined liquids (CT)` = "#000000", `refined liquids (steam)` = "#000000",
-        wind = "#0000ff", "red", "green", geothermal = "gray40")
-
-
-    pal_elec_sec <- c(elect_td_bld = "#ff230e", elect_td_ind = "darkolivegreen4", elect_td_trn = "dodgerblue",
-        electricity = "#ea9219")
-
-
-    pal_finalNrg_sec <- c(building = "#facda4", `comm non-building` = "#ff230e", industry = "#cef4d1",
-        transportation = "#d0f6f7", trn_pass_road_bus = "purple",buildings = "#facda4", electricity="lightcoral",
-        `LUC Emission`="grey30",`LUC Absorption`="darkolivegreen4")
-
-
-    # Modified Original GCAM color scheme for Primary energy consumption Modified the 'Primary energy
-    # colors including CCS - pal_pri_ene' color scheme from color_scheme.R Changed hydro to current
-    # wind color(blue), switched solar to current hydro color(yellow) switched wind to current solar
-    # color (biege), switched gas & gas CCS too a lighter blue because hydro and gas were too similar
-    pal_pri_ene <- c(`a oil` = "#d01c2a", `a oil CCS` = "#f7988f", `b natural gas` = "darkslategray1",
-        `b natural gas CCS` = "darkslategray4", `c coal` = "gray60", `c coal CCS` = "gray20", `d biomass` = "#00931d",
-        `d biomass CCS` = "#88c892", `e nuclear` = "#ef8e27", `f hydro` = "#3d86f9", `g wind` = "#fdd67b",
-        `h solar` = "#fdfa28", `i geothermal` = "#ad440c", `j traditional biomass` = "#11d081", `energy reduction` = "black")
-
-    # Modified color scheme for elec Modified the 'Primary energy colors including CCS - pal_pri_ene'
-    # color scheme from color_scheme.R Changed hydro to current wind color(blue), switched solar to
-    # current hydro color(yellow) switched wind to current solar color (biege), switched gas & gas CCS
-    # too a lighter blue because hydro and gas were too similar switched coal to grays and changed
-    # energy reduction to black
-    pal_elec_tech_colors <- c(`a Coal` = "gray60", `b Coal w/CCS` = "gray20", `c Gas` = "darkslategray1",
-        `d Gas w/CCS` = "darkslategray4", `e Oil` = "#d01c2a", `f Oil w/CCS` = "#f7988f", `g Biomass` = "#00931d",
-        `h Biomass w/CCS` = "#88c892", `i Nuclear` = "#ef8e27", `j Geothermal` = "#ad440c", `k Hydro` = "#3d86f9",
-        `l Wind` = "#fdd67b", `m Solar` = "#fdfa28", `n CHP` = "#507fab", `o Battery` = "#92a75d",
-        `energy reduction` = "grey", Total = "black", Other = "black")
+    pal_nrg <- c(`a Coal` = "gray40",  `c coal` = "gray40", `3 coal` = "gray40", coal = "gray40", `coal (conv pul)` = "gray40",
+                  Coal = "gray40",
+                 `b Coal w/CCS` = "gray20", `c coal CCS` = "gray20",
+                 `coal (IGCC CCS)` = "#c0237c",
+                 `coal (IGCC)` = "#f0237c",
+                 `coal (conv pul CCS)` = "#e0237c",
+                 `c Gas` = "darkslategray1", `b natural gas` = "darkslategray1", `2 gas` = "darkslategray1", Gas = "darkslategray1",
+                 gas = "darkslategray1", `gas (CC)` = "darkslategray1",
+                 `d Gas w/CCS` = "darkslategray4", `b natural gas CCS` = "darkslategray4",
+                 `gas (CC CCS)` = "#25c9e0",
+                 `gas (CT)` = "#25e9e0",
+                 `gas (steam)` = "greenyellow",
+                 `e Oil` = "firebrick4", `a oil` = "firebrick4", oil = "firebrick4", Oil = "firebrick4",
+                 `refined liquids` = "firebrick4", `refined liquids (steam)` = "firebrick4", `1 liquids` = "firebrick4",
+                 `refined liquids (CC)` = "firebrick4", `refined liquids (CT)` = "firebrick4",
+                 `refined liquids (CC CCS)` = "#f7988f", `f Oil w/CCS` = "#f7988f", `a oil CCS` = "#f7988f",
+                 `g Biomass` = "#00931d", `d biomass` = "#00931d",  biomass = "#00931d",  Biomass = "#00931d",
+                 `biomass (IGCC CCS)` = "#00a31d", `4 biomass` = "#00a31d",
+                 `biomass (IGCC)` = "#00c31d",
+                 `biomass (conv CCS)` = "#00e31d",
+                 `biomass (conv)` = "#00f31d",
+                  biofuel = "darkolivegreen1", Biofuel = "darkolivegreen1",
+                 `j traditional biomass` = "#11d081",
+                 `h Biomass w/CCS` = "#88c892", `d biomass CCS` = "#88c892",
+                 `i Nuclear` = "#ef8e27", `e nuclear` = "#ef8e27", nuclear = "#ef8e27", Gen_II_LWR = "#ef8e27",
+                  Gen_III = "#af8e27",
+                 `j Geothermal` = "darkmagenta", `i geothermal` = "darkmagenta", geothermal = "darkmagenta", Geothermal = "darkmagenta",
+                 `k Hydro` = "#3d86f9", `f hydro` = "#3d86f9", hydro = "#3d86f9", Hydro = "#3d86f9",
+                 `l Wind` = "#fdd67b", `g wind` = "#fdd67b",  wind = "#fdd67b", Wind = "#fdd67b",
+                 `m Solar` = "#fdfa28", `h solar` = "#fdfa28", solar = "#fdfa28", Solar = "#fdfa28",
+                  CSP = "#cdd67b",
+                  PV = "#fdd67b",
+                 `n CHP` = "#507fab",
+                 #---------------
+                 # Other
+                 #--------------
+                 `heat`="darkslategray",
+                 `6 hydrogen` = "orange", `hydrogen` = "orange",
+                 `o Battery` = "#92a75d",
+                 `energy reduction` = "grey",
+                 `Total` = "black", `total` = "black",
+                 `Other` = "grey70", other = "grey70",
+                 `Electricity` = "lavender", electricity="lavender", `5 electricity` = "lavender",
+                 #---------------
+                 # Sectors
+                 #--------------
+                 `building` = "#facda4", buildings = "#facda4", elect_td_bld = "#facda4",
+                 `comm non-building` = "#ff230e",
+                 `industry` = "#cef4d1", elect_td_ind = "#cef4d1",
+                 `transportation` = "#d0f6f7", `transport` = "#d0f6f7", elect_td_trn = "#d0f6f7",
+                 `trn_pass_road_bus` = "purple",
+                 #---------------
+                 # Emissions
+                 #--------------
+                 `LUC Emission`="grey30",
+                 `LUC Absorption`="darkolivegreen4")
 
 
     # Agriculture Production Type
@@ -262,9 +266,8 @@ metis.colors <- function(palx=NULL) {
         enduse_colors = enduse_colors, pal_pri_ene = pal_pri_ene, pal_pri_fuelcost = pal_pri_fuelcost,
         pal_emiss_sector = pal_emiss_sector, pal_landuse = pal_landuse, pal_hydrogen = pal_hydrogen,
         pal_refliq = pal_refliq, emiss_by_enduse_colors = emiss_by_enduse_colors, biouse_colors = biouse_colors,
-        pal_Basic = pal_Basic, pal_Gas = pal_Gas, pal_elec_subsec = pal_elec_subsec,
-        pal_elec_finalNrgFuel = pal_elec_finalNrgFuel, pal_elec_techs = pal_elec_techs, pal_elec_sec = pal_elec_sec,
-        pal_finalNrg_sec = pal_finalNrg_sec, pal_pri_ene = pal_pri_ene, pal_elec_tech_colors = pal_elec_tech_colors,
+        pal_Basic = pal_Basic, pal_Gas = pal_Gas, pal_nrg = pal_nrg,
+        pal_pri_ene = pal_pri_ene,
         pal_hot = pal_hot,pal_wet=pal_wet, pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,pal_green=pal_green,
         pal_div_BrGn=pal_div_BrGn,pal_div_BlRd=pal_div_BlRd,pal_sankey=pal_sankey, pal_spectral=pal_spectral, pal_ScarcityCat=pal_ScarcityCat))
 }

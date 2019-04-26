@@ -42,13 +42,8 @@ List of Color Palettes
 \item pal_Absolute
 \item pal_Absolute5
 \item pal_Unassigned
-\item pal_elec_subsec
-\item pal_elec_finalNrgFuel
-\item pal_elec_techs
-\item pal_elec_sec
-\item pal_finalNrg_sec
 \item pal_pri_ene
-\item pal_elec_tech_colors
+\item pal_nrg
 \item pal_hot
 \item pal_wet
 \item pal_div_wet
