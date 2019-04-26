@@ -316,17 +316,19 @@ grid2polyX<-metis.grid2poly(grid=dataBia,
   sqliteUSE = sqliteUSE_i,
   sqliteDBNamePath = sqliteDBNamePath_i)
 
-grid = dataBia
-boundaryRegionsSelect=boundaryRegionsSelect_i
-subRegShpFolder=subRegShpFolder_i
-subRegShpFile=subRegShpFile_i
-subRegCol=subRegCol_i
-subRegType = subRegType_i
-aggType=aggType_i
-nameAppend=nameAppend_i
-paramsSelect = paramsSelect_i
-sqliteUSE = sqliteUSE_i
-sqliteDBNamePath = sqliteDBNamePath_i
+# grid = dataBia
+# boundaryRegionsSelect=boundaryRegionsSelect_i
+# subRegShpFolder=subRegShpFolder_i
+# subRegShpFile=subRegShpFile_i
+# subRegCol=subRegCol_i
+# subRegType = subRegType_i
+# aggType=aggType_i
+# nameAppend=nameAppend_i
+# paramsSelect = paramsSelect_i
+# sqliteUSE = sqliteUSE_i
+# sqliteDBNamePath = sqliteDBNamePath_i
+
+
 
 #grid_i=gridMetis
 #grid_i=paste(getwd(),"/outputs/Grids/gridMetisXanthos.RData",sep = "")
