@@ -87,7 +87,7 @@ if(!is.null(ioTable)){
       mutate(!!column_i := 0)}}
   if(!any(grepl("total",colnames(ioTable),ignore.case = T))){
     ioTable <- ioTable %>%
-    dplyr::mutate(total=rowSums(select(.,-c(nonFlowColsAll[nonFlowColsAll!="total"])),na.rm=T))
+    dplyr::mutate(total=rowSums(select(.,-c(names(ioTable)[names(ioTable)!="total"])),na.rm=T))
     } else {names(ioTable)[names(ioTable) %in% c("total","Total","TOTAL")]<-"total"}
   sectors <- ioTable %>% dplyr::select(supplySector) %>% unique()
   subRegions <- unique(ioTable$subRegion)
