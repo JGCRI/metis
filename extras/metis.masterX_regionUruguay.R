@@ -54,7 +54,7 @@ regionsSelect_i <- c("Uruguay")
 dataGCAM<-metis.readgcam(reReadData=T, # Default Value is T
                                  dataProj = gcamdataProjFile_i, # Default Value is "dataProj.proj"
                                  dataProjPath = gcamdatabasePath_i,
-                                 scenOrigNames=c("GCAMOrig"),
+                                 scenOrigNames=c("IDBUruguay_GCAMOrig"),
                                  scenNewNames=c("GCAMOrig"),
                                  gcamdatabasePath=gcamdatabasePath_i,
                                  gcamdatabaseName=gcamdatabaseName_i,
