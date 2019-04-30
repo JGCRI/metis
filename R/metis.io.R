@@ -47,7 +47,9 @@ dir<-paste(dirOutputs, "/IO/CombSubReg", sep = "")
 # Initialize variables by setting to NULL
 #----------------
 
-NULL -> ioTable -> A
+NULL -> ioTable -> A -> year -> Year -> YEAR -> supplySector -> scenario ->
+  cap -> capNew -> nexusTotal -> otherTotal -> sectorFrom -> sectorTo -> subRegion ->
+  total -> totalTemp -> value -> x -> .
 
 
 #------------------
@@ -84,10 +86,10 @@ if(!is.null(ioTable)){
   if(!any(grepl(column_i,colnames(ioTable)))){
     print(paste("Column names in ioTable0: ",paste(colnames(ioTable),collapse=", ")," must include ",column_i,".",sep=""))
     ioTable <- ioTable %>%
-      mutate(!!column_i := 0)}}
+      dplyr::mutate(!!column_i := 0)}}
   if(!any(grepl("total",colnames(ioTable),ignore.case = T))){
     ioTable <- ioTable %>%
-    dplyr::mutate(total=rowSums(select(.,-c(names(ioTable)[names(ioTable)!="total"])),na.rm=T))
+    dplyr::mutate(total=rowSums(dplyr::select(.,-c(names(ioTable)[names(ioTable)!="total"])),na.rm=T))
     } else {names(ioTable)[names(ioTable) %in% c("total","Total","TOTAL")]<-"total"}
   sectors <- ioTable %>% dplyr::select(supplySector) %>% unique()
   subRegions <- unique(ioTable$subRegion)
@@ -142,9 +144,9 @@ for(scenario_i in scenarios){
 
 
 ioTable_adjustTotal <- ioTable0i %>%
-  dplyr::mutate(otherTotal=rowSums(ioTable0i %>% select(-nonFlowColsAll),na.rm=T),
-                total = case_when(total < otherTotal ~ otherTotal,TRUE ~ total),
-                adjustedDemand = case_when(total > otherTotal ~ total - otherTotal,TRUE ~ 0)) %>%
+  dplyr::mutate(otherTotal=rowSums(ioTable0i %>% dplyr::select(-nonFlowColsAll),na.rm=T),
+                total = dplyr::case_when(total < otherTotal ~ otherTotal,TRUE ~ total),
+                adjustedDemand = dplyr::case_when(total > otherTotal ~ total - otherTotal,TRUE ~ 0)) %>%
   dplyr::select(-otherTotal)
 
 ioTable_adjustTotal
@@ -154,8 +156,8 @@ ioTable_adjustTotal
 #-------------------
 
 ioTable_adjustCap <- ioTable_adjustTotal %>%
-  dplyr::mutate(capNew = case_when(total > cap ~ (total-cap), TRUE~0),
-                cap = case_when(total > cap ~ cap + capNew, TRUE~cap),
+  dplyr::mutate(capNew = dplyr::case_when(total > cap ~ (total-cap), TRUE~0),
+                cap = dplyr::case_when(total > cap ~ cap + capNew, TRUE~cap),
                 capOrig = cap - capNew)
 
 ioTable_adjustCap %>% as.data.frame()
@@ -176,7 +178,7 @@ if(useIntensity==1){
   colsRemove <- names(ioTable_adjustCap)[names(ioTable_adjustCap) %in% c(nonFlowCols,addedColumns,unique(ioTable_adjustCap$supplySector))]
   Di <- ioTable_adjustCap %>%
     dplyr::select(-colsRemove) %>%
-    dplyr::mutate(otherTotal=rowSums(select(.,-supplySector),na.rm=T)); Di
+    dplyr::mutate(otherTotal=rowSums(dplyr::select(.,-supplySector),na.rm=T)); Di
 
   # Calculate New Total based on the intensities and existing other demands
   Xi <- tibble::as_tibble(Li %*% as.matrix(Di$otherTotal))
@@ -188,7 +190,7 @@ if(useIntensity==1){
   Zi <- dplyr::bind_cols(Xi%>%dplyr::select(supplySector),tibble::as_tibble(Zi))
   names(Zi)<-c("supplySector",Xi$supplySector);
   Zi <- Zi %>%
-  dplyr::mutate(nexusTotal=rowSums(Zi %>% select(-supplySector),na.rm=T)); Zi
+  dplyr::mutate(nexusTotal=rowSums(Zi %>% dplyr::select(-supplySector),na.rm=T)); Zi
 
   # Join nexus and other demands to get totals and recalculate new Cap needed
   ZiCols <- names(Zi%>%dplyr::select(-supplySector))[names(Zi%>%dplyr::select(-supplySector)) %in% names(ioTable_adjustCap)]
@@ -199,8 +201,8 @@ if(useIntensity==1){
     dplyr::left_join(Zi) %>%
     dplyr::left_join(Di) %>%
     dplyr::mutate(total = nexusTotal + otherTotal,
-                  capNew = case_when(total > cap ~ (total-cap), TRUE~0),
-                  cap = case_when(total > cap ~ cap + capNew, TRUE~cap),
+                  capNew = dplyr::case_when(total > cap ~ (total-cap), TRUE~0),
+                  cap = dplyr::case_when(total > cap ~ cap + capNew, TRUE~cap),
                   capOrig = cap - capNew) %>%
     dplyr::select(-otherTotal,-nexusTotal)
 
@@ -220,7 +222,7 @@ ioTable_fillNexus <- ioTable_adjustIntensity
 
  for(nexus_sector_i in ioTable_fillNexus$supplySector[!ioTable_fillNexus$supplySector %in% names(ioTable_fillNexus)]){
    ioTable_fillNexus <- ioTable_fillNexus %>%
-    mutate(!!nexus_sector_i := 0)
+    dplyr::mutate(!!nexus_sector_i := 0)
  }
 
 ioTable_fillNexus
@@ -249,7 +251,7 @@ colOrder <- c("supplySector",sort(ioTable_complete$supplySector),
                                                                       "export",nonFlowColsAll)],
               "export",nonFlowColsAll[nonFlowColsAll!="supplySector"]); colOrder
 
-ioTable_complete <- ioTable_complete %>% dplyr::select(colOrder) %>% arrange(supplySector);
+ioTable_complete <- ioTable_complete %>% dplyr::select(colOrder) %>% dplyr::arrange(supplySector);
 ioTable_complete %>%as.data.frame()
 
 A_Output = A_Output %>% dplyr::bind_rows(Aorg %>% tibble::as_tibble() %>% dplyr::mutate(scenario=scenario_i,x=year_i,subRegion=subRegion_i)); A_Output

@@ -119,55 +119,55 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
 
 addMissing<-function(data){
   if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}else{
-    data<-data%>%dplyr::mutate(scenario=case_when(is.na(scenario)~"scenario",TRUE~scenario))}
+    data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
   if(!"region"%in%names(data)){data<-data%>%dplyr::mutate(region="region")}else{
-    data<-data%>%dplyr::mutate(region=case_when(is.na(region)~"region",TRUE~region))}
+    data<-data%>%dplyr::mutate(region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
   if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}else{
-    data<-data%>%dplyr::mutate(param=case_when(is.na(param)~"param",TRUE~param))}
+    data<-data%>%dplyr::mutate(param=dplyr::case_when(is.na(param)~"param",TRUE~param))}
   if(!"value"%in%names(data)){data<-data%>%dplyr::mutate(value=get(yData))}else{
-    data<-data%>%dplyr::mutate(value=case_when(is.na(value)~0,TRUE~value))}
+    data<-data%>%dplyr::mutate(value=dplyr::case_when(is.na(value)~0,TRUE~value))}
   if(!"origValue"%in%names(data)){data<-data%>%dplyr::mutate(origValue=value)}else{
-    data<-data%>%dplyr::mutate(origValue=case_when(is.na(origValue)~value,TRUE~origValue))}
+    data<-data%>%dplyr::mutate(origValue=dplyr::case_when(is.na(origValue)~value,TRUE~origValue))}
   if(!"units"%in%names(data)){data<-data%>%dplyr::mutate(units="units")}else{
-    data<-data%>%dplyr::mutate(units=case_when(is.na(units)~"units",TRUE~units))}
+    data<-data%>%dplyr::mutate(units=dplyr::case_when(is.na(units)~"units",TRUE~units))}
   if(!"x"%in%names(data)){data<-data%>%dplyr::mutate(x="x")}
   if(!"vintage" %in% names(data)){data<-data%>%dplyr::mutate(vintage = paste("Vint_", x, sep = ""))}else{
-    data<-data%>%dplyr::mutate(vintage=case_when(is.na(vintage)~paste("Vint_", x, sep = ""),TRUE~vintage))}
+    data<-data%>%dplyr::mutate(vintage=dplyr::case_when(is.na(vintage)~paste("Vint_", x, sep = ""),TRUE~vintage))}
   if(!"xLabel"%in%names(data)){
     if(is.null(xLabel)){data<-data%>%dplyr::mutate(xLabel="xLabel")}else{
       data<-data%>%dplyr::mutate(xLabel=xLabel)}}else{
-        data<-data%>%dplyr::mutate(xLabel=case_when(is.na(xLabel)~"xLabel",TRUE~xLabel))}
+        data<-data%>%dplyr::mutate(xLabel=dplyr::case_when(is.na(xLabel)~"xLabel",TRUE~xLabel))}
   if(!"aggregate"%in%names(data)){
     if(is.null(aggregate)){data<-data%>%dplyr::mutate(aggregate=aggregate_i)}else{
     data<-data%>%dplyr::mutate(aggregate=aggregate_i)}
-  }else{data<-data%>%dplyr::mutate(aggregate=case_when(is.na(aggregate)~aggregate_i,
+  }else{data<-data%>%dplyr::mutate(aggregate=dplyr::case_when(is.na(aggregate)~aggregate_i,
                                                          TRUE~aggregate))}
   if(!"class1"%in%names(data)){
     if("class"%in%names(data)){
     data<-data%>%dplyr::rename(class1=class)}else
     {data<-data%>%dplyr::mutate(class1="class1")}}else{
-      data<-data%>%dplyr::mutate(class1=case_when(is.na(class1)~"class1",TRUE~class1))}
+      data<-data%>%dplyr::mutate(class1=dplyr::case_when(is.na(class1)~"class1",TRUE~class1))}
   if(!"classLabel1"%in%names(data)){ if(is.null(classPalette)){data<-data%>%dplyr::mutate(classLabel1="classLabel1")}}else{
-    data<-data%>%dplyr::mutate(classLabel1=case_when(is.na(classLabel1)~"classLabel1",TRUE~classLabel1))}
+    data<-data%>%dplyr::mutate(classLabel1=dplyr::case_when(is.na(classLabel1)~"classLabel1",TRUE~classLabel1))}
   if(!"classPalette1"%in%names(data)){ if(is.null(classPalette)){data<-data%>%dplyr::mutate(classPalette1="pal_Basic")}else{
     data<-data%>%dplyr::mutate(classPalette1=classPalette)}}else{
-      data<-data%>%dplyr::mutate(classPalette1=case_when(is.na(classPalette1)~classPalette,TRUE~classPalette1))}
+      data<-data%>%dplyr::mutate(classPalette1=dplyr::case_when(is.na(classPalette1)~classPalette,TRUE~classPalette1))}
   if(!"class2"%in%names(data)){data<-data%>%dplyr::mutate(class2="class2")}else{
-    data<-data%>%dplyr::mutate(class2=case_when(is.na(class2)~"class2",TRUE~class2))}
+    data<-data%>%dplyr::mutate(class2=dplyr::case_when(is.na(class2)~"class2",TRUE~class2))}
   if(!"classLabel2"%in%names(data)){data<-data%>%dplyr::mutate(classLabel2="classLabel2")}else{
-    data<-data%>%dplyr::mutate(classLabel2=case_when(is.na(classLabel2)~"classLabel2",TRUE~classLabel2))}
+    data<-data%>%dplyr::mutate(classLabel2=dplyr::case_when(is.na(classLabel2)~"classLabel2",TRUE~classLabel2))}
   if(!"classPalette2"%in%names(data)){ if(is.null(classPalette)){data<-data%>%dplyr::mutate(classPalette2="pal_Basic")}else{
     data<-data%>%dplyr::mutate(classPalette2=classPalette)}}else{
-      data<-data%>%dplyr::mutate(classPalette2=case_when(is.na(classPalette2)~classPalette,TRUE~classPalette2))}
+      data<-data%>%dplyr::mutate(classPalette2=dplyr::case_when(is.na(classPalette2)~classPalette,TRUE~classPalette2))}
   if(!"origScen"%in%names(data)){data<-data%>%dplyr::mutate(origScen="origScen")}else{
-    data<-data%>%dplyr::mutate(origScen=case_when(is.na(origScen)~"origScen",TRUE~origScen))}
+    data<-data%>%dplyr::mutate(origScen=dplyr::case_when(is.na(origScen)~"origScen",TRUE~origScen))}
   if(!"origQuery"%in%names(data)){data<-data%>%dplyr::mutate(origQuery="origQuery")}else{
-    data<-data%>%dplyr::mutate(origQuery=case_when(is.na(origQuery)~"origQuery",TRUE~origQuery))}
+    data<-data%>%dplyr::mutate(origQuery=dplyr::case_when(is.na(origQuery)~"origQuery",TRUE~origQuery))}
   if(!"origUnits"%in%names(data)){data<-data%>%dplyr::mutate(origUnits="origUnits")}else{
-    data<-data%>%dplyr::mutate(origUnits=case_when(is.na(origUnits)~"origUnits",TRUE~origUnits))}
+    data<-data%>%dplyr::mutate(origUnits=dplyr::case_when(is.na(origUnits)~"origUnits",TRUE~origUnits))}
   if(!"origX"%in%names(data)){data<-data%>%dplyr::mutate(origX="origX")}
   if(!"sources"%in%names(data)){data<-data%>%dplyr::mutate(sources="sources")}else{
-    data<-data%>%dplyr::mutate(sources=case_when(is.na(sources)~"sources",TRUE~sources))}
+    data<-data%>%dplyr::mutate(sources=dplyr::case_when(is.na(sources)~"sources",TRUE~sources))}
   return(data)
 }
 
