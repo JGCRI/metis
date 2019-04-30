@@ -340,7 +340,8 @@ subRegType_i = "subBasin"
 nameAppend_i = "_local"
 aggType_i = NULL
 paramsSelect_i= "All" #"demeterLandUse"
-sqliteUSE_i = T
+#sqliteUSE_i = T
+sqliteUSE_i = F  #andym
 sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
 grid2polyX<-metis.grid2poly(#grid=grid_i,
@@ -363,7 +364,7 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
 
 #examplePolygonTable<-paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_subRegType_origDownscaled_hydrobidBermeo3.csv",sep="")
 
-polygonDataTables_i=c(paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Uruguay_state_origDownscaled_NE.csv",sep=""))
+polygonDataTables_i=c(paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_state_origDownscaled_NE.csv",sep=""))
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
 for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
 gridDataTables_i=c(paste(getwd(),"/outputs/Grids/gridCropped_Argentina_state_NE.csv",sep=""))
@@ -374,17 +375,17 @@ legendPosition_i=c("LEFT","bottom")
 legendOutsideSingle_i=T
 animateOn_i=T
 delay_i=100
-scenRef_i="gfdl-esm2m_rcp2p6_NA_NA"
+#scenRef_i="gfdl-esm2m_rcp2p6_NA_NA"     #andym
 paramsSelect_i = c("All")
 indvScenarios_i = "All"
-GCMRCPSSPPol_i=T
+GCMRCPSSPPol_i=T              #andym what is this?
 
 
 boundaryRegShape_i = NULL
 boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
 boundaryRegShpFile_i=paste("ne_10m_admin_0_countries",sep="")
 boundaryRegCol_i="NAME"
-boundaryRegionsSelect_i="Uruguay"
+boundaryRegionsSelect_i="Argentina"    #andym
 subRegShape_i = NULL
 subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
 subRegShpFile_i = paste(countryName,"NE1",sep= "")
@@ -392,9 +393,13 @@ subRegCol_i = "name"
 subRegType_i = "state"
 nameAppend_i = "_NE"
 
-scaleRange_i=data.frame(param=c("griddedScarcity"),
-                        maxScale=c(1),
-                        minScale=c(0))
+#scaleRange_i=data.frame(param=c("griddedScarcity"),     #andym
+#                        maxScale=c(1),     #andym
+#                        minScale=c(0))     #andym
+
+
+
+#andym commented out the following 2 sections:
 
 
 numeric2Cat_param <- list("griddedScarcity","param2")
@@ -434,7 +439,7 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  legendPosition=legendPosition_i,
                  animateOn=animateOn_i,
                  delay=delay_i,
-                 scenRef=scenRef_i,
+                 #scenRef=scenRef_i,
                  extension=T,
                  expandPercent = 3,
                  figWidth=6,
@@ -450,8 +455,8 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  legendTitleSizeMulti=NULL,
                  legendTextSizeAnim=NULL,
                  legendTextSizeMulti=NULL,
-                 refGCM="gfdl-esm2m",
-                 refRCP="rcp2p6",
+                 #refGCM="gfdl-esm2m",       andym
+                 #refRCP="rcp2p6",           #andym
                  chosenRefMeanYears=c(2000:2050),
                  numeric2Cat_list=numeric2Cat_list)
 
