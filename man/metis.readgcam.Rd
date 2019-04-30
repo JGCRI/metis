@@ -4,9 +4,9 @@
 \alias{metis.readgcam}
 \title{metis.readgcam}
 \usage{
-metis.readgcam(gcamdatabasePath, gcamdatabaseName,
+metis.readgcam(gcamdatabasePath = NULL, gcamdatabaseName = NULL,
   queryxml = "metisQueries.xml", queryPath = gcamdatabasePath,
-  scenOrigNames, scenNewNames = NULL, reReadData = T,
+  scenOrigNames = NULL, scenNewNames = NULL, reReadData = T,
   dataProj = "dataProj.proj", dataProjPath = gcamdatabasePath,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
   regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All")

@@ -42,35 +42,40 @@ library(tools)
 
 # ?metis.readgcam # For more help
 
-# Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech", "elecCapBySubsector",
-               "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
-               "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
-               "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-               "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS",
-               "finalNrgbySecDet","finalElecbySecDet","finalElecbyServiceDet")
-
-
-gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
-gcamdatabaseName <-"database_basexdb_Uruguay"
-gcamdataProjFile <-"Uruguay_dataProj.proj"
-regionsSelect <- c("Uruguay")
+gcamdatabasePath_i <-paste(getwd(),"/dataFiles/gcam",sep="")
+gcamdatabaseName_i <-"database_basexdb_Uruguay"
+gcamdataProjFile_i <-"Uruguay_dataProj.proj"
+regionsSelect_i <- c("Uruguay")
 
 #dataProjLoaded <- loadProject(paste(gcamdatabasePath, "/", gcamdataProjFile, sep = ""))
 #listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 #queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
-dataGCAM<-metis.readgcam(reReadData=F, # Default Value is T
-                                 dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
-                                 scenOrigNames=c("GCAMOrig"),
+dataGCAM<-metis.readgcam(reReadData=T, # Default Value is T
+                                 dataProj = gcamdataProjFile_i, # Default Value is "dataProj.proj"
+                                 dataProjPath = gcamdatabasePath_i,
+                                 scenOrigNames=c("IDBUruguay_GCAMOrig"),
                                  scenNewNames=c("GCAMOrig"),
-                                 gcamdatabasePath=gcamdatabasePath,
-                                 gcamdatabaseName=gcamdatabaseName,
+                                 gcamdatabasePath=gcamdatabasePath_i,
+                                 gcamdatabaseName=gcamdatabaseName_i,
                                  queryxml="metisQueries.xml",  # Default Value is "metisQueries.xml"
                                  dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
-                                 regionsSelect=regionsSelect, # Default Value is NULL
+                                 regionsSelect=regionsSelect_i, # Default Value is NULL
                                  paramsSelect="All" # Default value is "All"
 )
+
+# reReadData=T # Default Value is T
+# dataProj = gcamdataProjFile_i # Default Value is "dataProj.proj"
+# dataProjPath = gcamdatabasePath_i
+# scenOrigNames=c("GCAMOrig")
+# scenNewNames=c("GCAMOrig")
+# gcamdatabasePath=gcamdatabasePath_i
+# gcamdatabaseName=gcamdatabaseName_i
+# queryxml="metisQueries.xml"  # Default Value is "metisQueries.xml"
+# dirOutputs= paste(getwd(),"/outputs",sep="") # Default Value is paste(getwd()"/outputs"sep="")
+# regionsSelect=regionsSelect_i # Default Value is NULL
+# paramsSelect="All" # Default value is "All"
+
 
 
 dataGCAM # To view the data read that was read.
@@ -81,27 +86,48 @@ unique(dataGCAM$data$param)
 # Produce Data Charts
 #---------------------------
 
+# Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
+paramsSelect_i=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech", "elecCapBySubsector",
+                 "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
+                 "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
+                 "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
+                 "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS",
+                 "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec")
+
+
 # Read in Tables (If exist)
-dataTables<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
+dataTables_i<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
+a<-read.csv(dataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
 
 # Read in the data from the function metis.readgcam
-rTable <- dataGCAM$data
+rTable_i <- dataGCAM$data
 
-regionsSelect=c("Uruguay")
+regionsSelect_i=c("Uruguay")
 
-charts<-metis.chartsProcess(rTable=rTable, # Default is NULL
-                            dataTables=dataTables, # Default is NULL
-                            paramsSelect=paramsSelect, # Default is "All"
-                            regionsSelect=regionsSelect, # Default is "All"
+charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
+                            dataTables=dataTables_i, # Default is NULL
+                            paramsSelect=paramsSelect_i, # Default is "All"
+                            regionsSelect=regionsSelect_i, # Default is "All"
                             xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
                             scenRef="GCAMOrig", # Default is NULL
                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                             pdfpng="png", # Default is "png"
-                            regionCompareOnly=1, # Default is "0"
+                            regionCompareOnly=0, # Default is "0"
                             useNewLabels=1,
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050) # Default is All
-)
+                            )
 
+# rTable=rTable_i # Default is NULL
+# dataTables=dataTables_i # Default is NULL
+# paramsSelect=paramsSelect_i # Default is "All"
+# regionsSelect=regionsSelect_i # Default is "All"
+# xCompare=c("2010","2015","2020","2030") # Default is c("2015","2030","2050","2100")
+# scenRef="GCAMOrig" # Default is NULL
+# dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+# pdfpng="png" # Default is "png"
+# regionCompareOnly=0 # Default is "0"
+# useNewLabels=1
+# xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050) # Default is All
 
 
 #------------
@@ -168,7 +194,7 @@ countryLocalBasin@data <- droplevels(countryLocalBasin@data)
 head(countryLocalBasin@data)
 plot(countryLocalBasin)
 writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
-metis.map(dataPolygon=countryLocalBasin,label,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
+metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
 
 # dataPolygon=countryLocalBasin
 # fillColumn = localBasinsShapeFileColName
@@ -202,6 +228,7 @@ extension_i =  T
 cropSubShape2Bound_i = T
 
 boundariesX<- metis.boundaries(
+  #fillPalette = c("Accent"),
   boundaryRegShape=boundaryRegShape_i,
   #boundaryRegShpFolder=boundaryRegShpFolder_i,
   #boundaryRegShpFile=boundaryRegShpFile_i,
