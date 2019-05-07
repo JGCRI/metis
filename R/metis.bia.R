@@ -308,6 +308,9 @@ metis.bia<- function(biaInputsFolder = "NA",
 
 #
 
+
+
+
 #             print(paste("Data for bia file gathered into columns.", sep=""))
 #
 #             gridx$x<-as.numeric(gridx$x)

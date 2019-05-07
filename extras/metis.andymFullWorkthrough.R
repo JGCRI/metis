@@ -393,9 +393,9 @@ subRegCol_i = "name"
 subRegType_i = "state"
 nameAppend_i = "_NE"
 
-#scaleRange_i=data.frame(param=c("griddedScarcity"),     #andym
-#                        maxScale=c(1),     #andym
-#                        minScale=c(0))     #andym
+scaleRange_i=data.frame(param=c("griddedScarcity"),     #andym
+                        maxScale=c(1),     #andym
+                        minScale=c(0))     #andym
 
 
 
