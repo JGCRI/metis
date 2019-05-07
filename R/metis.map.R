@@ -184,7 +184,7 @@ metis.map<-function(dataPolygon=NULL,
 NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette
 
 legendTitle=gsub(" ","\n",legendTitle)
-tmap::tmap_mode(mode = c("plot"))
+tmap::tmap_mode(mode = c("plot"), max.categories=10000)
 
 
 #------------------------------------------

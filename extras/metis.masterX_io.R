@@ -29,27 +29,29 @@ library(ggalluvial)
 
 # Small Examples
 
+
 # Intensity
 A0=tibble::tribble( # Initial total demand
-  ~supplySector, ~W, ~W_import, ~E, ~E_import, ~Ag, ~Ag_import,
-  "W",            0,         0 ,0.404     ,0     ,0         ,0,
-  "W_import",     0,         0 ,0         ,0     ,0         ,0,
-  "E",            0.27778,   0 ,0         ,0     ,0         ,0,
-  "E_import",     0,         0 ,0         ,0     ,0         ,0,
-  "Ag",           0,         0 ,0.0202    ,0     ,0         ,0,
-  "Ag_import",    0,         0 ,0         ,0     ,0         ,0
+  ~supplySubSector, ~supplySector, ~water_sw, ~water_import, ~elec_all, ~elec_import, ~irri_all, ~irri_import,
+  "water_sw",        "water",     0,         0 ,0.404     ,0     ,0         ,0,
+  "water_import",     "water",     0,         0 ,0         ,0     ,0         ,0,
+  "elec_all",         "elec",      0.27778,   0 ,0         ,0     ,0         ,0,
+  "elec_import",      "elec",      0,         0 ,0         ,0     ,0         ,0,
+  "irri_all",         "irri",      0,         0 ,0.05    ,0     ,0         ,0,
+  "irri_import",      "irri",      0,         0 ,0         ,0     ,0         ,0
 );A0
+
 
 
 # Demands and Exports
 ioTable0=tibble::tribble( # Initial total demand
-  ~supplySector,    ~W,    ~E,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap,
-  "W",               0,    200, 20,        40,         50,     0,      500,    1000,
-  "W_import",        0,    20,  30,        20,         70,     300,    10,      0,
-  "E",               225,  0,   10,        30,         0,      200,    30,      10,
-  "E_import",        50,   0,   20,        40,         50,     670,    20,      350,
-  "Ag",              0,    10,  20,        0,          50,     0,      0,      100,
-  "Ag_import",       0,    20,  20,        0,          50,     30,     0,       20
+  ~supplySubSector,   ~supplySector, ~water_all,    ~elec_all,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap,
+  "water_sw",        "water",       0,    200, 20,        40,         50,     0,      500,    1000,
+  "water_import",     "water",       0,    20,  30,        20,         70,     300,    10,      0,
+  "elec_all",         "elec",        225,  0,   30,        40,         70,     1200,    30,     410,
+  "elec_import",      "elec",        50,   0,   20,        40,         50,     670,    20,      350,
+  "irri_corn",         "irri",        0,    30,  20,        0,          50,     0,      0,      100,
+  "irri_import",      "irri",        0,    20,  20,        0,          50,     30,     0,       20
 );ioTable0
 
 
@@ -71,7 +73,7 @@ io1c <- metis.io(ioTable0=ioTable0, A0=A2, useIntensity = 1,nameAppend = "_A_low
 #----------------------
 
 A0=tibble::tribble( # Initial Flows
-  ~supplySector ,    ~W,         ~E,    ~scenario,  ~subRegion,  ~year,
+  ~supplySubSector ,    ~W,         ~E,    ~scenario,  ~subRegion,  ~year,
   "W"     ,    0,           0.23,  "ScenA",   "SubRegA",  2010,
   "E"     ,    0.13,          0,   "ScenA",   "SubRegA",  2010,
   "W"     ,    0,           0.3,  "ScenB",   "SubRegA",  2010,
@@ -94,7 +96,7 @@ A0=tibble::tribble( # Initial Flows
 
 
 ioTable0=tibble::tribble( # Initial total demand
-  ~supplySector ,    ~localProduction,        ~scenario,  ~subRegion,  ~year,
+  ~supplySubSector ,    ~localProduction,        ~scenario,  ~subRegion,  ~year,
   "W"     ,    1000,           "ScenA",   "SubRegA",  2010,
   "E"     ,    130,          "ScenA",   "SubRegA",  2010,
   "W"     ,    10,           "ScenB",   "SubRegA",  2010,
