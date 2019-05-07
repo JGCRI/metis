@@ -105,6 +105,7 @@ NULL->bbox1->extendedBoundary->extendedSubReg->shape->boundaryHighlight->
   regionHL->subRegHighlight->subRegionHL->extendedShape->underLayer->subRegHighlightLabels->
   add_grid_name->fillPaletteOrig
 
+tmap::tmap_options(max.categories=1000)
 
 #----------------
 # Check Input Shape files
