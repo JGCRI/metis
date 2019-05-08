@@ -8,7 +8,7 @@ metis.io(ioTable0 = NULL, useIntensity = 0, A0 = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "")
 }
 \arguments{
-\item{ioTable0}{Initial ioTable. Must have columns: supplySector,total,export and cap. Each supply sector should also have imports. Default = NULL,}
+\item{ioTable0}{Initial ioTable. Must have columns: supplySubSector,total,export and cap. Each supply sector should also have imports. Default = NULL,}
 
 \item{useIntensity}{Boolean to use given intensity or not. Default is set to 0.}
 
