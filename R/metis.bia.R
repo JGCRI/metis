@@ -306,7 +306,10 @@ metis.bia<- function(biaInputsFolder = "NA",
               left_join(dataFromGCAM, by = c("class1", "region"))%>%
               dplyr::mutate(valueDistrib = gridCellPercentage*value, origValueDistrib = gridCellPercentage*origValue)
 
-#
+
+
+
+
 
 
 
