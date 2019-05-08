@@ -29,27 +29,29 @@ library(ggalluvial)
 
 # Small Examples
 
+
 # Intensity
 A0=tibble::tribble( # Initial total demand
-  ~supplySector, ~W, ~W_import, ~E, ~E_import, ~Ag, ~Ag_import,
-  "W",            0,         0 ,0.404     ,0     ,0         ,0,
-  "W_import",     0,         0 ,0         ,0     ,0         ,0,
-  "E",            0.27778,   0 ,0         ,0     ,0         ,0,
-  "E_import",     0,         0 ,0         ,0     ,0         ,0,
-  "Ag",           0,         0 ,0.0202    ,0     ,0         ,0,
-  "Ag_import",    0,         0 ,0         ,0     ,0         ,0
+  ~supplySubSector, ~supplySector, ~water_sw, ~water_import, ~elec_all, ~elec_import, ~irri_all, ~irri_import,
+  "water_sw",        "water",     0,         0 ,0.404     ,0     ,0         ,0,
+  "water_import",     "water",     0,         0 ,0         ,0     ,0         ,0,
+  "elec_all",         "elec",      0.27778,   0 ,0         ,0     ,0         ,0,
+  "elec_import",      "elec",      0,         0 ,0         ,0     ,0         ,0,
+  "irri_all",         "irri",      0,         0 ,0.05    ,0     ,0         ,0,
+  "irri_import",      "irri",      0,         0 ,0         ,0     ,0         ,0
 );A0
+
 
 
 # Demands and Exports
 ioTable0=tibble::tribble( # Initial total demand
-  ~supplySector,    ~W,    ~E,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap,
-  "W",               0,    200, 20,        40,         50,     0,      500,    1000,
-  "W_import",        0,    20,  30,        20,         70,     300,    10,      0,
-  "E",               225,  0,   10,        30,         0,      200,    30,      10,
-  "E_import",        50,   0,   20,        40,         50,     670,    20,      350,
-  "Ag",              0,    10,  20,        0,          50,     0,      0,      100,
-  "Ag_import",       0,    20,  20,        0,          50,     30,     0,       20
+  ~supplySubSector,   ~supplySector, ~water_all,    ~elec_all,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap, ~unit,
+  "water_sw",        "water",       0,    200, 20,        40,         50,     0,      500,    1000, "km3",
+  "water_import",     "water",       0,    20,  30,        20,         70,     300,    10,      0,  "km3",
+  "elec_all",         "elec",        225,  0,   30,        40,         70,     1200,    30,     410, "TWh",
+  "elec_import",      "elec",        50,   0,   20,        40,         50,     670,    20,      350, "TWh",
+  "irri_corn",         "irri",        0,    30,  20,        0,          50,     0,      0,      100, "tons",
+  "irri_import",      "irri",        0,    20,  20,        0,          50,     30,     0,       20, "tons"
 );ioTable0
 
 
@@ -71,7 +73,7 @@ io1c <- metis.io(ioTable0=ioTable0, A0=A2, useIntensity = 1,nameAppend = "_A_low
 #----------------------
 
 A0=tibble::tribble( # Initial Flows
-  ~supplySector ,    ~W,         ~E,    ~scenario,  ~subRegion,  ~year,
+  ~supplySubSector ,    ~W,         ~E,    ~scenario,  ~subRegion,  ~year,
   "W"     ,    0,           0.23,  "ScenA",   "SubRegA",  2010,
   "E"     ,    0.13,          0,   "ScenA",   "SubRegA",  2010,
   "W"     ,    0,           0.3,  "ScenB",   "SubRegA",  2010,
@@ -93,25 +95,38 @@ A0=tibble::tribble( # Initial Flows
 
 
 
+# Demands and Exports
 ioTable0=tibble::tribble( # Initial total demand
-  ~supplySector ,    ~localProduction,        ~scenario,  ~subRegion,  ~year,
-  "W"     ,    1000,           "ScenA",   "SubRegA",  2010,
-  "E"     ,    130,          "ScenA",   "SubRegA",  2010,
-  "W"     ,    10,           "ScenB",   "SubRegA",  2010,
-  "E"     ,    200,          "ScenB",   "SubRegA",  2010,
-  "W"     ,    100,           "ScenA",   "SubRegB",  2010,
-  "E"     ,    150,           "ScenA",   "SubRegB",  2010,
-  "W"     ,    100,           "ScenB",   "SubRegB",  2010,
-  "E"     ,    20,          "ScenB",   "SubRegB",  2010,
-  "W"     ,    10,           "ScenA",   "SubRegA",  2015,
-  "E"     ,    110,          "ScenA",   "SubRegA",  2015,
-  "W"     ,    250,           "ScenB",   "SubRegA",  2015,
-  "E"     ,    250,          "ScenB",   "SubRegA",  2015,
-  "W"     ,    200,           "ScenA",   "SubRegB",  2015,
-  "E"     ,    200,          "ScenA",   "SubRegB",  2015,
-  "W"     ,    100,           "ScenB",   "SubRegB",  2015,
-  "E"     ,    10,          "ScenB",   "SubRegB",  2015
+  ~supplySubSector,   ~supplySector, ~water_all,    ~elec_all,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap, ~unit, ~scenario, ~subRegion,
+  "water_sw",        "water",        0,    200, 20,        40,         50,     0,      500,    1000, "km3", "ScenA", "SubRegionA",
+  "water_import",     "water",       0,    20,  30,        20,         70,     300,    10,      0,  "km3", "ScenA", "SubRegionA",
+  "elec_all",         "elec",        225,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenA", "SubRegionA",
+  "elec_import",      "elec",        50,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenA", "SubRegionA",
+  "irri_corn",         "irri",       0,    30,  20,        0,          50,     0,      0,      100, "tons", "ScenA", "SubRegionA",
+  "irri_import",      "irri",        0,    40,  20,        0,          50,     30,     0,       20, "tons", "ScenA", "SubRegionA",
+  #
+  "water_sw",        "water",        0,    100, 20,        40,         50,     0,      500,    1000, "km3", "ScenB", "SubRegionA",
+  "water_import",     "water",       50,   40,  30,        20,         70,     300,    10,      0,  "km3", "ScenB", "SubRegionA",
+  "elec_all",         "elec",        125,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenB", "SubRegionA",
+  "elec_import",      "elec",        30,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenB", "SubRegionA",
+  "irri_corn",         "irri",       0,    70,  20,        0,          50,     0,      0,      100, "tons", "ScenB", "SubRegionA",
+  "irri_import",      "irri",        0,    10,  20,        0,          50,     30,     0,       20, "tons", "ScenB", "SubRegionA",
+  #
+  "water_sw",        "water",        0,    400, 20,        40,         50,     0,      500,    1000, "km3", "ScenA", "SubRegionB",
+  "water_import",     "water",       0,    10,  30,        20,         70,     300,    10,      0,  "km3",  "ScenA", "SubRegionB",
+  "elec_all",         "elec",        425,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenA", "SubRegionB",
+  "elec_import",      "elec",        60,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenA", "SubRegionB",
+  "irri_corn",         "irri",       0,    30,  20,        0,          50,     0,      0,      100, "tons", "ScenA", "SubRegionB",
+  "irri_import",      "irri",        0,    10,  20,        0,          50,     30,     0,       20, "tons", "ScenA", "SubRegionB",
+  #
+  "water_sw",        "water",        0,    300, 20,        40,         50,     0,      500,    1000, "km3", "ScenB", "SubRegionB",
+  "water_import",     "water",       0,    60,  30,        20,         70,     300,    10,      0,  "km3",  "ScenB", "SubRegionB",
+  "elec_all",         "elec",        25,   0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenB", "SubRegionB",
+  "elec_import",      "elec",        10,  0,   20,        40,         50,     670,    20,      350, "TWh", "ScenB", "SubRegionB",
+  "irri_corn",         "irri",       0,    70,  20,        0,          50,     0,      0,      100, "tons", "ScenB", "SubRegionB",
+  "irri_import",      "irri",        0,    35,  20,        0,          50,     30,     0,       20, "tons", "ScenB", "SubRegionB"
 );ioTable0
+
 
 
 # Original Test

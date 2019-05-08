@@ -841,7 +841,6 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -888,7 +887,6 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -936,7 +934,6 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -1100,7 +1097,6 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -1148,7 +1144,6 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -1315,7 +1310,6 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -1414,7 +1408,6 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       tblLUEmiss<-tbl
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -1458,7 +1451,6 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}

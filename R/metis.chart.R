@@ -32,6 +32,15 @@
 #' @param figWidth Default = 9,
 #' @param figHeight Default = 7,
 #' @param pdfpng Default = "png",
+#' @param labelTextSize = 4,
+#' @param sectorToOrder Default = NULL,
+#' @param sectorFromOrder Default = NULL,
+#' @param removeCols Default = NULL,
+#' @param bubbleSize Default = 10,
+#' @param sankeyAxis1 Default = NULL,
+#' @param sankeyAxis2 Default = NULL,
+#' @param sankeyAxis1Label Default = "axis1Label",
+#' @param sankeyAxis2Label Default = "axis2Label",
 
 
 
@@ -65,6 +74,15 @@ metis.chart<-function(data,
                          xBreaksMaj=10, xBreaksMin=5,
                          yBreaksMajn=5, yBreaksMinn=10,
                          sizeBarLines=0.5,sizeLines=1.5,
+                         labelTextSize = 4,
+                         sectorToOrder=NULL,
+                         sectorFromOrder=NULL,
+                         removeCols=NULL,
+                         bubbleSize=10,
+                         sankeyAxis1=NULL,
+                         sankeyAxis2=NULL,
+                         sankeyAxis1Label="axis1Label",
+                         sankeyAxis2Label="axis2Label",
                          printFig = T,
                          fileName = "chart",
                          dirOutputs=paste(getwd(),"/outputs",sep=""),
@@ -149,10 +167,93 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
     l1<-l1%>%dplyr::arrange(!! rlang::sym(class))
   }
 
+
+
   p <- ggplot(l1,aes(x=get(xData),y=get(yData),group=get(group))) +
        metis.chartsThemeLight()
 
+  if(chartType=="sankey"){
+  p <- ggplot(l1, aes(y = get(yData), axis1 = get(sankeyAxis1), axis2 = get(sankeyAxis2), group=get(facet_columns)))
+  }
+
   # Chart Type
+  if(chartType=="sankey"){
+
+    # Calculate number of facets. If both are one then
+    nFacets = ifelse(length(unique(l1[[facet_columns]]))>0 &
+                       length(unique(l1[[facet_rows]]))>0,
+                     length(unique(l1[[facet_columns]])) + length(unique(l1[[facet_rows]]))-1,
+                     length(unique(l1[[facet_columns]])) + length(unique(l1[[facet_rows]]))); nFacets
+
+
+    p <- p + theme_bw() +
+      ggalluvial::geom_alluvium(aes(fill = get(class)), width = 1/12, color="black", alpha=0.6) +
+      ggalluvial::geom_stratum(width = 1/12, fill = "grey70", color = "grey10", alpha=1) +
+      geom_text_repel(stat = "stratum", label.strata = TRUE, direction="y", size=4,segment.color = 'grey50',
+                      nudge_x=c(rep(c(rep(-3,length(unique(l1[[yData]]))),
+                                      rep(0.2,length(unique(l1[[xData]])))),nFacets)),
+                      hjust = 1) +
+      scale_x_discrete(limits = c(sankeyAxis1Label, sankeyAxis2Label), expand = c(0.3,0)) +
+      #scale_fill_brewer(type = "qual", palette = "Set1", name="From") +
+      scale_fill_manual(values=paletteX, name="From") +
+      coord_cartesian(clip = "off")+
+      theme(aspect.ratio = 1*(figWidth_i/max(figWidth_i,length(unique(dfx$sectorFrom))))) +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5,size = 15),
+            strip.text  = element_text(size = 15),
+            strip.background = element_blank(),
+            axis.title.x = element_text(size = 15),
+            axis.ticks.x = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.text.y = element_blank(),
+            axis.title.y = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.background = element_blank(),
+            panel.border = element_blank(),
+            legend.text=element_text(size=15))+
+      ggtitle(fname)
+
+    if(!grepl("class",class)){
+      p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
+        if(length(unique(l1[[class]]))<2){
+          p = p + theme(legend.position="none") + scale_fill_manual(values="firebrick")
+        }else{
+          p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))
+        }
+      }
+
+  }
+
+  # Chart Type
+  if(chartType=="bubble"){
+    p <- p + theme_bw() +
+      labs(title=fname) +
+      geom_point(data=l1%>%dplyr::filter(!(!!as.name(xData) %in% removeCols)),aes(col=value, size=value)) +
+      scale_color_gradient(low = "white", high = "indianred1", guide="none") +
+      geom_text(aes(label=round(value,2)),col="black", size=5) +
+      coord_fixed(ratio = 1) +
+      scale_x_discrete(limits = sectorToOrder, expand = c(0.1,0.1)) +
+      scale_y_discrete(limits = rev(sectorFromOrder), expand = c(0.1,0.1)) +
+      scale_size_continuous(range = c(1,bubbleSize), guide="none") +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 15),
+            axis.text.y = element_text(size = 15),
+            strip.text  = element_text(size = 15),
+            axis.title = element_text(size = 15)) +
+      theme(aspect.ratio = (figWidth_i/max(figWidth_i,length(unique(A_matx$sectorFrom)))))
+
+    if(!grepl("class",class)){
+      p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
+        if(length(unique(l1[[class]]))<2){
+          p = p + theme(legend.position="none") + scale_fill_manual(values="firebrick")
+        }else{
+          p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))
+        }
+      }
+
+  }
+
+
+
   if(chartType=="bar"){
   p <- p + geom_bar(aes(fill=get(class)),size=sizeBarLines,color="black", stat="identity",position=position) +
            scale_fill_manual(values=paletteX) + guides(color=F)
@@ -179,14 +280,17 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
     }
   }
 
+
 if(!xLabel%in%names(l1)){
   if(xLabel!="xLabel"){p<-p+xlab(xLabel)}else{
     p<-p+xlab(NULL)}}else{
       if(xLabel!="xLabel"){p<-p+xlab(unique(l1[[xLabel]]))}else{
         p<-p+xlab(NULL)}}
 if(!yLabel%in%names(l1)){p<-p+ylab(yLabel)}else{p<-p+ylab(eval(parse(text=paste(unique(l1[[yLabel]]),collapse="~"))))}
+
+  if(!chartType %in% c("bubble","sankey")){
   p <- p + theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
-       scale_y_continuous(breaks = scales::pretty_breaks(n = yBreaksMajn), minor_breaks = waiver())
+       scale_y_continuous(breaks = scales::pretty_breaks(n = yBreaksMajn), minor_breaks = waiver())}
 
 if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1[[xData]])),max(range(l1[[xData]])),by=xBreaksMaj)),
                                minor_breaks=(seq(min(range(l1[[xData]])),max(range(l1[[xData]])),by=xBreaksMin)),
