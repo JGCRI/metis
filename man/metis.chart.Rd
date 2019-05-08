@@ -11,9 +11,13 @@ metis.chart(data, chartType = "bar", position = "stack", xData = "x",
   facet_columns = "scenario", ncolrow = 4, scales = "fixed",
   useNewLabels = 0, units = "units", xBreaksMaj = 10,
   xBreaksMin = 5, yBreaksMajn = 5, yBreaksMinn = 10,
-  sizeBarLines = 0.5, sizeLines = 1.5, printFig = T,
-  fileName = "chart", dirOutputs = paste(getwd(), "/outputs", sep =
-  ""), figWidth = 13, figHeight = 9, pdfpng = "png")
+  sizeBarLines = 0.5, sizeLines = 1.5, labelTextSize = 4,
+  sectorToOrder = NULL, sectorFromOrder = NULL, removeCols = NULL,
+  bubbleSize = 10, sankeyAxis1 = NULL, sankeyAxis2 = NULL,
+  sankeyAxis1Label = "axis1Label", sankeyAxis2Label = "axis2Label",
+  printFig = T, fileName = "chart", dirOutputs = paste(getwd(),
+  "/outputs", sep = ""), figWidth = 13, figHeight = 9,
+  pdfpng = "png")
 }
 \arguments{
 \item{data}{data table for charting}
