@@ -94,6 +94,7 @@ metis.boundaries<- function(boundaryRegShape=NULL,
   # extdendedLabelSize=0.7
   # extension=T
   # cropSubShape2Bound=T
+  # grids=NULL
 
 
 #----------------
@@ -102,8 +103,9 @@ metis.boundaries<- function(boundaryRegShape=NULL,
 
 NULL->bbox1->extendedBoundary->extendedSubReg->shape->boundaryHighlight->
   regionHL->subRegHighlight->subRegionHL->extendedShape->underLayer->subRegHighlightLabels->
-  add_grid_name
+  add_grid_name->fillPaletteOrig
 
+tmap::tmap_options(max.categories=1000)
 
 #----------------
 # Check Input Shape files
@@ -294,17 +296,7 @@ if(!is.null(bbox1)){
 # Save boundary maps
 #---------------
 
-# fillcolorNA=fillcolorNA
-# dataPolygon=extendedShape
-# printFig=F
-# fillColumn = boundaryRegCol
-# labels=T
-# fillPalette = extendedFillColor
-# bgColor = extendedBGColor
-# frameShow=T
-# labelsSize=extdendedLabelSize
-# labelsColor=extendedLabelsColor
-# facetsON = F
+fillPaletteOrig <- fillPalette
 
 # Extended underLayer and Regional Highlights
 if(!is.null(extendedShape)){
@@ -366,10 +358,10 @@ subRegionHL<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=lab
 if(!is.null(subRegShape) & !is.null(regionHL)){
 metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, dataPolygon=subRegShape,fillColumn = subRegCol,
           fileName = paste(boundaryRegionsSelect,"_highlight_subReg_Region_",subRegType,nameAppend,sep=""),dirOutputs = dir,
-          underLayer = regionHL,bgColor=extendedBGColor,frameShow=T,labels=F,facetsON = F)
+          underLayer = regionHL,bgColor=extendedBGColor,frameShow=T,labels=F,facetsON = F,fillPalette=fillPaletteOrig)
 metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, dataPolygon=subRegShape,fillColumn = subRegCol,
             fileName = paste(boundaryRegionsSelect,"_highlight_subReg_Region_Labels_",subRegType,nameAppend,sep=""),dirOutputs = dir,
-            underLayer = regionHL,bgColor=extendedBGColor,frameShow=T,labels=T,facetsON = F)
+            underLayer = regionHL,bgColor=extendedBGColor,frameShow=T,labels=T,facetsON = F,fillPalette=fillPaletteOrig)
 }
 
 if(!is.null(overlapShape)){
@@ -389,7 +381,7 @@ if(!is.null(overlapShape)){
 if(!is.null(boundaryRegShape)){
 
   if(length(unique(boundaryRegShape@data[[boundaryRegCol]]))<2){fillPalette=extendedHighLightColor}else{
-    fillPalette="Spectral"
+    fillPalette=fillPaletteOrig
   }
 
   boundaryRegShapeBlank<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA,bgColor="white",frameShow=F,
@@ -417,7 +409,7 @@ if(!is.null(boundaryRegShape)){
 
 if(!is.null(subRegShape)){
 
-  if(length(unique(subRegShape@data[[subRegCol]]))<2){fillPalette=extendedHighLightColor}else{fillPalette="Spectral"}
+  if(length(unique(subRegShape@data[[subRegCol]]))<2){fillPalette=extendedHighLightColor}else{fillPalette=fillPaletteOrig}
 
 # SubRegion Maps No Extension
 subRegShapeBlank<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA,bgColor="white",frameShow=F,
@@ -505,7 +497,7 @@ metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, data
 
 if(!is.null(subRegShape) & !is.null(boundaryRegShape)){
 
-  if(length(unique(subRegShape@data[[subRegCol]]))<2){fillPalette=extendedHighLightColor}else{fillPalette="Spectral"}
+  if(length(unique(subRegShape@data[[subRegCol]]))<2){fillPalette=extendedHighLightColor}else{fillPalette=fillPaletteOrig}
 
   if(!is.null(boundaryRegShapeBlank) & !is.null(subRegShapeFilled)){
     metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, dataPolygon=subRegShape,

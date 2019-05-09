@@ -4,33 +4,15 @@
 \alias{metis.io}
 \title{metis.io}
 \usage{
-metis.io(Z0 = NULL, D0 = NULL, X0 = NULL, A0 = NULL,
-  Import0 = NULL, Cap0 = NULL, DNew = NULL, XNew = NULL,
-  ZNew = NULL, ANew = NULL, ZPartial = NULL,
+metis.io(ioTable0 = NULL, useIntensity = 0, A0 = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "")
 }
 \arguments{
-\item{Z0}{Initial Nexus Flows (i.e. Supply sectors which also have demands).Default = NULL,}
+\item{ioTable0}{Initial ioTable. Must have columns: supplySubSector,total,export and cap. Each supply sector should also have imports. Default = NULL,}
 
-\item{D0}{Intiial Other flows. (All other sectors which have demands but do not supply resources). Default = NULL,}
+\item{useIntensity}{Boolean to use given intensity or not. Default is set to 0.}
 
-\item{X0}{Initial Total Demands. Default = NULL,}
-
-\item{A0}{Initial Intensity Matrix. Default = NULL,}
-
-\item{Import0}{Default =NULL,}
-
-\item{Cap0}{Capacity. Default =NULL,}
-
-\item{DNew}{Modified other flows. Default =NULL,}
-
-\item{XNew}{Modified total demands. Default =NULL,}
-
-\item{ZNew}{Modified Nexus flows. Default =NULL,}
-
-\item{ANew}{Modified intensity matrix. Default =NULL,}
-
-\item{ZPartial}{Nexus flows to replace in calibrated dataset. Default =NULL,}
+\item{A0}{Intensity matrix. Default Null.}
 
 \item{dirOutputs}{Default =paste(getwd(),"/outputs",sep=""),}
 

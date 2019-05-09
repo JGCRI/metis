@@ -61,11 +61,11 @@
 #' @keywords gcam, gcam database, query
 #' @export
 
-metis.readgcam <- function(gcamdatabasePath,
-                           gcamdatabaseName,
+metis.readgcam <- function(gcamdatabasePath = NULL,
+                           gcamdatabaseName = NULL,
                            queryxml = "metisQueries.xml",
                            queryPath = gcamdatabasePath,
-                           scenOrigNames,
+                           scenOrigNames = NULL,
                            scenNewNames = NULL,
                            reReadData = T,
                            dataProj = "dataProj.proj",
@@ -75,6 +75,21 @@ metis.readgcam <- function(gcamdatabasePath,
                            queriesSelect="All",
                            paramsSelect="All"
                            ){
+
+
+  # gcamdatabasePath = NULL
+  # gcamdatabaseName = NULL
+  # queryxml = "metisQueries.xml"
+  # queryPath = gcamdatabasePath
+  # scenOrigNames = NULL
+  # scenNewNames = NULL
+  # reReadData = T
+  # dataProj = "dataProj.proj"
+  # dataProjPath = gcamdatabasePath
+  # dirOutputs = paste(getwd(), "/outputs", sep = "")
+  # regionsSelect = NULL
+  # queriesSelect="All"
+  # paramsSelect="All"
 
 
 #----------------
@@ -167,7 +182,7 @@ metis.readgcam <- function(gcamdatabasePath,
                      "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
                      "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
                      "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS",
-                     "finalNrgbySecDet","finalElecbySecDet","finalElecbyServiceDet")
+                     "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec")
     }else{paramsSelectx=paramsSelect}
 
      paramx<-"finalNrgbySec"
@@ -197,7 +212,7 @@ metis.readgcam <- function(gcamdatabasePath,
                  aggregate = "sum",
                  class1 = sector,
                  classLabel1 = "Sector",
-                 classPalette1 = "pal_finalNrg_sec",
+                 classPalette1 = "pal_nrg",
                  class2 = "class2",
                  classLabel2 = "classLabel2",
                  classPalette2 = "classPalette2")%>%
@@ -215,7 +230,7 @@ metis.readgcam <- function(gcamdatabasePath,
     }}
 
 
-     paramx<-"finalNrgbySecDet"
+     paramx<-"finalNrgbySecDetbyFuel"
      # Total final energy by aggregate end-use sector
      if(paramx %in% paramsSelectx){
        queryx <- "Final energy by detailed end-use sector and fuel"
@@ -226,7 +241,31 @@ metis.readgcam <- function(gcamdatabasePath,
          }
          tbl <- tbl %>%
            dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-           dplyr::mutate(param = "finalNrgbySecDet",
+           dplyr::mutate(sector=gsub("process heat cement","industry",sector),
+                         sector=gsub("cement","industry",sector),
+                         sector=gsub("industrial energy use","industry",sector),
+                         sector=gsub("industrial feedstocks","industry",sector),
+                         sector=gsub("N fertilizer","industry",sector),
+                         sector = replace(sector, stringr::str_detect(sector, "trn"), "transport"),
+                         sector=gsub("comm cooling","buildings",sector),
+                         sector=gsub("comm heating","buildings",sector),
+                         sector=gsub("comm others","buildings",sector),
+                         sector=gsub("resid cooling","buildings",sector),
+                         sector=gsub("resid heating","buildings",sector),
+                         sector=gsub("resid others","buildings",sector),
+                         input=gsub("elect\\_td\\_ind","electricity",input),
+                         input=gsub("elect\\_td\\_bld","electricity",input),
+                         input=gsub("elect\\_td\\_trn","electricity",input),
+                         input=gsub("delivered coal","coal",input),
+                         input=gsub("refined liquids enduse","oil",input),
+                         input=gsub("delivered biomass","biomass",input),
+                         input=gsub("H2 enduse","hydrogen",input),
+                         input=gsub("refined liquids industrial","oil",input),
+                         input=gsub("wholesale gas","gas",input),
+                         input=gsub("traditional biomass","biomass",input),
+                         input=gsub("delivered gas","gas",input),
+                         input=gsub("district heat","Other",input),
+                         param = "finalNrgbySecDetbyFuel",
                          sources = "Sources",
                          origScen = scenario,
                          origQuery = queryx,
@@ -240,10 +279,10 @@ metis.readgcam <- function(gcamdatabasePath,
                          x = year,
                          xLabel = "Year",
                          aggregate = "sum",
-                         class1 = sector,
-                         classLabel1 = "Sector",
-                         classPalette1 = "pal_16",
-                         class2 = input,
+                         class1 = input,
+                         classLabel1 = "Fuel",
+                         classPalette1 = "pal_nrg",
+                         class2 = sector,
                          classLabel2 = "classLabel2",
                          classPalette2 = "classPalette2")%>%
            dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
@@ -287,10 +326,10 @@ metis.readgcam <- function(gcamdatabasePath,
                          x = year,
                          xLabel = "Year",
                          aggregate = "sum",
-                         class1 = input,
-                         classLabel1 = "Sector",
-                         classPalette1 = "pal_finalNrg_sec",
-                         class2 = sector,
+                         class1 = sector,
+                         classLabel1 = "Subsector",
+                         classPalette1 = "pal_nrg",
+                         class2 = input,
                          classLabel2 = "classLabel2",
                          classPalette2 = "classPalette2")%>%
            dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
@@ -317,15 +356,30 @@ metis.readgcam <- function(gcamdatabasePath,
          }
          tbl <- tbl %>%
            dplyr::filter(grepl("elect",input))%>%
-           dplyr::mutate(sector=gsub("cement","industry",sector),
+           dplyr::mutate(sector=gsub("process heat cement","industry",sector),
+                         sector=gsub("cement","industry",sector),
                          sector=gsub("industrial energy use","industry",sector),
-                         sector=gsub("trn_pass","transport",sector),
-                         sector=gsub("trn_pass","industry",sector),
-                         sector=gsub("trn_pass_road_LDV_2W","industry",sector),
-                         sector=gsub("trn_pass_road_LDV_4W","industry",sector))%>%
-           dplyr::mutate(input=gsub("elect\\_td\\_ind","industry",input),
-                         input=gsub("elect\\_td\\_bld","building",input),
-                         input=gsub("elect\\_td\\_trn","transport",input))%>%
+                         sector=gsub("industrial feedstocks","industry",sector),
+                         sector=gsub("N fertilizer","industry",sector),
+                         sector = replace(sector, stringr::str_detect(sector, "trn"), "transport"),
+                         sector=gsub("comm cooling","buildings",sector),
+                         sector=gsub("comm heating","buildings",sector),
+                         sector=gsub("comm others","buildings",sector),
+                         sector=gsub("resid cooling","buildings",sector),
+                         sector=gsub("resid heating","buildings",sector),
+                         sector=gsub("resid others","buildings",sector),
+                         input=gsub("elect\\_td\\_ind","electricity",input),
+                         input=gsub("elect\\_td\\_bld","electricity",input),
+                         input=gsub("elect\\_td\\_trn","electricity",input),
+                         input=gsub("delivered coal","coal",input),
+                         input=gsub("refined liquids enduse","oil",input),
+                         input=gsub("delivered biomass","biomass",input),
+                         input=gsub("H2 enduse","hydrogen",input),
+                         input=gsub("refined liquids industrial","oil",input),
+                         input=gsub("wholesale gas","gas",input),
+                         input=gsub("traditional biomass","biomass",input),
+                         input=gsub("delivered gas","gas",input),
+                         input=gsub("district heat","Other",input))%>%
            dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
            dplyr::mutate(param = "finalElecbyServiceDet",
                          sources = "Sources",
@@ -342,9 +396,145 @@ metis.readgcam <- function(gcamdatabasePath,
                          xLabel = "Year",
                          aggregate = "sum",
                          class1 = sector,
-                         classLabel1 = "Sector",
-                         classPalette1 = "pal_16",
+                         classLabel1 = "Subsector",
+                         classPalette1 = "pal_nrg",
                          class2 = input,
+                         classLabel2 = "classLabel2",
+                         classPalette2 = "classPalette2")%>%
+           dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                         origScen, origQuery, origValue, origUnits, origX)%>%
+           dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                           aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                           origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+           dplyr::filter(!is.na(value))
+         datax <- dplyr::bind_rows(datax, tbl)
+       } else {
+         print(paste("Query '", queryx, "' not found in database", sep = ""))
+       }}
+
+     paramx<-"finalNrgbySecbyFuel"
+     # Total final energy by aggregate end-use sector
+     if(paramx %in% paramsSelectx){
+       queryx <- "Final energy by detailed end-use sector and fuel"
+       if (queryx %in% queriesx) {
+         tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+         if (!is.null(regionsSelect)) {
+           tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+         }
+         tbl <- tbl %>%
+           #dplyr::filter(grepl("elect",input))%>%
+           dplyr::mutate(sector=gsub("process heat cement","industry",sector),
+                         sector=gsub("cement","industry",sector),
+                         sector=gsub("industrial energy use","industry",sector),
+                         sector=gsub("industrial feedstocks","industry",sector),
+                         sector=gsub("N fertilizer","industry",sector),
+                         sector = replace(sector, stringr::str_detect(sector, "trn"), "transport"),
+                         sector=gsub("comm cooling","buildings",sector),
+                         sector=gsub("comm heating","buildings",sector),
+                         sector=gsub("comm others","buildings",sector),
+                         sector=gsub("resid cooling","buildings",sector),
+                         sector=gsub("resid heating","buildings",sector),
+                         sector=gsub("resid others","buildings",sector),
+                         input=gsub("elect\\_td\\_ind","electricity",input),
+                         input=gsub("elect\\_td\\_bld","electricity",input),
+                         input=gsub("elect\\_td\\_trn","electricity",input),
+                         input=gsub("delivered coal","coal",input),
+                         input=gsub("refined liquids enduse","oil",input),
+                         input=gsub("delivered biomass","biomass",input),
+                         input=gsub("H2 enduse","hydrogen",input),
+                         input=gsub("refined liquids industrial","oil",input),
+                         input=gsub("wholesale gas","gas",input),
+                         input=gsub("traditional biomass","biomass",input),
+                         input=gsub("delivered gas","gas",input),
+                         input=gsub("district heat","Other",input))%>%
+           dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+           dplyr::mutate(param = "finalNrgbySecbyFuel",
+                         sources = "Sources",
+                         origScen = scenario,
+                         origQuery = queryx,
+                         origValue = value,
+                         origUnits = Units,
+                         origX = year,
+                         scenario = scenNewNames,
+                         value = value * metis.assumptions()$convEJ2TWh,
+                         units = "Final Energy (TWh)",
+                         vintage = paste("Vint_", year, sep = ""),
+                         x = year,
+                         xLabel = "Year",
+                         aggregate = "sum",
+                         class1 = sector,
+                         classLabel1 = "Sector",
+                         classPalette1 = "pal_nrg",
+                         class2 = input,
+                         classLabel2 = "classLabel2",
+                         classPalette2 = "classPalette2")%>%
+           dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                         origScen, origQuery, origValue, origUnits, origX)%>%
+           dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                           aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                           origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+           dplyr::filter(!is.na(value))
+         datax <- dplyr::bind_rows(datax, tbl)
+       } else {
+         print(paste("Query '", queryx, "' not found in database", sep = ""))
+       }}
+
+     paramx<-"finalNrgbyFuelbySec"
+     # Total final energy by aggregate end-use sector
+     if(paramx %in% paramsSelectx){
+       queryx <- "Final energy by detailed end-use sector and fuel"
+       if (queryx %in% queriesx) {
+         tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+         if (!is.null(regionsSelect)) {
+           tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+         }
+         tbl <- tbl %>%
+           #dplyr::filter(grepl("elect",input))%>%
+           dplyr::mutate(sector=gsub("process heat cement","industry",sector),
+                         sector=gsub("cement","industry",sector),
+                         sector=gsub("industrial energy use","industry",sector),
+                         sector=gsub("industrial feedstocks","industry",sector),
+                         sector=gsub("N fertilizer","industry",sector),
+                         sector = replace(sector, stringr::str_detect(sector, "trn"), "transport"),
+                         sector=gsub("comm cooling","buildings",sector),
+                         sector=gsub("comm heating","buildings",sector),
+                         sector=gsub("comm others","buildings",sector),
+                         sector=gsub("resid cooling","buildings",sector),
+                         sector=gsub("resid heating","buildings",sector),
+                         sector=gsub("resid others","buildings",sector),
+                         input=gsub("elect\\_td\\_ind","electricity",input),
+                         input=gsub("elect\\_td\\_bld","electricity",input),
+                         input=gsub("elect\\_td\\_trn","electricity",input),
+                         input=gsub("delivered coal","coal",input),
+                         input=gsub("refined liquids enduse","oil",input),
+                         input=gsub("delivered biomass","biomass",input),
+                         input=gsub("H2 enduse","hydrogen",input),
+                         input=gsub("refined liquids industrial","oil",input),
+                         input=gsub("wholesale gas","gas",input),
+                         input=gsub("traditional biomass","biomass",input),
+                         input=gsub("delivered gas","gas",input),
+                         input=gsub("district heat","Other",input))%>%
+           dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+           dplyr::mutate(param = "finalNrgbyFuelbySec",
+                         sources = "Sources",
+                         origScen = scenario,
+                         origQuery = queryx,
+                         origValue = value,
+                         origUnits = Units,
+                         origX = year,
+                         scenario = scenNewNames,
+                         value = value * metis.assumptions()$convEJ2TWh,
+                         units = "Final Energy (TWh)",
+                         vintage = paste("Vint_", year, sep = ""),
+                         x = year,
+                         xLabel = "Year",
+                         aggregate = "sum",
+                         class1 = input,
+                         classLabel1 = "Fuel",
+                         classPalette1 = "pal_nrg",
+                         class2 = sector,
                          classLabel2 = "classLabel2",
                          classPalette2 = "classPalette2")%>%
            dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
@@ -386,7 +576,7 @@ metis.readgcam <- function(gcamdatabasePath,
                aggregate = "sum",
                class1 = fuel,
                classLabel1 = "Fuel",
-               classPalette1 = "pal_pri_ene",
+               classPalette1 = "pal_nrg",
                class2 = "class2",
                classLabel2 = "classLabel2",
                classPalette2 = "classPalette2")%>%
@@ -430,7 +620,7 @@ metis.readgcam <- function(gcamdatabasePath,
                aggregate = "sum",
                class1 = technology,
                classLabel1 = "Fuel",
-               classPalette1 = "pal_elec_tech_colors",
+               classPalette1 = "pal_nrg",
                class2 = "class2",
                classLabel2 = "classLabel2",
                classPalette2 = "classPalette2")%>%
@@ -651,7 +841,6 @@ metis.readgcam <- function(gcamdatabasePath,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -698,7 +887,6 @@ metis.readgcam <- function(gcamdatabasePath,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -746,7 +934,6 @@ metis.readgcam <- function(gcamdatabasePath,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -910,7 +1097,6 @@ metis.readgcam <- function(gcamdatabasePath,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -958,7 +1144,6 @@ metis.readgcam <- function(gcamdatabasePath,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -1125,7 +1310,6 @@ metis.readgcam <- function(gcamdatabasePath,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -1224,7 +1408,6 @@ metis.readgcam <- function(gcamdatabasePath,
         dplyr::filter(!is.na(value))
       tblLUEmiss<-tbl
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -1268,7 +1451,6 @@ metis.readgcam <- function(gcamdatabasePath,
                  origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblgdp<-tbl
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
@@ -1300,7 +1482,7 @@ metis.readgcam <- function(gcamdatabasePath,
                aggregate = "sum",
                class1 = sector,
                classLabel1 = "Type",
-               classPalette1 = "pal_finalNrg_sec",
+               classPalette1 = "pal_nrg",
                class2 = "class2",
                classLabel2 = "classLabel2",
                classPalette2 = "classPalette2") %>%
