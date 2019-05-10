@@ -64,6 +64,7 @@
 
 
 metis.chart<-function(data,
+                      dataNorm=NULL,
                          chartType="bar",position="stack",
                          xData="x",yData="value",class="class1",group="scenario",
                          classPalette="classPalette1",classLabel="classLabel1",
@@ -83,6 +84,7 @@ metis.chart<-function(data,
                          sankeyAxis2=NULL,
                          sankeyAxis1Label="axis1Label",
                          sankeyAxis2Label="axis2Label",
+                         sankeyGroupColor=NULL,
                          printFig = T,
                          fileName = "chart",
                          dirOutputs=paste(getwd(),"/outputs",sep=""),
@@ -120,6 +122,15 @@ metis.chart<-function(data,
   # figWidth=13
   # figHeight=9
   # pdfpng="png"
+  # labelTextSize = 4
+  # sectorToOrder=NULL
+  # sectorFromOrder=NULL
+  # removeCols=NULL
+  # bubbleSize=10
+  # sankeyAxis1=NULL
+  # sankeyAxis2=NULL
+  # sankeyAxis1Label="axis1Label"
+  # sankeyAxis2Label="axis2Label"
 
 #------------------
 # Initialize variables to remove binding errors if needed
@@ -145,7 +156,25 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
   if(classPalette %in% names(l1)){
   paletteX<-metis.colors()[[unique(l1[[classPalette]])]]}else{
     if(classPalette %in% names(metis.colors())){
-    paletteX<-metis.colors()[[classPalette]]} else {
+    paletteX<-metis.colors()[[classPalette]]
+
+    if(chartType=="sankey"){
+
+      paletteX_df <- paletteX %>% as.data.frame() %>%
+        dplyr::rename(value=".") %>%
+        dplyr::mutate(tempName = as.character(names(paletteX)),
+                      value=as.character(value)); paletteX_df %>% tibble::as_tibble()
+
+     paletteDF_temp <- data.frame(tempName=unique(l1[[sankeyGroupColor]])) %>%
+       dplyr::mutate(tempName = as.character(tempName)) %>%
+         dplyr::left_join(paletteX_df); paletteDF_temp
+
+     paletteX <- as.vector(c(paletteDF_temp$value,metis.colors()$pal_16))
+     names(paletteX) <-c(paletteDF_temp$tempName);paletteX
+
+    }
+
+    } else {
       paletteX<-classPalette
     }
   }
@@ -186,21 +215,28 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
                      length(unique(l1[[facet_columns]])) + length(unique(l1[[facet_rows]]))); nFacets
 
 
+    # nudge_x_c <- l1 %>%
+    #   dplyr::select(subRegion,sankeyAxis1,sankeyAxis2) %>%
+    #   tidyr::gather(-subRegion,key=key,value=value) %>%
+    #   dplyr::arrange(subRegion) %>%
+    #   dplyr::distinct() %>%
+    #   dplyr::mutate(nudge = case_when(key==sankeyAxis1~-3,
+    #                                       key==sankeyAxis2~0.2,
+    #                                       TRUE~0)); nudge_x_c; length(nudge_x_c$nudge)
+
+    # https://cran.r-project.org/web/packages/ggalluvial/vignettes/labels.html
+
     p <- p + theme_bw() +
       ggalluvial::geom_alluvium(aes(fill = get(class)), width = 1/12, color="black", alpha=0.6) +
       ggalluvial::geom_stratum(width = 1/12, fill = "grey70", color = "grey10", alpha=1) +
-      geom_text_repel(stat = "stratum", label.strata = TRUE, direction="y", size=4,segment.color = 'grey50',
-                      nudge_x=c(rep(c(rep(-3,length(unique(l1[[yData]]))),
-                                      rep(0.2,length(unique(l1[[xData]])))),nFacets)),
-                      hjust = 1) +
       scale_x_discrete(limits = c(sankeyAxis1Label, sankeyAxis2Label), expand = c(0.3,0)) +
-      #scale_fill_brewer(type = "qual", palette = "Set1", name="From") +
+      geom_text_repel(stat = "stratum", label.strata = TRUE, direction="y", size=4,segment.color = 'grey50') +
       scale_fill_manual(values=paletteX, name="From") +
       coord_cartesian(clip = "off")+
-      theme(aspect.ratio = 1*(figWidth_i/max(figWidth_i,length(unique(dfx$sectorFrom))))) +
+      theme(aspect.ratio = 1) +
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5,size = 15),
-            strip.text  = element_text(size = 15),
-            strip.background = element_blank(),
+            strip.text  = element_text(size = 18),
+            #strip.background = element_blank(),
             axis.title.x = element_text(size = 15),
             axis.ticks.x = element_blank(),
             axis.ticks.y = element_blank(),
@@ -212,6 +248,8 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
             panel.border = element_blank(),
             legend.text=element_text(size=15))+
       ggtitle(fname)
+
+
 
     if(!grepl("class",class)){
       p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
@@ -226,11 +264,14 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
   # Chart Type
   if(chartType=="bubble"){
+
+    if(is.null(dataNorm)){dataNorm=l1}
+
     p <- p + theme_bw() +
       labs(title=fname) +
-      geom_point(data=l1%>%dplyr::filter(!(!!as.name(xData) %in% removeCols)),aes(col=value, size=value)) +
+      geom_point(data=dataNorm%>%dplyr::filter(!(!!as.name(xData) %in% removeCols)),aes(col=value, size=value)) +
       scale_color_gradient(low = "white", high = "indianred1", guide="none") +
-      geom_text(aes(label=round(value,2)),col="black", size=5) +
+      geom_text(aes(label=round(value,2)),col="black", size=3) +
       coord_fixed(ratio = 1) +
       scale_x_discrete(limits = sectorToOrder, expand = c(0.1,0.1)) +
       scale_y_discrete(limits = rev(sectorFromOrder), expand = c(0.1,0.1)) +
@@ -239,7 +280,7 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
             axis.text.y = element_text(size = 15),
             strip.text  = element_text(size = 15),
             axis.title = element_text(size = 15)) +
-      theme(aspect.ratio = (figWidth_i/max(figWidth_i,length(unique(A_matx$sectorFrom)))))
+      theme(aspect.ratio = length(unique(l1[[yData]]))/length(unique(l1[[xData]])))
 
     if(!grepl("class",class)){
       p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{

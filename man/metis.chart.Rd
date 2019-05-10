@@ -66,6 +66,24 @@ metis.chart(data, chartType = "bar", position = "stack", xData = "x",
 
 \item{sizeLines}{Default 1.5}
 
+\item{labelTextSize}{= 4,}
+
+\item{sectorToOrder}{Default = NULL,}
+
+\item{sectorFromOrder}{Default = NULL,}
+
+\item{removeCols}{Default = NULL,}
+
+\item{bubbleSize}{Default = 10,}
+
+\item{sankeyAxis1}{Default = NULL,}
+
+\item{sankeyAxis2}{Default = NULL,}
+
+\item{sankeyAxis1Label}{Default = "axis1Label",}
+
+\item{sankeyAxis2Label}{Default = "axis2Label",}
+
 \item{printFig}{Default = T,}
 
 \item{fileName}{Default = "map",}

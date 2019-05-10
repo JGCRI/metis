@@ -45,7 +45,7 @@ A0=tibble::tribble( # Initial total demand
 
 # Demands and Exports
 ioTable0=tibble::tribble( # Initial total demand
-  ~supplySubSector,   ~supplySector, ~water_all,    ~elec_all,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap, ~unit,
+  ~supplySubSector,   ~supplySector, ~water_all,    ~elec_all,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap, ~units,
   "water_sw",        "water",       0,    200, 20,        40,         50,     0,      500,    1000, "km3",
   "water_import",     "water",       0,    20,  30,        20,         70,     300,    10,      0,  "km3",
   "elec_all",         "elec",        225,  0,   30,        40,         70,     1200,    30,     410, "TWh",
@@ -97,7 +97,7 @@ A0=tibble::tribble( # Initial Flows
 
 # Demands and Exports
 ioTable0=tibble::tribble( # Initial total demand
-  ~supplySubSector,   ~supplySector, ~water_all,    ~elec_all,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap, ~unit, ~scenario, ~subRegion,
+  ~supplySubSector,   ~supplySector, ~water_all,    ~elec_all,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap, ~units, ~scenario, ~subRegion,
   "water_sw",        "water",        0,    200, 20,        40,         50,     0,      500,    1000, "km3", "ScenA", "SubRegionA",
   "water_import",     "water",       0,    20,  30,        20,         70,     300,    10,      0,  "km3", "ScenA", "SubRegionA",
   "elec_all",         "elec",        225,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenA", "SubRegionA",
