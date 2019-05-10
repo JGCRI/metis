@@ -184,7 +184,8 @@ metis.map<-function(dataPolygon=NULL,
 NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette
 
 legendTitle=gsub(" ","\n",legendTitle)
-tmap::tmap_mode(mode = c("plot"), max.categories=10000)
+tmap::tmap_mode(mode = c("plot"))
+tmap::tmap_options(max.categories=10000)
 
 
 #------------------------------------------
@@ -218,8 +219,10 @@ if(!is.null(dataGrid)){
     raster<-raster::mask(raster,shape)
     raster<-methods::as(raster, "SpatialPixelsDataFrame")
     raster@data<-Filter(function(x)!all(is.na(x)), raster@data)
+    # Replace spaces because raster::stack(raster) will add periods which then don't correspond to fillColumn names
+    fillColumn<-gsub("\\ ",".",fillColumn)
     fillColumn<-fillColumn[c(fillColumn %in% names(raster@data))]
-    }
+   }
 }
 
 
@@ -336,8 +339,8 @@ if(!is.null(raster)){
   map<-tmap::tm_shape(raster) + tmap::tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
                                   style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks,legend.show = legendShow)
 
-  if(!is.null(raster)){checkFacets=length(names(raster))}else{
-  }
+  if(!is.null(raster)){checkFacets=length(names(raster))}
+
   if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
     map<- map + tmap::tm_facets(free.scales.fill=facetFreeScale,
                           nrow=facetRows,

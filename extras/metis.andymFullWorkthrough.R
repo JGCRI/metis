@@ -364,10 +364,10 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
 
 #examplePolygonTable<-paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_subRegType_origDownscaled_hydrobidBermeo3.csv",sep="")
 
-polygonDataTables_i=c(paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_state_origDownscaled_NE.csv",sep=""))
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",countryName,"_state_origDownscaled_NE.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
 for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
-gridDataTables_i=c(paste(getwd(),"/outputs/Grids/gridCropped_Argentina_state_NE.csv",sep=""))
+gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_",countryName,"_state_NE.csv",sep="")
 b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
 for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x));print(unique((b%>%dplyr::filter(param==param_i))$scenario))}
 xRange_i= seq(from=2000,to=2050,by=5)
@@ -375,17 +375,17 @@ legendPosition_i=c("LEFT","bottom")
 legendOutsideSingle_i=T
 animateOn_i=T
 delay_i=100
-#scenRef_i="gfdl-esm2m_rcp2p6_NA_NA"     #andym
+scenRef_i="gfdl-esm2m_rcp2p6_NA_NA"
 paramsSelect_i = c("All")
 indvScenarios_i = "All"
-GCMRCPSSPPol_i=T              #andym what is this?
+GCMRCPSSPPol_i=T
 
 
 boundaryRegShape_i = NULL
 boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
 boundaryRegShpFile_i=paste("ne_10m_admin_0_countries",sep="")
 boundaryRegCol_i="NAME"
-boundaryRegionsSelect_i="Argentina"    #andym
+boundaryRegionsSelect_i=countryName
 subRegShape_i = NULL
 subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
 subRegShpFile_i = paste(countryName,"NE1",sep= "")
@@ -393,19 +393,18 @@ subRegCol_i = "name"
 subRegType_i = "state"
 nameAppend_i = "_NE"
 
-scaleRange_i=data.frame(param=c("griddedScarcity"),     #andym
-                        maxScale=c(1),     #andym
-                        minScale=c(0))     #andym
-
-
-
-#andym commented out the following 2 sections:
+scaleRange_i=data.frame(param=c("griddedScarcity"),
+                        maxScale=c(1),
+                        minScale=c(0))
 
 
 numeric2Cat_param <- list("griddedScarcity","param2")
 numeric2Cat_breaks <- list(c(-Inf, 0.1, 0.2, 0.4,Inf),c(0,1,2))
-numeric2Cat_labels <- list(c("None (0<WSI<0.1)","Low (0.1<WSI<0.2)","Moderate (0.2<WSI<0.4)","Severe (WSI>0.4)"),c("a","b","c","d"))
-numeric2Cat_palette <- list(c("pal_ScarcityCat"),c("pal_x"))
+numeric2Cat_labels <- list(c("None (0<WSI<0.1)","Low (0.1<WSI<0.2)","Moderate (0.2<WSI<0.4)","Severe (WSI>0.4)"),
+                           c("a","b","c","d"))
+numeric2Cat_palette <- list(c("pal_ScarcityCat"),
+                            #c("c('None (0<WSI<0.1)'='black','Low (0.1<WSI<0.2)'='blue','Moderate (0.2<WSI<0.4)'='purple','Severe (WSI>0.4)'='yellow')"),
+                            c("Spectral")) # Can be a custom scale or an R brewer paletter or a metis.pal
 numeric2Cat_legendTextSize <- list(c(0.7),c(NULL))
 numeric2Cat_list <-list(numeric2Cat_param=numeric2Cat_param,
                         numeric2Cat_breaks=numeric2Cat_breaks,
@@ -447,7 +446,7 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  paramsSelect = paramsSelect_i,
                  scaleRange = scaleRange_i,
                  indvScenarios=indvScenarios_i,
-                 GCMRCPSSPPol=GCMRCPSSPPol_i,
+                 GCMRCPSSPPol=F,
                  multiFacetCols="scenarioRCP",
                  multiFacetRows="scenarioGCM",
                  legendOutsideMulti=T,
@@ -455,8 +454,8 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  legendTitleSizeMulti=NULL,
                  legendTextSizeAnim=NULL,
                  legendTextSizeMulti=NULL,
-                 #refGCM="gfdl-esm2m",       andym
-                 #refRCP="rcp2p6",           #andym
+                 #refGCM="gfdl-esm2m",
+                 #refRCP="rcp2p6",
                  chosenRefMeanYears=c(2000:2050),
                  numeric2Cat_list=numeric2Cat_list)
 
@@ -479,96 +478,7 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
 # legendPosition=legendPosition_i
 # animateOn=animateOn_i
 # delay=delay_i
-# scenRef=scenRef_i
-# extension=T
-# expandPercent = 3
-# figWidth=6
-# figHeight=7
-# paramsSelect = paramsSelect_i
-# scaleRange = scaleRange_i
-# indvScenarios=indvScenarios_i
-# GCMRCPSSPPol=T
-# multiFacetCols="scenarioRCP"
-# multiFacetRows="scenarioGCM"
-# legendOutsideMulti=T
-# legendPositionMulti=NULL
-# legendTitleSizeMulti=NULL
-# legendTextSizeAnim=NULL
-# legendTextSizeMulti=NULL
-# refGCM="gfdl-esm2m"
-# refRCP="rcp2p6"
-# chosenRefMeanYears=c(2000:2050)
-# numeric2Cat_list=numeric2Cat_list
-
-
-polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Uruguay_subBasin_origDownscaled_local.csv",sep="")
-a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
-for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
-
-subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
-subRegShpFile_i = localBasinShapeFile # paste("colombiaLocalBasin",sep= "")
-subRegCol_i = localBasinsShapeFileColName  #
-subRegType_i = "subBasin"
-nameAppend_i = "_local"
-
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
-                 #gridDataTables=gridDataTables_i,
-                 xRange=xRange_i,
-                 boundaryRegShape=boundaryRegShape_i,
-                 boundaryRegShpFolder=boundaryRegShpFolder_i,
-                 boundaryRegShpFile=boundaryRegShpFile_i,
-                 boundaryRegCol=boundaryRegCol_i,
-                 boundaryRegionsSelect=boundaryRegionsSelect_i,
-                 subRegShape=subRegShape_i,
-                 subRegShpFolder=subRegShpFolder_i,
-                 subRegShpFile=subRegShpFile_i,
-                 subRegCol=subRegCol_i,
-                 subRegType=subRegType_i,
-                 nameAppend=nameAppend_i,
-                 legendOutsideSingle=legendOutsideSingle_i,
-                 legendPosition=legendPosition_i,
-                 animateOn=animateOn_i,
-                 delay=delay_i,
-                 scenRef=scenRef_i,
-                 extension=T,
-                 expandPercent = 3,
-                 figWidth=6,
-                 figHeight=7,
-                 paramsSelect = paramsSelect_i,
-                 scaleRange = scaleRange_i,
-                 indvScenarios=indvScenarios_i,
-                 GCMRCPSSPPol=GCMRCPSSPPol_i,
-                 multiFacetCols="scenarioRCP",
-                 multiFacetRows="scenarioGCM",
-                 legendOutsideMulti=T,
-                 legendPositionMulti=NULL,
-                 legendTitleSizeMulti=NULL,
-                 legendTextSizeAnim=NULL,
-                 legendTextSizeMulti=NULL,
-                 refGCM="gfdl-esm2m",
-                 refRCP="rcp2p6",
-                 chosenRefMeanYears=c(2000:2050),
-                 numeric2Cat_list=numeric2Cat_list)
-
-# polygonDataTables=polygonDataTables_i
-# gridDataTables=gridDataTables_i
-# xRange=xRange_i
-# boundaryRegShape=boundaryRegShape_i
-# boundaryRegShpFolder=boundaryRegShpFolder_i
-# boundaryRegShpFile=boundaryRegShpFile_i
-# boundaryRegCol=boundaryRegCol_i
-# boundaryRegionsSelect=boundaryRegionsSelect_i
-# subRegShape=subRegShape_i
-# subRegShpFolder=subRegShpFolder_i
-# subRegShpFile=subRegShpFile_i
-# subRegCol=subRegCol_i
-# subRegType=subRegType_i
-# nameAppend=nameAppend_i
-# legendOutsideSingle=legendOutsideSingle_i
-# legendPosition=legendPosition_i
-# animateOn=animateOn_i
-# delay=delay_i
-# scenRef=scenRef_i
+# #scenRef=scenRef_i
 # extension=T
 # expandPercent = 3
 # figWidth=6
@@ -584,7 +494,7 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
 # legendTitleSizeMulti=NULL
 # legendTextSizeAnim=NULL
 # legendTextSizeMulti=NULL
-# refGCM="gfdl-esm2m"
-# refRCP="rcp2p6"
+# #refGCM="gfdl-esm2m"
+# #refRCP="rcp2p6"
 # chosenRefMeanYears=c(2000:2050)
 # numeric2Cat_list=numeric2Cat_list
