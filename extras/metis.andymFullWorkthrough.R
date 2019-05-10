@@ -185,7 +185,17 @@ boundariesX<- metis.boundaries(
 # Prepare Grids
 #------------------------
 
-# dirOutputs=paste(getwd(),"/outputs",sep="")
+dirOutputs=paste(getwd(),"/outputs",sep="")
+
+if (!dir.exists(dirOutputs)){                                        #these directory checks and creation I coped out of grid2poly
+  dir.create(dirOutputs)}
+if (!dir.exists(paste(dirOutputs, "/Grids", sep = ""))){
+  dir.create(paste(dirOutputs, "/Grids", sep = ""))}
+
+if (!dir.exists(paste(dirOutputs, "/Grids/diagnostics",sep=""))){
+  dir.create(paste(dirOutputs, "/Grids/diagnostics",sep=""))}
+
+
 # reReadData=1
 # demeterFolder=paste(getwd(),"/dataFiles/grids/demeter/",sep="")
 # demeterScenario="Eg1"
@@ -365,10 +375,59 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
 #examplePolygonTable<-paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_subRegType_origDownscaled_hydrobidBermeo3.csv",sep="")
 
 polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",countryName,"_state_origDownscaled_NE.csv",sep="")
-a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+a<-read.csv(polygonDataTables_i)
+
+a$class <- as.character(a$class)
+
+a[a=="a Coal"]="aCoal"          #andym added because the spaces in the subsector names seemed to be giving problems
+a[a=="c Gas"]<-"cGas"
+a[a=="e Oil"]<-"eOil"
+a[a=="g Biomass"]<-"gBiomass"
+a[a=="i Nuclear"]<-"iNuclear"
+a[a=="j Geothermal"]<-"jGeothermal"
+a[a=="k Hydro"]<-"kHydro"
+a[a=="l Wind"]<-"lWind"
+a[a=="m Solar"]<-"mSolar"
+a[a=="n CHP"]<-"nCHP"
+
+a$class <- as.factor(a$class)      #andym
+
+data.table::fwrite(a,file = paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",countryName,"_state_origDownscaled_NE_NOSPACES.csv",sep=""),row.names = F)        #andym
+
+polygonDataTables_i_NOSPACES=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",countryName,"_state_origDownscaled_NE_NOSPACES.csv",sep="")    #andym
+
+
+head(a); unique(a$scenario); unique(a$param); unique(a$x)
 for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
 gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_",countryName,"_state_NE.csv",sep="")
-b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
+b<-read.csv(gridDataTables_i)
+
+b$class <- as.character(b$class)
+
+b[b=="a Coal"]="aCoal"          #andym added because the spaces in the subsector names seemed to be giving problems
+b[b=="c Gas"]<-"cGas"
+b[b=="e Oil"]<-"eOil"
+b[b=="g Biomass"]<-"gBiomass"
+b[b=="i Nuclear"]<-"iNuclear"
+b[b=="j Geothermal"]<-"jGeothermal"
+b[b=="k Hydro"]<-"kHydro"
+b[b=="l Wind"]<-"lWind"
+b[b=="m Solar"]<-"mSolar"
+b[b=="n CHP"]<-"nCHP"
+
+b$class <- as.factor(b$class)
+
+
+
+b$class <- as.factor(b$class)      #andym
+
+data.table::fwrite(b,file = paste(getwd(),"/outputs/Grids/gridCropped_",countryName,"_state_NE_NOSPACES.csv",sep=""),row.names = F)        #andym
+
+gridDataTables_i_NOSPACES=paste(getwd(),"/outputs/Grids/gridCropped_",countryName,"_state_NE_NOSPACES.csv",sep="")    #andym
+
+
+
+head(b); unique(b$scenario); unique(b$param); unique(b$x)
 for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x));print(unique((b%>%dplyr::filter(param==param_i))$scenario))}
 xRange_i= seq(from=2000,to=2050,by=5)
 legendPosition_i=c("LEFT","bottom")
@@ -420,8 +479,8 @@ catLegendTextSize <- numeric2Cat_list$numeric2Cat_legendTextSize[[list_index]];c
 
 
 
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
-                 gridDataTables=gridDataTables_i,
+metis.mapProcess(polygonDataTables=polygonDataTables_i_NOSPACES,         #andym
+                 gridDataTables=gridDataTables_i_NOSPACES,          #andym
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,
                  boundaryRegShpFolder=boundaryRegShpFolder_i,
