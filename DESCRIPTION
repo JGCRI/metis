@@ -33,6 +33,7 @@ Imports:
 	stats (>= 3.5.0), 
         dbplyr (>= 1.3.0),
         RSQLite (>= 2.1.1),
+	ggrepel (>= 0.8.1),
 	data.table,
 	DBI
 Suggests: 

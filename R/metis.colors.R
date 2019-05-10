@@ -241,9 +241,13 @@ metis.colors <- function(palx=NULL) {
                 pasture="goldenrod1",otherarable="darkorange4",grass="darkolivegreen1",forest="darkgreen",
                 crops="yellow2",biomass="grey50",naturalOther="grey75")
 
-    pal_sankey <- c(Ag = "forestgreen", Ag_import = "chartreuse",
-                    E = "red", E_import = "orange",
-                    W = "dodgerblue4", W_import = "cadetblue1"); pal_sankey
+    pal_sankey <- c(Agriculture = "forestgreen", agriculture = "forestgreen", Ag = "forestgreen", AG = "forestgreen", Agri = "forestgreen",
+                    AGRI = "forestgreen", agri = "forestgreen", irri = "forestgreen", IRRI = "forestgreen", IRRIGATION = "forestgreen",
+                    irrigation = "forestgreen",
+                    LIVESTOCK="goldenrod2", Livestock="goldenrod2",livestock="goldenrod2",
+                    Electricity = "red", ELECTRICITY = "red", elec = "red", ELEC = "red", Elec = "red", E = "red",
+                    W = "dodgerblue4", Water = "dodgerblue4", WATER = "dodgerblue4", water = "dodgerblue4", WAT = "dodgerblue4", Wat = "dodgerblue4",
+                    wat = "dodgerblue4"); pal_sankey
 
     pal_ScarcityCat <- c("None (0<WSI<0.1)" = "#3288BD",
                          "Low (0.1<WSI<0.2)" = "#ABDDA4",
