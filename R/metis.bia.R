@@ -281,13 +281,17 @@ metis.bia<- function(biaInputsFolder = "NA",
               dplyr::left_join(listOfGridCells,by = c("gridlat","gridlon"))%>%
               dplyr::group_by(gridlat, gridlon, class1, gridID, ctry_name, ctry_code, region, region_32_code, param, units)%>%    #andym This group_by, and the following summarise get rid of a few columns
               dplyr::summarise(gridCellCapacity = sum(value))%>%
+              dplyr::ungroup() %>%
               dplyr::group_by(class1,region,region_32_code)%>%
               dplyr::mutate(regionCapSum = sum(gridCellCapacity),
-                            gridCellPercentage = gridCellCapacity/regionCapSum)
+                            gridCellPercentage = gridCellCapacity/regionCapSum) %>%
+              dplyr::ungroup()
 
 
-
-            gridWRI[gridWRI=="Coal"]<-"a Coal"
+            gridWRI[gridWRI==unique(gridWRI$class1)[grepl("cogen",unique(gridWRI$class1),ignore.case=T)]]<-
+              unique(dataFromGCAM$class1)[grepl("chp",unique(dataFromGCAM$class1),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$class1)[grepl("coal",unique(gridWRI$class1),ignore.case=T)]]<-
+              unique(dataFromGCAM$class1)[grepl("coal",unique(dataFromGCAM$class1),ignore.case=T)]
             gridWRI[gridWRI=="Gas"]<-"c Gas"
             gridWRI[gridWRI=="Oil"]<-"e Oil"
             gridWRI[gridWRI=="Biomass"]<-"g Biomass"
@@ -307,6 +311,44 @@ metis.bia<- function(biaInputsFolder = "NA",
               dplyr::mutate(valueDistrib = gridCellPercentage*value, origValueDistrib = gridCellPercentage*origValue)
 
 
+            #-------------------
+            # Crop Grid to Region
+            #-------------------
+
+            # Read in GCAM regions
+            GCAMRegionShapeFolder <- "C:/Users/amille17/Desktop/EssicServetop/metis/dataFiles/gis/admin_gcam32"
+            GCAMRegionShapeFile <- "region32_0p5deg"
+            shape=rgdal::readOGR(dsn=GCAMRegionShapeFolder,layer=GCAMRegionShapeFile,use_iconv=T,encoding='UTF-8')
+            shape@data <-shape@data %>%
+              left_join(ctor %>%
+                          dplyr::select(region_32_code, region) %>%
+                          dplyr::distinct() %>%
+                          dplyr::mutate(reg32_id=as.factor(region_32_code))%>%
+                          dplyr::select(-region_32_code)); shape@data %>% as.data.frame()
+            shape <- shape[(shape$region %in% regionsSelect),];
+            plot(shape)
+
+
+            # Prepare grids to be cropped
+            listOfGridCells
+            spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(listOfGridCells$gridlon,listOfGridCells$gridlat))),data=listOfGridCells)
+            sp::gridded(spdf)<-TRUE
+
+            r<-raster::stack(spdf)
+            raster::projection(r)<-sp::proj4string(shape)
+
+            rcrop<-raster::crop(r,shape)
+            rcropP<-raster::rasterToPolygons(rcrop)
+            gridCropped<-tibble::as_tibble(rcropP@data)
+
+
+
+            dataBia1<- dataFromGCAM %>%
+              dplyr::left_join(
+              gridWRI%>%dplyr::filter(region %in% regionsSelect)%>%
+              dplyr::select(gridlat, gridlon, gridID, class1, region, region_32_code, ctry_name, ctry_code, gridCellPercentage),
+              by = c("class1", "region"))%>%
+              dplyr::mutate(valueDistrib = gridCellPercentage*value, origValueDistrib = gridCellPercentage*origValue)
 
 
 
