@@ -289,13 +289,25 @@ if (!dir.exists(paste(dirOutputs, "/Grids/diagnostics",sep=""))){
 # # sqliteUSE = sqliteUSE
 # # sqliteDBNamePath =sqliteDBNamePath
 
-dataBia<-dataBia%>%select(-value, -origValue)%>%
+
+
+dataBia1<-dataBia1%>%select(-value, -origValue)%>%
   dplyr::mutate(aggType = "vol")%>%
   dplyr::rename(lat = gridlat, lon = gridlon, class = class1, value = valueDistrib, origValue = origValueDistrib)
 
-dataBia <-  dataBia %>%
+dataBia1 <-  dataBia1 %>%
   ungroup() %>%
   select(-gridCellPercentage,-region,-region_32_code,-ctry_name,-ctry_code, -aggregate, -contains("orig"),-gridID)
+
+# dataBia<-dataBia%>%select(-value, -origValue)%>%
+#   dplyr::mutate(aggType = "vol")%>%
+#   dplyr::rename(lat = gridlat, lon = gridlon, class = class1, value = valueDistrib, origValue = origValueDistrib)
+#
+# dataBia <-  dataBia %>%
+#   ungroup() %>%
+#   select(-gridCellPercentage,-region,-region_32_code,-ctry_name,-ctry_code, -aggregate, -contains("orig"),-gridID)
+
+
 
 #-----------
 # Grid to Poly
@@ -315,6 +327,7 @@ sqliteUSE_i = F  #andym
 sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
 grid2polyX<-metis.grid2poly(grid=dataBia,
+  #grid=dataBia1,               #andym
   boundaryRegionsSelect=boundaryRegionsSelect_i,
   subRegShpFolder=subRegShpFolder_i,
   subRegShpFile=subRegShpFile_i,

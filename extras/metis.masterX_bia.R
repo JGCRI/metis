@@ -61,7 +61,9 @@ scenNewNames=c("Eg1","Eg2")
 queryxml="metisQueries.xml"
 queriesSelect = "All"      #andym
 #regionsSelect = "All"      #andym
-regionsSelect <- c('Colombia', 'Argentina', 'Japan')
+
+#regionsSelect <- c('Colombia', 'Argentina', 'Japan')     #andym used this previously for tests, until May 16 2019
+regionsSelect <- c('Argentina')
 #regionsSelect <- NULL
 #paramsSelect<-"All"
 paramsSelect<- c("elecByTech", "elecCapBySubsector")

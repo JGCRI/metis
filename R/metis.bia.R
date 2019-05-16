@@ -175,10 +175,17 @@ metis.bia<- function(biaInputsFolder = "NA",
 
 
   listOfGridCells<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/emptyGrids/",gridChoice,".csv",sep=""), header=T,stringsAsFactors = F)%>%
-    tibble::as_tibble()%>%
-    rename(gridlat = lat,
-           gridlon = lon,
-           gridID = id)
+    tibble::as_tibble()
+
+  if(!("id" %in% names(listOfGridCells))){
+    print("grid id column not found within grid raster file, creating a new id column...")
+    listOfGridCells <- rowid_to_column(listOfGridCells, var = "id")
+  }
+
+  listOfGridCells <- rename(listOfGridCells,
+                            gridlat = lat,
+                            gridlon = lon,
+                            gridID = id)
 
 
   latmin<-min(listOfGridCells$gridlat)
@@ -316,7 +323,10 @@ metis.bia<- function(biaInputsFolder = "NA",
             #-------------------
 
             # Read in GCAM regions
-            GCAMRegionShapeFolder <- "C:/Users/amille17/Desktop/EssicServetop/metis/dataFiles/gis/admin_gcam32"
+
+            #GCAMRegionShapeFolder <- "C:/Users/amille17/Desktop/EssicServetop/metis/dataFiles/gis/admin_gcam32"
+            GCAMRegionShapeFolder <- paste(getwd(),"/dataFiles/gis/admin_gcam32",sep="")
+
             GCAMRegionShapeFile <- "region32_0p5deg"
             shape=rgdal::readOGR(dsn=GCAMRegionShapeFolder,layer=GCAMRegionShapeFile,use_iconv=T,encoding='UTF-8')
             shape@data <-shape@data %>%
@@ -337,10 +347,9 @@ metis.bia<- function(biaInputsFolder = "NA",
             r<-raster::stack(spdf)
             raster::projection(r)<-sp::proj4string(shape)
 
-            rcrop<-raster::crop(r,shape)
-            rcropP<-raster::rasterToPolygons(rcrop)
-            gridCropped<-tibble::as_tibble(rcropP@data)
-
+            rmask<-raster::mask(r,shape)
+            rmaskP<-raster::rasterToPolygons(rmask)
+            gridCropped<-tibble::as_tibble(rmaskP@data)
 
 
             dataBia1<- dataFromGCAM %>%
@@ -352,7 +361,31 @@ metis.bia<- function(biaInputsFolder = "NA",
 
 
 
+            # For electricity generation subsectors not represented in power plant database, distribute evently throughout region
+            dataBia1NA <- dplyr::filter(dataBia1,is.na(gridlat)) %>%
+              dplyr::select(-gridlat, -gridlon, -gridID)
 
+            evenDistrib <- expand.grid(unique(dataBia1NA$class1), gridCropped$gridID) %>%
+              tibble::as_tibble() %>%
+              dplyr::rename(class1 = Var1, gridID = Var2) %>%
+              dplyr::left_join(listOfGridCells, by = "gridID")
+            #for (sbsctr in unique((dplyr::filter(dataBia1,is.na(gridlat)))$class1)){}
+
+
+            evenDistrib <- dplyr::left_join(dataBia1NA,evenDistrib, by = "class1") %>%
+              dplyr::mutate(gridCellCapacity = 999) %>%
+              dplyr::group_by(class1,region)%>%
+              dplyr::mutate(regionCapSum = sum(gridCellCapacity),
+                            gridCellPercentage = gridCellCapacity/regionCapSum) %>%
+              dplyr::ungroup() %>%
+              dplyr::select(-valueDistrib, -origValueDistrib) %>%
+              dplyr::mutate(valueDistrib = gridCellPercentage*value, origValueDistrib = gridCellPercentage*origValue)%>%
+              dplyr::select(-gridCellCapacity, -regionCapSum)
+
+
+            dataBia1 <- dataBia1 %>%
+              dplyr::filter(!(is.na(gridlat))) %>%
+              bind_rows(evenDistrib)
 
 
 
