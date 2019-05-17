@@ -22,6 +22,8 @@ if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("ggplot2
 library(ggplot2)
 if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggaaluvial")}
 library(ggalluvial)
+if("grid" %in% rownames(installed.packages()) == F){install.packages("grid")}
+library(grid)
 
 
 #-------------
@@ -45,28 +47,25 @@ A0=tibble::tribble( # Initial total demand
 
 # Demands and Exports
 ioTable0=tibble::tribble( # Initial total demand
-  ~supplySubSector,   ~supplySector, ~water_all,    ~elec_all,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap, ~units,
-  "water_sw",        "water",       0,    200, 20,        40,         50,     0,      500,    1000, "km3",
-  "water_import",     "water",       0,    20,  30,        20,         70,     300,    10,      0,  "km3",
-  "elec_all",         "elec",        225,  0,   30,        40,         70,     1200,    30,     410, "TWh",
-  "elec_import",      "elec",        50,   0,   20,        40,         50,     670,    20,      350, "TWh",
-  "irri_corn",         "irri",        0,    30,  20,        0,          50,     0,      0,      100, "tons",
-  "irri_import",      "irri",        0,    20,  20,        0,          50,     30,     0,       20, "tons"
+  ~supplySubSector,   ~supplySector, ~water_all,    ~elec_all,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap, ~units, ~x,
+  "water_sw",        "water",       0,    200, 20,        40,         50,     0,      500,    1000, "km3", 2010,
+  "water_import",     "water",       0,    20,  30,        20,         70,     300,    10,      0,  "km3", 2010,
+  "elec_all",         "elec",        225,  0,   30,        40,         70,     1200,    30,     410, "TWh", 2010,
+  "elec_import",      "elec",        50,   0,   20,        40,         50,     670,    20,      350, "TWh", 2010,
+  "irri_corn",         "irri",        0,    30,  20,        0,          50,     0,      0,      100, "tons", 2010,
+  "irri_import",      "irri",        0,    20,  20,        0,          50,     30,     0,       20, "tons", 2010,
+  "water_sw",        "water",        0,    150, 10,        30,         70,     0,      200,    2000, "km3", 2020,
+  "water_import",     "water",       30,    10,  20,        50,         20,     200,    30,      0,  "km3", 2020,
+  "elec_all",         "elec",        125,  0,   20,        70,         40,     1800,    50,     810, "TWh", 2020,
+  "elec_import",      "elec",        30,   0,   10,        60,         30,     870,    10,      750, "TWh", 2020,
+  "irri_corn",         "irri",        0,    30,  50,        0,          20,     0,      0,      50, "tons", 2020,
+  "irri_import",      "irri",        0,    20,  70,        0,          10,     10,     0,       10, "tons", 2020
 );ioTable0
 
 
 # Original Test
 io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_test"); io1$ioTbl_Output %>% as.data.frame() ; io1$A_Output %>% as.data.frame()
-io1a <- metis.io(ioTable0=ioTable0, A0=A0, useIntensity = 1,nameAppend = "_A"); io1a$ioTbl_Output %>% as.data.frame() ; io1a$A_Output %>% as.data.frame()
-
-# High Electric water intensity
-A1<-A0; A1[1,4] <- 1.2; A1
-io1b <- metis.io(ioTable0=ioTable0, A0=A1, useIntensity = 1,nameAppend = "_A_highWatinElec"); io1b$ioTbl_Output %>% as.data.frame() ; io1b$A_Output %>% as.data.frame()
-
-# Low Electric water intensity
-A2<-A0; A2[1,4] <- 0.2; A2
-io1c <- metis.io(ioTable0=ioTable0, A0=A2, useIntensity = 1,nameAppend = "_A_lowWatinElec"); io1c$ioTbl_Output %>% as.data.frame() ; io1c$A_Output %>% as.data.frame()
-
+io1 <- metis.io(ioTable0=ioTable0 %>%dplyr::filter(x!=2020), nameAppend = "_2010"); io1$ioTbl_Output %>% as.data.frame() ; io1$A_Output %>% as.data.frame()
 
 #---------------------
 # Multi Scenario Examples
@@ -97,47 +96,65 @@ A0=tibble::tribble( # Initial Flows
 
 # Demands and Exports
 ioTable0=tibble::tribble( # Initial total demand
-  ~supplySubSector,   ~supplySector, ~water_all,    ~elec_all,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap, ~units, ~scenario, ~subRegion,
-  "water_sw",        "water",        0,    200, 20,        40,         50,     0,      500,    1000, "km3", "ScenA", "SubRegionA",
-  "water_import",     "water",       0,    20,  30,        20,         70,     300,    10,      0,  "km3", "ScenA", "SubRegionA",
-  "elec_all",         "elec",        225,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenA", "SubRegionA",
-  "elec_import",      "elec",        50,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenA", "SubRegionA",
-  "irri_corn",         "irri",       0,    30,  20,        0,          50,     0,      0,      100, "tons", "ScenA", "SubRegionA",
-  "irri_import",      "irri",        0,    40,  20,        0,          50,     30,     0,       20, "tons", "ScenA", "SubRegionA",
+  ~supplySubSector,   ~supplySector, ~water_all,    ~elec_all,  ~industry, ~transport, ~misc, ~export, ~resid, ~cap, ~units, ~scenario, ~subRegion, ~x, ~region,
+  "water_sw",        "water",        0,    200, 20,        40,         50,     0,      500,    1000, "km3", "ScenA", "SubRegionA", 2010, "testRegion",
+  "water_import",     "water",       0,    20,  30,        20,         70,     300,    10,      0,  "km3", "ScenA", "SubRegionA", 2010, "testRegion",
+  "elec_all",         "elec",        225,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenA", "SubRegionA", 2010, "testRegion",
+  "elec_import",      "elec",        50,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenA", "SubRegionA", 2010, "testRegion",
+  "irri_corn",         "irri",       0,    30,  20,        0,          50,     0,      0,      100, "tons", "ScenA", "SubRegionA", 2010, "testRegion",
+  "irri_import",      "irri",        0,    40,  20,        0,          50,     30,     0,       20, "tons", "ScenA", "SubRegionA", 2010, "testRegion",
   #
-  "water_sw",        "water",        0,    100, 20,        40,         50,     0,      500,    1000, "km3", "ScenB", "SubRegionA",
-  "water_import",     "water",       50,   40,  30,        20,         70,     300,    10,      0,  "km3", "ScenB", "SubRegionA",
-  "elec_all",         "elec",        125,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenB", "SubRegionA",
-  "elec_import",      "elec",        30,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenB", "SubRegionA",
-  "irri_corn",         "irri",       0,    70,  20,        0,          50,     0,      0,      100, "tons", "ScenB", "SubRegionA",
-  "irri_import",      "irri",        0,    10,  20,        0,          50,     30,     0,       20, "tons", "ScenB", "SubRegionA",
+  "water_sw",        "water",        0,    100, 20,        40,         50,     0,      500,    1000, "km3", "ScenB", "SubRegionA", 2010, "testRegion",
+  "water_import",     "water",       50,   40,  30,        20,         70,     300,    10,      0,  "km3", "ScenB", "SubRegionA", 2010, "testRegion",
+  "elec_all",         "elec",        125,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenB", "SubRegionA", 2010, "testRegion",
+  "elec_import",      "elec",        30,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenB", "SubRegionA", 2010, "testRegion",
+  "irri_corn",         "irri",       0,    70,  20,        0,          50,     0,      0,      100, "tons", "ScenB", "SubRegionA", 2010, "testRegion",
+  "irri_import",      "irri",        0,    10,  20,        0,          50,     30,     0,       20, "tons", "ScenB", "SubRegionA", 2010, "testRegion",
   #
-  "water_sw",        "water",        0,    400, 20,        40,         50,     0,      500,    1000, "km3", "ScenA", "SubRegionB",
-  "water_import",     "water",       0,    10,  30,        20,         70,     300,    10,      0,  "km3",  "ScenA", "SubRegionB",
-  "elec_all",         "elec",        425,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenA", "SubRegionB",
-  "elec_import",      "elec",        60,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenA", "SubRegionB",
-  "irri_corn",         "irri",       0,    30,  20,        0,          50,     0,      0,      100, "tons", "ScenA", "SubRegionB",
-  "irri_import",      "irri",        0,    10,  20,        0,          50,     30,     0,       20, "tons", "ScenA", "SubRegionB",
+  "water_sw",        "water",        0,    400, 20,        40,         50,     0,      500,    1000, "km3", "ScenA", "SubRegionB", 2010, "testRegion",
+  "water_import",     "water",       0,    10,  30,        20,         70,     300,    10,      0,  "km3",  "ScenA", "SubRegionB", 2010, "testRegion",
+  "elec_all",         "elec",        425,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenA", "SubRegionB", 2010, "testRegion",
+  "elec_import",      "elec",        60,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenA", "SubRegionB", 2010, "testRegion",
+  "irri_corn",         "irri",       0,    30,  20,        0,          50,     0,      0,      100, "tons", "ScenA", "SubRegionB", 2010, "testRegion",
+  "irri_import",      "irri",        0,    10,  20,        0,          50,     30,     0,       20, "tons", "ScenA", "SubRegionB", 2010, "testRegion",
   #
-  "water_sw",        "water",        0,    300, 20,        40,         50,     0,      500,    1000, "km3", "ScenB", "SubRegionB",
-  "water_import",     "water",       0,    60,  30,        20,         70,     300,    10,      0,  "km3",  "ScenB", "SubRegionB",
-  "elec_all",         "elec",        25,   0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenB", "SubRegionB",
-  "elec_import",      "elec",        10,  0,   20,        40,         50,     670,    20,      350, "TWh", "ScenB", "SubRegionB",
-  "irri_corn",         "irri",       0,    70,  20,        0,          50,     0,      0,      100, "tons", "ScenB", "SubRegionB",
-  "irri_import",      "irri",        0,    35,  20,        0,          50,     30,     0,       20, "tons", "ScenB", "SubRegionB"
+  "water_sw",        "water",        0,    300, 20,        40,         50,     0,      500,    1000, "km3", "ScenB", "SubRegionB", 2010, "testRegion",
+  "water_import",     "water",       0,    60,  30,        20,         70,     300,    10,      0,  "km3",  "ScenB", "SubRegionB", 2010, "testRegion",
+  "elec_all",         "elec",        25,   0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenB", "SubRegionB", 2010, "testRegion",
+  "elec_import",      "elec",        10,  0,   20,        40,         50,     670,    20,      350, "TWh", "ScenB", "SubRegionB", 2010, "testRegion",
+  "irri_corn",         "irri",       0,    70,  20,        0,          50,     0,      0,      100, "tons", "ScenB", "SubRegionB", 2010, "testRegion",
+  # 2020
+  "irri_import",      "irri",        0,    35,  20,        0,          50,     30,     0,       20, "tons", "ScenB", "SubRegionB", 2020, "testRegion",
+  "water_sw",        "water",        0,    200, 20,        40,         50,     0,      500,    1000, "km3", "ScenA", "SubRegionA", 2020, "testRegion",
+  "water_import",     "water",       0,    20,  30,        20,         70,     300,    10,      0,  "km3", "ScenA", "SubRegionA", 2020, "testRegion",
+  "elec_all",         "elec",        225,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenA", "SubRegionA", 2020, "testRegion",
+  "elec_import",      "elec",        50,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenA", "SubRegionA", 2020, "testRegion",
+  "irri_corn",         "irri",       0,    30,  20,        0,          50,     0,      0,      100, "tons", "ScenA", "SubRegionA", 2020, "testRegion",
+  "irri_import",      "irri",        0,    40,  20,        0,          50,     30,     0,       20, "tons", "ScenA", "SubRegionA", 2020, "testRegion",
+  #
+  "water_sw",        "water",        0,    100, 20,        40,         50,     0,      500,    1000, "km3", "ScenB", "SubRegionA", 2020, "testRegion",
+  "water_import",     "water",       50,   40,  30,        20,         70,     300,    10,      0,  "km3", "ScenB", "SubRegionA", 2020, "testRegion",
+  "elec_all",         "elec",        125,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenB", "SubRegionA", 2020, "testRegion",
+  "elec_import",      "elec",        30,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenB", "SubRegionA", 2020, "testRegion",
+  "irri_corn",         "irri",       0,    70,  20,        0,          50,     0,      0,      100, "tons", "ScenB", "SubRegionA", 2020, "testRegion",
+  "irri_import",      "irri",        0,    10,  20,        0,          50,     30,     0,       20, "tons", "ScenB", "SubRegionA", 2020, "testRegion",
+  #
+  "water_sw",        "water",        0,    400, 20,        40,         50,     0,      500,    1000, "km3", "ScenA", "SubRegionB", 2020, "testRegion",
+  "water_import",     "water",       0,    10,  30,        20,         70,     300,    10,      0,  "km3",  "ScenA", "SubRegionB", 2020, "testRegion",
+  "elec_all",         "elec",        425,  0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenA", "SubRegionB", 2020, "testRegion",
+  "elec_import",      "elec",        60,   0,   20,        40,         50,     670,    20,      350, "TWh", "ScenA", "SubRegionB", 2020, "testRegion",
+  "irri_corn",         "irri",       0,    30,  20,        0,          50,     0,      0,      100, "tons", "ScenA", "SubRegionB", 2020, "testRegion",
+  "irri_import",      "irri",        0,    10,  20,        0,          50,     30,     0,       20, "tons", "ScenA", "SubRegionB", 2020, "testRegion",
+  #
+  "water_sw",        "water",        0,    300, 20,        40,         50,     0,      500,    1000, "km3", "ScenB", "SubRegionB", 2020, "testRegion",
+  "water_import",     "water",       0,    60,  30,        20,         70,     300,    10,      0,  "km3",  "ScenB", "SubRegionB", 2020, "testRegion",
+  "elec_all",         "elec",        25,   0,   30,        40,         70,     1200,    30,     410, "TWh", "ScenB", "SubRegionB", 2020, "testRegion",
+  "elec_import",      "elec",        10,  0,   20,        40,         50,     670,    20,      350, "TWh", "ScenB", "SubRegionB", 2020, "testRegion",
+  "irri_corn",         "irri",       0,    70,  20,        0,          50,     0,      0,      100, "tons", "ScenB", "SubRegionB", 2020, "testRegion",
+  "irri_import",      "irri",        0,    35,  20,        0,          50,     30,     0,       20, "tons", "ScenB", "SubRegionB", 2020, "testRegion"
 );ioTable0
 
 
 
 # Original Test
 io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_Multi_test"); io1$ioTbl_Output %>% as.data.frame() ; io1$A_Output %>% as.data.frame()
-io1a <- metis.io(ioTable0=ioTable0, A0=A0, useIntensity = 1,nameAppend = "_Multi_A"); io1a$ioTbl_Output %>% as.data.frame() ; io1a$A_Output %>% as.data.frame()
-
-# High Electric water intensity
-A1<-A0; A1[1,4] <- 1.2; A1
-io1b <- metis.io(ioTable0=ioTable0, A0=A1, useIntensity = 1,nameAppend = "_Multi_A_highWatinElec"); io1b$ioTbl_Output %>% as.data.frame() ; io1b$A_Output %>% as.data.frame()
-
-# Low Electric water intensity
-A2<-A0; A2[1,4] <- 0.2; A2
-io1c <- metis.io(ioTable0=ioTable0, A0=A2, useIntensity = 1,nameAppend = "_Multi_A_lowWatinElec"); io1c$ioTbl_Output %>% as.data.frame() ; io1c$A_Output %>% as.data.frame()
-

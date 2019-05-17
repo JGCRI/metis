@@ -5,7 +5,8 @@
 \title{metis.io}
 \usage{
 metis.io(ioTable0 = NULL, useIntensity = 0, A0 = NULL,
-  dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "")
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
+  figWidth = 9, figHeight = 7)
 }
 \arguments{
 \item{ioTable0}{Initial ioTable. Must have columns: supplySubSector,total,export and cap. Each supply sector should also have imports. Default = NULL,}
@@ -17,6 +18,10 @@ metis.io(ioTable0 = NULL, useIntensity = 0, A0 = NULL,
 \item{dirOutputs}{Default =paste(getwd(),"/outputs",sep=""),}
 
 \item{nameAppend}{Modified intensity matrix. Default =NULL,}
+
+\item{figWidth}{Default = 7.5,}
+
+\item{figheight}{Default = 5}
 }
 \value{
 A table with data by polygon ID for each shapefile provided

@@ -6,6 +6,8 @@
 #' @param useIntensity Boolean to use given intensity or not. Default is set to 0.
 #' @param A0 Intensity matrix. Default Null.
 #' @param nameAppend Modified intensity matrix. Default =NULL,
+#' @param figWidth Default = 7.5,
+#' @param figheight Default = 5
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @export
@@ -15,7 +17,9 @@ metis.io<-function(ioTable0 = NULL,
                    useIntensity = 0,
                    A0 = NULL,
                    dirOutputs=paste(getwd(),"/outputs",sep=""),
-                   nameAppend=""
+                   nameAppend="",
+                   figWidth = 9,
+                   figHeight = 7
                         ){
 
   # ioTable0 = NULL
@@ -23,6 +27,8 @@ metis.io<-function(ioTable0 = NULL,
   # A0 = NULL
   # dirOutputs=paste(getwd(),"/outputs",sep="")
   # nameAppend=""
+  # figWidth = 7.5
+  # figHeight = 5
 
 #----------------
 # Defaults:
@@ -101,7 +107,10 @@ if (!dir.exists(paste(dirOutputs, "/IO", sep = ""))){
 
 NULL -> ioTable -> A -> year -> Year -> YEAR -> supplySubSector -> supplySector -> scenario ->
   cap -> capNew -> nexusTotal -> otherTotal -> sectorFrom -> sectorTo -> subRegion ->
-  total -> totalTemp -> value -> x -> .
+  total -> totalTemp -> value -> x -> . -> region -> missingSupplySubSectorNumber ->
+  percentDistribution->percentDistribution_Adjusted->percentDistribution_Remainder->region->
+  remainder->select->sumType->supplySectorSum->supplySubSectorNumber->
+  totalsAll->totalsSubSectorOther->valueCalculated->valueOrig -> fname
 
 
 #------------------
@@ -142,13 +151,9 @@ if(!is.null(ioTable)){
       stop(print(paste("Column names in ioTable0: ",paste(colnames(ioTable),collapse=", ")," must include ",column_i,".",sep="")))}}
 
   # Check that each supplySector has a total (supplySector_all category. If not add it and sum the supplySubSector values
-
   for (sectorTotal_i in paste(unique(ioTable$supplySector),"_all",sep="")){
-
     if(!sectorTotal_i %in% unique(ioTable$supplySubSector)){
-
       colsToEdit <- names(ioTable)[!names(ioTable) %in% c(addedColumns,"supplySector","supplySubSector")]
-
       # Create empty supplySector_all column and sum across supplySubSectors to get total value
       sectorTotalTemp <- ioTable %>%
         dplyr::filter(supplySector == gsub("_all","",sectorTotal_i)) %>%
@@ -156,7 +161,8 @@ if(!is.null(ioTable)){
         dplyr::mutate_at(vars(colsToEdit),sum, na.rm=T) %>%
         dplyr::select(-supplySubSector) %>%
         dplyr::distinct() %>%
-        dplyr::mutate(supplySubSector=sectorTotal_i);sectorTotalTemp
+        dplyr::mutate(supplySubSector=sectorTotal_i) %>%
+        dplyr::ungroup();sectorTotalTemp
 
       # Bind to main iotable
       ioTable <- ioTable %>%
@@ -166,7 +172,6 @@ if(!is.null(ioTable)){
 
     if(!is.null(A)){
     if(!sectorTotal_i %in% unique(A$supplySubSector)){
-
       colsToEdit <- names(A)[!names(A) %in% c(addedColumns,"supplySector","supplySubSector")]
 
       # Create empty supplySector_all column and sum across supplySubSectors to get total value
@@ -176,21 +181,20 @@ if(!is.null(ioTable)){
         dplyr::mutate_at(vars(colsToEdit),function(x) 0) %>%
         dplyr::mutate(supplySubSector=sectorTotal_i,
                       !!sectorTotal_i := 0) %>%
-        dplyr::distinct();sectorTotalTemp
+        dplyr::distinct() %>%
+        dplyr::ungroup();sectorTotalTemp
 
       # Bind to main iotable
       A <- A %>%
         dplyr::bind_rows(sectorTotalTemp) %>%
-        dplyr::mutate_at(vars(!!sectorTotal_i),funs(replace(., is.na(.), 0)))%>%
+        dplyr::mutate_at(vars(!!sectorTotal_i),dplyr::funs(replace(., is.na(.), 0)))%>%
         dplyr::distinct(); A
-    }
-
-    }
+    }}
   }
 
-  for (column_i in c("export","adjustedDemand","cap","capNew","capOrig","surplus")){
+for (column_i in c("export","adjustedDemand","cap","capNew","capOrig","surplus")){
   if(!any(grepl(column_i,colnames(ioTable)))){
-    print(paste("Column names in ioTable0: ",paste(colnames(ioTable),collapse=", ")," must include ",column_i,".",sep=""))
+    print(paste(column_i,"added as new column in ioTable0.",sep=""))
     ioTable <- ioTable %>%
       dplyr::mutate(!!column_i := 0)}}
   if(!any(grepl("total",colnames(ioTable),ignore.case = T))){
@@ -246,7 +250,8 @@ if(!is.null(supplySubSector_default0)){
         dplyr::group_by(supplySector,scenario,region,subRegion,x) %>%
         dplyr::mutate_at(vars(colsToEdit),function(x) x=100) %>%
         dplyr::mutate(supplySubSector=sectorTotal_i) %>%
-        dplyr::distinct();sectorTotalTemp
+        dplyr::distinct() %>%
+        dplyr::ungroup();sectorTotalTemp
 
       # Bind to main iotable
       supplySubSector_default0 <- supplySubSector_default0 %>%
@@ -267,7 +272,11 @@ if(!is.null(supplySubSector_default0)){
 
 # subsetDefaults by provided supplySubSectors
 supplySubSector_default_subSet <- supplySubSector_default0 %>%
-  dplyr::filter(supplySubSector %in% unique(ioTable$supplySubSector)); supplySubSector_default_subSet
+  dplyr::mutate(supplySubSector_supplySector = paste(supplySubSector,supplySector,sep="_")) %>%
+  dplyr::filter(supplySubSector %in% unique((ioTable %>%
+                                              dplyr::mutate(supplySubSector_supplySector =
+                                                              paste(supplySubSector,supplySector,sep="_")))$supplySubSector_supplySector
+                                            )); supplySubSector_default_subSet
 
 supplySubSector_default_ioTable0 <- ioTable %>%
   dplyr::select(supplySubSector,supplySector) %>%
@@ -277,27 +286,28 @@ supplySubSector_default_ioTable0 <- ioTable %>%
 
 supplySubSector_default_completeNA <- supplySubSector_default_ioTable0 %>%
   dplyr::bind_rows(supplySubSector_default_subSet) %>%
-  dplyr::arrange(supplySector); supplySubSector_default_completeNA
+  dplyr::arrange(supplySector) %>%
+  dplyr::select(-supplySubSector_supplySector); supplySubSector_default_completeNA
 
 # Distribute Remaining categories evenly
 
 supplySubSector_default <- supplySubSector_default_completeNA %>%
   dplyr::filter(!grepl("all",supplySubSector)) %>%
   dplyr::group_by(supplySector) %>%
-  dplyr::mutate(missingSupplySubSectorNumber = case_when(is.na(percentDistribution)~1,
+  dplyr::mutate(missingSupplySubSectorNumber = dplyr::case_when(is.na(percentDistribution)~1,
                                                          TRUE~0),
                 supplySubSectorNumber = sum(missingSupplySubSectorNumber),
-                percentDistribution_Remainder = case_when (is.na(percentDistribution) ~ 0,
+                percentDistribution_Remainder = dplyr::case_when (is.na(percentDistribution) ~ 0,
                                                            TRUE ~ 100-percentDistribution),
-                percentDistribution_Remainder = case_when (sum(percentDistribution_Remainder) == 0 ~ 100/supplySubSectorNumber,
+                percentDistribution_Remainder = dplyr::case_when (sum(percentDistribution_Remainder) == 0 ~ 100/supplySubSectorNumber,
                                                            TRUE ~ percentDistribution_Remainder),
-                percentDistribution = case_when (is.na(percentDistribution) ~ sum(percentDistribution_Remainder)/supplySubSectorNumber,
+                percentDistribution = dplyr::case_when (is.na(percentDistribution) ~ sum(percentDistribution_Remainder)/supplySubSectorNumber,
                                                           TRUE ~ percentDistribution)) %>%
   dplyr::ungroup() %>%
   dplyr::select(-missingSupplySubSectorNumber,-supplySubSectorNumber,-percentDistribution_Remainder) %>%
   dplyr::bind_rows(supplySubSector_default_completeNA %>%
                     dplyr::filter(grepl("all",supplySubSector))) %>%
-  dplyr::mutate(percentDistribution = case_when(is.na(percentDistribution) & grepl("all",supplySubSector) ~ 100,
+  dplyr::mutate(percentDistribution = dplyr::case_when(is.na(percentDistribution) & grepl("all",supplySubSector) ~ 100,
                                                 TRUE~percentDistribution)); supplySubSector_default %>% as.data.frame()
 
 
@@ -350,7 +360,7 @@ for (scenario_i in scenarios[!scenarios %in% unique(supplySubSector_default$scen
       for (year_i in years[!years %in% unique(supplySubSector_default$years)]){
 
         supplySubSector_default_temp <- supplySubSector_default_temp  %>%
-          bind_rows(supplySubSector_default %>%
+          dplyr::bind_rows(supplySubSector_default %>%
                       dplyr::filter(supplySubSector %in% unique(ioTable$supplySubSector)) %>%
                       dplyr::mutate(scenario = scenario_i,
                                     region = region_i,
@@ -369,7 +379,7 @@ for (scenario_i in scenarios[!scenarios %in% unique(A_default0$scenario)]){
       for (year_i in years[!years %in% unique(A_default0$years)]){
 
         A_temp <- A_temp %>%
-          bind_rows(A_default0 %>%
+          dplyr::bind_rows(A_default0 %>%
                       dplyr::mutate(scenario = scenario_i,
                                     region = region_i,
                                     subRegion = subRegion_i,
@@ -394,7 +404,8 @@ A %>% as.data.frame()
 supplySubSector_default_sum <- supplySubSector_default %>%
   dplyr::filter(!grepl("_all",supplySubSector)) %>%
   dplyr::group_by(supplySector,scenario,region,subRegion,x) %>%
-  dplyr::summarize(supplySectorSum = sum(percentDistribution)); supplySubSector_default_sum %>% as.data.frame()
+  dplyr::summarize(supplySectorSum = sum(percentDistribution)) %>%
+  dplyr::ungroup(); supplySubSector_default_sum %>% as.data.frame()
 
 if(any(supplySubSector_default_sum$supplySectorSum != 100)){
   print(supplySubSector_default_sum %>% dplyr::filter(supplySectorSum!=100))
@@ -426,16 +437,78 @@ for(scenario_i in scenarios){
       if(!is.null(supplySubSector_default)){supplySubSector_default0i<-supplySubSector_default %>% dplyr::filter(region==region_i,scenario==scenario_i,subRegion==subRegion_i,x==year_i)}
 
       A0i
-      ioTable0i
+      ioTable0i %>% as.data.frame()
       A_default0i
       supplySubSector_default0i
 
       if(nrow(ioTable0i)>0 & nrow(supplySubSector_default0i)>0){
       supplySubSector_default0i <- supplySubSector_default0i %>%
         dplyr::select(-units) %>%
-        dplyr::left_join(ioTable0i %>% dplyr::select(supplySector,units) %>% distinct()) %>%
-        dplyr::mutate(units=case_when(is.na(units)~"units",
+        dplyr::left_join(ioTable0i %>% dplyr::select(supplySector,units) %>% dplyr::distinct()) %>%
+        dplyr::mutate(units=dplyr::case_when(is.na(units)~"units",
                                      TRUE~units))}
+
+#-----------------------------------------------------------
+# Check to see if subsector totals add up to totals provided.
+# If total provided is > subsector totals then add to other supply
+# Else increase total to total provided and print message.
+#----------------------------------------------------------
+
+      if(!is.null(ioTable0i)){
+
+            # Get totals as supplied
+            ioTable0i_totals <- ioTable0i %>%
+              dplyr::filter(grepl("_all",supplySubSector)) %>%
+              dplyr::mutate(sumType = "totalsAll"); ioTable0i_totals %>% as.data.frame()
+
+            # Calculate total of subSectors Supplied
+            colsToEdit <- names(ioTable0i)[!names(ioTable0i) %in% c(addedColumns,"supplySector","supplySubSector")]; colsToEdit
+
+            ioTable0i_subSectorOther <-  ioTable0i %>%
+              dplyr::filter(!grepl("_all",supplySubSector)) %>%
+              dplyr::group_by(supplySector) %>%
+              dplyr::mutate_at(vars(colsToEdit),sum,na.rm=TRUE) %>%
+              dplyr::select(-supplySubSector) %>%
+              dplyr::distinct() %>%
+              dplyr::mutate(sumType = "totalsSubSectorOther",
+                            supplySubSector = paste(supplySector,"_other",sep="")) %>%
+              dplyr::ungroup(); ioTable0i_subSectorOther %>% as.data.frame()
+
+
+            # Calculate Remainder
+            ioTable0i_Remainder <- ioTable0i_totals %>%
+              dplyr::bind_rows(ioTable0i_subSectorOther) %>%
+              dplyr::select(-supplySubSector)%>%
+              tidyr::gather(colsToEdit,key="key",value="value") %>%
+              dplyr::mutate(value = dplyr::case_when(is.na(value)~0,TRUE~value)) %>%
+              tidyr::spread(sumType,value) %>%
+              dplyr::mutate(remainder=totalsAll-totalsSubSectorOther); ioTable0i_Remainder %>% as.data.frame()
+
+            ioTable0i_Remainder1 <- ioTable0i_Remainder %>%
+              mutate(otherAdjustedSupply = case_when(remainder>0 ~ remainder,
+                                                     TRUE~0),
+                     totalsAll = case_when(remainder<0 ~ -remainder,
+                                           TRUE~totalsAll)); ioTable0i_Remainder1 %>% as.data.frame() %>% arrange(supplySector,key)
+
+            ioTable0i_Remainder2 <- ioTable0i_Remainder1 %>%
+              dplyr::select(-totalsSubSectorOther,-remainder,-otherAdjustedSupply) %>%
+              tidyr::spread(key,totalsAll) %>%
+              dplyr::left_join(ioTable0i_totals %>% dplyr::select(supplySubSector,supplySector)); ioTable0i_Remainder2 %>% as.data.frame()
+
+            ioTable0i_Remainder3 <- ioTable0i_Remainder1 %>%
+              dplyr::select(-totalsAll,-remainder,-totalsSubSectorOther) %>%
+              tidyr::spread(key,otherAdjustedSupply) %>%
+              dplyr::mutate(supplySubSector=paste(supplySector,"_adjusted",sep="")); ioTable0i_Remainder3 %>% as.data.frame()
+
+            # Combine ioTable after removing old totals with remainder 2 and 3
+
+            ioTable0i <- ioTable0i %>%
+              dplyr::filter(!grepl("_all",supplySubSector)) %>%
+              dplyr::bind_rows(ioTable0i_Remainder2) %>%
+              dplyr::bind_rows(ioTable0i_Remainder3); ioTable0i %>% as.data.frame() %>% arrange(supplySector)
+
+
+          }
 
 #-----------------------------------------------------------
 # Fill out missing data using default supplySubSector_default0i
@@ -444,9 +517,19 @@ for(scenario_i in scenarios){
 # Add in all supplysubSectors and fill out missing values with NAs
 
 ioTable0i_completeNA <- ioTable0i %>%
-        tidyr::complete(supplySubSector=unique(supplySubSector_default0i$supplySubSector)) %>%
-        dplyr::select(-supplySector,-addedColumns) %>%
-        dplyr::left_join(supplySubSector_default0i %>% select(supplySubSector,supplySector, addedColumns)) %>%
+        tidyr::complete(supplySubSector=unique(c(supplySubSector_default0i$supplySubSector,ioTable0i$supplySubSector))) %>%
+        dplyr::mutate(region = region_i,
+                      scenario = scenario_i,
+                      subRegion = subRegion_i,
+                      x = year_i) %>%
+        dplyr::select(-supplySector, -units, -param)%>%
+        dplyr::distinct() %>%
+        dplyr::left_join((ioTable %>%
+                            dplyr::select(supplySector, supplySubSector, units, param) %>%
+                            # In order to include added supplySubSectors such as Water_adjusted
+                            dplyr::bind_rows(ioTable0i %>% dplyr::select(supplySector, supplySubSector, units, param)) %>%
+                            dplyr::distinct()),
+                         by="supplySubSector") %>%
         dplyr::select(names(ioTable0i));ioTable0i_completeNA %>% as.data.frame()
 
 # Find totals if given by supplySector_all.
@@ -461,13 +544,14 @@ for(supplySectorTotal_i in paste(unique(ioTable0i_completeNA$supplySector),"_all
 if(!supplySectorTotal_i %in% unique(ioTable0i_completeNA$supplySubSector)){
 
   ioTable0i_completeNA_temp <-  ioTable0i_completeNA_temp %>%
-    bind_rows(ioTable0i_completeNA %>%
-    dplyr::filter(supplySector == gsub("_all","",supplySectorTotal_i)) %>%
-    dplyr::group_by(supplySector) %>%
-    dplyr::mutate_at(vars(colsToEdit),sum,na.rm=TRUE) %>%
-    dplyr::select(-supplySubSector)%>%
-    dplyr::distinct() %>%
-    dplyr::mutate(supplySubSector = paste(supplySector,"_all",sep="")))
+    dplyr::bind_rows(ioTable0i_completeNA %>%
+                       dplyr::filter(supplySector == gsub("_all","",supplySectorTotal_i)) %>%
+                       dplyr::group_by(supplySector) %>%
+                       dplyr::mutate_at(vars(colsToEdit),sum,na.rm=TRUE) %>%
+                       dplyr::select(-supplySubSector)%>%
+                       dplyr::distinct() %>%
+                       dplyr::mutate(supplySubSector = paste(supplySector,"_all",sep="")) %>%
+                       dplyr::ungroup())
 }
 }
 
@@ -500,12 +584,12 @@ ioTable0i_Remainder <- ioTable0i_totals %>%
   dplyr::bind_rows(ioTable0i_subSectorOther) %>%
   dplyr::select(-supplySubSector)%>%
   tidyr::gather(colsToEdit,key="key",value="value") %>%
-  dplyr::mutate(value = case_when(is.na(value)~0,TRUE~value)) %>%
+  dplyr::mutate(value = dplyr::case_when(is.na(value)~0,TRUE~value)) %>%
   tidyr::spread(sumType,value) %>%
   dplyr::mutate(remainder=totalsAll-totalsSubSectorOther); ioTable0i_Remainder %>% as.data.frame()
 
 
-if(any(unique(ioTable0i_Remainder$remainder)<0)){
+if(any(unique(ioTable0i_Remainder$remainder)[!is.na(unique(ioTable0i_Remainder$remainder))]<0)){
   stop(print(list("Totals for a supplySector is less than the sum of the indvidual supplySubSectors provided.",
                   ioTable0i_Remainder%>%dplyr::filter(remainder < 0) %>% as.data.frame(),
                   ioTable0i_completeNA %>% tidyr::drop_na() %>% as.data.frame())))
@@ -526,7 +610,7 @@ ioTable0i_Remainder_Spread <- ioTable0i_Remainder %>%
 
 ioTable0i_completeNA_supplySubSectors <-  ioTable0i_completeNA %>%
   #dplyr::filter(!grepl("_all",supplySubSector)) %>%
-  dplyr::left_join(supplySubSector_default); ioTable0i_completeNA_supplySubSectors %>% as.data.frame()
+  dplyr::left_join(supplySubSector_default %>% dplyr::select(-units)); ioTable0i_completeNA_supplySubSectors %>% as.data.frame()
 
 ioTable0i_complete_RedistributeNA <- ioTable0i_completeNA_supplySubSectors %>%
   dplyr::select(-colsToEdit, -percentDistribution)
@@ -537,13 +621,13 @@ for(column_i in colsToEdit){
 
   ioTable0i_complete_RedistributeNA_temp <- ioTable0i_completeNA_supplySubSectors %>%
     # Assign 0 for NA sectors when cap is specified as 0.
-    dplyr::mutate(!!column_i := case_when(cap == 0 ~ 0, TRUE ~ !!as.name(column_i))) %>%
+    dplyr::mutate(!!column_i := dplyr::case_when(cap == 0 ~ 0, TRUE ~ !!as.name(column_i))) %>%
     dplyr::filter(is.na(!!as.name(column_i))) %>%
     dplyr::group_by(supplySector) %>%
     dplyr::mutate(supplySubSectorNumber = length(unique(supplySubSector)),
-                  percentDistribution = case_when(is.na(percentDistribution) ~ 0,
+                  percentDistribution = dplyr::case_when(is.na(percentDistribution) ~ 0,
                                                   TRUE ~ percentDistribution),
-                  percentDistribution_Adjusted = case_when (sum(percentDistribution) == 0 ~ 100/supplySubSectorNumber,
+                  percentDistribution_Adjusted = dplyr::case_when (sum(percentDistribution) == 0 ~ 100/supplySubSectorNumber,
                                                             TRUE ~ percentDistribution*100/sum(percentDistribution))) %>%
     dplyr::ungroup() %>%
     dplyr::left_join(ioTable0i_Remainder_Spread %>%
@@ -552,7 +636,8 @@ for(column_i in colsToEdit){
     dplyr::select(-colsToRemove,-percentDistribution, -supplySubSectorNumber,-percentDistribution_Adjusted,-remainder);  ioTable0i_complete_RedistributeNA_temp %>% as.data.frame()
 
   ioTable0i_complete_RedistributeNA <- ioTable0i_complete_RedistributeNA %>%
-    dplyr::left_join(ioTable0i_complete_RedistributeNA_temp)
+    dplyr::left_join(ioTable0i_complete_RedistributeNA_temp) %>%
+    dplyr::filter(!is.na(!!as.name(column_i)))
   }
 
 ioTable0i_complete_RedistributeNA %>% as.data.frame()
@@ -586,14 +671,16 @@ check_calculated<-ioTable0i_complete_Redistribute %>%
   dplyr::select(-supplySubSector) %>%
   dplyr::group_by(supplySector) %>%
   dplyr::summarize_at(vars(colsToEdit),sum) %>%
-  tidyr::gather(key="key",value="valueCalculated",colsToEdit); check_calculated %>% as.data.frame()
+  tidyr::gather(key="key",value="valueCalculated",colsToEdit) %>%
+  dplyr::ungroup(); check_calculated %>% as.data.frame()
 
 check_orig<-ioTable0i %>%
   dplyr::filter(grepl("_all",supplySubSector)) %>%
   dplyr::select(-supplySubSector) %>%
   dplyr::group_by(supplySector) %>%
   dplyr::summarize_at(vars(colsToEdit),sum) %>%
-  tidyr::gather(key="key",value="valueOrig",colsToEdit); check_orig %>% as.data.frame()
+  tidyr::gather(key="key",value="valueOrig",colsToEdit) %>%
+  dplyr::ungroup(); check_orig %>% as.data.frame()
 
 check_Orig_Calc <- check_orig %>%
   dplyr::left_join(check_calculated) %>%
@@ -612,14 +699,13 @@ if(any(abs(check_Orig_Calc$diff[!is.na(check_Orig_Calc$diff)]) >= 1e-10)){
 # If provided total is more than calcualted total then create a new category called adjustedDemand equal to the difference.
 #-------------------
 
-
 ioTable_adjustTotal <- ioTable0i_complete_Redistribute %>%
   dplyr::mutate(otherTotal=rowSums(ioTable0i_complete_Redistribute %>% dplyr::select(-nonFlowColsAll),na.rm=T),
                 total = dplyr::case_when(total < otherTotal ~ otherTotal,TRUE ~ total),
                 adjustedDemand = dplyr::case_when(total > otherTotal ~ total - otherTotal,TRUE ~ 0)) %>%
   dplyr::select(-otherTotal)
 
-ioTable_adjustTotal
+ioTable_adjustTotal %>% as.data.frame()
 
 #----------------------
 # Adjust for Capacity and New Capacity
@@ -715,7 +801,8 @@ ioTable_complete<-ioTable_fillNexus %>%
   dplyr::filter(total != 0)
 
 Zorg = ioTable_complete %>%
-  dplyr::select(supplySubSector,unique(ioTable_complete$supplySubSector)); Zorg %>% as.data.frame()
+  dplyr::select(supplySubSector,unique(ioTable_complete$supplySubSector)) %>%
+  replace(is.na(.), 0); Zorg %>% as.data.frame()
 Xorg = ioTable_complete %>%
   dplyr::select(supplySubSector,total); Xorg %>% as.data.frame()
 Aorg <-as.matrix(Zorg%>%dplyr::select(c(unique(Zorg$supplySubSector)))) %*% as.matrix(Xorg$total^-1*diag(nrow(Zorg)));Aorg %>% as.data.frame()
@@ -757,8 +844,8 @@ ioTbl_Output = ioTbl_Output %>% dplyr::bind_rows(ioTable_complete %>% tibble::as
 #-------------------------------------------------------------------------------------------------------
 
 
-  figWidth_i = 10
-  figHeight_i = 7
+  figWidth_i = figWidth
+  figHeight_i = figHeight
 
 
 #------------------------
@@ -768,7 +855,7 @@ ioTbl_Output = ioTbl_Output %>% dplyr::bind_rows(ioTable_complete %>% tibble::as
 
    for(region_i in regions){
     for(scenario_i in scenarios){
-        for(year_i in years){
+        # for(year_i in years){
 
           if (!dir.exists(paste(dirOutputs, "/IO/",region_i, sep = ""))){
             dir.create(paste(dirOutputs, "/IO/",region_i,  sep = ""))}
@@ -806,10 +893,11 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
   if(nrow(A_matx)>0){
 
-  fname = paste("A_",scenario_i,nameAppend,sep="")
-  figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(A_matx$subRegion)) + length(unique(A_matx$x)))));figWidth_ix
-  figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(A_matx$subRegion)) + length(unique(A_matx$x)))/4));  figHeight_ix
-  metis.chart(data=A_matx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+  fname = paste("A_sub_",scenario_i,nameAppend,sep="")
+  plotx <- A_matx
+  figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+  figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+  metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
               xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -823,10 +911,32 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
   }
 
+
+  A_matxAgg <- A_matx %>% dplyr::filter(grepl("_all",sectorFrom) & grepl("_all",sectorTo)); A_matxAgg %>% as.data.frame()
+  sectorFromOrder <- sort(unique(A_matxAgg $sectorFrom)); sectorFromOrder
+  sectorToOrder <-  sort(unique(A_matxAgg $sectorTo)); sectorToOrder
+
+
+  if(nrow(A_matxAgg )>0){
+
+    fname = paste("A_agg_",scenario_i,nameAppend,sep="")
+    plotx <- A_matxAgg
+    figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+    figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+    metis.chart(data=plotx , chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+                xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                figHeight=figHeight_ix,pdfpng="png")
+
+  }
+
+
+
   # ioTable normalized
 
   sol<- sol_list$ioTbl_Output %>%
-    dplyr::filter(scenario==scenario_i); sol
+    dplyr::filter(scenario==scenario_i,region==region_i); sol
 
 
   df_Mn<-sol %>%
@@ -837,6 +947,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   solx <- sol %>%
     tidyr::gather(-c("supplySubSector","supplySector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
     dplyr::rename (sectorFrom=supplySubSector) %>%
+    dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
     dplyr::arrange(sectorFrom)  %>%
     dplyr::filter(!is.nan(value),value!=0, !is.na(value));solx
 
@@ -844,47 +955,124 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   df_Mnx <- df_Mn %>%
     tidyr::gather(-c("supplySubSector","supplySector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
     dplyr::rename (sectorFrom=supplySubSector) %>%
+    dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
     dplyr::arrange(sectorFrom) %>%
     dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)); df_Mnx
 
   sectorFromOrder <- sort(unique(df_Mnx$sectorFrom)); sectorFromOrder
-
   sectorToOrder <-
     c(sort(unique(df_Mnx$sectorTo)[unique(df_Mnx$sectorTo) %in% unique(sol$supplySubSector)]),
       sort(unique(df_Mnx$sectorTo)[!unique(c(df_Mnx$sectorTo)) %in% c(unique(sol$supplySubSector),"export",nonFlowCols)]),
       "export",nonFlowCols); sectorToOrder
 
-
   # ioTable normalized bubbles
-
   if(nrow(df_Mnx)>0){
-
   fname = paste("ioNORM_",scenario_i,nameAppend,sep="")
-  figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(df_Mnx$subRegion)) + length(unique(df_Mnx$x)))));figWidth_ix
-  figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(df_Mnx$subRegion)) + length(unique(df_Mnx$x)))/4));  figHeight_ix
-  metis.chart(data=df_Mnx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+  plotx <- df_Mnx
+  figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+  figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+  metis.chart(data=plotx , chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
               xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png")
-
-
-  }
 
   # ioTable absolute bubbles
-
   if(nrow(solx)>0){
-
   fname = paste("ioABS_",scenario_i,nameAppend,sep="")
-  figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(solx$subRegion)) + length(unique(solx$x)))));figWidth_ix
-  figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(solx$subRegion)) + length(unique(solx$x)))/4));  figHeight_ix
-  metis.chart(data=solx, dataNorm=df_Mnx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+  plotx <- solx
+  figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+  figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+  metis.chart(data=plotx , dataNorm=df_Mnx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
               xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png")
-
   }
+  }
+
+
+  df_Mnx_AggDem <- df_Mnx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+    group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>% ungroup();
+  df_Mnx_AggDem %>% as.data.frame()
+  solx_AggDem <- solx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+    group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>% ungroup();
+  solx_AggDem %>% as.data.frame()
+
+  sectorFromOrder <- sort(unique(df_Mnx_AggDem$sectorFrom)); sectorFromOrder
+  sectorToOrder <-
+    c(sort(unique(df_Mnx_AggDem$sectorTo)[unique(df_Mnx_AggDem$sectorTo) %in% unique(df_Mnx_AggDem$supplySubSector)]),
+      sort(unique(df_Mnx_AggDem$sectorTo)[!unique(c(df_Mnx_AggDem$sectorTo)) %in% c(unique(df_Mnx_AggDem$supplySubSector),"export",nonFlowCols)]),
+      "export",nonFlowCols); sectorToOrder
+
+  # ioTable normalized bubbles
+  if(nrow(df_Mnx_AggDem)>0){
+    fname = paste("ioNORM_aggDem_",scenario_i,nameAppend,sep="")
+    plotx <- df_Mnx_AggDem
+    figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+    figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+    metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+                xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                figHeight=figHeight_ix,pdfpng="png")
+
+    # ioTable absolute bubbles
+    if(nrow(solx_AggDem)>0){
+      fname = paste("ioABS_aggDem_",scenario_i,nameAppend,sep="")
+      fplotx <- solx_AggDem
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, dataNorm=df_Mnx_AggDem, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+                  xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                  figHeight=figHeight_ix,pdfpng="png")
+    }}
+
+
+
+  df_Mnx_AggDemAggSup <- df_Mnx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+    group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+    ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
+  df_Mnx_AggDemAggSup %>% as.data.frame()
+  solx_AggDemAggSup <- solx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+    group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+    ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
+  solx_AggDemAggSup %>% as.data.frame()
+
+  sectorFromOrder <- sort(unique(df_Mnx_AggDemAggSup$sectorFrom)); sectorFromOrder
+  sectorToOrder <-
+    c(sort(unique(df_Mnx_AggDemAggSup$sectorTo)[unique(df_Mnx_AggDemAggSup$sectorTo) %in% unique(df_Mnx_AggDemAggSup$supplySubSector)]),
+      sort(unique(df_Mnx_AggDemAggSup$sectorTo)[!unique(c(df_Mnx_AggDemAggSup$sectorTo)) %in% c(unique(df_Mnx_AggDemAggSup$supplySubSector),"export",nonFlowCols)]),
+      "export",nonFlowCols); sectorToOrder
+
+  # ioTable normalized bubbles
+  if(nrow(df_Mnx_AggDemAggSup)>0){
+    fname = paste("ioNORM_aggDemaggSup_",scenario_i,nameAppend,sep="")
+    plotx <- df_Mnx_AggDemAggSup
+    figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+    figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+    metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+                xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                figHeight=figHeight_ix,pdfpng="png")
+
+    # ioTable absolute bubbles
+    if(nrow(solx_AggDemAggSup)>0){
+      fname = paste("ioABS_aggDemaggSup_",scenario_i,nameAppend,sep="")
+      plotx <- solx_AggDemAggSup
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, dataNorm=df_Mnx_AggDemAggSup, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+                  xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                  figHeight=figHeight_ix,pdfpng="png")
+    }}
+
+
 
 
   #-----------------
@@ -901,50 +1089,94 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     unique() %>%
     dplyr::arrange(sectorFrom); dfx
 
-  sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx$sectorFrom)]; sectorFromOrderSankey
-  sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx$sectorTo)]; sectorToOrderSankey
-
-  dfx$sectorFrom <- factor( as.character(dfx$sectorFrom), levels=sectorFromOrderSankey )
-  dfx$sectorTo <- factor( as.character(dfx$sectorTo), levels=sectorToOrderSankey )
-
-
   if(nrow(dfx)>0){
 
-  # Sankey Aggregated to supply subSectors
+  # Sankey Aggregated to supply subSectors and aggregated demand
 
-  dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
+  dfx_sankey <- dfx %>%dplyr::filter(value!=0) %>% dplyr::filter(!grepl("_all",sectorFrom)) %>%
+      dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
+      dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+      dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+      dplyr::ungroup() %>%
       dplyr::group_by(supplySector,region) %>%
       dplyr::mutate(normValue=value/sum(value)) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-      dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
-                    legendLabel = paste(supplySector," ",units,sep="")) %>%
-      as.data.frame();dfx_sankey
+      dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                        (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                        TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                  legendLabel = paste(sectorFrom," ",units,sep="")) %>%
+      as.data.frame() %>%
+    dplyr::ungroup();dfx_sankey
 
-  fname = paste("sankeySub_",scenario_i,nameAppend,sep="")
-  figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-  figHeight_ix <- figHeight_i*max(1,min(4,2*(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-  metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+  sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+  sectorToOrder <-
+    c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+      sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+      "export",nonFlowCols); sectorToOrder
+
+
+  sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+  sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+  dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+  dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+
+  fname = paste("sankeySub_aggDem_",scenario_i,nameAppend,sep="")
+  plotx<-dfx_sankey
+  figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+  figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+  metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
               sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
               labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png")
+              figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=0)
+
+  # data=dfx_sankey; chartType="sankey"; xData="sectorTo"; yData="normValue"; sankeyGroupColor="supplySector";
+  # classLabel="From"; class = "supplySector"; classPalette = "pal_sankey";
+  # sankeyAxis1="fromLabel";sankeyAxis2="sectorTo";sankeyAxis1Label ="From";sankeyAxis2Label="To";
+  # labelTextSize=5; sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
+  # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
+  # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
+  # figHeight=figHeight_ix;pdfpng="png"; sankeyLabelsOn=0
 
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
+    dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
+    dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+    dplyr::ungroup() %>%
     dplyr::group_by(supplySector,region,subRegion,x) %>%
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
+    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                        (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                        TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                   legendLabel = paste(sectorFrom," ",units,sep="")) %>%
-    as.data.frame();dfx_sankey
+    as.data.frame() %>%
+    dplyr::ungroup();dfx_sankey
 
-  fname = paste("sankeySub_",scenario_i,nameAppend,"_Free",sep="")
-  figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-  figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-  metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+  sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+  sectorToOrder <-
+    c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+      sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+      "export",nonFlowCols); sectorToOrder
+
+
+  sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+  sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+  dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+  dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+  fname = paste("sankeySub_aggDem_",scenario_i,nameAppend,"_Free",sep="")
+  plotx<-dfx_sankey
+  figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+  figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+  metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
               sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
               labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
@@ -953,57 +1185,94 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               figHeight=figHeight_ix,pdfpng="png")
 
 
-  # Sankey Aggregated to supply sectors
+  # Sankey Aggregated to supply sectors and agg Demand
 
-  dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
+  dfx_sankey <- dfx %>%dplyr::filter(value!=0) %>% dplyr::filter(grepl("_all",sectorFrom)) %>%
+    dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
+    dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+    dplyr::ungroup() %>%
     dplyr::group_by(supplySector,region) %>%
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
-                  legendLabel = paste(sectorFrom," ",units,sep="")) %>%
-    as.data.frame();dfx_sankey
+    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                        (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                        TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                  legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+    dplyr::ungroup();dfx_sankey
+
+  sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+  sectorToOrder <-
+    c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+      sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+      "export",nonFlowCols); sectorToOrder
 
 
-  fname = paste("sankeyAll_",scenario_i,nameAppend,sep="")
-  figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-  figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-  metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+  sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+  sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+  dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+  dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+  fname = paste("sankeyAll_aggDem_",scenario_i,nameAppend,sep="")
+  plotx<-dfx_sankey
+  figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+  figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+  metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
               sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
               labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png")
+              figHeight=figHeight_ix,pdfpng="png",sankeyLabelsOn=0)
+
 
 
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
-    dplyr::group_by(supplySector,region, subRegion, x) %>%
+    dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
+    dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+    dplyr::ungroup() %>%
+    dplyr::group_by(supplySector,region,subRegion,x) %>%
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
-                  legendLabel = paste(sectorFrom," ",units,sep="")) %>%
-    as.data.frame();dfx_sankey
+    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                        (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                        TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                  legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+    dplyr::ungroup();dfx_sankey
+
+  sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+  sectorToOrder <-
+    c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+      sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+      "export",nonFlowCols); sectorToOrder
 
 
-  fname = paste("sankeyAll_",scenario_i,nameAppend,"_FREE",sep="")
-  figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-  figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-  metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+  sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+  sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+  dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+  dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+  fname = paste("sankeyAll_aggDem_",scenario_i,nameAppend,"_FREE",sep="")
+  plotx<-dfx_sankey
+  figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+  figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+  metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
               sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
               labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png")
-
-
 
   }
 
 
-  #-------- Aggregated Demands
+  #-------- Total Demands
 
   solFlows <- sol %>%
     dplyr::select(!!c("supplySubSector",names(sol)[names(sol) %in% c("total","supplySector",addedColumns)]))
@@ -1016,49 +1285,154 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     unique() %>%
     dplyr::arrange(sectorFrom); dfx
 
-  sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx$sectorFrom)]; sectorFromOrderSankey
-  sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx$sectorTo)]; sectorToOrderSankey
-
-  dfx$sectorFrom <- factor( as.character(dfx$sectorFrom), levels=sectorFromOrderSankey )
-  dfx$sectorTo <- factor( as.character(dfx$sectorTo), levels=sectorToOrderSankey )
-
   if(nrow(dfx)>0){
+
+    # Subsupply to Agg Demands
 
     dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
       dplyr::group_by(supplySector,region) %>%
       dplyr::mutate(normValue=value/sum(value)) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-      dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
-                    legendLabel = paste(sectorFrom," ",units,sep="")) %>%
-      as.data.frame();dfx_sankey
+      dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                          (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                          TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                    legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+      dplyr::ungroup();dfx_sankey
+
+    sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+    sectorToOrder <-
+      c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+        sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+        "export",nonFlowCols); sectorToOrder
+
+
+    sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+    sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+    dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+    dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+
+    fname = paste("sankeySub2Total_",scenario_i,nameAppend,sep="")
+    plotx<-dfx_sankey
+    figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+    figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+    metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+                classLabel="From", class = "supplySector", classPalette = "pal_sankey",
+                sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn = 0)
+
+
+    dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
+      dplyr::group_by(supplySector,region,subRegion,x) %>%
+      dplyr::mutate(normValue=value/sum(value)) %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(sectorFrom,region,subRegion,x) %>%
+      dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                          (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                          TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                    legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+      dplyr::ungroup();dfx_sankey
+
+    sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+    sectorToOrder <-
+      c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+        sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+        "export",nonFlowCols); sectorToOrder
+
+
+    sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+    sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+    dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+    dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+
+    fname = paste("sankeySub2Total_",scenario_i,nameAppend,"_FREE",sep="")
+    plotx<-dfx_sankey
+    figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+    figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+    metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+                classLabel="From", class = "supplySector", classPalette = "pal_sankey",
+                sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                figHeight=figHeight_ix,pdfpng="png")
+
+
+    # SubSupply to Total Demands
+
+    dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
+      dplyr::group_by(supplySector,region) %>%
+      dplyr::mutate(normValue=value/sum(value)) %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(sectorFrom,region,subRegion,x) %>%
+      dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                          (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                          TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                    legendLabel = paste(sectorFrom," ",units,sep="")) %>% as.data.frame() %>%
+      dplyr::ungroup();dfx_sankey
+
+    sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+    sectorToOrder <-
+      c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+        sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+        "export",nonFlowCols); sectorToOrder
+
+
+    sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+    sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+    dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+    dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
 
 
   fname = paste("sankeySub2Total_",scenario_i,nameAppend,sep="")
-  figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-  figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-  metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+  plotx<-dfx_sankey
+  figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+  figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+  metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
               sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
               labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png")
+              figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn = 0)
 
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
     dplyr::group_by(supplySector,region,subRegion,x) %>%
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
-                  legendLabel = paste(sectorFrom," ",units,sep="")) %>%
-    as.data.frame();dfx_sankey
+    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                        (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                        TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                  legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+    dplyr::ungroup();dfx_sankey
 
+  sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+  sectorToOrder <-
+    c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+      sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+      "export",nonFlowCols); sectorToOrder
+
+
+  sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+  sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+  dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+  dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
 
   fname = paste("sankeySub2Total_",scenario_i,nameAppend,"_FREE",sep="")
-  figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-  figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-  metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+  plotx<-dfx_sankey
+  figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+  figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+  metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
               sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
               labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
@@ -1073,15 +1447,31 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
-                  legendLabel = paste(sectorFrom," ",units,sep="")) %>%
-    as.data.frame();dfx_sankey
+    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                        (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                        TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                  legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+    dplyr::ungroup();dfx_sankey
+
+  sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+  sectorToOrder <-
+    c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+      sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+      "export",nonFlowCols); sectorToOrder
+
+
+  sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+  sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+  dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+  dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
 
 
   fname = paste("sankeyAll2Total_",scenario_i,nameAppend,sep="")
-  figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-  figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-  metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+  plotx<-dfx_sankey
+  figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+  figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+  metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
               sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
               labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
@@ -1094,15 +1484,31 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
-                  legendLabel = paste(sectorFrom," ",units,sep="")) %>%
-    as.data.frame();dfx_sankey
+    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                        (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                        TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                  legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+    dplyr::ungroup();dfx_sankey
+
+  sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+  sectorToOrder <-
+    c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+      sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+      "export",nonFlowCols); sectorToOrder
+
+
+  sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+  sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+  dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+  dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
 
 
   fname = paste("sankeyAll2Total_",scenario_i,nameAppend,"_Free",sep="")
-  figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-  figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-  metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+  plotx<-dfx_sankey
+  figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+  figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+  metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
               sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
               labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
@@ -1111,6 +1517,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               figHeight=figHeight_ix,pdfpng="png")
 
   }
+
 
 
 #----------------
@@ -1123,7 +1530,13 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
     dir<- paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",subRegion_i,  sep = "")
 
+    #--------------
+    # Common Settings
+    #----------
 
+    sankeyExpandLeft_i = 0.2;
+    sankeyExpandLeft_i = 0.1;
+    sankeyAspectRatio_i = 0.6;
     #---------------------
     # sol_Output
     #---------------------
@@ -1132,7 +1545,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     # A Intensity Matrix
 
     A_mat <- sol_list$A_Output %>%
-      dplyr::filter(region==region_i,subRegion==subRegion_i,scenario==scenario_i); A_mat
+      dplyr::filter(region==region_i, subRegion==subRegion_i,scenario==scenario_i); A_mat
 
     A_matx <- A_mat %>%
       tidyr::gather(-c("supplySubSector",addedColumns[addedColumns %in% names(A_mat)]),key="sectorTo",value="value") %>%
@@ -1143,25 +1556,52 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     sectorFromOrder <- sort(unique(A_matx$sectorFrom)); sectorFromOrder
     sectorToOrder <-  sort(unique(A_matx$sectorTo)); sectorToOrder
 
-
-    # A Intensity Matrix
-
     if(nrow(A_matx)>0){
 
-      fname = paste("A_",scenario_i,nameAppend,sep="")
-      figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(A_matx$subRegion)) + length(unique(A_matx$x)))));figWidth_ix
-      figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(A_matx$subRegion)) + length(unique(A_matx$x)))/4));  figHeight_ix
-      metis.chart(data=A_matx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+      fname = paste("A_sub_",scenario_i,nameAppend,sep="")
+      plotx<-A_matx
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+                  xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                  figHeight=figHeight_ix,pdfpng="png")
+
+      # data=A_matx; chartType="bubble"; xData="sectorTo"; yData="sectorFrom"; classLabel="classLabel1";
+      # xLabel="sector To"; yLabel="sector From"; labelTextSize=5; sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
+      # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
+      # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
+      # figHeight=figHeight_ix;pdfpng="png"
+
+    }
+
+
+    A_matxAgg <- A_matx %>% dplyr::filter(grepl("_all",sectorFrom) & grepl("_all",sectorTo)); A_matxAgg %>% as.data.frame()
+    sectorFromOrder <- sort(unique(A_matxAgg $sectorFrom)); sectorFromOrder
+    sectorToOrder <-  sort(unique(A_matxAgg $sectorTo)); sectorToOrder
+
+
+    if(nrow(A_matxAgg )>0){
+
+      fname = paste("A_agg_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+      plotx<-A_matxAgg
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
                   xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
 
     }
+
+
+
     # ioTable normalized
 
     sol<- sol_list$ioTbl_Output %>%
-      dplyr::filter(subRegion==subRegion_i,scenario==scenario_i); sol
+      dplyr::filter(scenario==scenario_i,region==region_i, subRegion==subRegion_i); sol
 
 
     df_Mn<-sol %>%
@@ -1172,6 +1612,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     solx <- sol %>%
       tidyr::gather(-c("supplySubSector","supplySector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
       dplyr::rename (sectorFrom=supplySubSector) %>%
+      dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
       dplyr::arrange(sectorFrom)  %>%
       dplyr::filter(!is.nan(value),value!=0, !is.na(value));solx
 
@@ -1179,47 +1620,124 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     df_Mnx <- df_Mn %>%
       tidyr::gather(-c("supplySubSector","supplySector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
       dplyr::rename (sectorFrom=supplySubSector) %>%
+      dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
       dplyr::arrange(sectorFrom) %>%
       dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)); df_Mnx
 
     sectorFromOrder <- sort(unique(df_Mnx$sectorFrom)); sectorFromOrder
-
     sectorToOrder <-
       c(sort(unique(df_Mnx$sectorTo)[unique(df_Mnx$sectorTo) %in% unique(sol$supplySubSector)]),
         sort(unique(df_Mnx$sectorTo)[!unique(c(df_Mnx$sectorTo)) %in% c(unique(sol$supplySubSector),"export",nonFlowCols)]),
         "export",nonFlowCols); sectorToOrder
 
+    # ioTable normalized bubbles
+    if(nrow(df_Mnx)>0){
+      fname = paste("ioNORM_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+      plotx<-df_Mnx
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+                  xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                  figHeight=figHeight_ix,pdfpng="png")
+
+      # ioTable absolute bubbles
+      if(nrow(solx)>0){
+        fname = paste("ioABS_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+        plotx<-solx
+        figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+        figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+        metis.chart(data=plotx,dataNorm=df_Mnx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+                    xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                    removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                    fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                    figHeight=figHeight_ix,pdfpng="png")
+      }
+    }
+
+
+    df_Mnx_AggDem <- df_Mnx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+      group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>% ungroup();
+    df_Mnx_AggDem %>% as.data.frame()
+    solx_AggDem <- solx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+      group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>% ungroup();
+    solx_AggDem %>% as.data.frame()
+
+    sectorFromOrder <- sort(unique(df_Mnx_AggDem$sectorFrom)); sectorFromOrder
+    sectorToOrder <-
+      c(sort(unique(df_Mnx_AggDem$sectorTo)[unique(df_Mnx_AggDem$sectorTo) %in% unique(df_Mnx_AggDem$supplySubSector)]),
+        sort(unique(df_Mnx_AggDem$sectorTo)[!unique(c(df_Mnx_AggDem$sectorTo)) %in% c(unique(df_Mnx_AggDem$supplySubSector),"export",nonFlowCols)]),
+        "export",nonFlowCols); sectorToOrder
 
     # ioTable normalized bubbles
-
-    if(nrow(df_Mnx)>0){
-
-      fname = paste("ioNORM_",scenario_i,nameAppend,sep="")
-      figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(df_Mnx$subRegion)) + length(unique(df_Mnx$x)))));figWidth_ix
-      figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(df_Mnx$subRegion)) + length(unique(df_Mnx$x)))/4));  figHeight_ix
-      metis.chart(data=df_Mnx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+    if(nrow(df_Mnx_AggDem)>0){
+      fname = paste("ioNORM_aggDem_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+      plotx<-df_Mnx_AggDem
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
                   xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
 
-    }
+      # ioTable absolute bubbles
+      if(nrow(solx_AggDem)>0){
+        fname = paste("ioABS_aggDem_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+        plotx<-solx_AggDem
+        figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+        figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+        metis.chart(data=plotx, dataNorm=df_Mnx_AggDem, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+                    xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                    removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                    fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                    figHeight=figHeight_ix,pdfpng="png")
+      }}
 
-    # ioTable absolute bubbles
 
-    if(nrow(solx)>0){
 
-      fname = paste("ioABS_",scenario_i,nameAppend,sep="")
-      figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(solx$subRegion)) + length(unique(solx$x)))));figWidth_ix
-      figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(solx$subRegion)) + length(unique(solx$x)))/4));  figHeight_ix
-      metis.chart(data=solx, dataNorm=df_Mnx,chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+    df_Mnx_AggDemAggSup <- df_Mnx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+      group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+      ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
+    df_Mnx_AggDemAggSup %>% as.data.frame()
+    solx_AggDemAggSup <- solx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+      group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+      ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
+    solx_AggDemAggSup %>% as.data.frame()
+
+    sectorFromOrder <- sort(unique(df_Mnx_AggDemAggSup$sectorFrom)); sectorFromOrder
+    sectorToOrder <-
+      c(sort(unique(df_Mnx_AggDemAggSup$sectorTo)[unique(df_Mnx_AggDemAggSup$sectorTo) %in% unique(df_Mnx_AggDemAggSup$supplySubSector)]),
+        sort(unique(df_Mnx_AggDemAggSup$sectorTo)[!unique(c(df_Mnx_AggDemAggSup$sectorTo)) %in% c(unique(df_Mnx_AggDemAggSup$supplySubSector),"export",nonFlowCols)]),
+        "export",nonFlowCols); sectorToOrder
+
+    # ioTable normalized bubbles
+    if(nrow(df_Mnx_AggDemAggSup)>0){
+      fname = paste("ioNORM_aggDemaggSup_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+      plotx<-df_Mnx_AggDemAggSup
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
                   xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
 
+      # ioTable absolute bubbles
+      if(nrow(solx_AggDemAggSup)>0){
+        fname = paste("ioABS_aggDemaggSup_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+        plotx<-solx_AggDemAggSup
+        figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+        figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+        metis.chart(data=plotx, dataNorm=df_Mnx_AggDemAggSup, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
+                    xLabel="sector To", yLabel="sector From", labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                    removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                    fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                    figHeight=figHeight_ix,pdfpng="png")
+      }}
 
-    }
+
 
 
     #-----------------
@@ -1236,36 +1754,94 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       unique() %>%
       dplyr::arrange(sectorFrom); dfx
 
-    sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx$sectorFrom)]; sectorFromOrderSankey
-    sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx$sectorTo)]; sectorToOrderSankey
-
-    dfx$sectorFrom <- factor( as.character(dfx$sectorFrom), levels=sectorFromOrderSankey )
-    dfx$sectorTo <- factor( as.character(dfx$sectorTo), levels=sectorToOrderSankey )
-
-    if(all(unique(dfx$sectorFrom) %in% names(metis.colors()$pal_sankey))){
-      fillcolors = metis.colors()$pal_sankey} else {
-        fillcolors = metis.colors()$pal_Basic
-      }; fillcolors
-
-
     if(nrow(dfx)>0){
 
-      # Sankey Aggregated to supply subSectors
+      # Sankey Aggregated to supply subSectors and aggregated demand
+
+      dfx_sankey <- dfx %>%dplyr::filter(value!=0) %>% dplyr::filter(!grepl("_all",sectorFrom)) %>%
+        dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
+        dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(supplySector,region) %>%
+        dplyr::mutate(normValue=value/sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(sectorFrom,region,subRegion,x) %>%
+        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                            (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                            TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                      legendLabel = paste(sectorFrom," ",units,sep="")) %>%
+        as.data.frame() %>%
+        dplyr::ungroup();dfx_sankey
+
+      sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+      sectorToOrder <-
+        c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+          sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+          "export",nonFlowCols); sectorToOrder
+
+
+      sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+      sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+      dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+      dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+
+      fname = paste("sankeySub_aggDem_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+      plotx<-dfx_sankey
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+                  classLabel="From", class = "supplySector", classPalette = "pal_sankey",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=0)
+
+      # data=dfx_sankey; chartType="sankey"; xData="sectorTo"; yData="normValue"; sankeyGroupColor="supplySector";
+      # classLabel="From"; class = "supplySector"; classPalette = "pal_sankey";
+      # sankeyAxis1="fromLabel";sankeyAxis2="sectorTo";sankeyAxis1Label ="From";sankeyAxis2Label="To";
+      # labelTextSize=5; sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
+      # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
+      # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
+      # figHeight=figHeight_ix;pdfpng="png"; sankeyLabelsOn=0
 
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
-        dplyr::group_by(supplySector,region) %>%
+        dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
+        dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(supplySector,region,subRegion,x) %>%
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
+        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                            (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                            TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                       legendLabel = paste(sectorFrom," ",units,sep="")) %>%
-        as.data.frame();dfx_sankey
+        as.data.frame() %>%
+        dplyr::ungroup();dfx_sankey
+
+      sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+      sectorToOrder <-
+        c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+          sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+          "export",nonFlowCols); sectorToOrder
 
 
-      fname = paste("sankeySub_",scenario_i,nameAppend,sep="")
-      figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-      figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-      metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+      sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+      sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+      dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+      dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+      fname = paste("sankeySub_aggDem_",scenario_i,"_",subRegion_i,nameAppend,"_Free",sep="")
+      plotx<-dfx_sankey
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
                   sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
                   labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
@@ -1274,34 +1850,94 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   figHeight=figHeight_ix,pdfpng="png")
 
 
-      # Sankey Aggregated to supply sectors
+      # Sankey Aggregated to supply sectors and agg Demand
+
+      dfx_sankey <- dfx %>%dplyr::filter(value!=0) %>% dplyr::filter(grepl("_all",sectorFrom)) %>%
+        dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
+        dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(supplySector,region) %>%
+        dplyr::mutate(normValue=value/sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(sectorFrom,region,subRegion,x) %>%
+        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                            (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                            TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                      legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+        dplyr::ungroup();dfx_sankey
+
+      sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+      sectorToOrder <-
+        c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+          sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+          "export",nonFlowCols); sectorToOrder
+
+
+      sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+      sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+      dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+      dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+      fname = paste("sankeyAll_aggDem_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+      plotx<-dfx_sankey
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+                  classLabel="From", class = "supplySector", classPalette = "pal_sankey",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                  figHeight=figHeight_ix,pdfpng="png",sankeyLabelsOn=0)
+
+
 
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
-        dplyr::group_by(supplySector,region) %>%
+        dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
+        dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
+        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(supplySector,region,subRegion,x) %>%
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
-                      legendLabel = paste(sectorFrom," ",units,sep="")) %>%
-        as.data.frame();dfx_sankey
+        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                            (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                            TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                      legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+        dplyr::ungroup();dfx_sankey
+
+      sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+      sectorToOrder <-
+        c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+          sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+          "export",nonFlowCols); sectorToOrder
 
 
-      fname = paste("sankeyAll_",scenario_i,nameAppend,sep="")
-      figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-      figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-      metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+      sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+      sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+      dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+      dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+      fname = paste("sankeyAll_aggDem_",scenario_i,"_",subRegion_i,nameAppend,"_FREE",sep="")
+      plotx<-dfx_sankey
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
                   sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
                   labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
-
 
     }
 
 
-    #-------- Aggregated Demands
+    #-------- Total Demands
 
     solFlows <- sol %>%
       dplyr::select(!!c("supplySubSector",names(sol)[names(sol) %in% c("total","supplySector",addedColumns)]))
@@ -1314,30 +1950,154 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       unique() %>%
       dplyr::arrange(sectorFrom); dfx
 
-    sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx$sectorFrom)]; sectorFromOrderSankey
-    sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx$sectorTo)]; sectorToOrderSankey
-
     if(nrow(dfx)>0){
+
+      # Subsupply to Agg Demands
 
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
         dplyr::group_by(supplySector,region) %>%
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
-                      legendLabel = paste(sectorFrom," ",units,sep="")) %>%
-        as.data.frame();dfx_sankey
+        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                            (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                            TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                      legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+        dplyr::ungroup();dfx_sankey
 
-      # Calculate number of facets. If both are one then
-      nFacets = ifelse(length(unique(dfx_sankey$subRegion))>0 &
-                         length(unique(dfx_sankey$subRegion))>0,
-                       length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x))-1,
-                       length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x))); nFacets
+      sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+      sectorToOrder <-
+        c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+          sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+          "export",nonFlowCols); sectorToOrder
 
-      fname = paste("sankeySub2Total_",scenario_i,nameAppend,sep="")
-      figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-      figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-      metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+
+      sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+      sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+      dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+      dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+
+      fname = paste("sankeySub2Total_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+      plotx<-dfx_sankey
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+                  classLabel="From", class = "supplySector", classPalette = "pal_sankey",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn = 0)
+
+
+      dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
+        dplyr::group_by(supplySector,region,subRegion,x) %>%
+        dplyr::mutate(normValue=value/sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(sectorFrom,region,subRegion,x) %>%
+        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                            (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                            TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                      legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+        dplyr::ungroup();dfx_sankey
+
+      sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+      sectorToOrder <-
+        c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+          sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+          "export",nonFlowCols); sectorToOrder
+
+
+      sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+      sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+      dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+      dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+
+      fname = paste("sankeySub2Total_",scenario_i,"_",subRegion_i,nameAppend,"_FREE",sep="")
+      plotx<-dfx_sankey
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+                  classLabel="From", class = "supplySector", classPalette = "pal_sankey",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                  figHeight=figHeight_ix,pdfpng="png")
+
+
+      # SubSupply to Total Demands
+
+      dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
+        dplyr::group_by(supplySector,region) %>%
+        dplyr::mutate(normValue=value/sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(sectorFrom,region,subRegion,x) %>%
+        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                            (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                            TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                      legendLabel = paste(sectorFrom," ",units,sep="")) %>% as.data.frame() %>%
+        dplyr::ungroup();dfx_sankey
+
+      sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+      sectorToOrder <-
+        c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+          sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+          "export",nonFlowCols); sectorToOrder
+
+
+      sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+      sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+      dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+      dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+
+      fname = paste("sankeySub2Total_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+      plotx<-dfx_sankey
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+                  classLabel="From", class = "supplySector", classPalette = "pal_sankey",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn = 0)
+
+      dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
+        dplyr::group_by(supplySector,region,subRegion,x) %>%
+        dplyr::mutate(normValue=value/sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(sectorFrom,region,subRegion,x) %>%
+        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                            (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                            TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                      legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+        dplyr::ungroup();dfx_sankey
+
+      sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+      sectorToOrder <-
+        c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+          sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+          "export",nonFlowCols); sectorToOrder
+
+
+      sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+      sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+      dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+      dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+      fname = paste("sankeySub2Total_",scenario_i,"_",subRegion_i,nameAppend,"_FREE",sep="")
+      plotx<-dfx_sankey
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
                   sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
                   labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
@@ -1352,15 +2112,31 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = paste(sectorFrom," ",round(sum(value),1)," ",units,sep=""),
-                      legendLabel = paste(sectorFrom," ",units,sep="")) %>%
-        as.data.frame();dfx_sankey
+        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                            (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                            TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                      legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+        dplyr::ungroup();dfx_sankey
+
+      sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+      sectorToOrder <-
+        c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+          sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+          "export",nonFlowCols); sectorToOrder
 
 
-      fname = paste("sankeyAll2Total_",scenario_i,nameAppend,sep="")
-      figWidth_ix <- figWidth_i*max(1,min(2,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))));figWidth_ix
-      figHeight_ix <- figHeight_i*max(1,min(4,(length(unique(dfx_sankey$subRegion)) + length(unique(dfx_sankey$x)))/4));  figHeight_ix
-      metis.chart(data=dfx_sankey, chartType="sankey", xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+      sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+      sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+      dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+      dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+
+      fname = paste("sankeyAll2Total_",scenario_i,"_",subRegion_i,nameAppend,sep="")
+      plotx<-dfx_sankey
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
                   sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
                   labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
@@ -1368,7 +2144,42 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
 
+      dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
+        dplyr::group_by(supplySector,region,subRegion,x) %>%
+        dplyr::mutate(normValue=value/sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(sectorFrom,region,subRegion,x) %>%
+        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+                                            (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
+                                            TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
+                      legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
+        dplyr::ungroup();dfx_sankey
 
+      sectorFromOrder <- sort(unique(dfx_sankey$sectorFrom)); sectorFromOrder
+      sectorToOrder <-
+        c(sort(unique(dfx_sankey$sectorTo)[unique(dfx_sankey$sectorTo) %in% unique(dfx_sankey$supplySubSector)]),
+          sort(unique(dfx_sankey$sectorTo)[!unique(c(dfx_sankey$sectorTo)) %in% c(unique(dfx_sankey$supplySubSector),"export",nonFlowCols)]),
+          "export",nonFlowCols); sectorToOrder
+
+
+      sectorFromOrderSankey <- sectorFromOrder[sectorFromOrder %in% unique(dfx_sankey$sectorFrom)]; sectorFromOrderSankey
+      sectorToOrderSankey <- sectorToOrder[sectorToOrder %in% unique(dfx_sankey$sectorTo)]; sectorToOrderSankey
+
+      dfx_sankey$sectorFrom <- factor( as.character(dfx_sankey$sectorFrom), levels=sectorFromOrderSankey )
+      dfx_sankey$sectorTo <- factor( as.character(dfx_sankey$sectorTo), levels=sectorToOrderSankey )
+
+
+      fname = paste("sankeyAll2Total_",scenario_i,"_",subRegion_i,nameAppend,"_Free",sep="")
+      plotx<-dfx_sankey
+      figWidth_ix <- 1*figWidth_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));figWidth_ix
+      figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
+      metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
+                  classLabel="From", class = "supplySector", classPalette = "pal_sankey",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
+                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
+                  figHeight=figHeight_ix,pdfpng="png")
 
     }
 
@@ -1377,7 +2188,9 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   }
 
 
-        }}}
+       # } # Close Year_i
+    } # Close scenario_i
+   } # close subRegion_i
 
 
 
