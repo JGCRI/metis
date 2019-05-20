@@ -389,6 +389,25 @@ metis.bia<- function(biaInputsFolder = "NA",
 
 
 
+            #-------------------
+            # For electricity generation subsectors not represented in power plant database, distribute according to installed capacity of all subsectors
+            #-------------------
+
+
+            gridWRIallSubsecMixed <- gridWRI %>%
+              select(-class1, -) %>%
+              dplyr::group_by(gridlat, gridlon, class1, gridID, ctry_name, ctry_code, region, region_32_code, param, units)%>%    #andym This group_by, and the following summarise get rid of a few columns
+              dplyr::summarise(gridCellCapacity = sum(value))%>%
+              dplyr::ungroup() %>%
+
+
+              dplyr::mutate(regionCapSum = sum(gridCellCapacity),
+                            gridCellPercentage = gridCellCapacity/regionCapSum) %>%
+              dplyr::ungroup()
+
+
+
+
 #             print(paste("Data for bia file gathered into columns.", sep=""))
 #
 #             gridx$x<-as.numeric(gridx$x)

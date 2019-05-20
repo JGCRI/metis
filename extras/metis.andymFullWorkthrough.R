@@ -326,8 +326,8 @@ paramsSelect_i= "All" #"demeterLandUse"
 sqliteUSE_i = F  #andym
 sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
-grid2polyX<-metis.grid2poly(grid=dataBia,
-  #grid=dataBia1,               #andym
+grid2polyX<-metis.grid2poly(#grid=dataBia,
+  grid=dataBia1,               #andym
   boundaryRegionsSelect=boundaryRegionsSelect_i,
   subRegShpFolder=subRegShpFolder_i,
   subRegShpFile=subRegShpFile_i,
