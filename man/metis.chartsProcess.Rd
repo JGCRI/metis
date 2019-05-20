@@ -62,6 +62,8 @@ c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 
 \item{regionCompareOnly}{Default 0. If set to 1, will only run comparison plots and not individual}
 
+\item{scenarioCompareOnly}{Default 0. If set to 1, will only run comparison plots and not individual}
+
 \item{useNewLabels}{Default 0}
 
 \item{sizeBarLines}{Default 0.5}
@@ -79,8 +81,6 @@ c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 \item{colOrder2}{Default = NULL,}
 
 \item{colOrderName2}{Default = NULL,}
-
-\item{regionCompareOnly}{Default 0. If set to 1, will only run comparison plots and not individual}
 }
 \value{
 Produces charts in output folder and also returns combined table in metis format.

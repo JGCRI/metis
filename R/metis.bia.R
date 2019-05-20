@@ -23,13 +23,13 @@
 #' For example c('scenario1','scenario2).
 #' @param scenNewNames New Names which may be shorter and more useful for figures etc.
 #' Default will use Original Names. For example c('scenario1','scenario2)
-#' @param reReadData If TRUE will read the GCAM data base and create a queryData.proj file
 #' in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
 #' with full path is provided otherwise it will search for a dataProj.proj file in the existing
 #' folder which may have been created from an old run.
 #' @param dataProj Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.
 #' @param regionsSelect The regions to analyze in a vector. Example c('Colombia','Argentina')
 #' @param queriesSelect Default = "All". Vector of queries to read from the queryxml for example
+#' @param paramsSelect Default =c("elecByTech")
 #'
 #' @return #andym a tibble with GCAM electricity generation distributed on a grid for a selected region
 #' @keywords electricity, generation, gcam, gridded, downscale, downscaling, downscaled
