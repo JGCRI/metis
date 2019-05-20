@@ -413,22 +413,22 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
           if(any(grepl("hjust",names(gg_guts$data[[3]])))){
           gg_guts$data[[3]] <-
             gg_guts$data[[3]] %>%
-            mutate(hjust = case_when(x == min(gg_guts$data[[3]]$x) ~ 40,
+            dplyr::mutate(hjust = dplyr::case_when(x == min(gg_guts$data[[3]]$x) ~ 40,
                                      x == max(gg_guts$data[[3]]$x) ~ -40,
                                      TRUE ~ 0)); gg_guts$data[[3]]
           # once you've made your adjustments, you can plot it again
           if(pdfpng=='pdf'){grDevices::pdf(paste(dirOutputs,"/",fname,".pdf",sep=""),width=figWidth,height=figHeight)
-            grid.newpage();grid.draw(ggplot_gtable(gg_guts))
+            grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
             grDevices::dev.off()}
           if(pdfpng=='png'){grDevices::png(paste(dirOutputs,"/",fname,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
-            grid.newpage();grid.draw(ggplot_gtable(gg_guts))
+            grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
             grDevices::dev.off()}
           if(pdfpng=='both'){
             grDevices::pdf(paste(dirOutputs,"/",fname,".pdf",sep=""),width=figWidth,height=figHeight)
-            grid.newpage();grid.draw(ggplot_gtable(gg_guts))
+            grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
             grDevices::dev.off()
             grDevices::png(paste(dirOutputs,"/",fname,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
-            grid.newpage();grid.draw(ggplot_gtable(gg_guts))
+            grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
             grDevices::dev.off()
           }
 

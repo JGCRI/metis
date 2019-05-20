@@ -45,7 +45,7 @@
 #' @param aggregate Default "sum"
 #' @param classPalette Default "pal_Basic" from metis.colors()$pal_Basic
 #' @param regionCompareOnly Default 0. If set to 1, will only run comparison plots and not individual
-#' @param regionCompareOnly Default 0. If set to 1, will only run comparison plots and not individual
+#' @param scenarioCompareOnly Default 0. If set to 1, will only run comparison plots and not individual
 #' @param useNewLabels Default 0
 #' @param sizeBarLines Default 0.5
 #' @param sizeLines Default 1.5

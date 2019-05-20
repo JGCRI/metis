@@ -60,7 +60,10 @@ metis.bia(biaInputsFolder = "NA", biaInputsFiles = "NA",
 For example c('scenario1','scenario2).}
 
 \item{scenNewNames}{New Names which may be shorter and more useful for figures etc.
-Default will use Original Names. For example c('scenario1','scenario2)}
+Default will use Original Names. For example c('scenario1','scenario2)
+in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
+with full path is provided otherwise it will search for a dataProj.proj file in the existing
+folder which may have been created from an old run.}
 
 \item{gcamdatabasePath}{Path to gcam database folder}
 
@@ -68,10 +71,7 @@ Default will use Original Names. For example c('scenario1','scenario2)}
 
 \item{queryxml}{Full path to query.xml file}
 
-\item{reReadData}{If TRUE will read the GCAM data base and create a queryData.proj file
-in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
-with full path is provided otherwise it will search for a dataProj.proj file in the existing
-folder which may have been created from an old run.}
+\item{paramsSelect}{Default =c("elecByTech")}
 }
 \value{
 #andym a tibble with GCAM electricity generation distributed on a grid for a selected region

@@ -7,7 +7,7 @@
 #' @param A0 Intensity matrix. Default Null.
 #' @param nameAppend Modified intensity matrix. Default =NULL,
 #' @param figWidth Default = 7.5,
-#' @param figheight Default = 5
+#' @param figHeight Default = 5
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @export
@@ -110,7 +110,8 @@ NULL -> ioTable -> A -> year -> Year -> YEAR -> supplySubSector -> supplySector 
   total -> totalTemp -> value -> x -> . -> region -> missingSupplySubSectorNumber ->
   percentDistribution->percentDistribution_Adjusted->percentDistribution_Remainder->region->
   remainder->select->sumType->supplySectorSum->supplySubSectorNumber->
-  totalsAll->totalsSubSectorOther->valueCalculated->valueOrig -> fname
+  totalsAll->totalsSubSectorOther->valueCalculated->valueOrig -> fname ->
+    supplySubSector_supplySector->key -> otherAdjustedSupply -> param -> sectorToAgg
 
 
 #------------------
@@ -485,10 +486,10 @@ for(scenario_i in scenarios){
               dplyr::mutate(remainder=totalsAll-totalsSubSectorOther); ioTable0i_Remainder %>% as.data.frame()
 
             ioTable0i_Remainder1 <- ioTable0i_Remainder %>%
-              mutate(otherAdjustedSupply = case_when(remainder>0 ~ remainder,
+              dplyr::mutate(otherAdjustedSupply = dplyr::case_when(remainder>0 ~ remainder,
                                                      TRUE~0),
-                     totalsAll = case_when(remainder<0 ~ -remainder,
-                                           TRUE~totalsAll)); ioTable0i_Remainder1 %>% as.data.frame() %>% arrange(supplySector,key)
+                     totalsAll = dplyr::case_when(remainder<0 ~ -remainder,
+                                           TRUE~totalsAll)); ioTable0i_Remainder1 %>% as.data.frame() %>% dplyr::arrange(supplySector,key)
 
             ioTable0i_Remainder2 <- ioTable0i_Remainder1 %>%
               dplyr::select(-totalsSubSectorOther,-remainder,-otherAdjustedSupply) %>%
@@ -505,7 +506,7 @@ for(scenario_i in scenarios){
             ioTable0i <- ioTable0i %>%
               dplyr::filter(!grepl("_all",supplySubSector)) %>%
               dplyr::bind_rows(ioTable0i_Remainder2) %>%
-              dplyr::bind_rows(ioTable0i_Remainder3); ioTable0i %>% as.data.frame() %>% arrange(supplySector)
+              dplyr::bind_rows(ioTable0i_Remainder3); ioTable0i %>% as.data.frame() %>% dplyr::arrange(supplySector)
 
 
           }
@@ -993,10 +994,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
 
   df_Mnx_AggDem <- df_Mnx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-    group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>% ungroup();
+    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>% dplyr::ungroup();
   df_Mnx_AggDem %>% as.data.frame()
   solx_AggDem <- solx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-    group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>% ungroup();
+    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>% dplyr::ungroup();
   solx_AggDem %>% as.data.frame()
 
   sectorFromOrder <- sort(unique(df_Mnx_AggDem$sectorFrom)); sectorFromOrder
@@ -1033,12 +1034,12 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
 
   df_Mnx_AggDemAggSup <- df_Mnx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-    group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
-    ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
+    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
+    dplyr::ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
   df_Mnx_AggDemAggSup %>% as.data.frame()
   solx_AggDemAggSup <- solx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-    group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
-    ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
+    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
+    dplyr::ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
   solx_AggDemAggSup %>% as.data.frame()
 
   sectorFromOrder <- sort(unique(df_Mnx_AggDemAggSup$sectorFrom)); sectorFromOrder
@@ -1096,13 +1097,13 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   dfx_sankey <- dfx %>%dplyr::filter(value!=0) %>% dplyr::filter(!grepl("_all",sectorFrom)) %>%
       dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
       dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-      dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+      dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(supplySector,region) %>%
       dplyr::mutate(normValue=value/sum(value)) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-      dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+      dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                         (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                         TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                   legendLabel = paste(sectorFrom," ",units,sep="")) %>%
@@ -1146,13 +1147,13 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
     dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
     dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(supplySector,region,subRegion,x) %>%
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+    dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                         (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                         TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                   legendLabel = paste(sectorFrom," ",units,sep="")) %>%
@@ -1190,13 +1191,13 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   dfx_sankey <- dfx %>%dplyr::filter(value!=0) %>% dplyr::filter(grepl("_all",sectorFrom)) %>%
     dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
     dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(supplySector,region) %>%
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+    dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                         (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                         TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                   legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -1232,13 +1233,13 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
     dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
     dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+    dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(supplySector,region,subRegion,x) %>%
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+    dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                         (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                         TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                   legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -1294,7 +1295,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       dplyr::mutate(normValue=value/sum(value)) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-      dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+      dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                           (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                           TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                     legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -1332,7 +1333,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       dplyr::mutate(normValue=value/sum(value)) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-      dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+      dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                           (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                           TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                     legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -1372,7 +1373,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       dplyr::mutate(normValue=value/sum(value)) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-      dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+      dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                           (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                           TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                     legendLabel = paste(sectorFrom," ",units,sep="")) %>% as.data.frame() %>%
@@ -1409,7 +1410,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+    dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                         (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                         TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                   legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -1447,7 +1448,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+    dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                         (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                         TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                   legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -1484,7 +1485,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     dplyr::mutate(normValue=value/sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-    dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+    dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                         (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                         TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                   legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -1658,10 +1659,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
 
     df_Mnx_AggDem <- df_Mnx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-      group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>% ungroup();
+      dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>% dplyr::ungroup();
     df_Mnx_AggDem %>% as.data.frame()
     solx_AggDem <- solx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-      group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>% ungroup();
+      dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>% dplyr::ungroup();
     solx_AggDem %>% as.data.frame()
 
     sectorFromOrder <- sort(unique(df_Mnx_AggDem$sectorFrom)); sectorFromOrder
@@ -1698,12 +1699,12 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
 
     df_Mnx_AggDemAggSup <- df_Mnx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-      group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
-      ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
+      dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
+      dplyr::ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
     df_Mnx_AggDemAggSup %>% as.data.frame()
     solx_AggDemAggSup <- solx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-      group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
-      ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
+      dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
+      dplyr::ungroup() %>% dplyr::filter(grepl("_all",sectorFrom));
     solx_AggDemAggSup %>% as.data.frame()
 
     sectorFromOrder <- sort(unique(df_Mnx_AggDemAggSup$sectorFrom)); sectorFromOrder
@@ -1761,13 +1762,13 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       dfx_sankey <- dfx %>%dplyr::filter(value!=0) %>% dplyr::filter(!grepl("_all",sectorFrom)) %>%
         dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
         dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(supplySector,region) %>%
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+        dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                             (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                             TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                       legendLabel = paste(sectorFrom," ",units,sep="")) %>%
@@ -1811,13 +1812,13 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
         dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
         dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(supplySector,region,subRegion,x) %>%
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+        dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                             (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                             TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                       legendLabel = paste(sectorFrom," ",units,sep="")) %>%
@@ -1855,13 +1856,13 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       dfx_sankey <- dfx %>%dplyr::filter(value!=0) %>% dplyr::filter(grepl("_all",sectorFrom)) %>%
         dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
         dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(supplySector,region) %>%
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+        dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                             (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                             TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                       legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -1897,13 +1898,13 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
         dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
         dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
-        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% summarize(value=sum(value)) %>%
+        dplyr::group_by(sectorTo,sectorFrom,supplySector,scenario,x,region,subRegion,units,param) %>% dplyr::summarize(value=sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(supplySector,region,subRegion,x) %>%
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+        dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                             (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                             TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                       legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -1959,7 +1960,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+        dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                             (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                             TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                       legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -1997,7 +1998,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+        dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                             (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                             TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                       legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -2037,7 +2038,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+        dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                             (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                             TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                       legendLabel = paste(sectorFrom," ",units,sep="")) %>% as.data.frame() %>%
@@ -2074,7 +2075,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+        dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                             (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                             TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                       legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -2112,7 +2113,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+        dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                             (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                             TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                       legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%
@@ -2149,7 +2150,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
         dplyr::mutate(normValue=value/sum(value)) %>%
         dplyr::ungroup() %>%
         dplyr::group_by(sectorFrom,region,subRegion,x) %>%
-        dplyr::mutate(fromLabel = case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
+        dplyr::mutate(fromLabel = dplyr::case_when((sum(value) <= 1 & sum(value) >= -1) ~ paste(sectorFrom," ",signif(sum(value),2)," ",units,sep=""),
                                             (sum(value) >= 10 & sum(value) <= -10) ~ paste(sectorFrom," ",round(sum(value),0)," ",units,sep=""),
                                             TRUE ~ paste(sectorFrom," ",round(sum(value),1)," ",units,sep="")),
                       legendLabel = paste(sectorFrom," ",units,sep="")) %>%as.data.frame() %>%

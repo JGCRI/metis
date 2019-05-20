@@ -21,7 +21,7 @@ metis.io(ioTable0 = NULL, useIntensity = 0, A0 = NULL,
 
 \item{figWidth}{Default = 7.5,}
 
-\item{figheight}{Default = 5}
+\item{figHeight}{Default = 5}
 }
 \value{
 A table with data by polygon ID for each shapefile provided
