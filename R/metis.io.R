@@ -6,8 +6,9 @@
 #' @param useIntensity Boolean to use given intensity or not. Default is set to 0.
 #' @param A0 Intensity matrix. Default Null.
 #' @param nameAppend Modified intensity matrix. Default =NULL,
-#' @param figWidth Default = 7.5,
-#' @param figHeight Default = 5
+#' @param figWidth Default = 9,
+#' @param figHeight Default = 7,
+#' @param sankeyLabelAbsPlots Default = 0
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @export
@@ -19,7 +20,8 @@ metis.io<-function(ioTable0 = NULL,
                    dirOutputs=paste(getwd(),"/outputs",sep=""),
                    nameAppend="",
                    figWidth = 9,
-                   figHeight = 7
+                   figHeight = 7,
+                   sankeyLabelAbsPlots=1
                         ){
 
   # ioTable0 = NULL
@@ -27,8 +29,8 @@ metis.io<-function(ioTable0 = NULL,
   # A0 = NULL
   # dirOutputs=paste(getwd(),"/outputs",sep="")
   # nameAppend=""
-  # figWidth = 7.5
-  # figHeight = 5
+  # figWidth = 9
+  # figHeight = 7
 
 #----------------
 # Defaults:
@@ -858,6 +860,9 @@ ioTbl_Output = ioTbl_Output %>% dplyr::bind_rows(ioTable_complete %>% tibble::as
     for(scenario_i in scenarios){
         # for(year_i in years){
 
+
+      if(length(unique((sol_list$ioTbl_Output)$subRegion))>1){
+
           if (!dir.exists(paste(dirOutputs, "/IO/",region_i, sep = ""))){
             dir.create(paste(dirOutputs, "/IO/",region_i,  sep = ""))}
           if (!dir.exists(paste(dirOutputs, "/IO/",region_i,"/",scenario_i, sep = ""))){
@@ -1134,7 +1139,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=0)
+              figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
   # data=dfx_sankey; chartType="sankey"; xData="sectorTo"; yData="normValue"; sankeyGroupColor="supplySector";
   # classLabel="From"; class = "supplySector"; classPalette = "pal_sankey";
@@ -1142,7 +1147,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   # labelTextSize=5; sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
   # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
   # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
-  # figHeight=figHeight_ix;pdfpng="png"; sankeyLabelsOn=0
+  # figHeight=figHeight_ix;pdfpng="png"; sankeyLabelsOn=sankeyLabelAbsPlots
 
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
     dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
@@ -1226,7 +1231,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png",sankeyLabelsOn=0)
+              figHeight=figHeight_ix,pdfpng="png",sankeyLabelsOn=sankeyLabelAbsPlots)
 
 
 
@@ -1325,7 +1330,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                 labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                 removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn = 0)
+                figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
 
     dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
@@ -1403,7 +1408,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn = 0)
+              figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
     dplyr::group_by(supplySector,region,subRegion,x) %>%
@@ -1520,24 +1525,19 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   }
 
 
+    } # Close if more than one subRegion loop
 
 #----------------
 # By SubRegion
 #---------------
 
   for(subRegion_i in subRegions){
+
     if (!dir.exists(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",subRegion_i, sep = ""))){
       dir.create(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",subRegion_i,  sep = ""))}
 
     dir<- paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",subRegion_i,  sep = "")
 
-    #--------------
-    # Common Settings
-    #----------
-
-    sankeyExpandLeft_i = 0.2;
-    sankeyExpandLeft_i = 0.1;
-    sankeyAspectRatio_i = 0.6;
     #---------------------
     # sol_Output
     #---------------------
@@ -1799,7 +1799,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=0)
+                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
       # data=dfx_sankey; chartType="sankey"; xData="sectorTo"; yData="normValue"; sankeyGroupColor="supplySector";
       # classLabel="From"; class = "supplySector"; classPalette = "pal_sankey";
@@ -1807,7 +1807,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       # labelTextSize=5; sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
       # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
       # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
-      # figHeight=figHeight_ix;pdfpng="png"; sankeyLabelsOn=0
+      # figHeight=figHeight_ix;pdfpng="png"; sankeyLabelsOn=sankeyLabelAbsPlots
 
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
         dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
@@ -1891,7 +1891,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png",sankeyLabelsOn=0)
+                  figHeight=figHeight_ix,pdfpng="png",sankeyLabelsOn=sankeyLabelAbsPlots)
 
 
 
@@ -1990,7 +1990,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn = 0)
+                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
 
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
@@ -2068,7 +2068,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   labelTextSize=5, sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn = 0)
+                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
         dplyr::group_by(supplySector,region,subRegion,x) %>%
@@ -2186,12 +2186,14 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
 
 
-  }
+
+
+  } # Close subRegion_i
 
 
        # } # Close Year_i
     } # Close scenario_i
-   } # close subRegion_i
+   } # close region_i
 
 
 

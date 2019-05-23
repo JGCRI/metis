@@ -346,9 +346,9 @@ spanLowess=0.25
 popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 popFiles<-"grid_pop_map"
 popUnits<-"person"
-gridMetisData=paste(dirOutputs, "/Grids/gridMetisXanthos.RData", sep = "")
+gridMetisData=paste(dirOutputs, "/Grids/gridMetisPeru.RData", sep = "")
 sqliteUSE = T
-sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetisPeru.sqlite", sep = "")
 
 gridMetis<-metis.prepGrid(
   reReadData=reReadData,
@@ -366,11 +366,11 @@ gridMetis<-metis.prepGrid(
   xanthosCoordinatesPath=xanthosCoordinatesPath,
   xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
   spanLowess=spanLowess,
-  dirOutputs=paste(getwd(),"/outputs",sep=""),
-  gridMetisData=gridMetisData,
   popFolder=popFolder,
   popFiles=popFiles,
   popUnits=popUnits,
+  dirOutputs=paste(getwd(),"/outputs",sep=""),
+  gridMetisData=gridMetisData,
   sqliteUSE = sqliteUSE,
   sqliteDBNamePath =sqliteDBNamePath)
 
@@ -411,9 +411,11 @@ nameAppend_i = "_NE"
 aggType_i = NULL
 paramsSelect_i= "All" #"demeterLandUse"
 sqliteUSE_i = T
-sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetisPeru.sqlite", sep = "")
+#grid_i=gridMetis
 
-grid2polyX<-metis.grid2poly(#grid=grid_i,
+grid2polyX<-metis.grid2poly(
+  #grid=grid_i,
   boundaryRegionsSelect=boundaryRegionsSelect_i,
   subRegShpFolder=subRegShpFolder_i,
   subRegShpFile=subRegShpFile_i,
@@ -447,7 +449,7 @@ nameAppend_i = "_local"
 aggType_i = NULL
 paramsSelect_i= "All" #"demeterLandUse"
 sqliteUSE_i = T
-sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetisPeru.sqlite", sep = "")
 
 grid2polyX<-metis.grid2poly(#grid=grid_i,
   boundaryRegionsSelect=boundaryRegionsSelect_i,
