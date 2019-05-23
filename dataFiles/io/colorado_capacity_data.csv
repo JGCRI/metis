@@ -1,0 +1,37 @@
+subRegion,supplySector,supplySubSector,year,units,data
+Mendoza_alta_barrancas,Water,W_SW_Runoff,2010,Local natural supply limit (km^3),0.276125
+Mendoza_alta_riogrande,Water,W_SW_Runoff,2010,Local natural supply limit (km^3),3.5029
+Neuquen_alta_barrancas,Water,W_SW_Runoff,2010,Local natural supply limit (km^3),0.828375
+Mendoza_media,Water,W_SW_Runoff,2010,Local natural supply limit (km^3),0
+Neuquen_media,Water,W_SW_Runoff,2010,Local natural supply limit (km^3),0
+RioNegro_media,Water,W_SW_Runoff,2010,Local natural supply limit (km^3),0
+LaPampa_media,Water,W_SW_Runoff,2010,Local natural supply limit (km^3),0
+LaPampa_baja,Water,W_SW_Runoff,2010,Local natural supply limit (km^3),0
+RioNegro_baja,Water,W_SW_Runoff,2010,Local natural supply limit (km^3),0
+Corfo,Water,W_SW_Runoff,2010,Local natural supply limit (km^3),0
+Mendoza_alta_barrancas,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),0.276125
+Mendoza_alta_riogrande,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),3.5029
+Neuquen_alta_barrancas,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),0.828375
+Mendoza_media,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),2.301035699
+Neuquen_media,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),2.301035699
+RioNegro_media,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),2.273105575
+LaPampa_media,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),2.273105575
+LaPampa_baja,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),2.088111925
+RioNegro_baja,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),2.088111925
+Corfo,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),3.952107149
+Mendoza_alta_riogrande,Electricity,Electricity_RefLiq_Diesel,2010,Installed Capacity (MW),0.296
+Neuquen_media,Electricity,Electricity_Gas,2010,Installed Capacity (MW),67.5
+Neuquen_media,Electricity,Electricity_RefLiq_Diesel,2010,Installed Capacity (MW),32.39
+LaPampa_baja,Electricity,Electricity_RefLiq_Diesel,2010,Installed Capacity (MW),0.14
+LaPampa_media,Electricity,Electricity_Hydro,2010,Installed Capacity (MW),60
+Mendoza_alta_barrancas,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),5
+Mendoza_alta_riogrande,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),5
+Neuquen_alta_barrancas,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),5
+Mendoza_media,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),3
+Neuquen_media,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),3
+RioNegro_media,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),3
+LaPampa_media,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),3
+LaPampa_baja,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),0.45
+RioNegro_baja,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),0.45
+Corfo,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),3
+LaPampa_media,Water,W_SW_Reservoir,2010,Local natural supply limit (km^3),2.6

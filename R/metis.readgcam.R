@@ -1038,7 +1038,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::group_by(scenario,region) %>%
         dplyr::mutate(param = "gdpGrowthRate",
                       sources = "Sources",
-                      value = (value-dplyr::lag(value,order_by=x))*100/(5*dplyr::lag(value,order_by=x)),
+                      value = ((value/dplyr::lag(value,order_by=x))^(1/5)-1)*100,
                       units = "GDP Growth Rate (Percent)",
                       vintage = paste("Vint_", x, sep = ""),
                       classLabel1 = "GDP growth rate",

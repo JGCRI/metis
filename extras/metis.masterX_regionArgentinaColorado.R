@@ -36,135 +36,137 @@ library(tools)
 
 
 
-#----------------------------
-# Read GCAM Data
-#---------------------------
-
-# ?metis.readgcam # For more help
-
-gcamdatabasePath_i <-paste("D:/GCAM/gcam-core_LAC/output",sep="")
-gcamdatabaseName_i <-"database_basexdb"
-dataProj_i <-"Uruguay_dataProj.proj"
-dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
-queryPath_i <-paste(getwd(),"/dataFiles/gcam",sep="")
-regionsSelect_i <- c("Uruguay")
-
-#dataProjLoaded <- loadProject(paste(gcamdatabasePath, "/", gcamdataProjFile, sep = ""))
-#listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
-#queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
-
-dataGCAM<-metis.readgcam(reReadData=T, # Default Value is T
-                                 dataProj = dataProj_i, # Default Value is "dataProj.proj"
-                                 dataProjPath = dataProjPath_i,
-                                 scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef"),
-                                 scenNewNames=c("GCAMOrig","GCAMRef"),
-                                 gcamdatabasePath=gcamdatabasePath_i,
-                                 gcamdatabaseName=gcamdatabaseName_i,
-                                 queryxml="metisQueries.xml",  # Default Value is "metisQueries.xml"
-                                 queryPath = queryPath_i,
-                                 dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
-                                 regionsSelect=regionsSelect_i, # Default Value is NULL
-                                 paramsSelect="All" # Default value is "All"
-)
-
-# reReadData=F # Default Value is T
-# dataProj = gcamdataProjFile_i # Default Value is "dataProj.proj"
-# dataProjPath = gcamdatabasePath_i
-# scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef")
-# scenNewNames=c("GCAMOrig","GCAMRef")
-# gcamdatabasePath=gcamdatabasePath_i
-# gcamdatabaseName=gcamdatabaseName_i
-# queryxml="metisQueries.xml"  # Default Value is "metisQueries.xml"
-# queryPath = queryPath_i
-# dirOutputs= paste(getwd(),"/outputs",sep="") # Default Value is paste(getwd(),"/outputs",sep="")
-# regionsSelect=regionsSelect_i # Default Value is NULL
-# paramsSelect="All" # Default value is "All"
-
-
-# Save an object to a file
-#saveRDS(dataGCAM$data, file = paste(getwd(),"/dataFiles/gcam/tempUruguayGCAMData.rds",sep=""))
-#readRDS(file = paste(getwd(),"/dataFiles/gcam/tempUruguayGCAMData.rds",sep=""))
-
-dataGCAM # To view the data read that was read.
-dataGCAM$data
-unique(dataGCAM$data$param)
-unique(dataGCAM$data$scenario)
-
-#----------------------------
-# Produce Data Charts
-#---------------------------
-
-# Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-paramsSelect_i=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech", "elecCapBySubsector",
-                 "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
-                 "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
-                 "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-                 "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS",
-                 "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec")
-
-
-# Read in Tables (If exist)
-dataTables_i<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
-a<-read.csv(dataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
-
-# Read in the data from the function metis.readgcam
-rTable_i <- dataGCAM$data
-
-regionsSelect_i=c("Uruguay")
-
-charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
-                            dataTables=dataTables_i, # Default is NULL
-                            paramsSelect=paramsSelect_i, # Default is "All"
-                            regionsSelect=regionsSelect_i, # Default is "All"
-                            xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
-                            scenRef="GCAMOrig", # Default is NULL
-                            dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
-                            pdfpng="png", # Default is "png"
-                            regionCompareOnly=0, # Default is "0"
-                            scenarioCompareOnly=1, # Default is "0"
-                            useNewLabels=1,
-                            xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
-                            colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
-                            colOrderName1 = "scenario"
-                            )
-
-charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
-                            dataTables=dataTables_i, # Default is NULL
-                            paramsSelect=c("gdpPerCapita", "gdp", "gdpGrowthRate", "pop"), # Default is "All"
-                            regionsSelect=regionsSelect_i, # Default is "All"
-                            xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
-                            scenRef="GCAMOrig", # Default is NULL
-                            dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
-                            pdfpng="png", # Default is "png"
-                            regionCompareOnly=0, # Default is "0"
-                            scenarioCompareOnly=1, # Default is "0"
-                            useNewLabels=1,
-                            xRange=c(2010:2050),
-                            colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
-                            colOrderName1 = "scenario"
-)
-
-# rTable=rTable_i # Default is NULL
-# dataTables=dataTables_i # Default is NULL
-# paramsSelect=paramsSelect_i # Default is "All"
-# regionsSelect=regionsSelect_i # Default is "All"
-# xCompare=c("2010","2015","2020","2030") # Default is c("2015","2030","2050","2100")
-# scenRef="GCAMOrig" # Default is NULL
-# dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
-# pdfpng="png" # Default is "png
-# regionCompareOnly=0 # Default is "0"
-# useNewLabels=1
-# xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050) # Default is All
-
+# #----------------------------
+# # Read GCAM Data
+# #---------------------------
+#
+# # ?metis.readgcam # For more help
+#
+# gcamdatabasePath_i <-paste("D:/GCAM/gcam-core_LAC/output",sep="")
+# gcamdatabaseName_i <-"database_basexdb"
+# dataProj_i <-"Uruguay_dataProj.proj"
+# dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
+# queryPath_i <-paste(getwd(),"/dataFiles/gcam",sep="")
+# regionsSelect_i <- c("Uruguay")
+#
+# #dataProjLoaded <- loadProject(paste(gcamdatabasePath, "/", gcamdataProjFile, sep = ""))
+# #listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
+# #queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
+#
+# dataGCAM<-metis.readgcam(reReadData=T, # Default Value is T
+#                                  dataProj = dataProj_i, # Default Value is "dataProj.proj"
+#                                  dataProjPath = dataProjPath_i,
+#                                  scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef"),
+#                                  scenNewNames=c("GCAMOrig","GCAMRef"),
+#                                  gcamdatabasePath=gcamdatabasePath_i,
+#                                  gcamdatabaseName=gcamdatabaseName_i,
+#                                  queryxml="metisQueries.xml",  # Default Value is "metisQueries.xml"
+#                                  queryPath = queryPath_i,
+#                                  dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
+#                                  regionsSelect=regionsSelect_i, # Default Value is NULL
+#                                  paramsSelect="All" # Default value is "All"
+# )
+#
+# # reReadData=F # Default Value is T
+# # dataProj = gcamdataProjFile_i # Default Value is "dataProj.proj"
+# # dataProjPath = gcamdatabasePath_i
+# # scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef")
+# # scenNewNames=c("GCAMOrig","GCAMRef")
+# # gcamdatabasePath=gcamdatabasePath_i
+# # gcamdatabaseName=gcamdatabaseName_i
+# # queryxml="metisQueries.xml"  # Default Value is "metisQueries.xml"
+# # queryPath = queryPath_i
+# # dirOutputs= paste(getwd(),"/outputs",sep="") # Default Value is paste(getwd(),"/outputs",sep="")
+# # regionsSelect=regionsSelect_i # Default Value is NULL
+# # paramsSelect="All" # Default value is "All"
+#
+#
+# # Save an object to a file
+# #saveRDS(dataGCAM$data, file = paste(getwd(),"/dataFiles/gcam/tempUruguayGCAMData.rds",sep=""))
+# #readRDS(file = paste(getwd(),"/dataFiles/gcam/tempUruguayGCAMData.rds",sep=""))
+#
+# dataGCAM # To view the data read that was read.
+# dataGCAM$data
+# unique(dataGCAM$data$param)
+# unique(dataGCAM$data$scenario)
+#
+# #----------------------------
+# # Produce Data Charts
+# #---------------------------
+#
+# # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
+# paramsSelect_i=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech", "elecCapBySubsector",
+#                  "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
+#                  "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
+#                  "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
+#                  "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS",
+#                  "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec")
+#
+#
+# # Read in Tables (If exist)
+# dataTables_i<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
+# a<-read.csv(dataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+#
+# # Read in the data from the function metis.readgcam
+# rTable_i <- dataGCAM$data
+#
+# regionsSelect_i=c("Uruguay")
+#
+# charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
+#                             dataTables=dataTables_i, # Default is NULL
+#                             paramsSelect=paramsSelect_i, # Default is "All"
+#                             regionsSelect=regionsSelect_i, # Default is "All"
+#                             xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
+#                             scenRef="GCAMOrig", # Default is NULL
+#                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
+#                             pdfpng="png", # Default is "png"
+#                             regionCompareOnly=0, # Default is "0"
+#                             scenarioCompareOnly=1, # Default is "0"
+#                             useNewLabels=1,
+#                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
+#                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
+#                             colOrderName1 = "scenario"
+#                             )
+#
+# charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
+#                             dataTables=dataTables_i, # Default is NULL
+#                             paramsSelect=c("gdpPerCapita", "gdp", "gdpGrowthRate", "pop"), # Default is "All"
+#                             regionsSelect=regionsSelect_i, # Default is "All"
+#                             xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
+#                             scenRef="GCAMOrig", # Default is NULL
+#                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
+#                             pdfpng="png", # Default is "png"
+#                             regionCompareOnly=0, # Default is "0"
+#                             scenarioCompareOnly=1, # Default is "0"
+#                             useNewLabels=1,
+#                             xRange=c(2010:2050),
+#                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
+#                             colOrderName1 = "scenario"
+# )
+#
+# # rTable=rTable_i # Default is NULL
+# # dataTables=dataTables_i # Default is NULL
+# # paramsSelect=paramsSelect_i # Default is "All"
+# # regionsSelect=regionsSelect_i # Default is "All"
+# # xCompare=c("2010","2015","2020","2030") # Default is c("2015","2030","2050","2100")
+# # scenRef="GCAMOrig" # Default is NULL
+# # dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+# # pdfpng="png" # Default is "png
+# # regionCompareOnly=0 # Default is "0"
+# # useNewLabels=1
+# # xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050) # Default is All
+#
 
 #------------
 # Prepare Polygons
 #----------------
 
-countryName= "Uruguay"
-localBasinShapeFileFolder = paste(getwd(),"/dataFiles/gis/shapefiles_Uruguay",sep="")
-localBasinShapeFile = "c097Polygon"
-localBasinsShapeFileColName = "codcuenca" # Will need to load the file to see which name this would be
+countryName= "Argentina"
+localBasinShapeFileFolder = paste(getwd(),"/dataFiles/gis/shapefiles_Argentina",sep="")
+localBasinShapeFile = "colorado_ten_subregions_v3"
+tempShape<-readOGR(dsn=localBasinShapeFileFolder,
+        layer=localBasinShapeFile,use_iconv=T,encoding='UTF-8')
+localBasinsShapeFileColName = "cuenca" # Will need to load the file to see which name this would be
 countryName <- tools::toTitleCase(countryName); countryName
 
 
@@ -220,6 +222,12 @@ countryLocalBasin<-raster::crop(countryLocalBasin,countryNE1)
 countryLocalBasin@data <- droplevels(countryLocalBasin@data)
 head(countryLocalBasin@data)
 plot(countryLocalBasin)
+# subset any islands or regions not wanted
+countryLocalBasin<-countryLocalBasin[(!countryLocalBasin$cuenca %in%
+                                        c("media","baja","RioGrande","Barrancas")) & !is.na(countryLocalBasin$cuenca),]
+head(countryLocalBasin@data)
+plot(countryLocalBasin)
+
 writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
 
@@ -308,6 +316,7 @@ nameAppend_i = "_localSubBasin"
 overlapShape_i = countryNE1
 
 boundariesX<- metis.boundaries(
+  #labelsSize=0.5,
   boundaryRegShape=boundaryRegShape_i,
   boundaryRegCol=boundaryRegCol_i,
   boundaryRegionsSelect=boundaryRegionsSelect_i,

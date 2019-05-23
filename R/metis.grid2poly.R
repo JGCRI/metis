@@ -119,8 +119,24 @@ metis.grid2poly<- function(grid=NULL,
       if(any(!c("lat","lon","value","param","scenario") %in% names(grid))){
         stop(paste(grid," should have columns lon, lat, value, param and scenario. Missing columns: ",
                    names(grid)[!names(grid) %in% c("lat","lon","value")]))
-      } else {params=unique(grid$param)
-      scenarios=unique(grid$scenario)}
+      } else {
+
+        params=unique(grid$param)
+
+      paramScenarios<-tibble::tibble()
+      for(param_i in params){
+        print(paste("Finding unique scenarios in grid for param: ",param_i,"...",sep=""))
+        scenarios<-grid%>%dplyr::filter(param==param_i)%>%dplyr::distinct(scenario);
+        scenarios=scenarios$scenario
+        paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
+        print(paste("Unique scenarios found : ", paste(scenarios,collapse=", "),sep=""))
+      }
+      paramScenarios<-paramScenarios%>%unique()
+      print("paramScenarios found: ")
+      print(paramScenarios)
+      scenarios<-unique(paramScenarios$scenario)
+
+      }
     } # If !is.null(grid)
 
   } # if not using sqlLite
@@ -162,6 +178,7 @@ metis.grid2poly<- function(grid=NULL,
 
   # Delete temporary grid folder
   if (dir.exists(paste(dirOutputs, "/Grids/temp", sep = ""))){unlink(paste(dirOutputs, "/Grids/temp", sep = ""),recursive = T)}
+  if (dir.exists(paste(dirOutputs, "/Grids/tempWeighted", sep = ""))){unlink(paste(dirOutputs, "/Grids/temp", sep = ""),recursive = T)}
 
 
 
@@ -216,7 +233,8 @@ metis.grid2poly<- function(grid=NULL,
 
   }# closing if !is.null(grid)
 
-  gridCropped<-tibble::tibble()
+ gridCropped <-tibble::tibble()
+
 
   if(!is.null(sqlGrid) | !is.null(grid)){
 
@@ -295,46 +313,10 @@ metis.grid2poly<- function(grid=NULL,
           rcrop<-raster::crop(r,shapeExpandExtent)
           rcropP<-raster::rasterToPolygons(rcrop)
 
-          gridCropped<-dplyr::bind_rows(gridCropped,tibble::as_tibble(rcropP@data))
-
-          # Save gridCropped to csv
-
-           if(nrow(gridCropped)>0){
-
-            gridCroppedX<-tidyr::gather(gridCropped,key=key,value=value,-c(lat,lon))%>%
-              tidyr::separate(col="key",into=namesGrid[!namesGrid %in% c("lat","lon","value")],sep="_")%>%
-              unique()%>%
-              dplyr::filter(!is.na(value))
-
-            for(colx in names(gridCroppedX)){
-              if(is.character(gridCroppedX[[colx]])){
-                gridCroppedX[[colx]]<-gsub("XSPACEX"," ",gridCroppedX[[colx]])
-                gridCroppedX[[colx]]<-gsub("XPERIODX","\\.",gridCroppedX[[colx]])
-                gridCroppedX[[colx]]<-gsub("XDASHX","\\-",gridCroppedX[[colx]])
-                gridCroppedX[[colx]]<-gsub("XLPARENTHX","\\(",gridCroppedX[[colx]])
-                gridCroppedX[[colx]]<-gsub("XRLPARENTHX","\\)",gridCroppedX[[colx]])
-                gridCroppedX[[colx]]<-gsub("XUNDERX","\\_",gridCroppedX[[colx]])
-              }
-            }
-
-            polyType=subRegType
-            if (!dir.exists(paste(dirOutputs, "/Grids", sep = ""))){dir.create(paste(dirOutputs, "/Grids", sep = ""))}
-            if (!dir.exists(paste(dirOutputs, "/Grids/temp", sep = ""))){dir.create(paste(dirOutputs, "/Grids/temp", sep = ""))}
-
-            grid_fname<-paste(dirOutputs, "/Grids/temp/gridCropped_",boundaryRegionsSelect,"_",polyType,"_",param_i,"_",scenario_i,nameAppend,".csv", sep = "")
-            data.table::fwrite(gridCroppedX%>%dplyr::mutate(region=boundaryRegionsSelect,polyType=polyType),
-                               file = grid_fname,row.names = F)
-            print(paste("Subregional grid data files written to: ",grid_fname, sep = ""))
-
-          } # If nrow(gridCropped)
-
           sp::proj4string(rcropP)<-sp::proj4string(shape)
           rcropPx<-raster::intersect(shape,rcropP)
 
-          # rcropPx covers all the area available in the rasters which intersect with the shape
-          #plot(rcrop[[names(rcrop)[3]]]);plot(shape,add=T)
-          #plot(rcropP,col="cadetblue1");plot(shape,add=T)
-          #plot(rcropPx,col="cadetblue1");plot(shape,add=T)
+
 
           if(is.null(gridPolyLoop)){
             print("Printing Grid overlay...")
@@ -353,6 +335,7 @@ metis.grid2poly<- function(grid=NULL,
           }
           gridPolyLoop=1; # To prevent gridded map being produced multiple times
 
+
           if(aggType_i=="depth"){
             print(paste("Aggregating depth for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
             rcropPx@data$area<-raster::area(rcropPx)
@@ -361,6 +344,15 @@ metis.grid2poly<- function(grid=NULL,
             s1<-s1@data%>%dplyr::select( subRegCol,subRegAreaSum);
             rcropPx@data<-dplyr::left_join(rcropPx@data,s1,by= subRegCol)
             rcropPx@data$areaPrcnt<-rcropPx@data$area/rcropPx@data$subRegAreaSum;
+
+           gridCropped <-  rcropPx@data %>%
+                          dplyr::select(c(names(rcropP),ID=subRegCol)) %>%
+                          dplyr::mutate(weight=1)
+            #%>%
+            #  dplyr::select(lat, lon,	ID,	weight,	scenarioGCM,	scenarioRCP,	scenarioSSP,	scenarioPolicy,
+            #                scenario,	param,	units,	aggType,	x,	classPalette,	class,	value,	region,	polyType)
+
+
             x<-data.frame(mapply(`*`,rcropPx@data%>%
                                    dplyr::select(names(rcropPx@data)[!names(rcropPx@data) %in% c(
                                      names(shape),"lat","lon","area","subRegAreaSum","areaPrcnt")]),
@@ -368,14 +360,27 @@ metis.grid2poly<- function(grid=NULL,
               dplyr::bind_cols(rcropPx@data%>%dplyr::select( subRegCol))%>%tibble::as_tibble();
             polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(round(mean(.,na.rm=T),2)))
           }
+
           if(aggType_i=="vol"){
             print(paste("Aggregating volume for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
             w <- raster::extract(r,shape, method="simple",weights=T, normalizeWeights=F);
             dfx<-data.frame()
+
+           gridCropped <- tibble::tibble()
+
             for (i in seq(w)){
               if(!is.null(w[[i]]))
-                x<-as.data.frame(w[[i]])
+                x<-as.data.frame(w[[i]]) %>% dplyr::mutate(weight=weight*100)
               x$ID<-shape@data[[ subRegCol]][[i]]
+
+
+             gridCropped <-gridCropped %>%
+                dplyr::bind_rows(x %>%
+                dplyr::mutate_at(.vars=c(names(x)[!names(x) %in% c("lon","lat","weight","ID")]),.funs=dplyr::funs(.*weight)))
+              #%>%
+              #  dplyr::select(lat, lon,	ID,	weight,	scenarioGCM,	scenarioRCP,	scenarioSSP,	scenarioPolicy,
+              #                scenario,	param,	units,	aggType,	x,	classPalette,	class,	value,	region,	polyType)
+
               x1<-data.frame(mapply(`*`,x%>%
                                       dplyr::select(names(r)[!names(r) %in% c("lat","lon")]),x%>%
                                       dplyr::select(weight),SIMPLIFY=FALSE))%>%
@@ -412,7 +417,40 @@ metis.grid2poly<- function(grid=NULL,
 
           poly<-dplyr::bind_rows(poly,polyx@data)
 
-          rm(r,spdf,gridx,rcropPx,rcropP,polyx,rcrop,w,polyDatax)
+
+          #---------
+
+          if(nrow(gridCropped)>0){
+
+           gridCroppedX<-tidyr::gather(gridCropped,key=key,value=value,-c("lat","lon","weight","ID"))%>%
+              tidyr::separate(col="key",into=namesGrid[!namesGrid %in% c("lat","lon","value")],sep="_")%>%
+              unique()%>%
+              dplyr::filter(!is.na(value))
+
+            for(colx in names(gridCroppedX)){
+              if(is.character(gridCroppedX[[colx]])){
+               gridCroppedX[[colx]]<-gsub("XSPACEX"," ",gridCroppedX[[colx]])
+               gridCroppedX[[colx]]<-gsub("XPERIODX","\\.",gridCroppedX[[colx]])
+               gridCroppedX[[colx]]<-gsub("XDASHX","\\-",gridCroppedX[[colx]])
+               gridCroppedX[[colx]]<-gsub("XLPARENTHX","\\(",gridCroppedX[[colx]])
+               gridCroppedX[[colx]]<-gsub("XRLPARENTHX","\\)",gridCroppedX[[colx]])
+               gridCroppedX[[colx]]<-gsub("XUNDERX","\\_",gridCroppedX[[colx]])
+              }
+            }
+
+            polyType=subRegType
+            if (!dir.exists(paste(dirOutputs, "/Grids", sep = ""))){dir.create(paste(dirOutputs, "/Grids", sep = ""))}
+            if (!dir.exists(paste(dirOutputs, "/Grids/tempWeighted", sep = ""))){dir.create(paste(dirOutputs, "/Grids/tempWeighted", sep = ""))}
+
+            grid_fname<-paste(dirOutputs, "/Grids/tempWeighted/gridCropped_",boundaryRegionsSelect,"_",polyType,"_",param_i,"_",scenario_i,nameAppend,".csv", sep = "")
+            data.table::fwrite(gridCroppedX%>%dplyr::mutate(region=boundaryRegionsSelect,polyType=polyType),
+                               file = grid_fname,row.names = F)
+            print(paste("Subregional grid data files written to: ",grid_fname, sep = ""))
+
+          } # If nrow(gridCropped)
+
+
+          #rm(r,spdf,gridx,rcropPx,rcropP,polyx,rcrop,polyDatax)
 
         } # Close loop for aggType
       } else {print(paste("No data for param: ",param_i," and scenario: ",scenario_i,".",sep=""))}# Close loop for nrow>0
@@ -453,31 +491,34 @@ metis.grid2poly<- function(grid=NULL,
   }else{print("Polygon data has 0 rows")}
 
 
+  # Save Cropped Grid Weighted Edges
 
-  # Save Cropped Grid
+  if(length(list.files(paste(dirOutputs, "/Grids/tempWeighted", sep = "")))>0){
 
-  if(length(list.files(paste(dirOutputs, "/Grids/temp", sep = "")))>0){
+    #gridCroppedCompiled <- tibble::tibble()
+    grid_fnameComp<-paste(dirOutputs, "/Grids/gridCropped",boundaryRegionsSelect,"_",subRegType,nameAppend,".csv", sep = "")
 
-  #gridCroppedCompiled <- tibble::tibble()
-  grid_fnameComp<-paste(dirOutputs, "/Grids/gridCropped_",boundaryRegionsSelect,"_",subRegType,nameAppend,".csv", sep = "")
-  for (file_i in list.files(paste(dirOutputs, "/Grids/temp", sep = ""))){
-    print(paste("Compiling grid file",file_i,"...",sep=""))
-    gridTemp <- data.table::fread(paste(dirOutputs, "/Grids/temp/",file_i, sep = ""))
-    data.table::fwrite(gridTemp,
-                       file = grid_fnameComp,row.names = F, append=T)
+    gridTempX <- tibble::tibble()
+    for (file_i in list.files(paste(dirOutputs, "/Grids/tempWeighted", sep = ""))){
+      print(paste("Compiling grid file",file_i,"...",sep=""))
+      gridTemp <- data.table::fread(paste(dirOutputs, "/Grids/tempWeighted/",file_i, sep = ""))
+      gridTempX <- gridTempX %>%
+        dplyr::bind_rows(gridTemp)
+    }
+
+    gridTempAll <- gridTempX%>%unique()
+
+    if (file.exists(grid_fnameComp)){unlink(grid_fnameComp,recursive = T)}
+
+    data.table::fwrite(gridTempAll,
+                       file = grid_fnameComp,row.names = F, append=F)
+
+    print(paste("Subregional grid data files written to: ",grid_fnameComp, sep = ""))
+
+    # Delete temporary grid folder
+   if (dir.exists(paste(dirOutputs, "/Grids/tempWeighted", sep = ""))){unlink(paste(dirOutputs, "/Grids/tempWeighted", sep = ""),recursive = T)}
+
   }
-
-  gridTempAll <- (data.table::fread(grid_fnameComp))%>%unique()
-
-  data.table::fwrite(gridTempAll,
-                     file = grid_fnameComp,row.names = F, append=F)
-
-  print(paste("Subregional grid data files written to: ",grid_fnameComp, sep = ""))
-
- # Delete temporary grid folder
-  if (dir.exists(paste(dirOutputs, "/Grids/temp", sep = ""))){unlink(paste(dirOutputs, "/Grids/temp", sep = ""),recursive = T)}
-
-   }
 
   return(poly)
 
