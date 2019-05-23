@@ -1001,7 +1001,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 # fileName = paste("map_",boundaryRegionsSelect,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
                 # dirOutputs = paste(dirOutputs,"/Maps/",boundaryRegionsSelect,"/raster/", scenario_i,"/byYear",sep = "")
 
-
                 if(length(names(mapx@data))==1){
                   legendBreaksAnim = animPrettyBreaksGrid
                   legendStyleAnim="fixed"}else{
