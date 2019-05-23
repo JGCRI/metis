@@ -8,6 +8,7 @@
 ^metis.pdf$
 ^dataFiles$
 ^outputs$
+^outputsTemp$
 ^gis$
 ^grids$
 ^gcam$

@@ -1,0 +1,11 @@
+subRegion,Mendoza_alta_barrancas,Mendoza_alta_riogrande,Neuquen_alta_barrancas,Mendoza_media,Neuquen_media,RioNegro_media,LaPampa_media,LaPampa_baja,RioNegro_baja,Corfo
+Mendoza_alta_barrancas,0,0,0,0.5,0.5,0,0,0,0,0
+Mendoza_alta_riogrande,0,0,0,0.5,0.5,0,0,0,0,0
+Neuquen_alta_barrancas,0,0,0,0.5,0.5,0,0,0,0,0
+Mendoza_media,0,0,0,0,0,0.5,0.5,0,0,0
+Neuquen_media,0,0,0,0,0,0.5,0.5,0,0,0
+RioNegro_media,0,0,0,0,0,0,0,0.5,0.5,0
+LaPampa_media,0,0,0,0,0,0,0,0.5,0.5,0
+LaPampa_baja,0,0,0,0,0,0,0,0,0,1
+RioNegro_baja,0,0,0,0,0,0,0,0,0,1
+Corfo,0,0,0,0,0,0,0,0,0,0

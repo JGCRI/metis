@@ -4,23 +4,29 @@
 \alias{metis.chart}
 \title{metis.chart}
 \usage{
-metis.chart(data, chartType = "bar", position = "stack", xData = "x",
-  yData = "value", class = "class1", group = "scenario",
+metis.chart(data, dataNorm = NULL, chartType = "bar",
+  position = "stack", xData = "x", yData = "value",
+  class = "class1", group = "scenario",
   classPalette = "classPalette1", classLabel = "classLabel1",
   xLabel = "xLabel", yLabel = "yLabel", facet_rows = "region",
-  facet_columns = "scenario", ncolrow = 4, scales = "fixed",
+  facet_columns = "scenario", ncolrow = 4, facetBGColor = "grey30",
+  facetLabelColor = "white", facetLabelSize = 1.5, scales = "fixed",
   useNewLabels = 0, units = "units", xBreaksMaj = 10,
   xBreaksMin = 5, yBreaksMajn = 5, yBreaksMinn = 10,
   sizeBarLines = 0.5, sizeLines = 1.5, labelTextSize = 4,
   sectorToOrder = NULL, sectorFromOrder = NULL, removeCols = NULL,
   bubbleSize = 10, sankeyAxis1 = NULL, sankeyAxis2 = NULL,
   sankeyAxis1Label = "axis1Label", sankeyAxis2Label = "axis2Label",
-  printFig = T, fileName = "chart", dirOutputs = paste(getwd(),
-  "/outputs", sep = ""), figWidth = 13, figHeight = 9,
-  pdfpng = "png")
+  sankeyGroupColor = NULL, printFig = T, fileName = "chart",
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), figWidth = 13,
+  figHeight = 9, pdfpng = "png", sankeyLabelsOn = 1,
+  colOrder1 = NULL, colOrderName1 = NULL, colOrder2 = NULL,
+  colOrderName2 = NULL)
 }
 \arguments{
 \item{data}{data table for charting}
+
+\item{dataNorm}{Default = NULL,}
 
 \item{chartType}{Type of chart: "bar" or "line"}
 
@@ -48,6 +54,12 @@ metis.chart(data, chartType = "bar", position = "stack", xData = "x",
 
 \item{ncolrow}{Number of columns or Rows for Faceted plots}
 
+\item{facetBGColor}{Default ="grey30",}
+
+\item{facetLabelColor}{Default= "white",}
+
+\item{facetLabelSize}{Default =1.5,}
+
 \item{scales}{Default "fixed"}
 
 \item{useNewLabels}{Default 0}
@@ -66,6 +78,26 @@ metis.chart(data, chartType = "bar", position = "stack", xData = "x",
 
 \item{sizeLines}{Default 1.5}
 
+\item{labelTextSize}{= 4,}
+
+\item{sectorToOrder}{Default = NULL,}
+
+\item{sectorFromOrder}{Default = NULL,}
+
+\item{removeCols}{Default = NULL,}
+
+\item{bubbleSize}{Default = 10,}
+
+\item{sankeyAxis1}{Default = NULL,}
+
+\item{sankeyAxis2}{Default = NULL,}
+
+\item{sankeyAxis1Label}{Default = "axis1Label",}
+
+\item{sankeyAxis2Label}{Default = "axis2Label",}
+
+\item{sankeyGroupColor}{Default = NULL,}
+
 \item{printFig}{Default = T,}
 
 \item{fileName}{Default = "map",}
@@ -77,6 +109,16 @@ metis.chart(data, chartType = "bar", position = "stack", xData = "x",
 \item{figHeight}{Default = 7,}
 
 \item{pdfpng}{Default = "png",}
+
+\item{sankeyLabelsOn}{Default =1}
+
+\item{colOrder1}{Default = NULL,}
+
+\item{colOrderName1}{Default = NULL,}
+
+\item{colOrder2}{Default = NULL,}
+
+\item{colOrderName2}{Default = NULL,}
 }
 \value{
 Returns the formatted data used to produce chart

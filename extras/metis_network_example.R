@@ -1,29 +1,3 @@
-
-#----------------------------
-# Install necessary packages
-#----------------------------
-if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
-library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/metis")}
-library(metis)
-if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
-library(rgcam)
-if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}
-library(tibble)
-if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dlpyr")}
-library(dplyr)
-if("rgdal" %in% rownames(installed.packages()) == F){install.packages("rgdal")}
-library(rgdal)
-if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}
-library(tmap)
-if("rgeos" %in% rownames(installed.packages()) == F){install.packages("rgeos")}
-library(rgeos)
-if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("ggplot2")}
-library(ggplot2)
-if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggaaluvial")}
-library(ggalluvial)
-
-
 # This script uses MetisWatMod to build the simulation network then balance water flows in a historical year
 
 source(paste(getwd(),'/extras/MetisWatMod.R',sep=""))
@@ -40,8 +14,8 @@ from_to <- output$from_to
 # Import user-defined supply/demand/capacity files
 # Import demands across sectors, with corresponding supplies specified
 # Import base data
-demand_data_file = paste(getwd(),'/datafiles/io/colorado_demand_data.csv',sep="")
-capacity_data_file = paste(getwd(),'/datafiles/io/colorado_capacity_data.csv',sep="")
+demand_data_file = 'C:/Users/twild/Dropbox/Argentina and metis workplan/Metis_Colorado/colorado_demand_data.csv'
+capacity_data_file = 'C:/Users/twild/Dropbox/Argentina and metis workplan/Metis_Colorado/colorado_capacity_data.csv'
 demand_data <- read.csv(demand_data_file)
 demand_data <- demand_data %>% as_tibble()
 capacity_data <- read.csv(capacity_data_file)
@@ -59,13 +33,3 @@ ioTable0 <- ioTable0 %>% left_join(capTable, by=c('subRegion', 'supplySector', '
 # Balancing water flows
 output_water <- subReg_water_balance(ioTable0, network_order, network_data, from_to)
 ioTable0 <- output_water$supply_demand_table  # updated demand-supply table that includes proper natural water exports, and capacities
-
-ioTable0 <- ioTable0 %>% mutate(region="Argentina")
-
-io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
-io1$ioTbl_Output %>% as.data.frame()
-io1$A_Output %>% as.data.frame()
-
-# Filter for one sub-region for testing purposes
-ioTable0_SR <- ioTable0 %>% filter(subRegion=='Mendoza_alta_barrancas')
-io1 <- metis.io(ioTable0=ioTable0_SR, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
