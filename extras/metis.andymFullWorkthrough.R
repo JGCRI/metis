@@ -158,28 +158,6 @@ boundariesX<- metis.boundaries(
             paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
   cropSubShape2Bound=cropSubShape2Bound_i)
 
-# Plot SubRegion Basin boundaries
-subRegShape_i = countryLocalBasin
-subRegCol_i = localBasinsShapeFileColName
-subRegType_i = "subBasin"
-nameAppend_i = "_localSubBasin"
-overlapShape_i = countryNE1
-
-boundariesX<- metis.boundaries(
-  boundaryRegShape=boundaryRegShape_i,
-  boundaryRegCol=boundaryRegCol_i,
-  boundaryRegionsSelect=boundaryRegionsSelect_i,
-  subRegShape=subRegShape_i,
-  subRegCol=subRegCol_i,
-  subRegType=subRegType_i,
-  nameAppend=nameAppend_i,
-  expandPercent=expandPercent_i,
-  overlapShape = overlapShape_i,
-  extension = extension_i,
-  grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
-            paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
-  cropSubShape2Bound=cropSubShape2Bound_i)
-
 
 #------------------------
 # Prepare Grids
@@ -289,7 +267,58 @@ if (!dir.exists(paste(dirOutputs, "/Grids/diagnostics",sep=""))){
 # # sqliteUSE = sqliteUSE
 # # sqliteDBNamePath =sqliteDBNamePath
 
+#------------------------
+# Run Bia to create distributed electricity generation
+#------------------------
 
+biaOutputsFolder=paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep="")
+biaInputsFolder=paste(getwd(),"/dataFiles/grids/bia/biaInputs",sep="")
+
+gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
+gcamdatabaseName <-"example_database_basexdb"
+dataProjPath<-gcamdatabasePath
+queryPath<-gcamdatabasePath
+gcamdataProjFile <-"Example_dataProj.proj"
+dataProj=gcamdataProjFile  #andym
+scenOrigNames=c("ExampleScen1","ExampleScen2")
+scenNewNames=c("Eg1","Eg2")
+queryxml="metisQueries.xml"
+queriesSelect = "All"      #andym
+regionsSelect <- c('Argentina')
+paramsSelect<- c("elecByTech", "elecCapBySubsector")
+
+reReadData=F
+
+biaInputsFiles=c("global_power_plant_database_MW")
+
+biaScenarioAssign="Eg1"
+
+gridChoice<-"grid_050"
+#gridChoice<-"grid_025"
+
+sqliteUSE = F
+
+dataBia1<-metis.bia(
+  biaInputsFolder=biaInputsFolder,
+  biaInputsFiles=biaInputsFiles,
+  biaScenarioAssign=biaScenarioAssign,
+  biaOutputsFolder=biaOutputsFolder,
+  sqliteUSE = sqliteUSE,
+  sqliteDBNamePath = sqliteDBNamePath,
+  regionsSelect=regionsSelect, # Default Value is NULL
+  queriesSelect = queriesSelect, # Default value is "ALL"
+  reReadData=reReadData, # Default Value is T
+  dataProj=dataProj, # Default Value is "dataProj.proj"
+  dataProjPath=dataProjPath, #Default Value is gcamdatabasePath
+  scenOrigNames=scenOrigNames,
+  scenNewNames=scenNewNames,
+  gcamdatabasePath=gcamdatabasePath,
+  gcamdatabaseName=gcamdatabaseName,
+  queryxml=queryxml,  # Default Value is "metisQueries.xml"
+  paramsSelect=paramsSelect, # Default = c("elecByTech", "elecCapBySubsector")
+  gridChoice = gridChoice # Default = "grid_050"
+
+)
 
 dataBia1<-dataBia1%>%select(-value, -origValue)%>%
   dplyr::mutate(aggType = "vol")%>%
@@ -320,7 +349,7 @@ subRegShpFile_i = paste(countryName,"NE1",sep= "")
 subRegCol_i = "name"
 subRegType_i = "state"
 nameAppend_i = "_NE"
-aggType_i = NULL
+#aggType_i = NULL
 paramsSelect_i= "All" #"demeterLandUse"
 #sqliteUSE_i = T
 sqliteUSE_i = F  #andym
@@ -333,52 +362,11 @@ grid2polyX<-metis.grid2poly(#grid=dataBia,
   subRegShpFile=subRegShpFile_i,
   subRegCol=subRegCol_i,
   subRegType = subRegType_i,
-  aggType=aggType_i,
+  #aggType=aggType_i,
   nameAppend=nameAppend_i,
   paramsSelect = paramsSelect_i,
   sqliteUSE = sqliteUSE_i,
   sqliteDBNamePath = sqliteDBNamePath_i)
-
-# grid = dataBia
-# boundaryRegionsSelect=boundaryRegionsSelect_i
-# subRegShpFolder=subRegShpFolder_i
-# subRegShpFile=subRegShpFile_i
-# subRegCol=subRegCol_i
-# subRegType = subRegType_i
-# aggType=aggType_i
-# nameAppend=nameAppend_i
-# paramsSelect = paramsSelect_i
-# sqliteUSE = sqliteUSE_i
-# sqliteDBNamePath = sqliteDBNamePath_i
-
-
-
-#grid_i=gridMetis
-#grid_i=paste(getwd(),"/outputs/Grids/gridMetisXanthos.RData",sep = "")
-boundaryRegionsSelect_i=countryName
-subRegShpFolder_i = localBasinShapeFileFolder # paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
-subRegShpFile_i = localBasinShapeFile # paste("colombiaLocalBasin",sep= "")
-subRegCol_i = localBasinsShapeFileColName  #
-subRegType_i = "subBasin"
-nameAppend_i = "_local"
-aggType_i = NULL
-paramsSelect_i= "All" #"demeterLandUse"
-#sqliteUSE_i = T
-sqliteUSE_i = F  #andym
-sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
-
-grid2polyX<-metis.grid2poly(#grid=grid_i,
-  boundaryRegionsSelect=boundaryRegionsSelect_i,
-  subRegShpFolder=subRegShpFolder_i,
-  subRegShpFile=subRegShpFile_i,
-  subRegCol=subRegCol_i,
-  subRegType = subRegType_i,
-  aggType=aggType_i,
-  nameAppend=nameAppend_i,
-  paramsSelect = paramsSelect_i,
-  sqliteUSE = sqliteUSE_i,
-  sqliteDBNamePath = sqliteDBNamePath_i)
-
 
 
 #-----------
@@ -410,13 +398,12 @@ data.table::fwrite(a,file = paste(getwd(),"/outputs/Maps/Tables/subReg_origData_
 polygonDataTables_i_NOSPACES=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",countryName,"_state_origDownscaled_NE_NOSPACES.csv",sep="")    #andym
 
 
-head(a); unique(a$scenario); unique(a$param); unique(a$x)
+head(a); unique(a$scenario); unique(a$param); unique(a$x); unique(a$class)
 for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
 gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_",countryName,"_state_NE.csv",sep="")
+
 b<-read.csv(gridDataTables_i)
-
 b$class <- as.character(b$class)
-
 b[b=="a Coal"]="aCoal"          #andym added because the spaces in the subsector names seemed to be giving problems
 b[b=="c Gas"]<-"cGas"
 b[b=="e Oil"]<-"eOil"
@@ -437,7 +424,6 @@ b$class <- as.factor(b$class)      #andym
 data.table::fwrite(b,file = paste(getwd(),"/outputs/Grids/gridCropped_",countryName,"_state_NE_NOSPACES.csv",sep=""),row.names = F)        #andym
 
 gridDataTables_i_NOSPACES=paste(getwd(),"/outputs/Grids/gridCropped_",countryName,"_state_NE_NOSPACES.csv",sep="")    #andym
-
 
 
 head(b); unique(b$scenario); unique(b$param); unique(b$x)
