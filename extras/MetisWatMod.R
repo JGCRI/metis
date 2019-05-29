@@ -108,7 +108,6 @@ subReg_water_balance <- function(supply_demand_table, completed_subRegs, network
   # Loop (in specified simulation order) through sub-regions to determine natural water imports, resulting capacity, 
   # and resulting necessary exports
   for (e in completed_subRegs){
-    print(e)
     #temp_supp_dem_tbl <- supply_demand_table %>% filter(subRegion==e, supplySector=='Water')
     upstream_inflow_c <- 0
     # Loop through inflow subRegions and add up flows they provide to subregion e
@@ -116,47 +115,32 @@ subReg_water_balance <- function(supply_demand_table, completed_subRegs, network
       sum_inflow_df <- supply_demand_table %>% filter(subRegion==from, supplySector=='Water')
       upstream_component <- sum(sum_inflow_df$downstream, na.rm=TRUE)
       upstream_fraction <- (network_data %>% filter(subRegion==from) %>% select(e))[[e]]
-      #print(upstream_component)
-      #print(upstream_fraction)
       upstream_inflow_c <- upstream_inflow_c + upstream_component*upstream_fraction
     }
-    #print(upstream_inflow)
     # Set locally available capacity of inflow being supplied by upstream subRegions
     supply_demand_table <- supply_demand_table %>% mutate(upstream_inflow = upstream_inflow_c) %>% 
       mutate(cap = if_else(subRegion == e & supplySubSector=='W_SW_Upstream', upstream_inflow, cap))
-    df_user_wat_dem_tot <- supply_demand_table %>% filter(subRegion==e, supplySector=='Water') %>% 
+    df_user_wat_dem_tot <- supply_demand_table %>% filter(subRegion==e, supplySubSector %in% c('W_SW_Upstream', 'W_SW_Runoff', 'W_SW_Import')) %>% 
       select(-one_of("downstream", "cap", "upstream_inflow"))
     df_user_wat_dem_tot <- df_user_wat_dem_tot %>% mutate(rowsum=rowSums(.[4:ncol(df_user_wat_dem_tot)], na.rm=TRUE))
     user_wat_dem_tot <- sum(df_user_wat_dem_tot$rowsum, na.rm=TRUE)
-    #View(supply_demand_table)
-    available_water <- supply_demand_table %>% 
+    current_water <- supply_demand_table %>% 
       filter(subRegion == e, supplySubSector %in% c('W_SW_Upstream', 'W_SW_Runoff', 'W_SW_Import')) %>% 
       select("cap") %>% mutate(rowsum=rowSums(., na.rm=TRUE))
-    #if(e=='Mendoza_media'){
-    #  print(supply_demand_table %>% as.data.frame())
-    #  print(upstream_inflow_c)
-    #  print(available_water <- supply_demand_table %>% 
-    #             filter(subRegion == e, supplySubSector %in% c('W_SW_Upstream', 'W_SW_Runoff', 'W_SW_Import')) %>% 
-    #             select("cap"))}
-    #print(available_water)
-    available_water <- sum(available_water$rowsum)
-    consumption_frac <- 0.8  # Placeholder, not data-based
-    print(available_water)
-    print(user_wat_dem_tot)
-    if (available_water > user_wat_dem_tot){
+    current_water <- sum(current_water$rowsum)
+    consumption_frac <- 1 #  0.8  # Placeholder, not data-based
+    if (current_water > user_wat_dem_tot){
       # Must increase water exports
-      print("Yes")
       if(!e %in% names(from_to)){
         # This is a headwater sub-region that has no inflowing subregions. All water sent downstream must come from runoff.
         supply_demand_table <- supply_demand_table %>% 
-          mutate(downstream = if_else(subRegion == e & supplySubSector=='W_SW_Runoff', available_water - user_wat_dem_tot*consumption_frac, downstream))
+          mutate(downstream = if_else(subRegion == e & supplySubSector=='W_SW_Runoff', current_water - user_wat_dem_tot*consumption_frac, downstream))
       }else{
         # This is not a headwater sub-region. Water sent downstream could come from both runoff and upstream flows. 
         # But for simplicity here we assume all water comes from upstream flows in non headwater subregions.
         supply_demand_table <- supply_demand_table %>% 
-          mutate(downstream = if_else(subRegion == e & supplySubSector=='W_SW_Upstream', available_water - user_wat_dem_tot*consumption_frac, downstream))
+          mutate(downstream = if_else(subRegion == e & supplySubSector=='W_SW_Upstream', current_water - user_wat_dem_tot*consumption_frac, downstream))
       }
-      #View(supply_demand_table)
     }
   }
   supply_demand_table <- supply_demand_table %>% select(-upstream_inflow)
