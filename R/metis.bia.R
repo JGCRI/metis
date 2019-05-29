@@ -324,14 +324,23 @@ metis.bia<- function(biaInputsFolder = "NA",
               unique(dataFromGCAM$class1)[grepl("chp",unique(dataFromGCAM$class1),ignore.case=T)]
             gridWRI[gridWRI==unique(gridWRI$class1)[grepl("coal",unique(gridWRI$class1),ignore.case=T)]]<-
               unique(dataFromGCAM$class1)[grepl("coal",unique(dataFromGCAM$class1),ignore.case=T)]
-            gridWRI[gridWRI=="Gas"]<-"c Gas"
-            gridWRI[gridWRI=="Oil"]<-"e Oil"
-            gridWRI[gridWRI=="Biomass"]<-"g Biomass"
-            gridWRI[gridWRI=="Nuclear"]<-"i Nuclear"
-            gridWRI[gridWRI=="Geothermal"]<-"j Geothermal"
-            gridWRI[gridWRI=="Hydro"]<-"k Hydro"
-            gridWRI[gridWRI=="Wind"]<-"l Wind"
-            gridWRI[gridWRI=="Solar"]<-"m Solar"
+            gridWRI[gridWRI==unique(gridWRI$class1)[grepl("Gas",unique(gridWRI$class1),ignore.case=T)]]<-
+              unique(dataFromGCAM$class1)[grepl("Gas",unique(dataFromGCAM$class1),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$class1)[grepl("Oil",unique(gridWRI$class1),ignore.case=T)]]<-
+              unique(dataFromGCAM$class1)[grepl("Oil",unique(dataFromGCAM$class1),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$class1)[grepl("Biomass",unique(gridWRI$class1),ignore.case=T)]]<-
+              unique(dataFromGCAM$class1)[grepl("Biomass",unique(dataFromGCAM$class1),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$class1)[grepl("Nuclear",unique(gridWRI$class1),ignore.case=T)]]<-
+              unique(dataFromGCAM$class1)[grepl("Nuclear",unique(dataFromGCAM$class1),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$class1)[grepl("Geothermal",unique(gridWRI$class1),ignore.case=T)]]<-
+              unique(dataFromGCAM$class1)[grepl("Geothermal",unique(dataFromGCAM$class1),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$class1)[grepl("Hydro",unique(gridWRI$class1),ignore.case=T)]]<-
+              unique(dataFromGCAM$class1)[grepl("Hydro",unique(dataFromGCAM$class1),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$class1)[grepl("Wind",unique(gridWRI$class1),ignore.case=T)]]<-
+              unique(dataFromGCAM$class1)[grepl("Wind",unique(dataFromGCAM$class1),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$class1)[grepl("Solar",unique(gridWRI$class1),ignore.case=T)]]<-
+              unique(dataFromGCAM$class1)[grepl("Solar",unique(dataFromGCAM$class1),ignore.case=T)]
+
 
 
 ###Apr 1: In order to find a specific grid cell within gridWRI I have to do the round (___,digits = 10) - necessary for numbers with repeating digits like 1/3.
@@ -413,24 +422,47 @@ metis.bia<- function(biaInputsFolder = "NA",
               bind_rows(evenDistrib)
 
 
+#
+#             #-------------------
+#             # For electricity generation subsectors not represented in power plant database, distribute according to installed capacity of all subsectors
+#             #-------------------
+#
+#
+#             gridWRIallSubsecMixed <- gridWRI %>%
+#               dplyr::group_by(gridlat, gridlon, gridID, ctry_name, ctry_code, region, region_32_code, param, units)%>%
+#               dplyr::summarise(gridCellCapacity = sum(gridCellCapacity))%>%
+#               dplyr::ungroup() %>%
+#
+#               dplyr::group_by(region,region_32_code)%>%
+#               dplyr::mutate(regionCapSum = sum(gridCellCapacity),
+#                             gridCellPercentage = gridCellCapacity/regionCapSum) %>%
+#               dplyr::ungroup()
+#
+#
+#
+#             dataBia2<- dataFromGCAM %>%
+#               dplyr::left_join(
+#                 gridWRI%>%dplyr::filter(region %in% regionsSelect)%>%
+#                   dplyr::select(gridlat, gridlon, gridID, class1, region, region_32_code, ctry_name, ctry_code, gridCellPercentage),
+#                 by = c("class1", "region"))%>%
+#               dplyr::mutate(valueDistrib = gridCellPercentage*value, origValueDistrib = gridCellPercentage*origValue)
+#
+#
+#
+#             dataBia2NA <- dplyr::filter(dataBia2,is.na(gridlat)) %>%
+#               dplyr::select(-gridlat, -gridlon, -gridID) %>%
+#               dplyr::mutate( gridcellIndex = )
+#
+#
+#             evenDistrib <- expand.grid(unique(dataBia2NA$class1), gridCropped$gridID) %>%
+#               tibble::as_tibble() %>%
+#               dplyr::rename(class1 = Var1, gridID = Var2) %>%
+#               dplyr::left_join(listOfGridCells, by = "gridID")
+#
+#               select(-class1, -) %>%
 
-            #-------------------
-            # For electricity generation subsectors not represented in power plant database, distribute according to installed capacity of all subsectors
-            #-------------------
 
 
-            gridWRIallSubsecMixed <- gridWRI %>%
-              dplyr::group_by(gridlat, gridlon, gridID, ctry_name, ctry_code, region, region_32_code, param, units)%>%    #andym This group_by, and the following summarise get rid of a few columns
-              dplyr::summarise(gridCellCapacity = sum(value))%>%
-              dplyr::ungroup() %>%
-
-
-              select(-class1, -) %>%
-
-
-              dplyr::mutate(regionCapSum = sum(gridCellCapacity),
-                            gridCellPercentage = gridCellCapacity/regionCapSum) %>%
-              dplyr::ungroup()
 
 
 

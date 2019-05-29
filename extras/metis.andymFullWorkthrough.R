@@ -65,12 +65,17 @@ countryNE0<-countryNE0[(countryNE0$NAME==countryName),]
 head(countryNE0@data)
 plot(countryNE0)
 
+# Natural earth level 1 admin boundaries
+NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+             layer="ne_10m_admin_1_states_provinces",use_iconv=T,encoding='UTF-8')
 if(!countryName %in% unique(NE1@data$admin)){stop(print(paste(countryName, " not in NE1 countries. Please check data.", sep="")))}
 countryNE1<-NE1[(NE1$admin==countryName),]
 # subset any islands or regions not wanted
 countryNE1<-countryNE1[(!countryNE1$name %in% "San Andrés y Providencia") & !is.na(countryNE1$name),]
 head(countryNE1@data)
 plot(countryNE1)
+
+
 
 # GCAM Basins
 GCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
@@ -107,6 +112,20 @@ subRegCol_i = "basin_name"
 subRegType_i = "GCAMBasin"
 nameAppend_i = "_GCAMBasin"
 overlapShape_i = countryNE1
+
+
+# Natural Earth admin1 boundaries
+boundaryRegionsSelect_i=countryName
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
+subRegShpFile_i = paste(countryName,"NE1",sep= "")
+subRegCol_i = "name"
+subRegType_i = "state"
+nameAppend_i = "_NE"
+#aggType_i = NULL
+paramsSelect_i= "All" #"demeterLandUse"
+#sqliteUSE_i = T
+sqliteUSE_i = F  #andym
+sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
 
 
