@@ -335,6 +335,8 @@ if(length(fillPalette)==1){
 if(!is.null(raster)){
 
 
+  names(dataGrid@data)<-gsub(" ",".",names(dataGrid@data))
+
   if(is.null(legendBreaks)){legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(dataGrid@data%>%dplyr::select(fillColumn)%>%as.matrix())}
   map<-tmap::tm_shape(raster) + tmap::tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
                                   style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks,legend.show = legendShow)

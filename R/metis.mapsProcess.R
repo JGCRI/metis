@@ -374,6 +374,12 @@ metis.mapProcess<-function(polygonDataTables=NULL,
     sp::proj4string(boundaryRegShape) <- sp::proj4string(subRegShape)
   }
 
+  if(is.null(boundaryRegShape) & !is.null(subRegShape)){
+    boundaryRegShape <- subRegShape
+    boundaryRegCol <- subRegCol
+    extendedBGColor <- "white"
+  }
+
 
   if(!subRegCol %in% names(subRegShape)){stop(paste("SubRegCol: ",subRegCol," not present in subRegShape",sep=""))}
 
@@ -442,6 +448,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
         sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
         print("Creating extended boundary using boundaryRegShape...")
         extendedShape<-raster::crop(extendedBoundary, bbox1)
+        extendedShape@bbox <- bbox1@bbox
         extendedShapeCol<-boundaryRegCol
       }else{print("No extended boundary.")}
     }
@@ -464,16 +471,12 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # Subset Data
   #------------------
 
-
-  if(nrow(shapeTbl)>0){
-    if(any(!boundaryRegionsSelect %in% unique(shapeTbl$region))){
-      stop(paste("boundaryRegionsSelect: ",boundaryRegionsSelect," not in shapeTbl regions"))}}
-
-
   if(!is.null(shapeTbl)){
+    if(!is.null(boundaryRegionsSelect)){
+      if(any(boundaryRegionsSelect %in% unique(shapeTbl$region))){
     shapeTbl<-shapeTbl%>%
       unique()%>%
-      dplyr::filter(region %in% boundaryRegionsSelect)
+      dplyr::filter(region %in% boundaryRegionsSelect)}}
     if(any(xRange!="All")){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange);
     print(paste("Subset shapeTbl x to xRange: ",paste(xRange,collapse=", "),sep=""))}
     if(any(paramsSelect!="All")){
@@ -716,6 +719,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # Create Folders if needed
   #------------------
   if(TRUE){ # to create all folders in one go during testing.
+
+    if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect<-"region"}
 
     if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
     if (!dir.exists(paste(dirOutputs, "/Maps", sep = ""))){
@@ -1380,8 +1385,12 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
                   if(nrow(shapeTblMult%>%dplyr::filter(subRegType==subRegType_i,scenarioSSP==ssp_i,class==class_i,scenarioPolicy==policy_i,param==param_i))>0){
 
-                    shapeTblMultx<-shapeTblMult%>%dplyr::filter(region==boundaryRegionsSelect,scenarioSSP==ssp_i,subRegType==subRegType_i,
+                    shapeTblMultx<-shapeTblMult%>%dplyr::filter(scenarioSSP==ssp_i,subRegType==subRegType_i,
                                                                 scenarioPolicy==policy_i,param==param_i,class==class_i)
+
+                    if(boundaryRegionsSelect %in% unique(shapeTblMultx$region)){
+                      shapeTblMultx <- shapeTblMultx %>% dplyr::filter(region==boundaryRegionsSelect)
+                    }
 
                     animScalePoly<-(shapeTblMultx)$value
 
@@ -1963,13 +1972,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
       if(any(indvScenarios=="All")){
         print(paste("indvScenarios set to 'All', running for all scenarios.",sep=""))
-        scenarios <- unique(shapeTbl$scenario)} else {
+        scenarios <- unique(shapeTbl$scenario)
+        } else {
 
           if(all(indvScenarios %in% unique(shapeTbl$scenario))){
             print(paste("Running for selected indvScenarios: ", paste(indvScenarios,collapse=", "),sep=""))
             scenarios <- unique((shapeTbl%>%dplyr::filter(scenario %in% indvScenarios))$scenario)
           } else {if(!all(indvScenarios %in% unique(shapeTbl$scenario))){
-            print(paste("Running for indvScenarios: ", paste(indvScenarios,collapse=", "), "available in unique shapeTbl scenarios : ",
+            print(paste("Running for indvScenarios: ", paste(indvScenarios,collapse=", "), " available in unique shapeTbl scenarios : ",
                         paste(indvScenarios[indvScenarios %in% unique(shapeTbl$scenario)],collapse=", "),sep=""))
             scenarios <- unique((shapeTbl%>%dplyr::filter(scenario %in% indvScenarios[indvScenarios %in% unique(shapeTbl$scenario)]))$scenario)
           }
@@ -2007,8 +2017,12 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
               # Figure 1 : each param: If class > 1 { (Map x Class) x Selected Years}
 
-              shapeTblx<-shapeTbl%>%dplyr::filter(region==boundaryRegionsSelect,scenario==scenario_i,subRegType==subRegType_i,
+              shapeTblx<-shapeTbl%>%dplyr::filter(scenario==scenario_i,subRegType==subRegType_i,
                                                   param==param_i)
+
+              if(boundaryRegionsSelect %in% unique(shapeTblx$region)){
+                shapeTblx <- shapeTblx %>% dplyr::filter(region==boundaryRegionsSelect)
+              }
 
               for (x_i in unique(shapeTbl$x)){
 
@@ -2248,13 +2262,25 @@ metis.mapProcess<-function(polygonDataTables=NULL,
               # Figure 2 : each param: If class ==1 { Map x years}
               #-----------------------------
 
-              checkTbl<-shapeTbl%>%dplyr::filter(region==boundaryRegionsSelect,scenario==scenario_i,subRegType==subRegType_i,param==param_i)
+              checkTbl<-shapeTbl%>%dplyr::filter(scenario==scenario_i,subRegType==subRegType_i,param==param_i)
+
+              if(boundaryRegionsSelect %in% unique(checkTbl$region)){
+                checkTbl <- checkTbl %>% dplyr::filter(region==boundaryRegionsSelect)
+              }
+
+
               checkTbl<-droplevels(checkTbl)
               if(length(unique(checkTbl$class))==1){
 
                 rm(checkTbl)
 
-                datax<-shapeTbl%>%dplyr::filter(region==boundaryRegionsSelect,scenario==scenario_i,subRegType==subRegType_i,param==param_i)
+                datax<-shapeTbl%>%dplyr::filter(scenario==scenario_i,subRegType==subRegType_i,param==param_i)
+
+                if(boundaryRegionsSelect %in% unique(datax$region)){
+                  datax <- datax %>% dplyr::filter(region==boundaryRegionsSelect)
+                }
+
+
                 if(nrow(datax)>1){
                   legendTitle<-paste(unique(datax$units),sep="")
                   fillPalette<-as.character(unique(datax$classPalette))
@@ -2347,7 +2373,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
                   # Calculate Mean
 
-                  datax<-shapeTbl%>%dplyr::filter(region==boundaryRegionsSelect,scenario==scenario_i,subRegType==subRegType_i,param==param_i)
+                  datax<-shapeTbl%>%dplyr::filter(scenario==scenario_i,subRegType==subRegType_i,param==param_i)
+
+
+                  if(boundaryRegionsSelect %in% unique(datax$region)){
+                    datax <- datax %>% dplyr::filter(region==boundaryRegionsSelect)
+                  }
+
+
                   if(nrow(datax)>1){
                     legendTitle<-paste(unique(datax$units),sep="")
                     fillPalette<-as.character(unique(datax$classPalette))
