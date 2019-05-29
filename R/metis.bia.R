@@ -246,7 +246,32 @@ metis.bia<- function(biaInputsFolder = "NA",
 
             print(paste("Reading bia input file: ",biaInputsFile_i,"...",sep=""))
             gridWRI<-data.table::fread(paste(biaInputsFolder,"/",biaInputsFile_i,sep=""), header=T,stringsAsFactors = F)
-            gridWRI[gridWRI=="United States of America"]<-"United States"
+
+            gridWRI[gridWRI==unique(gridWRI$country_long)[grepl("United States",unique(gridWRI$country_long),ignore.case=T)]]<-
+              unique(ctor$country_long)[grepl("United States",unique(ctor$country_long),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$country_long)[grepl("Bosnia",unique(gridWRI$country_long),ignore.case=T)]]<-
+              unique(ctor$country_long)[grepl("Bosnia",unique(ctor$country_long),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$country_long)[grepl("Brunei",unique(gridWRI$country_long),ignore.case=T)]]<-
+              unique(ctor$country_long)[grepl("Brunei",unique(ctor$country_long),ignore.case=T)]
+            gridWRI[gridWRI=="Democratic Republic of the Congo"]<-"Congo DRC"
+            gridWRI[gridWRI=="Congo"]<-"Congo Rep."
+            gridWRI[gridWRI=="Taiwan"]<-"Taiwan China"
+            ctor$country_long[ctor$region == "Taiwan"] <- "Taiwan China"
+            gridWRI[gridWRI=="Congo"]<-"Congo Rep."
+            gridWRI[gridWRI==unique(gridWRI$country_long)[grepl("Cote",unique(gridWRI$country_long),ignore.case=T)]]<-
+              unique(ctor$country_long)[grepl("Cote",unique(ctor$country_long),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$country_long)[grepl("Gambia",unique(gridWRI$country_long),ignore.case=T)]]<-
+              unique(ctor$country_long)[grepl("Gambia",unique(ctor$country_long),ignore.case=T)]
+            # gridWRI[gridWRI==unique(gridWRI$country_long)[grepl("Kosovo",unique(gridWRI$country_long),ignore.case=T)]]<-
+            #   unique(ctor$country_long)[grepl("Kosovo",unique(ctor$country_long),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$country_long)[grepl("Syria",unique(gridWRI$country_long),ignore.case=T)]]<-
+              unique(ctor$country_long)[grepl("Syria",unique(ctor$country_long),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$country_long)[grepl("Taiwan",unique(gridWRI$country_long),ignore.case=T)]]<-
+              unique(ctor$country_long)[grepl("Taiwan",unique(ctor$country_long),ignore.case=T)]
+            gridWRI[gridWRI==unique(gridWRI$country_long)[grepl("Trinidad",unique(gridWRI$country_long),ignore.case=T)]]<-
+              unique(ctor$country_long)[grepl("Trinidad",unique(ctor$country_long),ignore.case=T)]
+
+
             gridWRI<-gridWRI%>%tibble::as_tibble()%>%dplyr::select(-year_of_capacity_data,-commissioning_year,-name,-country,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source)%>%
               dplyr::left_join(ctor,by="country_long")
 
@@ -394,16 +419,18 @@ metis.bia<- function(biaInputsFolder = "NA",
             #-------------------
 
 
-            # gridWRIallSubsecMixed <- gridWRI %>%
-            #   select(-class1, -) %>%
-            #   dplyr::group_by(gridlat, gridlon, class1, gridID, ctry_name, ctry_code, region, region_32_code, param, units)%>%    #andym This group_by, and the following summarise get rid of a few columns
-            #   dplyr::summarise(gridCellCapacity = sum(value))%>%
-            #   dplyr::ungroup() %>%
-            #
-            #
-            #   dplyr::mutate(regionCapSum = sum(gridCellCapacity),
-            #                 gridCellPercentage = gridCellCapacity/regionCapSum) %>%
-            #   dplyr::ungroup()
+            gridWRIallSubsecMixed <- gridWRI %>%
+              dplyr::group_by(gridlat, gridlon, gridID, ctry_name, ctry_code, region, region_32_code, param, units)%>%    #andym This group_by, and the following summarise get rid of a few columns
+              dplyr::summarise(gridCellCapacity = sum(value))%>%
+              dplyr::ungroup() %>%
+
+
+              select(-class1, -) %>%
+
+
+              dplyr::mutate(regionCapSum = sum(gridCellCapacity),
+                            gridCellPercentage = gridCellCapacity/regionCapSum) %>%
+              dplyr::ungroup()
 
 
 
