@@ -38,6 +38,7 @@
 #' @param extendedFillColor Default ="grey75",
 #' @param extendedBGColor Default ="lightblue1",
 #' @param extendedHighLightColor Default ="cornsilk1",
+#' @param extendedLabels Default = T
 #' @param extendedLabelsColor Default ="grey30",
 #' @param extdendedLabelSize Default =0.7,
 #' @param extendedShape Default =NULL,
@@ -95,6 +96,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                            boundaryRegCol=NULL,
                            boundaryRegionsSelect=NULL,
                            fillcolorNA=NULL,
+                           extendedLabels =T,
                            extendedFillColor="grey75",
                            extendedBGColor="lightblue1",
                            extendedHighLightColor="cornsilk1",
@@ -380,6 +382,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
     boundaryRegShape<-subRegShape
     boundaryRegCol <- subRegCol
     extendedBGColor <- "white"
+    extendedLabels <- F
   }
 
 
@@ -458,7 +461,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
     if(!is.null(extendedShape)){
       if(extendedShapeCol %in% names(extendedShape)){
         underLayer<-metis.map(fillcolorNA=fillcolorNA, dataPolygon=extendedShape, printFig=F,
-                              fillColumn = extendedShapeCol,labels=T, fillPalette = extendedFillColor,legendShow=F,
+                              fillColumn = extendedShapeCol,labels=extendedLabels, fillPalette = extendedFillColor,legendShow=F,
                               bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,
                               facetsON=F, figWidth=figWidth,figHeight=figHeight)
         bgColorChosen= extendedBGColor
