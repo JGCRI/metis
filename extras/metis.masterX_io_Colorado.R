@@ -22,6 +22,9 @@ if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("ggplot2
 library(ggplot2)
 if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggaaluvial")}
 library(ggalluvial)
+if("tidyverse" %in% rownames(installed.packages()) == F){install.packages("tidyverse")}
+library(tidyverse)
+
 
 
 # This script uses MetisWatMod to build the simulation network then balance water flows in a historical year
@@ -65,7 +68,3 @@ ioTable0 <- ioTable0 %>% mutate(region="Argentina")
 io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
 io1$ioTbl_Output %>% as.data.frame()
 io1$A_Output %>% as.data.frame()
-
-# Filter for one sub-region for testing purposes
-ioTable0_SR <- ioTable0 %>% filter(subRegion=='Mendoza_alta_barrancas')
-io1 <- metis.io(ioTable0=ioTable0_SR, nameAppend = "_MultiScenario")  # ioTable0=ioTable0

@@ -149,7 +149,7 @@ metis.grid2poly<- function(grid=NULL,
   if(nrow(paramScenarios)>0){
     if(any(is.na(unique(paramScenarios$scenario)))){
       print("Removing NA scenarios. Remaining Scenarios:")
-      paramScenarios <- paramScenarios %>% filter(!is.na(scenario))
+      paramScenarios <- paramScenarios %>% dplyr::filter(!is.na(scenario))
       print(paramScenarios)
     }
   }

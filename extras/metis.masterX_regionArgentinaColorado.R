@@ -162,12 +162,13 @@ library(tools)
 #----------------
 
 countryName= "Argentina"
+countryName <- tools::toTitleCase(countryName); countryName
+
 localBasinShapeFileFolder = paste(getwd(),"/dataFiles/gis/shapefiles_Argentina",sep="")
 localBasinShapeFile = "colorado_ten_subregions_v3"
 tempShape<-readOGR(dsn=localBasinShapeFileFolder,
         layer=localBasinShapeFile,use_iconv=T,encoding='UTF-8')
 localBasinsShapeFileColName = "cuenca" # Will need to load the file to see which name this would be
-countryName <- tools::toTitleCase(countryName); countryName
 
 
 # Create directory for country
@@ -246,6 +247,7 @@ if(file.exists(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,"/",countr
   writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 }
 metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T)
+
 
 # dataPolygon=countryLocalBasin
 # fillColumn = localBasinsShapeFileColName
@@ -368,7 +370,7 @@ xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/",sep="")
 #xanthosScenario="Eg1"
 #xanthosUnits="Runoff (mm)"
 xanthosFiles=c(
-  "pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099.csv",
+  #"pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099.csv",
   # "pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099.csv",
   # "pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099.csv",
   # "pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099.csv",
@@ -489,8 +491,9 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
 #grid_i=gridMetis
 #grid_i=paste(getwd(),"/outputs/Grids/gridMetisXanthos.RData",sep = "")
 boundaryRegionsSelect_i=countryName
-subRegShpFolder_i = localBasinShapeFileFolder # paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
-subRegShpFile_i = localBasinShapeFile # paste("colombiaLocalBasin",sep= "")
+subRegShape_i = countryLocalBasin
+#subRegShpFolder_i = localBasinShapeFileFolder # paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
+#subRegShpFile_i = localBasinShapeFile # paste("colombiaLocalBasin",sep= "")
 subRegCol_i = localBasinsShapeFileColName  #
 subRegType_i = "subBasin"
 nameAppend_i = "_local"
@@ -499,10 +502,12 @@ paramsSelect_i= "All" #"demeterLandUse"
 sqliteUSE_i = T
 sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
-grid2polyX<-metis.grid2poly(#grid=grid_i,
+grid2polyX<-metis.grid2poly(
+  #grid=grid_i,
   boundaryRegionsSelect=boundaryRegionsSelect_i,
-  subRegShpFolder=subRegShpFolder_i,
-  subRegShpFile=subRegShpFile_i,
+  subRegShape=subRegShape_i ,
+  #subRegShpFolder=subRegShpFolder_i,
+  #subRegShpFile=subRegShpFile_i,
   subRegCol=subRegCol_i,
   subRegType = subRegType_i,
   aggType=aggType_i,
@@ -573,6 +578,11 @@ catLabels <- numeric2Cat_list$numeric2Cat_labels[[list_index]]; catLabels
 catPalette <- numeric2Cat_list$numeric2Cat_palette[[list_index]]; catPalette
 catLegendTextSize <- numeric2Cat_list$numeric2Cat_legendTextSize[[list_index]];catLegendTextSize
 
+boundaryRegShape_i = NULL
+boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
+boundaryRegShpFile_i=paste("ne_10m_admin_0_countries",sep="")
+boundaryRegCol_i="NAME"
+boundaryRegionsSelect_i=countryName
 
 
 metis.mapProcess(polygonDataTables=polygonDataTables_i,
@@ -730,7 +740,7 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
 # paramsSelect = paramsSelect_i
 # scaleRange = scaleRange_i
 # indvScenarios=indvScenarios_i
-# GCMRCPSSPPol=F
+# GCMRCPSSPPol=GCMRCPSSPPol_i
 # multiFacetCols="scenarioRCP"
 # multiFacetRows="scenarioGCM"
 # legendOutsideMulti=T
