@@ -26,6 +26,7 @@
 #' @param paramsSelect Default = c("elecByTech", "elecCapBySubsector") . Vector of parameters to be read from the GCAM database
 #' @param gridChoice Default = "grid_050" . Choice of whether to use 50 km x 50 km grid cells ("grid_050") or 25 km x 25 km ("grid_025").
 #' @param diagnosticsON Default = T.
+#' @param subsectorNAdistribute Default = "even". Choose "even" for even distribution or "totalOther" to distribute based on sum of all other subsectors..
 #' @return #andym a tibble with GCAM electricity generation distributed on a grid for a selected region
 #' @keywords electricity, generation, gcam, gridded, downscale, downscaling, downscaled
 #' @export
@@ -46,7 +47,8 @@ metis.bia<- function(biaInputsFolder = "NA",
                      queriesSelect = "All",
                      paramsSelect = c("elecByTech", "elecCapBySubsector"),
                      gridChoice = "grid_050",
-                     diagnosticsON = T
+                     diagnosticsON = T,
+                     subsectorNAdistribute = "even"
 ){
 
   # biaInputsFolder = "NA"
@@ -89,6 +91,12 @@ metis.bia<- function(biaInputsFolder = "NA",
     gridlat -> gridlon -> gridID -> region_32_code -> ctry_name -> ctry_code -> gridCellPercentage -> aggregate ->
     valueDistrib -> origValueDistrib ->readgcamdata->gridlat->gridlon
 
+
+
+  if(!subsectorNAdistribute %in% c("even","totalOther")){
+    print(paste("subsectorNAdistribute provided: ",subsectorNAdistribute," should be either 'even' or 'totalOther'. Setting to 'even'.",sep=""))
+    subsectorNAdistribute = "even"
+  }
 
 
   #------------------
@@ -304,6 +312,9 @@ metis.bia<- function(biaInputsFolder = "NA",
               unique(dataFromGCAM$class1)[grepl("Solar",unique(dataFromGCAM$class1),ignore.case=T)]
 
 
+
+            if(subsectorNAdistribute == "even"){
+
             #-------------------
             # For electricity generation subsectors not represented in power plant database, distribute evently throughout region
             #-------------------
@@ -377,46 +388,66 @@ metis.bia<- function(biaInputsFolder = "NA",
             dataBia <- dataBia %>%
               dplyr::filter(!(is.na(gridlat))) %>%
               bind_rows(evenDistrib)
+            } # Close if subsectorNAdistribute == "even"
 
 
-#
-#             #-------------------
-#             # For electricity generation subsectors not represented in power plant database, distribute according to installed capacity of all subsectors
-#             #-------------------
-#
-#
-#             gridWRIallSubsecMixed <- gridWRI %>%
-#               dplyr::group_by(gridlat, gridlon, gridID, ctry_name, ctry_code, region, region_32_code, param, units)%>%
-#               dplyr::summarise(gridCellCapacity = sum(gridCellCapacity))%>%
-#               dplyr::ungroup() %>%
-#
-#               dplyr::group_by(region,region_32_code)%>%
-#               dplyr::mutate(regionCapSum = sum(gridCellCapacity),
-#                             gridCellPercentage = gridCellCapacity/regionCapSum) %>%
-#               dplyr::ungroup()
-#
-#
-#
-#             dataBia2<- dataFromGCAM %>%
-#               dplyr::left_join(
-#                 gridWRI%>%dplyr::filter(region %in% regionsSelect)%>%
-#                   dplyr::select(gridlat, gridlon, gridID, class1, region, region_32_code, ctry_name, ctry_code, gridCellPercentage),
-#                 by = c("class1", "region"))%>%
-#               dplyr::mutate(valueDistrib = gridCellPercentage*value, origValueDistrib = gridCellPercentage*origValue)
-#
-#
-#
-#             dataBia2NA <- dplyr::filter(dataBia2,is.na(gridlat)) %>%
-#               dplyr::select(-gridlat, -gridlon, -gridID) %>%
-#               dplyr::mutate( gridcellIndex = )
-#
-#
-#             evenDistrib <- expand.grid(unique(dataBia2NA$class1), gridCropped$gridID) %>%
-#               tibble::as_tibble() %>%
-#               dplyr::rename(class1 = Var1, gridID = Var2) %>%
-#               dplyr::left_join(listOfGridCells, by = "gridID")
-#
-#               select(-class1, -) %>%
+
+            if(subsectorNAdistribute == "totalOther"){
+
+            #-------------------
+            # For electricity generation subsectors not represented in power plant database, distribute according to installed capacity of all subsectors
+            #-------------------
+
+
+            gridWRIallSubsecMixed <- gridWRI %>%
+              dplyr::group_by(gridlat, gridlon, gridID, ctry_name, ctry_code, region, region_32_code, param, units)%>%
+              dplyr::summarise(gridCellCapacity = sum(gridCellCapacity))%>%
+              dplyr::ungroup() %>%
+              dplyr::group_by(region,region_32_code)%>%
+              dplyr::mutate(regionCapSum = sum(gridCellCapacity),
+                            gridCellPercentage = gridCellCapacity/regionCapSum) %>%
+              dplyr::ungroup() %>%
+              rowid_to_column(var = "gridCellIndex") %>%
+              dplyr::mutate(gridCellIndex = -gridCellIndex)
+
+
+
+            dataBia<- dataFromGCAM %>%
+              dplyr::left_join(
+                gridWRI%>%dplyr::filter(region %in% regionsSelect)%>%
+                  dplyr::select(gridlat, gridlon, gridID, class1, region, region_32_code, ctry_name, ctry_code, gridCellPercentage),
+                by = c("class1", "region"))%>%
+              dplyr::mutate(valueDistrib = gridCellPercentage*value, origValueDistrib = gridCellPercentage*origValue)
+
+
+
+            #Find the elecricity generation subsectors that are not represented in the powerplant database, but which are predicted by GCAM
+            dataBiaNA <- dplyr::filter(dataBia,is.na(gridlat)) %>%
+              dplyr::select(-gridlat, -gridlon, -gridID, -region_32_code, -ctry_name, -ctry_code, -gridCellPercentage)
+
+
+
+
+            ####andym  CHECK that THE EQUIVALENT UP IN EVEN DIST works even if there are multiple regions    [even though it generates (expands) to make all combinations, when dataBiaNA left joins this one, then it discards all of the unneeded combinations, I believe]
+
+            distribByTotalCap <- expand.grid(unique(dataBiaNA$class1), (dplyr::filter(gridWRIallSubsecMixed, region %in% regionsSelect))$gridCellIndex) %>%
+              tibble::as_tibble() %>%
+              dplyr::rename(class1 = Var1, gridCellIndex = Var2) %>%
+              dplyr::mutate(class1 = as.character(class1)) %>%
+              dplyr::left_join(gridWRIallSubsecMixed, by = "gridCellIndex") %>%
+              dplyr::select(-param, -units)
+
+
+            distribByTotalCap <- dplyr::left_join(dataBiaNA, distribByTotalCap, by = c("class1", "region")) %>%
+              dplyr::select(-valueDistrib, -origValueDistrib) %>%
+              dplyr::mutate(valueDistrib = gridCellPercentage*value, origValueDistrib = gridCellPercentage*origValue)
+
+            dataBia <- dataBia %>%
+              dplyr::filter(!(is.na(gridlat))) %>%
+              bind_rows(dplyr::select(distribByTotalCap, -regionCapSum, -gridCellCapacity, -gridCellIndex))
+
+            } # Close if subsectorNAdistribute == "totalOther"
+
 
 
           } # Close if bia file exists

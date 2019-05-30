@@ -71,6 +71,7 @@ scenNewNames=c("Eg1","Eg2")
 queryxml="metisQueries.xml"
 queriesSelect = "All"      #andym
 regionsSelect <- c('Argentina')
+#regionsSelect <- c('Argentina', 'Colombia')
 paramsSelect<- c("elecByTech", "elecCapBySubsector")
 
 reReadData=F
@@ -81,6 +82,8 @@ biaScenarioAssign="Eg1"
 
 #gridChoice<-"grid_050"
 gridChoice<-"grid_025"
+
+diagnosticsON<-F
 
 
 dataBia1<-metis.bia(
@@ -99,7 +102,7 @@ dataBia1<-metis.bia(
   queryxml=queryxml,  # Default Value is "metisQueries.xml"
   paramsSelect=paramsSelect, # Default = c("elecByTech", "elecCapBySubsector")
   gridChoice = gridChoice, # Default = "grid_050"
-  diagnosticsON = F
+  diagnosticsON = diagnosticsON
 )
 
 
