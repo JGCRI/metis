@@ -174,62 +174,78 @@ countryName <- tools::toTitleCase(countryName); countryName
 if (!dir.exists(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""))){
   dir.create(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""))}
 
+if(file.exists(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,"/",countryName,"NE0.shp",sep=""))){
+  countryNE0 = readOGR(dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""),
+                       layer=paste(countryName,"NE0",sep=""),use_iconv=T,encoding='UTF-8')
+}else{
+  # View default metis country shapefile (Natural Earth maps)
+  NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+               layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
+  if(!countryName %in% unique(NE0@data$NAME)){stop(print(paste(countryName, " not in NE0 countries. Please check data.", sep="")))}
+  countryNE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+                      layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
+  countryNE0<-countryNE0[(countryNE0$NAME==countryName),]
+  head(countryNE0@data)
+  plot(countryNE0)
+  projX<-proj4string(countryNE0)
+  writeOGR(obj=countryNE0, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"NE0",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+}
+metis.map(dataPolygon=countryNE0,fillColumn = "ADMIN",printFig=F, facetsON = F, labels=T, legendStyle = "cat")
 
-# View default metis country shapefile (Natural Earth maps)
-NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-             layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
-
-if(!countryName %in% unique(NE0@data$NAME)){stop(print(paste(countryName, " not in NE0 countries. Please check data.", sep="")))}
-
-countryNE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-                     layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
-countryNE0<-countryNE0[(countryNE0$NAME==countryName),]
-head(countryNE0@data)
-plot(countryNE0)
-projX<-proj4string(countryNE0)
 
 # Natural earth level 1 admin boundaries
-NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-             layer="ne_10m_admin_1_states_provinces",use_iconv=T,encoding='UTF-8')
-if(!countryName %in% unique(NE1@data$admin)){stop(print(paste(countryName, " not in NE1 countries. Please check data.", sep="")))}
-countryNE1<-NE1[(NE1$admin==countryName),]
-# subset any islands or regions not wanted
-countryNE1<-countryNE1[(!countryNE1$name %in% "San Andrés y Providencia") & !is.na(countryNE1$name),]
-head(countryNE1@data)
-plot(countryNE1)
-countryNE1<-spTransform(countryNE1,CRS(projX))
-writeOGR(obj=countryNE1, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"NE1",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+if(file.exists(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,"/",countryName,"NE0.shp",sep=""))){
+  countryNE1 = readOGR(dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""),
+                       layer=paste(countryName,"NE1",sep=""),use_iconv=T,encoding='UTF-8')
+}else{
+  NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+               layer="ne_10m_admin_1_states_provinces",use_iconv=T,encoding='UTF-8')
+  if(!countryName %in% unique(NE1@data$admin)){stop(print(paste(countryName, " not in NE1 countries. Please check data.", sep="")))}
+  countryNE1<-NE1[(NE1$admin==countryName),]
+  # subset any islands or regions not wanted
+  countryNE1<-countryNE1[(!countryNE1$name %in% "San Andrés y Providencia") & !is.na(countryNE1$name),]
+  head(countryNE1@data)
+  plot(countryNE1)
+  countryNE1<-spTransform(countryNE1,CRS(projX))
+  writeOGR(obj=countryNE1, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"NE1",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+}
 metis.map(dataPolygon=countryNE1,fillColumn = "name",printFig=F, facetsON = F, labels=T, legendStyle = "cat")
 
 
 # GCAM Basins
-GCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
-                   layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
-GCAMBasin<-spTransform(GCAMBasin,CRS(projX))
-countryGCAMBasin<-raster::crop(GCAMBasin,countryNE1)
-countryLocalBasin@data <- droplevels(countryLocalBasin@data)
-head(countryGCAMBasin@data)
-plot(countryGCAMBasin)
-writeOGR(obj=countryGCAMBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"GCAMBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+if(file.exists(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,"/",countryName,"NE0.shp",sep=""))){
+  countryGCAMBasin = readOGR(dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""),
+                       layer=paste(countryName,"GCAMBasin",sep=""),use_iconv=T,encoding='UTF-8')
+}else{
+  GCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
+                     layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
+  GCAMBasin<-spTransform(GCAMBasin,CRS(projX))
+  countryGCAMBasin<-raster::crop(GCAMBasin,countryNE1)
+  countryGCAMBasin@data <- droplevels(countryGCAMBasin@data)
+  head(countryGCAMBasin@data)
+  plot(countryGCAMBasin)
+  writeOGR(obj=countryGCAMBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"GCAMBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+}
 metis.map(dataPolygon=countryGCAMBasin,fillColumn = "basin_name",printFig=F,facetsON = F, labels=T, legendStyle = "cat")
 
 
 # Local basin Shapefiles
-countryLocalBasin<-readOGR(dsn=localBasinShapeFileFolder,
-                            layer=localBasinShapeFile,use_iconv=T,encoding='UTF-8')
-countryLocalBasin<-spTransform(countryLocalBasin,CRS(projX))
-countryLocalBasin<-raster::crop(countryLocalBasin,countryNE1)
-countryLocalBasin@data <- droplevels(countryLocalBasin@data)
-head(countryLocalBasin@data)
-plot(countryLocalBasin)
-# subset any islands or regions not wanted
-countryLocalBasin<-countryLocalBasin[(!countryLocalBasin$cuenca %in%
-                                        c("media","baja","RioGrande","Barrancas")) & !is.na(countryLocalBasin$cuenca),]
-head(countryLocalBasin@data)
-plot(countryLocalBasin)
-
-writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
-metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
+if(file.exists(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,"/",countryName,"NE0.shp",sep=""))){
+  countryLocalBasin = readOGR(dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""),
+                              layer=paste(countryName,"LocalBasin",sep=""),use_iconv=T,encoding='UTF-8')
+}else{
+  countryLocalBasin<-readOGR(dsn=localBasinShapeFileFolder,
+                             layer=localBasinShapeFile,use_iconv=T,encoding='UTF-8')
+  countryLocalBasin<-spTransform(countryLocalBasin,CRS(projX))
+  countryLocalBasin<-raster::crop(countryLocalBasin,countryNE1)
+  countryLocalBasin<-countryLocalBasin[(!countryLocalBasin$cuenca %in%
+                                          c("media","baja","RioGrande","Barrancas")) & !is.na(countryLocalBasin$cuenca),]
+  countryLocalBasin@data <- droplevels(countryLocalBasin@data)
+  head(countryLocalBasin@data)
+  plot(countryLocalBasin)
+  writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+}
+metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T)
 
 # dataPolygon=countryLocalBasin
 # fillColumn = localBasinsShapeFileColName
@@ -238,6 +254,7 @@ metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName
 # labels=T
 # legendStyle = "cat"
 # fillPalette = eval(parse(text=paste(b[1,2])))
+
 
 #-----------
 # Boundaries
@@ -337,7 +354,7 @@ boundariesX<- metis.boundaries(
 #------------------------
 
 dirOutputs=paste(getwd(),"/outputs",sep="")
-reReadData=1
+reReadData=0
 demeterFolder=paste(getwd(),"/dataFiles/grids/demeter/",sep="")
 demeterScenario="Eg1"
 demeterUnits="Landuse (Fraction)"
@@ -379,7 +396,7 @@ spanLowess=0.25
 popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 popFiles<-"grid_pop_map"
 popUnits<-"person"
-gridMetisData=paste(dirOutputs, "/Grids/gridMetisXanthos.RData", sep = "")
+gridMetisData=paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")
 sqliteUSE = T
 sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
@@ -495,17 +512,17 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
   sqliteDBNamePath = sqliteDBNamePath_i)
 
 
-
 #-----------
 # Mapping
 #-------------
 
+#countryName="Argentina"
 #examplePolygonTable<-paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_subRegType_origDownscaled_hydrobidBermeo3.csv",sep="")
 
-polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Uruguay_state_origDownscaled_NE.csv",sep="")
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",countryName,"_state_origDownscaled_NE.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
 for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
-gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_Uruguay_state_NE.csv",sep="")
+gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_",countryName,"_state_NE.csv",sep="")
 b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
 for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x));print(unique((b%>%dplyr::filter(param==param_i))$scenario))}
 xRange_i= seq(from=2000,to=2050,by=5)
@@ -523,7 +540,7 @@ boundaryRegShape_i = NULL
 boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
 boundaryRegShpFile_i=paste("ne_10m_admin_0_countries",sep="")
 boundaryRegCol_i="NAME"
-boundaryRegionsSelect_i="Uruguay"
+boundaryRegionsSelect_i=countryName
 subRegShape_i = NULL
 subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
 subRegShpFile_i = paste(countryName,"NE1",sep= "")
@@ -638,7 +655,7 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
 # numeric2Cat_list=numeric2Cat_list
 
 
-polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Uruguay_subBasin_origDownscaled_local.csv",sep="")
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",countryName,"_subBasin_origDownscaled_local.csv",sep="")
 a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
 for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
 
@@ -651,11 +668,11 @@ nameAppend_i = "_local"
 metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  #gridDataTables=gridDataTables_i,
                  xRange=xRange_i,
-                 boundaryRegShape=boundaryRegShape_i,
-                 boundaryRegShpFolder=boundaryRegShpFolder_i,
-                 boundaryRegShpFile=boundaryRegShpFile_i,
-                 boundaryRegCol=boundaryRegCol_i,
-                 boundaryRegionsSelect=boundaryRegionsSelect_i,
+                 # boundaryRegShape=boundaryRegShape_i,
+                 # boundaryRegShpFolder=boundaryRegShpFolder_i,
+                 # boundaryRegShpFile=boundaryRegShpFile_i,
+                 # boundaryRegCol=boundaryRegCol_i,
+                 # boundaryRegionsSelect=boundaryRegionsSelect_i,
                  subRegShape=subRegShape_i,
                  subRegShpFolder=subRegShpFolder_i,
                  subRegShpFile=subRegShpFile_i,
@@ -688,13 +705,13 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  numeric2Cat_list=numeric2Cat_list)
 
 # polygonDataTables=polygonDataTables_i
-# gridDataTables=gridDataTables_i
+# #gridDataTables=gridDataTables_i
 # xRange=xRange_i
-# boundaryRegShape=boundaryRegShape_i
-# boundaryRegShpFolder=boundaryRegShpFolder_i
-# boundaryRegShpFile=boundaryRegShpFile_i
-# boundaryRegCol=boundaryRegCol_i
-# boundaryRegionsSelect=boundaryRegionsSelect_i
+# # boundaryRegShape=boundaryRegShape_i
+# # boundaryRegShpFolder=boundaryRegShpFolder_i
+# # boundaryRegShpFile=boundaryRegShpFile_i
+# # boundaryRegCol=boundaryRegCol_i
+# # boundaryRegionsSelect=boundaryRegionsSelect_i
 # subRegShape=subRegShape_i
 # subRegShpFolder=subRegShpFolder_i
 # subRegShpFile=subRegShpFile_i

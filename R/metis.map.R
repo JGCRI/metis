@@ -216,7 +216,9 @@ if(!is.null(dataGrid)){
     if(!is.null(shape)){
     raster<-raster::stack(raster)
     raster::projection(raster)<-sp::proj4string(shape)
-    raster<-raster::mask(raster,shape)
+    shape_ras <- raster::rasterize(shape, raster[[1]], getCover=TRUE)
+    shape_ras[shape_ras==0] <- NA
+    raster<-raster::mask(raster,shape_ras)
     raster<-methods::as(raster, "SpatialPixelsDataFrame")
     raster@data<-Filter(function(x)!all(is.na(x)), raster@data)
     # Replace spaces because raster::stack(raster) will add periods which then don't correspond to fillColumn names
@@ -335,7 +337,7 @@ if(length(fillPalette)==1){
 if(!is.null(raster)){
 
 
-  if(is.null(legendBreaks)){legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(dataGrid@data%>%dplyr::select(fillColumn)%>%as.matrix())}
+  if(is.null(legendBreaks)){legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(raster@data%>%dplyr::select(fillColumn)%>%as.matrix())}
   map<-tmap::tm_shape(raster) + tmap::tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
                                   style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks,legend.show = legendShow)
 
