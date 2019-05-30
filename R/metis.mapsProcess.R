@@ -192,6 +192,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
     value->x->year->gridID->underLayer->maxScale->minScale->scenarioGCM->scenarioRCP->scenarioSSP->
     scenarioPolicy->valueDiff->rowid->catParam
 
+  if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect="region"}
+
   # Set legend size based on where legend is placed
   if(legendOutsideSingle==T){legendTitleSizeS=legendTitleSizeO;legendTextSizeS=legendTextSizeO;legendPositionS=NULL}
   if(legendOutsideSingle==F){legendTitleSizeS=legendTitleSizeI;legendTextSizeS=legendTextSizeI;legendPositionS=legendPosition}
@@ -375,7 +377,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   }
 
   if(is.null(boundaryRegShape) & !is.null(subRegShape)){
-    boundaryRegShape <- subRegShape
+    boundaryRegShape<-subRegShape
     boundaryRegCol <- subRegCol
     extendedBGColor <- "white"
   }
@@ -471,12 +473,17 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # Subset Data
   #------------------
 
+  if(nrow(shapeTbl)>0){
+
+
+    if(boundaryRegionsSelect!="region"){
+     if(any(!boundaryRegionsSelect %in% unique(shapeTbl$region))){
+      stop(paste("boundaryRegionsSelect: ",boundaryRegionsSelect," not in shapeTbl regions"))}}}
+
+
   if(!is.null(shapeTbl)){
-    if(!is.null(boundaryRegionsSelect)){
-      if(any(boundaryRegionsSelect %in% unique(shapeTbl$region))){
-    shapeTbl<-shapeTbl%>%
-      unique()%>%
-      dplyr::filter(region %in% boundaryRegionsSelect)}}
+    shapeTbl<-shapeTbl%>%unique()
+    if(boundaryRegionsSelect != "region"){shapeTbl <- shapeTbl %>% dplyr::filter(region %in% boundaryRegionsSelect)}
     if(any(xRange!="All")){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange);
     print(paste("Subset shapeTbl x to xRange: ",paste(xRange,collapse=", "),sep=""))}
     if(any(paramsSelect!="All")){
@@ -486,17 +493,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
           print(paste("None of the paramsSelect: ",paste(paramsSelect,collapse=", ")," are present in shapeTbl params. Skipping subset.",sep=""))
         }
     }
-
-    # if(!is.null(scaleRange) & any(unique(scaleRange$param) %in% unique(shapeTbl$param))){
-    #   shapeTbl<-shapeTbl%>%dplyr::left_join(scaleRange,by="param")%>%
-    #     dplyr::mutate(value=dplyr::case_when((!is.na(maxScale) & value>maxScale)~maxScale,
-    #                                          (!is.na(minScale) & value<minScale)~minScale,
-    #                                          TRUE~value))%>%
-    #     dplyr::select(-maxScale,-minScale)
-    #   print(paste("Used scaleRange to adjust value for params in shapeTbl: ",
-    #               paste(unique(scaleRange$param)[unique(scaleRange$param) %in% unique(shapeTbl$param)],collaspe=","),sep=""))
-    #   print(scaleRange)
-    # }
 
     shapeTbl<-droplevels(shapeTbl)
   }
@@ -897,10 +893,10 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                (max(range(animScaleGrid))-min(range(animScaleGrid)))>-1E-10){animScaleGridRange=min(animScaleGrid)}else{
                  animScaleGridRange=range(animScaleGrid)
                }
-            if(mean(animScaleGridRange,na.rm = T)<0.01 & mean(animScaleGridRange,na.rm = T)>(-0.01)){animLegendDigits<-4}else{
-              if(mean(animScaleGridRange,na.rm = T)<0.1 & mean(animScaleGridRange,na.rm = T)>(-0.1)){animLegendDigits<-3}else{
-                if(mean(animScaleGridRange,na.rm = T)<1 & mean(animScaleGridRange,na.rm = T)>(-1)){animLegendDigits<-2}else{
-                  if(mean(animScaleGridRange,na.rm = T)<10 & mean(animScaleGridRange,na.rm = T)>(-10)){animLegendDigits<-1}else{animLegendDigits<-0}}}}
+            if(mean(animScaleGridRange,na.rm = T)<0.01 & mean(animScaleGridRange,na.rm = T)>(-0.01)){animLegendDigits<-5}else{
+              if(mean(animScaleGridRange,na.rm = T)<0.1 & mean(animScaleGridRange,na.rm = T)>(-0.1)){animLegendDigits<-4}else{
+                if(mean(animScaleGridRange,na.rm = T)<1 & mean(animScaleGridRange,na.rm = T)>(-1)){animLegendDigits<-3}else{
+                  if(mean(animScaleGridRange,na.rm = T)<10 & mean(animScaleGridRange,na.rm = T)>(-10)){animLegendDigits<-2}else{animLegendDigits<-1}}}}
 
             # Figure 1 : each param: If class > 1 { (Map x Class) x Selected Years}
 
@@ -923,10 +919,10 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 sp::gridded(rasterx)<-T
 
                 scaleData<-datax%>%dplyr::select(-lat,-lon)
-                if(mean(range(scaleData,na.rm=T),na.rm = T)<0.01 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.01)){legendDigits<-4}else{
-                  if(mean(range(scaleData,na.rm=T),na.rm = T)<0.1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.1)){legendDigits<-3}else{
-                    if(mean(range(scaleData,na.rm=T),na.rm = T)<1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-1)){legendDigits<-2}else{
-                      if(mean(range(scaleData,na.rm=T),na.rm = T)<10 & mean(range(scaleData,na.rm=T),na.rm = T)>(-10)){legendDigits<-1}else{legendDigits<-0}}}}
+                if(mean(range(scaleData,na.rm=T),na.rm = T)<0.01 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.01)){legendDigits<-5}else{
+                  if(mean(range(scaleData,na.rm=T),na.rm = T)<0.1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.1)){legendDigits<-4}else{
+                    if(mean(range(scaleData,na.rm=T),na.rm = T)<1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-1)){legendDigits<-3}else{
+                      if(mean(range(scaleData,na.rm=T),na.rm = T)<10 & mean(range(scaleData,na.rm=T),na.rm = T)>(-10)){legendDigits<-2}else{legendDigits<-1}}}}
 
                 mapx<-rasterx
                 mapx@data<-mapx@data%>%dplyr::select(-lat,-lon)
@@ -1166,10 +1162,11 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 sp::gridded(rasterx)<-T
 
                 scaleData<-datax%>%dplyr::select(-lat,-lon)
-                if(mean(range(scaleData,na.rm=T),na.rm = T)<0.01 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.01)){legendDigits<-4}else{
-                  if(mean(range(scaleData,na.rm=T),na.rm = T)<0.1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.1)){legendDigits<-3}else{
-                    if(mean(range(scaleData,na.rm=T),na.rm = T)<1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-1)){legendDigits<-2}else{
-                      if(mean(range(scaleData,na.rm=T),na.rm = T)<10 & mean(range(scaleData,na.rm=T),na.rm = T)>(-10)){legendDigits<-1}else{legendDigits<-0}}}}
+                if(mean(range(scaleData,na.rm=T),na.rm = T)<0.01 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.01)){legendDigits<-5}else{
+                  if(mean(range(scaleData,na.rm=T),na.rm = T)<0.1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.1)){legendDigits<-4}else{
+                    if(mean(range(scaleData,na.rm=T),na.rm = T)<1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-1)){legendDigits<-3}else{
+                      if(mean(range(scaleData,na.rm=T),na.rm = T)<10 & mean(range(scaleData,na.rm=T),na.rm = T)>(-10)){legendDigits<-2}else{
+                        if(mean(range(scaleData,na.rm=T),na.rm = T)<100 & mean(range(scaleData,na.rm=T),na.rm = T)>(-100)){legendDigits<-1}else{legendDigits<-0}}}}}
 
                 mapx<-rasterx
                 mapx@data<-mapx@data%>%dplyr::select(-lat,-lon)
@@ -2019,6 +2016,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
               shapeTblx<-shapeTbl%>%dplyr::filter(scenario==scenario_i,subRegType==subRegType_i,
                                                   param==param_i)
+              if(boundaryRegionsSelect!="region"){shapeTblx<-shapeTblx%>%dplyr::filter(region==boundaryRegionsSelect)}
+
 
               if(boundaryRegionsSelect %in% unique(shapeTblx$region)){
                 shapeTblx <- shapeTblx %>% dplyr::filter(region==boundaryRegionsSelect)
@@ -2280,7 +2279,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   datax <- datax %>% dplyr::filter(region==boundaryRegionsSelect)
                 }
 
-
                 if(nrow(datax)>1){
                   legendTitle<-paste(unique(datax$units),sep="")
                   fillPalette<-as.character(unique(datax$classPalette))
@@ -2375,11 +2373,9 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
                   datax<-shapeTbl%>%dplyr::filter(scenario==scenario_i,subRegType==subRegType_i,param==param_i)
 
-
                   if(boundaryRegionsSelect %in% unique(datax$region)){
                     datax <- datax %>% dplyr::filter(region==boundaryRegionsSelect)
                   }
-
 
                   if(nrow(datax)>1){
                     legendTitle<-paste(unique(datax$units),sep="")
