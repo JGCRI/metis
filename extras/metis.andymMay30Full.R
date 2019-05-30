@@ -38,100 +38,10 @@ library(tools)
 
 
 #------------
-# Set values andym what should this be called?
-#----------------
-
-
-countryName= "Argentina"
-countryName <- tools::toTitleCase(countryName); countryName
-
-
-# Create directory for country
-if (!dir.exists(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""))){
-  dir.create(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""))}
-
-
-# View default metis country shapefile (Natural Earth maps)
-NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-             layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
-
-if(!countryName %in% unique(NE0@data$NAME)){stop(print(paste(countryName, " not in NE0 countries. Please check data.", sep="")))}
-
-countryNE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-                    layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
-countryNE0<-countryNE0[(countryNE0$NAME==countryName),]
-head(countryNE0@data)
-plot(countryNE0)
-
-# Natural earth level 1 admin boundaries
-NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
-             layer="ne_10m_admin_1_states_provinces",use_iconv=T,encoding='UTF-8')
-if(!countryName %in% unique(NE1@data$admin)){stop(print(paste(countryName, " not in NE1 countries. Please check data.", sep="")))}
-countryNE1<-NE1[(NE1$admin==countryName),]
-# subset any islands or regions not wanted
-countryNE1<-countryNE1[(!countryNE1$name %in% "San Andrés y Providencia") & !is.na(countryNE1$name),]
-head(countryNE1@data)
-plot(countryNE1)
-
-
-
-# GCAM Basins
-GCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
-                   layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
-GCAMBasin<-spTransform(GCAMBasin,CRS(projX))
-countryGCAMBasin<-raster::crop(GCAMBasin,countryNE0)
-head(countryGCAMBasin@data)
-plot(countryGCAMBasin)
-
-
-# Plot NE admin boundaries 1
-boundaryRegShape_i = NE0
-#boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
-#boundaryRegShpFile_i=paste("ne_10m_admin_0_countries",sep="")
-boundaryRegCol_i="NAME"
-boundaryRegionsSelect_i=countryName
-subRegShape_i = countryNE1
-#subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
-#subRegShpFile_i = paste("countryNE1",sep= "")
-subRegCol_i = "name"
-subRegType_i = "state"
-nameAppend_i = "_NE"
-expandPercent_i = 2
-overlapShape_i = countryGCAMBasin
-#overlapShpFile_i = "Global235_CLM_final_5arcmin_multipart"
-#overlapShpFolder_i = paste(getwd(),"/dataFiles/gis/basin_gcam",sep= "")
-extension_i =  T
-cropSubShape2Bound_i = T
-
-
-# Plot GCAM Basin boundaries
-subRegShape_i = countryGCAMBasin
-subRegCol_i = "basin_name"
-subRegType_i = "GCAMBasin"
-nameAppend_i = "_GCAMBasin"
-overlapShape_i = countryNE1
-
-
-# Natural Earth admin1 boundaries
-boundaryRegionsSelect_i=countryName
-subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
-subRegShpFile_i = paste(countryName,"NE1",sep= "")
-subRegCol_i = "name"
-subRegType_i = "state"
-nameAppend_i = "_NE"
-#aggType_i = NULL
-paramsSelect_i= "All" #"demeterLandUse"
-#sqliteUSE_i = T
-sqliteUSE_i = F  #andym
-sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
-
-
-
-#------------
 # Prepare Polygons
 #----------------
 
-countryName= "Argentina"
+countryName= "Japan"
 countryName <- tools::toTitleCase(countryName); countryName
 
 
@@ -264,7 +174,6 @@ if (!dir.exists(paste(dirOutputs, "/Grids/diagnostics",sep=""))){
   dir.create(paste(dirOutputs, "/Grids/diagnostics",sep=""))}
 
 
-
 biaOutputsFolder=paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep="")
 biaInputsFolder=paste(getwd(),"/dataFiles/grids/bia/biaInputs",sep="")
 
@@ -278,7 +187,8 @@ scenOrigNames=c("ExampleScen1","ExampleScen2")
 scenNewNames=c("Eg1","Eg2")
 queryxml="metisQueries.xml"
 queriesSelect = "All"      #andym
-regionsSelect <- c('Argentina')
+regionsSelect <- c('Argentina','Japan')
+#regionsSelect <- c('Argentina', 'Colombia')
 paramsSelect<- c("elecByTech", "elecCapBySubsector")
 
 reReadData=F
@@ -287,18 +197,18 @@ biaInputsFiles=c("global_power_plant_database_MW")
 
 biaScenarioAssign="Eg1"
 
-gridChoice<-"grid_050"
-#gridChoice<-"grid_025"
+#gridChoice<-"grid_050"
+gridChoice<-"grid_025"
 
-sqliteUSE = F
+diagnosticsON<-F
 
-dataBia1<-metis.bia(
+#subsectorNAdistribute = "totalOther"
+subsectorNAdistribute = "even"
+
+
+dataBia2<-metis.bia(
   biaInputsFolder=biaInputsFolder,
   biaInputsFiles=biaInputsFiles,
-  biaScenarioAssign=biaScenarioAssign,
-  biaOutputsFolder=biaOutputsFolder,
-  sqliteUSE = sqliteUSE,
-  sqliteDBNamePath = sqliteDBNamePath,
   regionsSelect=regionsSelect, # Default Value is NULL
   queriesSelect = queriesSelect, # Default value is "ALL"
   reReadData=reReadData, # Default Value is T
@@ -310,9 +220,29 @@ dataBia1<-metis.bia(
   gcamdatabaseName=gcamdatabaseName,
   queryxml=queryxml,  # Default Value is "metisQueries.xml"
   paramsSelect=paramsSelect, # Default = c("elecByTech", "elecCapBySubsector")
-  gridChoice = gridChoice # Default = "grid_050"
-
+  gridChoice = gridChoice, # Default = "grid_050"
+  diagnosticsON = diagnosticsON,
+  subsectorNAdistribute = subsectorNAdistribute
 )
+
+
+# biaInputsFolder=biaInputsFolder
+# biaInputsFiles=biaInputsFiles
+# biaOutputsFolder=biaOutputsFolder
+# regionsSelect=regionsSelect # Default Value is NULL
+# queriesSelect = queriesSelect # Default value is "ALL"
+# reReadData=reReadData # Default Value is T
+# dataProj=dataProj # Default Value is "dataProj.proj"
+# dataProjPath=dataProjPath #Default Value is gcamdatabasePath
+# scenOrigNames=scenOrigNames
+# scenNewNames=scenNewNames
+# gcamdatabasePath=gcamdatabasePath
+# gcamdatabaseName=gcamdatabaseName
+# queryxml=queryxml  # Default Value is "metisQueries.xml"
+# paramsSelect=paramsSelect # Default = c("elecByTech", "elecCapBySubsector")
+# gridChoice = gridChoice # Default = "grid_050"
+# diagnosticsON = T
+# subsectorNAdistribute = "even"
 
 dataBia2<-dataBia2%>%select(-value, -origValue)%>%
   dplyr::mutate(aggType = "vol")%>%
@@ -329,8 +259,6 @@ dataBia2 <-  dataBia2 %>%
 # dataBia <-  dataBia %>%
 #   ungroup() %>%
 #   select(-gridCellPercentage,-region,-region_32_code,-ctry_name,-ctry_code, -aggregate, -contains("orig"),-gridID)
-
-
 
 
 
@@ -471,6 +399,18 @@ grid2polyX<-metis.grid2poly(#grid=dataBia,
   paramsSelect = paramsSelect_i,
   sqliteUSE = sqliteUSE_i,
   sqliteDBNamePath = sqliteDBNamePath_i)
+
+# grid=dataBia2               #andym
+# boundaryRegionsSelect=boundaryRegionsSelect_i
+# subRegShpFolder=subRegShpFolder_i
+# subRegShpFile=subRegShpFile_i
+# subRegCol=subRegCol_i
+# subRegType = subRegType_i
+# #aggType=aggType_i
+# nameAppend=nameAppend_i
+# paramsSelect = paramsSelect_i
+# sqliteUSE = sqliteUSE_i
+# sqliteDBNamePath = sqliteDBNamePath_i
 
 
 #-----------

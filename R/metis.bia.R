@@ -1,9 +1,8 @@
 #' metis.bia
 #'
 #' This function downscales GCAM electricity generation and installed capacity onto a grid, based on WRI PowerWatch dataset of present capacity
-#' @param biaInputsFolder andym Bia Inputs Folder Path
-#' @param biaInputsFiles andym Bia Files to Read
-#' @param biaScenarioAssign andym Default "NA". Scenario name if testing a single scenario.
+#' @param biaInputsFolder Bia Inputs Folder Path
+#' @param biaInputsFiles Bia electricity generation files to Read
 #' @param biaOutputsFolder Default =paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep=""),
 #' @param reReadData Default =1,
 #' @param gcamdatabasePath Path to gcam database folder
@@ -27,13 +26,12 @@
 #' @param gridChoice Default = "grid_050" . Choice of whether to use 50 km x 50 km grid cells ("grid_050") or 25 km x 25 km ("grid_025").
 #' @param diagnosticsON Default = T.
 #' @param subsectorNAdistribute Default = "even". Choose "even" for even distribution or "totalOther" to distribute based on sum of all other subsectors..
-#' @return #andym a tibble with GCAM electricity generation distributed on a grid for a selected region
+#' @return A tibble with GCAM electricity generation distributed on a grid for selected regions
 #' @keywords electricity, generation, gcam, gridded, downscale, downscaling, downscaled
 #' @export
 
 metis.bia<- function(biaInputsFolder = "NA",
                      biaInputsFiles = "NA",
-                     biaScenarioAssign = "NA",
                      reReadData = 1,
                      regionsSelect = NULL,
                      dataProj = "dataProj.proj",
@@ -53,7 +51,6 @@ metis.bia<- function(biaInputsFolder = "NA",
 
   # biaInputsFolder = "NA"
   # biaInputsFiles = "NA"
-  # biaScenarioAssign = "NA"
   # biaOutputsFolder = paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep="")
   # reReadData = 1
   # regionsSelect = NULL
@@ -68,7 +65,8 @@ metis.bia<- function(biaInputsFolder = "NA",
   # queriesSelect = "All"
   # paramsSelect = c("elecByTech", "elecCapBySubsector")
   # gridChoice = "grid_050"
-
+  # diagnosticsON = T
+  # subsectorNAdistribute = "even"
 
 
   #----------------
@@ -77,9 +75,7 @@ metis.bia<- function(biaInputsFolder = "NA",
 
   NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
     ilon->ilat->param->V2->V3->scenario->classPalette->x->value->id->
-    biaScenarios->biaYears->zelusScenarios->zelusYears->
-    commonYears->commonScenarios->V1->Area_hec->Area_km2->valueBia->valueZelus->commonYears_i->
-    scenarioSSP->scenarioPolicy->scenarioGCM->scenarioRCP->
+    biaYears->commonYears->commonScenarios->V1->Area_hec->Area_km2->valueBia->commonYears_i->
     country->name->country_long_gppd_idnr->fuel1->fuel2->fuel3->fuel4->owner->geolocation_source->
     GCMRCP->capacity_gw->capacity_mw->cf1971to2100->class1->data_source->dataBia->est_installed_capacity->
     estimated_generation_gwh->gcamCapacityFactor->generation_gwh_2013->generation_gwh_2014->
@@ -89,7 +85,7 @@ metis.bia<- function(biaInputsFolder = "NA",
     origUnits -> origScen -> origQuery -> classPalette2 -> classPalette1 -> classLabel2 -> classLabel1 -> class2 ->
     class1 -> connx -> aggregate -> Units -> sources -> paramx -> technology -> input -> output -> gcamCapacityFactor ->
     gridlat -> gridlon -> gridID -> region_32_code -> ctry_name -> ctry_code -> gridCellPercentage -> aggregate ->
-    valueDistrib -> origValueDistrib ->readgcamdata->gridlat->gridlon
+    valueDistrib -> origValueDistrib ->readgcamdata->gridlat->gridlon->gridCropped
 
 
 
@@ -149,7 +145,7 @@ metis.bia<- function(biaInputsFolder = "NA",
 
   #tbl <- rgcam::getQuery(dataProjLoaded, queries[1])  # Tibble
   regionsAll<-unique(dataFromGCAM$region)
-  if(any(regionsSelect=="All" | regionsSelect=="all" )){regionsSelect<-regionsAll; regionsSelectAll=T}else{
+  if(any(regionsSelect=="All" | regionsSelect=="all" | is.null(regionsSelect))){regionsSelect<-regionsAll; regionsSelectAll=T}else{
     regionsSelectAll=F
   }
 
@@ -212,7 +208,6 @@ metis.bia<- function(biaInputsFolder = "NA",
       print(paste("bia input folder: ", biaInputsFolder ," is incorrect or doesn't exist.",sep=""))
       print(paste("Skipping electricity generation distribution with bia",sep=""))}else {
 
-        biaScenarios<-character()
         biaYears<-numeric()
 
         for(biaInputsFile_i in biaInputsFiles){
@@ -255,7 +250,6 @@ metis.bia<- function(biaInputsFolder = "NA",
             gridWRI<-gridWRI%>%tibble::as_tibble()%>%dplyr::select(-year_of_capacity_data,-commissioning_year,-name,-country,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source)%>%
               dplyr::left_join(ctor,by="country_long")
 
-            biaScenario<-biaScenarioAssign       #andym not sure exactly the purpose of these
             biaGCM = NA;biaRCP = NA
 
 
@@ -264,11 +258,6 @@ metis.bia<- function(biaInputsFolder = "NA",
 
             gridWRI<-gridWRI%>%dplyr::mutate(lat=latitude,
                                              lon=longitude,
-                                             scenario=biaScenario,
-                                             scenarioGCM=biaGCM,
-                                             scenarioRCP=biaRCP,
-                                             scenarioSSP=NA,
-                                             scenarioPolicy=NA,
                                              param="biaElecGen",
                                              units= "Capacity (GW)",
                                              aggType=aggType,
@@ -281,7 +270,7 @@ metis.bia<- function(biaInputsFolder = "NA",
               tibble::as_tibble()%>%
               dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)%>%
               dplyr::left_join(listOfGridCells,by = c("gridlat","gridlon"))%>%
-              dplyr::group_by(gridlat, gridlon, class1, gridID, ctry_name, ctry_code, region, region_32_code, param, units)%>%    #andym This group_by, and the following summarise get rid of a few columns
+              dplyr::group_by(gridlat, gridlon, class1, gridID, ctry_name, ctry_code, region, region_32_code, param, units)%>%
               dplyr::summarise(gridCellCapacity = sum(value))%>%
               dplyr::ungroup() %>%
               dplyr::group_by(class1,region,region_32_code)%>%
@@ -321,7 +310,6 @@ metis.bia<- function(biaInputsFolder = "NA",
 
             # Read in GCAM regions
 
-            #GCAMRegionShapeFolder <- "C:/Users/amille17/Desktop/EssicServetop/metis/dataFiles/gis/admin_gcam32"
             if(!dir.exists(paste(getwd(),"/dataFiles/gis/admin_gcam32",sep=""))){
               print(paste("GCAMRegionShapeFolder: ",paste(getwd(),"/dataFiles/gis/admin_gcam32",sep=""), " does not exist.",sep=""))
             } else{
@@ -333,29 +321,34 @@ metis.bia<- function(biaInputsFolder = "NA",
               GCAMRegionShapeFile <- "region32_0p5deg"}
 
 
-            shape=rgdal::readOGR(dsn=GCAMRegionShapeFolder,layer=GCAMRegionShapeFile,use_iconv=T,encoding='UTF-8')
-            shape@data <-shape@data %>%
-              left_join(ctor %>%
-                          dplyr::select(region_32_code, region) %>%
-                          dplyr::distinct() %>%
-                          dplyr::mutate(reg32_id=as.factor(region_32_code))%>%
-                          dplyr::select(-region_32_code)); shape@data %>% as.data.frame()
-            shape <- shape[(shape$region %in% regionsSelect),];
-            plot(shape)
+            gridCropped <- tibble(gridlat = NA, gridlon = NA, gridID = NA, region = NA)
 
+            for(regionc in regionsSelect){
+              shape=rgdal::readOGR(dsn=GCAMRegionShapeFolder,layer=GCAMRegionShapeFile,use_iconv=T,encoding='UTF-8')
+              shape@data <-shape@data %>%
+                left_join(ctor %>%
+                            dplyr::select(region_32_code, region) %>%
+                            dplyr::distinct() %>%
+                            dplyr::mutate(reg32_id=as.factor(region_32_code))%>%
+                            dplyr::select(-region_32_code), by = "reg32_id")
+              shape@data %>% as.data.frame()
+              shape <- shape[(shape$region %in% regionc),];
+              plot(shape)
 
-            # Prepare grids to be cropped
-            listOfGridCells
-            spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(listOfGridCells$gridlon,listOfGridCells$gridlat))),data=listOfGridCells)
-            sp::gridded(spdf)<-TRUE
+              # Prepare grids to be cropped
+              spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(listOfGridCells$gridlon,listOfGridCells$gridlat))),data=listOfGridCells)
+              sp::gridded(spdf)<-TRUE
 
-            r<-raster::stack(spdf)
-            raster::projection(r)<-sp::proj4string(shape)
+              r<-raster::stack(spdf)
+              raster::projection(r)<-sp::proj4string(shape)
 
-            rmask<-raster::mask(r,shape)
-            rmaskP<-raster::rasterToPolygons(rmask)
-            gridCropped<-tibble::as_tibble(rmaskP@data)
+              rmask<-raster::mask(r,shape)
+              rmaskP<-raster::rasterToPolygons(rmask)
+              gridCropped<-dplyr::bind_rows(gridCropped,dplyr::mutate(tibble::as_tibble(rmaskP@data),region = regionc))
 
+            }
+
+            gridCropped <- dplyr::filter(gridCropped,!is.na(region))
 
             dataBia<- dataFromGCAM %>%
               dplyr::left_join(
@@ -371,10 +364,12 @@ metis.bia<- function(biaInputsFolder = "NA",
             evenDistrib <- expand.grid(unique(dataBiaNA$class1), gridCropped$gridID) %>%
               tibble::as_tibble() %>%
               dplyr::rename(class1 = Var1, gridID = Var2) %>%
-              dplyr::left_join(listOfGridCells, by = "gridID")
+              dplyr::left_join(listOfGridCells, by = "gridID") %>%
+              dplyr::left_join(gridCropped, by = c("gridlat", "gridlon", "gridID"))
 
+            evenDistrib$class1 <- as.character(evenDistrib$class1)
 
-            evenDistrib <- dplyr::left_join(dataBiaNA,evenDistrib, by = "class1") %>%
+            evenDistrib <- dplyr::left_join(dataBiaNA,evenDistrib, by = c("class1", "region")) %>%
               dplyr::mutate(gridCellCapacity = 999) %>%
               dplyr::group_by(class1,region)%>%
               dplyr::mutate(regionCapSum = sum(gridCellCapacity),
@@ -425,11 +420,6 @@ metis.bia<- function(biaInputsFolder = "NA",
             dataBiaNA <- dplyr::filter(dataBia,is.na(gridlat)) %>%
               dplyr::select(-gridlat, -gridlon, -gridID, -region_32_code, -ctry_name, -ctry_code, -gridCellPercentage)
 
-
-
-
-            ####andym  CHECK that THE EQUIVALENT UP IN EVEN DIST works even if there are multiple regions    [even though it generates (expands) to make all combinations, when dataBiaNA left joins this one, then it discards all of the unneeded combinations, I believe]
-
             distribByTotalCap <- expand.grid(unique(dataBiaNA$class1), (dplyr::filter(gridWRIallSubsecMixed, region %in% regionsSelect))$gridCellIndex) %>%
               tibble::as_tibble() %>%
               dplyr::rename(class1 = Var1, gridCellIndex = Var2) %>%
@@ -462,8 +452,6 @@ metis.bia<- function(biaInputsFolder = "NA",
 
      if(diagnosticsON == T){
 
-       ## andym need to fix the readgcam
-
        regionsSelectCompareCap<-unique(gridWRI$region)
 
        biaInputsFile_i<-biaInputsFiles[1]
@@ -474,25 +462,41 @@ metis.bia<- function(biaInputsFolder = "NA",
 
        gWRI<-data.table::fread(file = paste(biaInputsFolder,"/",biaInputsFile_i, '.csv',sep=""), header=T)
 
-       gWRI[gWRI=="United States of America"]<-"United States"
+       gWRI[gWRI==unique(gWRI$country_long)[grepl("United States",unique(gWRI$country_long),ignore.case=T)]]<-
+         unique(ctor$country_long)[grepl("United States",unique(ctor$country_long),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$country_long)[grepl("Bosnia",unique(gWRI$country_long),ignore.case=T)]]<-
+         unique(ctor$country_long)[grepl("Bosnia",unique(ctor$country_long),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$country_long)[grepl("Brunei",unique(gWRI$country_long),ignore.case=T)]]<-
+         unique(ctor$country_long)[grepl("Brunei",unique(ctor$country_long),ignore.case=T)]
+       gWRI[gWRI=="Democratic Republic of the Congo"]<-"Congo DRC"
+       gWRI[gWRI=="Congo"]<-"Congo Rep."
+       gWRI[gWRI=="Taiwan"]<-"Taiwan China"
+       ctor$country_long[ctor$region == "Taiwan"] <- "Taiwan China"
+       gWRI[gWRI=="Congo"]<-"Congo Rep."
+       gWRI[gWRI==unique(gWRI$country_long)[grepl("Cote",unique(gWRI$country_long),ignore.case=T)]]<-
+         unique(ctor$country_long)[grepl("Cote",unique(ctor$country_long),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$country_long)[grepl("Gambia",unique(gWRI$country_long),ignore.case=T)]]<-
+         unique(ctor$country_long)[grepl("Gambia",unique(ctor$country_long),ignore.case=T)]
+       # gWRI[gWRI==unique(gWRI$country_long)[grepl("Kosovo",unique(gWRI$country_long),ignore.case=T)]]<-
+       #   unique(ctor$country_long)[grepl("Kosovo",unique(ctor$country_long),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$country_long)[grepl("Syria",unique(gWRI$country_long),ignore.case=T)]]<-
+         unique(ctor$country_long)[grepl("Syria",unique(ctor$country_long),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$country_long)[grepl("Taiwan",unique(gWRI$country_long),ignore.case=T)]]<-
+         unique(ctor$country_long)[grepl("Taiwan",unique(ctor$country_long),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$country_long)[grepl("Trinidad",unique(gWRI$country_long),ignore.case=T)]]<-
+         unique(ctor$country_long)[grepl("Trinidad",unique(ctor$country_long),ignore.case=T)]
 
        gWRI<-gWRI%>%tibble::as_tibble()%>%dplyr::select(-name,-country,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source)%>%
          dplyr::left_join(ctr,by="country_long")
 
 
 
-       biaScenario<-biaScenarioAssign
        biaGCM=NA;biaRCP=NA
 
        aggType="vol"
 
        gWRI<-gWRI%>%dplyr::mutate(lat=latitude,
                                   lon=longitude,
-                                  scenario=biaScenario,
-                                  scenarioGCM=biaGCM,
-                                  scenarioRCP=biaRCP,
-                                  scenarioSSP=NA,
-                                  scenarioPolicy=NA,
                                   param="biaElecGen",
                                   units= "Capacity (GW)",
                                   aggType=aggType,
@@ -513,27 +517,31 @@ metis.bia<- function(biaInputsFolder = "NA",
          tibble::as_tibble()%>%dplyr::select(-latitude,-longitude,-fuel1,-capacity_mw,-generation_gwh_2013,-generation_gwh_2014,-generation_gwh_2015,-generation_gwh_2016,-estimated_generation_gwh,-country_long)
 
 
-
-       #andym in the future can figure out which countries are grouped into the non-nation regions
-
        gWRI <- gWRI%>%
          dplyr::group_by(region, class1)%>%
          dplyr::summarise(WRI_total_capacity=sum(value))%>%
          dplyr::filter(region %in% regionsSelectCompareCap)
-       gWRI[gWRI=="Coal"]<-"a Coal"
-       gWRI[gWRI=="Gas"]<-"c Gas"
-       gWRI[gWRI=="Oil"]<-"e Oil"
-       gWRI[gWRI=="Biomass"]<-"g Biomass"
-       gWRI[gWRI=="Nuclear"]<-"i Nuclear"
-       gWRI[gWRI=="Geothermal"]<-"j Geothermal"
-       gWRI[gWRI=="Hydro"]<-"k Hydro"
-       gWRI[gWRI=="Wind"]<-"l Wind"
-       gWRI[gWRI=="Solar"]<-"m Solar"
 
-
-       # andym Should I do scenOrigNames = scenOrigNames[1] in the readgcam function below, since what if there are multiple different scenarios that show non-reference installed capacity predictions
-       # andym Maybe we should just set this up, so that it points to a place where the reference GCAM scenario will always be located
-
+       gWRI[gWRI==unique(gWRI$class1)[grepl("cogen",unique(gWRI$class1),ignore.case=T)]]<-
+         unique(dataFromGCAM$class1)[grepl("chp",unique(dataFromGCAM$class1),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$class1)[grepl("coal",unique(gWRI$class1),ignore.case=T)]]<-
+         unique(dataFromGCAM$class1)[grepl("coal",unique(dataFromGCAM$class1),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$class1)[grepl("Gas",unique(gWRI$class1),ignore.case=T)]]<-
+         unique(dataFromGCAM$class1)[grepl("Gas",unique(dataFromGCAM$class1),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$class1)[grepl("Oil",unique(gWRI$class1),ignore.case=T)]]<-
+         unique(dataFromGCAM$class1)[grepl("Oil",unique(dataFromGCAM$class1),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$class1)[grepl("Biomass",unique(gWRI$class1),ignore.case=T)]]<-
+         unique(dataFromGCAM$class1)[grepl("Biomass",unique(dataFromGCAM$class1),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$class1)[grepl("Nuclear",unique(gWRI$class1),ignore.case=T)]]<-
+         unique(dataFromGCAM$class1)[grepl("Nuclear",unique(dataFromGCAM$class1),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$class1)[grepl("Geothermal",unique(gWRI$class1),ignore.case=T)]]<-
+         unique(dataFromGCAM$class1)[grepl("Geothermal",unique(dataFromGCAM$class1),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$class1)[grepl("Hydro",unique(gWRI$class1),ignore.case=T)]]<-
+         unique(dataFromGCAM$class1)[grepl("Hydro",unique(dataFromGCAM$class1),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$class1)[grepl("Wind",unique(gWRI$class1),ignore.case=T)]]<-
+         unique(dataFromGCAM$class1)[grepl("Wind",unique(dataFromGCAM$class1),ignore.case=T)]
+       gWRI[gWRI==unique(gWRI$class1)[grepl("Solar",unique(gWRI$class1),ignore.case=T)]]<-
+         unique(dataFromGCAM$class1)[grepl("Solar",unique(dataFromGCAM$class1),ignore.case=T)]
 
        readAllGCAMcapDataList<-metis.readgcam(gcamdatabasePath = gcamdatabasePath, gcamdatabaseName = gcamdatabaseName,
                                     queryxml = queryxml, queryPath = queryPath,
@@ -544,17 +552,12 @@ metis.bia<- function(biaInputsFolder = "NA",
        readAllGCAMcapData<-readAllGCAMcapDataList$data%>%
          dplyr::filter(param=="elecCapBySubsector")
 
-
-
        gGCAMelecCap<-readAllGCAMcapData%>%dplyr::filter(x==2015)%>%
          dplyr::mutate(GCAM_total_capacity=value)%>%
          dplyr::select(-c(value))
 
-
        gCapComparison<-dplyr::full_join(gGCAMelecCap,gWRI, by = c("region", "class1"))%>%
          tidyr::gather(key="data_source",value="est_installed_capacity",-c("region","class1","aggregate","units","vintage","x","xLabel","class2","sources","param","scenario","origValue","origX","origUnits","origQuery","origScen","classPalette1","classLabel1","classPalette2","classLabel2"))
-
-
 
        for(regioni in regionsSelectCompareCap){
          gridR<-gCapComparison%>%dplyr::filter(region==regioni)
@@ -562,11 +565,19 @@ metis.bia<- function(biaInputsFolder = "NA",
          metis.printPdfPng(figure=ggplot(data = gridR, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity"),
                            dir=paste(biaOutputsFolder, "/biadiagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
 
-       }     #close metis.printPdfPng
+       }     #close for loop
      } # Close if FALSE
 
 
   print("About to return data for distributed electricity generation data")
+
+  print(paste("Bia output data written to: ",paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia.csv",sep=""), sep = ""))
+
+  data.table::fwrite(dataBia,
+
+                     file = paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia.csv",sep=""),row.names = F, append=F)
+
+
 
   return(dataBia)
 

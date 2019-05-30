@@ -70,7 +70,7 @@ scenOrigNames=c("ExampleScen1","ExampleScen2")
 scenNewNames=c("Eg1","Eg2")
 queryxml="metisQueries.xml"
 queriesSelect = "All"      #andym
-regionsSelect <- c('Argentina')
+regionsSelect <- c('Argentina','Japan')
 #regionsSelect <- c('Argentina', 'Colombia')
 paramsSelect<- c("elecByTech", "elecCapBySubsector")
 
@@ -85,12 +85,13 @@ gridChoice<-"grid_025"
 
 diagnosticsON<-F
 
+subsectorNAdistribute = "even"
 
-dataBia1<-metis.bia(
+
+dataBia2<-metis.bia(
   biaInputsFolder=biaInputsFolder,
   biaInputsFiles=biaInputsFiles,
-  biaScenarioAssign=biaScenarioAssign,
-  #regionsSelect=regionsSelect, # Default Value is NULL
+  regionsSelect=regionsSelect, # Default Value is NULL
   queriesSelect = queriesSelect, # Default value is "ALL"
   reReadData=reReadData, # Default Value is T
   dataProj=dataProj, # Default Value is "dataProj.proj"
@@ -102,13 +103,13 @@ dataBia1<-metis.bia(
   queryxml=queryxml,  # Default Value is "metisQueries.xml"
   paramsSelect=paramsSelect, # Default = c("elecByTech", "elecCapBySubsector")
   gridChoice = gridChoice, # Default = "grid_050"
-  diagnosticsON = diagnosticsON
+  diagnosticsON = diagnosticsON,
+  subsectorNAdistribute = subsectorNAdistribute
 )
 
 
 # biaInputsFolder=biaInputsFolder
 # biaInputsFiles=biaInputsFiles
-# biaScenarioAssign=biaScenarioAssign
 # biaOutputsFolder=biaOutputsFolder
 # regionsSelect=regionsSelect # Default Value is NULL
 # queriesSelect = queriesSelect # Default value is "ALL"
@@ -122,7 +123,8 @@ dataBia1<-metis.bia(
 # queryxml=queryxml  # Default Value is "metisQueries.xml"
 # paramsSelect=paramsSelect # Default = c("elecByTech", "elecCapBySubsector")
 # gridChoice = gridChoice # Default = "grid_050"
-
+# diagnosticsON = T
+# subsectorNAdistribute = "even"
 
 dataBia1<-dataBia1%>%select(-value, -origValue)%>%
   dplyr::mutate(aggType = "vol")%>%

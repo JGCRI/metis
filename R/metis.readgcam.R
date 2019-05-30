@@ -1716,7 +1716,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::summarize_at(c("value"),dplyr::funs(mean))
       dataxAgg<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
 
-      utils::write.csv(dataxAgg,
+      utils::write.csv(dataxAgg %>% dplyr::filter(region == region_i),
                        file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_aggClass_",region_i,"_", min(range(datax$x)),
                                     "to", max(range(datax$x)), ".csv", sep = ""),row.names = F)
 
