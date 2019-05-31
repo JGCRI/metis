@@ -5,10 +5,9 @@
 \title{metis.bia}
 \usage{
 metis.bia(biaInputsFolder = "NA", biaInputsFiles = "NA",
-  biaScenarioAssign = "NA", reReadData = 1, regionsSelect = NULL,
-  dataProj = "dataProj.proj", dataProjPath = gcamdatabasePath,
-  scenOrigNames = c("GCAMOrig", "GCAMModified"),
-  scenNewNames = c("GCAMOrig", "GCAMModified"),
+  reReadData = 1, regionsSelect = NULL, dataProj = "dataProj.proj",
+  dataProjPath = gcamdatabasePath, scenOrigNames = c("GCAMOrig",
+  "GCAMModified"), scenNewNames = c("GCAMOrig", "GCAMModified"),
   gcamdatabasePath = "NA", gcamdatabaseName = "NA",
   queryxml = "metisQueries.xml", queryPath = gcamdatabasePath,
   queriesSelect = "All", paramsSelect = c("elecByTech",
@@ -16,11 +15,9 @@ metis.bia(biaInputsFolder = "NA", biaInputsFiles = "NA",
   subsectorNAdistribute = "even")
 }
 \arguments{
-\item{biaInputsFolder}{andym Bia Inputs Folder Path}
+\item{biaInputsFolder}{Bia Inputs Folder Path}
 
-\item{biaInputsFiles}{andym Bia Files to Read}
-
-\item{biaScenarioAssign}{andym Default "NA". Scenario name if testing a single scenario.}
+\item{biaInputsFiles}{Bia electricity generation files to Read}
 
 \item{reReadData}{Default =1,}
 
@@ -63,7 +60,7 @@ with full path is provided otherwise it will search for a dataProj.proj file in 
 folder which may have been created from an old run.}
 }
 \value{
-#andym a tibble with GCAM electricity generation distributed on a grid for a selected region
+A tibble with GCAM electricity generation distributed on a grid for selected regions
 }
 \description{
 This function downscales GCAM electricity generation and installed capacity onto a grid, based on WRI PowerWatch dataset of present capacity

@@ -35,15 +35,16 @@ library(rgeos)
 if("tools" %in% rownames(installed.packages()) == F){install.packages("tools")}
 library(tools)
 
-
+if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("ggplot2")}
+library(ggplot2)
 
 #------------
 # Prepare Polygons
 #----------------
 
 #countryName= "Japan"
-#countryName= "Colombia"
-countryName= "Argentina"
+countryName= "Colombia"
+#countryName= "Argentina"
 
 countryName <- tools::toTitleCase(countryName); countryName
 
@@ -190,10 +191,10 @@ scenOrigNames=c("ExampleScen1","ExampleScen2")
 scenNewNames=c("Eg1","Eg2")
 queryxml="metisQueries.xml"
 queriesSelect = "All"      #andym
-regionsSelect <- c('Argentina','Japan')
+#regionsSelect <- c('Argentina','Japan')
 #regionsSelect <- c('Argentina', 'Colombia')
-#regionsSelect <- c('Japan', 'Colombia')
-#regionsSelect <- c('Colombia')
+regionsSelect <- c('Japan', 'Colombia')
+# regionsSelect <- c('Colombia')
 #regionsSelect <- c('Argentina')
 paramsSelect<- c("elecByTech", "elecCapBySubsector")
 
@@ -237,7 +238,7 @@ dataBia2<-metis.bia(
 # biaInputsFolder=biaInputsFolder
 # biaInputsFiles=biaInputsFiles
 # biaOutputsFolder=biaOutputsFolder
-# regionsSelect=regionsSelect # Default Value is NULL
+# #regionsSelect=regionsSelect # Default Value is NULL
 # queriesSelect = queriesSelect # Default value is "ALL"
 # reReadData=reReadData # Default Value is T
 # dataProj=dataProj # Default Value is "dataProj.proj"
@@ -256,6 +257,7 @@ dataBia2<-dataBia2%>%select(-value, -origValue)%>%
   dplyr::mutate(aggType = "vol")%>%
   dplyr::rename(lat = gridlat, lon = gridlon, class = class1, value = valueDistrib, origValue = origValueDistrib)
 
+dataBiaCheck <- dataBia2
 
 dataBia2 <-  dataBia2 %>%
   ungroup() %>%

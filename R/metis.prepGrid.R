@@ -17,6 +17,8 @@
 #' @param scarcityXanthosRollMeanWindow Default = 10,
 #' @param popFolder Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 #' @param popFiles Default = <-"grid_pop_map"
+#' @param biaFolder Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")
+#' @param biaFiles Default = <-"grid_bia_map"
 #' @param popUnits Default = <-"person"
 #' @param dirOutputs Default =paste(getwd(),"/outputs",sep=""),
 #' @param reReadData Default =1,
@@ -47,6 +49,8 @@ metis.prepGrid<- function(demeterFolder="NA",
                         spanLowess=0.25,
                         popFolder="NA",
                         popFiles="NA",
+                        biaFolder="NA",
+                        biaFiles="NA",
                         popUnits="NA",
                         dirOutputs=paste(getwd(),"/outputs",sep=""),
                         reReadData=1,
@@ -627,6 +631,56 @@ if(!dir.exists(popFolder)){
     if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
 
   } # Close pop folder
+
+#----------------
+# Prepare gridded Electricity generation and capacity from Bia
+#---------------
+
+if(!dir.exists(biaFolder)){
+
+  print(paste("bia folder: ", biaFolder ," is incorrect or doesn't exist.",sep=""))
+  print(paste("Skipping bia runs",sep=""))}else {
+
+    if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
+
+    for(biaFile_i in biaFiles){
+
+      biaFile_i=gsub(".csv","",biaFile_i)
+      if(!grepl(".csv",biaFile_i)){biaFile_i=paste(biaFile_i,".csv",sep="")}
+
+      if(!file.exists(paste(biaFolder,"/",biaFile_i,sep=""))){
+        print(paste("bia file: ", biaFolder,"/",biaFile_i," is incorrect or doesn't exist.",sep=""))
+        print(paste("Skipping file: ",biaFolder,"/",biaFile_i,sep=""))
+      }else{
+        print(paste("Reading bia data file: ",biaFile_i,"...",sep=""))
+
+        gridx<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""))%>%
+          tibble::as_tibble()%>%
+          select(-value, -origValue)%>%
+          dplyr::mutate(aggType = "vol")%>%
+          dplyr::rename(lat = gridlat, lon = gridlon, class = class1, value = valueDistrib, origValue = origValueDistrib) %>%
+          select(-gridCellPercentage,-region,-region_32_code,-ctry_name,-ctry_code, -aggregate, -contains("orig"),-gridID)
+        gridx$x<-as.numeric(gridx$x)
+
+        print("File read.")
+
+        if(sqliteUSE==T){
+          DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
+          print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
+        }else{
+          print(paste("Using .Rdata format to save data.",sep=""))
+          gridMetis<-dplyr::bind_rows(gridMetis,gridx)
+        }
+
+        rm(gridx)
+
+      } # Close if bia file exists
+    } # close bia file loops
+
+    if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
+
+  } # Close bia folder
+
 
 
 #----------------

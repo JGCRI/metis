@@ -145,7 +145,7 @@ metis.bia<- function(biaInputsFolder = "NA",
 
   #tbl <- rgcam::getQuery(dataProjLoaded, queries[1])  # Tibble
   regionsAll<-unique(dataFromGCAM$region)
-  if(any(regionsSelect=="All" | regionsSelect=="all" | is.null(regionsSelect))){regionsSelect<-regionsAll; regionsSelectAll=T}else{
+  if(("All" %in% regionsSelect) | ("all" %in% regionsSelect) | is.null(regionsSelect)){regionsSelect<-regionsAll; regionsSelectAll=T}else{
     regionsSelectAll=F
   }
 
@@ -573,8 +573,10 @@ metis.bia<- function(biaInputsFolder = "NA",
 
   print(paste("Bia output data written to: ",paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia.csv",sep=""), sep = ""))
 
-  data.table::fwrite(dataBia,
+  if (file.exists(paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia.csv",sep=""))){
+    unlink(paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia.csv",sep=""),recursive=T)}
 
+  data.table::fwrite(dataBia,
                      file = paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia.csv",sep=""),row.names = F, append=F)
 
 

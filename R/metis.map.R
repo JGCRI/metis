@@ -220,6 +220,20 @@ if(!is.null(dataGrid)){
     shape_ras[shape_ras==0] <- NA
     raster<-raster::mask(raster,shape_ras)
     raster<-methods::as(raster, "SpatialPixelsDataFrame")
+    # # Shape Size Boudnary
+    # shapeX<-abs(shape@bbox[1,1]-shape@bbox[1,2]);shapeX
+    # shapeY<-abs(shape@bbox[2,1]-shape@bbox[2,2]);shapeY
+    # # Grid Cell size boundary
+    # gridX <- abs(shape_ras@extent[1]-shape_ras@extent[2]);gridX
+    # gridY <- abs(shape_ras@extent[3]-shape_ras@extent[4]);gridY
+    # if((gridX*gridY)<(shapeX*shapeY)){
+    #   raster<-raster::mask(raster,shape)
+    #   raster<-methods::as(raster, "SpatialPixelsDataFrame")
+    #   raster@bbox<-shape@bbox}else{
+    #     raster<-raster::mask(raster,shape_ras)
+    #     raster<-methods::as(raster, "SpatialPixelsDataFrame")}
+    #raster<-raster::mask(raster,shape)
+    #raster<-methods::as(raster, "SpatialPixelsDataFrame")
     raster@data<-Filter(function(x)!all(is.na(x)), raster@data)
     # Replace spaces because raster::stack(raster) will add periods which then don't correspond to fillColumn names
     fillColumn<-gsub("\\ ",".",fillColumn)
