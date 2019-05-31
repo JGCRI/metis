@@ -41,7 +41,10 @@ library(tools)
 # Prepare Polygons
 #----------------
 
-countryName= "Japan"
+#countryName= "Japan"
+#countryName= "Colombia"
+countryName= "Argentina"
+
 countryName <- tools::toTitleCase(countryName); countryName
 
 
@@ -189,6 +192,9 @@ queryxml="metisQueries.xml"
 queriesSelect = "All"      #andym
 regionsSelect <- c('Argentina','Japan')
 #regionsSelect <- c('Argentina', 'Colombia')
+#regionsSelect <- c('Japan', 'Colombia')
+#regionsSelect <- c('Colombia')
+#regionsSelect <- c('Argentina')
 paramsSelect<- c("elecByTech", "elecCapBySubsector")
 
 reReadData=F
@@ -201,6 +207,8 @@ biaScenarioAssign="Eg1"
 gridChoice<-"grid_025"
 
 diagnosticsON<-F
+#diagnosticsON<-T
+
 
 #subsectorNAdistribute = "totalOther"
 subsectorNAdistribute = "even"
@@ -247,6 +255,7 @@ dataBia2<-metis.bia(
 dataBia2<-dataBia2%>%select(-value, -origValue)%>%
   dplyr::mutate(aggType = "vol")%>%
   dplyr::rename(lat = gridlat, lon = gridlon, class = class1, value = valueDistrib, origValue = origValueDistrib)
+
 
 dataBia2 <-  dataBia2 %>%
   ungroup() %>%
