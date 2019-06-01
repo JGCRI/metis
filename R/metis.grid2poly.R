@@ -402,7 +402,7 @@ metis.grid2poly<- function(grid=NULL,
             dfx<-data.frame()
 
             for (i in seq(w)){
-              if(!is.null(w[[i]]))
+              if(!is.null(w[[i]])) {
                 x<-as.data.frame(w[[i]]) %>% dplyr::mutate(weight=weight*100)
               x$ID<-shape@data[[ subRegCol]][[i]]
 
@@ -413,6 +413,7 @@ metis.grid2poly<- function(grid=NULL,
                 dplyr::bind_cols(x%>%dplyr::select(ID));
               #assign(paste0("df", i), x)
               dfx<-rbind.data.frame(dfx,x1)
+              }
             }
             names(dfx)[names(dfx)=="ID"]<- subRegCol;
             polyDatax<-dfx%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(round(sum(.,na.rm=T),2)))%>%tibble::as_tibble()

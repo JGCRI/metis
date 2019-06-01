@@ -16,10 +16,10 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   boundaryRegShpFile = NULL, boundaryRegCol = NULL,
   boundaryRegionsSelect = NULL, fillcolorNA = NULL,
-  extendedFillColor = "grey75", extendedBGColor = "lightblue1",
-  extendedHighLightColor = "cornsilk1", extendedLabelsColor = "grey30",
-  extdendedLabelSize = 0.7, extendedShape = NULL,
-  extendedShapeCol = NULL, expandPercent = 2,
+  extendedLabels = T, extendedFillColor = "grey75",
+  extendedBGColor = "lightblue1", extendedHighLightColor = "cornsilk1",
+  extendedLabelsColor = "grey30", extdendedLabelSize = 0.7,
+  extendedShape = NULL, extendedShapeCol = NULL, expandPercent = 2,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 9, figHeight = 7, scaleRange = NULL,
   paramsSelect = "All", indvScenarios = NULL, GCMRCPSSPPol = F,
@@ -90,6 +90,8 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{boundaryRegionsSelect}{Default = NULL,}
 
 \item{fillcolorNA}{Default = NULL}
+
+\item{extendedLabels}{Default = T}
 
 \item{extendedFillColor}{Default ="grey75",}
 

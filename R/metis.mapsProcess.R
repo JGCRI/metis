@@ -240,7 +240,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
       for(grid_i in gridDataTables){
         if(file.exists(grid_i)){
-          gridTblNew<-data.table::fread(paste(grid_i))%>%tibble::as.tibble()
+          gridTblNew<-data.table::fread(paste(grid_i))%>%tibble::as_tibble()
           gridTbl<-dplyr::bind_rows(gridTbl,gridTblNew)
           rm(gridTblNew)
         } else {stop(paste(grid_i," does not exist"))}
@@ -249,7 +249,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
       # Join relevant colors and classes using the mapping file if it exists
       if(!"classPalette" %in% names(gridTbl)){
         if(file.exists(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))){
-          map<-data.table::fread(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))%>%tibble::as.tibble()
+          map<-data.table::fread(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))%>%tibble::as_tibble()
           gridTbl<-gridTbl%>%dplyr::left_join(map,by=c("param","units","class"))
         }}
 
@@ -299,12 +299,12 @@ metis.mapProcess<-function(polygonDataTables=NULL,
       if(class(polygonDataTables)!="character"){stop("polygonDataTables neither .csv file path nor dataframe or tibble")}
       for(i in polygonDataTables){
         if(file.exists(i)){
-          shapeTblNew<-data.table::fread(paste(i))%>%tibble::as.tibble()
+          shapeTblNew<-data.table::fread(paste(i))%>%tibble::as_tibble()
 
           # Join relevant colors and classes using the mapping file if it exists
           if(!"classPalette" %in% names(shapeTblNew)){
             if(file.exists(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))){
-              map<-data.table::fread(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))%>%tibble::as.tibble()
+              map<-data.table::fread(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))%>%tibble::as_tibble()
               shapeTblNew<-shapeTblNew%>%dplyr::left_join(map,by=c("param","units","class"))
             }else{"subregional mapping not found. Using defaults."}}
 

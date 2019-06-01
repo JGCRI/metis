@@ -12,15 +12,12 @@ metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
   copySingleTethysScenbyXanthos = NULL, xanthosFolder = "NA",
   xanthosFiles = "NA", xanthosScenarioAssign = "NA",
   xanthosCoordinatesPath = "NA", xanthosGridAreaHecsPath = "NA",
-  biaFolder = "NA", biaFiles = "NA", biaScenarioAssign = "NA",
-  zelusFolder = "NA", zelusScenario = "NA", zelusUnits = "NA",
-  zelusFiles = "NA", scarcityXanthosRollMeanWindow = 10,
-  spanLowess = 0.25, popFolder = "NA", popFiles = "NA",
-  popUnits = "NA", dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  reReadData = 1, gridMetisData = paste(getwd(),
-  "/outputs/Grids/gridMetis.RData", sep = ""), sqliteUSE = F,
-  sqliteDBNamePath = paste(getwd(), "/outputs/Grids/gridMetis.sqlite",
-  sep = ""))
+  scarcityXanthosRollMeanWindow = 10, spanLowess = 0.25,
+  popFolder = "NA", popFiles = "NA", popUnits = "NA",
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), reReadData = 1,
+  gridMetisData = paste(getwd(), "/outputs/Grids/gridMetis.RData", sep =
+  ""), sqliteUSE = F, sqliteDBNamePath = paste(getwd(),
+  "/outputs/Grids/gridMetis.sqlite", sep = ""))
 }
 \arguments{
 \item{demeterFolder}{Full path to demeter outputs}
@@ -50,20 +47,6 @@ metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
 \item{xanthosCoordinatesPath}{paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")}
 
 \item{xanthosGridAreaHecsPath}{=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/reference/Grid_Areas_ID.csv",sep=""),}
-
-\item{biaFolder}{andym Bia Folder Path}
-
-\item{biaFiles}{andym Bia Files to Read}
-
-\item{biaScenarioAssign}{andym Default "NA". Scenario name if testing a single scenario.}
-
-\item{zelusFolder}{andym Full path to zelus outputs}
-
-\item{zelusScenario}{andym Scenario name for zelus run}
-
-\item{zelusUnits}{andym No Default}
-
-\item{zelusFiles}{andym Default =c(?_?'edtrnsp','edbld','edindus'?_?)}
 
 \item{scarcityXanthosRollMeanWindow}{Default = 10,}
 

@@ -1,0 +1,1063 @@
+"scenario","region","param","sources","x","xLabel","vintage","units","aggregate","origScen","origQuery","origUnits","origX","value"
+"Eg1","Japan","aggLandAlloc","Sources",1975,"Year","Vint_1975","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",1975,358.98965970474
+"Eg1","Japan","aggLandAlloc","Sources",1990,"Year","Vint_1990","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",1990,358.98956096976
+"Eg1","Japan","aggLandAlloc","Sources",2005,"Year","Vint_2005","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2005,358.98974580172
+"Eg1","Japan","aggLandAlloc","Sources",2010,"Year","Vint_2010","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2010,358.9898380737
+"Eg1","Japan","aggLandAlloc","Sources",2015,"Year","Vint_2015","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2015,358.98992818604
+"Eg1","Japan","aggLandAlloc","Sources",2020,"Year","Vint_2020","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2020,358.98985098978
+"Eg1","Japan","aggLandAlloc","Sources",2025,"Year","Vint_2025","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2025,358.98994625743
+"Eg1","Japan","aggLandAlloc","Sources",2030,"Year","Vint_2030","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2030,358.98987946717
+"Eg1","Japan","aggLandAlloc","Sources",2035,"Year","Vint_2035","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2035,358.98990805046
+"Eg1","Japan","aggLandAlloc","Sources",2040,"Year","Vint_2040","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2040,358.98999956623
+"Eg1","Japan","aggLandAlloc","Sources",2045,"Year","Vint_2045","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2045,358.98987438713
+"Eg1","Japan","aggLandAlloc","Sources",2050,"Year","Vint_2050","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2050,358.98991606058
+"Eg1","Japan","aggLandAlloc","Sources",2055,"Year","Vint_2055","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2055,358.98994656409
+"Eg1","Japan","aggLandAlloc","Sources",2060,"Year","Vint_2060","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2060,358.98995312237
+"Eg1","Japan","aggLandAlloc","Sources",2065,"Year","Vint_2065","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2065,358.98984898238
+"Eg1","Japan","aggLandAlloc","Sources",2070,"Year","Vint_2070","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2070,358.98984850582
+"Eg1","Japan","aggLandAlloc","Sources",2075,"Year","Vint_2075","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2075,358.98984578781
+"Eg1","Japan","aggLandAlloc","Sources",2080,"Year","Vint_2080","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2080,358.98988581866
+"Eg1","Japan","aggLandAlloc","Sources",2085,"Year","Vint_2085","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2085,358.98994761871
+"Eg1","Japan","aggLandAlloc","Sources",2090,"Year","Vint_2090","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2090,358.98985817285
+"Eg1","Japan","aggLandAlloc","Sources",2095,"Year","Vint_2095","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2095,358.98991220655
+"Eg1","Japan","aggLandAlloc","Sources",2100,"Year","Vint_2100","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2100,358.98983759877
+"Eg1","Japan","agProdBiomass",NA,2020,"Year","Vint_2020","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2020,6.73242299958339
+"Eg1","Japan","agProdBiomass",NA,2025,"Year","Vint_2025","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2025,12.9175849758334
+"Eg1","Japan","agProdBiomass",NA,2030,"Year","Vint_2030","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2030,21.3162862622224
+"Eg1","Japan","agProdBiomass",NA,2035,"Year","Vint_2035","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2035,31.7159820133336
+"Eg1","Japan","agProdBiomass",NA,2040,"Year","Vint_2040","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2040,37.5377203763892
+"Eg1","Japan","agProdBiomass",NA,2045,"Year","Vint_2045","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2045,43.6034414019448
+"Eg1","Japan","agProdBiomass",NA,2050,"Year","Vint_2050","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2050,49.5821224961115
+"Eg1","Japan","agProdBiomass",NA,2055,"Year","Vint_2055","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2055,54.2303519733338
+"Eg1","Japan","agProdBiomass",NA,2060,"Year","Vint_2060","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2060,60.0391243425005
+"Eg1","Japan","agProdBiomass",NA,2065,"Year","Vint_2065","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2065,64.271754721945
+"Eg1","Japan","agProdBiomass",NA,2070,"Year","Vint_2070","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2070,69.0529200516672
+"Eg1","Japan","agProdBiomass",NA,2075,"Year","Vint_2075","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2075,74.0392628055561
+"Eg1","Japan","agProdBiomass",NA,2080,"Year","Vint_2080","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2080,78.852636908334
+"Eg1","Japan","agProdBiomass",NA,2085,"Year","Vint_2085","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2085,83.5359409388896
+"Eg1","Japan","agProdBiomass",NA,2090,"Year","Vint_2090","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2090,87.5224079722229
+"Eg1","Japan","agProdBiomass",NA,2095,"Year","Vint_2095","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2095,91.2421973194452
+"Eg1","Japan","agProdBiomass",NA,2100,"Year","Vint_2100","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2100,96.1410835777785
+"Eg1","Japan","agProdByCrop",NA,1975,"Year","Vint_1975","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",1975,80.883973524188
+"Eg1","Japan","agProdByCrop",NA,1990,"Year","Vint_1990","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",1990,64.917896282175
+"Eg1","Japan","agProdByCrop",NA,2005,"Year","Vint_2005","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2005,56.280597518496
+"Eg1","Japan","agProdByCrop",NA,2010,"Year","Vint_2010","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2010,67.482473188386
+"Eg1","Japan","agProdByCrop",NA,2015,"Year","Vint_2015","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2015,67.297021121084
+"Eg1","Japan","agProdByCrop",NA,2020,"Year","Vint_2020","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2020,67.934182043325
+"Eg1","Japan","agProdByCrop",NA,2025,"Year","Vint_2025","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2025,68.642982986353
+"Eg1","Japan","agProdByCrop",NA,2030,"Year","Vint_2030","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2030,68.984735294936
+"Eg1","Japan","agProdByCrop",NA,2035,"Year","Vint_2035","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2035,68.438316634379
+"Eg1","Japan","agProdByCrop",NA,2040,"Year","Vint_2040","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2040,67.690186845274
+"Eg1","Japan","agProdByCrop",NA,2045,"Year","Vint_2045","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2045,66.652872785701
+"Eg1","Japan","agProdByCrop",NA,2050,"Year","Vint_2050","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2050,65.348551548723
+"Eg1","Japan","agProdByCrop",NA,2055,"Year","Vint_2055","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2055,64.933914882345
+"Eg1","Japan","agProdByCrop",NA,2060,"Year","Vint_2060","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2060,64.245050508854
+"Eg1","Japan","agProdByCrop",NA,2065,"Year","Vint_2065","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2065,63.309003129221
+"Eg1","Japan","agProdByCrop",NA,2070,"Year","Vint_2070","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2070,62.211287220001
+"Eg1","Japan","agProdByCrop",NA,2075,"Year","Vint_2075","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2075,60.936975131712
+"Eg1","Japan","agProdByCrop",NA,2080,"Year","Vint_2080","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2080,59.522612517364
+"Eg1","Japan","agProdByCrop",NA,2085,"Year","Vint_2085","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2085,57.978371089564
+"Eg1","Japan","agProdByCrop",NA,2090,"Year","Vint_2090","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2090,56.32011249915
+"Eg1","Japan","agProdByCrop",NA,2095,"Year","Vint_2095","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2095,54.617985747682
+"Eg1","Japan","agProdByCrop",NA,2100,"Year","Vint_2100","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2100,52.858338724552
+"Eg1","Japan","agProdbyIrrRfd","Sources",1975,"Year","Vint_1975","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",1975,80.883973524188
+"Eg1","Japan","agProdbyIrrRfd","Sources",1990,"Year","Vint_1990","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",1990,64.917896282175
+"Eg1","Japan","agProdbyIrrRfd","Sources",2005,"Year","Vint_2005","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2005,56.280597518496
+"Eg1","Japan","agProdbyIrrRfd","Sources",2010,"Year","Vint_2010","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2010,67.482473188386
+"Eg1","Japan","agProdbyIrrRfd","Sources",2015,"Year","Vint_2015","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2015,67.297021121084
+"Eg1","Japan","agProdbyIrrRfd","Sources",2020,"Year","Vint_2020","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2020,67.934182043325
+"Eg1","Japan","agProdbyIrrRfd","Sources",2025,"Year","Vint_2025","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2025,68.642982986353
+"Eg1","Japan","agProdbyIrrRfd","Sources",2030,"Year","Vint_2030","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2030,68.984735294936
+"Eg1","Japan","agProdbyIrrRfd","Sources",2035,"Year","Vint_2035","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2035,68.438316634379
+"Eg1","Japan","agProdbyIrrRfd","Sources",2040,"Year","Vint_2040","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2040,67.690186845274
+"Eg1","Japan","agProdbyIrrRfd","Sources",2045,"Year","Vint_2045","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2045,66.652872785701
+"Eg1","Japan","agProdbyIrrRfd","Sources",2050,"Year","Vint_2050","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2050,65.348551548723
+"Eg1","Japan","agProdbyIrrRfd","Sources",2055,"Year","Vint_2055","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2055,64.933914882345
+"Eg1","Japan","agProdbyIrrRfd","Sources",2060,"Year","Vint_2060","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2060,64.245050508854
+"Eg1","Japan","agProdbyIrrRfd","Sources",2065,"Year","Vint_2065","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2065,63.309003129221
+"Eg1","Japan","agProdbyIrrRfd","Sources",2070,"Year","Vint_2070","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2070,62.211287220001
+"Eg1","Japan","agProdbyIrrRfd","Sources",2075,"Year","Vint_2075","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2075,60.936975131712
+"Eg1","Japan","agProdbyIrrRfd","Sources",2080,"Year","Vint_2080","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2080,59.522612517364
+"Eg1","Japan","agProdbyIrrRfd","Sources",2085,"Year","Vint_2085","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2085,57.978371089564
+"Eg1","Japan","agProdbyIrrRfd","Sources",2090,"Year","Vint_2090","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2090,56.32011249915
+"Eg1","Japan","agProdbyIrrRfd","Sources",2095,"Year","Vint_2095","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2095,54.617985747682
+"Eg1","Japan","agProdbyIrrRfd","Sources",2100,"Year","Vint_2100","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2100,52.858338724552
+"Eg1","Japan","agProdForest",NA,1975,"Year","Vint_1975","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",1975,0.1173008999
+"Eg1","Japan","agProdForest",NA,1990,"Year","Vint_1990","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",1990,0.0856952999
+"Eg1","Japan","agProdForest",NA,2005,"Year","Vint_2005","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2005,0.0437608
+"Eg1","Japan","agProdForest",NA,2010,"Year","Vint_2010","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2010,0.0399403
+"Eg1","Japan","agProdForest",NA,2015,"Year","Vint_2015","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2015,0.0410271554
+"Eg1","Japan","agProdForest",NA,2020,"Year","Vint_2020","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2020,0.0420750351
+"Eg1","Japan","agProdForest",NA,2025,"Year","Vint_2025","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2025,0.04305044
+"Eg1","Japan","agProdForest",NA,2030,"Year","Vint_2030","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2030,0.0439333816
+"Eg1","Japan","agProdForest",NA,2035,"Year","Vint_2035","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2035,0.0446723836
+"Eg1","Japan","agProdForest",NA,2040,"Year","Vint_2040","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2040,0.0453499457
+"Eg1","Japan","agProdForest",NA,2045,"Year","Vint_2045","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2045,0.0459211634
+"Eg1","Japan","agProdForest",NA,2050,"Year","Vint_2050","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2050,0.0463829953
+"Eg1","Japan","agProdForest",NA,2055,"Year","Vint_2055","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2055,0.0463920695
+"Eg1","Japan","agProdForest",NA,2060,"Year","Vint_2060","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2060,0.0463007228
+"Eg1","Japan","agProdForest",NA,2065,"Year","Vint_2065","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2065,0.0461180769
+"Eg1","Japan","agProdForest",NA,2070,"Year","Vint_2070","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2070,0.0458331283
+"Eg1","Japan","agProdForest",NA,2075,"Year","Vint_2075","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2075,0.0454631724
+"Eg1","Japan","agProdForest",NA,2080,"Year","Vint_2080","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2080,0.0450384219
+"Eg1","Japan","agProdForest",NA,2085,"Year","Vint_2085","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2085,0.0445299657
+"Eg1","Japan","agProdForest",NA,2090,"Year","Vint_2090","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2090,0.0439500985
+"Eg1","Japan","agProdForest",NA,2095,"Year","Vint_2095","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2095,0.043340274
+"Eg1","Japan","agProdForest",NA,2100,"Year","Vint_2100","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2100,0.0426913842
+"Eg1","Japan","co2emission","Sources",1975,"Year","Vint_1975","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",1975,579.682756766667
+"Eg1","Japan","co2emission","Sources",1990,"Year","Vint_1990","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",1990,1148.1526485
+"Eg1","Japan","co2emission","Sources",2005,"Year","Vint_2005","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2005,1304.89414997333
+"Eg1","Japan","co2emission","Sources",2010,"Year","Vint_2010","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2010,1197.38701316667
+"Eg1","Japan","co2emission","Sources",2015,"Year","Vint_2015","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2015,1257.92638022333
+"Eg1","Japan","co2emission","Sources",2020,"Year","Vint_2020","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2020,1255.67178491333
+"Eg1","Japan","co2emission","Sources",2025,"Year","Vint_2025","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2025,1252.06660674333
+"Eg1","Japan","co2emission","Sources",2030,"Year","Vint_2030","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2030,1242.77418775767
+"Eg1","Japan","co2emission","Sources",2035,"Year","Vint_2035","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2035,1222.86355874833
+"Eg1","Japan","co2emission","Sources",2040,"Year","Vint_2040","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2040,1207.80155946633
+"Eg1","Japan","co2emission","Sources",2045,"Year","Vint_2045","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2045,1189.27929358333
+"Eg1","Japan","co2emission","Sources",2050,"Year","Vint_2050","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2050,1168.006231645
+"Eg1","Japan","co2emission","Sources",2055,"Year","Vint_2055","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2055,1144.83459976233
+"Eg1","Japan","co2emission","Sources",2060,"Year","Vint_2060","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2060,1122.22024475
+"Eg1","Japan","co2emission","Sources",2065,"Year","Vint_2065","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2065,1100.65199674833
+"Eg1","Japan","co2emission","Sources",2070,"Year","Vint_2070","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2070,1078.050190657
+"Eg1","Japan","co2emission","Sources",2075,"Year","Vint_2075","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2075,1007.99347082867
+"Eg1","Japan","co2emission","Sources",2080,"Year","Vint_2080","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2080,984.658469725333
+"Eg1","Japan","co2emission","Sources",2085,"Year","Vint_2085","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2085,996.421943572
+"Eg1","Japan","co2emission","Sources",2090,"Year","Vint_2090","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2090,958.818823240667
+"Eg1","Japan","co2emission","Sources",2095,"Year","Vint_2095","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2095,914.352416508667
+"Eg1","Japan","co2emission","Sources",2100,"Year","Vint_2100","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2100,881.597451493
+"Eg1","Japan","co2emissionByEndUse","Sources",1975,"Year","Vint_1975","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",1975,579.682756766667
+"Eg1","Japan","co2emissionByEndUse","Sources",1980,"Year","Vint_1980","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",1980,19.3807647900533
+"Eg1","Japan","co2emissionByEndUse","Sources",1985,"Year","Vint_1985","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",1985,15.9118619892467
+"Eg1","Japan","co2emissionByEndUse","Sources",1990,"Year","Vint_1990","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",1990,1148.15264825221
+"Eg1","Japan","co2emissionByEndUse","Sources",1990,"Year","Vint_1990","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",1990,12.1916229337467
+"Eg1","Japan","co2emissionByEndUse","Sources",1995,"Year","Vint_1995","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",1995,22.542479734456
+"Eg1","Japan","co2emissionByEndUse","Sources",2000,"Year","Vint_2000","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2000,18.835796324906
+"Eg1","Japan","co2emissionByEndUse","Sources",2005,"Year","Vint_2005","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2005,1304.89415087146
+"Eg1","Japan","co2emissionByEndUse","Sources",2005,"Year","Vint_2005","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2005,15.460759168536
+"Eg1","Japan","co2emissionByEndUse","Sources",2010,"Year","Vint_2010","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2010,1197.38701621048
+"Eg1","Japan","co2emissionByEndUse","Sources",2010,"Year","Vint_2010","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2010,-20.7927440725825
+"Eg1","Japan","co2emissionByEndUse","Sources",2015,"Year","Vint_2015","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2015,1257.92638473025
+"Eg1","Japan","co2emissionByEndUse","Sources",2015,"Year","Vint_2015","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2015,-23.5924069831113
+"Eg1","Japan","co2emissionByEndUse","Sources",2020,"Year","Vint_2020","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2020,1255.67178976403
+"Eg1","Japan","co2emissionByEndUse","Sources",2020,"Year","Vint_2020","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2020,-17.6921421591457
+"Eg1","Japan","co2emissionByEndUse","Sources",2025,"Year","Vint_2025","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2025,1252.06661179872
+"Eg1","Japan","co2emissionByEndUse","Sources",2025,"Year","Vint_2025","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2025,-14.525038390973
+"Eg1","Japan","co2emissionByEndUse","Sources",2030,"Year","Vint_2030","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2030,1242.77420339042
+"Eg1","Japan","co2emissionByEndUse","Sources",2030,"Year","Vint_2030","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2030,-11.3485970674853
+"Eg1","Japan","co2emissionByEndUse","Sources",2035,"Year","Vint_2035","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2035,1222.8636082833
+"Eg1","Japan","co2emissionByEndUse","Sources",2035,"Year","Vint_2035","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2035,-5.56167113800467
+"Eg1","Japan","co2emissionByEndUse","Sources",2040,"Year","Vint_2040","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2040,1207.801671647
+"Eg1","Japan","co2emissionByEndUse","Sources",2040,"Year","Vint_2040","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2040,-7.4150321483183
+"Eg1","Japan","co2emissionByEndUse","Sources",2045,"Year","Vint_2045","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2045,1189.27947328108
+"Eg1","Japan","co2emissionByEndUse","Sources",2045,"Year","Vint_2045","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2045,-7.17565150879353
+"Eg1","Japan","co2emissionByEndUse","Sources",2050,"Year","Vint_2050","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2050,1168.00645881018
+"Eg1","Japan","co2emissionByEndUse","Sources",2050,"Year","Vint_2050","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2050,-6.0776077581384
+"Eg1","Japan","co2emissionByEndUse","Sources",2055,"Year","Vint_2055","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2055,1144.83485107175
+"Eg1","Japan","co2emissionByEndUse","Sources",2055,"Year","Vint_2055","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2055,-4.70431893306855
+"Eg1","Japan","co2emissionByEndUse","Sources",2060,"Year","Vint_2060","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2060,1122.22050215136
+"Eg1","Japan","co2emissionByEndUse","Sources",2060,"Year","Vint_2060","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2060,-4.09578562087112
+"Eg1","Japan","co2emissionByEndUse","Sources",2065,"Year","Vint_2065","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2065,1100.65223396275
+"Eg1","Japan","co2emissionByEndUse","Sources",2065,"Year","Vint_2065","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2065,-3.628980283027
+"Eg1","Japan","co2emissionByEndUse","Sources",2070,"Year","Vint_2070","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2070,1078.05038660459
+"Eg1","Japan","co2emissionByEndUse","Sources",2070,"Year","Vint_2070","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2070,-3.44903268094367
+"Eg1","Japan","co2emissionByEndUse","Sources",2075,"Year","Vint_2075","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2075,1007.9936071314
+"Eg1","Japan","co2emissionByEndUse","Sources",2075,"Year","Vint_2075","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2075,-3.47245272084187
+"Eg1","Japan","co2emissionByEndUse","Sources",2080,"Year","Vint_2080","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2080,984.658517642284
+"Eg1","Japan","co2emissionByEndUse","Sources",2080,"Year","Vint_2080","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2080,-3.62714558252273
+"Eg1","Japan","co2emissionByEndUse","Sources",2085,"Year","Vint_2085","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2085,996.421897077927
+"Eg1","Japan","co2emissionByEndUse","Sources",2085,"Year","Vint_2085","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2085,-3.8615052002721
+"Eg1","Japan","co2emissionByEndUse","Sources",2090,"Year","Vint_2090","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2090,958.818703002917
+"Eg1","Japan","co2emissionByEndUse","Sources",2090,"Year","Vint_2090","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2090,-4.16382485051834
+"Eg1","Japan","co2emissionByEndUse","Sources",2095,"Year","Vint_2095","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2095,914.352215375892
+"Eg1","Japan","co2emissionByEndUse","Sources",2095,"Year","Vint_2095","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2095,-4.49556754788515
+"Eg1","Japan","co2emissionByEndUse","Sources",2100,"Year","Vint_2100","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2100,881.597144564584
+"Eg1","Japan","co2emissionByEndUse","Sources",2100,"Year","Vint_2100","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2100,-4.80019868949738
+"Eg1","Japan","elecByTech","Sources",1990,"Year","Vint_1990","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",1990,835.512886111118
+"Eg1","Japan","elecByTech","Sources",2005,"Year","Vint_2005","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2005,1089.91063333334
+"Eg1","Japan","elecByTech","Sources",2010,"Year","Vint_2010","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2010,1110.75030277779
+"Eg1","Japan","elecByTech","Sources",2015,"Year","Vint_2015","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2015,1259.12910230557
+"Eg1","Japan","elecByTech","Sources",2020,"Year","Vint_2020","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2020,1266.1819892389
+"Eg1","Japan","elecByTech","Sources",2025,"Year","Vint_2025","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2025,1268.15853485834
+"Eg1","Japan","elecByTech","Sources",2030,"Year","Vint_2030","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2030,1273.34658444168
+"Eg1","Japan","elecByTech","Sources",2035,"Year","Vint_2035","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2035,1266.87410477501
+"Eg1","Japan","elecByTech","Sources",2040,"Year","Vint_2040","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2040,1264.01661094168
+"Eg1","Japan","elecByTech","Sources",2045,"Year","Vint_2045","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2045,1255.83799427501
+"Eg1","Japan","elecByTech","Sources",2050,"Year","Vint_2050","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2050,1242.73953223057
+"Eg1","Japan","elecByTech","Sources",2055,"Year","Vint_2055","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2055,1226.06647247223
+"Eg1","Japan","elecByTech","Sources",2060,"Year","Vint_2060","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2060,1205.34321566668
+"Eg1","Japan","elecByTech","Sources",2065,"Year","Vint_2065","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2065,1180.74097133334
+"Eg1","Japan","elecByTech","Sources",2070,"Year","Vint_2070","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2070,1151.46998491668
+"Eg1","Japan","elecByTech","Sources",2075,"Year","Vint_2075","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2075,1119.67059808334
+"Eg1","Japan","elecByTech","Sources",2080,"Year","Vint_2080","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2080,1092.25457600001
+"Eg1","Japan","elecByTech","Sources",2085,"Year","Vint_2085","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2085,1064.20438891668
+"Eg1","Japan","elecByTech","Sources",2090,"Year","Vint_2090","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2090,1025.95246622223
+"Eg1","Japan","elecByTech","Sources",2095,"Year","Vint_2095","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2095,991.53682047223
+"Eg1","Japan","elecByTech","Sources",2100,"Year","Vint_2100","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2100,953.410993055563
+"Eg1","Japan","elecCapBySubsector","Sources",1990,"Year","Vint_1990","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",1990,122.12435782239
+"Eg1","Japan","elecCapBySubsector","Sources",2005,"Year","Vint_2005","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2005,156.193766239686
+"Eg1","Japan","elecCapBySubsector","Sources",2010,"Year","Vint_2010","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2010,161.100644865132
+"Eg1","Japan","elecCapBySubsector","Sources",2015,"Year","Vint_2015","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2015,183.169797950411
+"Eg1","Japan","elecCapBySubsector","Sources",2020,"Year","Vint_2020","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2020,184.625827552752
+"Eg1","Japan","elecCapBySubsector","Sources",2025,"Year","Vint_2025","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2025,185.584629574191
+"Eg1","Japan","elecCapBySubsector","Sources",2030,"Year","Vint_2030","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2030,187.413528360792
+"Eg1","Japan","elecCapBySubsector","Sources",2035,"Year","Vint_2035","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2035,187.952878519553
+"Eg1","Japan","elecCapBySubsector","Sources",2040,"Year","Vint_2040","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2040,187.679818215338
+"Eg1","Japan","elecCapBySubsector","Sources",2045,"Year","Vint_2045","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2045,188.003662957721
+"Eg1","Japan","elecCapBySubsector","Sources",2050,"Year","Vint_2050","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2050,188.213113941951
+"Eg1","Japan","elecCapBySubsector","Sources",2055,"Year","Vint_2055","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2055,187.401769012284
+"Eg1","Japan","elecCapBySubsector","Sources",2060,"Year","Vint_2060","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2060,188.237796506717
+"Eg1","Japan","elecCapBySubsector","Sources",2065,"Year","Vint_2065","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2065,185.492050957094
+"Eg1","Japan","elecCapBySubsector","Sources",2070,"Year","Vint_2070","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2070,182.354642119285
+"Eg1","Japan","elecCapBySubsector","Sources",2075,"Year","Vint_2075","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2075,179.516122651917
+"Eg1","Japan","elecCapBySubsector","Sources",2080,"Year","Vint_2080","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2080,175.612035290157
+"Eg1","Japan","elecCapBySubsector","Sources",2085,"Year","Vint_2085","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2085,172.392988919162
+"Eg1","Japan","elecCapBySubsector","Sources",2090,"Year","Vint_2090","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2090,165.356802951196
+"Eg1","Japan","elecCapBySubsector","Sources",2095,"Year","Vint_2095","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2095,161.613858438518
+"Eg1","Japan","elecCapBySubsector","Sources",2100,"Year","Vint_2100","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2100,156.707218123456
+"Eg1","Japan","finalNrgbySec","Sources",1975,"Year","Vint_1975","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",1975,2747.61390388891
+"Eg1","Japan","finalNrgbySec","Sources",1990,"Year","Vint_1990","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",1990,4193.83421500003
+"Eg1","Japan","finalNrgbySec","Sources",2005,"Year","Vint_2005","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2005,4837.07804777782
+"Eg1","Japan","finalNrgbySec","Sources",2010,"Year","Vint_2010","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2010,4529.28448694448
+"Eg1","Japan","finalNrgbySec","Sources",2015,"Year","Vint_2015","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2015,4534.61619555559
+"Eg1","Japan","finalNrgbySec","Sources",2020,"Year","Vint_2020","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2020,4513.27928133337
+"Eg1","Japan","finalNrgbySec","Sources",2025,"Year","Vint_2025","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2025,4497.40009505559
+"Eg1","Japan","finalNrgbySec","Sources",2030,"Year","Vint_2030","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2030,4463.1687019167
+"Eg1","Japan","finalNrgbySec","Sources",2035,"Year","Vint_2035","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2035,4399.29166112226
+"Eg1","Japan","finalNrgbySec","Sources",2040,"Year","Vint_2040","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2040,4332.48167427781
+"Eg1","Japan","finalNrgbySec","Sources",2045,"Year","Vint_2045","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2045,4260.32284513892
+"Eg1","Japan","finalNrgbySec","Sources",2050,"Year","Vint_2050","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2050,4189.28988636114
+"Eg1","Japan","finalNrgbySec","Sources",2055,"Year","Vint_2055","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2055,4106.90323808337
+"Eg1","Japan","finalNrgbySec","Sources",2060,"Year","Vint_2060","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2060,4026.4208049167
+"Eg1","Japan","finalNrgbySec","Sources",2065,"Year","Vint_2065","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2065,3937.31547430559
+"Eg1","Japan","finalNrgbySec","Sources",2070,"Year","Vint_2070","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2070,3842.11117444448
+"Eg1","Japan","finalNrgbySec","Sources",2075,"Year","Vint_2075","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2075,3741.12006650003
+"Eg1","Japan","finalNrgbySec","Sources",2080,"Year","Vint_2080","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2080,3634.8711676667
+"Eg1","Japan","finalNrgbySec","Sources",2085,"Year","Vint_2085","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2085,3522.78468005558
+"Eg1","Japan","finalNrgbySec","Sources",2090,"Year","Vint_2090","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2090,3418.04551697225
+"Eg1","Japan","finalNrgbySec","Sources",2095,"Year","Vint_2095","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2095,3308.99168833336
+"Eg1","Japan","finalNrgbySec","Sources",2100,"Year","Vint_2100","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2100,3206.66689061391
+"Eg1","Japan","gdp","Sources",1975,"Year","Vint_1975","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",1975,1545.71
+"Eg1","Japan","gdp","Sources",1990,"Year","Vint_1990","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",1990,3013.25
+"Eg1","Japan","gdp","Sources",2005,"Year","Vint_2005","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2005,3577.27
+"Eg1","Japan","gdp","Sources",2010,"Year","Vint_2010","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2010,3637.17
+"Eg1","Japan","gdp","Sources",2015,"Year","Vint_2015","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2015,3760.53
+"Eg1","Japan","gdp","Sources",2020,"Year","Vint_2020","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2020,3903.35
+"Eg1","Japan","gdp","Sources",2025,"Year","Vint_2025","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2025,4111.43
+"Eg1","Japan","gdp","Sources",2030,"Year","Vint_2030","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2030,4304.12
+"Eg1","Japan","gdp","Sources",2035,"Year","Vint_2035","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2035,4447.72
+"Eg1","Japan","gdp","Sources",2040,"Year","Vint_2040","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2040,4561.46
+"Eg1","Japan","gdp","Sources",2045,"Year","Vint_2045","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2045,4685.4
+"Eg1","Japan","gdp","Sources",2050,"Year","Vint_2050","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2050,4805.36
+"Eg1","Japan","gdp","Sources",2055,"Year","Vint_2055","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2055,4939.61
+"Eg1","Japan","gdp","Sources",2060,"Year","Vint_2060","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2060,5086.75
+"Eg1","Japan","gdp","Sources",2065,"Year","Vint_2065","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2065,5230.53
+"Eg1","Japan","gdp","Sources",2070,"Year","Vint_2070","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2070,5369.69
+"Eg1","Japan","gdp","Sources",2075,"Year","Vint_2075","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2075,5499.39
+"Eg1","Japan","gdp","Sources",2080,"Year","Vint_2080","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2080,5623.23
+"Eg1","Japan","gdp","Sources",2085,"Year","Vint_2085","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2085,5748.79
+"Eg1","Japan","gdp","Sources",2090,"Year","Vint_2090","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2090,5878.12
+"Eg1","Japan","gdp","Sources",2095,"Year","Vint_2095","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2095,6009.4
+"Eg1","Japan","gdp","Sources",2100,"Year","Vint_2100","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2100,6138.39
+"Eg1","Japan","gdpGrowthRate","Sources",1990,"Year","Vint_1990","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",1990,14.2829466768893
+"Eg1","Japan","gdpGrowthRate","Sources",2005,"Year","Vint_2005","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2005,3.49117339137464
+"Eg1","Japan","gdpGrowthRate","Sources",2010,"Year","Vint_2010","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2010,0.332671468489876
+"Eg1","Japan","gdpGrowthRate","Sources",2015,"Year","Vint_2015","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2015,0.669309897760595
+"Eg1","Japan","gdpGrowthRate","Sources",2020,"Year","Vint_2020","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2020,0.748290885022129
+"Eg1","Japan","gdpGrowthRate","Sources",2025,"Year","Vint_2025","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2025,1.04412819092716
+"Eg1","Japan","gdpGrowthRate","Sources",2030,"Year","Vint_2030","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2030,0.920244523815095
+"Eg1","Japan","gdpGrowthRate","Sources",2035,"Year","Vint_2035","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2035,0.658536917820096
+"Eg1","Japan","gdpGrowthRate","Sources",2040,"Year","Vint_2040","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2040,0.506300237711055
+"Eg1","Japan","gdpGrowthRate","Sources",2045,"Year","Vint_2045","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2045,0.537610832287294
+"Eg1","Japan","gdpGrowthRate","Sources",2050,"Year","Vint_2050","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2050,0.506893794785235
+"Eg1","Japan","gdpGrowthRate","Sources",2055,"Year","Vint_2055","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2055,0.552609668144144
+"Eg1","Japan","gdpGrowthRate","Sources",2060,"Year","Vint_2060","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2060,0.588781324289545
+"Eg1","Japan","gdpGrowthRate","Sources",2065,"Year","Vint_2065","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2065,0.559026586951905
+"Eg1","Japan","gdpGrowthRate","Sources",2070,"Year","Vint_2070","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2070,0.526532683878855
+"Eg1","Japan","gdpGrowthRate","Sources",2075,"Year","Vint_2075","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2075,0.478481047330948
+"Eg1","Japan","gdpGrowthRate","Sources",2080,"Year","Vint_2080","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2080,0.446374393900584
+"Eg1","Japan","gdpGrowthRate","Sources",2085,"Year","Vint_2085","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2085,0.442640089446567
+"Eg1","Japan","gdpGrowthRate","Sources",2090,"Year","Vint_2090","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2090,0.445943080187239
+"Eg1","Japan","gdpGrowthRate","Sources",2095,"Year","Vint_2095","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2095,0.442735732600563
+"Eg1","Japan","gdpGrowthRate","Sources",2100,"Year","Vint_2100","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2100,0.425655005156877
+"Eg1","Japan","gdpPerCapita","Sources",1975,"Year","Vint_1975","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",1975,13.9494
+"Eg1","Japan","gdpPerCapita","Sources",1990,"Year","Vint_1990","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",1990,24.6481
+"Eg1","Japan","gdpPerCapita","Sources",2005,"Year","Vint_2005","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2005,28.3028
+"Eg1","Japan","gdpPerCapita","Sources",2010,"Year","Vint_2010","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2010,28.7442
+"Eg1","Japan","gdpPerCapita","Sources",2015,"Year","Vint_2015","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2015,29.8206
+"Eg1","Japan","gdpPerCapita","Sources",2020,"Year","Vint_2020","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2020,31.2736
+"Eg1","Japan","gdpPerCapita","Sources",2025,"Year","Vint_2025","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2025,33.467
+"Eg1","Japan","gdpPerCapita","Sources",2030,"Year","Vint_2030","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2030,35.7455
+"Eg1","Japan","gdpPerCapita","Sources",2035,"Year","Vint_2035","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2035,37.7982
+"Eg1","Japan","gdpPerCapita","Sources",2040,"Year","Vint_2040","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2040,39.7499
+"Eg1","Japan","gdpPerCapita","Sources",2045,"Year","Vint_2045","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2045,41.9433
+"Eg1","Japan","gdpPerCapita","Sources",2050,"Year","Vint_2050","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2050,44.2446
+"Eg1","Japan","gdpPerCapita","Sources",2055,"Year","Vint_2055","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2055,46.8108
+"Eg1","Japan","gdpPerCapita","Sources",2060,"Year","Vint_2060","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2060,49.668
+"Eg1","Japan","gdpPerCapita","Sources",2065,"Year","Vint_2065","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2065,52.783
+"Eg1","Japan","gdpPerCapita","Sources",2070,"Year","Vint_2070","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2070,56.1571
+"Eg1","Japan","gdpPerCapita","Sources",2075,"Year","Vint_2075","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2075,59.6968
+"Eg1","Japan","gdpPerCapita","Sources",2080,"Year","Vint_2080","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2080,63.4032
+"Eg1","Japan","gdpPerCapita","Sources",2085,"Year","Vint_2085","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2085,67.4962
+"Eg1","Japan","gdpPerCapita","Sources",2090,"Year","Vint_2090","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2090,71.9599
+"Eg1","Japan","gdpPerCapita","Sources",2095,"Year","Vint_2095","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2095,76.7719
+"Eg1","Japan","gdpPerCapita","Sources",2100,"Year","Vint_2100","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2100,81.9097
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",1975,"Year","Vint_1975","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",1975,0.0140342326
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",1975,"Year","Vint_1975","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",1975,579.682756766667
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",1990,"Year","Vint_1990","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",1990,0.02875425234571
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",1990,"Year","Vint_1990","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",1990,1148.1526485
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2005,"Year","Vint_2005","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2005,0.04733965923944
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2005,"Year","Vint_2005","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2005,1304.89414997333
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2010,"Year","Vint_2010","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2010,0.06483159434446
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2010,"Year","Vint_2010","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2010,1197.38701316667
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2015,"Year","Vint_2015","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2015,0.06550768382882
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2015,"Year","Vint_2015","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2015,1257.92638022333
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2020,"Year","Vint_2020","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2020,0.09129475810024
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2020,"Year","Vint_2020","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2020,1255.67178491333
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2025,"Year","Vint_2025","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2025,0.09107579747208
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2025,"Year","Vint_2025","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2025,1252.06660674333
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2030,"Year","Vint_2030","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2030,0.1137394037577
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2030,"Year","Vint_2030","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2030,1242.77418775767
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2035,"Year","Vint_2035","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2035,0.11185467822076
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2035,"Year","Vint_2035","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2035,1222.86355874833
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2040,"Year","Vint_2040","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2040,0.10969469463326
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2040,"Year","Vint_2040","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2040,1207.80155946633
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2045,"Year","Vint_2045","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2045,0.10739232391452
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2045,"Year","Vint_2045","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2045,1189.27929358333
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2050,"Year","Vint_2050","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2050,0.10493203846958
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2050,"Year","Vint_2050","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2050,1168.006231645
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2055,"Year","Vint_2055","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2055,0.10242896269482
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2055,"Year","Vint_2055","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2055,1144.83459976233
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2060,"Year","Vint_2060","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2060,0.09988729235868
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2060,"Year","Vint_2060","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2060,1122.22024475
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2065,"Year","Vint_2065","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2065,0.09705102173022
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2065,"Year","Vint_2065","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2065,1100.65199674833
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2070,"Year","Vint_2070","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2070,0.0940317450756
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2070,"Year","Vint_2070","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2070,1078.050190657
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2075,"Year","Vint_2075","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2075,0.0908872431562
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2075,"Year","Vint_2075","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2075,1007.99347082867
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2080,"Year","Vint_2080","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2080,0.08771976888612
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2080,"Year","Vint_2080","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2080,984.658469725333
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2085,"Year","Vint_2085","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2085,0.0844346968841
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2085,"Year","Vint_2085","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2085,996.421943572
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2090,"Year","Vint_2090","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2090,0.08115890603248
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2090,"Year","Vint_2090","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2090,958.818823240667
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2095,"Year","Vint_2095","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2095,0.07789680414972
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2095,"Year","Vint_2095","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2095,914.352416508667
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2100,"Year","Vint_2100","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2100,0.074646826718
+"Eg1","Japan","ghgEmissByGHGGROUPS","Sources",2100,"Year","Vint_2100","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2100,881.597451493
+"Eg1","Japan","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",1975,0.0140342326
+"Eg1","Japan","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",1975,579.682756766667
+"Eg1","Japan","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",1975,21.78817578
+"Eg1","Japan","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",1990,0.02875425234571
+"Eg1","Japan","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",1990,1148.1526485
+"Eg1","Japan","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",1990,25.4247074025
+"Eg1","Japan","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2005,0.04733965923944
+"Eg1","Japan","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2005,1304.89414997333
+"Eg1","Japan","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2005,12.9004903675
+"Eg1","Japan","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2010,0.06483159434446
+"Eg1","Japan","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2010,1197.38701316667
+"Eg1","Japan","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2010,12.8408289125
+"Eg1","Japan","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2015,0.06550768382882
+"Eg1","Japan","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2015,1257.92638022333
+"Eg1","Japan","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2015,12.473057245
+"Eg1","Japan","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2020,0.09129475810024
+"Eg1","Japan","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2020,1255.67178491333
+"Eg1","Japan","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2020,12.282670682425
+"Eg1","Japan","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2025,0.09107579747208
+"Eg1","Japan","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2025,1252.06660674333
+"Eg1","Japan","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2025,12.30056695425
+"Eg1","Japan","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2030,0.1137394037577
+"Eg1","Japan","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2030,1242.77418775767
+"Eg1","Japan","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2030,11.88275933015
+"Eg1","Japan","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2035,0.11185467822076
+"Eg1","Japan","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2035,1222.86355874833
+"Eg1","Japan","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2035,13.965978259025
+"Eg1","Japan","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2040,0.10969469463326
+"Eg1","Japan","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2040,1207.80155946633
+"Eg1","Japan","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2040,14.92641329495
+"Eg1","Japan","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2045,0.10739232391452
+"Eg1","Japan","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2045,1189.27929358333
+"Eg1","Japan","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2045,15.233533212575
+"Eg1","Japan","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2050,0.10493203846958
+"Eg1","Japan","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2050,1168.006231645
+"Eg1","Japan","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2050,15.63912657645
+"Eg1","Japan","ghgEmissionByGHG","Sources",2055,"Year","Vint_2055","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2055,0.10242896269482
+"Eg1","Japan","ghgEmissionByGHG","Sources",2055,"Year","Vint_2055","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2055,1144.83459976233
+"Eg1","Japan","ghgEmissionByGHG","Sources",2055,"Year","Vint_2055","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2055,15.990340213975
+"Eg1","Japan","ghgEmissionByGHG","Sources",2060,"Year","Vint_2060","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2060,0.09988729235868
+"Eg1","Japan","ghgEmissionByGHG","Sources",2060,"Year","Vint_2060","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2060,1122.22024475
+"Eg1","Japan","ghgEmissionByGHG","Sources",2060,"Year","Vint_2060","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2060,16.26561033775
+"Eg1","Japan","ghgEmissionByGHG","Sources",2065,"Year","Vint_2065","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2065,0.09705102173022
+"Eg1","Japan","ghgEmissionByGHG","Sources",2065,"Year","Vint_2065","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2065,1100.65199674833
+"Eg1","Japan","ghgEmissionByGHG","Sources",2065,"Year","Vint_2065","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2065,16.310352008625
+"Eg1","Japan","ghgEmissionByGHG","Sources",2070,"Year","Vint_2070","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2070,0.0940317450756
+"Eg1","Japan","ghgEmissionByGHG","Sources",2070,"Year","Vint_2070","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2070,1078.050190657
+"Eg1","Japan","ghgEmissionByGHG","Sources",2070,"Year","Vint_2070","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2070,16.208376457965
+"Eg1","Japan","ghgEmissionByGHG","Sources",2075,"Year","Vint_2075","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2075,0.0908872431562
+"Eg1","Japan","ghgEmissionByGHG","Sources",2075,"Year","Vint_2075","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2075,1007.99347082867
+"Eg1","Japan","ghgEmissionByGHG","Sources",2075,"Year","Vint_2075","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2075,16.104609596275
+"Eg1","Japan","ghgEmissionByGHG","Sources",2080,"Year","Vint_2080","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2080,0.08771976888612
+"Eg1","Japan","ghgEmissionByGHG","Sources",2080,"Year","Vint_2080","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2080,984.658469725333
+"Eg1","Japan","ghgEmissionByGHG","Sources",2080,"Year","Vint_2080","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2080,15.43515144695
+"Eg1","Japan","ghgEmissionByGHG","Sources",2085,"Year","Vint_2085","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2085,0.0844346968841
+"Eg1","Japan","ghgEmissionByGHG","Sources",2085,"Year","Vint_2085","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2085,996.421943572
+"Eg1","Japan","ghgEmissionByGHG","Sources",2085,"Year","Vint_2085","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2085,23.6267420858
+"Eg1","Japan","ghgEmissionByGHG","Sources",2090,"Year","Vint_2090","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2090,0.08115890603248
+"Eg1","Japan","ghgEmissionByGHG","Sources",2090,"Year","Vint_2090","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2090,958.818823240667
+"Eg1","Japan","ghgEmissionByGHG","Sources",2090,"Year","Vint_2090","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2090,71.71324030025
+"Eg1","Japan","ghgEmissionByGHG","Sources",2095,"Year","Vint_2095","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2095,0.07789680414972
+"Eg1","Japan","ghgEmissionByGHG","Sources",2095,"Year","Vint_2095","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2095,914.352416508667
+"Eg1","Japan","ghgEmissionByGHG","Sources",2095,"Year","Vint_2095","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2095,80.432032025725
+"Eg1","Japan","ghgEmissionByGHG","Sources",2100,"Year","Vint_2100","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2100,0.074646826718
+"Eg1","Japan","ghgEmissionByGHG","Sources",2100,"Year","Vint_2100","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2100,881.597451493
+"Eg1","Japan","ghgEmissionByGHG","Sources",2100,"Year","Vint_2100","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2100,95.75624317245
+"Eg1","Japan","irrWatConsBasin","Sources",1975,"Year","Vint_1975","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",1975,3.08594186302
+"Eg1","Japan","irrWatConsBasin","Sources",1990,"Year","Vint_1990","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",1990,2.45925046968
+"Eg1","Japan","irrWatConsBasin","Sources",2005,"Year","Vint_2005","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2005,2.05890874074
+"Eg1","Japan","irrWatConsBasin","Sources",2010,"Year","Vint_2010","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2010,1.75486316272
+"Eg1","Japan","irrWatConsBasin","Sources",2015,"Year","Vint_2015","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2015,1.78972674267
+"Eg1","Japan","irrWatConsBasin","Sources",2020,"Year","Vint_2020","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2020,1.847791112486
+"Eg1","Japan","irrWatConsBasin","Sources",2025,"Year","Vint_2025","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2025,1.905162123669
+"Eg1","Japan","irrWatConsBasin","Sources",2030,"Year","Vint_2030","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2030,1.951473153783
+"Eg1","Japan","irrWatConsBasin","Sources",2035,"Year","Vint_2035","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2035,2.028789905656
+"Eg1","Japan","irrWatConsBasin","Sources",2040,"Year","Vint_2040","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2040,2.085555979851
+"Eg1","Japan","irrWatConsBasin","Sources",2045,"Year","Vint_2045","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2045,2.12363798526
+"Eg1","Japan","irrWatConsBasin","Sources",2050,"Year","Vint_2050","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2050,2.14104265838
+"Eg1","Japan","irrWatConsBasin","Sources",2055,"Year","Vint_2055","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2055,2.16095010719
+"Eg1","Japan","irrWatConsBasin","Sources",2060,"Year","Vint_2060","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2060,2.16745778007
+"Eg1","Japan","irrWatConsBasin","Sources",2065,"Year","Vint_2065","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2065,2.15950482586
+"Eg1","Japan","irrWatConsBasin","Sources",2070,"Year","Vint_2070","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2070,2.1456775237
+"Eg1","Japan","irrWatConsBasin","Sources",2075,"Year","Vint_2075","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2075,2.12381005341
+"Eg1","Japan","irrWatConsBasin","Sources",2080,"Year","Vint_2080","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2080,2.0943956539
+"Eg1","Japan","irrWatConsBasin","Sources",2085,"Year","Vint_2085","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2085,2.05966322007
+"Eg1","Japan","irrWatConsBasin","Sources",2090,"Year","Vint_2090","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2090,2.01824247621
+"Eg1","Japan","irrWatConsBasin","Sources",2095,"Year","Vint_2095","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2095,1.97449784731
+"Eg1","Japan","irrWatConsBasin","Sources",2100,"Year","Vint_2100","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2100,1.93121188424
+"Eg1","Japan","irrWatWithBasin","Sources",1975,"Year","Vint_1975","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",1975,5.71470996617
+"Eg1","Japan","irrWatWithBasin","Sources",1990,"Year","Vint_1990","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",1990,4.55416789515
+"Eg1","Japan","irrWatWithBasin","Sources",2005,"Year","Vint_2005","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2005,3.81279195978
+"Eg1","Japan","irrWatWithBasin","Sources",2010,"Year","Vint_2010","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2010,3.24974215258
+"Eg1","Japan","irrWatWithBasin","Sources",2015,"Year","Vint_2015","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2015,3.31430842046
+"Eg1","Japan","irrWatWithBasin","Sources",2020,"Year","Vint_2020","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2020,3.421835063643
+"Eg1","Japan","irrWatWithBasin","Sources",2025,"Year","Vint_2025","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2025,3.528072687977
+"Eg1","Japan","irrWatWithBasin","Sources",2030,"Year","Vint_2030","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2030,3.613844352723
+"Eg1","Japan","irrWatWithBasin","Sources",2035,"Year","Vint_2035","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2035,3.75702088881
+"Eg1","Japan","irrWatWithBasin","Sources",2040,"Year","Vint_2040","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2040,3.86214859646
+"Eg1","Japan","irrWatWithBasin","Sources",2045,"Year","Vint_2045","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2045,3.932664842
+"Eg1","Japan","irrWatWithBasin","Sources",2050,"Year","Vint_2050","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2050,3.96489008856
+"Eg1","Japan","irrWatWithBasin","Sources",2055,"Year","Vint_2055","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2055,4.00176020795
+"Eg1","Japan","irrWatWithBasin","Sources",2060,"Year","Vint_2060","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2060,4.01381660108
+"Eg1","Japan","irrWatWithBasin","Sources",2065,"Year","Vint_2065","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2065,3.99908755595
+"Eg1","Japan","irrWatWithBasin","Sources",2070,"Year","Vint_2070","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2070,3.97347931789
+"Eg1","Japan","irrWatWithBasin","Sources",2075,"Year","Vint_2075","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2075,3.93298906851
+"Eg1","Japan","irrWatWithBasin","Sources",2080,"Year","Vint_2080","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2080,3.87851929617
+"Eg1","Japan","irrWatWithBasin","Sources",2085,"Year","Vint_2085","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2085,3.81419293466
+"Eg1","Japan","irrWatWithBasin","Sources",2090,"Year","Vint_2090","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2090,3.73748210217
+"Eg1","Japan","irrWatWithBasin","Sources",2095,"Year","Vint_2095","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2095,3.65648474971
+"Eg1","Japan","irrWatWithBasin","Sources",2100,"Year","Vint_2100","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2100,3.57632220134
+"Eg1","Japan","landIrrRfd","Sources",1975,"Year","Vint_1975","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",1975,0.03881278637774
+"Eg1","Japan","landIrrRfd","Sources",1990,"Year","Vint_1990","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",1990,0.03625746204176
+"Eg1","Japan","landIrrRfd","Sources",2005,"Year","Vint_2005","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2005,0.03464372442172
+"Eg1","Japan","landIrrRfd","Sources",2010,"Year","Vint_2010","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2010,0.0339154581937
+"Eg1","Japan","landIrrRfd","Sources",2015,"Year","Vint_2015","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2015,0.03366274134604
+"Eg1","Japan","landIrrRfd","Sources",2020,"Year","Vint_2020","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2020,0.03448219336978
+"Eg1","Japan","landIrrRfd","Sources",2025,"Year","Vint_2025","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2025,0.03525758456743
+"Eg1","Japan","landIrrRfd","Sources",2030,"Year","Vint_2030","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2030,0.03604383592717
+"Eg1","Japan","landIrrRfd","Sources",2035,"Year","Vint_2035","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2035,0.03719793622046
+"Eg1","Japan","landIrrRfd","Sources",2040,"Year","Vint_2040","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2040,0.03774831911623
+"Eg1","Japan","landIrrRfd","Sources",2045,"Year","Vint_2045","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2045,0.03803920842713
+"Eg1","Japan","landIrrRfd","Sources",2050,"Year","Vint_2050","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2050,0.03806961619058
+"Eg1","Japan","landIrrRfd","Sources",2055,"Year","Vint_2055","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2055,0.03826416263409
+"Eg1","Japan","landIrrRfd","Sources",2060,"Year","Vint_2060","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2060,0.03839600626237
+"Eg1","Japan","landIrrRfd","Sources",2065,"Year","Vint_2065","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2065,0.03823063248238
+"Eg1","Japan","landIrrRfd","Sources",2070,"Year","Vint_2070","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2070,0.03805012807582
+"Eg1","Japan","landIrrRfd","Sources",2075,"Year","Vint_2075","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2075,0.03778932046781
+"Eg1","Japan","landIrrRfd","Sources",2080,"Year","Vint_2080","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2080,0.03743656839866
+"Eg1","Japan","landIrrRfd","Sources",2085,"Year","Vint_2085","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2085,0.03701799166871
+"Eg1","Japan","landIrrRfd","Sources",2090,"Year","Vint_2090","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2090,0.03647867754285
+"Eg1","Japan","landIrrRfd","Sources",2095,"Year","Vint_2095","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2095,0.03590688058655
+"Eg1","Japan","landIrrRfd","Sources",2100,"Year","Vint_2100","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2100,0.03541499247877
+"Eg1","Japan","LUCemiss","Sources",1980,"Year","Vint_1980","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",1980,19.3807647900533
+"Eg1","Japan","LUCemiss","Sources",1985,"Year","Vint_1985","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",1985,15.9118619892467
+"Eg1","Japan","LUCemiss","Sources",1990,"Year","Vint_1990","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",1990,12.1916229337467
+"Eg1","Japan","LUCemiss","Sources",1995,"Year","Vint_1995","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",1995,22.542479734456
+"Eg1","Japan","LUCemiss","Sources",2000,"Year","Vint_2000","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2000,18.835796324906
+"Eg1","Japan","LUCemiss","Sources",2005,"Year","Vint_2005","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2005,15.460759168536
+"Eg1","Japan","LUCemiss","Sources",2010,"Year","Vint_2010","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2010,-20.7927440725825
+"Eg1","Japan","LUCemiss","Sources",2015,"Year","Vint_2015","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2015,-23.5924069831113
+"Eg1","Japan","LUCemiss","Sources",2020,"Year","Vint_2020","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2020,-17.6921421591457
+"Eg1","Japan","LUCemiss","Sources",2025,"Year","Vint_2025","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2025,-14.525038390973
+"Eg1","Japan","LUCemiss","Sources",2030,"Year","Vint_2030","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2030,-11.3485970674853
+"Eg1","Japan","LUCemiss","Sources",2035,"Year","Vint_2035","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2035,-5.56167113800467
+"Eg1","Japan","LUCemiss","Sources",2040,"Year","Vint_2040","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2040,-7.4150321483183
+"Eg1","Japan","LUCemiss","Sources",2045,"Year","Vint_2045","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2045,-7.17565150879353
+"Eg1","Japan","LUCemiss","Sources",2050,"Year","Vint_2050","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2050,-6.0776077581384
+"Eg1","Japan","LUCemiss","Sources",2055,"Year","Vint_2055","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2055,-4.70431893306855
+"Eg1","Japan","LUCemiss","Sources",2060,"Year","Vint_2060","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2060,-4.09578562087112
+"Eg1","Japan","LUCemiss","Sources",2065,"Year","Vint_2065","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2065,-3.628980283027
+"Eg1","Japan","LUCemiss","Sources",2070,"Year","Vint_2070","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2070,-3.44903268094367
+"Eg1","Japan","LUCemiss","Sources",2075,"Year","Vint_2075","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2075,-3.47245272084187
+"Eg1","Japan","LUCemiss","Sources",2080,"Year","Vint_2080","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2080,-3.62714558252273
+"Eg1","Japan","LUCemiss","Sources",2085,"Year","Vint_2085","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2085,-3.8615052002721
+"Eg1","Japan","LUCemiss","Sources",2090,"Year","Vint_2090","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2090,-4.16382485051834
+"Eg1","Japan","LUCemiss","Sources",2095,"Year","Vint_2095","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2095,-4.49556754788515
+"Eg1","Japan","LUCemiss","Sources",2100,"Year","Vint_2100","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2100,-4.80019868949738
+"Eg1","Japan","pop","Sources",1975,"Year","Vint_1975","Population (Millions)","sum","ExampleScen1","Population by region","thous",1975,110.808
+"Eg1","Japan","pop","Sources",1990,"Year","Vint_1990","Population (Millions)","sum","ExampleScen1","Population by region","thous",1990,122.251
+"Eg1","Japan","pop","Sources",2005,"Year","Vint_2005","Population (Millions)","sum","ExampleScen1","Population by region","thous",2005,126.393
+"Eg1","Japan","pop","Sources",2010,"Year","Vint_2010","Population (Millions)","sum","ExampleScen1","Population by region","thous",2010,126.536
+"Eg1","Japan","pop","Sources",2015,"Year","Vint_2015","Population (Millions)","sum","ExampleScen1","Population by region","thous",2015,126.105
+"Eg1","Japan","pop","Sources",2020,"Year","Vint_2020","Population (Millions)","sum","ExampleScen1","Population by region","thous",2020,124.813
+"Eg1","Japan","pop","Sources",2025,"Year","Vint_2025","Population (Millions)","sum","ExampleScen1","Population by region","thous",2025,122.85
+"Eg1","Japan","pop","Sources",2030,"Year","Vint_2030","Population (Millions)","sum","ExampleScen1","Population by region","thous",2030,120.41
+"Eg1","Japan","pop","Sources",2035,"Year","Vint_2035","Population (Millions)","sum","ExampleScen1","Population by region","thous",2035,117.67
+"Eg1","Japan","pop","Sources",2040,"Year","Vint_2040","Population (Millions)","sum","ExampleScen1","Population by region","thous",2040,114.754
+"Eg1","Japan","pop","Sources",2045,"Year","Vint_2045","Population (Millions)","sum","ExampleScen1","Population by region","thous",2045,111.708
+"Eg1","Japan","pop","Sources",2050,"Year","Vint_2050","Population (Millions)","sum","ExampleScen1","Population by region","thous",2050,108.609
+"Eg1","Japan","pop","Sources",2055,"Year","Vint_2055","Population (Millions)","sum","ExampleScen1","Population by region","thous",2055,105.523
+"Eg1","Japan","pop","Sources",2060,"Year","Vint_2060","Population (Millions)","sum","ExampleScen1","Population by region","thous",2060,102.415
+"Eg1","Japan","pop","Sources",2065,"Year","Vint_2065","Population (Millions)","sum","ExampleScen1","Population by region","thous",2065,99.095
+"Eg1","Japan","pop","Sources",2070,"Year","Vint_2070","Population (Millions)","sum","ExampleScen1","Population by region","thous",2070,95.619
+"Eg1","Japan","pop","Sources",2075,"Year","Vint_2075","Population (Millions)","sum","ExampleScen1","Population by region","thous",2075,92.122
+"Eg1","Japan","pop","Sources",2080,"Year","Vint_2080","Population (Millions)","sum","ExampleScen1","Population by region","thous",2080,88.69
+"Eg1","Japan","pop","Sources",2085,"Year","Vint_2085","Population (Millions)","sum","ExampleScen1","Population by region","thous",2085,85.172
+"Eg1","Japan","pop","Sources",2090,"Year","Vint_2090","Population (Millions)","sum","ExampleScen1","Population by region","thous",2090,81.686
+"Eg1","Japan","pop","Sources",2095,"Year","Vint_2095","Population (Millions)","sum","ExampleScen1","Population by region","thous",2095,78.276
+"Eg1","Japan","pop","Sources",2100,"Year","Vint_2100","Population (Millions)","sum","ExampleScen1","Population by region","thous",2100,74.941
+"Eg1","Japan","primNrgConsumByFuel","Sources",1975,"Year","Vint_1975","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",1975,2258.22072222224
+"Eg1","Japan","primNrgConsumByFuel","Sources",1990,"Year","Vint_1990","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",1990,4818.80811111115
+"Eg1","Japan","primNrgConsumByFuel","Sources",2005,"Year","Vint_2005","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2005,5591.47854444449
+"Eg1","Japan","primNrgConsumByFuel","Sources",2010,"Year","Vint_2010","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2010,5231.9538305556
+"Eg1","Japan","primNrgConsumByFuel","Sources",2015,"Year","Vint_2015","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2015,5433.95778933649
+"Eg1","Japan","primNrgConsumByFuel","Sources",2020,"Year","Vint_2020","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2020,5415.59520764963
+"Eg1","Japan","primNrgConsumByFuel","Sources",2025,"Year","Vint_2025","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2025,5403.06784183121
+"Eg1","Japan","primNrgConsumByFuel","Sources",2030,"Year","Vint_2030","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2030,5371.96386569479
+"Eg1","Japan","primNrgConsumByFuel","Sources",2035,"Year","Vint_2035","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2035,5302.56759806546
+"Eg1","Japan","primNrgConsumByFuel","Sources",2040,"Year","Vint_2040","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2040,5244.65114745074
+"Eg1","Japan","primNrgConsumByFuel","Sources",2045,"Year","Vint_2045","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2045,5174.99661946568
+"Eg1","Japan","primNrgConsumByFuel","Sources",2050,"Year","Vint_2050","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2050,5093.79509611893
+"Eg1","Japan","primNrgConsumByFuel","Sources",2055,"Year","Vint_2055","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2055,4995.03136645262
+"Eg1","Japan","primNrgConsumByFuel","Sources",2060,"Year","Vint_2060","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2060,4861.51964425765
+"Eg1","Japan","primNrgConsumByFuel","Sources",2065,"Year","Vint_2065","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2065,4751.10456995976
+"Eg1","Japan","primNrgConsumByFuel","Sources",2070,"Year","Vint_2070","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2070,4630.56591456587
+"Eg1","Japan","primNrgConsumByFuel","Sources",2075,"Year","Vint_2075","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2075,4429.68069472948
+"Eg1","Japan","primNrgConsumByFuel","Sources",2080,"Year","Vint_2080","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2080,4316.58298727726
+"Eg1","Japan","primNrgConsumByFuel","Sources",2085,"Year","Vint_2085","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2085,4294.93052735448
+"Eg1","Japan","primNrgConsumByFuel","Sources",2090,"Year","Vint_2090","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2090,4138.90901674781
+"Eg1","Japan","primNrgConsumByFuel","Sources",2095,"Year","Vint_2095","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2095,3969.18659664557
+"Eg1","Japan","primNrgConsumByFuel","Sources",2100,"Year","Vint_2100","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2100,3831.92201635547
+"Eg1","Japan","watBioPhysCons","Sources",1975,"Year","Vint_1975","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",1975,21.89563001387
+"Eg1","Japan","watBioPhysCons","Sources",1990,"Year","Vint_1990","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",1990,20.5062299047
+"Eg1","Japan","watBioPhysCons","Sources",2005,"Year","Vint_2005","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2005,16.6731109405
+"Eg1","Japan","watBioPhysCons","Sources",2010,"Year","Vint_2010","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2010,14.8926071565
+"Eg1","Japan","watBioPhysCons","Sources",2015,"Year","Vint_2015","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2015,15.0025268144
+"Eg1","Japan","watBioPhysCons","Sources",2020,"Year","Vint_2020","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2020,15.89423992956
+"Eg1","Japan","watBioPhysCons","Sources",2025,"Year","Vint_2025","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2025,16.80018387776
+"Eg1","Japan","watBioPhysCons","Sources",2030,"Year","Vint_2030","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2030,17.79617364709
+"Eg1","Japan","watBioPhysCons","Sources",2035,"Year","Vint_2035","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2035,19.02797256754
+"Eg1","Japan","watBioPhysCons","Sources",2040,"Year","Vint_2040","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2040,19.77875871648
+"Eg1","Japan","watBioPhysCons","Sources",2045,"Year","Vint_2045","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2045,20.43263729214
+"Eg1","Japan","watBioPhysCons","Sources",2050,"Year","Vint_2050","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2050,20.95628603127
+"Eg1","Japan","watBioPhysCons","Sources",2055,"Year","Vint_2055","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2055,21.46860106403
+"Eg1","Japan","watBioPhysCons","Sources",2060,"Year","Vint_2060","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2060,21.98135168498
+"Eg1","Japan","watBioPhysCons","Sources",2065,"Year","Vint_2065","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2065,22.27904600298
+"Eg1","Japan","watBioPhysCons","Sources",2070,"Year","Vint_2070","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2070,22.57957306007
+"Eg1","Japan","watBioPhysCons","Sources",2075,"Year","Vint_2075","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2075,22.82737591547
+"Eg1","Japan","watBioPhysCons","Sources",2080,"Year","Vint_2080","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2080,22.9937996074
+"Eg1","Japan","watBioPhysCons","Sources",2085,"Year","Vint_2085","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2085,23.10655949117
+"Eg1","Japan","watBioPhysCons","Sources",2090,"Year","Vint_2090","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2090,23.1140938298
+"Eg1","Japan","watBioPhysCons","Sources",2095,"Year","Vint_2095","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2095,23.07869033763
+"Eg1","Japan","watBioPhysCons","Sources",2100,"Year","Vint_2100","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2100,23.12062848922
+"Eg1","Japan","watConsumBySec","Sources",1975,"Year","Vint_1975","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",1975,7.638271757473
+"Eg1","Japan","watConsumBySec","Sources",1990,"Year","Vint_1990","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",1990,9.2822452212031
+"Eg1","Japan","watConsumBySec","Sources",2005,"Year","Vint_2005","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2005,8.3962684169032
+"Eg1","Japan","watConsumBySec","Sources",2010,"Year","Vint_2010","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2010,7.8480004933243
+"Eg1","Japan","watConsumBySec","Sources",2015,"Year","Vint_2015","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2015,7.8234459925612
+"Eg1","Japan","watConsumBySec","Sources",2020,"Year","Vint_2020","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2020,7.79306494396966
+"Eg1","Japan","watConsumBySec","Sources",2025,"Year","Vint_2025","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2025,7.76292850202666
+"Eg1","Japan","watConsumBySec","Sources",2030,"Year","Vint_2030","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2030,7.75217216309696
+"Eg1","Japan","watConsumBySec","Sources",2035,"Year","Vint_2035","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2035,7.74349841634976
+"Eg1","Japan","watConsumBySec","Sources",2040,"Year","Vint_2040","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2040,7.72094851795966
+"Eg1","Japan","watConsumBySec","Sources",2045,"Year","Vint_2045","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2045,7.67424721289806
+"Eg1","Japan","watConsumBySec","Sources",2050,"Year","Vint_2050","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2050,7.6090696579269
+"Eg1","Japan","watConsumBySec","Sources",2055,"Year","Vint_2055","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2055,7.5435763941518
+"Eg1","Japan","watConsumBySec","Sources",2060,"Year","Vint_2060","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2060,7.4932328955171
+"Eg1","Japan","watConsumBySec","Sources",2065,"Year","Vint_2065","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2065,7.387140677504
+"Eg1","Japan","watConsumBySec","Sources",2070,"Year","Vint_2070","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2070,7.2727764883063
+"Eg1","Japan","watConsumBySec","Sources",2075,"Year","Vint_2075","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2075,7.1474070771043
+"Eg1","Japan","watConsumBySec","Sources",2080,"Year","Vint_2080","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2080,6.9922014968871
+"Eg1","Japan","watConsumBySec","Sources",2085,"Year","Vint_2085","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2085,6.7552156997156
+"Eg1","Japan","watConsumBySec","Sources",2090,"Year","Vint_2090","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2090,6.59595574982467
+"Eg1","Japan","watConsumBySec","Sources",2095,"Year","Vint_2095","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2095,6.4563344121635
+"Eg1","Japan","watConsumBySec","Sources",2100,"Year","Vint_2100","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2100,6.3022069580368
+"Eg1","Japan","watWithdrawByCrop","Sources",1975,"Year","Vint_1975","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",1975,5.71470996617
+"Eg1","Japan","watWithdrawByCrop","Sources",1990,"Year","Vint_1990","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",1990,4.55416789515
+"Eg1","Japan","watWithdrawByCrop","Sources",2005,"Year","Vint_2005","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2005,3.81279195978
+"Eg1","Japan","watWithdrawByCrop","Sources",2010,"Year","Vint_2010","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2010,3.24974215258
+"Eg1","Japan","watWithdrawByCrop","Sources",2015,"Year","Vint_2015","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2015,3.31430842046
+"Eg1","Japan","watWithdrawByCrop","Sources",2020,"Year","Vint_2020","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2020,3.421835063643
+"Eg1","Japan","watWithdrawByCrop","Sources",2025,"Year","Vint_2025","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2025,3.528072687977
+"Eg1","Japan","watWithdrawByCrop","Sources",2030,"Year","Vint_2030","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2030,3.613844352723
+"Eg1","Japan","watWithdrawByCrop","Sources",2035,"Year","Vint_2035","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2035,3.75702088881
+"Eg1","Japan","watWithdrawByCrop","Sources",2040,"Year","Vint_2040","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2040,3.86214859646
+"Eg1","Japan","watWithdrawByCrop","Sources",2045,"Year","Vint_2045","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2045,3.932664842
+"Eg1","Japan","watWithdrawByCrop","Sources",2050,"Year","Vint_2050","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2050,3.96489008856
+"Eg1","Japan","watWithdrawByCrop","Sources",2055,"Year","Vint_2055","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2055,4.00176020795
+"Eg1","Japan","watWithdrawByCrop","Sources",2060,"Year","Vint_2060","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2060,4.01381660108
+"Eg1","Japan","watWithdrawByCrop","Sources",2065,"Year","Vint_2065","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2065,3.99908755595
+"Eg1","Japan","watWithdrawByCrop","Sources",2070,"Year","Vint_2070","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2070,3.97347931789
+"Eg1","Japan","watWithdrawByCrop","Sources",2075,"Year","Vint_2075","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2075,3.93298906851
+"Eg1","Japan","watWithdrawByCrop","Sources",2080,"Year","Vint_2080","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2080,3.87851929617
+"Eg1","Japan","watWithdrawByCrop","Sources",2085,"Year","Vint_2085","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2085,3.81419293466
+"Eg1","Japan","watWithdrawByCrop","Sources",2090,"Year","Vint_2090","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2090,3.73748210217
+"Eg1","Japan","watWithdrawByCrop","Sources",2095,"Year","Vint_2095","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2095,3.65648474971
+"Eg1","Japan","watWithdrawByCrop","Sources",2100,"Year","Vint_2100","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2100,3.57632220134
+"Eg1","Japan","watWithdrawBySec","Sources",1975,"Year","Vint_1975","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",1975,33.928940795467
+"Eg1","Japan","watWithdrawBySec","Sources",1990,"Year","Vint_1990","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",1990,40.4286454874731
+"Eg1","Japan","watWithdrawBySec","Sources",2005,"Year","Vint_2005","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2005,40.1083156595432
+"Eg1","Japan","watWithdrawBySec","Sources",2010,"Year","Vint_2010","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2010,37.9912741270843
+"Eg1","Japan","watWithdrawBySec","Sources",2015,"Year","Vint_2015","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2015,38.2366213563512
+"Eg1","Japan","watWithdrawBySec","Sources",2020,"Year","Vint_2020","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2020,38.4024202418307
+"Eg1","Japan","watWithdrawBySec","Sources",2025,"Year","Vint_2025","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2025,38.3578785758847
+"Eg1","Japan","watWithdrawBySec","Sources",2030,"Year","Vint_2030","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2030,38.189622350489
+"Eg1","Japan","watWithdrawBySec","Sources",2035,"Year","Vint_2035","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2035,37.7812274453388
+"Eg1","Japan","watWithdrawBySec","Sources",2040,"Year","Vint_2040","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2040,37.3377160360147
+"Eg1","Japan","watWithdrawBySec","Sources",2045,"Year","Vint_2045","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2045,36.7298197100521
+"Eg1","Japan","watWithdrawBySec","Sources",2050,"Year","Vint_2050","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2050,35.9984240129819
+"Eg1","Japan","watWithdrawBySec","Sources",2055,"Year","Vint_2055","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2055,35.2815774720038
+"Eg1","Japan","watWithdrawBySec","Sources",2060,"Year","Vint_2060","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2060,35.0539270493851
+"Eg1","Japan","watWithdrawBySec","Sources",2065,"Year","Vint_2065","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2065,34.003565059524
+"Eg1","Japan","watWithdrawBySec","Sources",2070,"Year","Vint_2070","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2070,33.1767146108263
+"Eg1","Japan","watWithdrawBySec","Sources",2075,"Year","Vint_2075","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2075,32.1396274115033
+"Eg1","Japan","watWithdrawBySec","Sources",2080,"Year","Vint_2080","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2080,30.8592963647521
+"Eg1","Japan","watWithdrawBySec","Sources",2085,"Year","Vint_2085","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2085,29.3693424185656
+"Eg1","Japan","watWithdrawBySec","Sources",2090,"Year","Vint_2090","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2090,28.3720447351371
+"Eg1","Japan","watWithdrawBySec","Sources",2095,"Year","Vint_2095","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2095,27.3117967494969
+"Eg1","Japan","watWithdrawBySec","Sources",2100,"Year","Vint_2100","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2100,26.3292223576278
+"Eg2","Japan","aggLandAlloc","Sources",1975,"Year","Vint_1975","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",1975,358.98965970474
+"Eg2","Japan","aggLandAlloc","Sources",1990,"Year","Vint_1990","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",1990,358.98956096976
+"Eg2","Japan","aggLandAlloc","Sources",2005,"Year","Vint_2005","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2005,358.98974580172
+"Eg2","Japan","aggLandAlloc","Sources",2010,"Year","Vint_2010","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2010,358.9898380737
+"Eg2","Japan","aggLandAlloc","Sources",2015,"Year","Vint_2015","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2015,358.98998511546
+"Eg2","Japan","aggLandAlloc","Sources",2020,"Year","Vint_2020","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2020,358.98994454648
+"Eg2","Japan","aggLandAlloc","Sources",2025,"Year","Vint_2025","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2025,358.98994975657
+"Eg2","Japan","aggLandAlloc","Sources",2030,"Year","Vint_2030","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2030,358.98993406292
+"Eg2","Japan","aggLandAlloc","Sources",2035,"Year","Vint_2035","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2035,358.98987757571
+"Eg2","Japan","aggLandAlloc","Sources",2040,"Year","Vint_2040","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2040,358.98990420433
+"Eg2","Japan","aggLandAlloc","Sources",2045,"Year","Vint_2045","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2045,358.98997465241
+"Eg2","Japan","aggLandAlloc","Sources",2050,"Year","Vint_2050","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2050,358.98991517711
+"Eg2","Japan","aggLandAlloc","Sources",2055,"Year","Vint_2055","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2055,0
+"Eg2","Japan","aggLandAlloc","Sources",2060,"Year","Vint_2060","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2060,0
+"Eg2","Japan","aggLandAlloc","Sources",2065,"Year","Vint_2065","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2065,0
+"Eg2","Japan","aggLandAlloc","Sources",2070,"Year","Vint_2070","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2070,0
+"Eg2","Japan","aggLandAlloc","Sources",2075,"Year","Vint_2075","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2075,0
+"Eg2","Japan","aggLandAlloc","Sources",2080,"Year","Vint_2080","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2080,0
+"Eg2","Japan","aggLandAlloc","Sources",2085,"Year","Vint_2085","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2085,0
+"Eg2","Japan","aggLandAlloc","Sources",2090,"Year","Vint_2090","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2090,0
+"Eg2","Japan","aggLandAlloc","Sources",2095,"Year","Vint_2095","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2095,0
+"Eg2","Japan","aggLandAlloc","Sources",2100,"Year","Vint_2100","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2100,0
+"Eg2","Japan","agProdBiomass",NA,2020,"Year","Vint_2020","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2020,6.73695369380561
+"Eg2","Japan","agProdBiomass",NA,2025,"Year","Vint_2025","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2025,12.9253894355557
+"Eg2","Japan","agProdBiomass",NA,2030,"Year","Vint_2030","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2030,21.3266907272224
+"Eg2","Japan","agProdBiomass",NA,2035,"Year","Vint_2035","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2035,31.7296208180558
+"Eg2","Japan","agProdBiomass",NA,2040,"Year","Vint_2040","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2040,37.5588299575003
+"Eg2","Japan","agProdBiomass",NA,2045,"Year","Vint_2045","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2045,43.6295515036115
+"Eg2","Japan","agProdBiomass",NA,2050,"Year","Vint_2050","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2050,49.6118142783337
+"Eg2","Japan","agProdByCrop",NA,1975,"Year","Vint_1975","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",1975,80.883973524188
+"Eg2","Japan","agProdByCrop",NA,1990,"Year","Vint_1990","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",1990,64.917896282175
+"Eg2","Japan","agProdByCrop",NA,2005,"Year","Vint_2005","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2005,56.280597518496
+"Eg2","Japan","agProdByCrop",NA,2010,"Year","Vint_2010","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2010,67.482473188386
+"Eg2","Japan","agProdByCrop",NA,2015,"Year","Vint_2015","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2015,67.287574956506
+"Eg2","Japan","agProdByCrop",NA,2020,"Year","Vint_2020","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2020,67.915184936627
+"Eg2","Japan","agProdByCrop",NA,2025,"Year","Vint_2025","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2025,68.614332552881
+"Eg2","Japan","agProdByCrop",NA,2030,"Year","Vint_2030","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2030,68.945406618223
+"Eg2","Japan","agProdByCrop",NA,2035,"Year","Vint_2035","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2035,68.392664358345
+"Eg2","Japan","agProdByCrop",NA,2040,"Year","Vint_2040","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2040,67.63897582797
+"Eg2","Japan","agProdByCrop",NA,2045,"Year","Vint_2045","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2045,66.59935988714
+"Eg2","Japan","agProdByCrop",NA,2050,"Year","Vint_2050","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2050,65.295353919955
+"Eg2","Japan","agProdbyIrrRfd","Sources",1975,"Year","Vint_1975","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",1975,80.883973524188
+"Eg2","Japan","agProdbyIrrRfd","Sources",1990,"Year","Vint_1990","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",1990,64.917896282175
+"Eg2","Japan","agProdbyIrrRfd","Sources",2005,"Year","Vint_2005","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2005,56.280597518496
+"Eg2","Japan","agProdbyIrrRfd","Sources",2010,"Year","Vint_2010","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2010,67.482473188386
+"Eg2","Japan","agProdbyIrrRfd","Sources",2015,"Year","Vint_2015","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2015,67.287574956506
+"Eg2","Japan","agProdbyIrrRfd","Sources",2020,"Year","Vint_2020","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2020,67.915184936627
+"Eg2","Japan","agProdbyIrrRfd","Sources",2025,"Year","Vint_2025","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2025,68.614332552881
+"Eg2","Japan","agProdbyIrrRfd","Sources",2030,"Year","Vint_2030","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2030,68.945406618223
+"Eg2","Japan","agProdbyIrrRfd","Sources",2035,"Year","Vint_2035","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2035,68.392664358345
+"Eg2","Japan","agProdbyIrrRfd","Sources",2040,"Year","Vint_2040","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2040,67.63897582797
+"Eg2","Japan","agProdbyIrrRfd","Sources",2045,"Year","Vint_2045","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2045,66.59935988714
+"Eg2","Japan","agProdbyIrrRfd","Sources",2050,"Year","Vint_2050","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2050,65.295353919955
+"Eg2","Japan","agProdForest",NA,1975,"Year","Vint_1975","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",1975,0.1173008999
+"Eg2","Japan","agProdForest",NA,1990,"Year","Vint_1990","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",1990,0.0856952999
+"Eg2","Japan","agProdForest",NA,2005,"Year","Vint_2005","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2005,0.0437608
+"Eg2","Japan","agProdForest",NA,2010,"Year","Vint_2010","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2010,0.0399403
+"Eg2","Japan","agProdForest",NA,2015,"Year","Vint_2015","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2015,0.041026055
+"Eg2","Japan","agProdForest",NA,2020,"Year","Vint_2020","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2020,0.0420726344
+"Eg2","Japan","agProdForest",NA,2025,"Year","Vint_2025","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2025,0.0430467388
+"Eg2","Japan","agProdForest",NA,2030,"Year","Vint_2030","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2030,0.0439281798
+"Eg2","Japan","agProdForest",NA,2035,"Year","Vint_2035","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2035,0.0446663811
+"Eg2","Japan","agProdForest",NA,2040,"Year","Vint_2040","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2040,0.0453429419
+"Eg2","Japan","agProdForest",NA,2045,"Year","Vint_2045","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2045,0.0459135584
+"Eg2","Japan","agProdForest",NA,2050,"Year","Vint_2050","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2050,0.0463750891
+"Eg2","Japan","co2emission","Sources",1975,"Year","Vint_1975","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",1975,579.682756766667
+"Eg2","Japan","co2emission","Sources",1990,"Year","Vint_1990","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",1990,1148.1526485
+"Eg2","Japan","co2emission","Sources",2005,"Year","Vint_2005","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2005,1304.89414997333
+"Eg2","Japan","co2emission","Sources",2010,"Year","Vint_2010","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2010,1197.38701316667
+"Eg2","Japan","co2emission","Sources",2015,"Year","Vint_2015","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2015,1257.93034873
+"Eg2","Japan","co2emission","Sources",2020,"Year","Vint_2020","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2020,1255.67566908667
+"Eg2","Japan","co2emission","Sources",2025,"Year","Vint_2025","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2025,1252.07023227
+"Eg2","Japan","co2emission","Sources",2030,"Year","Vint_2030","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2030,1242.776621317
+"Eg2","Japan","co2emission","Sources",2035,"Year","Vint_2035","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2035,1222.86824878167
+"Eg2","Japan","co2emission","Sources",2040,"Year","Vint_2040","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2040,1207.799561947
+"Eg2","Japan","co2emission","Sources",2045,"Year","Vint_2045","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2045,1189.27359887233
+"Eg2","Japan","co2emission","Sources",2050,"Year","Vint_2050","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2050,1167.99681591267
+"Eg2","Japan","co2emissionByEndUse","Sources",1975,"Year","Vint_1975","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",1975,579.682756766667
+"Eg2","Japan","co2emissionByEndUse","Sources",1980,"Year","Vint_1980","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",1980,19.3807647900533
+"Eg2","Japan","co2emissionByEndUse","Sources",1985,"Year","Vint_1985","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",1985,15.9118619892467
+"Eg2","Japan","co2emissionByEndUse","Sources",1990,"Year","Vint_1990","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",1990,1148.15263486101
+"Eg2","Japan","co2emissionByEndUse","Sources",1990,"Year","Vint_1990","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",1990,12.1916229337467
+"Eg2","Japan","co2emissionByEndUse","Sources",1995,"Year","Vint_1995","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",1995,22.542479734456
+"Eg2","Japan","co2emissionByEndUse","Sources",2000,"Year","Vint_2000","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2000,18.835796324906
+"Eg2","Japan","co2emissionByEndUse","Sources",2005,"Year","Vint_2005","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2005,1304.89415834305
+"Eg2","Japan","co2emissionByEndUse","Sources",2005,"Year","Vint_2005","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2005,15.460759168536
+"Eg2","Japan","co2emissionByEndUse","Sources",2010,"Year","Vint_2010","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2010,1197.38704859303
+"Eg2","Japan","co2emissionByEndUse","Sources",2010,"Year","Vint_2010","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2010,-20.7927440725825
+"Eg2","Japan","co2emissionByEndUse","Sources",2015,"Year","Vint_2015","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2015,1257.93038947656
+"Eg2","Japan","co2emissionByEndUse","Sources",2015,"Year","Vint_2015","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2015,-23.5977838011843
+"Eg2","Japan","co2emissionByEndUse","Sources",2020,"Year","Vint_2020","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2020,1255.67571468851
+"Eg2","Japan","co2emissionByEndUse","Sources",2020,"Year","Vint_2020","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2020,-17.732670562783
+"Eg2","Japan","co2emissionByEndUse","Sources",2025,"Year","Vint_2025","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2025,1252.0702798359
+"Eg2","Japan","co2emissionByEndUse","Sources",2025,"Year","Vint_2025","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2025,-14.56703035557
+"Eg2","Japan","co2emissionByEndUse","Sources",2030,"Year","Vint_2030","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2030,1242.77676593578
+"Eg2","Japan","co2emissionByEndUse","Sources",2030,"Year","Vint_2030","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2030,-11.3932667754693
+"Eg2","Japan","co2emissionByEndUse","Sources",2035,"Year","Vint_2035","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2035,1222.86867235603
+"Eg2","Japan","co2emissionByEndUse","Sources",2035,"Year","Vint_2035","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2035,-5.59278375981233
+"Eg2","Japan","co2emissionByEndUse","Sources",2040,"Year","Vint_2040","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2040,1207.80032561239
+"Eg2","Japan","co2emissionByEndUse","Sources",2040,"Year","Vint_2040","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2040,-7.43734332501013
+"Eg2","Japan","co2emissionByEndUse","Sources",2045,"Year","Vint_2045","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2045,1189.2742968886
+"Eg2","Japan","co2emissionByEndUse","Sources",2045,"Year","Vint_2045","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2045,-7.18256618531503
+"Eg2","Japan","co2emissionByEndUse","Sources",2050,"Year","Vint_2050","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2050,1167.99670301766
+"Eg2","Japan","co2emissionByEndUse","Sources",2050,"Year","Vint_2050","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2050,-6.08237205041803
+"Eg2","Japan","co2emissionByEndUse","Sources",2055,"Year","Vint_2055","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2055,-4.68088981337743
+"Eg2","Japan","co2emissionByEndUse","Sources",2060,"Year","Vint_2060","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2060,-3.45102967928099
+"Eg2","Japan","co2emissionByEndUse","Sources",2065,"Year","Vint_2065","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2065,-2.55365124820146
+"Eg2","Japan","co2emissionByEndUse","Sources",2070,"Year","Vint_2070","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2070,-1.89296591245425
+"Eg2","Japan","co2emissionByEndUse","Sources",2075,"Year","Vint_2075","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2075,-1.40416018390053
+"Eg2","Japan","co2emissionByEndUse","Sources",2080,"Year","Vint_2080","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2080,-1.04165368858217
+"Eg2","Japan","co2emissionByEndUse","Sources",2085,"Year","Vint_2085","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2085,-0.772554242823656
+"Eg2","Japan","co2emissionByEndUse","Sources",2090,"Year","Vint_2090","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2090,-0.572771292169524
+"Eg2","Japan","co2emissionByEndUse","Sources",2095,"Year","Vint_2095","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2095,-0.424489203300177
+"Eg2","Japan","co2emissionByEndUse","Sources",2100,"Year","Vint_2100","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2100,-0.314481075316137
+"Eg2","Japan","elecByTech","Sources",1990,"Year","Vint_1990","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",1990,835.512886111118
+"Eg2","Japan","elecByTech","Sources",2005,"Year","Vint_2005","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2005,1089.91063333334
+"Eg2","Japan","elecByTech","Sources",2010,"Year","Vint_2010","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2010,1110.75030277779
+"Eg2","Japan","elecByTech","Sources",2015,"Year","Vint_2015","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2015,1259.13948786112
+"Eg2","Japan","elecByTech","Sources",2020,"Year","Vint_2020","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2020,1266.19791814168
+"Eg2","Japan","elecByTech","Sources",2025,"Year","Vint_2025","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2025,1268.17708955279
+"Eg2","Japan","elecByTech","Sources",2030,"Year","Vint_2030","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2030,1273.37560510834
+"Eg2","Japan","elecByTech","Sources",2035,"Year","Vint_2035","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2035,1266.92803505279
+"Eg2","Japan","elecByTech","Sources",2040,"Year","Vint_2040","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2040,1264.07094424723
+"Eg2","Japan","elecByTech","Sources",2045,"Year","Vint_2045","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2045,1255.90423219168
+"Eg2","Japan","elecByTech","Sources",2050,"Year","Vint_2050","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2050,1242.81510888334
+"Eg2","Japan","elecCapBySubsector","Sources",1990,"Year","Vint_1990","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",1990,122.12435782239
+"Eg2","Japan","elecCapBySubsector","Sources",2005,"Year","Vint_2005","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2005,156.193766239686
+"Eg2","Japan","elecCapBySubsector","Sources",2010,"Year","Vint_2010","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2010,161.100644865132
+"Eg2","Japan","elecCapBySubsector","Sources",2015,"Year","Vint_2015","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2015,183.171271254147
+"Eg2","Japan","elecCapBySubsector","Sources",2020,"Year","Vint_2020","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2020,184.628093722327
+"Eg2","Japan","elecCapBySubsector","Sources",2025,"Year","Vint_2025","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2025,185.587273274509
+"Eg2","Japan","elecCapBySubsector","Sources",2030,"Year","Vint_2030","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2030,187.417610666618
+"Eg2","Japan","elecCapBySubsector","Sources",2035,"Year","Vint_2035","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2035,187.960479087849
+"Eg2","Japan","elecCapBySubsector","Sources",2040,"Year","Vint_2040","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2040,187.687049702647
+"Eg2","Japan","elecCapBySubsector","Sources",2045,"Year","Vint_2045","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2045,188.011981619359
+"Eg2","Japan","elecCapBySubsector","Sources",2050,"Year","Vint_2050","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2050,188.222071004797
+"Eg2","Japan","finalNrgbySec","Sources",1975,"Year","Vint_1975","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",1975,2747.61390388891
+"Eg2","Japan","finalNrgbySec","Sources",1990,"Year","Vint_1990","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",1990,4193.83421500003
+"Eg2","Japan","finalNrgbySec","Sources",2005,"Year","Vint_2005","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2005,4837.07804777782
+"Eg2","Japan","finalNrgbySec","Sources",2010,"Year","Vint_2010","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2010,4529.28448694448
+"Eg2","Japan","finalNrgbySec","Sources",2015,"Year","Vint_2015","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2015,4534.61504702781
+"Eg2","Japan","finalNrgbySec","Sources",2020,"Year","Vint_2020","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2020,4513.28191888892
+"Eg2","Japan","finalNrgbySec","Sources",2025,"Year","Vint_2025","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2025,4497.40436594448
+"Eg2","Japan","finalNrgbySec","Sources",2030,"Year","Vint_2030","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2030,4463.17900197226
+"Eg2","Japan","finalNrgbySec","Sources",2035,"Year","Vint_2035","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2035,4399.3086530167
+"Eg2","Japan","finalNrgbySec","Sources",2040,"Year","Vint_2040","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2040,4332.50380030559
+"Eg2","Japan","finalNrgbySec","Sources",2045,"Year","Vint_2045","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2045,4260.35212283337
+"Eg2","Japan","finalNrgbySec","Sources",2050,"Year","Vint_2050","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2050,4189.33901458337
+"Eg2","Japan","gdp","Sources",1975,"Year","Vint_1975","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",1975,1545.71
+"Eg2","Japan","gdp","Sources",1990,"Year","Vint_1990","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",1990,3013.25
+"Eg2","Japan","gdp","Sources",2005,"Year","Vint_2005","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2005,3577.27
+"Eg2","Japan","gdp","Sources",2010,"Year","Vint_2010","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2010,3637.17
+"Eg2","Japan","gdp","Sources",2015,"Year","Vint_2015","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2015,3760.53
+"Eg2","Japan","gdp","Sources",2020,"Year","Vint_2020","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2020,3903.35
+"Eg2","Japan","gdp","Sources",2025,"Year","Vint_2025","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2025,4111.43
+"Eg2","Japan","gdp","Sources",2030,"Year","Vint_2030","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2030,4304.12
+"Eg2","Japan","gdp","Sources",2035,"Year","Vint_2035","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2035,4447.72
+"Eg2","Japan","gdp","Sources",2040,"Year","Vint_2040","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2040,4561.46
+"Eg2","Japan","gdp","Sources",2045,"Year","Vint_2045","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2045,4685.4
+"Eg2","Japan","gdp","Sources",2050,"Year","Vint_2050","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2050,4805.36
+"Eg2","Japan","gdp","Sources",2055,"Year","Vint_2055","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2055,4939.61
+"Eg2","Japan","gdp","Sources",2060,"Year","Vint_2060","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2060,5086.75
+"Eg2","Japan","gdp","Sources",2065,"Year","Vint_2065","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2065,5230.53
+"Eg2","Japan","gdp","Sources",2070,"Year","Vint_2070","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2070,5369.69
+"Eg2","Japan","gdp","Sources",2075,"Year","Vint_2075","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2075,5499.39
+"Eg2","Japan","gdp","Sources",2080,"Year","Vint_2080","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2080,5623.23
+"Eg2","Japan","gdp","Sources",2085,"Year","Vint_2085","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2085,5748.79
+"Eg2","Japan","gdp","Sources",2090,"Year","Vint_2090","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2090,5878.12
+"Eg2","Japan","gdp","Sources",2095,"Year","Vint_2095","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2095,6009.4
+"Eg2","Japan","gdp","Sources",2100,"Year","Vint_2100","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2100,6138.39
+"Eg2","Japan","gdpGrowthRate","Sources",1990,"Year","Vint_1990","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",1990,14.2829466768893
+"Eg2","Japan","gdpGrowthRate","Sources",2005,"Year","Vint_2005","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2005,3.49117339137464
+"Eg2","Japan","gdpGrowthRate","Sources",2010,"Year","Vint_2010","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2010,0.332671468489876
+"Eg2","Japan","gdpGrowthRate","Sources",2015,"Year","Vint_2015","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2015,0.669309897760595
+"Eg2","Japan","gdpGrowthRate","Sources",2020,"Year","Vint_2020","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2020,0.748290885022129
+"Eg2","Japan","gdpGrowthRate","Sources",2025,"Year","Vint_2025","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2025,1.04412819092716
+"Eg2","Japan","gdpGrowthRate","Sources",2030,"Year","Vint_2030","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2030,0.920244523815095
+"Eg2","Japan","gdpGrowthRate","Sources",2035,"Year","Vint_2035","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2035,0.658536917820096
+"Eg2","Japan","gdpGrowthRate","Sources",2040,"Year","Vint_2040","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2040,0.506300237711055
+"Eg2","Japan","gdpGrowthRate","Sources",2045,"Year","Vint_2045","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2045,0.537610832287294
+"Eg2","Japan","gdpGrowthRate","Sources",2050,"Year","Vint_2050","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2050,0.506893794785235
+"Eg2","Japan","gdpGrowthRate","Sources",2055,"Year","Vint_2055","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2055,0.552609668144144
+"Eg2","Japan","gdpGrowthRate","Sources",2060,"Year","Vint_2060","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2060,0.588781324289545
+"Eg2","Japan","gdpGrowthRate","Sources",2065,"Year","Vint_2065","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2065,0.559026586951905
+"Eg2","Japan","gdpGrowthRate","Sources",2070,"Year","Vint_2070","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2070,0.526532683878855
+"Eg2","Japan","gdpGrowthRate","Sources",2075,"Year","Vint_2075","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2075,0.478481047330948
+"Eg2","Japan","gdpGrowthRate","Sources",2080,"Year","Vint_2080","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2080,0.446374393900584
+"Eg2","Japan","gdpGrowthRate","Sources",2085,"Year","Vint_2085","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2085,0.442640089446567
+"Eg2","Japan","gdpGrowthRate","Sources",2090,"Year","Vint_2090","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2090,0.445943080187239
+"Eg2","Japan","gdpGrowthRate","Sources",2095,"Year","Vint_2095","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2095,0.442735732600563
+"Eg2","Japan","gdpGrowthRate","Sources",2100,"Year","Vint_2100","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2100,0.425655005156877
+"Eg2","Japan","gdpPerCapita","Sources",1975,"Year","Vint_1975","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",1975,13.9494
+"Eg2","Japan","gdpPerCapita","Sources",1990,"Year","Vint_1990","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",1990,24.6481
+"Eg2","Japan","gdpPerCapita","Sources",2005,"Year","Vint_2005","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2005,28.3028
+"Eg2","Japan","gdpPerCapita","Sources",2010,"Year","Vint_2010","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2010,28.7442
+"Eg2","Japan","gdpPerCapita","Sources",2015,"Year","Vint_2015","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2015,29.8206
+"Eg2","Japan","gdpPerCapita","Sources",2020,"Year","Vint_2020","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2020,31.2736
+"Eg2","Japan","gdpPerCapita","Sources",2025,"Year","Vint_2025","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2025,33.467
+"Eg2","Japan","gdpPerCapita","Sources",2030,"Year","Vint_2030","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2030,35.7455
+"Eg2","Japan","gdpPerCapita","Sources",2035,"Year","Vint_2035","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2035,37.7982
+"Eg2","Japan","gdpPerCapita","Sources",2040,"Year","Vint_2040","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2040,39.7499
+"Eg2","Japan","gdpPerCapita","Sources",2045,"Year","Vint_2045","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2045,41.9433
+"Eg2","Japan","gdpPerCapita","Sources",2050,"Year","Vint_2050","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2050,44.2446
+"Eg2","Japan","gdpPerCapita","Sources",2055,"Year","Vint_2055","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2055,46.8108
+"Eg2","Japan","gdpPerCapita","Sources",2060,"Year","Vint_2060","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2060,49.668
+"Eg2","Japan","gdpPerCapita","Sources",2065,"Year","Vint_2065","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2065,52.783
+"Eg2","Japan","gdpPerCapita","Sources",2070,"Year","Vint_2070","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2070,56.1571
+"Eg2","Japan","gdpPerCapita","Sources",2075,"Year","Vint_2075","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2075,59.6968
+"Eg2","Japan","gdpPerCapita","Sources",2080,"Year","Vint_2080","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2080,63.4032
+"Eg2","Japan","gdpPerCapita","Sources",2085,"Year","Vint_2085","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2085,67.4962
+"Eg2","Japan","gdpPerCapita","Sources",2090,"Year","Vint_2090","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2090,71.9599
+"Eg2","Japan","gdpPerCapita","Sources",2095,"Year","Vint_2095","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2095,76.7719
+"Eg2","Japan","gdpPerCapita","Sources",2100,"Year","Vint_2100","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2100,81.9097
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",1975,"Year","Vint_1975","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",1975,0.0140342326
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",1975,"Year","Vint_1975","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",1975,579.682756766667
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",1990,"Year","Vint_1990","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",1990,0.02875425234571
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",1990,"Year","Vint_1990","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",1990,1148.1526485
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2005,"Year","Vint_2005","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2005,0.04733965923944
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2005,"Year","Vint_2005","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2005,1304.89414997333
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2010,"Year","Vint_2010","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2010,0.06483159434446
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2010,"Year","Vint_2010","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2010,1197.38701316667
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2015,"Year","Vint_2015","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2015,0.06550771458504
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2015,"Year","Vint_2015","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2015,1257.93034873
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2020,"Year","Vint_2020","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2020,0.09129482147268
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2020,"Year","Vint_2020","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2020,1255.67566908667
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2025,"Year","Vint_2025","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2025,0.09107604259074
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2025,"Year","Vint_2025","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2025,1252.07023227
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2030,"Year","Vint_2030","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2030,0.11373961098014
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2030,"Year","Vint_2030","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2030,1242.776621317
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2035,"Year","Vint_2035","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2035,0.11185496827088
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2035,"Year","Vint_2035","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2035,1222.86824878167
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2040,"Year","Vint_2040","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2040,0.10969517318204
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2040,"Year","Vint_2040","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2040,1207.799561947
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2045,"Year","Vint_2045","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2045,0.10739292934476
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2045,"Year","Vint_2045","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2045,1189.27359887233
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2050,"Year","Vint_2050","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2050,0.10493272535738
+"Eg2","Japan","ghgEmissByGHGGROUPS","Sources",2050,"Year","Vint_2050","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2050,1167.99681591267
+"Eg2","Japan","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",1975,0.0140342326
+"Eg2","Japan","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",1975,579.682756766667
+"Eg2","Japan","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",1975,21.78817578
+"Eg2","Japan","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",1990,0.02875425234571
+"Eg2","Japan","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",1990,1148.1526485
+"Eg2","Japan","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",1990,25.4247074025
+"Eg2","Japan","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2005,0.04733965923944
+"Eg2","Japan","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2005,1304.89414997333
+"Eg2","Japan","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2005,12.9004903675
+"Eg2","Japan","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2010,0.06483159434446
+"Eg2","Japan","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2010,1197.38701316667
+"Eg2","Japan","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2010,12.8408289125
+"Eg2","Japan","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2015,0.06550771458504
+"Eg2","Japan","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2015,1257.93034873
+"Eg2","Japan","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2015,12.47223658
+"Eg2","Japan","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2020,0.09129482147268
+"Eg2","Japan","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2020,1255.67566908667
+"Eg2","Japan","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2020,12.281698675625
+"Eg2","Japan","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2025,0.09107604259074
+"Eg2","Japan","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2025,1252.07023227
+"Eg2","Japan","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2025,12.29931229135
+"Eg2","Japan","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2030,0.11373961098014
+"Eg2","Japan","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2030,1242.776621317
+"Eg2","Japan","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2030,11.872820969775
+"Eg2","Japan","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2035,0.11185496827088
+"Eg2","Japan","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2035,1222.86824878167
+"Eg2","Japan","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2035,13.953153645925
+"Eg2","Japan","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2040,0.10969517318204
+"Eg2","Japan","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2040,1207.799561947
+"Eg2","Japan","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2040,14.915807205325
+"Eg2","Japan","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2045,0.10739292934476
+"Eg2","Japan","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2045,1189.27359887233
+"Eg2","Japan","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2045,15.2202978035
+"Eg2","Japan","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2050,0.10493272535738
+"Eg2","Japan","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2050,1167.99681591267
+"Eg2","Japan","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2050,15.620834931
+"Eg2","Japan","irrWatConsBasin","Sources",1975,"Year","Vint_1975","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",1975,3.08594186302
+"Eg2","Japan","irrWatConsBasin","Sources",1990,"Year","Vint_1990","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",1990,2.45925046968
+"Eg2","Japan","irrWatConsBasin","Sources",2005,"Year","Vint_2005","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2005,2.05890874074
+"Eg2","Japan","irrWatConsBasin","Sources",2010,"Year","Vint_2010","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2010,1.75486316272
+"Eg2","Japan","irrWatConsBasin","Sources",2015,"Year","Vint_2015","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2015,1.78938697252
+"Eg2","Japan","irrWatConsBasin","Sources",2020,"Year","Vint_2020","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2020,1.847132318568
+"Eg2","Japan","irrWatConsBasin","Sources",2025,"Year","Vint_2025","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2025,1.904151400957
+"Eg2","Japan","irrWatConsBasin","Sources",2030,"Year","Vint_2030","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2030,1.950081393962
+"Eg2","Japan","irrWatConsBasin","Sources",2035,"Year","Vint_2035","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2035,2.027102211561
+"Eg2","Japan","irrWatConsBasin","Sources",2040,"Year","Vint_2040","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2040,2.083605203448
+"Eg2","Japan","irrWatConsBasin","Sources",2045,"Year","Vint_2045","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2045,2.12152683594
+"Eg2","Japan","irrWatConsBasin","Sources",2050,"Year","Vint_2050","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2050,2.13888467798
+"Eg2","Japan","irrWatWithBasin","Sources",1975,"Year","Vint_1975","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",1975,5.71470996617
+"Eg2","Japan","irrWatWithBasin","Sources",1990,"Year","Vint_1990","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",1990,4.55416789515
+"Eg2","Japan","irrWatWithBasin","Sources",2005,"Year","Vint_2005","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2005,3.81279195978
+"Eg2","Japan","irrWatWithBasin","Sources",2010,"Year","Vint_2010","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2010,3.24974215258
+"Eg2","Japan","irrWatWithBasin","Sources",2015,"Year","Vint_2015","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2015,3.31368557914
+"Eg2","Japan","irrWatWithBasin","Sources",2020,"Year","Vint_2020","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2020,3.420614798115
+"Eg2","Japan","irrWatWithBasin","Sources",2025,"Year","Vint_2025","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2025,3.526197642876
+"Eg2","Japan","irrWatWithBasin","Sources",2030,"Year","Vint_2030","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2030,3.6112490069
+"Eg2","Japan","irrWatWithBasin","Sources",2035,"Year","Vint_2035","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2035,3.753894611
+"Eg2","Japan","irrWatWithBasin","Sources",2040,"Year","Vint_2040","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2040,3.85852044726
+"Eg2","Japan","irrWatWithBasin","Sources",2045,"Year","Vint_2045","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2045,3.92875076106
+"Eg2","Japan","irrWatWithBasin","Sources",2050,"Year","Vint_2050","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2050,3.96089106146
+"Eg2","Japan","landIrrRfd","Sources",1975,"Year","Vint_1975","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",1975,0.03881278637774
+"Eg2","Japan","landIrrRfd","Sources",1990,"Year","Vint_1990","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",1990,0.03625746204176
+"Eg2","Japan","landIrrRfd","Sources",2005,"Year","Vint_2005","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2005,0.03464372442172
+"Eg2","Japan","landIrrRfd","Sources",2010,"Year","Vint_2010","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2010,0.0339154581937
+"Eg2","Japan","landIrrRfd","Sources",2015,"Year","Vint_2015","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2015,0.03365797604546
+"Eg2","Japan","landIrrRfd","Sources",2020,"Year","Vint_2020","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2020,0.03447298397648
+"Eg2","Japan","landIrrRfd","Sources",2025,"Year","Vint_2025","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2025,0.03524384406657
+"Eg2","Japan","landIrrRfd","Sources",2030,"Year","Vint_2030","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2030,0.03602520414292
+"Eg2","Japan","landIrrRfd","Sources",2035,"Year","Vint_2035","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2035,0.03717621073571
+"Eg2","Japan","landIrrRfd","Sources",2040,"Year","Vint_2040","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2040,0.03772443966433
+"Eg2","Japan","landIrrRfd","Sources",2045,"Year","Vint_2045","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2045,0.03801445387241
+"Eg2","Japan","landIrrRfd","Sources",2050,"Year","Vint_2050","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2050,0.03804516896711
+"Eg2","Japan","landIrrRfd","Sources",2055,"Year","Vint_2055","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2055,0
+"Eg2","Japan","landIrrRfd","Sources",2060,"Year","Vint_2060","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2060,0
+"Eg2","Japan","landIrrRfd","Sources",2065,"Year","Vint_2065","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2065,0
+"Eg2","Japan","landIrrRfd","Sources",2070,"Year","Vint_2070","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2070,0
+"Eg2","Japan","landIrrRfd","Sources",2075,"Year","Vint_2075","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2075,0
+"Eg2","Japan","landIrrRfd","Sources",2080,"Year","Vint_2080","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2080,0
+"Eg2","Japan","landIrrRfd","Sources",2085,"Year","Vint_2085","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2085,0
+"Eg2","Japan","landIrrRfd","Sources",2090,"Year","Vint_2090","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2090,0
+"Eg2","Japan","landIrrRfd","Sources",2095,"Year","Vint_2095","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2095,0
+"Eg2","Japan","landIrrRfd","Sources",2100,"Year","Vint_2100","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2100,0
+"Eg2","Japan","LUCemiss","Sources",1980,"Year","Vint_1980","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",1980,19.3807647900533
+"Eg2","Japan","LUCemiss","Sources",1985,"Year","Vint_1985","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",1985,15.9118619892467
+"Eg2","Japan","LUCemiss","Sources",1990,"Year","Vint_1990","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",1990,12.1916229337467
+"Eg2","Japan","LUCemiss","Sources",1995,"Year","Vint_1995","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",1995,22.542479734456
+"Eg2","Japan","LUCemiss","Sources",2000,"Year","Vint_2000","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2000,18.835796324906
+"Eg2","Japan","LUCemiss","Sources",2005,"Year","Vint_2005","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2005,15.460759168536
+"Eg2","Japan","LUCemiss","Sources",2010,"Year","Vint_2010","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2010,-20.7927440725825
+"Eg2","Japan","LUCemiss","Sources",2015,"Year","Vint_2015","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2015,-23.5977838011843
+"Eg2","Japan","LUCemiss","Sources",2020,"Year","Vint_2020","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2020,-17.732670562783
+"Eg2","Japan","LUCemiss","Sources",2025,"Year","Vint_2025","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2025,-14.56703035557
+"Eg2","Japan","LUCemiss","Sources",2030,"Year","Vint_2030","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2030,-11.3932667754693
+"Eg2","Japan","LUCemiss","Sources",2035,"Year","Vint_2035","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2035,-5.59278375981233
+"Eg2","Japan","LUCemiss","Sources",2040,"Year","Vint_2040","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2040,-7.43734332501013
+"Eg2","Japan","LUCemiss","Sources",2045,"Year","Vint_2045","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2045,-7.18256618531503
+"Eg2","Japan","LUCemiss","Sources",2050,"Year","Vint_2050","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2050,-6.08237205041803
+"Eg2","Japan","LUCemiss","Sources",2055,"Year","Vint_2055","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2055,-4.68088981337743
+"Eg2","Japan","LUCemiss","Sources",2060,"Year","Vint_2060","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2060,-3.45102967928099
+"Eg2","Japan","LUCemiss","Sources",2065,"Year","Vint_2065","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2065,-2.55365124820146
+"Eg2","Japan","LUCemiss","Sources",2070,"Year","Vint_2070","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2070,-1.89296591245425
+"Eg2","Japan","LUCemiss","Sources",2075,"Year","Vint_2075","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2075,-1.40416018390053
+"Eg2","Japan","LUCemiss","Sources",2080,"Year","Vint_2080","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2080,-1.04165368858217
+"Eg2","Japan","LUCemiss","Sources",2085,"Year","Vint_2085","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2085,-0.772554242823656
+"Eg2","Japan","LUCemiss","Sources",2090,"Year","Vint_2090","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2090,-0.572771292169524
+"Eg2","Japan","LUCemiss","Sources",2095,"Year","Vint_2095","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2095,-0.424489203300177
+"Eg2","Japan","LUCemiss","Sources",2100,"Year","Vint_2100","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2100,-0.314481075316137
+"Eg2","Japan","pop","Sources",1975,"Year","Vint_1975","Population (Millions)","sum","ExampleScen2","Population by region","thous",1975,110.808
+"Eg2","Japan","pop","Sources",1990,"Year","Vint_1990","Population (Millions)","sum","ExampleScen2","Population by region","thous",1990,122.251
+"Eg2","Japan","pop","Sources",2005,"Year","Vint_2005","Population (Millions)","sum","ExampleScen2","Population by region","thous",2005,126.393
+"Eg2","Japan","pop","Sources",2010,"Year","Vint_2010","Population (Millions)","sum","ExampleScen2","Population by region","thous",2010,126.536
+"Eg2","Japan","pop","Sources",2015,"Year","Vint_2015","Population (Millions)","sum","ExampleScen2","Population by region","thous",2015,126.105
+"Eg2","Japan","pop","Sources",2020,"Year","Vint_2020","Population (Millions)","sum","ExampleScen2","Population by region","thous",2020,124.813
+"Eg2","Japan","pop","Sources",2025,"Year","Vint_2025","Population (Millions)","sum","ExampleScen2","Population by region","thous",2025,122.85
+"Eg2","Japan","pop","Sources",2030,"Year","Vint_2030","Population (Millions)","sum","ExampleScen2","Population by region","thous",2030,120.41
+"Eg2","Japan","pop","Sources",2035,"Year","Vint_2035","Population (Millions)","sum","ExampleScen2","Population by region","thous",2035,117.67
+"Eg2","Japan","pop","Sources",2040,"Year","Vint_2040","Population (Millions)","sum","ExampleScen2","Population by region","thous",2040,114.754
+"Eg2","Japan","pop","Sources",2045,"Year","Vint_2045","Population (Millions)","sum","ExampleScen2","Population by region","thous",2045,111.708
+"Eg2","Japan","pop","Sources",2050,"Year","Vint_2050","Population (Millions)","sum","ExampleScen2","Population by region","thous",2050,108.609
+"Eg2","Japan","pop","Sources",2055,"Year","Vint_2055","Population (Millions)","sum","ExampleScen2","Population by region","thous",2055,105.523
+"Eg2","Japan","pop","Sources",2060,"Year","Vint_2060","Population (Millions)","sum","ExampleScen2","Population by region","thous",2060,102.415
+"Eg2","Japan","pop","Sources",2065,"Year","Vint_2065","Population (Millions)","sum","ExampleScen2","Population by region","thous",2065,99.095
+"Eg2","Japan","pop","Sources",2070,"Year","Vint_2070","Population (Millions)","sum","ExampleScen2","Population by region","thous",2070,95.619
+"Eg2","Japan","pop","Sources",2075,"Year","Vint_2075","Population (Millions)","sum","ExampleScen2","Population by region","thous",2075,92.122
+"Eg2","Japan","pop","Sources",2080,"Year","Vint_2080","Population (Millions)","sum","ExampleScen2","Population by region","thous",2080,88.69
+"Eg2","Japan","pop","Sources",2085,"Year","Vint_2085","Population (Millions)","sum","ExampleScen2","Population by region","thous",2085,85.172
+"Eg2","Japan","pop","Sources",2090,"Year","Vint_2090","Population (Millions)","sum","ExampleScen2","Population by region","thous",2090,81.686
+"Eg2","Japan","pop","Sources",2095,"Year","Vint_2095","Population (Millions)","sum","ExampleScen2","Population by region","thous",2095,78.276
+"Eg2","Japan","pop","Sources",2100,"Year","Vint_2100","Population (Millions)","sum","ExampleScen2","Population by region","thous",2100,74.941
+"Eg2","Japan","primNrgConsumByFuel","Sources",1975,"Year","Vint_1975","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",1975,2258.22072222224
+"Eg2","Japan","primNrgConsumByFuel","Sources",1990,"Year","Vint_1990","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",1990,4818.80811111115
+"Eg2","Japan","primNrgConsumByFuel","Sources",2005,"Year","Vint_2005","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2005,5591.47854444449
+"Eg2","Japan","primNrgConsumByFuel","Sources",2010,"Year","Vint_2010","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2010,5231.9538305556
+"Eg2","Japan","primNrgConsumByFuel","Sources",2015,"Year","Vint_2015","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2015,5433.96820822585
+"Eg2","Japan","primNrgConsumByFuel","Sources",2020,"Year","Vint_2020","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2020,5415.61153833113
+"Eg2","Japan","primNrgConsumByFuel","Sources",2025,"Year","Vint_2025","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2025,5403.0873945829
+"Eg2","Japan","primNrgConsumByFuel","Sources",2030,"Year","Vint_2030","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2030,5371.99135219493
+"Eg2","Japan","primNrgConsumByFuel","Sources",2035,"Year","Vint_2035","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2035,5302.62852446015
+"Eg2","Japan","primNrgConsumByFuel","Sources",2040,"Year","Vint_2040","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2040,5244.72006072099
+"Eg2","Japan","primNrgConsumByFuel","Sources",2045,"Year","Vint_2045","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2045,5175.08178451268
+"Eg2","Japan","primNrgConsumByFuel","Sources",2050,"Year","Vint_2050","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2050,5093.90044539212
+"Eg2","Japan","watBioPhysCons","Sources",1975,"Year","Vint_1975","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",1975,21.89563001387
+"Eg2","Japan","watBioPhysCons","Sources",1990,"Year","Vint_1990","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",1990,20.5062299047
+"Eg2","Japan","watBioPhysCons","Sources",2005,"Year","Vint_2005","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2005,16.6731109405
+"Eg2","Japan","watBioPhysCons","Sources",2010,"Year","Vint_2010","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2010,14.8926071565
+"Eg2","Japan","watBioPhysCons","Sources",2015,"Year","Vint_2015","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2015,14.9997344261
+"Eg2","Japan","watBioPhysCons","Sources",2020,"Year","Vint_2020","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2020,15.88880320125
+"Eg2","Japan","watBioPhysCons","Sources",2025,"Year","Vint_2025","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2025,16.79197763632
+"Eg2","Japan","watBioPhysCons","Sources",2030,"Year","Vint_2030","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2030,17.78485456265
+"Eg2","Japan","watBioPhysCons","Sources",2035,"Year","Vint_2035","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2035,19.01466605158
+"Eg2","Japan","watBioPhysCons","Sources",2040,"Year","Vint_2040","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2040,19.76413906494
+"Eg2","Japan","watBioPhysCons","Sources",2045,"Year","Vint_2045","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2045,20.41738728016
+"Eg2","Japan","watBioPhysCons","Sources",2050,"Year","Vint_2050","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2050,20.94118313796
+"Eg2","Japan","watConsumBySec","Sources",1975,"Year","Vint_1975","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",1975,7.638271757473
+"Eg2","Japan","watConsumBySec","Sources",1990,"Year","Vint_1990","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",1990,9.2822452212031
+"Eg2","Japan","watConsumBySec","Sources",2005,"Year","Vint_2005","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2005,8.3962684169032
+"Eg2","Japan","watConsumBySec","Sources",2010,"Year","Vint_2010","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2010,7.8480004933243
+"Eg2","Japan","watConsumBySec","Sources",2015,"Year","Vint_2015","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2015,7.8231075193716
+"Eg2","Japan","watConsumBySec","Sources",2020,"Year","Vint_2020","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2020,7.7924086430925
+"Eg2","Japan","watConsumBySec","Sources",2025,"Year","Vint_2025","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2025,7.76192145193054
+"Eg2","Japan","watConsumBySec","Sources",2030,"Year","Vint_2030","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2030,7.75078134651644
+"Eg2","Japan","watConsumBySec","Sources",2035,"Year","Vint_2035","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2035,7.74181897425614
+"Eg2","Japan","watConsumBySec","Sources",2040,"Year","Vint_2040","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2040,7.71899419296204
+"Eg2","Japan","watConsumBySec","Sources",2045,"Year","Vint_2045","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2045,7.67211918812744
+"Eg2","Japan","watConsumBySec","Sources",2050,"Year","Vint_2050","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2050,7.60688943220354
+"Eg2","Japan","watWithdrawByCrop","Sources",1975,"Year","Vint_1975","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",1975,5.71470996617
+"Eg2","Japan","watWithdrawByCrop","Sources",1990,"Year","Vint_1990","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",1990,4.55416789515
+"Eg2","Japan","watWithdrawByCrop","Sources",2005,"Year","Vint_2005","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2005,3.81279195978
+"Eg2","Japan","watWithdrawByCrop","Sources",2010,"Year","Vint_2010","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2010,3.24974215258
+"Eg2","Japan","watWithdrawByCrop","Sources",2015,"Year","Vint_2015","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2015,3.31368557914
+"Eg2","Japan","watWithdrawByCrop","Sources",2020,"Year","Vint_2020","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2020,3.420614798115
+"Eg2","Japan","watWithdrawByCrop","Sources",2025,"Year","Vint_2025","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2025,3.526197642876
+"Eg2","Japan","watWithdrawByCrop","Sources",2030,"Year","Vint_2030","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2030,3.6112490069
+"Eg2","Japan","watWithdrawByCrop","Sources",2035,"Year","Vint_2035","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2035,3.753894611
+"Eg2","Japan","watWithdrawByCrop","Sources",2040,"Year","Vint_2040","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2040,3.85852044726
+"Eg2","Japan","watWithdrawByCrop","Sources",2045,"Year","Vint_2045","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2045,3.92875076106
+"Eg2","Japan","watWithdrawByCrop","Sources",2050,"Year","Vint_2050","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2050,3.96089106146
+"Eg2","Japan","watWithdrawBySec","Sources",1975,"Year","Vint_1975","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",1975,33.928940795467
+"Eg2","Japan","watWithdrawBySec","Sources",1990,"Year","Vint_1990","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",1990,40.4286454874731
+"Eg2","Japan","watWithdrawBySec","Sources",2005,"Year","Vint_2005","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2005,40.1083156595432
+"Eg2","Japan","watWithdrawBySec","Sources",2010,"Year","Vint_2010","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2010,37.9912741270843
+"Eg2","Japan","watWithdrawBySec","Sources",2015,"Year","Vint_2015","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2015,38.2360199451916
+"Eg2","Japan","watWithdrawBySec","Sources",2020,"Year","Vint_2020","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2020,38.4013388365685
+"Eg2","Japan","watWithdrawBySec","Sources",2025,"Year","Vint_2025","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2025,38.3560258068595
+"Eg2","Japan","watWithdrawBySec","Sources",2030,"Year","Vint_2030","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2030,38.1870049896114
+"Eg2","Japan","watWithdrawBySec","Sources",2035,"Year","Vint_2035","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2035,37.7780613272421
+"Eg2","Japan","watWithdrawBySec","Sources",2040,"Year","Vint_2040","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2040,37.333795250815
+"Eg2","Japan","watWithdrawBySec","Sources",2045,"Year","Vint_2045","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2045,36.7255138512094
+"Eg2","Japan","watWithdrawBySec","Sources",2050,"Year","Vint_2050","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2050,35.9938033152795
