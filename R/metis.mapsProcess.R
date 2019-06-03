@@ -217,7 +217,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
     if(!"scenarioGCM"%in%names(data)){data<-data%>%dplyr::mutate(scenarioGCM="scenarioGCM")}
     if(!"scenarioRCP"%in%names(data)){data<-data%>%dplyr::mutate(scenarioRCP="scenarioRCP")}
     if(!"scenarioSSP"%in%names(data)){data<-data%>%dplyr::mutate(scenarioSSP="scenarioSSP")}
-    if(!"scenarioPolicy)"%in%names(data)){data<-data%>%dplyr::mutate(scenarioPolicy="scenarioPolicy")}
+    if(!"scenarioPolicy"%in%names(data)){data<-data%>%dplyr::mutate(scenarioPolicy="scenarioPolicy")}
     return(data)
   }
 
@@ -485,7 +485,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
 
   if(!is.null(shapeTbl)){
-    shapeTbl<-shapeTbl%>%unique()
+    #shapeTbl<-shapeTbl%>%unique()
     if(boundaryRegionsSelect != "region"){shapeTbl <- shapeTbl %>% dplyr::filter(region %in% boundaryRegionsSelect)}
     if(any(xRange!="All")){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange);
     print(paste("Subset shapeTbl x to xRange: ",paste(xRange,collapse=", "),sep=""))}
@@ -861,7 +861,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
       if(indvScenarios=="All"){
         print(paste("indvScenarios set to 'All', running for all scenarios.",sep=""))
-        scenarios <- unique(gridTbl$scenario)} else {
+        scenarios <- unique(gridTbl$scenario)
+        } else {
 
           if(all(indvScenarios %in% unique(gridTbl$scenario))){
             print(paste("Running for selected indvScenarios: ", paste(indvScenarios,collapse=", "),sep=""))

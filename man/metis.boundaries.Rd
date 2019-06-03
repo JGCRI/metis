@@ -16,7 +16,8 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   extendedFillColor = "grey75", extendedBGColor = "lightblue1",
   extendedHighLightColor = "cornsilk1", extendedLabelsColor = "grey30",
   extdendedLabelSize = 0.7, extension = T, fillPalette = "Spectral",
-  cropSubShape2Bound = T, grids = NULL)
+  cropSubShape2Bound = T, grids = NULL, innerMargins = c(0, 0.1, 0,
+  0.1), outerMargins = c(0.01, 0.01, 0.01, 0.01))
 }
 \arguments{
 \item{boundaryRegShape}{Default=NULL. Boundary region shape if already read into R.}
@@ -75,7 +76,11 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
 
 \item{cropSubShape2Bound}{Default = T. Set to False if subregion shape is larger than boundary, but desired fro extension.}
 
-\item{grids}{Default = NULL. Suggested is c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+\item{grids}{Default = NULL. Suggested is c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),}
+
+\item{innerMargins}{Default =c(0,0.1,0,0.1), # bottom, left, top, right}
+
+\item{outerMargins}{Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right
 paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""))
 This may happen in the case of disputed boundaries.}
 }

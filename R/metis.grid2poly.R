@@ -320,6 +320,9 @@ metis.grid2poly<- function(grid=NULL,
           sp::proj4string(shapeExpandExtent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
 
           print(paste("Cropping grid to shape file for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
+
+         if(!is.null(raster::intersect(raster::extent(r), raster::extent(shapeExpandExtent)))){
+
           rcrop<-raster::crop(r,shapeExpandExtent)
           rcropP<-raster::rasterToPolygons(rcrop)
 
@@ -447,6 +450,9 @@ metis.grid2poly<- function(grid=NULL,
 
           #rm(r,spdf,gridx,rcropPx,rcropP,polyx,rcrop,polyDatax)
 
+         } else { # Close loop for if extents overlap
+           print(paste("Gridded data provided for param: ",param_i," and scenario: ",scenario_i," did not overlap with shape boundary.",sep=""))
+         }
         } # Close loop for aggType
       } else {print(paste("No data for param: ",param_i," and scenario: ",scenario_i,".",sep=""))}# Close loop for nrow>0
     } # Close loop for param_i and scenario_i

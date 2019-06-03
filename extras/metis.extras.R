@@ -78,12 +78,18 @@ install_github(repo="zarrarkhan/metis",'dev_metis')
 #----------------
 
 size = 0
+dfSize = data.frame()
 for (x in ls() ){
   thisSize = object.size(get(x))
   size = size + thisSize
-  message(x, " = ", appendLF = F); print(thisSize, units='auto')
+  #message(x, " = ", appendLF = F); print(thisSize, units='auto')
+  dfSizeTemp <- data.frame(file=c(paste(x)),size=paste(print(thisSize, units='Mb')),units="MB")
+  dfSize <- dfSize %>% bind_rows(dfSizeTemp)
 }
 message("total workspace is ",appendLF = F); print(size, units='auto')
+dfSize$size = as.numeric(dfSize$size);
+dfSize %>% arrange(size)
+gc()
 
 
 #--------------

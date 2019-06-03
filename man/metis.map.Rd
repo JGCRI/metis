@@ -22,7 +22,8 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   fillshowNA = NA, fillcolorNULL = "grey30", facetsON = T,
   panelLabel = NULL, multiFacetRows = NULL, multiFacetCols = NULL,
   mapTitle = NULL, mapTitleSize = 1, numeric2Cat_list = NULL,
-  catParam = NULL)
+  catParam = NULL, innerMargins = c(0, 0, 0, 0),
+  outerMargins = c(0.01, 0.01, 0.01, 0.01))
 }
 \arguments{
 \item{dataPolygon}{Default = NULL,}
@@ -132,6 +133,10 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
 \item{numeric2Cat_list}{Default=NULL,}
 
 \item{catParam}{Default=NULL}
+
+\item{innerMargins}{Default =c(0,0,0,0), # bottom, left, top, right}
+
+\item{outerMargins}{Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right}
 }
 \value{
 Returns the formatted data used to produce chart

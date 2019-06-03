@@ -13,11 +13,12 @@ metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
   xanthosFiles = "NA", xanthosScenarioAssign = "NA",
   xanthosCoordinatesPath = "NA", xanthosGridAreaHecsPath = "NA",
   scarcityXanthosRollMeanWindow = 10, spanLowess = 0.25,
-  popFolder = "NA", popFiles = "NA", popUnits = "NA",
-  dirOutputs = paste(getwd(), "/outputs", sep = ""), reReadData = 1,
-  gridMetisData = paste(getwd(), "/outputs/Grids/gridMetis.RData", sep =
-  ""), sqliteUSE = F, sqliteDBNamePath = paste(getwd(),
-  "/outputs/Grids/gridMetis.sqlite", sep = ""))
+  popFolder = "NA", popFiles = "NA", biaFolder = "NA",
+  biaFiles = "NA", popUnits = "NA", dirOutputs = paste(getwd(),
+  "/outputs", sep = ""), reReadData = 1, gridMetisData = paste(getwd(),
+  "/outputs/Grids/gridMetis.RData", sep = ""), sqliteUSE = F,
+  sqliteDBNamePath = paste(getwd(), "/outputs/Grids/gridMetis.sqlite",
+  sep = ""))
 }
 \arguments{
 \item{demeterFolder}{Full path to demeter outputs}
@@ -55,6 +56,10 @@ metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
 \item{popFolder}{Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")}
 
 \item{popFiles}{Default = <-"grid_pop_map"}
+
+\item{biaFolder}{Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")}
+
+\item{biaFiles}{Default = <-"grid_bia_map"}
 
 \item{popUnits}{Default = <-"person"}
 

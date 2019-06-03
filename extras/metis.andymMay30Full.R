@@ -211,8 +211,8 @@ diagnosticsON<-F
 #diagnosticsON<-T
 
 
-#subsectorNAdistribute = "totalOther"
-subsectorNAdistribute = "even"
+subsectorNAdistribute = "totalOther"
+#subsectorNAdistribute = "even"
 
 
 dataBia2<-metis.bia(
@@ -253,24 +253,6 @@ dataBia2<-metis.bia(
 # diagnosticsON = T
 # subsectorNAdistribute = "even"
 
-dataBia2<-dataBia2%>%select(-value, -origValue)%>%
-  dplyr::mutate(aggType = "vol")%>%
-  dplyr::rename(lat = gridlat, lon = gridlon, class = class1, value = valueDistrib, origValue = origValueDistrib)
-
-dataBiaCheck <- dataBia2
-
-dataBia2 <-  dataBia2 %>%
-  ungroup() %>%
-  select(-gridCellPercentage,-region,-region_32_code,-ctry_name,-ctry_code, -aggregate, -contains("orig"),-gridID)
-
-# dataBia<-dataBia%>%select(-value, -origValue)%>%
-#   dplyr::mutate(aggType = "vol")%>%
-#   dplyr::rename(lat = gridlat, lon = gridlon, class = class1, value = valueDistrib, origValue = origValueDistrib)
-#
-# dataBia <-  dataBia %>%
-#   ungroup() %>%
-#   select(-gridCellPercentage,-region,-region_32_code,-ctry_name,-ctry_code, -aggregate, -contains("orig"),-gridID)
-
 
 
 #------------------------
@@ -287,8 +269,6 @@ if (!dir.exists(paste(dirOutputs, "/Grids", sep = ""))){
 if (!dir.exists(paste(dirOutputs, "/Grids/diagnostics",sep=""))){
   dir.create(paste(dirOutputs, "/Grids/diagnostics",sep=""))}
 
-
-# reReadData=1
 # demeterFolder=paste(getwd(),"/dataFiles/grids/demeter/",sep="")
 # demeterScenario="Eg1"
 # demeterUnits="Landuse (Fraction)"
@@ -330,56 +310,62 @@ if (!dir.exists(paste(dirOutputs, "/Grids/diagnostics",sep=""))){
 # popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 # popFiles<-"grid_pop_map"
 # popUnits<-"person"
-# gridMetisData=paste(dirOutputs, "/Grids/gridMetisXanthos.RData", sep = "")
-# sqliteUSE = T
-# sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
-#
-# gridMetis<-metis.prepGrid(
-#   reReadData=reReadData,
-#   demeterFolder=demeterFolder,
-#   demeterScenario=demeterScenario,
-#   demeterTimesteps=demeterTimesteps,
-#   demeterUnits=demeterUnits,
-#   tethysFolder=tethysFolder,
-#   tethysScenario=tethysScenario,
-#   copySingleTethysScenbyXanthos=copySingleTethysScenbyXanthos,
-#   tethysFiles=tethysFiles,
-#   tethysUnits=tethysUnits,
-#   xanthosFolder=xanthosFolder,
-#   xanthosFiles=xanthosFiles,
-#   xanthosCoordinatesPath=xanthosCoordinatesPath,
-#   xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
-#   spanLowess=spanLowess,
-#   dirOutputs=paste(getwd(),"/outputs",sep=""),
-#   gridMetisData=gridMetisData,
-#   popFolder=popFolder,
-#   popFiles=popFiles,
-#   popUnits=popUnits,
-#   sqliteUSE = sqliteUSE,
-#   sqliteDBNamePath =sqliteDBNamePath)
-#
-# # reReadData=reReadData
-# # demeterFolder=demeterFolder
-# # demeterScenario=demeterScenario
-# # demeterTimesteps=demeterTimesteps
-# # demeterUnits=demeterUnits
-# # tethysFolder=tethysFolder
-# # tethysScenario=tethysScenario
-# # copySingleTethysScenbyXanthos=copySingleTethysScenbyXanthos
-# # tethysFiles=tethysFiles
-# # tethysUnits=tethysUnits
-# # xanthosFolder=xanthosFolder
-# # xanthosFiles=xanthosFiles
-# # xanthosCoordinatesPath=xanthosCoordinatesPath
-# # xanthosGridAreaHecsPath=xanthosGridAreaHecsPath
-# # spanLowess=spanLowess
-# # dirOutputs=paste(getwd(),"/outputs",sep="")
-# # gridMetisData=gridMetisData
-# # popFolder=popFolder
-# # popFiles=popFiles
-# # popUnits=popUnits
-# # sqliteUSE = sqliteUSE
-# # sqliteDBNamePath =sqliteDBNamePath
+
+
+reReadData=1
+gridMetisData=paste(dirOutputs, "/Grids/gridMetisBia.RData", sep = "")
+sqliteUSE = T
+sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetisBia.sqlite", sep = "")
+
+
+gridMetis<-metis.prepGrid(
+  reReadData=reReadData,
+  #demeterFolder=demeterFolder,
+  #demeterScenario=demeterScenario,
+  # demeterTimesteps=demeterTimesteps,
+  # demeterUnits=demeterUnits,
+  # tethysFolder=tethysFolder,
+  # tethysScenario=tethysScenario,
+  # copySingleTethysScenbyXanthos=copySingleTethysScenbyXanthos,
+  # tethysFiles=tethysFiles,
+  # tethysUnits=tethysUnits,
+  # xanthosFolder=xanthosFolder,
+  # xanthosFiles=xanthosFiles,
+  # xanthosCoordinatesPath=xanthosCoordinatesPath,
+  # xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
+  # spanLowess=spanLowess,
+  # popFolder=popFolder,
+  # popFiles=popFiles,
+  # popUnits=popUnits,
+  biaFolder=paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep=""),
+  biaFiles="dataBia.csv",
+  dirOutputs=paste(getwd(),"/outputs",sep=""),
+  gridMetisData=gridMetisData,
+  sqliteUSE = sqliteUSE,
+  sqliteDBNamePath =sqliteDBNamePath)
+
+# reReadData=reReadData
+# demeterFolder=demeterFolder
+# demeterScenario=demeterScenario
+# demeterTimesteps=demeterTimesteps
+# demeterUnits=demeterUnits
+# tethysFolder=tethysFolder
+# tethysScenario=tethysScenario
+# copySingleTethysScenbyXanthos=copySingleTethysScenbyXanthos
+# tethysFiles=tethysFiles
+# tethysUnits=tethysUnits
+# xanthosFolder=xanthosFolder
+# xanthosFiles=xanthosFiles
+# xanthosCoordinatesPath=xanthosCoordinatesPath
+# xanthosGridAreaHecsPath=xanthosGridAreaHecsPath
+# spanLowess=spanLowess
+# dirOutputs=paste(getwd(),"/outputs",sep="")
+# gridMetisData=gridMetisData
+# popFolder=popFolder
+# popFiles=popFiles
+# popUnits=popUnits
+# sqliteUSE = sqliteUSE
+# sqliteDBNamePath =sqliteDBNamePath
 
 #-----------
 # Grid to Poly
@@ -395,11 +381,11 @@ nameAppend_i = "_NE"
 #aggType_i = NULL
 paramsSelect_i= "All" #"demeterLandUse"
 #sqliteUSE_i = T
-sqliteUSE_i = F  #andym
+sqliteUSE_i = T  #andym
 sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
 grid2polyX<-metis.grid2poly(#grid=dataBia,
-  grid=dataBia2,               #andym
+  #grid=dataBia2,               #andym
   boundaryRegionsSelect=boundaryRegionsSelect_i,
   subRegShpFolder=subRegShpFolder_i,
   subRegShpFile=subRegShpFile_i,
@@ -572,7 +558,7 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i_NOSPACES,         #andym
                  chosenRefMeanYears=c(2000:2050),
                  numeric2Cat_list=numeric2Cat_list)
 
-
+#
 # polygonDataTables=polygonDataTables_i
 # gridDataTables=gridDataTables_i
 # xRange=xRange_i
@@ -611,3 +597,4 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i_NOSPACES,         #andym
 # #refRCP="rcp2p6"
 # chosenRefMeanYears=c(2000:2050)
 # numeric2Cat_list=numeric2Cat_list
+# extendedLabels =F
