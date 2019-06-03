@@ -141,3 +141,28 @@ io1b <- metis.io(ioTable0=ioTable0, A0=A1, useIntensity = 1,nameAppend = "_Multi
 A2<-A0; A2[1,4] <- 0.2; A2
 io1c <- metis.io(ioTable0=ioTable0, A0=A2, useIntensity = 1,nameAppend = "_Multi_A_lowWatinElec"); io1c$ioTbl_Output %>% as.data.frame() ; io1c$A_Output %>% as.data.frame()
 
+#------------------------------------------------
+# Import supply/demand/capacity files
+# Import demands across sectors, with corresponding supplies specified
+# Import base data
+demand_data_file = 'C:/Users/twild/Dropbox/Argentina and metis workplan/Metis_Colorado/colorado_demand_data.csv'
+capacity_data_file = 'C:/Users/twild/Dropbox/Argentina and metis workplan/Metis_Colorado/colorado_capacity_data.csv'
+demand_data <- read.csv(demand_data_file)
+demand_data <- demand_data %>% as_tibble()
+capacity_data <- read.csv(capacity_data_file)
+# Manipulate/rearrange demand/supply data frame to wide format
+ioTable0 <- demand_data %>% select(-units, -localData, -dataSource, -year, -param) %>%
+  mutate(demandClassCombined=ifelse(class2=="", paste0(demandClass, class2), paste0(demandClass,"_", class2))) %>%
+  select(-class2, -demandClass) %>% spread(demandClassCombined, localDataSubdivided)
+ioTable0[,c(which(colnames(ioTable0)=="supplySector"),which(colnames(ioTable0)!="supplySector"))]  # Shift supply to first
+ioTable0[,c(which(colnames(ioTable0)=="supplySubSector"),which(colnames(ioTable0)!="supplySubSector"))]  # Shift supply to first
+# Manipulate/rearrange supply capacity data frame to wide format, and integrate it with existing ioTable0 dataframe
+capTable <- capacity_data %>% select(-year, -units) %>% rename(cap=data)
+# Merge ioTable0 and capTable
+ioTable0 <- ioTable0 %>% left_join(capTable, by=c('subRegion', 'supplySector', 'supplySubSector'))
+# Filter for one sub-region for testing purposes
+ioTable0_SR <- ioTable0 %>% filter(subRegion=='Mendoza_alta_barrancas')
+io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
+io1 <- metis.io(ioTable0=ioTable0_SR, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
+io1$ioTbl_Output %>% as.data.frame()
+io1$A_Output %>% as.data.frame()
