@@ -26,6 +26,7 @@
 #' @param gridChoice Default = "grid_050" . Choice of whether to use 50 km x 50 km grid cells ("grid_050") or 25 km x 25 km ("grid_025").
 #' @param diagnosticsON Default = T.
 #' @param subsectorNAdistribute Default = "even". Choose "even" for even distribution or "totalOther" to distribute based on sum of all other subsectors..
+#' @param nameAppend Default=""
 #' @return A tibble with GCAM electricity generation distributed on a grid for selected regions
 #' @keywords electricity, generation, gcam, gridded, downscale, downscaling, downscaled
 #' @export
@@ -46,7 +47,8 @@ metis.bia<- function(biaInputsFolder = "NA",
                      paramsSelect = c("elecByTech", "elecCapBySubsector"),
                      gridChoice = "grid_050",
                      diagnosticsON = T,
-                     subsectorNAdistribute = "even"
+                     subsectorNAdistribute = "even",
+                     nameAppend=""
 ){
 
   # biaInputsFolder = "NA"
@@ -571,13 +573,14 @@ metis.bia<- function(biaInputsFolder = "NA",
 
   print("About to return data for distributed electricity generation data")
 
-  print(paste("Bia output data written to: ",paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia.csv",sep=""), sep = ""))
+  print(paste("Bia output data written to: ",paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia",nameAppend,".csv",sep=""), sep = ""))
 
-  if (file.exists(paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia.csv",sep=""))){
-    unlink(paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia.csv",sep=""),recursive=T)}
+
+  if (file.exists(paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia",nameAppend,".csv",sep=""))){
+    unlink(paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia",nameAppend,".csv",sep=""),recursive=T)}
 
   data.table::fwrite(dataBia,
-                     file = paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia.csv",sep=""),row.names = F, append=F)
+                     file = paste(getwd(),"/dataFiles/grids/bia/biaOutputs/dataBia",nameAppend,".csv",sep=""),row.names = F, append=F)
 
 
 

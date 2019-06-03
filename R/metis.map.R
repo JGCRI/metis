@@ -57,6 +57,8 @@
 #' @param mapTitleSize Default=1
 #' @param numeric2Cat_list Default=NULL,
 #' @param catParam Default=NULL
+#' @param innerMargins Default =c(0,0,0,0), # bottom, left, top, right
+#' @param outerMargins Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
 #' @export
@@ -114,7 +116,9 @@ metis.map<-function(dataPolygon=NULL,
                   mapTitle=NULL,
                   mapTitleSize=1,
                   numeric2Cat_list=NULL,
-                  catParam=NULL
+                  catParam=NULL,
+                  innerMargins=c(0,0,0,0), # bottom, left, top, right
+                  outerMargins=c(0.01,0.01,0.01,0.01) # bottom, left, top, right
                   ){
 
 
@@ -216,24 +220,10 @@ if(!is.null(dataGrid)){
     if(!is.null(shape)){
     raster<-raster::stack(raster)
     raster::projection(raster)<-sp::proj4string(shape)
-    shape_ras <- raster::rasterize(shape, raster[[1]], getCover=TRUE)
-    shape_ras[shape_ras==0] <- NA
-    raster<-raster::mask(raster,shape_ras)
+    # shape_ras <- raster::rasterize(shape, raster[[1]], getCover=TRUE)
+    # shape_ras[shape_ras==0] <- NA
+    # raster<-raster::mask(raster,shape_ras)
     raster<-methods::as(raster, "SpatialPixelsDataFrame")
-    # # Shape Size Boudnary
-    # shapeX<-abs(shape@bbox[1,1]-shape@bbox[1,2]);shapeX
-    # shapeY<-abs(shape@bbox[2,1]-shape@bbox[2,2]);shapeY
-    # # Grid Cell size boundary
-    # gridX <- abs(shape_ras@extent[1]-shape_ras@extent[2]);gridX
-    # gridY <- abs(shape_ras@extent[3]-shape_ras@extent[4]);gridY
-    # if((gridX*gridY)<(shapeX*shapeY)){
-    #   raster<-raster::mask(raster,shape)
-    #   raster<-methods::as(raster, "SpatialPixelsDataFrame")
-    #   raster@bbox<-shape@bbox}else{
-    #     raster<-raster::mask(raster,shape_ras)
-    #     raster<-methods::as(raster, "SpatialPixelsDataFrame")}
-    #raster<-raster::mask(raster,shape)
-    #raster<-methods::as(raster, "SpatialPixelsDataFrame")
     raster@data<-Filter(function(x)!all(is.na(x)), raster@data)
     # Replace spaces because raster::stack(raster) will add periods which then don't correspond to fillColumn names
     fillColumn<-gsub("\\ ",".",fillColumn)
@@ -352,7 +342,7 @@ if(!is.null(raster)){
 
 
   if(is.null(legendBreaks)){legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(raster@data%>%dplyr::select(fillColumn)%>%as.matrix())}
-  map<-tmap::tm_shape(raster) + tmap::tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
+  map<-tmap::tm_shape(raster, bbox=shape@bbox) + tmap::tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
                                   style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks,legend.show = legendShow)
 
   if(!is.null(raster)){checkFacets=length(names(raster))}
@@ -462,7 +452,7 @@ if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
               legend.text.size = legendTextSize)+
     tmap::tm_layout(frame = frameShow,bg.color=bgColor)+
     tmap::tm_layout(main.title.position="left",main.title.size=1.5,
-              inner.margins = rep(0,4),outer.margins=rep(0.01,4)) +
+              inner.margins = innerMargins,outer.margins=outerMargins) +
     tmap::tm_layout(panel.label.bg.color = facetBGColor,
                     panel.label.color = facetLabelColor,
                     panel.label.size = facetLabelSize)

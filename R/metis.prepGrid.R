@@ -84,6 +84,8 @@ metis.prepGrid<- function(demeterFolder="NA",
   # gridMetisData=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = "")
   # sqliteUSE = F
   # sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+  # biaFolder="NA"
+  # biaFiles="NA"
 
 
 #----------------
@@ -97,6 +99,32 @@ NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
     tethysGCMRCPs->xanthosGCMRCPs->scenarioSSP->scenarioPolicy->scenarioGCM->scenarioRCP->
     country->name->GCMRCP->datax->
     region->regionsSelect->rowid->scenarioTethys->scenarioXanthos
+
+
+#------------------
+# Function for adding any missing columns if needed
+# -----------------
+
+  addMissing<-function(data){
+    if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
+    if(!"x"%in%names(data)){if("year"%in%names(data)){
+      data<-data%>%dplyr::mutate(x=year)}else{data<-data%>%dplyr::mutate(x="x")}}
+    if(!"region"%in%names(data)){data<-data%>%dplyr::mutate(region="region")}
+    if(!"classPalette"%in%names(data)){data<-data%>%dplyr::mutate(classPalette="pal_hot")}
+    if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}
+    if(!"scenarioGCM"%in%names(data)){data<-data%>%dplyr::mutate(scenarioGCM="scenarioGCM")}
+    if(!"scenarioRCP"%in%names(data)){data<-data%>%dplyr::mutate(scenarioRCP="scenarioRCP")}
+    if(!"scenarioSSP"%in%names(data)){data<-data%>%dplyr::mutate(scenarioSSP="scenarioSSP")}
+    if(!"scenarioPolicy"%in%names(data)){data<-data%>%dplyr::mutate(scenarioPolicy="scenarioPolicy")}
+    if(!"class"%in%names(data)){data<-data%>%dplyr::mutate(class="scenarioPolicy")}
+    if(!"class2"%in%names(data)){data<-data%>%dplyr::mutate(class2="class2")}
+    if(!"aggType"%in%names(data)){data<-data%>%dplyr::mutate(aggType="aggType")}
+    if(!"lon"%in%names(data)){data<-data%>%dplyr::mutate(lon="lon")}
+    if(!"lat"%in%names(data)){data<-data%>%dplyr::mutate(lat="lat")}
+    if(!"units"%in%names(data)){data<-data%>%dplyr::mutate(units="units")}
+    return(data)
+  }
+
 
 
 #------------------
@@ -164,6 +192,11 @@ gridx<-data.table::fread(paste(demeterFolder,"/landcover_",timestepx,"_timestep.
   dplyr::select(-aez_id,-region_id,-longitude,-latitude)%>%
   tidyr::gather(key="class",value="value",-c("lat","lon","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","x","classPalette"))
 print("File read.")
+
+colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+                                                "param","units","aggType","classPalette","class","x","value")]
+gridx <- gridx %>% dplyr::select(colsSelect)
+gridx<-addMissing(gridx); gridx
 
 if(sqliteUSE==T){
   DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
@@ -249,6 +282,11 @@ if(!dir.exists(tethysFolder)){
         tethysGCMRCPs<-dplyr::bind_rows(tethysGCMRCPs,tethysGCMRCP)
         tethysGCMRCPs<-tethysGCMRCPs[stats::complete.cases(tethysGCMRCPs),]
         tethysYears<-unique(gridx$x)
+
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+                                           "param","units","aggType","classPalette","class","x","value")]
+        gridx <- gridx %>% dplyr::select(colsSelect)
+        gridx<-addMissing(gridx); gridx
 
         if(sqliteUSE==T){
           DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
@@ -401,6 +439,11 @@ if(!dir.exists(xanthosFolder)){
 
         gridx<-gridx%>%dplyr::mutate(value=lowess)%>%dplyr::select(-lowess)
 
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+                                                        "param","units","aggType","classPalette","class","x","value")]
+        gridx <- gridx %>% dplyr::select(colsSelect)
+        gridx<-addMissing(gridx); gridx
+
         if(sqliteUSE==T){
         DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
         print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
@@ -507,7 +550,14 @@ if(sqliteUSE==T){
                 classPalette="pal_ScarcityCat");
 
 
+      colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+                                                      "param","units","aggType","classPalette","class","x","value")]
+      gridx <- gridx %>% dplyr::select(colsSelect)
+      gridx<-addMissing(gridx); gridx
+
       print(paste("Data extracted and saved.",sep=""))
+
+
       if(sqliteUSE==T){
         DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
         print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
@@ -613,6 +663,11 @@ if(!dir.exists(popFolder)){
                         class="class")
         gridx$x<-as.numeric(gridx$x)
 
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+                                                        "param","units","aggType","classPalette","class","x","value")]
+        gridx <- gridx %>% dplyr::select(colsSelect)
+        gridx<-addMissing(gridx); gridx
+
         print("File read.")
 
         if(sqliteUSE==T){
@@ -639,7 +694,8 @@ if(!dir.exists(popFolder)){
 if(!dir.exists(biaFolder)){
 
   print(paste("bia folder: ", biaFolder ," is incorrect or doesn't exist.",sep=""))
-  print(paste("Skipping bia runs",sep=""))}else {
+  print(paste("Skipping bia runs",sep=""))
+  }else {
 
     if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
 
@@ -661,6 +717,12 @@ if(!dir.exists(biaFolder)){
           dplyr::rename(lat = gridlat, lon = gridlon, class = class1, value = valueDistrib, origValue = origValueDistrib) %>%
           select(-gridCellPercentage,-region,-region_32_code,-ctry_name,-ctry_code, -aggregate, -contains("orig"),-gridID)
         gridx$x<-as.numeric(gridx$x)
+
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+                                                        "param","units","aggType","classPalette","class","x","value")]
+        gridx <- gridx %>% dplyr::select(colsSelect)
+        gridx<-addMissing(gridx); gridx
+
 
         print("File read.")
 

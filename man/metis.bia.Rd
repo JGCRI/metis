@@ -12,7 +12,7 @@ metis.bia(biaInputsFolder = "NA", biaInputsFiles = "NA",
   queryxml = "metisQueries.xml", queryPath = gcamdatabasePath,
   queriesSelect = "All", paramsSelect = c("elecByTech",
   "elecCapBySubsector"), gridChoice = "grid_050", diagnosticsON = T,
-  subsectorNAdistribute = "even")
+  subsectorNAdistribute = "even", nameAppend = "")
 }
 \arguments{
 \item{biaInputsFolder}{Bia Inputs Folder Path}
@@ -51,6 +51,8 @@ the same folder as specified by gcamdatabasePath}
 \item{diagnosticsON}{Default = T.}
 
 \item{subsectorNAdistribute}{Default = "even". Choose "even" for even distribution or "totalOther" to distribute based on sum of all other subsectors..}
+
+\item{nameAppend}{Default=""}
 
 \item{biaOutputsFolder}{Default =paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep=""),}
 
