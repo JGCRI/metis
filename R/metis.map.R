@@ -220,9 +220,9 @@ if(!is.null(dataGrid)){
     if(!is.null(shape)){
     raster<-raster::stack(raster)
     raster::projection(raster)<-sp::proj4string(shape)
-    # shape_ras <- raster::rasterize(shape, raster[[1]], getCover=TRUE)
-    # shape_ras[shape_ras==0] <- NA
-    # raster<-raster::mask(raster,shape_ras)
+    shape_ras <- raster::rasterize(shape, raster[[1]], getCover=TRUE)
+    shape_ras[shape_ras==0] <- NA
+    raster<-raster::mask(raster,shape_ras)
     raster<-methods::as(raster, "SpatialPixelsDataFrame")
     raster@data<-Filter(function(x)!all(is.na(x)), raster@data)
     # Replace spaces because raster::stack(raster) will add periods which then don't correspond to fillColumn names

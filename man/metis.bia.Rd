@@ -6,10 +6,10 @@
 \usage{
 metis.bia(biaInputsFolder = "NA", biaInputsFiles = "NA",
   reReadData = 1, regionsSelect = NULL, dataProj = "dataProj.proj",
-  dataProjPath = gcamdatabasePath, scenOrigNames = c("GCAMOrig",
-  "GCAMModified"), scenNewNames = c("GCAMOrig", "GCAMModified"),
-  gcamdatabasePath = "NA", gcamdatabaseName = "NA",
-  queryxml = "metisQueries.xml", queryPath = gcamdatabasePath,
+  dataProjPath = gcamdatabasePath, scenOrigNames = NULL,
+  scenNewNames = NULL, gcamdatabasePath = "NA",
+  gcamdatabaseName = "NA", queryxml = "metisQueries.xml",
+  queryPath = paste(getwd(), "/dataFiles/gcam", sep = ""),
   queriesSelect = "All", paramsSelect = c("elecByTech",
   "elecCapBySubsector"), gridChoice = "grid_050", diagnosticsON = T,
   subsectorNAdistribute = "even", nameAppend = "")
@@ -17,9 +17,12 @@ metis.bia(biaInputsFolder = "NA", biaInputsFiles = "NA",
 \arguments{
 \item{biaInputsFolder}{Bia Inputs Folder Path}
 
-\item{biaInputsFiles}{Bia electricity generation files to Read}
+\item{biaInputsFiles}{Bia Inputs Folder Path}
 
-\item{reReadData}{Default =1,}
+\item{reReadData}{Default = 1. will read the GCAM data base and create a queryData.proj file
+in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
+with full path is provided otherwise it will search for a dataProj.proj file in the existing
+folder which may have been created from an old run.}
 
 \item{regionsSelect}{The regions to analyze in a vector. Example c('Colombia','Argentina')}
 
@@ -53,13 +56,6 @@ the same folder as specified by gcamdatabasePath}
 \item{subsectorNAdistribute}{Default = "even". Choose "even" for even distribution or "totalOther" to distribute based on sum of all other subsectors..}
 
 \item{nameAppend}{Default=""}
-
-\item{biaOutputsFolder}{Default =paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep=""),}
-
-\item{reReadData}{If TRUE will read the GCAM data base and create a queryData.proj file
-in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
-with full path is provided otherwise it will search for a dataProj.proj file in the existing
-folder which may have been created from an old run.}
 }
 \value{
 A tibble with GCAM electricity generation distributed on a grid for selected regions

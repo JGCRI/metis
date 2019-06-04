@@ -2,9 +2,7 @@
 #'
 #' This function downscales GCAM electricity generation and installed capacity onto a grid, based on WRI PowerWatch dataset of present capacity
 #' @param biaInputsFolder Bia Inputs Folder Path
-#' @param biaInputsFiles Bia electricity generation files to Read
-#' @param biaOutputsFolder Default =paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep=""),
-#' @param reReadData Default =1,
+#' @param biaInputsFiles Bia Inputs Folder Path
 #' @param gcamdatabasePath Path to gcam database folder
 #' @param gcamdatabaseName Name of gcam database
 #' @param queryxml Full path to query.xml file
@@ -15,7 +13,7 @@
 #' For example c('scenario1','scenario2).
 #' @param scenNewNames New Names which may be shorter and more useful for figures etc.
 #' Default will use Original Names. For example c('scenario1','scenario2)
-#' @param reReadData If TRUE will read the GCAM data base and create a queryData.proj file
+#' @param reReadData Default = 1. will read the GCAM data base and create a queryData.proj file
 #' in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
 #' with full path is provided otherwise it will search for a dataProj.proj file in the existing
 #' folder which may have been created from an old run.
@@ -37,12 +35,12 @@ metis.bia<- function(biaInputsFolder = "NA",
                      regionsSelect = NULL,
                      dataProj = "dataProj.proj",
                      dataProjPath = gcamdatabasePath,
-                     scenOrigNames = c("GCAMOrig","GCAMModified"),
-                     scenNewNames = c("GCAMOrig","GCAMModified"),
+                     scenOrigNames = NULL,
+                     scenNewNames = NULL,
                      gcamdatabasePath = "NA",
                      gcamdatabaseName = "NA",
                      queryxml = "metisQueries.xml",
-                     queryPath = gcamdatabasePath,
+                     queryPath = paste(getwd(),"/dataFiles/gcam",sep=""),
                      queriesSelect = "All",
                      paramsSelect = c("elecByTech", "elecCapBySubsector"),
                      gridChoice = "grid_050",
@@ -71,6 +69,8 @@ metis.bia<- function(biaInputsFolder = "NA",
   # subsectorNAdistribute = "even"
 
 
+
+
   #----------------
   # Initialize variables by setting to NULL
   #----------------
@@ -87,7 +87,8 @@ metis.bia<- function(biaInputsFolder = "NA",
     origUnits -> origScen -> origQuery -> classPalette2 -> classPalette1 -> classLabel2 -> classLabel1 -> class2 ->
     class1 -> connx -> aggregate -> Units -> sources -> paramx -> technology -> input -> output -> gcamCapacityFactor ->
     gridlat -> gridlon -> gridID -> region_32_code -> ctry_name -> ctry_code -> gridCellPercentage -> aggregate ->
-    valueDistrib -> origValueDistrib ->readgcamdata->gridlat->gridlon->gridCropped
+    valueDistrib -> origValueDistrib ->readgcamdata->gridlat->gridlon->gridCropped-> year_of_capacity_data ->
+    gridCellCapacity -> regionCapSum -> Var1 -> Var2 -> gridCellIndex->commissioning_year
 
 
 
@@ -130,7 +131,7 @@ metis.bia<- function(biaInputsFolder = "NA",
   readgcamdata<-metis.readgcam(gcamdatabasePath = gcamdatabasePath, gcamdatabaseName = gcamdatabaseName,
                                queryxml = queryxml, queryPath = queryPath,
                                scenOrigNames = scenOrigNames, scenNewNames = scenNewNames, reReadData = reReadData,
-                               dataProj = gcamdataProjFile, dataProjPath = dataProjPath, dirOutputs = biaOutputsFolder,
+                               dataProj = dataProj, dataProjPath = dataProjPath, dirOutputs = biaOutputsFolder,
                                regionsSelect = regionsSelect, queriesSelect = queriesSelect , paramsSelect = paramsSelect)
 
 
@@ -166,10 +167,10 @@ metis.bia<- function(biaInputsFolder = "NA",
 
   if(!("id" %in% names(listOfGridCells))){
     print("grid id column not found within grid file, creating a new id column...")
-    listOfGridCells <- rowid_to_column(listOfGridCells, var = "id")
+    listOfGridCells <- tibble::rowid_to_column(listOfGridCells, var = "id")
   }
 
-  listOfGridCells <- rename(listOfGridCells,
+  listOfGridCells <- dplyr::rename(listOfGridCells,
                             gridlat = lat,
                             gridlon = lon,
                             gridID = id)
@@ -252,9 +253,6 @@ metis.bia<- function(biaInputsFolder = "NA",
             gridWRI<-gridWRI%>%tibble::as_tibble()%>%dplyr::select(-year_of_capacity_data,-commissioning_year,-name,-country,-gppd_idnr,-fuel2,-fuel3,-fuel4,-owner,-source,-url,-geolocation_source)%>%
               dplyr::left_join(ctor,by="country_long")
 
-            biaGCM = NA;biaRCP = NA
-
-
             aggType="vol"
 
 
@@ -323,19 +321,19 @@ metis.bia<- function(biaInputsFolder = "NA",
               GCAMRegionShapeFile <- "region32_0p5deg"}
 
 
-            gridCropped <- tibble(gridlat = NA, gridlon = NA, gridID = NA, region = NA)
+            gridCropped <- tibble::tibble(gridlat = NA, gridlon = NA, gridID = NA, region = NA)
 
             for(regionc in regionsSelect){
               shape=rgdal::readOGR(dsn=GCAMRegionShapeFolder,layer=GCAMRegionShapeFile,use_iconv=T,encoding='UTF-8')
               shape@data <-shape@data %>%
-                left_join(ctor %>%
+                dplyr::left_join(ctor %>%
                             dplyr::select(region_32_code, region) %>%
                             dplyr::distinct() %>%
                             dplyr::mutate(reg32_id=as.factor(region_32_code))%>%
                             dplyr::select(-region_32_code), by = "reg32_id")
               shape@data %>% as.data.frame()
               shape <- shape[(shape$region %in% regionc),];
-              plot(shape)
+              raster::plot(shape)
 
               # Prepare grids to be cropped
               spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(listOfGridCells$gridlon,listOfGridCells$gridlat))),data=listOfGridCells)
@@ -384,7 +382,7 @@ metis.bia<- function(biaInputsFolder = "NA",
 
             dataBia <- dataBia %>%
               dplyr::filter(!(is.na(gridlat))) %>%
-              bind_rows(evenDistrib)
+              dplyr::bind_rows(evenDistrib)
             } # Close if subsectorNAdistribute == "even"
 
 
@@ -404,7 +402,7 @@ metis.bia<- function(biaInputsFolder = "NA",
               dplyr::mutate(regionCapSum = sum(gridCellCapacity),
                             gridCellPercentage = gridCellCapacity/regionCapSum) %>%
               dplyr::ungroup() %>%
-              rowid_to_column(var = "gridCellIndex") %>%
+              tibble::rowid_to_column(var = "gridCellIndex") %>%
               dplyr::mutate(gridCellIndex = -gridCellIndex)
 
 
@@ -436,7 +434,7 @@ metis.bia<- function(biaInputsFolder = "NA",
 
             dataBia <- dataBia %>%
               dplyr::filter(!(is.na(gridlat))) %>%
-              bind_rows(dplyr::select(distribByTotalCap, -regionCapSum, -gridCellCapacity, -gridCellIndex))
+              dplyr::bind_rows(dplyr::select(distribByTotalCap, -regionCapSum, -gridCellCapacity, -gridCellIndex))
 
             } # Close if subsectorNAdistribute == "totalOther"
 
@@ -492,9 +490,6 @@ metis.bia<- function(biaInputsFolder = "NA",
          dplyr::left_join(ctr,by="country_long")
 
 
-
-       biaGCM=NA;biaRCP=NA
-
        aggType="vol"
 
        gWRI<-gWRI%>%dplyr::mutate(lat=latitude,
@@ -548,7 +543,7 @@ metis.bia<- function(biaInputsFolder = "NA",
        readAllGCAMcapDataList<-metis.readgcam(gcamdatabasePath = gcamdatabasePath, gcamdatabaseName = gcamdatabaseName,
                                     queryxml = queryxml, queryPath = queryPath,
                                     scenOrigNames = scenOrigNames, scenNewNames = scenNewNames, reReadData = reReadData,
-                                    dataProj = gcamdataProjFile, dataProjPath = dataProjPath, dirOutputs = biaOutputsFolder,
+                                    dataProj = dataProj, dataProjPath = dataProjPath, dirOutputs = biaOutputsFolder,
                                     regionsSelect = "All", queriesSelect = queriesSelect , paramsSelect = c("elecByTech", "elecCapBySubsector"))
 
        readAllGCAMcapData<-readAllGCAMcapDataList$data%>%
