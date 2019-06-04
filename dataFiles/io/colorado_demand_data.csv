@@ -55,8 +55,9 @@ RioNegro_media,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.00277
 RioNegro_media,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.00277,0.000277,Water,W_GW_Reservoir,COIRCO_2013_report
 LaPampa_media,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.00166,0.001494,Water,W_SW_Upstream,COIRCO_2013_report
 LaPampa_media,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.00166,0.000166,Water,W_GW_Reservoir,COIRCO_2013_report
-LaPampa_baja,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.01087,0.009783,Water,W_SW_Upstream,COIRCO_2013_report
-LaPampa_baja,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.01087,0.001087,Water,W_GW_Reservoir,COIRCO_2013_report
+LaPampa_baja,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.00083,0.000747,Water,W_SW_Upstream,COIRCO_2013_report
+LaPampa_baja,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.00083,0.000083,Water,W_GW_Reservoir,COIRCO_2013_report
+LaPampa_baja,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.0021,0.0021,Water,export,COIRCO_2013_report
 RioNegro_baja,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.0021,0.00189,Water,W_SW_Upstream,COIRCO_2013_report
 RioNegro_baja,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.0021,0.00021,Water,W_GW_Reservoir,COIRCO_2013_report
 Corfo,watWithdrawBySec,Water Withdrawals (km^3),2010,municipal,,0.00252,0.002268,Water,W_SW_Upstream,COIRCO_2013_report
