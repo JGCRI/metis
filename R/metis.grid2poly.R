@@ -439,7 +439,8 @@ metis.grid2poly<- function(grid=NULL,
           polyData<-polyData%>%dplyr::mutate(subRegType=subRegType)
 
           polyx<-shape
-          polyx@data<-dplyr::left_join(polyx@data,polyData)
+          polyx@data<-polyx@data%>%dplyr::mutate(region = "region")%>%
+            dplyr::left_join(polyData)
           polyx@data<-polyx@data%>%
             dplyr::rename(subRegion:= !!paste(subRegCol))%>%
             dplyr::mutate(region=boundaryRegionsSelect)%>%
