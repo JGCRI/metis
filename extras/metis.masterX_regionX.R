@@ -393,33 +393,38 @@ if (!dir.exists(paste(dirOutputs, "/Grids/diagnostics",sep=""))){
 biaOutputsFolder=paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep="")
 biaInputsFolder=paste(getwd(),"/dataFiles/grids/bia/biaInputs",sep="")
 
-gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
-gcamdatabaseName <-"example_database_basexdb"
+#gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
+#gcamdatabaseName <-"example_database_basexdb"
+# GCAM uruguay
+gcamdatabasePath <-paste("D:/GCAM/gcam-core_LAC/output",sep="")
+gcamdatabaseName <-"database_basexdb"
+scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef")
+scenNewNames=c("GCAMOrig","GCAMRef")
 dataProjPath<-gcamdatabasePath
-queryPath<-gcamdatabasePath
-gcamdataProjFile <-"Example_dataProj.proj"
-dataProj=gcamdataProjFile  #andym
-scenOrigNames=c("ExampleScen1","ExampleScen2")
-scenNewNames=c("Eg1","Eg2")
+queryPath<-paste(getwd(),"/dataFiles/gcam",sep="")
+#gcamdataProjFile <-"Example_dataProj.proj"
+#dataProj=gcamdataProjFile  #andym
+#scenOrigNames=c("ExampleScen1","ExampleScen2")
+#scenNewNames=c("Eg1","Eg2")
 queryxml="metisQueries.xml"
 queriesSelect = "All"      #andym
 #regionsSelect <- c('Argentina','Japan')
 #regionsSelect <- c('Argentina', 'Colombia')
-regionsSelect <- c('Japan', 'Colombia')
+regionsSelect <- c('Uruguay')
 # regionsSelect <- c('Colombia')
 #regionsSelect <- c('Argentina')
 paramsSelect<- c("elecByTech", "elecCapBySubsector")
 
-reReadData=F
+reReadData=T
 
 biaInputsFiles=c("global_power_plant_database_MW")
 
-biaScenarioAssign="Eg1"
+#biaScenarioAssign="Eg1"
 
 #gridChoice<-"grid_050"
 gridChoice<-"grid_025"
 
-diagnosticsON<-F
+diagnosticsON<-T
 #diagnosticsON<-T
 
 

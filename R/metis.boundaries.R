@@ -97,9 +97,11 @@ metis.boundaries<- function(boundaryRegShape=NULL,
   # extendedHighLightColor="cornsilk1"
   # extendedLabelsColor="grey30"
   # extdendedLabelSize=0.7
-  # extension=T
+  # fillPalette="Spectral"
   # cropSubShape2Bound=T
   # grids=NULL
+  # innerMargins=c(0,0.1,0,0.1) # bottom, left, top, right
+  # outerMargins=c(0.01,0.01,0.01,0.01) # bottom, left, top, right
 
 
 #----------------
@@ -108,7 +110,7 @@ metis.boundaries<- function(boundaryRegShape=NULL,
 
 NULL->bbox1->extendedBoundary->extendedSubReg->shape->boundaryHighlight->
   regionHL->subRegHighlight->subRegionHL->extendedShape->underLayer->subRegHighlightLabels->
-  add_grid_name->fillPaletteOrig
+  add_grid_name->fillPaletteOrig->lat->lon
 
 tmap::tmap_options(max.categories=1000)
 
@@ -495,6 +497,14 @@ metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, data
                                 fillPalette = "white",alpha=0,facetsON=F,
                                 labels=F,printFig = F,borderColor="red",
                                 lwd=1),facetsON=F)
+
+gridsBySubReg <-raster::intersect(subRegShape,rcropP)
+gridsBySubReg <- gridsBySubReg@data %>% dplyr::select(lat,lon,subRegCol) %>% unique()
+grid_fname<-paste(dir,"/",boundaryRegionsSelect,"_gridsBySubReg_",subRegType,"_GridSize",add_grid_name,nameAppend,".csv",sep = "")
+data.table::fwrite(gridsBySubReg,
+                   file = grid_fname,row.names = F)
+print(paste("Subregional grid data files written to: ",grid_fname, sep = ""))
+
 }
 
 }

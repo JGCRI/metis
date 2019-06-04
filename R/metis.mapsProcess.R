@@ -192,7 +192,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
   NULL->lat->lon->param->region->scenario->subRegion->
     value->x->year->gridID->underLayer->maxScale->minScale->scenarioGCM->scenarioRCP->scenarioSSP->
-    scenarioPolicy->valueDiff->rowid->catParam
+    scenarioPolicy->valueDiff->rowid->catParam->include->shapeExpandEtxent->Var1->Var2->Var3
 
   if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect="region"}
 
@@ -534,17 +534,26 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
   if(!is.null(gridTbl) & !is.null(shape)){
 
-    shapeExpandEtxent<-shape@bbox
-    shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
-    sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
-    gridTbl<-gridTbl%>%dplyr::mutate(gridID=seq(1:nrow(gridTbl)))
-    croppedCoords<-gridTbl%>%dplyr::select(lat,lon,gridID)%>%unique()
-    croppedCoords<-sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(croppedCoords$lon,croppedCoords$lat))),data=croppedCoords)
-    sp::proj4string(croppedCoords)<-sp::proj4string(shapeExpandEtxent)
-    croppedCoords<-raster::crop(croppedCoords,shapeExpandEtxent)
-    sp::gridded(croppedCoords)<-T
 
-    gridTbl<-gridTbl%>%dplyr::filter(gridID %in% unique((croppedCoords@data)$gridID))%>%dplyr::select(-gridID)
+    gridTbl1<-gridTbl%>%dplyr::select(lat,lon) %>%
+      dplyr::distinct() %>%
+      dplyr::mutate(include=1); gridTbl1 %>% as.data.frame()
+
+    gridTbl1x<-sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridTbl1$lon,gridTbl1$lat))),data=gridTbl1)
+    sp::proj4string(gridTbl1x)<-sp::proj4string(shape)
+    sp::gridded(gridTbl1x)<-T
+
+
+    gridTbl1x<-raster::stack(gridTbl1x)
+    raster::projection(gridTbl1x)<-sp::proj4string(shape)
+    shape_ras <- raster::rasterize(shape, gridTbl1x[[1]], getCover=TRUE)
+    shape_ras[shape_ras==0] <- NA
+    gridTbl1x<-raster::mask(gridTbl1x,shape_ras)
+    gridTbl1x<-methods::as(gridTbl1x, "SpatialPixelsDataFrame")
+    gridTbl1x@data<-Filter(function(x)!all(is.na(x)), gridTbl1x@data)
+
+    gridTbl_cropped <- gridTbl1x@data
+    gridTbl <- gridTbl %>% dplyr::right_join(gridTbl_cropped) %>% dplyr::filter(include==1) %>% dplyr::select(-include);
 
   }
 
@@ -857,6 +866,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
   if(!is.null(gridTbl)){
 
+
     if(!is.null(indvScenarios)){
 
       if(indvScenarios=="All"){
@@ -889,7 +899,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$minScale)}
             }
             animPrettyBreaksGrid<-scales::pretty_breaks(n=legendFixedBreaks)(animScaleGrid)
-            animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,centers=(legendFixedBreaks-2)))$centers[,1]))
+            animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,
+                                                               centers=min(length(unique(animScaleGrid)),(legendFixedBreaks-2))))$centers[,1]))
             animKmeanBreaksGrid <- sort(c(min(animScaleGrid),animKmeanBreaksGrid,max(animScaleGrid)))
 
 
@@ -1395,6 +1406,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
                     animScalePoly<-(shapeTblMultx)$value
 
+
                     if(!is.null(scaleRange) & grepl(param_i,unique(scaleRange$param))){
                       if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
                         animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)}
@@ -1402,7 +1414,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                         animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)}
                     }
                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
-                    animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,centers=(legendFixedBreaks-2)))$centers[,1]))
+                    animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
+                                                                       centers=min(length(unique(animScalePoly)),(legendFixedBreaks-2))))$centers[,1]))
                     animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly,max(animScalePoly)))
 
 
@@ -1443,6 +1456,15 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       # Need to makeunique ID's when assigning multiple variable for faceted plotting
                       mapx<-NULL
                       GCMRCPcomb<-datax%>%dplyr::select(scenarioGCM,scenarioRCP)%>%unique();GCMRCPcomb
+
+                      # Add in any missing subRegions to datax
+                      datax1<-expand.grid(unique(shape@data$subRegion)[!unique(shape@data$subRegion) %in% unique(datax$subRegion)],
+                                          unique(datax$scenarioGCM),unique(datax$scenarioRCP)) %>%
+                        dplyr::select(subRegion=Var1, scenarioGCM=Var2, scenarioRCP=Var3) %>%
+                        dplyr::mutate(!!names(datax)[4]:=0)
+
+                      datax <- datax %>% dplyr::bind_rows(datax1) %>% dplyr::mutate(subRegion=as.factor(subRegion))
+
                       for (row_i in 1:nrow(GCMRCPcomb)){
                         GCM_i <- GCMRCPcomb[row_i,]$scenarioGCM
                         RCP_i <- GCMRCPcomb[row_i,]$scenarioRCP
@@ -1452,7 +1474,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                         if(is.null(mapx)){mapx<-a1}else{mapx<-rbind(mapx,a1,makeUniqueIDs = TRUE)}
                       }
 
-                      legendStyleMulti="fixed"
+                      if(length(unique(animScalePoly))==1){legendStyleMulti="kmeans"}else{
+                      legendStyleMulti="fixed"}
                       legendTitleMulti=paste(paste("Mean_",min(chosenRefMeanYearsX),"to",max(chosenRefMeanYearsX),sep=""),"\n",legendTitle,sep="")
                       panelLabelMulti=NULL
 
@@ -1620,6 +1643,15 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           # Need to makeunique ID's when assigning multiple variable for faceted plotting
                           mapx<-NULL
                           GCMRCPcomb<-datax%>%dplyr::select(scenarioGCM,scenarioRCP)%>%unique();GCMRCPcomb
+
+                          # Add in any missing subRegions to datax
+                          datax1<-expand.grid(unique(shape@data$subRegion)[!unique(shape@data$subRegion) %in% unique(datax$subRegion)],
+                                              unique(datax$scenarioGCM),unique(datax$scenarioRCP)) %>%
+                            dplyr::select(subRegion=Var1, scenarioGCM=Var2, scenarioRCP=Var3) %>%
+                            dplyr::mutate(!!names(datax)[4]:=0)
+
+                          datax <- datax %>% dplyr::bind_rows(datax1) %>% dplyr::mutate(subRegion=as.factor(subRegion))
+
                           for (row_i in 1:nrow(GCMRCPcomb)){
                             GCM_i <- GCMRCPcomb[row_i,]$scenarioGCM
                             RCP_i <- GCMRCPcomb[row_i,]$scenarioRCP
@@ -1629,7 +1661,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             if(is.null(mapx)){mapx<-a1}else{mapx<-rbind(mapx,a1,makeUniqueIDs = TRUE)}
                           }
 
-                          legendStyleMulti="fixed"
+                          if(length(unique(animScalePoly))==1){legendStyleMulti="kmeans"}else{
+                            legendStyleMulti="fixed"}
                           legendTitleMulti=paste(x_i,"\n",legendTitle,sep="")
                           panelLabelMulti=NULL
 
@@ -1769,7 +1802,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                         animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)}
                     }
                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
-                    animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,centers=(legendFixedBreaks-2)))$centers[,1]))
+                    animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
+                                                                       centers=min(length(unique(animScalePoly)),(legendFixedBreaks-2))))$centers[,1]))
                     animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly,max(animScalePoly)))
 
 
@@ -1812,6 +1846,16 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                         # Need to makeunique ID's when assigning multiple variable for faceted plotting
                         mapx<-NULL
                         GCMRCPcomb<-datax%>%dplyr::select(scenarioGCM,scenarioRCP)%>%unique();GCMRCPcomb
+
+                        # Add in any missing subRegions to datax
+                        datax1<-expand.grid(unique(shape@data$subRegion)[!unique(shape@data$subRegion) %in% unique(datax$subRegion)],
+                                            unique(datax$scenarioGCM),unique(datax$scenarioRCP)) %>%
+                          dplyr::select(subRegion=Var1, scenarioGCM=Var2, scenarioRCP=Var3) %>%
+                          dplyr::mutate(!!names(datax)[4]:=0)
+
+                        datax <- datax %>% dplyr::bind_rows(datax1) %>% dplyr::mutate(subRegion=as.factor(subRegion))
+
+
                         for (row_i in 1:nrow(GCMRCPcomb)){
                           GCM_i <- GCMRCPcomb[row_i,]$scenarioGCM
                           RCP_i <- GCMRCPcomb[row_i,]$scenarioRCP
@@ -1821,7 +1865,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           if(is.null(mapx)){mapx<-a1}else{mapx<-rbind(mapx,a1,makeUniqueIDs = TRUE)}
                         }
 
-                        legendStyleMulti="fixed"
+                        if(length(unique(animScalePoly))==1){legendStyleMulti="kmeans"}else{
+                          legendStyleMulti="fixed"}
                         legendTitleMulti=paste(x_i,"\n",legendTitle,sep="")
                         panelLabelMulti=NULL
                         mapTitle=paste("Absolute Difference (Scenario less Reference Mean)\nRef GCM: ",
@@ -2002,7 +2047,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)}
               }
               animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
-              animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,centers=(legendFixedBreaks-2)))$centers[,1]))
+              animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
+                                                                 centers=min(length(unique(animScalePoly)),(legendFixedBreaks-2))))$centers[,1]))
               animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly,max(animScalePoly)))
 
               if((max(range(animScalePoly))-min(range(animScalePoly)))<1E-10 &
