@@ -559,7 +559,7 @@ metis.bia<- function(biaInputsFolder = "NA",
        for(regioni in regionsSelectCompareCap){
          gridR<-gCapComparison%>%dplyr::filter(region==regioni)
          fname=paste(unique(gridR$region),"_est_installed_capacity")
-         metis.printPdfPng(figure=ggplot(data = gridR, aes(fill = data_source, x = class1, y = est_installed_capacity))+geom_bar(position = "dodge", stat="identity"),
+         metis.printPdfPng(figure=ggplot2::ggplot(data = gridR, ggplot2::aes(fill = data_source, x = class1, y = est_installed_capacity))+ggplot2::geom_bar(position = "dodge", stat="identity"),
                            dir=paste(biaOutputsFolder, "/biadiagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
 
        }     #close for loop

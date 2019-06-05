@@ -221,7 +221,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%
         dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
@@ -290,7 +290,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -337,7 +337,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -406,7 +406,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -474,7 +474,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -542,7 +542,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -585,7 +585,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -629,7 +629,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblElecbyTech<-tbl
@@ -707,7 +707,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -750,7 +750,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -795,7 +795,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -838,7 +838,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -884,7 +884,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -931,7 +931,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -974,7 +974,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1017,7 +1017,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
@@ -1052,7 +1052,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1096,7 +1096,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1143,7 +1143,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1309,7 +1309,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1363,7 +1363,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1406,7 +1406,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       tblLUEmiss<-tbl
       datax <- dplyr::bind_rows(datax, tbl)
@@ -1450,7 +1450,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1493,7 +1493,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
 
       # Add LU Change Emissions
@@ -1528,7 +1528,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
 
 
@@ -1588,7 +1588,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1641,7 +1641,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
