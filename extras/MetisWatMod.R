@@ -104,6 +104,9 @@ subReg_water_balance <- function(supply_demand_table, completed_subRegs, network
   if(!'downstream' %in% names(supply_demand_table)){
     supply_demand_table$downstream <- 0
   }
+  if(!'losses' %in% names(supply_demand_table)){
+    supply_demand_table$losses <- 0
+  }
 
   # Loop (in specified simulation order) through sub-regions to determine natural water imports, resulting capacity,
   # and resulting necessary exports
@@ -120,8 +123,9 @@ subReg_water_balance <- function(supply_demand_table, completed_subRegs, network
     # Set locally available capacity of inflow being supplied by upstream subRegions
     supply_demand_table <- supply_demand_table %>% mutate(upstream_inflow = upstream_inflow_c) %>%
       mutate(cap = if_else(subRegion == e & supplySubSector=='W_SW_Upstream', upstream_inflow, cap))
-    df_user_wat_dem_tot <- supply_demand_table %>% filter(subRegion==e, supplySubSector %in% c('W_SW_Upstream', 'W_SW_Runoff', 'W_SW_Import')) %>%
-      select(-one_of("downstream", "cap", "upstream_inflow"))
+    df_user_wat_dem_tot <- supply_demand_table %>%
+      filter(subRegion==e, supplySubSector %in% c('W_SW_Upstream', 'W_SW_Runoff', 'W_SW_Import')) %>%
+      select(-one_of("downstream", "cap", "upstream_inflow", "units", "region"))
     df_user_wat_dem_tot <- df_user_wat_dem_tot %>% mutate(rowsum=rowSums(.[4:ncol(df_user_wat_dem_tot)], na.rm=TRUE))
     user_wat_dem_tot <- sum(df_user_wat_dem_tot$rowsum, na.rm=TRUE)
     current_water <- supply_demand_table %>%
@@ -135,11 +139,13 @@ subReg_water_balance <- function(supply_demand_table, completed_subRegs, network
         # This is a headwater sub-region that has no inflowing subregions. All water sent downstream must come from runoff.
         supply_demand_table <- supply_demand_table %>%
           mutate(downstream = if_else(subRegion == e & supplySubSector=='W_SW_Runoff', current_water - user_wat_dem_tot*consumption_frac, downstream))
+          # %>% mutate(losses = if_else(subRegion == e & supplySubSector=='W_SW_Runoff', user_wat_dem_tot*consumption_frac, losses))
       }else{
         # This is not a headwater sub-region. Water sent downstream could come from both runoff and upstream flows.
         # But for simplicity here we assume all water comes from upstream flows in non headwater subregions.
         supply_demand_table <- supply_demand_table %>%
           mutate(downstream = if_else(subRegion == e & supplySubSector=='W_SW_Upstream', current_water - user_wat_dem_tot*consumption_frac, downstream))
+          # %>% mutate(losses = if_else(subRegion == e & supplySubSector=='W_SW_Upstream', user_wat_dem_tot*consumption_frac, losses))
       }
     }
   }
