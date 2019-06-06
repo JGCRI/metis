@@ -49,7 +49,7 @@ demand_data <- read.csv(demand_data_file)
 demand_data <- demand_data %>% as_tibble()
 capacity_data <- read.csv(capacity_data_file)
 # Manipulate/rearrange demand/supply data frame to wide format
-ioTable0 <- demand_data %>% select(-units, -localData, -dataSource, -year, -param) %>%
+ioTable0 <- demand_data %>% select(-localData, -dataSource, -year, -param) %>%
   mutate(demandClassCombined=ifelse(class2=="", paste0(demandClass, class2), paste0(demandClass,"_", class2))) %>%
   select(-class2, -demandClass) %>% spread(demandClassCombined, localDataSubdivided)
 ioTable0[,c(which(colnames(ioTable0)=="supplySector"),which(colnames(ioTable0)!="supplySector"))]  # Shift supply to first column
@@ -62,9 +62,7 @@ ioTable0 <- ioTable0 %>% left_join(capTable, by=c('subRegion', 'supplySector', '
 # Balancing water flows
 output_water <- subReg_water_balance(ioTable0, network_order, network_data, from_to)
 ioTable0 <- output_water$supply_demand_table  # updated demand-supply table that includes proper natural water exports, and capacities
-
-ioTable0 <- ioTable0 %>% mutate(region="Argentina")
-
+ioTable0$units <- as.character(ioTable0$units)
 io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
 io1$ioTbl_Output %>% as.data.frame()
 io1$A_Output %>% as.data.frame()
