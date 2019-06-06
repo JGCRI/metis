@@ -53,6 +53,7 @@
 #' @param colOrderName2 Default = NULL,
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
+#' @import ggplot2
 #' @export
 #' @examples
 #' # Examples below show the default chart with minimum information
@@ -60,6 +61,7 @@
 #'
 #' library(tibble)
 #' library(dplyr)
+#' library(ggplot2)
 #' tbl <- tribble (
 #' ~x,     ~value,
 #' 2010,   15,
@@ -243,7 +245,22 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
 
   p <- ggplot(l1,aes(x=get(xData),y=get(yData),group=get(group))) +
-       metis.chartsThemeLight()
+      theme_bw() +
+      theme(
+        text =                element_text(family = NULL, face = "plain",colour = "black", size = 24,
+                                           hjust = 0.5, vjust = 0.5, angle = 0, lineheight = 0.9)
+        , axis.text.x =       element_text(size=24)
+        , axis.text.y =       element_text(size=24)
+        ,axis.title.x =       element_text(vjust = -1, margin=margin(t=1,unit="line"))
+        ,axis.title.y =       element_text(angle = 90, vjust = 2, margin=margin(r=1,unit="line"))
+        ,legend.key =         element_blank()
+        ,legend.key.size =    unit(1.5, 'lines')
+        ,legend.text =        element_text(size = rel(1.0), colour = "black")
+        ,legend.title =       element_text(size = rel(1.2), face = NULL, hjust = 0, colour = "black")
+        #,strip.background =   element_rect(fill = NA, colour = "black")
+        ,plot.margin =        unit(c(1, 1, 1, 1), "lines")
+        ,plot.title=          element_text(face="bold", hjust=0,size=20,margin = margin(b=20))
+      )
 
   if(chartType=="sankey"){
   p <- ggplot(l1, aes(y = get(yData), axis1 = get(sankeyAxis1), axis2 = get(sankeyAxis2), group=get(facet_columns)))

@@ -133,6 +133,7 @@ iIt requires a table in the Metis format. Each figure is accompanied with a csv 
 
 library(tibble)
 library(dplyr)
+library(ggplot2)
 tbl <- tribble (
 ~x,     ~value,
 2010,   15,

@@ -98,7 +98,9 @@ NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
     commonYears->commonScenarios->V1->Area_hec->Area_km2->lowess->valueXanthos->valueTethys->commonYears_i->
     tethysGCMRCPs->xanthosGCMRCPs->scenarioSSP->scenarioPolicy->scenarioGCM->scenarioRCP->
     country->name->GCMRCP->datax->
-    region->regionsSelect->rowid->scenarioTethys->scenarioXanthos
+    region->regionsSelect->rowid->scenarioTethys->scenarioXanthos->
+    year->origValue->gridlat->gridlon->class1->valueDistrib->origValueDistrib->gridCellPercentage->
+    region_32_code->ctry_name->ctry_code->aggregate->gridID
 
 
 #------------------
@@ -712,10 +714,10 @@ if(!dir.exists(biaFolder)){
 
         gridx<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""))%>%
           tibble::as_tibble()%>%
-          select(-value, -origValue)%>%
+          dplyr::select(-value, -origValue)%>%
           dplyr::mutate(aggType = "vol")%>%
           dplyr::rename(lat = gridlat, lon = gridlon, class = class1, value = valueDistrib, origValue = origValueDistrib) %>%
-          select(-gridCellPercentage,-region,-region_32_code,-ctry_name,-ctry_code, -aggregate, -contains("orig"),-gridID)
+          dplyr::select(-gridCellPercentage,-region,-region_32_code,-ctry_name,-ctry_code, -aggregate, -dplyr::contains("orig"),-gridID)
         gridx$x<-as.numeric(gridx$x)
 
         colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",

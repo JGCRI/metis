@@ -161,7 +161,7 @@ if(!is.null(ioTable)){
       sectorTotalTemp <- ioTable %>%
         dplyr::filter(supplySector == gsub("_all","",sectorTotal_i)) %>%
         dplyr::group_by(supplySector,scenario,region,subRegion,x) %>%
-        dplyr::mutate_at(vars(colsToEdit),sum, na.rm=T) %>%
+        dplyr::mutate_at(dplyr::vars(colsToEdit),sum, na.rm=T) %>%
         dplyr::select(-supplySubSector) %>%
         dplyr::distinct() %>%
         dplyr::mutate(supplySubSector=sectorTotal_i) %>%
@@ -181,7 +181,7 @@ if(!is.null(ioTable)){
       sectorTotalTemp <- A %>%
         dplyr::filter(supplySector == gsub("_all","",sectorTotal_i)) %>%
         dplyr::group_by(supplySector,scenario,region,subRegion,x) %>%
-        dplyr::mutate_at(vars(colsToEdit),function(x) 0) %>%
+        dplyr::mutate_at(dplyr::vars(colsToEdit),function(x) 0) %>%
         dplyr::mutate(supplySubSector=sectorTotal_i,
                       !!sectorTotal_i := 0) %>%
         dplyr::distinct() %>%
@@ -190,7 +190,7 @@ if(!is.null(ioTable)){
       # Bind to main iotable
       A <- A %>%
         dplyr::bind_rows(sectorTotalTemp) %>%
-        dplyr::mutate_at(vars(!!sectorTotal_i),dplyr::funs(replace(., is.na(.), 0)))%>%
+        dplyr::mutate_at(dplyr::vars(!!sectorTotal_i),dplyr::funs(replace(., is.na(.), 0)))%>%
         dplyr::distinct(); A
     }}
   }
@@ -251,7 +251,7 @@ if(!is.null(supplySubSector_default0)){
       sectorTotalTemp <- supplySubSector_default0 %>%
         dplyr::filter(supplySector == gsub("_all","",sectorTotal_i)) %>%
         dplyr::group_by(supplySector,scenario,region,subRegion,x) %>%
-        dplyr::mutate_at(vars(colsToEdit),function(x) x=100) %>%
+        dplyr::mutate_at(dplyr::vars(colsToEdit),function(x) x=100) %>%
         dplyr::mutate(supplySubSector=sectorTotal_i) %>%
         dplyr::distinct() %>%
         dplyr::ungroup();sectorTotalTemp
@@ -470,7 +470,7 @@ for(scenario_i in scenarios){
             ioTable0i_subSectorOther <-  ioTable0i %>%
               dplyr::filter(!grepl("_all",supplySubSector)) %>%
               dplyr::group_by(supplySector) %>%
-              dplyr::mutate_at(vars(colsToEdit),sum,na.rm=TRUE) %>%
+              dplyr::mutate_at(dplyr::vars(colsToEdit),sum,na.rm=TRUE) %>%
               dplyr::select(-supplySubSector) %>%
               dplyr::distinct() %>%
               dplyr::mutate(sumType = "totalsSubSectorOther",
@@ -550,7 +550,7 @@ if(!supplySectorTotal_i %in% unique(ioTable0i_completeNA$supplySubSector)){
     dplyr::bind_rows(ioTable0i_completeNA %>%
                        dplyr::filter(supplySector == gsub("_all","",supplySectorTotal_i)) %>%
                        dplyr::group_by(supplySector) %>%
-                       dplyr::mutate_at(vars(colsToEdit),sum,na.rm=TRUE) %>%
+                       dplyr::mutate_at(dplyr::vars(colsToEdit),sum,na.rm=TRUE) %>%
                        dplyr::select(-supplySubSector)%>%
                        dplyr::distinct() %>%
                        dplyr::mutate(supplySubSector = paste(supplySector,"_all",sep="")) %>%
@@ -574,7 +574,7 @@ colsToEdit <- names(ioTable0i_completeNA)[!names(ioTable0i_completeNA) %in% c(ad
 ioTable0i_subSectorOther <-  ioTable0i_completeNA %>%
   dplyr::filter(!grepl("_all",supplySubSector)) %>%
   dplyr::group_by(supplySector) %>%
-  dplyr::mutate_at(vars(colsToEdit),sum,na.rm=TRUE) %>%
+  dplyr::mutate_at(dplyr::vars(colsToEdit),sum,na.rm=TRUE) %>%
   dplyr::select(-supplySubSector) %>%
   dplyr::distinct() %>%
   dplyr::mutate(sumType = "totalsSubSectorOther",
@@ -673,7 +673,7 @@ check_calculated<-ioTable0i_complete_Redistribute %>%
   dplyr::filter(!grepl("_all",supplySubSector)) %>%
   dplyr::select(-supplySubSector) %>%
   dplyr::group_by(supplySector) %>%
-  dplyr::summarize_at(vars(colsToEdit),sum) %>%
+  dplyr::summarize_at(dplyr::vars(colsToEdit),sum) %>%
   tidyr::gather(key="key",value="valueCalculated",colsToEdit) %>%
   dplyr::ungroup(); check_calculated %>% as.data.frame()
 
@@ -681,7 +681,7 @@ check_orig<-ioTable0i %>%
   dplyr::filter(grepl("_all",supplySubSector)) %>%
   dplyr::select(-supplySubSector) %>%
   dplyr::group_by(supplySector) %>%
-  dplyr::summarize_at(vars(colsToEdit),sum) %>%
+  dplyr::summarize_at(dplyr::vars(colsToEdit),sum) %>%
   tidyr::gather(key="key",value="valueOrig",colsToEdit) %>%
   dplyr::ungroup(); check_orig %>% as.data.frame()
 
@@ -947,7 +947,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
   df_Mn<-sol %>%
     dplyr::mutate(totalTemp=total) %>% # to move total to end to include columns on right side of total in the normalization
-    dplyr::mutate_at(vars(-c("supplySubSector","supplySector",addedColumns[addedColumns %in% names(sol)])),dplyr::funs(./totalTemp)) %>%
+    dplyr::mutate_at(dplyr::vars(-c("supplySubSector","supplySector",addedColumns[addedColumns %in% names(sol)])),dplyr::funs(./totalTemp)) %>%
     dplyr::select(-totalTemp); df_Mn
 
   solx <- sol %>%
@@ -1607,7 +1607,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
     df_Mn<-sol %>%
       dplyr::mutate(totalTemp=total) %>% # to move total to end to include columns on right side of total in the normalization
-      dplyr::mutate_at(vars(-c("supplySubSector","supplySector",addedColumns[addedColumns %in% names(sol)])),dplyr::funs(./totalTemp)) %>%
+      dplyr::mutate_at(dplyr::vars(-c("supplySubSector","supplySector",addedColumns[addedColumns %in% names(sol)])),dplyr::funs(./totalTemp)) %>%
       dplyr::select(-totalTemp); df_Mn
 
     solx <- sol %>%

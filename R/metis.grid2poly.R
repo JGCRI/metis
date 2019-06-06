@@ -262,6 +262,11 @@ metis.grid2poly<- function(grid=NULL,
       }
 
       if(nrow(gridx)>0){
+
+        # Remove column for region from gridx if exists
+        if("region" %in% names(gridx)){gridx <- gridx %>% dplyr::select(-region)}
+
+
         print(paste("Starting aggregation for param: ",param_i," and scenario: ",scenario_i,"...",sep=""))
 
 
