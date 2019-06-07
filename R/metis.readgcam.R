@@ -1682,8 +1682,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
   if (is.null(regionsSelect) | regionsSelectAll==T) {
     utils::write.csv(datax, file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
                                          "to", max(range(datax$x)), ".csv", sep = ""), row.names = F)
-    print(paste("GCAM data table saved to: ", paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
-                                                    "to", max(range(datax$x)), ".csv", sep = "")))
+    print(paste("GCAM data table saved to: ", paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions.csv", sep = "")))
 
     utils::write.csv(dataTemplate, file = paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = ""),
                      row.names = F)
@@ -1700,8 +1699,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
       print(paste("Saving data table for region: ",region_i,"...", sep = ""))
       utils::write.csv(datax %>% dplyr::filter(region == region_i),
-                       file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_", min(range(datax$x)),
-                                    "to", max(range(datax$x)), ".csv", sep = ""),row.names = F)
+                       file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,".csv", sep = ""),row.names = F)
 
       # Aggregate across classes
       dataxAggsums<-datax%>%
@@ -1717,8 +1715,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       dataxAgg<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
 
       utils::write.csv(dataxAgg %>% dplyr::filter(region == region_i),
-                       file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_aggClass_",region_i,"_", min(range(datax$x)),
-                                    "to", max(range(datax$x)), ".csv", sep = ""),row.names = F)
+                       file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_aggClass.csv", sep = ""),row.names = F)
 
       utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
                        file = paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_",region_i,".csv", sep = ""),row.names = F)

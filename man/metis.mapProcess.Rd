@@ -8,7 +8,7 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), xRange = "All",
   labels = F, labelsSize = 1.2, subRegShape = NULL,
   subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
-  subRegType = "subRegType", nameAppend = "",
+  subRegType = "subRegType", dirNameAppend = "", nameAppend = "",
   legendOutsideSingle = F, legendOutsidePosition = NULL,
   legendPosition = NULL, legendFixedBreaks = 5, legendTitleSizeO = 2,
   legendTextSizeO = 1, legendTitleSizeI = 1.5, legendTextSizeI = 1,
@@ -19,9 +19,9 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   extendedLabels = T, extendedFillColor = "grey75",
   extendedBGColor = "lightblue1", extendedHighLightColor = "cornsilk1",
   extendedLabelsColor = "grey30", extdendedLabelSize = 0.7,
-  extendedShape = NULL, extendedShapeCol = NULL, expandPercent = 2,
+  extendedShape = NULL, extendedShapeCol = NULL, expandPercent = 3,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
-  figWidth = 9, figHeight = 7, scaleRange = NULL,
+  figWidth = 6, figHeight = 7, scaleRange = NULL,
   paramsSelect = "All", indvScenarios = NULL, GCMRCPSSPPol = F,
   multiFacetCols = "scenarioRCP", multiFacetRows = "scenarioGCM",
   legendOutsideMulti = T, legendPositionMulti = NULL,
@@ -52,6 +52,8 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{subRegCol}{Default ="NAME_1",}
 
 \item{subRegType}{Default ="subRegType",}
+
+\item{dirNameAppend}{Default =""}
 
 \item{nameAppend}{Default =""}
 
