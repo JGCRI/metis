@@ -105,7 +105,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   # aggregate="sum"
   # class="class"
   # classPalette="pal_Basic"
-  # regionCompareOnly=1
+  # regionCompareOnly=0
   # useNewLabels=0
   # sizeBarLines=0
   # sizeLines=1.5
@@ -122,7 +122,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
 
   NULL->scenario->value->x->region->param->origValue->origScen->origQuery->
   origUnits->origX->sources->vintage->class1->classLabel1->classPalette1->
-  class2->classLabel2->classPalette2->i->j->k->figWMult
+  class2->classLabel2->classPalette2->i->j->k->figWMult->classLabel1x ->classLabel2x-> classPalette1x-> classPalette2x
 
   aggregate_i <- aggregate
 
@@ -202,18 +202,38 @@ if(!is.null(dataTables)){
 for(i in dataTables){
   if(file.exists(i)){
   tblNew<-utils::read.csv(paste(i), stringsAsFactors = F)%>%tibble::as.tibble()
+  if("class"%in%names(tblNew) & !"class1"%in%names(tblNew)){tblNew<-tblNew%>%dplyr::mutate(class1=class)}
    tbl<-dplyr::bind_rows(tbl,tblNew)
-  } else {stop(paste(i," does not exist"))}
+  } else {stop(paste(i," does not exist. Please run metis.readgcam.R to generate corresponding table."))}
 }
 
 # Join relevant colors and classes using the mapping file if it exists
 if(file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
   map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""), stringsAsFactors = F)%>%tibble::as.tibble()
-  tbl<-tbl%>%dplyr::left_join(map%>%dplyr::select(-class1,-class2)%>%dplyr::distinct(),by=c("param","units"))
+  tbl<-tbl%>%dplyr::rename(classLabel1x=classLabel1,classPalette1x=classPalette1,
+                           classLabel2x=classLabel2,classPalette2x=classPalette2)
+  tbl<-tbl%>%dplyr::left_join(map%>%dplyr::select(param,
+                                         classLabel1,classPalette1,
+                                         classLabel2,classPalette2)%>%dplyr::distinct(),by=c("param"))
+  tbl <- tbl%>%
+    dplyr::mutate(classLabel1 = dplyr::case_when(classLabel1==classLabel1x~classLabel1,
+                                          classLabel1!=classLabel1x & classLabel1x!="classLabel1x"~classLabel1x,
+                                          TRUE~classLabel1),
+                  classPalette1 = dplyr::case_when(classPalette1==classPalette1x~classPalette1,
+                                          classPalette1!=classPalette1x & classPalette1x!="classPalette1x"~classPalette1x,
+                                          TRUE~classPalette1),
+                  classLabel2 = dplyr::case_when(classLabel2==classLabel2x~classLabel2,
+                                          classLabel2!=classLabel2x & classLabel2x!="classLabel2x"~classLabel2x,
+                                          TRUE~classLabel2),
+                  classPalette2 = dplyr::case_when(classPalette2==classPalette2x~classPalette2,
+                                            classPalette2!=classPalette2x & classPalette2x!="classPalette2x"~classPalette2x,
+                                            TRUE~classPalette2)) %>%
+    dplyr::select(-classLabel1x,-classPalette1x,-classLabel2x,-classPalette2x)
   }
 
 # Add missing columns
   tbl<-addMissing(tbl)
+  if("class" %in% names(tbl)){tbl<-tbl%>%dplyr::select(-class)}
 }
 
 # Read in R data (rTable)
@@ -291,11 +311,11 @@ if (!dir.exists(paste(dirOutputs, "/Charts", sep = ""))){
 if(length(unique(tbl$region))>1){
   if (!dir.exists(paste(dirOutputs, "/Charts/compareRegions", sep = ""))){
     dir.create(paste(dirOutputs, "/Charts/compareRegions", sep = ""))}
-  if (!dir.exists(paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""))){
-    dir.create(paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""))}
+  if (!dir.exists(paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""))){
+    dir.create(paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""))}
   for (j in unique(tbl$scenario)) {
-    if (!dir.exists(paste(dirOutputs, "/Charts/compareRegions","/", j,sep = "")))
-    {dir.create(paste(dirOutputs, "/Charts/compareRegions","/", j,sep = ""))}
+    if (!dir.exists(paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = "")))
+    {dir.create(paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""))}
   }
 } # If length(unique(tbl$region))>1
 
@@ -391,7 +411,7 @@ if(length(unique(tbl$region))>1){
         # Bar Chart
        metis.chart(tbl_spC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows="none",
-          dirOutputs = paste(dirOutputs, "/Charts/compareRegions","/", j,sep = ""),
+          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figBar_",j,"_compareRegions",nameAppend,sep=""),
           figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult,pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )
@@ -399,7 +419,7 @@ if(length(unique(tbl$region))>1){
         # Line Chart
         metis.chart(tbl_spC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows="none",
-          dirOutputs = paste(dirOutputs, "/Charts/compareRegions","/", j,sep = ""),
+          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figLines_",j,"_compareRegions",nameAppend,sep=""),
           figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult,pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )
@@ -410,7 +430,7 @@ if(length(unique(tbl$region))>1){
           # Bar Chart
           metis.chart(tbl_sp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows="class2",
-                      dirOutputs = paste(dirOutputs, "/Charts/compareRegions","/", j,sep = ""),
+                      dirOutputs = paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
                       fileName = paste(k,"_figBar_",j,"_compareRegionsClass2",nameAppend,sep=""),
                       figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult,
                       figHeight = 9*max((length(unique(tbl_sp$class2))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -419,7 +439,7 @@ if(length(unique(tbl$region))>1){
           # Line Chart
           metis.chart(tbl_sp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows="class2",
-                      dirOutputs = paste(dirOutputs, "/Charts/compareRegions","/", j,sep = ""),
+                      dirOutputs = paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
                       fileName = paste(k,"_figLines_",j,"_compareRegionsClass2",nameAppend,sep=""),
                       figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult,
                       figHeight = 9*max((length(unique(tbl_sp$class2))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -468,7 +488,7 @@ if(length(unique(tbl$scenario))>1){
         # Bar Chart
         metis.chart(tbl_pC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="scenario",facet_rows="region",
-          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
+          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegions",nameAppend,sep=""),
           figWidth = 13*max((length(unique(tbl_p$scenario))/2),1)*figWMult,
           figHeight = 9*max((length(unique(tbl_p$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -477,7 +497,7 @@ if(length(unique(tbl$scenario))>1){
         # Line Chart
         metis.chart(tbl_pC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="scenario",facet_rows="region",
-          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
+          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figLine_compareScenRegions",nameAppend,sep=""),
           figWidth = 13*max((length(unique(tbl_p$scenario))/2),1)*figWMult,
           figHeight = 9*max((length(unique(tbl_p$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -492,7 +512,7 @@ if(length(unique(tbl$scenario))>1){
           print(paste("Comparing for only: ",  paste(xCompare[(xCompare %in% unique(tbl_p[[xData]]))],collapse=", "), sep=""))
           tbl_py <- tbl_p%>%dplyr::filter(x %in% xCompare)}else{
             print(paste("Comparing for only: ",  paste(xCompare,collapse=", "), sep=""))
-            tbl_py <- tbl_py%>%dplyr::filter(x %in% xCompare)
+            tbl_py <- tbl_p%>%dplyr::filter(x %in% xCompare)
           }
 
         if(length(unique(tbl_py$class1))>1){figWMult=1.3}else{figWMult=1}
@@ -516,7 +536,7 @@ if(length(unique(tbl$scenario))>1){
         # Bar Chart
         metis.chart(tbl_pyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData, facet_rows="region",
-          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
+          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegion_xScenSelectYears",nameAppend,sep=""),
           figWidth = 13*max((length(unique(tbl_py$x)[unique(tbl_py$x) %in% xCompare])/3),1)*figWMult,
           figHeight = 9*max((length(unique(tbl_py$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -547,7 +567,7 @@ if(length(unique(tbl$scenario))>1){
           metis.chart(tbl_pAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge", classPalette = classPalette,
                       facet_columns="region",facet_rows="none",
-            dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
+            dirOutputs = paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
             fileName = paste(j,"_figBarDodged_compareScenRegion",nameAppend,sep=""),
             figWidth = 13*max((length(unique(tbl_pAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
@@ -556,7 +576,7 @@ if(length(unique(tbl$scenario))>1){
           metis.chart(tbl_pAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario", classPalette = classPalette,
                       facet_columns="region",facet_rows="none",
-            dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
+            dirOutputs = paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
             fileName = paste(j,"_figLineOverlap_compareScenRegion",nameAppend,sep=""),
             figWidth = 13*max((length(unique(tbl_pAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
@@ -624,7 +644,7 @@ if(length(unique(tbl$scenario))>1){
         # Bar Chart
         metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region",
-          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
+          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBarDiff_compareScenRegion",nameAppend,sep=""),
           figWidth = 13*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,
           figHeight = 9*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -633,7 +653,7 @@ if(length(unique(tbl$scenario))>1){
         # Line Chart
         metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region",
-          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/compareScen", sep = ""),
+          dirOutputs = paste(dirOutputs, "/Charts/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figLineDiff_compareScenRegion",nameAppend,sep=""),
           figWidth = 13*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,
           figHeight = 9*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2

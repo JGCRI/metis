@@ -78,7 +78,7 @@ metis.map<-function(dataPolygon=NULL,
                   labels=F,
                   labelsSize=1.2,
                   labelsColor="black",
-                  labelsAutoPlace=F,
+                  labelsAutoPlace=T,
                   figWidth=9,
                   figHeight=7,
                   legendWidth=-1,
@@ -106,9 +106,9 @@ metis.map<-function(dataPolygon=NULL,
                   facetLabelColor = "white",
                   facetLabelSize=1.5,
                   alpha=1,
-                  fillcolorNA="grey30",
+                  fillcolorNA="gray",
                   fillshowNA=NA,
-                  fillcolorNULL="grey30",
+                  fillcolorNULL="gray",
                   facetsON=T,
                   panelLabel=NULL,
                   multiFacetRows=NULL,
@@ -387,7 +387,9 @@ if(is.null(legendBreaks)){
   if(length(scales::pretty_breaks(n=legendFixedBreaks)(shape@data%>%dplyr::select(fillColumn)%>%as.matrix()))>1){
     legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(shape@data%>%dplyr::select(fillColumn)%>%as.matrix())
   }else{legendBreaks=NULL}
-  }
+}
+
+if(length(unique(legendBreaks))==1){legendStyle="kmeans"}
 #names(shape)[names(shape) %in% fillColumn]<-gsub(" ","_",names(shape)[names(shape) %in% fillColumn])
 map<-map + tmap::tm_fill(col=fillColumn, palette = fillPalette, title=legendTitle,
                    style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks,alpha=alpha,colorNA=fillcolorNA,
@@ -482,7 +484,17 @@ if(nchar(paste(dirOutputs,"/",fname,sep=""))>250){
 
 if(!dir.exists(dirOutputs)){
   print(paste("dirOutputs provided: ",dirOutputs," does not exist. Saving to: ", getwd(),sep=""))
-  diroutputs=getwd()}else{
+
+  if (!dir.exists(paste(dirOutputs, "/outputsTemp", sep = ""))){
+    dir.create(paste(dirOutputs, "/outputstemp", sep = ""))}
+
+  metis.printPdfPng(figure=map,
+                    dir=dirOutputs,
+                    filename=fname,
+                    figWidth=figWidth,
+                    figHeight=figHeight,
+                    pdfpng=pdfpng)
+  }else{
 metis.printPdfPng(figure=map,
                 dir=dirOutputs,
                 filename=fname,
