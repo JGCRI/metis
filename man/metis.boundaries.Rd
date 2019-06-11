@@ -16,8 +16,8 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   extendedFillColor = "grey75", extendedBGColor = "lightblue1",
   extendedHighLightColor = "cornsilk1", extendedLabelsColor = "grey30",
   extdendedLabelSize = 0.7, extension = T, fillPalette = "Spectral",
-  cropSubShape2Bound = T, grids = NULL, innerMargins = c(0, 0.1, 0,
-  0.1), outerMargins = c(0.01, 0.01, 0.01, 0.01))
+  cropSubShape2Bound = T, grids = NULL, innerMargins = c(0.1, 0.2,
+  0.1, 0.2), outerMargins = c(0.01, 0.01, 0.01, 0.01))
 }
 \arguments{
 \item{boundaryRegShape}{Default=NULL. Boundary region shape if already read into R.}

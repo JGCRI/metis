@@ -17,8 +17,6 @@
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
 library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="zarrarkhan/metis")}
-library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
 if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}
@@ -611,6 +609,12 @@ for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(p
 gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_",countryName,"_subBasin_local.csv",sep="")
 b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
 for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x));print(unique((b%>%dplyr::filter(param==param_i))$scenario))}
+
+
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/Colorado_reference_scarcity.csv",sep="")
+a1<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+
+
 xRange_i= seq(from=2000,to=2050,by=5)
 legendPosition_i=c("LEFT","bottom")
 legendOutsideSingle_i=T
@@ -619,7 +623,7 @@ delay_i=100
 scenRef_i="gfdl-esm2m_rcp2p6_NA_NA"
 paramsSelect_i = c("All")
 indvScenarios_i = "All"
-GCMRCPSSPPol_i=T
+GCMRCPSSPPol_i=F
 
 
 boundaryRegShape_i = NULL
