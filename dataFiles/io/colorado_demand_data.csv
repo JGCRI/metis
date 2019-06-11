@@ -57,7 +57,7 @@ Argentina,LaPampa_media,watWithdrawBySec,km3,2010,municipal,,0.00166,0.001494,Wa
 Argentina,LaPampa_media,watWithdrawBySec,km3,2010,municipal,,0.00166,0.000166,Water,W_GW_Reservoir,COIRCO_2013_report
 Argentina,LaPampa_baja,watWithdrawBySec,km3,2010,municipal,,0.00083,0.000747,Water,W_SW_Upstream,COIRCO_2013_report
 Argentina,LaPampa_baja,watWithdrawBySec,km3,2010,municipal,,0.00083,0.000083,Water,W_GW_Reservoir,COIRCO_2013_report
-Argentina,LaPampa_baja,watWithdrawBySec,km3,2010,municipal,,0.0021,0.0021,Water,export,COIRCO_2013_report
+Argentina,LaPampa_baja,watWithdrawBySec,km3,2010,export,,0.0021,0.0021,Water,W_SW_Upstream,COIRCO_2013_report
 Argentina,RioNegro_baja,watWithdrawBySec,km3,2010,municipal,,0.0021,0.00189,Water,W_SW_Upstream,COIRCO_2013_report
 Argentina,RioNegro_baja,watWithdrawBySec,km3,2010,municipal,,0.0021,0.00021,Water,W_GW_Reservoir,COIRCO_2013_report
 Argentina,Corfo,watWithdrawBySec,km3,2010,municipal,,0.00252,0.002268,Water,W_SW_Upstream,COIRCO_2013_report
