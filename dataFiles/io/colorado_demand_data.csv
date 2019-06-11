@@ -1,9 +1,6 @@
 region,subRegion,param,units,year,demandClass,class2,localData,localDataSubdivided,supplySector,supplySubSector,dataSource
 Argentina,Mendoza_alta_barrancas,watWithdrawBySec,km3,2010,Ag_fruittrees,,0.001,0.001,Water,W_SW_Runoff,COIRCO_2013_report
-Argentina,Mendoza_alta_riogrande,watWithdrawBySec,km3,2010,irrigation,,0,0,Water,W_SW_Runoff,COIRCO_2013_report
 Argentina,Neuquen_alta_barrancas,watWithdrawBySec,km3,2010,Ag_pasture,,0.0087,0.0087,Water,W_SW_Runoff,COIRCO_2013_report
-Argentina,Mendoza_media,watWithdrawBySec,km3,2010,irrigation,,0,0,Water,W_SW_Upstream,COIRCO_2013_report
-Argentina,Mendoza_media,watWithdrawBySec,km3,2010,irrigation,,0,0,Water,W_GW_Reservoir,assumed 10% GW (throughout)
 Argentina,Neuquen_media,watWithdrawBySec,km3,2010,Ag_pasture,,0.0656,0.01476,Water,W_SW_Upstream,assumed evenly divided water demand across crops
 Argentina,Neuquen_media,watWithdrawBySec,km3,2010,Ag_cereals,,0.0656,0.01476,Water,W_SW_Upstream,assumed evenly divided water demand across crops
 Argentina,Neuquen_media,watWithdrawBySec,km3,2010,Ag_fruittrees,,0.0656,0.01476,Water,W_SW_Upstream,assumed evenly divided water demand across crops
