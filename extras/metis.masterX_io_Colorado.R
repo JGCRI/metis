@@ -63,6 +63,114 @@ ioTable0 <- ioTable0 %>% left_join(capTable, by=c('subRegion', 'supplySector', '
 output_water <- subReg_water_balance(ioTable0, network_order, network_data, from_to)
 ioTable0 <- output_water$supply_demand_table  # updated demand-supply table that includes proper natural water exports, and capacities
 ioTable0$units <- as.character(ioTable0$units)
+
+# Aggregate regions up to the level of a single region
+ioTable0
+t1 <- ioTable0
+t2 <- ioTable0[0,]
+downstream_elem_list <- character(0)
+singleSubRegName <- 'Colorado'
+downstream_flow <- 0
+
+# determine downstream-most element, so can account correctly for single subregion outflows
+
+for (subreg in unique(ioTable0$subRegion)){
+  counter = 0
+  for(name in names(from_to)){
+    counter = counter + 1
+    if(subreg %in% from_to[[name]]){
+      break
+    }
+    if(counter==length(names(from_to))){
+      downstream_elem_list <- c(downstream_elem_list, subreg)
+    }
+  }
+}
+
+# This only works if there are more than 1 subregion.
+for(reg in unique(ioTable0$region)){
+  # Loop through regions
+  t1 <- t1 %>% filter(region == reg)  # Filter out region of interest
+  # Reset W_SW_Upstream to W_SW_Runoff for these intermediate sub-regions (i.e., not headwater or downstream-most elements)
+  # Needs to be done before we sum up all the categories below.
+  for (subreg in unique(ioTable0$subRegion)){
+    if(subreg %in% names(from_to)){
+      if(subreg %in% downstream_elem_list){
+        dsf <- (t1 %>% filter(supplySubSector=='W_SW_Upstream', subRegion==subreg))$downstream[1]
+        downstream_flow <- downstream_flow + dsf
+      }
+      t1 <- t1 %>% mutate(supplySubSector = if_else(supplySubSector=='W_SW_Upstream' & subRegion==subreg, 'W_SW_Runoff', supplySubSector))
+    }
+  }
+  View(t1)
+  print("1")
+  for (sup_sub_sec in unique(t1$supplySubSector)){
+    # First loop through all subsectors, and sum up demands across all subregions
+    non_numer <- t1 %>% filter(supplySubSector==sup_sub_sec) %>%
+      select(region, subRegion, units, supplySector, supplySubSector)  #select LHS non-numeric columns
+    lhs <- non_numer[1,] # select only the first row, so you can keep values of non-numeric columns
+    numer <- t1 %>% filter(supplySubSector==sup_sub_sec) %>%
+      select(-region, -subRegion, -units, -supplySector, -supplySubSector)
+    rhs <- data.frame(colname=names(numer), colSums_d=colSums(numer, na.rm=TRUE)) %>% spread(colname, colSums_d)  # sum up and spread numeric columns
+    new_row_subsector_single_reg <- cbind(lhs,rhs)  # combine lhs and rhs
+    new_row_subsector_single_reg['subRegion'] <- singleSubRegName  # rename to new single subregion
+    new_row_subsector_single_reg['downstream'] <- 0  # set to zero; we deal with this later
+    if (dim(numer)[1]>0){
+      t2 <- rbind(t2, new_row_subsector_single_reg)  # add new subsector single region value to final DF (t2)
+    }
+  }
+  print("2")
+  # Next deal with downstream flows and upstream flows
+
+  # First, get rid of W_SW_Upstream; reflects incorrect accounting. Already reassigned some to runoff.
+  t2 <- t2 %>% filter(!supplySubSector=='W_SW_Upstream')
+
+  # Handle upstream flows
+  # Only for headwater subregion, add up any flows coming from upstream
+  non_numer <- t1 %>% filter(!subRegion %in% names(from_to), supplySector=='Water', supplySubSector=='W_SW_Upstream') %>%
+    select(region, subRegion, units, supplySector, supplySubSector)  #select LHS non-numeric columns
+  lhs <- non_numer[1,] # select only the first row, so you can keep values of non-numeric columns
+  numer <- t1 %>% filter(!subRegion %in% names(from_to), supplySector=='Water', supplySubSector=='W_SW_Upstream') %>%
+    select(-region, -subRegion, -units, -supplySector, -supplySubSector)
+  rhs <- data.frame(colname=names(numer), colSums_d=colSums(numer, na.rm=TRUE)) %>% spread(colname, colSums_d)  # sum up and spread numeric columns
+  new_row_subsector_single_reg <- cbind(lhs,rhs)  # combine lhs and rhs
+  new_row_subsector_single_reg['subRegion'] <- singleSubRegName  # rename to new single subregion
+  if (dim(numer)[1]>0){
+    t2 <- rbind(t2, new_row_subsector_single_reg)  # put new row in for W_SW_Upstream
+  }
+  print("3")
+
+
+  # Element is a downstream-most element
+  # Handle downstream flows
+  # Add row dealing with downstream flows
+
+  t2 <- t2 %>%
+    mutate(downstream=if_else(supplySubSector=='W_SW_Runoff', downstream_flow, downstream))
+}
+
+
+
+
+# Run Metis IO model
 io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
 io1$ioTbl_Output %>% as.data.frame()
 io1$A_Output %>% as.data.frame()
+
+
+
+
+
+
+non_numer <- t1 %>% filter(subRegion %in% downstream_elem_list, supplySector=='Water', supplySubSector=='W_SW_Upstream') %>%
+  select(region, subRegion, units, supplySector, supplySubSector)  #select LHS non-numeric columns
+lhs <- non_numer[1,] # select only the first row, so you can keep values of non-numeric columns
+numer <- t1 %>% filter(subRegion %in% downstream_elem_list, supplySector=='Water', supplySubSector=='W_SW_Upstream') %>%
+  select(-region, -subRegion, -units, -supplySector, -supplySubSector)
+rhs <- data.frame(colname=names(numer), colSums_d=colSums(numer, na.rm=TRUE)) %>% spread(colname, colSums_d)  # sum up and spread numeric columns
+new_row_subsector_single_reg <- cbind(lhs,rhs)  # combine lhs and rhs
+new_row_subsector_single_reg['subRegion'] <- singleSubRegName  # rename to new single subregion
+if (dim(numer)[1]>0){
+  t2 <- t2 %>%
+    mutate(downstream=if_else(supplySubSector=='W_SW_Runoff', new_row_subsector_single_reg$downstream[1], downstream))
+}
