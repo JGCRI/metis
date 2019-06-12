@@ -64,6 +64,15 @@ output_water <- subReg_water_balance(ioTable0, network_order, network_data, from
 ioTable0 <- output_water$supply_demand_table  # updated demand-supply table that includes proper natural water exports, and capacities
 ioTable0$units <- as.character(ioTable0$units)
 
+
+# Run Metis IO model
+io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
+io1$ioTbl_Output %>% as.data.frame()
+io1$A_Output %>% as.data.frame()
+
+
+#----------------------------------------------------------------------------------------------------------------------#
+
 # Aggregate regions up to the level of a single region
 ioTable0
 t1 <- ioTable0
@@ -102,8 +111,6 @@ for(reg in unique(ioTable0$region)){
       t1 <- t1 %>% mutate(supplySubSector = if_else(supplySubSector=='W_SW_Upstream' & subRegion==subreg, 'W_SW_Runoff', supplySubSector))
     }
   }
-  View(t1)
-  print("1")
   for (sup_sub_sec in unique(t1$supplySubSector)){
     # First loop through all subsectors, and sum up demands across all subregions
     non_numer <- t1 %>% filter(supplySubSector==sup_sub_sec) %>%
@@ -119,7 +126,6 @@ for(reg in unique(ioTable0$region)){
       t2 <- rbind(t2, new_row_subsector_single_reg)  # add new subsector single region value to final DF (t2)
     }
   }
-  print("2")
   # Next deal with downstream flows and upstream flows
 
   # First, get rid of W_SW_Upstream; reflects incorrect accounting. Already reassigned some to runoff.
@@ -138,39 +144,55 @@ for(reg in unique(ioTable0$region)){
   if (dim(numer)[1]>0){
     t2 <- rbind(t2, new_row_subsector_single_reg)  # put new row in for W_SW_Upstream
   }
-  print("3")
-
 
   # Element is a downstream-most element
   # Handle downstream flows
   # Add row dealing with downstream flows
-
   t2 <- t2 %>%
     mutate(downstream=if_else(supplySubSector=='W_SW_Runoff', downstream_flow, downstream))
-}
 
+  # Deal with electricity now
+  imp <- t2 %>% filter(supplySubSector == 'Electricity_Import') %>% select(-cap, -region, -subRegion, -units, -supplySector, -supplySubSector) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
+  imp <- imp$rowsum[1]
 
+  exp <- t2 %>% filter(grepl('Electricity_', supplySubSector))
+  exp <- sum(exp$export)
 
+  if (exp>=imp){
+    # Net exports from the region must occur, but they are reduced by local consumption of value="imp"
+    actual_regional_exports <- exp-imp
+    actual_regional_imports <- 0
+    # Adjust t2 table to reflect correct exports.Proportionally change each category.
+    t2 <- t2 %>% mutate(export=if_else(grepl('Electricity_', supplySubSector), actual_regional_exports*(export/exp), export))
+  }else{
+    # Net imports into the region must occur
+    actual_regional_exports <- 0
+    actual_regional_imports <- imp-exp
+    #t2 <- t2 %>% filter(grepl('Electricity_Imports', supplySubSector) %>% mutate() actual_regional_exports*(export/exp), export))
 
-# Run Metis IO model
-io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
-io1$ioTbl_Output %>% as.data.frame()
-io1$A_Output %>% as.data.frame()
+    # Follow same approach as below.
+    # Need to reset imports to zero in t2.
 
-
-
-
-
-
-non_numer <- t1 %>% filter(subRegion %in% downstream_elem_list, supplySector=='Water', supplySubSector=='W_SW_Upstream') %>%
-  select(region, subRegion, units, supplySector, supplySubSector)  #select LHS non-numeric columns
-lhs <- non_numer[1,] # select only the first row, so you can keep values of non-numeric columns
-numer <- t1 %>% filter(subRegion %in% downstream_elem_list, supplySector=='Water', supplySubSector=='W_SW_Upstream') %>%
-  select(-region, -subRegion, -units, -supplySector, -supplySubSector)
-rhs <- data.frame(colname=names(numer), colSums_d=colSums(numer, na.rm=TRUE)) %>% spread(colname, colSums_d)  # sum up and spread numeric columns
-new_row_subsector_single_reg <- cbind(lhs,rhs)  # combine lhs and rhs
-new_row_subsector_single_reg['subRegion'] <- singleSubRegName  # rename to new single subregion
-if (dim(numer)[1]>0){
-  t2 <- t2 %>%
-    mutate(downstream=if_else(supplySubSector=='W_SW_Runoff', new_row_subsector_single_reg$downstream[1], downstream))
+    protected_list <- c('region', 'subRegion', 'units', 'supplySector', 'supplySubSector', 'cap', 'downstream', 'export')
+    for (colname in names(t2)){
+      if(!colname %in% protected_list){
+        index <- t2$supplySubSector=='Electricity_Import'  # index of electricity imports row
+        orig_imp <- t2[[colname]][index]  # Store original electricity imports in this colname demand sector, so we can track the change ("diff")
+        fraction <- orig_imp/imp  # fraction (out of 1) of required overall imports reduction that will be taken from this demand sector
+        t2[[colname]][index] <- actual_regional_imports*fraction  # scale down imported values to reflect that some local supply exists
+        diff <- orig_imp - t2[[colname]][index]  # difference to be allocated from exports back to demand sectors
+        # add this diff back to the demand sector, but from a supply subsector row
+        #Reassign exports to demand sectors
+        index_supply_subsec <- grepl('Electricity_', t2$supplySubSector) & !grepl('_Import', t2$supplySubSector) # index of electricity imports row
+        t2[[colname]][index_supply_subsec] <- t2[[colname]][index_supply_subsec] + t2$export[index_supply_subsec]*fraction
+      }
+    }
+    t2$export <- 0  # Reset export to zero
+  }
+  # Run Metis IO model
+  ioTable0 <- t2
+  io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
+  io1$ioTbl_Output %>% as.data.frame()
+  io1$A_Output %>% as.data.frame()
 }
