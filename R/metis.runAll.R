@@ -64,18 +64,23 @@
 #' @param sqliteUSE Default = T,
 #' @param sqliteDBNamePath Default =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep Default = ""),
 #' @param grid Default = NULL,
+#' @param boundaryGridsOverlap Default = NULL
+#' @param paramsSelect_grid2poly Default = "All"
 #' @param sqliteUSEGrid2Poly Default = T,
 #' @param sqliteDBNamePathGrid2Poly Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep Default = ""),
 #' @param run_state_grid2poly Default = F,
 #' @param run_GCAMbasin_grid2poly Default = F,
 #' @param run_localShape_grid2poly Default = T,
+#' @param polygonDataTablesCustom Default = NULL,
 #' @param xRangeMap Default = seq(fromDefault =2000,toDefault =2050,byDefault =5),
 #' @param legendPosition Default =c("LEFT","bottom"),
 #' @param legendOutsideSingle Default =T,
 #' @param animateOn Default =T,
 #' @param delay Default =100,
 #' @param scenRefMap Default ="gfdl-esm2m_rcp2p6_NA_NA",
-#' @param paramsSelect Default = c("All"),
+#' @param paramsSelect_GCAM Default = c("All"),
+#' @param paramsSelect_Chart Default = c("All"),
+#' @param paramsSelect_Map Default = c("All"),
 #' @param indvScenarios Default = "All",
 #' @param GCMRCPSSPPol Default =F,
 #' @param localSubRegDataTables Default = NULL
@@ -110,6 +115,7 @@ metis.runAll<- function(
                   queryxml="metisQueries.xml",  # Default Value is "metisQueries.xml"
                   scenOrigNames = c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef"),
                   scenNewNames = c("GCAMOrig","GCAMRef"),
+                  paramsSelect_GCAM = c("All"),
                   # 2. Create Charts
                   # GCAM Data will be produced from step 1 Read GCAM Data. It is saved as dataGCAM.
                   dataTablesLocal=NULL,
@@ -122,11 +128,15 @@ metis.runAll<- function(
                   colOrderName1 = "scenario",
                   xCompare = c("2015","2030","2050","2100"),
                   xRange = c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
+                  paramsSelect_Chart = c("All"),
                   # 3. Prepare Polygon Data (Check and fix shapefiles as needed)
                   localcountryName = NULL, # Country or Region Name
                   localShapeFileFolder = NULL,
                   localShapeFile = NULL,
                   localShapeFileColName = NULL, # Make sure this is one of the names(tempShape@data)
+                  # 4. Boundaries
+                  boundaryGridsOverlap=c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+                    paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
                   # 5. Bia
                   biaInputsFolder = paste(getwd(),"/dataFiles/grids/bia/biaInputs",sep=""),
                   biaInputsFiles = c("global_power_plant_database_MW"),
@@ -148,7 +158,7 @@ metis.runAll<- function(
                   xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/",sep=""),
                   xanthosFiles=c("pm_abcd_mrtm_noresm1-m_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp8p5_1950_2099.csv"),
                   xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosReference/coordinates.csv",sep=""),
-                  xanthosGridAreaHecsPath=paste(getwd(),"/dataFiles/grids/xanthosReference/Grid_Areas D.csv",sep=""),
+                  xanthosGridAreaHecsPath=paste(getwd(),"/dataFiles/grids/xanthosReference/Grid_Areas_ID.csv",sep=""),
                   scarcityXanthosRollMeanWindow=10,
                   spanLowess=0.25,
                   popFolder=paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep=""),
@@ -161,7 +171,8 @@ metis.runAll<- function(
                   sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = ""),
                   # 7. Grid to polygons
                   grid=NULL,
-                  #subRegShape = countryLocal
+                  paramsSelect_grid2poly="All",
+                  polygonDataTablesCustom = NULL,
                   sqliteUSEGrid2Poly = T,
                   sqliteDBNamePathGrid2Poly = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = ""),
                   run_state_grid2poly = T,
@@ -174,7 +185,7 @@ metis.runAll<- function(
                   animateOn=T,
                   delay=100,
                   scenRefMap="gfdl-esm2m_rcp2p6_NA_NA",
-                  paramsSelect = c("All"),
+                  paramsSelect_Map = c("All"),
                   indvScenarios = "All",
                   GCMRCPSSPPol=F,
                   localSubRegDataTables=NULL,
@@ -202,7 +213,7 @@ metis.runAll<- function(
   # Prelim settings
   #---------------------------
 
-  dataGCAM = NULL
+  NULL -> dataGCAM ->  polygonDataTables_x
 
   #----------------------------
   # Read GCAM Data
@@ -219,7 +230,7 @@ metis.runAll<- function(
                              queryPath = queryPath,
                              dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
                              regionsSelect=gcamcountryNames, # Default Value is NULL
-                             paramsSelect="All" # Default value is "All"
+                             paramsSelect=paramsSelect_GCAM # Default value is "All"
     )
   }
 
@@ -242,7 +253,7 @@ metis.runAll<- function(
 
     charts<-metis.chartsProcess(#rTable=rTable, # Default is NULL
                                 dataTables=dataTables, # Default is NULL
-                                paramsSelect=paramsSelect, # Default is "All"
+                                paramsSelect=paramsSelect_Chart, # Default is "All"
                                 regionsSelect=gcamcountryNames, # Default is "All"
                                 xCompare=xCompare, # Default is c("2015","2030","2050","2100")
                                 scenRef=scenRef, # Default is NULL
@@ -255,10 +266,12 @@ metis.runAll<- function(
                                 colOrder1 = colOrder1,
                                 colOrderName1 = colOrderName1)
 
-    # dataTables=c(paste(getwd(),"/outputs/readGCAMTables/Tables_gcam/gcamDataTable_",countryName_i,".csv", sep=""))
-    # paramsSelect="finalNrgbySec"
-    # regionsSelect="Pakistan" # Default is "All"
-    # scenRef="GCAMOrig" # Default is NULL
+    # # #rTable=rTable, # Default is NULL
+    # dataTables=c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Uruguay.csv",sep=""),
+    #              paste(getwd(),"/outputs/readGCAMTables/Tables_gcam/gcamDataTable_Uruguay.csv", sep=""))
+    # paramsSelect="aggLandAlloc" # Default is "All"
+    # regionsSelect="uruguay" # Default is "All"
+    # scenarioCompareOnly=1 # Default is "0"
 
   }
 
@@ -318,7 +331,7 @@ metis.runAll<- function(
         countryNE1@data <- droplevels(countryNE1@data)
         #head(countryNE1@data)
         raster::plot(countryNE1)
-        countryNE1<-spTransform(countryNE1,sp::CRS(projX))
+        countryNE1<-sp::spTransform(countryNE1,sp::CRS(projX))
         rgdal::writeOGR(obj=countryNE1, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"NE1",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
       }
       metis.map(dataPolygon=countryNE1,fillColumn = "name",printFig=F, facetsON = F, labels=T, legendStyle = "cat")
@@ -331,7 +344,7 @@ metis.runAll<- function(
       }else{
         GCAMBasin<-rgdal::readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
                            layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
-        GCAMBasin<-spTransform(GCAMBasin,sp::CRS(projX))
+        GCAMBasin<-sp::spTransform(GCAMBasin,sp::CRS(projX))
         countryGCAMBasin<-raster::crop(GCAMBasin,countryNE1)
         countryGCAMBasin@data <- droplevels(countryGCAMBasin@data)
         #head(countryGCAMBasin@data)
@@ -354,7 +367,7 @@ metis.runAll<- function(
     }else{
       countryLocal<-rgdal::readOGR(dsn=localShapeFileFolder,
                             layer=localShapeFile,use_iconv=T,encoding='UTF-8')
-      countryLocal<-spTransform(countryLocal,sp::CRS(projX))
+      countryLocal<-sp::spTransform(countryLocal,sp::CRS(projX))
       countryLocal<-raster::crop(countryLocal,countryNE1)
       countryLocal<-countryLocal[(!countryLocal$cuenca %in%
                                     c("media","baja","RioGrande","Barrancas")) & !is.na(countryLocal$cuenca),]
@@ -396,8 +409,7 @@ metis.runAll<- function(
           nameAppend = "",
           overlapShpFolder=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""),
           overlapShpFile=paste(countryName,"GCAMBasin",sep=""),
-          grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
-                    paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+          grids = boundaryGridsOverlap,
           cropSubShape2Bound=T)}else{
             print(paste("Shapefile for region ", countryName ,"NE1 not produced yet. Please run prepare polygons first.",sep=""))}
 
@@ -415,8 +427,7 @@ metis.runAll<- function(
           nameAppend = "",
           overlapShpFolder=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""),
           overlapShpFile=paste(countryName,"NE1",sep=""),
-          grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
-                    paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+          grids = boundaryGridsOverlap,
           cropSubShape2Bound=T)}else{
             print(paste("Shapefile for region ", countryName ,"GCAMBasin not produced yet. Please run prepare polygons first.",sep=""))}
 
@@ -436,8 +447,7 @@ metis.runAll<- function(
       subRegCol=localShapeFileColName,
       subRegType = "localShape",
       nameAppend = "",
-      grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
-                paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+      grids = boundaryGridsOverlap,
       cropSubShape2Bound=T)
 
     }
@@ -506,15 +516,24 @@ metis.runAll<- function(
       xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
       biaFolder=biaFolder,
       biaFiles=biaFiles,
-      spanLowess=spanLowess,
-      dirOutputs=paste(getwd(),"/outputs",sep=""),
-      gridMetisData=gridMetisData,
       popFolder=popFolder,
       popFiles=popFiles,
       popUnits=popUnits,
+      spanLowess=spanLowess,
+      dirOutputs=paste(getwd(),"/outputs",sep=""),
+      gridMetisData=gridMetisData,
       sqliteUSE = sqliteUSE,
       sqliteDBNamePath =sqliteDBNamePath)
   }
+
+
+  # biaFolder=paste(getwd(),"/dataFiles/grids/bia/biaOutputs/",sep="")
+  # biaFiles=paste("dataBia",sep="")
+  # reReadDataPrepGrids=1
+  # sqliteUSE = F
+  # sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+  # gridMetisData=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = "")
+
 
   #-----------
   # Grid to Poly
@@ -530,7 +549,7 @@ metis.runAll<- function(
       if(run_state_grid2poly == T){
         # Natural Earth States
         grid2polyX<-metis.grid2poly(
-          grid=grid,
+          #grid=grid,
           boundaryRegionsSelect=countryName,
           subRegShpFolder=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""),
           subRegShpFile=paste(countryName,"NE1",sep=""),
@@ -538,7 +557,23 @@ metis.runAll<- function(
           subRegType = "state",
           nameAppend="_NEState",
           sqliteUSE = sqliteUSE,
-          sqliteDBNamePath = sqliteDBNamePath)
+          sqliteDBNamePath = sqliteDBNamePath,
+          paramsSelect=paramsSelect_grid2poly)
+
+        # paramsSelect_grid2poly="All"
+        # paramsSelect = "All"
+        # countryName="Argentina"
+        # grid=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = "")
+        # boundaryRegionsSelect=countryName
+        # subRegShpFolder=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep="")
+        # subRegShpFile=paste(countryName,"NE1",sep="")
+        # subRegCol="name"
+        # subRegType = "state"
+        # nameAppend="_NEState"
+        # sqliteUSE = T
+        # sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+        # paramsSelect="elecByTech"
+
       }
 
       if(run_GCAMbasin_grid2poly == T){
@@ -552,7 +587,8 @@ metis.runAll<- function(
           subRegType = "basin",
           nameAppend="_GCAMBasin",
           sqliteUSE = sqliteUSE,
-          sqliteDBNamePath = sqliteDBNamePath)
+          sqliteDBNamePath = sqliteDBNamePath,
+          paramsSelect=paramsSelect_grid2poly)
       }
     }}
 
@@ -569,7 +605,8 @@ metis.runAll<- function(
         subRegType = "localShape",
         nameAppend = "",
         sqliteUSE = sqliteUSE,
-        sqliteDBNamePath = sqliteDBNamePath)
+        sqliteDBNamePath = sqliteDBNamePath,
+        paramsSelect=paramsSelect_grid2poly)
     }
     }
 
@@ -637,7 +674,7 @@ metis.runAll<- function(
           animateOn=animateOn,
           delay=delay,
           scenRef=scenRefMap,
-          paramsSelect = paramsSelect,
+          paramsSelect = paramsSelect_Map,
           scaleRange = scaleRange,
           indvScenarios=indvScenarios,
           GCMRCPSSPPol=GCMRCPSSPPol,
@@ -654,9 +691,13 @@ metis.runAll<- function(
       if(run_map_state == T){
 
 
-        polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",countryName,"_subBasin_origDownscaled_local.csv",sep="")
-        # a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
-        # for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
+        polygonDataTables_x= paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",countryName,"_subBasin_origDownscaled_local.csv",sep="")
+
+          if(file.exists(polygonDataTables_x)){
+            polygonDataTables_i <- c(polygonDataTables_x,
+                                     polygonDataTablesCustom)
+          } else {polygonDataTables_i=polygonDataTablesCustom}
+
 
         metis.mapProcess(
           polygonDataTables=polygonDataTables_i,
@@ -676,7 +717,7 @@ metis.runAll<- function(
           animateOn=animateOn,
           delay=delay,
           scenRef=scenRefMap,
-          paramsSelect = paramsSelect,
+          paramsSelect = paramsSelect_Map,
           scaleRange = scaleRange,
           indvScenarios=indvScenarios,
           GCMRCPSSPPol=GCMRCPSSPPol,
@@ -690,7 +731,15 @@ metis.runAll<- function(
 
       if(run_map_GCAMbasin == T){
 
-        polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",countryName,"_subBasin_origDownscaled_local.csv",sep="")
+        polygonDataTables_x=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",countryName,"_subBasin_origDownscaled_local.csv",sep="")
+
+
+        if(file.exists(polygonDataTables_x)){
+          polygonDataTables_i <- c(polygonDataTables_x,
+                                   polygonDataTablesCustom)
+        } else {polygonDataTables_i=polygonDataTablesCustom}
+
+
 
         metis.mapProcess(polygonDataTables=polygonDataTables_i,
                          xRange=xRangeMap,
@@ -710,7 +759,7 @@ metis.runAll<- function(
                          animateOn=animateOn,
                          delay=delay,
                          scenRef=scenRefMap,
-                         paramsSelect = paramsSelect,
+                         paramsSelect = paramsSelect_Map,
                          scaleRange = scaleRange,
                          indvScenarios=indvScenarios,
                          GCMRCPSSPPol=GCMRCPSSPPol,
@@ -747,7 +796,7 @@ metis.runAll<- function(
                        animateOn=animateOn,
                        delay=delay,
                        scenRef=scenRefMap,
-                       paramsSelect = paramsSelect,
+                       paramsSelect = paramsSelect_Map,
                        scaleRange = scaleRange,
                        indvScenarios=indvScenarios,
                        GCMRCPSSPPol=GCMRCPSSPPol,
@@ -763,7 +812,16 @@ metis.runAll<- function(
 
       if(run_map_localShapeGCAMData == T){
 
-      polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",localcountryName,"_subBasin_origDownscaled_local.csv",sep="")
+      polygonDataTables_x=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_",localcountryName,"_subBasin_origDownscaled_local.csv",sep="")
+
+      if(file.exists(polygonDataTables_x)){
+        polygonDataTables_i <- c(polygonDataTables_x,
+                                 polygonDataTablesCustom)
+      } else {polygonDataTables_i=polygonDataTablesCustom}
+
+      # a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+      # for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
+
 
       metis.mapProcess(polygonDataTables=polygonDataTables_i,
                        xRange=xRangeMap,
@@ -782,7 +840,7 @@ metis.runAll<- function(
                        animateOn=animateOn,
                        delay=delay,
                        scenRef=scenRefMap,
-                       paramsSelect = paramsSelect,
+                       paramsSelect = paramsSelect_Map,
                        scaleRange = scaleRange,
                        indvScenarios=indvScenarios,
                        GCMRCPSSPPol=GCMRCPSSPPol,
@@ -818,7 +876,7 @@ metis.runAll<- function(
           animateOn=animateOn,
           delay=delay,
           scenRef=scenRefMap,
-          paramsSelect = paramsSelect,
+          paramsSelect = paramsSelect_Map,
           scaleRange = scaleRange,
           indvScenarios=indvScenarios,
           GCMRCPSSPPol=GCMRCPSSPPol,

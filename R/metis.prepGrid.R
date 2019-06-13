@@ -190,12 +190,13 @@ gridx<-data.table::fread(paste(demeterFolder,"/landcover_",timestepx,"_timestep.
          units=demeterUnits,
          aggType="depth",
          x=timestepx,
-         classPalette="pal_green")%>%
+         classPalette="pal_green",
+         region="region")%>%
   dplyr::select(-aez_id,-region_id,-longitude,-latitude)%>%
-  tidyr::gather(key="class",value="value",-c("lat","lon","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","x","classPalette"))
+  tidyr::gather(key="class",value="value",-c("lat","lon","region","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","x","classPalette"))
 print("File read.")
 
-colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
                                                 "param","units","aggType","classPalette","class","x","value")]
 gridx <- gridx %>% dplyr::select(colsSelect)
 gridx<-addMissing(gridx); gridx
@@ -259,8 +260,9 @@ if(!dir.exists(tethysFolder)){
                             units=tethysUnits,
                             aggType=aggType,
                             classPalette="pal_wet",
-                            class=class_i)%>%
-               tidyr::gather(key="x",value="value",-c("lat","lon","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","classPalette","class"))
+                            class=class_i,
+                            region="region")%>%
+               tidyr::gather(key="x",value="value",-c("lat","lon","region","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","classPalette","class"))
 
         gridx$x<-as.numeric(gridx$x)
 
@@ -285,7 +287,7 @@ if(!dir.exists(tethysFolder)){
         tethysGCMRCPs<-tethysGCMRCPs[stats::complete.cases(tethysGCMRCPs),]
         tethysYears<-unique(gridx$x)
 
-        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
                                            "param","units","aggType","classPalette","class","x","value")]
         gridx <- gridx %>% dplyr::select(colsSelect)
         gridx<-addMissing(gridx); gridx
@@ -439,9 +441,9 @@ if(!dir.exists(xanthosFolder)){
                           dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
             }
 
-        gridx<-gridx%>%dplyr::mutate(value=lowess)%>%dplyr::select(-lowess)
+        gridx<-gridx%>%dplyr::mutate(value=lowess,region="region")%>%dplyr::select(-lowess)
 
-        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
                                                         "param","units","aggType","classPalette","class","x","value")]
         gridx <- gridx %>% dplyr::select(colsSelect)
         gridx<-addMissing(gridx); gridx
@@ -537,6 +539,7 @@ if(sqliteUSE==T){
                       param="griddedScarcity",
                       class="Scarcity",
                       classPalette="pal_hot",
+                      region="region",
                       scenario=paste("T",scenarioTethys,"X",scenarioXanthos,sep=""))%>%
         dplyr::select(-valueXanthos,-valueTethys,-scenarioTethys,-scenarioXanthos)%>%
         dplyr::rename(value=scarcity)%>%
@@ -552,7 +555,7 @@ if(sqliteUSE==T){
                 classPalette="pal_ScarcityCat");
 
 
-      colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+      colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
                                                       "param","units","aggType","classPalette","class","x","value")]
       gridx <- gridx %>% dplyr::select(colsSelect)
       gridx<-addMissing(gridx); gridx
@@ -618,6 +621,7 @@ if(!is.null(gridMetis)){
                         param="griddedScarcity",
                         class="Scarcity",
                         classPalette="pal_hot",
+                        region="region",
                         scenario=paste("T",scenarioTethys,"X",scenarioXanthos,sep="")) %>%
           dplyr::select(-valueXanthos,-valueTethys, -scenarioTethys,-scenarioXanthos) %>%
           dplyr::rename(value=scarcity)%>%
@@ -662,10 +666,11 @@ if(!dir.exists(popFolder)){
                         units=popUnits,
                         aggType="vol",
                         classPalette="pal_hot",
-                        class="class")
+                        class="class",
+                        region="region")
         gridx$x<-as.numeric(gridx$x)
 
-        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
                                                         "param","units","aggType","classPalette","class","x","value")]
         gridx <- gridx %>% dplyr::select(colsSelect)
         gridx<-addMissing(gridx); gridx
@@ -717,10 +722,10 @@ if(!dir.exists(biaFolder)){
           dplyr::select(-value, -origValue)%>%
           dplyr::mutate(aggType = "vol")%>%
           dplyr::rename(lat = gridlat, lon = gridlon, class = class1, value = valueDistrib, origValue = origValueDistrib) %>%
-          dplyr::select(-gridCellPercentage,-region,-region_32_code,-ctry_name,-ctry_code, -aggregate, -dplyr::contains("orig"),-gridID)
+          dplyr::select(-gridCellPercentage,-region_32_code,-ctry_name,-ctry_code, -aggregate, -dplyr::contains("orig"),-gridID)
         gridx$x<-as.numeric(gridx$x)
 
-        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
                                                         "param","units","aggType","classPalette","class","x","value")]
         gridx <- gridx %>% dplyr::select(colsSelect)
         gridx<-addMissing(gridx); gridx

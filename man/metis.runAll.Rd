@@ -13,14 +13,18 @@ metis.runAll(run_readGCAM = F, run_charts = F, run_boundaries = F,
   = ""), queryPath = paste(getwd(), "/dataFiles/gcam", sep = ""),
   queryxml = "metisQueries.xml",
   scenOrigNames = c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef"),
-  scenNewNames = c("GCAMOrig", "GCAMRef"), dataTablesLocal = NULL,
+  scenNewNames = c("GCAMOrig", "GCAMRef"),
+  paramsSelect_GCAM = c("All"), dataTablesLocal = NULL,
   scenRef = "GCAMRef", regionCompareOnly = 0,
   scenarioCompareOnly = 1, useNewLabels = 1,
   colOrder1 = c("GCAMOrig", "GCAMRef", "Local Data"),
   colOrderName1 = "scenario", xCompare = c("2015", "2030", "2050",
   "2100"), xRange = c(2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045,
-  2050), localcountryName = NULL, localShapeFileFolder = NULL,
-  localShapeFile = NULL, localShapeFileColName = NULL,
+  2050), paramsSelect_Chart = c("All"), localcountryName = NULL,
+  localShapeFileFolder = NULL, localShapeFile = NULL,
+  localShapeFileColName = NULL, boundaryGridsOverlap = c(paste(getwd(),
+  "/dataFiles/grids/emptyGrids/grid_025.csv", sep = ""), paste(getwd(),
+  "/dataFiles/grids/emptyGrids/grid_050.csv", sep = "")),
   biaInputsFolder = paste(getwd(), "/dataFiles/grids/bia/biaInputs", sep
   = ""), biaInputsFiles = c("global_power_plant_database_MW"),
   gridChoice = "grid_025", diagnosticsON = T,
@@ -39,7 +43,7 @@ metis.runAll(run_readGCAM = F, run_charts = F, run_boundaries = F,
   xanthosCoordinatesPath = paste(getwd(),
   "/dataFiles/grids/xanthosReference/coordinates.csv", sep = ""),
   xanthosGridAreaHecsPath = paste(getwd(),
-  "/dataFiles/grids/xanthosReference/Grid_Areas D.csv", sep = ""),
+  "/dataFiles/grids/xanthosReference/Grid_Areas_ID.csv", sep = ""),
   scarcityXanthosRollMeanWindow = 10, spanLowess = 0.25,
   popFolder = paste(getwd(), "/dataFiles/grids/griddedIDsPop/", sep =
   ""), popFiles = "grid_pop_map", popUnits = "Population",
@@ -48,16 +52,18 @@ metis.runAll(run_readGCAM = F, run_charts = F, run_boundaries = F,
   gridMetisData = paste(getwd(), "/outputs/Grids/gridMetis.RData", sep =
   ""), sqliteUSE = T, sqliteDBNamePath = paste(getwd(),
   "/outputs/Grids/gridMetis.sqlite", sep = ""), grid = NULL,
+  paramsSelect_grid2poly = "All", polygonDataTablesCustom = NULL,
   sqliteUSEGrid2Poly = T, sqliteDBNamePathGrid2Poly = paste(getwd(),
   "/outputs/Grids/gridMetis.sqlite", sep = ""), run_state_grid2poly = T,
   run_GCAMbasin_grid2poly = T, run_localShape_grid2poly = T,
   xRangeMap = seq(from = 2000, to = 2050, by = 5),
   legendPosition = c("LEFT", "bottom"), legendOutsideSingle = T,
   animateOn = T, delay = 100, scenRefMap = "gfdl-esm2m_rcp2p6_NA_NA",
-  paramsSelect = c("All"), indvScenarios = "All", GCMRCPSSPPol = F,
-  localSubRegDataTables = NULL, run_map_grid = T, run_map_state = T,
-  run_map_GCAMbasin = T, run_map_localShapeLocalData = T,
-  run_map_localShapeGCAMData = T, run_map_localShapeGCAMGrid = T)
+  paramsSelect_Map = c("All"), indvScenarios = "All",
+  GCMRCPSSPPol = F, localSubRegDataTables = NULL, run_map_grid = T,
+  run_map_state = T, run_map_GCAMbasin = T,
+  run_map_localShapeLocalData = T, run_map_localShapeGCAMData = T,
+  run_map_localShapeGCAMGrid = T)
 }
 \arguments{
 \item{run_readGCAM}{Default = T,}
@@ -96,6 +102,8 @@ metis.runAll(run_readGCAM = F, run_charts = F, run_boundaries = F,
 
 \item{scenNewNames}{Default = c("GCAMOrig","GCAMRef"),}
 
+\item{paramsSelect_GCAM}{Default = c("All"),}
+
 \item{dataTablesLocal}{Default = NULL.}
 
 \item{scenRef}{Default = "GCAMRef"}
@@ -114,6 +122,8 @@ metis.runAll(run_readGCAM = F, run_charts = F, run_boundaries = F,
 
 \item{xRange}{Default = c(2010,2015,2020,2025,2030,2035,2040,2045,2050),}
 
+\item{paramsSelect_Chart}{Default = c("All"),}
+
 \item{localcountryName}{Default = NULL}
 
 \item{localShapeFileFolder}{Default = NULL}
@@ -121,6 +131,8 @@ metis.runAll(run_readGCAM = F, run_charts = F, run_boundaries = F,
 \item{localShapeFile}{Default = "NULL}
 
 \item{localShapeFileColName}{Default = NULL, # Make sure this is one of the names(tempShape@data)}
+
+\item{boundaryGridsOverlap}{Default = NULL}
 
 \item{biaInputsFolder}{Default = paste(getwd(),"/dataFiles/grids/bia/biaInputs",sepDefault =""),}
 
@@ -184,6 +196,10 @@ metis.runAll(run_readGCAM = F, run_charts = F, run_boundaries = F,
 
 \item{grid}{Default = NULL,}
 
+\item{paramsSelect_grid2poly}{Default = "All"}
+
+\item{polygonDataTablesCustom}{Default = NULL,}
+
 \item{sqliteUSEGrid2Poly}{Default = T,}
 
 \item{sqliteDBNamePathGrid2Poly}{Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep Default = ""),}
@@ -206,7 +222,7 @@ metis.runAll(run_readGCAM = F, run_charts = F, run_boundaries = F,
 
 \item{scenRefMap}{Default ="gfdl-esm2m_rcp2p6_NA_NA",}
 
-\item{paramsSelect}{Default = c("All"),}
+\item{paramsSelect_Map}{Default = c("All"),}
 
 \item{indvScenarios}{Default = "All",}
 

@@ -19,6 +19,7 @@ if("rgeos" %in% rownames(installed.packages()) == F){install.packages("rgeos")}
 library(rgeos)
 if("tools" %in% rownames(installed.packages()) == F){install.packages("tools")}
 library(tools)
+library(metis)
 
 
 #-----------------------------
@@ -27,7 +28,7 @@ library(tools)
 
 # Select countries and then choose modules to run.
 
-gcamcountryNames_i <- c("Argentina","Uruguay","Peru","Brazil")
+gcamcountryNames_i <- c("Uruguay")
 
 # USA, Africa_Eastern, Africa_Northern, Africa_Southern, Africa_Western, Australia_NZ, Brazil, Canada
 # Central America and Caribbean, Central Asia, China, EU-12, EU-15, Europe_Eastern, Europe_Non_EU,
@@ -61,11 +62,27 @@ scenRef_i <- c("GCAMRef")
 }
 
 #-----------------------------
+# Intermediate Setup (Change GCAM databases and Scenarios)
+#-----------------------------
+# For GCAM and Charts
+# c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
+# "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
+# "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
+# "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
+# "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
+
+paramsSelect_GCAM_i = c("All")
+paramsSelect_Chart_i = c("pop","gdpGrowthRate","agProdByCrop","aggLandAlloc","watConsumBySec")
+
+
+paramsSelect_Map_i = c("All")
+
+#-----------------------------
 # Local Data (Add Local Data tables and Shapefiles)
 #-----------------------------
 
 # Local Data tables for national Results
-dataTablesLocal_i = NULL
+dataTablesLocal_i = c("D:/metis/outputs/readGCAMTables/Tables_Local/local_Regional_Uruguay.csv")
 localcountryName_i = NULL
 localShapeFileFolder_i = NULL
 localShapeFile_i = NULL
@@ -90,12 +107,12 @@ localSubRegDataTables_i = paste(getwd(),"/outputs/Maps/Tables/Colorado_reference
 #-----------------------------
 if(TRUE){
 run_readGCAM_i   = T; reReadDataGCAM_i    = 0; # If a dataProj file has already been created then leave this as 0.
-run_charts_i     = T; regionCompareOnly_i = 0; scenarioCompareOnly_i = 0;
+run_charts_i     = T; regionCompareOnly_i = 0; scenarioCompareOnly_i = 1;
 run_boundaries_i = F;
-run_bia_i        = T;
-run_prepGrids_i  = T; reReadDataPrepGrids_i = 0;
-run_grid2poly_i  = T; run_state_grid2poly_i = T; run_GCAMbasin_grid2poly_i = T; run_localShape_grid2poly_i = F;
-run_maps_i       = T; run_map_state_i = T;       run_map_GCAMbasin_i = T;  run_map_grid_i = T;
+run_bia_i        = F;
+run_prepGrids_i  = F; reReadDataPrepGrids_i = 1; sqliteUSE_i = T; paramsSelect_grid2poly_i="All";
+run_grid2poly_i  = F; run_state_grid2poly_i = T; run_GCAMbasin_grid2poly_i = F; run_localShape_grid2poly_i = F;
+run_maps_i       = F; run_map_state_i = T;       run_map_GCAMbasin_i = T;  run_map_grid_i = T;
                       run_map_localShapeLocalData_i = T; run_map_localShapeGCAMData_i = T; run_map_localShapeGCAMGrid_i = T;
 run_io_i         = F}
 
@@ -112,6 +129,7 @@ x <-metis.runAll(run_readGCAM = run_readGCAM_i,
              dataProj = dataProj_i,
              scenOrigNames = scenOrigNames_i,
              scenNewNames = scenNewNames_i,
+             paramsSelect_GCAM=paramsSelect_GCAM_i,
              # CHARTS
              dataTablesLocal = dataTablesLocal_i,
              run_charts = run_charts_i,
@@ -120,8 +138,9 @@ x <-metis.runAll(run_readGCAM = run_readGCAM_i,
              scenarioCompareOnly = scenarioCompareOnly_i, # Default is "0"
              colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
              colOrderName1 = "scenario",
-             xCompare = c("2015","2030","2050","2100"),
+             xCompare = c("2010","2015","2020","2050"),
              xRange = c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
+             paramsSelect_Chart=paramsSelect_Chart_i,
              # BOUNDARIES
              run_boundaries = run_boundaries_i,
              localcountryName = localcountryName_i, # Country or Region Name
@@ -134,7 +153,7 @@ x <-metis.runAll(run_readGCAM = run_readGCAM_i,
              # PREP GRIDS
              run_prepGrids = run_prepGrids_i,
              reReadDataPrepGrids=reReadDataPrepGrids_i,
-             sqliteUSE = T,
+             sqliteUSE = sqliteUSE_i,
              sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = ""),
              gridMetisData=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = ""),
              # Grid2Poly
@@ -143,8 +162,10 @@ x <-metis.runAll(run_readGCAM = run_readGCAM_i,
              run_GCAMbasin_grid2poly = run_GCAMbasin_grid2poly_i,
              run_localShape_grid2poly = run_localShape_grid2poly_i,
              # If sqliteUSE is T above it will use the SQL produced in
-             grid=NULL, # If additional grids are to be run
+             grid=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = ""), # If additional grids are to be run
+             paramsSelect_grid2poly=paramsSelect_grid2poly_i,
              # MAPS
+             paramsSelect_Map=paramsSelect_Map_i,
              run_maps = run_maps_i,
              xRangeMap= seq(from=2000,to=2050,by=5),
              legendPosition=c("LEFT","bottom"),
