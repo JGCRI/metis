@@ -364,13 +364,16 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
   if(chartType=="line"){
   p <- p +  geom_line(aes(color=get(class),group=get(class)),size=sizeLines, stat="identity",position="identity") +
-            scale_color_manual(values=paletteX)
+            scale_color_manual(values=paletteX) +
+            geom_point(aes(shape = get(class), color=get(class)),size = 4 )
   if(!grepl("class",class)){
-    p = p + guides(color = guide_legend(title=tools::toTitleCase(paste(class,sep=""))))}else{
+    p = p + guides(color = guide_legend(title=tools::toTitleCase(paste(class,sep=""))),
+                   shape = guide_legend(title=tools::toTitleCase(paste(class,sep=""))))}else{
       if(length(unique(l1[[class]]))<2){
         p = p + theme(legend.position="none") + scale_color_manual(values="firebrick")
       }else{
-    p = p + guides(color = guide_legend(title=unique(l1[[classLabel]])))
+    p = p + guides(color = guide_legend(title=unique(l1[[classLabel]])),
+                   shape = guide_legend(title=unique(l1[[classLabel]])))
     }
     }
   }

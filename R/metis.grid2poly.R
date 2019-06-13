@@ -76,6 +76,8 @@ metis.grid2poly<- function(grid=NULL,
     params<-sqlGrid%>%dplyr::distinct(param)%>%dplyr::collect();
     params=params$param
     print(paste("Unique params found : ", paste(params,collapse=", "),sep=""))
+    print(paste("Selected Parameters : ", paste(paramsSelect,collapse=", "),sep=""))
+    if(!grepl("all",paramsSelect,ignore.case = T)){params=params[params %in% paramsSelect]}
     paramScenarios<-tibble::tibble()
     for(param_i in params){
       print(paste("Finding unique scenarios in sql database for param: ",param_i,"...",sep=""))
@@ -125,6 +127,9 @@ metis.grid2poly<- function(grid=NULL,
       } else {
 
         params=unique(grid$param)
+        print(paste("Unique params found : ", paste(params,collapse=", "),sep=""))
+        print(paste("Selected Parameters : ", paste(paramsSelect,collapse=", "),sep=""))
+        if(!grepl("all",paramsSelect,ignore.case = T)){params=params[params %in% paramsSelect]}
 
       paramScenarios<-tibble::tibble()
       for(param_i in params){
@@ -193,60 +198,15 @@ metis.grid2poly<- function(grid=NULL,
   if (dir.exists(paste(dirOutputs, "/Grids/temp", sep = ""))){unlink(paste(dirOutputs, "/Grids/temp", sep = ""),recursive = T)}
 
   #----------------
-  # Read in shapefiles and check format
+  # Cropped and Process Grid to Polygons
   #---------------
 
-  if(!is.null(sqlGrid)){
-    if(!any(paramsSelect == "All")){
-      if(all(paramsSelect %in% params)){
-        sqlGrid<-sqlGrid%>%dplyr::filter(param %in% paramsSelect)
-        paramsSub<-params[params %in% paramsSelect]
-        print(paste("Filtering sqlGrid to selected paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
-      }else{
-        if(any(paramsSelect %in% unique(grid$param))){
-          grid<-grid%>%dplyr::filter(param %in% paramsSelect)
-          paramsSub<-params[params %in% paramsSelect]
-          print(paste("Only analyzing params ",paste((paramsSelect %in% unique(grid$param)),collapse=", "),
-                      " which are present in sqlGrid of all paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
-        }else{
-          print(paste("paramsSelect ",paste(paramsSelect,collapse=", "),
-                      " not present in unique(grid$param) ",
-                      unique(grid$param),". Using all params in sqlGrid.",sep=""))
-        }
-      }
-
-    }else {paramsSub<-params}
-
-  }
-
-  if(!is.null(grid)){
-
-    if(!any(paramsSelect == "All")){
-      if(all(paramsSelect %in% params)){
-        grid<-grid%>%dplyr::filter(param %in% paramsSelect)
-        paramsSub<-params[params %in% paramsSelect]
-        print(paste("Filtering grid to selected paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
-      }else{
-        if(any(paramsSelect %in% params)){
-          grid<-grid%>%dplyr::filter(param %in% paramsSelect)
-          paramsSub<-params[params %in% paramsSelect]
-          print(paste("Only analyzing params ",paste((paramsSelect %in% params),collapse=", "),
-                      " which are present in grid of all paramsSelect ",paste(paramsSelect,collapse=", "),sep=""))
-        }else{
-          print(paste("paramsSelect ",paste(paramsSelect,collapse=", "),
-                      " not present in unique(grid$param) ",
-                      params,". Using all params in grid.",sep=""))
-        }
-      }
-
-    } else {paramsSub<-params}
-
-  }# closing if !is.null(grid)
 
  gridCropped <-tibble::tibble()
 
 
   if(!is.null(sqlGrid) | !is.null(grid)){
+
 
     for(row_i in 1:nrow(paramScenarios)){
 
@@ -258,13 +218,19 @@ metis.grid2poly<- function(grid=NULL,
         gridx<-sqlGrid%>%dplyr::filter(param==param_i, scenario==scenario_i)%>%dplyr::collect()
         print(paste("Data read.",sep=""))
       }else{
+        if(!is.null(grid)){
         gridx<-grid%>%dplyr::filter(param==param_i,scenario==scenario_i)
+        } else {"No grid or sqldata available."}
       }
 
       if(nrow(gridx)>0){
 
         # Remove column for region from gridx if exists
-        if("region" %in% names(gridx)){gridx <- gridx %>% dplyr::select(-region)}
+
+        if("region" %in% names(gridx)){
+          if(boundaryRegionsSelect %in% unique(gridx$region)){gridx <- gridx %>% dplyr::filter(region==boundaryRegionsSelect)}
+             gridx <- gridx %>% dplyr::select(-region)
+          }
 
 
         print(paste("Starting aggregation for param: ",param_i," and scenario: ",scenario_i,"...",sep=""))
@@ -279,16 +245,28 @@ metis.grid2poly<- function(grid=NULL,
 
         namesGrid<-names(gridx)
 
+
         # Temporary column names merge in order to aggregate params scenarios across sub-regions
         print("setting grid columns ...")
         for(colx in names(gridx)){
           if(is.character(gridx[[colx]])){
-            gridx[[colx]]<-gsub(" ","XSPACEX",gridx[[colx]],perl = TRUE )
-            gridx[[colx]]<-gsub("\\.","XPERIODX",gridx[[colx]],perl = TRUE )
-            gridx[[colx]]<-gsub("\\-","XDASHX",gridx[[colx]],perl = TRUE )
-            gridx[[colx]]<-gsub("\\(","XLPARENTHX",gridx[[colx]],perl = TRUE)
-            gridx[[colx]]<-gsub("\\)","XRLPARENTHX",gridx[[colx]],perl = TRUE)
-            gridx[[colx]]<-gsub("\\_","XUNDERX",gridx[[colx]],perl = TRUE)
+
+            # gridx[[colx]]<-gsub(" ","XSPACEX",gridx[[colx]],perl = TRUE )
+            # gridx[[colx]]<-gsub("\\.","XPERIODX",gridx[[colx]],perl = TRUE )
+            # gridx[[colx]]<-gsub("\\-","XDASHX",gridx[[colx]],perl = TRUE )
+            # gridx[[colx]]<-gsub("\\(","XLPARENTHX",gridx[[colx]],perl = TRUE)
+            # gridx[[colx]]<-gsub("\\)","XRLPARENTHX",gridx[[colx]],perl = TRUE)
+            # gridx[[colx]]<-gsub("\\_","XUNDERX",gridx[[colx]],perl = TRUE)
+
+
+            gridx <- gridx %>% dplyr::mutate(
+              !!colx := gsub(" ","XSPACEX",!!as.name(colx),perl = TRUE ),
+              !!colx:= gsub("\\.","XPERIODX",!!as.name(colx),perl = TRUE ),
+              !!colx:= gsub("\\-","XDASHX",!!as.name(colx),perl = TRUE ),
+              !!colx:= gsub("\\(","XLPARENTHX",!!as.name(colx),perl = TRUE ),
+              !!colx:= gsub("\\)","XRLPARENTHX",!!as.name(colx),perl = TRUE ),
+              !!colx:= gsub("\\_","XUNDERX",!!as.name(colx),perl = TRUE ))
+
           }
         }
         print("Grid Columns set.")
@@ -347,12 +325,23 @@ metis.grid2poly<- function(grid=NULL,
 
             for(colx in names(gridCroppedX)){
               if(is.character(gridCroppedX[[colx]])){
-                gridCroppedX[[colx]]<-gsub("XSPACEX"," ",gridCroppedX[[colx]])
-                gridCroppedX[[colx]]<-gsub("XPERIODX","\\.",gridCroppedX[[colx]])
-                gridCroppedX[[colx]]<-gsub("XDASHX","\\-",gridCroppedX[[colx]])
-                gridCroppedX[[colx]]<-gsub("XLPARENTHX","\\(",gridCroppedX[[colx]])
-                gridCroppedX[[colx]]<-gsub("XRLPARENTHX","\\)",gridCroppedX[[colx]])
-                gridCroppedX[[colx]]<-gsub("XUNDERX","\\_",gridCroppedX[[colx]])
+
+                # gridCroppedX[[colx]]<-gsub("XSPACEX"," ",gridCroppedX[[colx]])
+                # gridCroppedX[[colx]]<-gsub("XPERIODX","\\.",gridCroppedX[[colx]])
+                # gridCroppedX[[colx]]<-gsub("XDASHX","\\-",gridCroppedX[[colx]])
+                # gridCroppedX[[colx]]<-gsub("XLPARENTHX","\\(",gridCroppedX[[colx]])
+                # gridCroppedX[[colx]]<-gsub("XRLPARENTHX","\\)",gridCroppedX[[colx]])
+                # gridCroppedX[[colx]]<-gsub("XUNDERX","\\_",gridCroppedX[[colx]])
+
+                gridCroppedX <- gridCroppedX %>% dplyr::mutate(
+                  !!colx := gsub("XSPACEX","",!!as.name(colx),perl = TRUE ),
+                  !!colx:= gsub("XPERIODX","\\.",!!as.name(colx),perl = TRUE ),
+                  !!colx:= gsub("XDASHX","\\-",!!as.name(colx),perl = TRUE ),
+                  !!colx:= gsub("XLPARENTHX","\\(",!!as.name(colx),perl = TRUE ),
+                  !!colx:= gsub("XRLPARENTHX","\\)",!!as.name(colx),perl = TRUE ),
+                  !!colx:= gsub("XUNDERX","\\_",!!as.name(colx),perl = TRUE ))
+
+
               }
             }
 
@@ -432,12 +421,22 @@ metis.grid2poly<- function(grid=NULL,
 
           for(colx in names(polyData)){
             if(is.character(polyData[[colx]])){
-              polyData[[colx]]<-gsub("XSPACEX"," ",polyData[[colx]])
-              polyData[[colx]]<-gsub("XPERIODX","\\.",polyData[[colx]])
-              polyData[[colx]]<-gsub("XDASHX","\\-",polyData[[colx]])
-              polyData[[colx]]<-gsub("XLPARENTHX","\\(",polyData[[colx]])
-              polyData[[colx]]<-gsub("XRLPARENTHX","\\)",polyData[[colx]])
-              polyData[[colx]]<-gsub("XUNDERX","\\_",polyData[[colx]])
+
+              # polyData[[colx]]<-gsub("XSPACEX"," ",polyData[[colx]])
+              # polyData[[colx]]<-gsub("XPERIODX","\\.",polyData[[colx]])
+              # polyData[[colx]]<-gsub("XDASHX","\\-",polyData[[colx]])
+              # polyData[[colx]]<-gsub("XLPARENTHX","\\(",polyData[[colx]])
+              # polyData[[colx]]<-gsub("XRLPARENTHX","\\)",polyData[[colx]])
+              # polyData[[colx]]<-gsub("XUNDERX","\\_",polyData[[colx]])
+
+              polyData <- polyData %>% dplyr::mutate(
+                !!colx := gsub("XSPACEX","",!!as.name(colx),perl = TRUE ),
+                !!colx:= gsub("XPERIODX","\\.",!!as.name(colx),perl = TRUE ),
+                !!colx:= gsub("XDASHX","\\-",!!as.name(colx),perl = TRUE ),
+                !!colx:= gsub("XLPARENTHX","\\(",!!as.name(colx),perl = TRUE ),
+                !!colx:= gsub("XRLPARENTHX","\\)",!!as.name(colx),perl = TRUE ),
+                !!colx:= gsub("XUNDERX","\\_",!!as.name(colx),perl = TRUE ))
+
             }
           }
 
@@ -460,9 +459,17 @@ metis.grid2poly<- function(grid=NULL,
          }
         } # Close loop for aggType
       } else {print(paste("No data for param: ",param_i," and scenario: ",scenario_i,".",sep=""))}# Close loop for nrow>0
-    } # Close loop for param_i and scenario_i
+
+
+      NULL -> gridx -> spdf -> r -> rcrop -> rcropP -> rcropPx -> w -> gridCroppedX->
+        x1  -> polyData -> polyx -> dfx
+      rm(gridx,spdf,r,rcrop,rcropP,rcropPx,w,gridCroppedX, x1, polyData, polyx, dfx); gc()
+
+      } # Close loop for param_i and scenario_i
 
     print(paste("Aggregation for all scenarios and params complete."))
+
+
 
   }else{print("No grid provided.")}
 
@@ -522,9 +529,12 @@ metis.grid2poly<- function(grid=NULL,
     print(paste("Subregional grid data files written to: ",grid_fnameComp, sep = ""))
 
     # Delete temporary grid folder
-   if (dir.exists(paste(dirOutputs, "/Grids/temp", sep = ""))){unlink(paste(dirOutputs, "/Grids/temp", sep = ""),recursive = T)}
+   if(dir.exists(paste(dirOutputs, "/Grids/temp", sep = ""))){unlink(paste(dirOutputs, "/Grids/temp", sep = ""),recursive = T)}
 
   }
+
+ if(sqliteUSE==T){on.exit(DBI::dbDisconnect(dbConn), add=T)}
+ gc()
 
   return(poly)
 
