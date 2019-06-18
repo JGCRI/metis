@@ -283,7 +283,7 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
       ggalluvial::geom_alluvium(aes(fill = get(class)), width = 1/12, color="grey10", alpha=0.7, na.rm=F) +
       ggalluvial::geom_stratum(width = 1/12, fill = "grey70", color = "grey10", alpha=1, na.rm=F) +
       scale_x_discrete(limits = c(sankeyAxis1Label, sankeyAxis2Label), expand = c(1,0.1),drop=F) +
-      ggrepel::geom_text_repel(stat = "stratum", label.strata = TRUE, direction="y", size=4,segment.color = 'grey50') +
+      ggrepel::geom_text_repel(force=100,stat = "stratum", label.strata = TRUE, direction="y", size=4,segment.color = 'grey50') +
       scale_fill_manual(values=paletteX, name="From",na.translate=F, drop=F) +
       coord_cartesian(clip = "off")+
       theme(aspect.ratio = 0.5) +
@@ -433,8 +433,8 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
           if(any(grepl("hjust",names(gg_guts$data[[3]])))){
           gg_guts$data[[3]] <-
             gg_guts$data[[3]] %>%
-            dplyr::mutate(hjust = dplyr::case_when(x == min(gg_guts$data[[3]]$x) ~ 40,
-                                     x == max(gg_guts$data[[3]]$x) ~ -40,
+            dplyr::mutate(hjust = dplyr::case_when(x == min(gg_guts$data[[3]]$x) ~ 10,
+                                     x == max(gg_guts$data[[3]]$x) ~ -10,
                                      TRUE ~ 0)); gg_guts$data[[3]]
           # once you've made your adjustments, you can plot it again
           if(pdfpng=='pdf'){grDevices::pdf(paste(dirOutputs,"/",fname,".pdf",sep=""),width=figWidth,height=figHeight)
