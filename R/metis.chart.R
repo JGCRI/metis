@@ -425,17 +425,29 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
 
 
         if(chartType=="sankey"){
+
           if(sankeyLabelsOn==1){
           # This is the plot under the hood. Find the element with ggrepel
           gg_guts <- ggplot_build(p); gg_guts$data
           # The geom_text_repel layer is the 3rd one
           # Adjust the hjust param for the plot by axis
           if(any(grepl("hjust",names(gg_guts$data[[3]])))){
+
+          # labelsFrom <- (gg_guts$data[[3]] %>% dplyr::filter(x==min(gg_guts$data[[3]]$x)))$label; labelsFrom
+          # labelsFrom <- gsub("\\s", " ", format(labelsFrom, width=max(nchar(labelsFrom)), justify="right")); labelsFrom; nchar(labelsFrom)
+          # labelsTo <- (gg_guts$data[[3]] %>% dplyr::filter(x==max(gg_guts$data[[3]]$x)))$label; labelsTo
+          # labelsTo <- gsub("\\s", " ", format(labelsTo, width=1*max(nchar(labelsTo)), justify="left")); labelsTo; nchar(labelsTo)
+          # labelsNew <- c(labelsFrom,labelsTo); labelsNew; nchar(labelsNew)
+          # gg_guts$data[[3]]$label <- labelsNew
+
+          gg_guts$data[[3]]$label <- gsub("\\s", " ", format(gg_guts$data[[3]]$label, width=max(nchar(gg_guts$data[[3]]$label)), justify="left"));
+
           gg_guts$data[[3]] <-
             gg_guts$data[[3]] %>%
-            dplyr::mutate(hjust = dplyr::case_when(x == min(gg_guts$data[[3]]$x) ~ 10,
-                                     x == max(gg_guts$data[[3]]$x) ~ -10,
-                                     TRUE ~ 0)); gg_guts$data[[3]]
+            dplyr::mutate(hjust = dplyr::case_when(x == min(gg_guts$data[[3]]$x) ~ 1.3,
+                                     x == max(gg_guts$data[[3]]$x) ~ -0.3,
+                                     TRUE ~ 0)); gg_guts$data[[3]]; nchar(gg_guts$data[[3]]$label)
+
           # once you've made your adjustments, you can plot it again
           if(pdfpng=='pdf'){grDevices::pdf(paste(dirOutputs,"/",fname,".pdf",sep=""),width=figWidth,height=figHeight)
             grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
