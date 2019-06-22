@@ -189,7 +189,7 @@ Save and unzip the file in ./metis/datafiles/gis.
 
 [Back to Contents](#Contents)
 
-This section walks through the different features of the metis package using the example data provided in order to familiarize the user with the different functions. All metis R functions are stored in ./metis/R. In Metis version 1.0.0 the following functions are available:
+This section walks through the different features of the metis package using the example data provided in order to familiarize the user with the different functions. All metis R functions are stored in ./metis/R. The key functions available are:
 
 - metis.assumptions.R: Contains all conversions and assumptions used in the model
 - metis.chart.R: metis charting function which allows quick and easy access to features like facets, labels and colors. The function is based on ggplot and returns a ggplot chart.
@@ -201,7 +201,20 @@ This section walks through the different features of the metis package using the
 - metis.prepGrid.R: This function is designed to be used with specific open-source downscaling models Xanthos, Demeter and Tethys which downscale GCAM data to the grid level. The function takes outputs from these various models and processes them into the metis format which is then used as an input to the metis.mapsProcess.R function.
 - metis.R: Function to define package documentation.
 - metis.readgcam.R: This functions is designed to interact specifically with GCAM outputs. The function processes GCAM outputs into .csv files by GCAM region which can then be used as inputs to metis.chartsProcess.R
-- metis.templates.R: Templates which define the overall look and feel of metis charts. The templates file also contains the metis figure printing function allowin a choice between pdf and png files. 
+- metis.io.R: This function is designed to take in multi-sector flows and create an input/output matrix with inter-sectoral intensities. The function also allows users to visualize these inter-sectoral links via sankey diagrams. 
+
+| Function  | Description |
+| ------------- | ------------- |
+| metis.assumptions.R  | Contains all conversions and assumptions used in the model  |
+| metis.colors.R  | Collection of metis color palettes. A list of palettes can be viewed in the function help file (?metis.colors). To view a particular palette metis.colors("pal_hot")  |
+| metis.chart.R  | metis charting function which allows quick and easy access to features like facets, labels and colors. The function is based on ggplot and returns a ggplot chart.  |
+| metis.chart.R  | Content Cell  |
+| metis.chart.R  | Content Cell  |
+| metis.chart.R  | Content Cell  |
+| metis.chart.R  | Content Cell  |
+| metis.chart.R  | Content Cell  |
+
+
 
 <details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
