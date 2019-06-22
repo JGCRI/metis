@@ -103,10 +103,12 @@ Metis is designed to be accesible to a range of stakeholders with varying expert
 (functions: metis.grid2poly.R)
 - Data preparation: Functions to prepare data from other modules into the appropriate format.
 (functions: metis.readgcam.R, metis.prepGrid.R)
+- Input/Output (IO) Analysis: Functions to build IO inter-sectoral tables and sankey diagrams.
+(functions: metis.io.R)
 
 <p align="left"> <b> Under Development </b> </p>
 
-- Input-Output Analysis: Input output tables to capture cross-sectoral and cross-regional feedbacks and links. (functions: metis.io.R, metis.irio.R)
+- Flows: Module to route water through upstream and downstream sub-regions.
 - Infrastructure: Optimization module to find infrastructure development options to address supply-demand gaps. (functions: metis.infra.R)
 
 <p align="center"> <img src="READMEfigs/metis_workflow1.png"></p>
