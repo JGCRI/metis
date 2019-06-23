@@ -191,29 +191,18 @@ Save and unzip the file in ./metis/datafiles/gis.
 
 This section walks through the different features of the metis package using the example data provided in order to familiarize the user with the different functions. All metis R functions are stored in ./metis/R. The key functions available are:
 
-- metis.assumptions.R: Contains all conversions and assumptions used in the model
-- metis.chart.R: metis charting function which allows quick and easy access to features like facets, labels and colors. The function is based on ggplot and returns a ggplot chart.
-- metis.chartsProcess.R: metis charting function used to compare scenarios and regions. The function also creates diff plots with percentage and absolute differences from a given reference scenario.
-- metis.colors.R: Collection of metis color palettes. A list of palettes can be viewed in the function help file (?metis.colors). To view a particular palette metis.colors("pal_hot")
-- metis.grid2poly.R: Function used to crop and aggregate gridded data by a given polygon shape file. If no grid is provided the function can still be used to produce regional and subregional maps.
-- metis.map.R: metis mapping function to plot raster and polygon data. The function uses the tmap package and returns a tmap object. Several maps can be combined by overlaying and underlaying using this function. Options allow for different colors palettes, labels, text-size as well as legend breaks which are freescale, kmeans or equally divided to highlight different kinds of data.
-- metis.mapsProcess.R: metis mapping function used to compare across scenarios. The function produces diff maps with percentage and absolute differences from a given reference scenario.
-- metis.prepGrid.R: This function is designed to be used with specific open-source downscaling models Xanthos, Demeter and Tethys which downscale GCAM data to the grid level. The function takes outputs from these various models and processes them into the metis format which is then used as an input to the metis.mapsProcess.R function.
-- metis.R: Function to define package documentation.
-- metis.readgcam.R: This functions is designed to interact specifically with GCAM outputs. The function processes GCAM outputs into .csv files by GCAM region which can then be used as inputs to metis.chartsProcess.R
-- metis.io.R: This function is designed to take in multi-sector flows and create an input/output matrix with inter-sectoral intensities. The function also allows users to visualize these inter-sectoral links via sankey diagrams. 
-
 | Function  | Description |
 | ------------- | ------------- |
 | metis.assumptions.R  | Contains all conversions and assumptions used in the model  |
 | metis.colors.R  | Collection of metis color palettes. A list of palettes can be viewed in the function help file (?metis.colors). To view a particular palette metis.colors("pal_hot")  |
 | metis.chart.R  | metis charting function which allows quick and easy access to features like facets, labels and colors. The function is based on ggplot and returns a ggplot chart.  |
-| metis.chart.R  | Content Cell  |
-| metis.chart.R  | Content Cell  |
-| metis.chart.R  | Content Cell  |
-| metis.chart.R  | Content Cell  |
-| metis.chart.R  | Content Cell  |
-
+| metis.chartsProcess.R  | metis charting function used to compare scenarios and regions. The function also creates diff plots with percentage and absolute differences from a given reference scenario.  |
+| metis.grid2poly.R  | Function used to crop and aggregate gridded data by a given polygon shape file. If no grid is provided the function can still be used to produce regional and subregional maps  |
+| metis.map.R  | metis mapping function to plot raster and polygon data. The function uses the tmap package and returns a tmap object. Several maps can be combined by overlaying and underlaying using this function. Options allow for different colors palettes, labels, text-size as well as legend breaks which are freescale, kmeans or equally divided to highlight different kinds of data.  |
+| metis.mapsProcess.R  | metis mapping function used to compare across scenarios. The function produces diff maps with percentage and absolute differences from a given reference scenario.  |
+| metis.prepGrid.R  | This function is designed to be used with specific open-source downscaling models Xanthos, Demeter and Tethys which downscale GCAM data to the grid level. The function takes outputs from these various models and processes them into the metis format which is then used as an input to the metis.mapsProcess.R function.  |
+| metis.readgcam.R  | This functions is designed to interact specifically with GCAM outputs. The function processes GCAM outputs into .csv files by GCAM region which can then be used as inputs to metis.chartsProcess.R |
+| metis.io.R  | This functions is designed to interact specifically with GCAM outputs. The function processes GCAM outputs into .csv files by GCAM region which can then be used as inputs to metis.chartsProcess.R |
 
 
 <details><summary>Click here to expand for further details, code and example figures.</summary>
@@ -260,39 +249,40 @@ The model comes with an example gcamdatabase ".proj" file called "Example_dataPr
 
 ```r
 #----------------------------
-# Read GCAM Data
+# Read GCAM Data (metis.readgcam.R
 #---------------------------
 
-gcamdatabasePath <-paste(getwd(),"/dataFiles/gcam",sep="")
-gcamdatabaseName <-"example_database_basexdb"
-gcamdataProjFile <-"Example_dataProj.proj"
-regionsSelect <- c("Colombia","Argentina")
+# Connect to gcam database or project
+  # gcamdatabasePath_i <-paste(getwd(),"/dataFiles/gcam",sep="") # Use if gcamdatabase is needed
+  # gcamdatabaseName_i <-"example_database_basexdb" # Use if gcamdatabse is needed
+  dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="") # Path to dataProj file.
+  dataProj_i <-"Example_dataProj.proj"  # Use if gcamdata has been saved as .proj file
+
+# Get list of scenarios and rename if desired.
+  # rgcam::localDBConn(gcamdatabasePath,gcamdatabaseName) # if connecting directly to gcam database
+  dataProjLoaded <- loadProject(paste(dataProjPath_i, "/",dataProj_i , sep = ""))
+  listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
+  scenOrigNames_i = c("exampleScen1","ExampleScen2")
+  scenNewNames_i = c("Eg1","Eg2")  # These are the names that will be used in figures
+
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-paramsSelect=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
-               "watConsumBySec", "watWithdrawBySec","gdp", "gdpGrowthRate", "pop",
-               "agProdByCrop", "aggLandAlloc","co2emissionByEndUse")
+  paramsSelect_i = "All"
 
-# Use function localDBConn from package rgcam to get a list of scenarios if needed.
-# localDBConn(gcamdatabasePath,gcamdatabaseName)
-# dataProjLoaded <- loadProject(paste(gcamdatabasePath, "/", dataProj, sep = ""))
-#  listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
-# queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
+# Select regions from the 32 GCAM regions.
+  regionsSelect_i <- c("Colombia","Argentina")
 
-
-dataGCAM<-metis.readgcam(reReadData=F, # Default Value is T
-                       dataProj=gcamdataProjFile, # Default Value is "dataProj.proj"
-                       scenOrigNames=c("ExampleScen1","ExampleScen2"),
-                       scenNewNames=c("Eg1","Eg2"),
-                       gcamdatabasePath=gcamdatabasePath,
-                       gcamdatabaseName=gcamdatabaseName,
-                       queryxml="metisQueries.xml",  # Default Value is "metisQueries.xml"
-                       dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
-                       regionsSelect=regionsSelect, # Default Value is NULL
-                       paramsSelect=paramsSelect, # Default value is "All"
-                       queriesSelect="All" # Default is "All"
+  dataGCAM<-metis.readgcam(reReadData = T,
+                         #gcamdatabasePath = NULL,
+                         #gcamdatabaseName = NULL,
+                         scenOrigNames = scenOrigNames_i,
+                         scenNewNames = scenNewNames_i,
+                         dataProj = dataProj_i,
+                         dataProjPath = dataProjPath_i,
+                         regionsSelect = regionsSelect_i ,
+                         paramsSelect=paramsSelect_i
                        )
 
-dataGCAM$data # To view the data read that was read.
+  dataGCAM$data # To view the data read that was read.
                        
 ```  
 
@@ -304,6 +294,103 @@ The function metis.readgcam() returns a list which contains a dataframe with the
 
 </p>
 </details>
+
+
+<!-- ------------------------>
+<!-- ------------------------>
+## <a name="metis.chart"></a> metis.chart
+<p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
+<!-- ------------------------>
+<!-- ------------------------>
+
+[Back to Contents](#Contents)
+
+<b> Key Inputs </b>  
+
+metis.chart.R is the metis charting software used in mets.chartsProcess.R. It allows users to create line, bar, bubble and sankey charts. The default settings maintain a conistent look across the metis products.
+
+
+<details><summary>Click here to expand for further details, code and example figures.</summary>
+<p>
+
+The following section shows some basic example to use metis.chart.R.
+
+```r
+
+# Simple example with progressively more features
+   tbl <- tribble (
+   ~x,     ~value,
+   2010,   15,
+   2020,   20,
+   2030,   30
+   )
+   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "line")
+   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar")
+   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", color = "blue",
+               yLabel = "New y Label", xLabel = "New Xlabel", printFig = T, fileName = "newFileName", title = "Title")
+   # See ?metis.chart for more details on further customization eg. tick marks, title size ect.
+
+# More detailed data with facets
+   # Simple example with progressively more features
+   tbl_multi <- tribble (
+     ~x,     ~value, ~region,     ~scen,   ~fuel,
+     2010,   25,     "region1",   "scenA",  "Oil",
+     2020,   30,     "region1",   "scenA",  "Oil",
+     2030,   40,     "region1",   "scenA",  "Oil",
+     2010,   25,     "region2",   "scenA",  "Oil",
+     2020,   10,     "region2",   "scenA",  "Oil",
+     2030,   60,     "region2",   "scenA",  "Oil",
+     2010,   75,     "region1",   "scenB",  "Oil",
+     2020,   30,     "region1",   "scenB",  "Oil",
+     2030,   20,     "region1",   "scenB",  "Oil",
+     2010,   25,     "region2",   "scenB",  "Oil",
+     2020,   10,     "region2",   "scenB",  "Oil",
+     2030,   90,     "region2",   "scenB",  "Oil",
+     2010,   55,     "region1",   "scenA",  "Gas",
+     2020,   40,     "region1",   "scenA",  "Gas",
+     2030,   30,     "region1",   "scenA",  "Gas",
+     2010,   35,     "region2",   "scenA",  "Gas",
+     2020,   30,     "region2",   "scenA",  "Gas",
+     2030,   32,     "region2",   "scenA",  "Gas",
+     2010,   16,     "region1",   "scenB",  "Gas",
+     2020,   28,     "region1",   "scenB",  "Gas",
+     2030,   39,     "region1",   "scenB",  "Gas",
+     2010,   12,     "region2",   "scenB",  "Gas",
+     2020,   26,     "region2",   "scenB",  "Gas",
+     2030,   37,     "region2",   "scenB",  "Gas"
+   )
+
+   my_pal <- RColorBrewer::brewer.pal(9, "Set1")
+
+   metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel",
+               chartType = "line",  classPalette=my_pal,
+               facet_rows="region",facet_columns="scen")
+
+   my_pal <- metis.colors()$pal_Basic
+
+   metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel", position="stack",
+               group="fuel",chartType = "bar", classPalette=my_pal,
+               facet_rows="region",facet_columns="scen")
+
+   metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel", position="dodge",
+               group="fuel",chartType = "bar", classPalette=my_pal,
+               facet_rows="region",facet_columns="scen")
+
+
+# Sankey Diagram Example
+
+   # Data Frame with 2 regions, 3 supply sectors and 3 demand sectors
+   df <- data.frame(region = c("A","A","A","B","B","B"),
+                    supplySector = c("coal","gas","wind","coal","gas","wind"),
+                    demandSector = c("resid","indus","ag","resid","indus","ag"),
+                    value = 10*runif(6)); df
+
+   metis.chart(data=df, chartType="sankey", yData="value", sankeyGroupColor="supplySector",
+               classLabel="From", class = "supplySector", classPalette = metis.colors()$pal_Basic,
+               sankeyAxis1="supplySector",sankeyAxis2="demandSector",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+               facet_columns="region")
+```
+
 
 <!-- ------------------------>
 <!-- ------------------------>
