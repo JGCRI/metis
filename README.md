@@ -391,6 +391,9 @@ The following section shows some basic example to use metis.chart.R.
                facet_columns="region")
 ```
 
+</p>
+</details>
+
 
 <!-- ------------------------>
 <!-- ------------------------>
