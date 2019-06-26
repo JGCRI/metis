@@ -47,7 +47,6 @@ date: January 2019
     + [metis.map.R](#metis.map.R)
     + [metis.boundaries.R](#metis.boundaries.R)
     + [metis.grid2poly.R](#metis.grid2poly.R)
-    + [metis.gridByPoly.R](#metis.gridByPoly.R)
     + [metis.mapsProcess.R](#metis.mapsProcess.R)
     + [metis.io.R](#metis.io.R)
 - [Under development](#underDevelopment) 

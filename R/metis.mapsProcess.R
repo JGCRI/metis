@@ -74,8 +74,10 @@
 #'   #------------------------------
 #'
 #'   # Simple Example. See example csv tables provided for ideal column names needed.
-#'   exampleGridTable_i<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
-#'   examplePolygonTable_i<-paste(getwd(),"/dataFiles/examples/example_poly_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+#'   exampleGridTable_i<-paste(getwd(),
+#'   "/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+#'   examplePolygonTable_i<-paste(getwd(),
+#'   "/dataFiles/examples/example_poly_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
 #'   gridTable=read.csv(exampleGridTable_i);head(gridTable)
 #'   polyTable=read.csv(examplePolygonTable_i);head(polyTable)
 #'
@@ -107,10 +109,12 @@
 #'
 #'   boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
 #'   boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
-#'   boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
+#'   boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,
+#'                       layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
 #'   head(boundaryRegShp_i@data)
 #'   boundaryRegCol_i = "NAME"
-#'   metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
+#'   metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,
+#'             labels=F ,printFig=F,facetsON=F)
 #'   # Pick country names from the list of countries in the natural earth shapefile.
 #'   unique(boundaryRegShp_i@data[[boundaryRegCol_i]])
 #'   boundaryRegionsSelect_i = c("Argentina") # Must be a region in the boundaryRegShp
@@ -156,23 +160,26 @@
 #'   boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
 #'   head(boundaryRegShp_i@data)
 #'   boundaryRegCol_i = "region"
-#'   metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
+#'   metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,
+#'             printFig=F,facetsON=F)
 #'
 #'   # Choose GCAM region
 #'   # Full list: USA, Africa_Eastern, Africa_Northern, Africa_Southern, Africa_Western,
 #'   # Australia_NZ, Brazil, Canada Central America and Caribbean, Central Asia, China, EU-12,
 #'   # EU-15, Europe_Eastern, Europe_Non_EU, European Free Trade Association, India, Indonesia, Japan,
-#'   # Mexico, Middle East, Pakistan, Russia, South Africa, South America_Northern, South America_Southern,
-#'   # South Asia, South Korea, Southeast Asia,
+#'   # Mexico, Middle East, Pakistan, Russia, South Africa, South America_Northern,
+#'   # South America_Southern, South Asia, South Korea, Southeast Asia,
 #'
 #'   # A similar analysis can be done using the country shapefile for any country.
 #'    # Uncomment the following lines of code and choose and appropriate region to crop to.
 #'   # boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
 #'   # boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
-#'   # boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
+#'   # boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,
+#'                        use_iconv=T,encoding='UTF-8')
 #'   # head(boundaryRegShp_i@data)
 #'   # boundaryRegCol_i = "NAME"
-#'   # metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
+#'   # metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,
+#'   # printFig=F,facetsON=F)
 #'   # Pick country names from the list of countries in the natural earth shapefile.
 #'   # unique(boundaryRegShp_i@data[[boundaryRegCol_i]])
 #'
@@ -211,7 +218,7 @@
 #'   # when the boundary and subregion shape don't line up.
 #'   # The extra regions can be removed as follows.
 #'   # Choose regions from the list of regions printed above.
-#'   # Can also subset to the regions available in the polygon data table below.(unique(polyTable$subRegion)
+#'   # Can also subset to the regions available in the polygon data table below.
 #'   regions_to_remove =c("Amu_Darya")
 #'   subRegShp_i_Crop<-subRegShp_i_Crop[(!subRegShp_i_Crop[[subRegCol_i]] %in% regions_to_remove) &
 #'                                       !is.na(subRegShp_i_Crop[[subRegCol_i]]),]
@@ -221,7 +228,8 @@
 #'
 #'
 #'   # Read in the datatable with values by subRegion
-#'    examplePolygonTable_i<-paste(getwd(),"/dataFiles/examples/example_GCAMBasins_analysis.csv",sep="")
+#'   examplePolygonTable_i<-paste(getwd(),
+#'   "/dataFiles/examples/example_GCAMBasins_analysis.csv",sep="")
 #'   polyTable=read.csv(examplePolygonTable_i);head(polyTable)
 #'   unique(polyTable$x); # check available number of years.
 #'

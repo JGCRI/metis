@@ -20,7 +20,8 @@
 #' @export
 #' @examples
 #'    # Example Grid File (csv with lats and lons that overlap the shapefile)
-#'        gridExample<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+#'        gridExample<-paste(getwd(),
+#'        "/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
 #'
 #'        # Polygons. An example Shapefile is Provided with metis in ./metis/dataFiles/examples.
 #'        examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
