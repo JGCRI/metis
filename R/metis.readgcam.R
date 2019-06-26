@@ -19,7 +19,12 @@
 #' @param dataProj Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.
 #' @param dataProjPath Folder that contains the dataProj or where it will be produced.
 #' By default it is the same folder as specified by gcamdatabasePath
-#' @param regionsSelect The regions to analyze in a vector. Example c('Colombia','Argentina')
+#' @param regionsSelect The regions to analyze in a vector. Example c('Colombia','Argentina'). Full list:
+#' c(USA, Africa_Eastern, Africa_Northern, Africa_Southern, Africa_Western, Australia_NZ, Brazil, Canada
+#' Central America and Caribbean, Central Asia, China, EU-12, EU-15, Europe_Eastern, Europe_Non_EU,
+#' European Free Trade Association, India, Indonesia, Japan, Mexico, Middle East, Pakistan, Russia,
+#' South Africa, South America_Northern, South America_Southern, South Asia, South Korea, Southeast Asia,
+# Taiwan, Argentina, Colombia, Uruguay)
 #' @param queriesSelect Default = "All". Vector of queries to read from the queryxml for example
 #' c("Total final energy by aggregate end-use sector", "Population by region"). The queries must be
 #' availble in the queryxml file. Current list of queries and generated paramaters are:
@@ -60,16 +65,47 @@
 #' tibble with gcam data formatted for metis charts.
 #' @keywords gcam, gcam database, query
 #' @export
+#' @examples
+#' # Connect to gcam database or project
+#'   # gcamdatabasePath_i <-paste(getwd(),"/dataFiles/gcam",sep="") # Use if gcamdatabase is needed
+#'   # gcamdatabaseName_i <-"example_database_basexdb" # Use if gcamdatabse is needed
+#'   dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="") # Path to dataProj file.
+#'   dataProj_i <-"Example_dataProj.proj"  # Use if gcamdata has been saved as .proj file
+#'
+#' # Get list of scenarios and rename if desired.
+#'   # rgcam::localDBConn(gcamdatabasePath,gcamdatabaseName) # if connecting directly to gcam database
+#'   dataProjLoaded <- loadProject(paste(dataProjPath_i, "/",dataProj_i , sep = ""))
+#'   listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
+#'   scenOrigNames_i = c("exampleScen1","ExampleScen2")
+#'   scenNewNames_i = c("Eg1","Eg2")  # These are the names that will be used in figures
+#'
+#' # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
+#'   paramsSelect_i = "All"
+#'
+#' # Select regions from the 32 GCAM regions.
+#'   regionsSelect_i <- c("Colombia","Argentina")
+#'
+#'   dataGCAM<-metis.readgcam(reReadData = T,
+#'                          #gcamdatabasePath = NULL,
+#'                          #gcamdatabaseName = NULL,
+#'                          scenOrigNames = scenOrigNames_i,
+#'                          scenNewNames = scenNewNames_i,
+#'                          dataProj = dataProj_i,
+#'                          dataProjPath = dataProjPath_i,
+#'                          regionsSelect = regionsSelect_i ,
+#'                          paramsSelect=paramsSelect_i)
+#'
+#'   dataGCAM$data # To view the data read that was read.
 
 metis.readgcam <- function(gcamdatabasePath = NULL,
                            gcamdatabaseName = NULL,
                            queryxml = "metisQueries.xml",
-                           queryPath = gcamdatabasePath,
+                           queryPath = paste(getwd(),"/dataFiles/gcam",sep=""),
                            scenOrigNames = NULL,
                            scenNewNames = NULL,
                            reReadData = T,
                            dataProj = "dataProj.proj",
-                           dataProjPath = gcamdatabasePath,
+                           dataProjPath = NULL,
                            dirOutputs = paste(getwd(), "/outputs", sep = ""),
                            regionsSelect = NULL,
                            queriesSelect="All",
@@ -134,6 +170,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     if(!file.exists(paste(queryPath, "/", queryxml, sep = ""))){stop(paste("query file: ", queryPath,"/",queryxml," is incorrect or doesn't exist.",sep=""))}
 
     # Check for gcamdatbasePath and gcamdatabasename
+    if(is.null(gcamdatabasePath) | is.null(gcamdatabaseName)){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
     if(!file.exists(paste(gcamdatabasePath, "/", gcamdatabaseName, sep = ""))){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
 
     if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){
@@ -1676,6 +1713,13 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     dir.create(paste(getwd(),"/dataFiles", sep = ""))}  # dataFiles directory (should already exist)
   if (!dir.exists(paste(getwd(),"/dataFiles/mapping", sep = ""))){
     dir.create(paste(getwd(),"/dataFiles/mapping", sep = ""))}  # mapping directory
+
+  if (file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
+    fullTemplateMapExisting <- data.table::fread(file=paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))
+    fullTemplateMap <- fullTemplateMap %>% dplyr::bind_rows(fullTemplateMapExisting) %>% unique()
+  }
+
+
   utils::write.csv(fullTemplateMap, file = paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""),
                    row.names = F)
 
@@ -1722,7 +1766,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       #utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
       #                 file = paste(dirOutputs, "/Tables/Tables_Local/local_Regional_",region_i,".csv", sep = ""),row.names = F)
 
-      print(paste("Table saved.", sep = ""))
+      print(paste("Table saved to: ",dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_aggClass.csv", sep = ""))
     }
   }
 
