@@ -40,7 +40,8 @@
 #' @export
 #' @examples
 #'      # Load Relevant Libraries
-#'      if("rgdal" %in% rownames(installed.packages()) == FALSE){install.packages("rgdal")}; library(rgdal)
+#'      if("rgdal" %in% rownames(installed.packages()) == FALSE){install.packages("rgdal")};
+#'      library(rgdal)
 #'
 #'      # Example Shape File. Provided with metis in ./metis/dataFiles/examples
 #'      examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
