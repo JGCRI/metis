@@ -180,6 +180,8 @@ metis.map<-function(dataPolygon=NULL,
   # mapTitleSize=1
   # numeric2Cat_list=NULL
   # catParam=NULL
+  # innerMargins=c(0,0,0,0)
+  # outerMargins=c(0.01,0.01,0.01,0.01)
 
 #------------------
 # Initialize variables to remove binding errors if needed
@@ -342,12 +344,15 @@ if(!is.null(raster)){
 
 
   if(is.null(legendBreaks)){legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(raster@data%>%dplyr::select(fillColumn)%>%as.matrix())}
-  map<-tmap::tm_shape(raster, bbox=shape@bbox) + tmap::tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
+
+  if(!is.null(shape)){map<-tmap::tm_shape(raster, bbox=shape@bbox)} else {map<-tmap::tm_shape(raster)}
+
+  map<- map + tmap::tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
                                   style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks,legend.show = legendShow)
 
   if(!is.null(raster)){checkFacets=length(names(raster))}
 
-  if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
+  if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn) & facetsON==T){
     map<- map + tmap::tm_facets(free.scales.fill=facetFreeScale,
                           nrow=facetRows,
                           ncol=min(facetCols,length(fillColumn))) +
@@ -360,6 +365,7 @@ if(!is.null(raster)){
 
 }
 
+if(!is.null(shape)){
 if(is.null(underLayer)){
   if(grepl("tmap",class(shape)[1],ignore.case=T)){
     if(!is.null(map)){map<-map+shape}else{map<-shape}
@@ -370,7 +376,7 @@ if(is.null(underLayer)){
       if(!is.null(map)){map<-map+underLayer+shape}else{map<-underLayer+shape}
       }else
         if(!is.null(map)){map<-underLayer+map+tmap::tm_shape(shape)}else{map<-underLayer+tmap::tm_shape(shape)}
-  }
+  }}
 
 if(!is.null(shape)){
 

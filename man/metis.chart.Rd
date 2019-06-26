@@ -141,8 +141,9 @@ tbl <- tribble (
  metis.chart(data = tbl, xData = "x", yData = "value", chartType = "line")
  metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar")
  metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", color = "blue",
-            yLabel = "New y Label", xLabel = "New Xlabel", printFig = T, fileName = "newFileName", title = "Title")
-  More detailed data with facets
+            yLabel = "New y Label", xLabel = "New X label", printFig = T,
+            fileName = "newFileName", title = "Title")
+ # More detailed data with facets
   tbl_multi <- tribble (
   ~x,     ~value, ~region,     ~scen,   ~fuel,
   2010,   25,     "region1",   "scenA",  "Oil",
@@ -193,9 +194,13 @@ tbl <- tribble (
                   demandSector = c("resid","indus","ag","resid","indus","ag"),
                   value = 10*runif(6)); df
 
+ # if("ggalluvial" \%in\% rownames(installed.packages()) == F){install.packages("ggalluvial")};
+ # library(ggalluvial)
+
  metis.chart(data=df, chartType="sankey", yData="value", sankeyGroupColor="supplySector",
              classLabel="From", class = "supplySector", classPalette = metis.colors()$pal_Basic,
-             sankeyAxis1="supplySector",sankeyAxis2="demandSector",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+             sankeyAxis1="supplySector",sankeyAxis2="demandSector",
+             sankeyAxis1Label ="From",sankeyAxis2Label="To",
              facet_columns="region")
 }
 \keyword{bubble,}

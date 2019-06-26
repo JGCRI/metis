@@ -67,10 +67,11 @@
 #'  metis.chart(data = tbl, xData = "x", yData = "value", chartType = "line")
 #'  metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar")
 #'  metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", color = "blue",
-#'             yLabel = "New y Label", xLabel = "New Xlabel", printFig = T, fileName = "newFileName", title = "Title")
-#   See ?metis.chart for more details on further customization eg. tick marks, title size ect.
+#'             yLabel = "New y Label", xLabel = "New X label", printFig = T,
+#'             fileName = "newFileName", title = "Title")
+#   # See ?metis.chart for more details on further customization eg. tick marks, title size ect.
 
-#'   More detailed data with facets
+#'  # More detailed data with facets
 #'   tbl_multi <- tribble (
 #'   ~x,     ~value, ~region,     ~scen,   ~fuel,
 #'   2010,   25,     "region1",   "scenA",  "Oil",
@@ -121,9 +122,13 @@
 #'                   demandSector = c("resid","indus","ag","resid","indus","ag"),
 #'                   value = 10*runif(6)); df
 #'
+#'  # if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggalluvial")};
+#'  # library(ggalluvial)
+#'
 #'  metis.chart(data=df, chartType="sankey", yData="value", sankeyGroupColor="supplySector",
 #'              classLabel="From", class = "supplySector", classPalette = metis.colors()$pal_Basic,
-#'              sankeyAxis1="supplySector",sankeyAxis2="demandSector",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+#'              sankeyAxis1="supplySector",sankeyAxis2="demandSector",
+#'              sankeyAxis1Label ="From",sankeyAxis2Label="To",
 #'              facet_columns="region")
 
 
@@ -218,6 +223,8 @@ metis.chart<-function(data,
 # -----------------
 
 NULL -> value -> tempName -> sankeyHjustCheck -> value1
+StatStratum <- ggalluvial::StatStratum # This is done so that ggplot2 recognizes stat stratum
+
 
 #------------------------------------------
 # Format data to include any missing columns
@@ -491,10 +498,12 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
   if(printFig!=F){
     fname<-paste(fileName,sep="")
     if(!dir.exists(dirOutputs)){
-      print(paste("dirOutputs provided: ",dirOutputs," does not exist. Saving to: ", paste(getwd(),"/outputsTemp",sep=""),sep=""))
+      print(paste("dirOutputs provided: ",dirOutputs," does not exist. Saving to: ", paste(getwd(),"/outputsTemp/Charts",sep=""),sep=""))
       if (!dir.exists(paste(getwd(),"/outputsTemp",sep="")))
       {dir.create(paste(getwd(),"/outputsTemp",sep=""))}
-      dirOutputs=paste(getwd(),"/outputsTemp",sep="")
+      if (!dir.exists(paste(getwd(),"/outputsTemp/Charts",sep="")))
+      {dir.create(paste(getwd(),"/outputsTemp/Charts",sep=""))}
+      dirOutputs=paste(getwd(),"/outputsTemp/Charts",sep="")
       }
 
 

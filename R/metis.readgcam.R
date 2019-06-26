@@ -170,6 +170,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     if(!file.exists(paste(queryPath, "/", queryxml, sep = ""))){stop(paste("query file: ", queryPath,"/",queryxml," is incorrect or doesn't exist.",sep=""))}
 
     # Check for gcamdatbasePath and gcamdatabasename
+    if(is.null(gcamdatabasePath) | is.null(gcamdatabaseName)){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
     if(!file.exists(paste(gcamdatabasePath, "/", gcamdatabaseName, sep = ""))){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
 
     if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){
@@ -1712,6 +1713,13 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     dir.create(paste(getwd(),"/dataFiles", sep = ""))}  # dataFiles directory (should already exist)
   if (!dir.exists(paste(getwd(),"/dataFiles/mapping", sep = ""))){
     dir.create(paste(getwd(),"/dataFiles/mapping", sep = ""))}  # mapping directory
+
+  if (file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
+    fullTemplateMapExisting <- data.table::fread(file=paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))
+    fullTemplateMap <- fullTemplateMap %>% dplyr::bind_rows(fullTemplateMapExisting) %>% unique()
+  }
+
+
   utils::write.csv(fullTemplateMap, file = paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""),
                    row.names = F)
 
@@ -1758,7 +1766,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       #utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
       #                 file = paste(dirOutputs, "/Tables/Tables_Local/local_Regional_",region_i,".csv", sep = ""),row.names = F)
 
-      print(paste("Table saved.", sep = ""))
+      print(paste("Table saved to: ",dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_aggClass.csv", sep = ""))
     }
   }
 

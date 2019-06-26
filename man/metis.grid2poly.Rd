@@ -4,9 +4,9 @@
 \alias{metis.grid2poly}
 \title{metis.grid2poly}
 \usage{
-metis.grid2poly(grid = NULL, boundaryRegionsSelect = NULL,
-  subRegShape = NULL, subRegShpFolder = NULL, subRegShpFile = NULL,
-  subRegCol = NULL, subRegType = "subRegType", aggType = NULL,
+metis.grid2poly(grid = NULL, subRegShape = NULL,
+  subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
+  subRegType = "subRegType", aggType = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
   labelsSize = 1.2, paramsSelect = "All", sqliteUSE = F,
   sqliteDBNamePath = paste(getwd(), "/outputs/Grids/gridMetis.sqlite",
@@ -14,8 +14,6 @@ metis.grid2poly(grid = NULL, boundaryRegionsSelect = NULL,
 }
 \arguments{
 \item{grid}{Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",}
-
-\item{boundaryRegionsSelect}{Default=NULL. Larger region name which will be used as the folder name for outputs.}
 
 \item{subRegShape}{Default=NULL. shapefile over which grid data is to be aggregated.}
 
@@ -47,6 +45,26 @@ A table with data by polygon ID for each shapefile provided
 \description{
 This function takes a .csv file with gridded lat, long data and aggregates
 the data by spatial boundaries given different shapefiles.
+}
+\examples{
+   # Example Grid File (csv with lats and lons that overlap the shapefile)
+       gridExample<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+
+       # Polygons. An example Shapefile is Provided with metis in ./metis/dataFiles/examples.
+       examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
+       examplePolyFile_i<-paste("bermejo3Cropped",sep="")
+       bermejo3Cropped=readOGR(dsn=examplePolyFolder,
+                               layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+       head(bermejo3Cropped@data) # TO choose subRegCol name
+       subRegCol_i = "SUB_NAME"
+
+       # Run metis.grid2poly
+       polyBermeo3Cropped<-metis.grid2poly(grid=gridExample,
+                                           subRegShpFolder=examplePolyFolder_i,
+                                           subRegShpFile=examplePolyFile_i,
+                                           subRegCol=subRegCol_i,
+                                           aggType="depth", # Aggregation type. See ?metis.grid2poly
+                                           nameAppend="_Bermeo3")
 }
 \keyword{database,}
 \keyword{gcam}

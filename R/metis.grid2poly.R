@@ -6,7 +6,6 @@
 #' @keywords gcam, gcam database, query
 #' @param grid  Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",
 #' @param subRegShape  Default=NULL. shapefile over which grid data is to be aggregated.
-#' @param boundaryRegionsSelect  Default=NULL. Larger region name which will be used as the folder name for outputs.
 #' @param subRegShpFolder  Default=NULL. Folder containing boundary region shapefile. Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),
 #' @param subRegShpFile  Default=NULL. Name of sub-region shapefile. Suggested paste("ne_10m_admin_1_states_provinces",sep  Default=""),
 #' @param subRegCol  Default= NULL. Suggested for states "name",
@@ -19,9 +18,27 @@
 #' @param sqliteUSE Default = T,
 #' @param sqliteDBNamePath Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 #' @export
+#' @examples
+#'    # Example Grid File (csv with lats and lons that overlap the shapefile)
+#'        gridExample<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+#'
+#'        # Polygons. An example Shapefile is Provided with metis in ./metis/dataFiles/examples.
+#'        examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
+#'        examplePolyFile_i<-paste("bermejo3Cropped",sep="")
+#'        bermejo3Cropped=readOGR(dsn=examplePolyFolder,
+#'                                layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+#'        head(bermejo3Cropped@data) # TO choose subRegCol name
+#'        subRegCol_i = "SUB_NAME"
+#'
+#'        # Run metis.grid2poly
+#'        polyBermeo3Cropped<-metis.grid2poly(grid=gridExample,
+#'                                            subRegShpFolder=examplePolyFolder_i,
+#'                                            subRegShpFile=examplePolyFile_i,
+#'                                            subRegCol=subRegCol_i,
+#'                                            aggType="depth", # Aggregation type. See ?metis.grid2poly
+#'                                            nameAppend="_Bermeo3")
 
 metis.grid2poly<- function(grid=NULL,
-                           boundaryRegionsSelect=NULL,
                            subRegShape=NULL,
                            subRegShpFolder=NULL,
                            subRegShpFile=NULL,
@@ -36,7 +53,6 @@ metis.grid2poly<- function(grid=NULL,
                            sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")) {
 
   # grid=NULL
-  # boundaryRegionsSelect=NULL
   # subRegShape=NULL
   # subRegShpFolder=NULL
   # subRegShpFile=NULL
@@ -46,6 +62,8 @@ metis.grid2poly<- function(grid=NULL,
   # dirOutputs=paste(getwd(),"/outputs",sep="")
   # nameAppend=""
   # labelsSize=1.2
+  # sqliteUSE = F
+  # sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
   #----------------
   # Initialize variables by setting to NULL
@@ -53,7 +71,18 @@ metis.grid2poly<- function(grid=NULL,
 
   NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
     param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon->overlapShape->
-    gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis
+    gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis -> template_subRegional_mapping
+
+  #------------------
+  # Function for adding any missing columns if needed
+  # -----------------
+
+  addMissing<-function(data){
+    if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
+    if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}
+
+    return(data)
+  }
 
   #----------------
   # Check input data format
@@ -121,10 +150,12 @@ metis.grid2poly<- function(grid=NULL,
         }
       }
 
-      if(any(!c("lat","lon","value","param","scenario") %in% names(grid))){
-        stop(paste(grid," should have columns lon, lat, value, param and scenario. Missing columns: ",
-                   names(grid)[!names(grid) %in% c("lat","lon","value")]))
+      if(any(!c("lat","lon","value") %in% names(grid))){
+        stop(paste("grid should have columns lon, lat, value. Current columns: ",
+                   names(grid)))
       } else {
+
+        grid <- addMissing(grid)
 
         params=unique(grid$param)
         print(paste("Unique params found : ", paste(params,collapse=", "),sep=""))
@@ -180,22 +211,16 @@ metis.grid2poly<- function(grid=NULL,
 
   poly<-tibble::tibble()
 
-  if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect="Region"}
-
-
   #----------------
   # Create Folders
   #---------------
 
   if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
-  if (!dir.exists(paste(dirOutputs, "/Maps", sep = ""))){dir.create(paste(dirOutputs, "/Maps", sep = ""))}
-  if (!dir.exists(paste(dirOutputs, "/Maps/Boundaries", sep = ""))){dir.create(paste(dirOutputs, "/Maps/Boundaries", sep = ""))}
-  if (!dir.exists(paste(dirOutputs, "/Maps/Boundaries/",boundaryRegionsSelect, sep = ""))){dir.create(paste(dirOutputs, "/Maps/Boundaries/",boundaryRegionsSelect,sep = ""))}
-  if (!dir.exists(paste(dirOutputs, "/Maps/Tables", sep = ""))){dir.create(paste(dirOutputs, "/Maps/Tables", sep = ""))}
-  dir=paste(dirOutputs, "/Maps/Boundaries/",boundaryRegionsSelect,sep = "")
+  if (!dir.exists(paste(dirOutputs, "/Grid2Poly", sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly", sep = ""))}
+  dir=paste(dirOutputs, "/Grid2Poly",sep = "")
 
   # Delete temporary grid folder
-  if (dir.exists(paste(dirOutputs, "/Grids/temp", sep = ""))){unlink(paste(dirOutputs, "/Grids/temp", sep = ""),recursive = T)}
+  if (dir.exists(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))){unlink(paste(dirOutputs, "/Grid2Poly/temp", sep = ""),recursive = T)}
 
   #----------------
   # Cropped and Process Grid to Polygons
@@ -225,14 +250,6 @@ metis.grid2poly<- function(grid=NULL,
 
       if(nrow(gridx)>0){
 
-        # Remove column for region from gridx if exists
-
-        if("region" %in% names(gridx)){
-          if(boundaryRegionsSelect %in% unique(gridx$region)){gridx <- gridx %>% dplyr::filter(region==boundaryRegionsSelect)}
-             gridx <- gridx %>% dplyr::select(-region)
-          }
-
-
         print(paste("Starting aggregation for param: ",param_i," and scenario: ",scenario_i,"...",sep=""))
 
 
@@ -250,14 +267,6 @@ metis.grid2poly<- function(grid=NULL,
         print("setting grid columns ...")
         for(colx in names(gridx)){
           if(is.character(gridx[[colx]])){
-
-            # gridx[[colx]]<-gsub(" ","XSPACEX",gridx[[colx]],perl = TRUE )
-            # gridx[[colx]]<-gsub("\\.","XPERIODX",gridx[[colx]],perl = TRUE )
-            # gridx[[colx]]<-gsub("\\-","XDASHX",gridx[[colx]],perl = TRUE )
-            # gridx[[colx]]<-gsub("\\(","XLPARENTHX",gridx[[colx]],perl = TRUE)
-            # gridx[[colx]]<-gsub("\\)","XRLPARENTHX",gridx[[colx]],perl = TRUE)
-            # gridx[[colx]]<-gsub("\\_","XUNDERX",gridx[[colx]],perl = TRUE)
-
 
             gridx <- gridx %>% dplyr::mutate(
               !!colx := gsub(" ","XSPACEX",!!as.name(colx),perl = TRUE ),
@@ -326,13 +335,6 @@ metis.grid2poly<- function(grid=NULL,
             for(colx in names(gridCroppedX)){
               if(is.character(gridCroppedX[[colx]])){
 
-                # gridCroppedX[[colx]]<-gsub("XSPACEX"," ",gridCroppedX[[colx]])
-                # gridCroppedX[[colx]]<-gsub("XPERIODX","\\.",gridCroppedX[[colx]])
-                # gridCroppedX[[colx]]<-gsub("XDASHX","\\-",gridCroppedX[[colx]])
-                # gridCroppedX[[colx]]<-gsub("XLPARENTHX","\\(",gridCroppedX[[colx]])
-                # gridCroppedX[[colx]]<-gsub("XRLPARENTHX","\\)",gridCroppedX[[colx]])
-                # gridCroppedX[[colx]]<-gsub("XUNDERX","\\_",gridCroppedX[[colx]])
-
                 gridCroppedX <- gridCroppedX %>% dplyr::mutate(
                   !!colx := gsub("XSPACEX","",!!as.name(colx),perl = TRUE ),
                   !!colx:= gsub("XPERIODX","\\.",!!as.name(colx),perl = TRUE ),
@@ -346,11 +348,11 @@ metis.grid2poly<- function(grid=NULL,
             }
 
             polyType=subRegType
-            if (!dir.exists(paste(dirOutputs, "/Grids", sep = ""))){dir.create(paste(dirOutputs, "/Grids", sep = ""))}
-            if (!dir.exists(paste(dirOutputs, "/Grids/temp", sep = ""))){dir.create(paste(dirOutputs, "/Grids/temp", sep = ""))}
+            if (!dir.exists(paste(dirOutputs, "/Grid2Poly", sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly", sep = ""))}
+            if (!dir.exists(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))}
 
-            grid_fname<-paste(dirOutputs, "/Grids/temp/gridCropped_",boundaryRegionsSelect,"_",polyType,"_",param_i,"_",scenario_i,nameAppend,".csv", sep = "")
-            data.table::fwrite(gridCroppedX%>%dplyr::mutate(region=boundaryRegionsSelect,polyType=polyType),
+            grid_fname<-paste(dirOutputs, "/Grid2Poly/temp/gridCropped_",polyType,"_",param_i,"_",scenario_i,nameAppend,".csv", sep = "")
+            data.table::fwrite(gridCroppedX%>%dplyr::mutate(polyType=polyType),
                                file = grid_fname,row.names = F)
             print(paste("Subregional grid data files written to: ",grid_fname, sep = ""))
 
@@ -360,21 +362,20 @@ metis.grid2poly<- function(grid=NULL,
 
           if(is.null(gridPolyLoop)){
             print("Printing Grid overlay...")
-            metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_map_GridSize_Labels",nameAppend,sep=""),
+            metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(subRegType,"_map_GridSize_Labels",nameAppend,sep=""),
                       dirOutputs = dir,
                       overLayer = metis.map(labelsSize=labelsSize, dataPolygon=shape,fillColumn = subRegCol,
                                             fillPalette = "white",alpha=0,facetsON=F,
                                             labels=T,printFig=F),facetsON=F)
 
             print("Printing Grid overlay with Labels...")
-            metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(boundaryRegionsSelect,"_",subRegType,"_map_GridSize",nameAppend,sep=""),
+            metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(subRegType,"_map_GridSize",nameAppend,sep=""),
                       dirOutputs = dir,
                       overLayer = metis.map(labelsSize=labelsSize, dataPolygon=shape,fillColumn = subRegCol,
                                             fillPalette = "white",alpha=0,facetsON=F,
                                             labels=F,printFig = F),facetsON=F)
           }
           gridPolyLoop=1; # To prevent gridded map being produced multiple times
-
 
           if(aggType_i=="depth"){
             print(paste("Aggregating depth for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
@@ -390,7 +391,7 @@ metis.grid2poly<- function(grid=NULL,
                                      names(shape),"lat","lon","area","subRegAreaSum","areaPrcnt")]),
                                  rcropPx@data%>%dplyr::select(areaPrcnt),SIMPLIFY=FALSE))%>%
               dplyr::bind_cols(rcropPx@data%>%dplyr::select( subRegCol))%>%tibble::as_tibble();
-            polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(round(mean(.,na.rm=T),2)))
+            polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(mean(.,na.rm=T)))
           }
 
           if(aggType_i=="vol"){
@@ -413,7 +414,7 @@ metis.grid2poly<- function(grid=NULL,
               }
             }
             names(dfx)[names(dfx)=="ID"]<- subRegCol;
-            polyDatax<-dfx%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(round(sum(.,na.rm=T),2)))%>%tibble::as_tibble()
+            polyDatax<-dfx%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(sum(.,na.rm=T)))%>%tibble::as_tibble()
           }
 
           polyData<-tidyr::gather(polyDatax,key=key,value=value,-(subRegCol))%>%
@@ -421,13 +422,6 @@ metis.grid2poly<- function(grid=NULL,
 
           for(colx in names(polyData)){
             if(is.character(polyData[[colx]])){
-
-              # polyData[[colx]]<-gsub("XSPACEX"," ",polyData[[colx]])
-              # polyData[[colx]]<-gsub("XPERIODX","\\.",polyData[[colx]])
-              # polyData[[colx]]<-gsub("XDASHX","\\-",polyData[[colx]])
-              # polyData[[colx]]<-gsub("XLPARENTHX","\\(",polyData[[colx]])
-              # polyData[[colx]]<-gsub("XRLPARENTHX","\\)",polyData[[colx]])
-              # polyData[[colx]]<-gsub("XUNDERX","\\_",polyData[[colx]])
 
               polyData <- polyData %>% dplyr::mutate(
                 !!colx := gsub("XSPACEX","",!!as.name(colx),perl = TRUE ),
@@ -445,9 +439,11 @@ metis.grid2poly<- function(grid=NULL,
           polyx<-shape
           polyx@data<-dplyr::left_join(polyx@data,polyData)
           polyx@data<-polyx@data%>%
-            dplyr::rename(subRegion:= !!paste(subRegCol))%>%
-            dplyr::mutate(region=boundaryRegionsSelect)%>%
-            dplyr::filter(!is.na(x))
+            dplyr::rename(subRegion:= !!paste(subRegCol))
+
+          if("x" %in% names(polyx@data)){
+            polyx@data <- polyx@data%>%
+            dplyr::filter(!is.na(x))}
 
           poly<-dplyr::bind_rows(poly,polyx@data)
 
@@ -483,38 +479,45 @@ metis.grid2poly<- function(grid=NULL,
       dir.create(paste(getwd(),"/dataFiles", sep = ""))}  # dataFiles directory (should already exist)
     if (!dir.exists(paste(getwd(),"/dataFiles/mapping", sep = ""))){
       dir.create(paste(getwd(),"/dataFiles/mapping", sep = ""))}  # mapping directory
-    data.table::fwrite(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
-                         dplyr::select(param,units,class,classPalette),
+
+
+    if (file.exists(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))){
+      template_subRegional_mapping_existing <- data.table::fread(file=paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))
+      template_subRegional_mapping <- poly %>%
+        dplyr::select(c("param","units","class","classPalette")[c("param","units","class","classPalette") %in% names(poly)]) %>%
+        dplyr::bind_rows(template_subRegional_mapping_existing) %>% unique()
+    }
+
+
+     data.table::fwrite(template_subRegional_mapping,
                        file = paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""),row.names = F)
 
 
-    for (boundaryRegionsSelect in boundaryRegionsSelect[(boundaryRegionsSelect %in% unique(poly$region))]) {
-      data.table::fwrite(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
-                           dplyr::select(scenario,param,units,class,value,x,subRegion,subRegType,region)%>%
+     data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","value","subRegion","subRegType","region")[
+                             c("scenario","param","units","class","value","subRegion","subRegType","region") %in% names(poly)])%>%
                            dplyr::mutate(value=0,x=2015)%>%unique,
-                         file = paste(dirOutputs, "/Maps/Tables/subReg_",boundaryRegionsSelect,"_",subRegType,"_template",nameAppend,".csv", sep = ""),row.names = F)
-      data.table::fwrite(poly %>% dplyr::filter(region == boundaryRegionsSelect) %>%
-                           dplyr::select(dplyr::contains("scenario"),param,units,class,value,x,subRegion,subRegType,region,classPalette),
-                         file = paste(dirOutputs, "/Maps/Tables/subReg_origData_byClass_",boundaryRegionsSelect,"_",subRegType,"_origDownscaled",nameAppend,".csv", sep = ""),row.names = F)
-    }
+                         file = paste(dirOutputs, "/Grid2Poly/subReg_grid2poly_template_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
+      data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","value","subRegion","subRegType","region","classPalette")[
+                             c("scenario","param","units","class","value","subRegion","subRegType","region","classPalette") %in% names(poly)]),
+                              file = paste(dirOutputs, "/Grid2Poly/subReg_grid2poly_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
 
-    print(paste("Subregional Polygon template .csv files written to: ",dirOutputs, "/Maps/Tables/subReg_",boundaryRegionsSelect,"_template",nameAppend,".csv", sep = ""))
-    print(paste("Subregional Polygon data .csv files written to: ",dirOutputs, "/Maps/Tables/subReg_origData_byClass_",boundaryRegionsSelect,"_",subRegType,"_origDownscaled",nameAppend,".csv", sep = ""))
+    print(paste("Subregional Polygon template .csv files written to: ",dirOutputs, "/Grid2Poly/subReg_grid2poly_template",nameAppend,".csv", sep = ""))
+    print(paste("Subregional Polygon data .csv files written to: ",dirOutputs, "/Grid2Poly/subReg_grid2poly_",subRegType,nameAppend,".csv", sep = ""))
 
   }else{print("Polygon data has 0 rows")}
 
 
   # Save Cropped Grid
 
-  if(length(list.files(paste(dirOutputs, "/Grids/temp", sep = "")))>0){
+  if(length(list.files(paste(dirOutputs, "/Grid2Poly/temp", sep = "")))>0){
 
     #gridCroppedCompiled <- tibble::tibble()
-    grid_fnameComp<-paste(dirOutputs, "/Grids/gridCropped_",boundaryRegionsSelect,"_",subRegType,nameAppend,".csv", sep = "")
+    grid_fnameComp<-paste(dirOutputs, "/Grid2Poly/gridCropped_",subRegType,nameAppend,".csv", sep = "")
 
     gridTempX <- tibble::tibble()
-    for (file_i in list.files(paste(dirOutputs, "/Grids/temp", sep = ""))){
+    for (file_i in list.files(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))){
       print(paste("Compiling grid file",file_i,"...",sep=""))
-      gridTemp <- data.table::fread(paste(dirOutputs, "/Grids/temp/",file_i, sep = ""))
+      gridTemp <- data.table::fread(paste(dirOutputs, "/Grid2Poly/temp/",file_i, sep = ""))
       gridTempX <- gridTempX %>%
         dplyr::bind_rows(gridTemp)
     }
@@ -529,7 +532,7 @@ metis.grid2poly<- function(grid=NULL,
     print(paste("Subregional grid data files written to: ",grid_fnameComp, sep = ""))
 
     # Delete temporary grid folder
-   if(dir.exists(paste(dirOutputs, "/Grids/temp", sep = ""))){unlink(paste(dirOutputs, "/Grids/temp", sep = ""),recursive = T)}
+   if(dir.exists(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))){unlink(paste(dirOutputs, "/Grid2Poly/temp", sep = ""),recursive = T)}
 
   }
 
