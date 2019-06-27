@@ -8,7 +8,7 @@ doc
 outputs
 LAC_dataProj.proj
 Uruguay_dataProj.proj
-gis
+**gis/other
 **/grids/demeter
 **/grids/tethys
 **/grids/xanthos
