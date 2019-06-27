@@ -237,7 +237,7 @@ library(ggalluvial)
 
   bermejoBoundaries<- metis.boundaries(
                             boundaryRegShape=NULL,
-                            boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+                            boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
                             boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),
                             boundaryRegCol="NAME",
                             boundaryRegionsSelect="Argentina",
@@ -247,7 +247,7 @@ library(ggalluvial)
                             nameAppend="_test",
                             expandPercent=2,
                             overlapShpFile="Global235_CLM_final_5arcmin_multipart",
-                            overlapShpFolder=paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),
+                            overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
                             extension = T,
                             grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
                                       paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")))
@@ -312,7 +312,7 @@ library(ggalluvial)
 
 # Extended Map showing the subregion within a wider boudnary region
 
-    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
+    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
     boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
     boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
     head(boundaryRegShp_i@data)
@@ -355,10 +355,9 @@ library(ggalluvial)
     # Read in polygon data table with data per sub-regions of interest
     # Runs metis.mapsProcess.R
 
-
 # Read in Boundary Region
     # Read in the GCAM 32 regions shapefile which comes with metis.
-    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/admin_gcam32",sep="")
+    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
     boundaryRegShpFile_i <- paste("region32_0p5deg_regions",sep="")
     boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
     head(boundaryRegShp_i@data)
@@ -374,7 +373,7 @@ library(ggalluvial)
 
 # A similar analysis can be done using the country shapefile for any country.
     # Uncomment the following lines of code and choose and appropriate region to crop to.
-    # boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
+    # boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
     # boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
     # boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
     # head(boundaryRegShp_i@data)
@@ -388,7 +387,7 @@ library(ggalluvial)
 
 # Read in subregion shapefile
     # Read in the  SubBasin GCAM Basins shapefile which comes with metis.
-    subRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/basin_gcam",sep="")
+    subRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
     subRegShpFile_i <- paste("Global235_CLM_final_5arcmin_multipart",sep="")
     subRegShp_i = readOGR(dsn=subRegShpFolder_i,layer=subRegShpFile_i,use_iconv=T,encoding='UTF-8')
     head(subRegShp_i@data)
@@ -406,7 +405,7 @@ library(ggalluvial)
       nameAppend="",
       expandPercent=2,
       #overlapShpFile="Global235_CLM_final_5arcmin_multipart",
-      #overlapShpFolder=paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),
+      #overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
       extension = T,
       cropSubShape2Bound = T)
 

@@ -552,7 +552,7 @@ The following section shows some basic example to use metis.map.R.
 <b> Key Inputs </b>  
 
 - boundaryRegShape: A polygon shapefile which has already been read into R defining the boundary region. Default is NULL. If left NULL then a folder and filename should be specified if a boundary is desired.
-- boundaryRegShpFolder: If an extended map is desired then this can be provided. naturalEarth admin boundaries are available if downloaded from the osf link https://osf.io/pbta5/). These will be lying in ./metis/dataFiles/gis/naturalEarth, The default value is NULL and in this case no extended boundary will be drawn.
+- boundaryRegShpFolder: If an extended map is desired then this can be provided. naturalEarth admin boundaries are available if downloaded from the osf link https://osf.io/pbta5/). These will be lying in ./metis/dataFiles/gis/metis/naturalEarth, The default value is NULL and in this case no extended boundary will be drawn.
 - boundaryRegShpFile: If desired and chosen from the naturalEarth data then "ne_10m_admin_0_countries" can be chosen.
 - boundaryRegCol: If boundaryRegShpFolder and File are specified then this column should be specified. If the naturalEarth data is used the column is "NAME".
 - boundaryRegionsSelect: Desired boundary region. In the naturalEarth data these are country names eg. "Argentina",
@@ -564,7 +564,7 @@ The following section shows some basic example to use metis.map.R.
 - subRegType: The kind of sub-region being analyzed e.g. "state", "subBasin" etc. 
 - nameAppend: If any name should be appended to the files produced e.g. "_hydrobidBermeo3",
 - extension: If the extended boundary region should be plotted with the subregion.
-- overlapShpFolder: If an overlapping shapefile is desired then the folder should be specified. For example GCAM basin boundaries saved in ./metis/dataFiles/gis/basin_gcam
+- overlapShpFolder: If an overlapping shapefile is desired then the folder should be specified. For example GCAM basin boundaries saved in ./metis/dataFiles/gis/metis/gcam
 - overlapShpFile: Overlapping shapefile name for eg. "Global235_CLM_final_5arcmin_multipart"
 
 metis.boundaries is used to create maps showing where the sub-region lies in the greater region. For this option a boundary region should be defined. NaturalEarth boundary region files have been made available throught the osf repository https://osf.io/pbta5/). Once metis.boundaries has been run a folder for "Maps" is created. The Maps folder will contain a "Boundary" folder which contains the boundary files defining each region and subregion. The function also shows how different grid cells sizes compare with the selected regions. This is useful to understand if the desired regional resolution is too fine for a particular grid size. The folder structure and example output boundary maps are shown in the figures that follow.
@@ -589,7 +589,7 @@ metis.boundaries is used to create maps showing where the sub-region lies in the
 
   bermejoBoundaries<- metis.boundaries(
                             boundaryRegShape=NULL,
-                            boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+                            boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
                             boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),
                             boundaryRegCol="NAME",
                             boundaryRegionsSelect="Argentina",
@@ -599,7 +599,7 @@ metis.boundaries is used to create maps showing where the sub-region lies in the
                             nameAppend="_test",
                             expandPercent=2,
                             overlapShpFile="Global235_CLM_final_5arcmin_multipart",
-                            overlapShpFolder=paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),
+                            overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
                             extension = T,
                             grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
                                       paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")))
@@ -690,7 +690,7 @@ metis.grid2poly can also be used to create maps showing where the sub-region lie
 - xRange=c(2005,2010,2020): Range of years to analyze. If left blank will analyze all available years.
 - boundaryRegionsSelect: Name of overall region. Will create a folder with this name. "Argentina",
 - (Optional) subRegShape: If a subregional shape is already available in R. If not then the shape folder and file need to be specified in the following paramters. 
-- subRegShpFolder: Sub-region shape file folder. This can be an output of metis.grid2poly and will be lying in ./metis/outputs/Maps/Boundary/"REGIONX". It can also be a subregion from the downloaded gis files E.g. paste(getwd(),"/dataFiles/gis/subbasin_hydrobid",sep=""),
+- subRegShpFolder: Sub-region shape file folder. This can be an output of metis.grid2poly and will be lying in ./metis/outputs/Grid2Poly/"REGIONX". It can also be any subregion shapefile like the ones in "./metis/dataFiles/gis"
 - subRegShpFile: Sub-region shapefile name e.g. paste("bermejo3Cropped",sep=""),
 - subRegCol: Columns whith unique identifiers for each sub-region. In this case e.g. "SUB_NAME". The shapefile data should be read and checked to determine this. 
 - subRegType: Name the type of sub-region being analyzed. A separate folder for each type will be create. For exampel "subBasin" or "state"
@@ -753,7 +753,7 @@ Grid |  Basin
 
 # Extended Map showing the subregion within a wider boudnary region
 
-    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
+    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
     boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
     boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
     head(boundaryRegShp_i@data)
@@ -799,7 +799,7 @@ Grid |  Basin
 
 # Read in Boundary Region
     # Read in the GCAM 32 regions shapefile which comes with metis.
-    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/admin_gcam32",sep="")
+    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
     boundaryRegShpFile_i <- paste("region32_0p5deg_regions",sep="")
     boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
     head(boundaryRegShp_i@data)
@@ -815,7 +815,7 @@ Grid |  Basin
 
 # A similar analysis can be done using the country shapefile for any country.
     # Uncomment the following lines of code and choose and appropriate region to crop to.
-    # boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
+    # boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
     # boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
     # boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
     # head(boundaryRegShp_i@data)
@@ -829,7 +829,7 @@ Grid |  Basin
 
 # Read in subregion shapefile
     # Read in the  SubBasin GCAM Basins shapefile which comes with metis.
-    subRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/basin_gcam",sep="")
+    subRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
     subRegShpFile_i <- paste("Global235_CLM_final_5arcmin_multipart",sep="")
     subRegShp_i = readOGR(dsn=subRegShpFolder_i,layer=subRegShpFile_i,use_iconv=T,encoding='UTF-8')
     head(subRegShp_i@data)
@@ -847,7 +847,7 @@ Grid |  Basin
       nameAppend="",
       expandPercent=2,
       #overlapShpFile="Global235_CLM_final_5arcmin_multipart",
-      #overlapShpFolder=paste(getwd(),"/dataFiles/gis/basin_gcam",sep=""),
+      #overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
       extension = T,
       cropSubShape2Bound = T)
 
