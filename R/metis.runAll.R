@@ -72,6 +72,7 @@
 #' @param run_GCAMbasin_grid2poly Default = F,
 #' @param run_localShape_grid2poly Default = T,
 #' @param polygonDataTablesCustom Default = NULL,
+#' @param scaleRange_i Default = NULL,
 #' @param xRangeMap Default = seq(fromDefault =2000,toDefault =2050,byDefault =5),
 #' @param legendPosition Default =c("LEFT","bottom"),
 #' @param legendOutsideSingle Default =T,
@@ -179,6 +180,7 @@ metis.runAll<- function(
                   run_GCAMbasin_grid2poly = T,
                   run_localShape_grid2poly = T,
                   # 8. Produce Maps
+                  scaleRange_i = NULL,
                   xRangeMap= seq(from=2000,to=2050,by=5),
                   legendPosition=c("LEFT","bottom"),
                   legendOutsideSingle=T,
@@ -622,6 +624,10 @@ metis.runAll<- function(
     scaleRange=data.frame(param=c("griddedScarcity"),
                             maxScale=c(1),
                             minScale=c(0))
+
+   if(!is.null(scaleRange_i)){
+     scaleRange = scaleRange %>%
+      dplyr::bind_rows(scaleRange_i)}
 
     numeric2Cat_param <- list("griddedScarcity","param2")
     numeric2Cat_breaks <- list(c(-Inf, 0.1, 0.2, 0.4,Inf),c(0,1,2))

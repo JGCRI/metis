@@ -56,7 +56,7 @@ metis.runAll(run_readGCAM = F, run_charts = F, run_boundaries = F,
   sqliteUSEGrid2Poly = T, sqliteDBNamePathGrid2Poly = paste(getwd(),
   "/outputs/Grids/gridMetis.sqlite", sep = ""), run_state_grid2poly = T,
   run_GCAMbasin_grid2poly = T, run_localShape_grid2poly = T,
-  xRangeMap = seq(from = 2000, to = 2050, by = 5),
+  scaleRange_i = NULL, xRangeMap = seq(from = 2000, to = 2050, by = 5),
   legendPosition = c("LEFT", "bottom"), legendOutsideSingle = T,
   animateOn = T, delay = 100, scenRefMap = "gfdl-esm2m_rcp2p6_NA_NA",
   paramsSelect_Map = c("All"), indvScenarios = "All",
@@ -209,6 +209,8 @@ metis.runAll(run_readGCAM = F, run_charts = F, run_boundaries = F,
 \item{run_GCAMbasin_grid2poly}{Default = F,}
 
 \item{run_localShape_grid2poly}{Default = T,}
+
+\item{scaleRange_i}{Default = NULL,}
 
 \item{xRangeMap}{Default = seq(fromDefault =2000,toDefault =2050,byDefault =5),}
 
