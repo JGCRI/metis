@@ -75,7 +75,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                            scenNewNames = NULL,
                            reReadData = T,
                            dataProj = "dataProj.proj",
-                           dataProjPath = NULL,
+                           dataProjPath = paste(getwd(), "/outputs", sep = ""),
                            dirOutputs = paste(getwd(), "/outputs", sep = ""),
                            regionsSelect = NULL,
                            queriesSelect="All",
@@ -1666,8 +1666,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
   dataTemplate <- datax %>%
     dplyr::mutate(scenario = "Local Data", value = 0, sources="Sources", x=2010) %>%
-    dplyr::rename(class=class1)%>%
-    dplyr::select(scenario, region, sources, param, units, class, x, value) %>%
+    dplyr::select(scenario, region, sources, param, units, class1,class2, x, value) %>%
     unique()
 
   fullTemplateMap <- datax %>%

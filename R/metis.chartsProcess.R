@@ -204,16 +204,17 @@ for(i in dataTables){
   if(file.exists(i)){
   tblNew<-utils::read.csv(paste(i), stringsAsFactors = F)%>%tibble::as.tibble()
   if("class"%in%names(tblNew) & !"class1"%in%names(tblNew)){tblNew<-tblNew%>%dplyr::mutate(class1=class)}
+
+  # Join relevant colors and classes using the mapping file if it exists
+  if(file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
+    map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""), stringsAsFactors = F)%>%tibble::as.tibble()
+    for(missing_i in c( "classLabel1","classPalette1","classLabel2","classPalette2")){
+      if(!missing_i %in% names(tblNew))
+    tblNew<-tblNew%>%dplyr::left_join(map%>%dplyr::select(param,missing_i)%>%dplyr::distinct(),by=c("param"))}}
+
    tbl<-dplyr::bind_rows(tbl,tblNew)
    } else {stop(paste(i," does not exist. Please run metis.readgcam.R to generate corresponding table."))}
 }
-
-# Join relevant colors and classes using the mapping file if it exists
-if(file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
-  map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""), stringsAsFactors = F)%>%tibble::as.tibble()
-  tbl<-tbl%>%dplyr::left_join(map%>%dplyr::select(param,
-                                         classLabel1,classPalette1,
-                                         classLabel2,classPalette2)%>%dplyr::distinct(),by=c("param"))}
 
 # Add missing columns
   tbl<-addMissing(tbl)
@@ -884,10 +885,13 @@ for(i in unique(tbl$region)){
         dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
       if(!yData %in% names(tbl_rp)){tbl_rpd<-tbl_rpd%>%dplyr::select(-dplyr::one_of(c(yData)))}
 
+      tbl_rpd_fixedCols <- tbl_rpd %>% dplyr::select("xLabel","classLabel1","classPalette1","classLabel2","classPalette2") %>% unique()
+
       for (k in unique(tbl_rp$scenario)[unique(tbl_rp$scenario)!=scenRef_i]){
         tbl_temp <- tbl_rp%>%
           dplyr::filter(scenario %in% c(scenRef_i,k))%>%
-          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
+          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,
+                        -xLabel,classLabel1,classPalette1,classLabel2,classPalette2)
         if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-dplyr::one_of(c(yData)))}
         tbl_temp <- tbl_temp%>%
           tidyr::spread(scenario,yData)%>%
@@ -898,6 +902,12 @@ for(i in unique(tbl$region)){
                         -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,"_diff",sep="")]))
         tbl_rpd<-dplyr::bind_rows(tbl_rpd,tbl_temp)
       }
+
+
+      # Join relevant colors and classes using the mapping file if it exists
+      for(missing_i in c( "xLabel","classLabel1","classPalette1","classLabel2","classPalette2")){
+          if(!missing_i %in% names( tbl_rpd))
+            tbl_rpd<- tbl_rpd%>%dplyr::left_join(tbl_rpd_fixedCols%>%dplyr::select(param,missing_i)%>%dplyr::distinct(),by=c("param"))}
 
       tbl_rpd <-tbl_rpd %>%
         dplyr::mutate(scenario=factor(scenario,
