@@ -5,11 +5,12 @@
 \title{metis.readgcam}
 \usage{
 metis.readgcam(gcamdatabasePath = NULL, gcamdatabaseName = NULL,
-  queryxml = "metisQueries.xml", queryPath = gcamdatabasePath,
-  scenOrigNames = NULL, scenNewNames = NULL, reReadData = T,
-  dataProj = "dataProj.proj", dataProjPath = gcamdatabasePath,
-  dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All")
+  queryxml = "metisQueries.xml", queryPath = paste(getwd(),
+  "/dataFiles/gcam", sep = ""), scenOrigNames = NULL,
+  scenNewNames = NULL, reReadData = T, dataProj = "dataProj.proj",
+  dataProjPath = NULL, dirOutputs = paste(getwd(), "/outputs", sep =
+  ""), regionsSelect = NULL, queriesSelect = "All",
+  paramsSelect = "All")
 }
 \arguments{
 \item{gcamdatabasePath}{Path to gcam database folder}
@@ -39,7 +40,11 @@ By default it is the same folder as specified by gcamdatabasePath}
 
 \item{dirOutputs}{Full path to directory for outputs}
 
-\item{regionsSelect}{The regions to analyze in a vector. Example c('Colombia','Argentina')}
+\item{regionsSelect}{The regions to analyze in a vector. Example c('Colombia','Argentina'). Full list:
+c(USA, Africa_Eastern, Africa_Northern, Africa_Southern, Africa_Western, Australia_NZ, Brazil, Canada
+Central America and Caribbean, Central Asia, China, EU-12, EU-15, Europe_Eastern, Europe_Non_EU,
+European Free Trade Association, India, Indonesia, Japan, Mexico, Middle East, Pakistan, Russia,
+South Africa, South America_Northern, South America_Southern, South Asia, South Korea, Southeast Asia,}
 
 \item{queriesSelect}{Default = "All". Vector of queries to read from the queryxml for example
 c("Total final energy by aggregate end-use sector", "Population by region"). The queries must be

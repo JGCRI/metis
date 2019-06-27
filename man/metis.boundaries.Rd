@@ -40,11 +40,11 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
 
 \item{subRegionsSelect}{Default=NULL. The region to choose from the given sub-region shapefile.}
 
-\item{subRegType}{Default="subRegType". Eg. "states", "basins" etc.}
+\item{subRegType}{Default="subRegType". Type of subregion. Eg. "states", "basins" etc.}
 
 \item{dirOutputs}{Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.}
 
-\item{nameAppend}{Default="".}
+\item{nameAppend}{Default="". Name to append to saved files.}
 
 \item{expandPercent}{Default=2. Percentage to expand boundary region beyond chosen region.}
 
@@ -56,27 +56,27 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
 
 \item{labelsSize}{Default =1.2.}
 
-\item{fillcolorNA}{Default =NULL.}
+\item{fillcolorNA}{Default =NULL. Fill color for NA values.}
 
 \item{projX}{Default ="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0".}
 
-\item{extendedFillColor}{Default = "grey75".}
+\item{extendedFillColor}{Default = "grey75". Color used to fill extended land areas.}
 
-\item{extendedBGColor}{Default = "lightblue1".}
+\item{extendedBGColor}{Default = "lightblue1". Color used to fill background/water bodies.}
 
-\item{extendedHighLightColor}{Default = "cornsilk1".}
+\item{extendedHighLightColor}{Default = "cornsilk1". Color used to highlight region of analysis.}
 
-\item{extendedLabelsColor}{Default = "grey30".}
+\item{extendedLabelsColor}{Default = "grey30". Color for extended country name labels.}
 
-\item{extdendedLabelSize}{Default =0.7.}
+\item{extdendedLabelSize}{Default =0.7. Size of extended country name labels.}
 
-\item{extension}{Default = T}
+\item{extension}{Default = T. Should the map be extended beyond chosen shapefile boudnaries.}
 
-\item{fillPalette}{Default ="Spectral".}
+\item{fillPalette}{Default ="Spectral". Palette to use to fill subregions.}
 
-\item{cropSubShape2Bound}{Default = T. Set to False if subregion shape is larger than boundary, but desired fro extension.}
+\item{cropSubShape2Bound}{Default = T. If subregion shape file is larger than boundary file.}
 
-\item{grids}{Default = NULL. Suggested is c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),}
+\item{grids}{Default = NULL. Metis comes with 0.5 and 0.25 grids in c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),}
 
 \item{innerMargins}{Default =c(0,0.1,0,0.1), # bottom, left, top, right}
 

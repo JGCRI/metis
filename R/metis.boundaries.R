@@ -14,30 +14,31 @@
 #' @param subRegShpFile  Default=NULL. Name of sub-region shapefile. Suggested paste("ne_10m_admin_1_states_provinces",sep  Default=""),
 #' @param subRegCol  Default= NULL. Suggested for states "name",
 #' @param subRegionsSelect  Default=NULL. The region to choose from the given sub-region shapefile.
-#' @param subRegType  Default="subRegType". Eg. "states", "basins" etc.
+#' @param subRegType  Default="subRegType". Type of subregion. Eg. "states", "basins" etc.
 #' @param dirOutputs  Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.
-#' @param nameAppend  Default="".
+#' @param nameAppend  Default="". Name to append to saved files.
+#' @param extension Default = T. Should the map be extended beyond chosen shapefile boudnaries.
 #' @param expandPercent  Default=2. Percentage to expand boundary region beyond chosen region.
 #' @param overlapShape Default = NULL. If boundary lines of another shapefile are desired specify the shape here.
 #' @param overlapShpFolder Default = NULL. For GCAM basins use paste(getwd(),"/dataFiles/gis/basin_gcam",sep="").
 #' @param overlapShpFile Default = NULL. For GCAM basins use ="Global235_CLM_final_5arcmin_multipart"
-#' @param fillcolorNA Default =NULL.
+#' @param fillcolorNA Default =NULL. Fill color for NA values.
 #' @param labelsSize Default =1.2.
 #' @param projX Default ="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0".
-#' @param extendedFillColor Default = "grey75".
-#' @param extendedBGColor Default = "lightblue1".
-#' @param extendedHighLightColor Default = "cornsilk1".
-#' @param extendedLabelsColor Default = "grey30".
-#' @param extdendedLabelSize Default =0.7.
-#' @param extension Default = T
-#' @param fillPalette Default ="Spectral".
-#' @param cropSubShape2Bound Default = T. Set to False if subregion shape is larger than boundary, but desired fro extension.
-#' @param grids Default = NULL. Suggested is c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+#' @param extendedFillColor Default = "grey75". Color used to fill extended land areas.
+#' @param extendedBGColor Default = "lightblue1". Color used to fill background/water bodies.
+#' @param extendedHighLightColor Default = "cornsilk1". Color used to highlight region of analysis.
+#' @param extendedLabelsColor Default = "grey30". Color for extended country name labels.
+#' @param extdendedLabelSize Default =0.7. Size of extended country name labels.
+#' @param fillPalette Default ="Spectral". Palette to use to fill subregions.
+#' @param cropSubShape2Bound Default = T. If subregion shape file is larger than boundary file.
+#' @param grids Default = NULL. Metis comes with 0.5 and 0.25 grids in c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
 #' @param innerMargins Default =c(0,0.1,0,0.1), # bottom, left, top, right
 #' @param outerMargins Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right
 #' paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""))
 #' This may happen in the case of disputed boundaries.
 #' @export
+
 
 metis.boundaries<- function(boundaryRegShape=NULL,
                          boundaryRegShpFolder=NULL,
@@ -179,10 +180,9 @@ if(!is.null(boundaryRegShape)){boundaryRegShape<-sp::spTransform(boundaryRegShap
 #---------------
 
 if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
-if (!dir.exists(paste(dirOutputs, "/Maps", sep = ""))){dir.create(paste(dirOutputs, "/Maps", sep = ""))}
-if (!dir.exists(paste(dirOutputs, "/Maps/Boundaries", sep = ""))){dir.create(paste(dirOutputs, "/Maps/Boundaries", sep = ""))}
-if (!dir.exists(paste(dirOutputs, "/Maps/Boundaries/",boundaryRegionsSelect, sep = ""))){dir.create(paste(dirOutputs, "/Maps/Boundaries/",boundaryRegionsSelect,sep = ""))}
-dir=paste(dirOutputs, "/Maps/Boundaries/",boundaryRegionsSelect,sep = "")
+if (!dir.exists(paste(dirOutputs, "/Boundaries", sep = ""))){dir.create(paste(dirOutputs, "/Boundaries", sep = ""))}
+if (!dir.exists(paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect, sep = ""))){dir.create(paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect,sep = ""))}
+dir=paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect,sep = "")
 
 #----------------
 # Create Boundary and subRegional shapefiles
@@ -529,6 +529,15 @@ if(!is.null(subRegShape) & !is.null(boundaryRegShape)){
 
 if(!is.null(extendedShape)){print(paste("Extended shapefile ",paste(boundaryRegionsSelect,"_Extended",nameAppend,sep="")," saved to: ",dir,sep=""))}
 
-return(extendedShape)
+if(!is.null(subRegShape)){
+  subRegShape@data <- droplevels(subRegShape@data)
+rgdal::writeOGR(obj=subRegShape,
+                dsn=dir,
+                layer=paste(boundaryRegionsSelect,"_subRegion",nameAppend,sep=""),
+                driver="ESRI Shapefile", overwrite_layer=TRUE)
+print(paste("Subregion shapefile ",paste(boundaryRegionsSelect,"_subRegion",nameAppend,sep="")," saved to: ",dir,sep=""))
+  }
+
+return(list(subRegShape=subRegShape,extendedShape=extendedShape))
 
 } # Close Function

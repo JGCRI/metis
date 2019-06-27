@@ -70,6 +70,9 @@ io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario")  # ioTable0=io
 io1$ioTbl_Output %>% as.data.frame()
 io1$A_Output %>% as.data.frame()
 
+ioTableTest <- ioTable0 %>% filter(subRegion=="Corfo")
+io2 <- metis.io(ioTable0=ioTableTest, nameAppend = "_SingleRegionTest")  # ioTable0=ioTable0
+
 
 #----------------------------------------------------------------------------------------------------------------------#
 

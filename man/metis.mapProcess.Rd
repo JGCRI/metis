@@ -5,14 +5,15 @@
 \title{metis.mapProcess}
 \usage{
 metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
-  dirOutputs = paste(getwd(), "/outputs", sep = ""), xRange = "All",
-  labels = F, labelsSize = 1.2, subRegShape = NULL,
-  subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
-  subRegType = "subRegType", dirNameAppend = "", nameAppend = "",
-  legendOutsideSingle = F, legendOutsidePosition = NULL,
-  legendPosition = NULL, legendFixedBreaks = 5, legendTitleSizeO = 2,
-  legendTextSizeO = 1, legendTitleSizeI = 1.5, legendTextSizeI = 1,
-  animateOn = T, delay = 100, scenRef = NULL, extension = F,
+  dirOutputs = paste(getwd(), "/outputs", sep = ""),
+  mapsOutFolderName = "mapOutputs", xRange = "All", labels = F,
+  labelsSize = 1.2, subRegShape = NULL, subRegShpFolder = NULL,
+  subRegShpFile = NULL, subRegCol = NULL, subRegType = "subRegType",
+  dirNameAppend = "", nameAppend = "", legendOutsideSingle = F,
+  legendOutsidePosition = NULL, legendPosition = NULL,
+  legendFixedBreaks = 5, legendTitleSizeO = 2, legendTextSizeO = 1,
+  legendTitleSizeI = 1.5, legendTextSizeI = 1, animateOn = T,
+  delay = 100, scenRef = NULL, extension = F,
   boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   boundaryRegShpFile = NULL, boundaryRegCol = NULL,
   boundaryRegionsSelect = NULL, fillcolorNA = NULL,
@@ -22,13 +23,13 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   extendedShape = NULL, extendedShapeCol = NULL, expandPercent = 3,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 6, figHeight = 7, scaleRange = NULL,
-  paramsSelect = "All", indvScenarios = NULL, GCMRCPSSPPol = F,
+  paramsSelect = "All", indvScenarios = "All", GCMRCPSSPPol = F,
   multiFacetCols = "scenarioRCP", multiFacetRows = "scenarioGCM",
   legendOutsideMulti = T, legendPositionMulti = NULL,
   legendTitleSizeMulti = NULL, legendTextSizeAnim = NULL,
   legendTextSizeMulti = NULL, refGCM = NULL, refRCP = NULL,
   chosenRefMeanYears = NULL, mapTitleSize = 0.5,
-  facetLabelSizeMulti = 3, numeric2Cat_list = NULL)
+  facetLabelSizeMulti = 3, numeric2Cat_list = NULL, diffOn = F)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -36,6 +37,8 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{gridDataTables}{Default = NULL,}
 
 \item{dirOutputs}{Default = paste(getwd(),"/outputs",sep=""),}
+
+\item{mapsOutFolderName}{Default="mapOutputs",}
 
 \item{xRange}{Default ="All",}
 
@@ -121,7 +124,7 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{paramsSelect}{Default ="All"}
 
-\item{indvScenarios}{Default =T,}
+\item{indvScenarios}{Default ="All",}
 
 \item{GCMRCPSSPPol}{Default = F,}
 
@@ -150,6 +153,8 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{facetLabelSizeMulti}{Default =3}
 
 \item{numeric2Cat_list}{Default=NULL,}
+
+\item{diffOn}{Default = F. Whether to calculate diff values between scenarios.}
 }
 \value{
 Returns the formatted data used to produce chart
