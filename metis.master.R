@@ -383,7 +383,7 @@ library(ggalluvial)
     # Pick country names from the list of countries in the natural earth shapefile.
     # unique(boundaryRegShp_i@data[[boundaryRegCol_i]])
 
-    boundaryRegionsSelect_i = c("China") # Must be a region in the boundaryRegShp
+    boundaryRegionsSelect_i = c("Southeast Asia") # Must be a region in the boundaryRegShp
 
 
 # Read in subregion shapefile
@@ -409,6 +409,19 @@ library(ggalluvial)
       #overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
       extension = T,
       cropSubShape2Bound = T)
+
+    # boundaryRegShape=boundaryRegShp_i
+    # boundaryRegCol=boundaryRegCol_i
+    # boundaryRegionsSelect=boundaryRegionsSelect_i
+    # subRegShape=subRegShp_i
+    # subRegCol=subRegCol_i
+    # subRegType="GCAMBasin"
+    # nameAppend=""
+    # expandPercent=2
+    # #overlapShpFile="Global235_CLM_final_5arcmin_multipart"
+    # #overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
+    # extension = T
+    # cropSubShape2Bound = T
 
 # The subregion shapefile created by boundaries can now be selected to be used for mapping values.
     subRegShp_i_Crop = boundaries$subRegShape # or can point to the subRegShapeFolder and subRegShpFile as produced by metis.boundaries.R
@@ -481,4 +494,23 @@ library(ggalluvial)
                      diffOn = F,
                      legendOutsideSingle = T,
                      scaleRange = scaleRange_i)
+
+    # polygonDataTables=examplePolygonTable_i
+    # #gridDataTables=exampleGridTable_i
+    # xRange=c(2010,2020,2100)
+    # mapsOutFolderName=paste(boundaryRegionsSelect_i,"_Edited",sep="")
+    # boundaryRegionsSelect=boundaryRegionsSelect_i
+    # boundaryRegShape=boundaryRegShp_i
+    # subRegShape=subRegShp_i_Crop
+    # subRegCol=subRegCol_i
+    # subRegType="GCAMBasin"
+    # nameAppend="_improvedFig"
+    # legendPosition=c("LEFT","bottom")
+    # animateOn=T
+    # delay=100
+    # scenRef="SSP2_Ref"
+    # extension=F
+    # diffOn = F
+    # legendOutsideSingle = T
+    # scaleRange = scaleRange_i
 

@@ -253,10 +253,10 @@ if(!is.null(extendedBoundary)){
 
 if(!is.null(bbox1)){
   bbox1$min;bbox1$max
-  bbox1$min[1]<-if(bbox1$min[1]<0){(1+expandPercent/100)*bbox1$min[1]}else{(1-expandPercent/100)*bbox1$min[1]};
-  bbox1$min[2]<-if(bbox1$min[2]<0){(1+expandPercent/100)*bbox1$min[2]}else{(1-expandPercent/100)*bbox1$min[2]};
-  bbox1$max[1]<-if(bbox1$max[1]<0){(1-expandPercent/100)*bbox1$max[1]}else{(1+expandPercent/100)*bbox1$max[1]};
-  bbox1$max[2]<-if(bbox1$max[2]<0){(1-expandPercent/100)*bbox1$max[2]}else{(1+expandPercent/100)*bbox1$max[2]};
+  bbox1$min[1]<-if(bbox1$min[1]<0){max((1+expandPercent/100)*bbox1$min[1],-180)}else{max((1-expandPercent/100)*bbox1$min[1],-180)};
+  bbox1$min[2]<-if(bbox1$min[2]<0){max((1+expandPercent/100)*bbox1$min[2],-90)}else{max((1-expandPercent/100)*bbox1$min[2], -90)};
+  bbox1$max[1]<-if(bbox1$max[1]<0){min((1-expandPercent/100)*bbox1$max[1],180)}else{min((1+expandPercent/100)*bbox1$max[1],180)};
+  bbox1$max[2]<-if(bbox1$max[2]<0){min((1-expandPercent/100)*bbox1$max[2],90)}else{min((1+expandPercent/100)*bbox1$max[2],90)};
   bbox1$min;bbox1$max;
   bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
   sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
