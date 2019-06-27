@@ -477,11 +477,11 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
 
           }}} else {
 
-    if(is.null(facet_rows) & !is.null(facet_columns) & length(unique(l1[[facet_rows]]))>1){
-      p <- p + facet_wrap(facet_columns,ncol=ncolrow,scales = scales) + ggtitle(paste(unique(l1[[facet_rows]])," ",fileName,sep=""))}
+    if(is.null(facet_rows) & !is.null(facet_columns)){
+      p <- p + facet_wrap(facet_columns,ncol=ncolrow,scales = scales)}
 
-    if(!is.null(facet_rows) & is.null(facet_columns) & length(unique(l1[[facet_columns]]))>1){
-        p <- p + facet_wrap(facet_rows,nrow=ncolrow,scales = scales) + ggtitle(paste(unique(l1[[facet_columns]])," ",fileName,sep=""))}}
+    if(!is.null(facet_rows) & is.null(facet_columns)){
+        p <- p + facet_wrap(facet_rows,nrow=ncolrow,scales = scales)}}
       }
 
 

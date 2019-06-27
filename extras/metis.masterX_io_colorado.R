@@ -43,36 +43,189 @@ from_to <- output$from_to
 # Import user-defined supply/demand/capacity files
 # Import demands across sectors, with corresponding supplies specified
 # Import base data
-demand_data_file = paste(getwd(),'/datafiles/io/colorado_demand_data.csv',sep="")
+demand_data_file = paste(getwd(),'/datafiles/io/colorado_demand_data_AgPolicy.csv',sep="")  # _AgPolicy
 capacity_data_file = paste(getwd(),'/datafiles/io/colorado_capacity_data.csv',sep="")
 demand_data <- read.csv(demand_data_file)
 demand_data <- demand_data %>% as_tibble()
 capacity_data <- read.csv(capacity_data_file)
 # Manipulate/rearrange demand/supply data frame to wide format
 ioTable0 <- demand_data %>% select(-localData, -dataSource, -year, -param) %>%
-  mutate(demandClassCombined=ifelse(class2=="", paste0(demandClass, class2), paste0(demandClass,"_", class2))) %>%
-  select(-class2, -demandClass) %>% spread(demandClassCombined, localDataSubdivided)
+  spread(demandClass, localDataSubdivided)
 ioTable0[,c(which(colnames(ioTable0)=="supplySector"),which(colnames(ioTable0)!="supplySector"))]  # Shift supply to first column
 # Manipulate/rearrange supply capacity data frame to wide format, and integrate it with existing ioTable0 dataframe
 capTable <- capacity_data %>% select(-year, -units) %>% rename(cap=data)
 # Merge ioTable0 and capTable
 ioTable0 <- ioTable0 %>% left_join(capTable, by=c('subRegion', 'supplySector', 'supplySubSector'))
-#------------------------------------------------
-
+#-----------------------------------------------------------------------------------------------------------------------
 # Balancing water flows
 output_water <- subReg_water_balance(ioTable0, network_order, network_data, from_to)
 ioTable0 <- output_water$supply_demand_table  # updated demand-supply table that includes proper natural water exports, and capacities
 ioTable0$units <- as.character(ioTable0$units)
+#-----------------------------------------------------------------------------------------------------------------------
+# Create a single dataframe to dump relevant results into that you want to map
+subregions <- as.character(unique(ioTable0$subRegion))
+num_subreg <- length(subregions)
+colnames <- c('scenario', 'region', 'subRegion', 'sources', 'param', 'units', 'class', 'x', 'value', 'subRegType',
+              'classPalette1', 'classLabel1')
+mapping_df <- data.frame(matrix(ncol = 12, nrow = num_subreg))
+colnames(mapping_df) <- colnames
+params <- 'griddedScarcity'
+mapping_df['region'] <- 'Argentina'
+mapping_df['subRegion'] <- subregions
+mapping_df['scenario'] <- 'reference'
+mapping_df['sources'] <- 'localData'
+mapping_df['param'] <- params
+mapping_df['units'] <- 'unitless'
+mapping_df['class'] <- 'scarcity'
+mapping_df['subRegType'] <- 'localBasin'
+mapping_df['x'] <- 2010
+mapping_df['value'] <- 0
+mapping_df['classPalette'] <- 'YlOrRd'
+mapping_df['classLabel'] <- 'Scarcity'
 
+# Calculate scarcity
+# Process supplies/demands to create scarcity value for each of the 10 sub-regions
+for (subReg in subregions){
+  df <- ioTable0 %>% filter(subRegion==subReg, supplySector %in% c('Water'))
+  df2 <- df %>% select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
+  demand <- sum((df2)$rowsum, na.rm=TRUE)
+  df3 <- ioTable0 %>% filter(subRegion==subReg, supplySubSector %in% c('W_SW_Runoff', 'W_SW_Upstream'))
+  df4 <- df3 %>% select(cap) %>%  mutate(rowsum=rowSums(., na.rm=TRUE))
+  surfaceSupply <- sum((df4)$rowsum, na.rm=TRUE)
+  sr <- c(subReg)
+  mapping_df <- mapping_df %>% mutate(value = if_else(subRegion==sr, demand/surfaceSupply, value))
+}
+save_dir <- 'C:/Users/twild/all_git_repositories/metis/metis/outputs/Maps/Tables'
+export_df <- mapping_df %>% filter(param %in% params) %>% select(-classPalette1)  # Deal with Palette separately in map
+write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+#-----------------------------------------------------------------------------------------------------------------------
+# Store/export data related to runoff
+colnames <- c('scenario', 'region', 'subRegion', 'sources', 'param', 'units', 'class', 'x', 'value', 'subRegType',
+              'classPalette1', 'classLabel1')
+new_df_append <- data.frame(matrix(ncol = 12, nrow = num_subreg))
+colnames(new_df_append) <- colnames
+new_df_append['region'] <- 'Argentina'
+new_df_append['subRegion'] <- subregions
+new_df_append['scenario'] <- 'reference'
+new_df_append['sources'] <- 'localData'
+params <- c('runoff')
+new_df_append['param'] <- params
+new_df_append['units'] <- 'km3'
+new_df_append['class'] <- 'runoff'
+new_df_append['subRegType'] <- 'localBasin'
+new_df_append['x'] <- 2010
+new_df_append['value'] <- 0
+new_df_append['classPalette'] <- 'Blues'
+new_df_append['classLabel'] <- 'Runoff'
+for (subReg in subregions){
+  df <- ioTable0 %>% filter(subRegion==subReg, supplySubSector %in% c('W_SW_Runoff')) %>%
+    select(-subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
+  runoff_value <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, runoff_value, value))
+}
+mapping_df <- rbind(mapping_df, new_df_append)
+export_df <- mapping_df %>% filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+
+# Store/export data related to irrigation water demand
+params <- c('irrigation_demand')
+new_df_append['param'] <- params
+new_df_append['units'] <- 'km3'
+new_df_append['class'] <- 'Irrigation'
+new_df_append['subRegType'] <- 'localBasin'
+new_df_append['x'] <- 2010
+new_df_append['value'] <- 0
+new_df_append['classPalette'] <- 'Blues'
+new_df_append['classLabel'] <- 'IrrigationDemand'
+for (subReg in subregions){
+  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
+    select(-subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
+      select(contains("Ag_")) %>%
+      mutate(rowsum=rowSums(., na.rm=TRUE))
+  irrig_wat_dem_val <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, irrig_wat_dem_val, value))
+}
+mapping_df <- rbind(mapping_df, new_df_append)
+export_df <- mapping_df %>% filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+
+# Store/export data related to available water (routed/consumption taken into account)
+params <- c('available_water')
+new_df_append['param'] <- params
+new_df_append['units'] <- 'km3'
+new_df_append['class'] <- 'AvailableWater'
+new_df_append['subRegType'] <- 'localBasin'
+new_df_append['x'] <- 2010
+new_df_append['value'] <- 0
+new_df_append['classPalette'] <- 'Blues'
+new_df_append['classLabel'] <- 'AvailableWater'
+for (subReg in subregions){
+  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(supplySubSector %in% c('W_SW_Upstream', 'W_SW_Runoff')) %>%
+    select(cap) %>% mutate(rowsum=rowSums(., na.rm=TRUE))
+  available_water <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, available_water, value))
+}
+mapping_df <- rbind(mapping_df, new_df_append)
+export_df <- mapping_df %>% filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+
+
+# Store/export data related to total water demand
+params <- c('total_water_demand')
+new_df_append['param'] <- params
+new_df_append['units'] <- 'km3'
+new_df_append['class'] <- 'WaterDemand'
+new_df_append['subRegType'] <- 'localBasin'
+new_df_append['x'] <- 2010
+new_df_append['value'] <- 0
+new_df_append['classPalette'] <- 'Blues'
+new_df_append['classLabel'] <- 'WaterDemand'
+for (subReg in subregions){
+  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("W_", supplySubSector)) %>%
+    select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
+  total_demand <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_demand, value))
+}
+mapping_df <- rbind(mapping_df, new_df_append)
+export_df <- mapping_df %>% filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+
+# Store/export data related to total electricity supply
+params <- c('total_elec_supply')
+new_df_append['param'] <- params
+new_df_append['units'] <- 'GWh'
+new_df_append['class'] <- 'ElecSupply'
+new_df_append['subRegType'] <- 'localBasin'
+new_df_append['x'] <- 2010
+new_df_append['value'] <- 0
+new_df_append['classPalette'] <- 'YlOrRd'
+new_df_append['classLabel'] <- 'ElecSupply'
+for (subReg in subregions){
+  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("Electricity_", supplySubSector)) %>%
+    filter(!grepl("Electricity_Import", supplySubSector)) %>%
+    select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
+  total_elec_supply <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_elec_supply, value))
+}
+mapping_df <- rbind(mapping_df, new_df_append)
+export_df <- mapping_df %>% filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+
+#-----------------------------------------------------------------------------------------------------------------------
 
 # Run Metis IO model
 io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario", combSubRegionPlots = 0)  # ioTable0=ioTable0
 io1$ioTbl_Output %>% as.data.frame()
 io1$A_Output %>% as.data.frame()
 
-ioTableTest <- ioTable0 %>% filter(subRegion=="Corfo")
-io2 <- metis.io(ioTable0=ioTableTest, nameAppend = "_SingleRegionTest", combSubRegionPlots = 0)  # ioTable0=ioTable0
-
+# Re-run Metis with A matrix output as input
+# First, add supply sectors back into A matrix. They were dropped, and metis checks for it and crashes if it's not there.
+#Ao <- io1$A_Output %>% as.data.frame() %>% cbind(io1$ioTbl_Output %>% as.data.frame() %>% select(supplySector))
+#io1 <- metis.io(ioTable0=ioTable0, A0=Ao, nameAppend = "_MultiScenario", useIntensity = 1)
 
 #----------------------------------------------------------------------------------------------------------------------#
 
@@ -191,7 +344,8 @@ for(reg in unique(ioTable0$region)){
         t2[[colname]][index_supply_subsec] <- t2[[colname]][index_supply_subsec] + t2$export[index_supply_subsec]*fraction
       }
     }
-    t2$export <- 0  # Reset export to zero
+    index_elec <- grepl('Electricity_', t2$supplySubSector)  # need to set exports to zero in all electricity supply subsectors
+    t2$export[index_elec] <- 0  # Reset export to zero
   }
   # Run Metis IO model
   ioTable0 <- t2
