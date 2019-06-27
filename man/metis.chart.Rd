@@ -4,79 +4,124 @@
 \alias{metis.chart}
 \title{metis.chart}
 \usage{
-metis.chart(data, chartType = "bar", position = "stack", xData = "x",
-  yData = "value", class = "class1", group = "scenario",
+metis.chart(data, dataNorm = NULL, chartType = "bar",
+  position = "stack", xData = "x", yData = "value",
+  class = "class1", group = "scenario",
   classPalette = "classPalette1", classLabel = "classLabel1",
-  xLabel = "xLabel", yLabel = "yLabel", facet_rows = "region",
-  facet_columns = "scenario", ncolrow = 4, scales = "fixed",
-  useNewLabels = 0, units = "units", xBreaksMaj = 10,
-  xBreaksMin = 5, yBreaksMajn = 5, yBreaksMinn = 10,
-  sizeBarLines = 0.5, sizeLines = 1.5, labelTextSize = 4,
-  sectorToOrder = NULL, sectorFromOrder = NULL, removeCols = NULL,
-  bubbleSize = 10, sankeyAxis1 = NULL, sankeyAxis2 = NULL,
-  sankeyAxis1Label = "axis1Label", sankeyAxis2Label = "axis2Label",
-  printFig = T, fileName = "chart", dirOutputs = paste(getwd(),
-  "/outputs", sep = ""), figWidth = 13, figHeight = 9,
-  pdfpng = "png")
+  color = NULL, xLabel = "xLabel", yLabel = "yLabel",
+  facet_rows = NULL, facet_columns = NULL, ncolrow = 4,
+  facetBGColor = "grey30", facetLabelColor = "white",
+  facetLabelSize = 1.5, scales = "fixed", useNewLabels = 0,
+  units = "units", xBreaksMaj = 10, xBreaksMin = 5,
+  yBreaksMajn = 5, yBreaksMinn = 10, sizeBarLines = 0.5,
+  sizeLines = 1.5, sectorToOrder = NULL, sectorFromOrder = NULL,
+  removeCols = NULL, bubbleSize = 10, sankeyAxis1 = NULL,
+  sankeyAxis2 = NULL, sankeyAxis1Label = "axis1Label",
+  sankeyAxis2Label = "axis2Label", sankeyGroupColor = NULL,
+  printFig = T, fileName = "chart", title = NULL,
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), figWidth = 13,
+  figHeight = 9, pdfpng = "png", sankeyLabelsOn = 1,
+  colOrder1 = NULL, colOrderName1 = NULL, colOrder2 = NULL,
+  colOrderName2 = NULL)
 }
 \arguments{
-\item{data}{data table for charting}
+\item{data}{Data table for charting}
 
-\item{chartType}{Type of chart: "bar" or "line"}
+\item{dataNorm}{Normalized data to plot under actual data in bubble plots. Default = NULL,}
+
+\item{chartType}{Type of chart: "bar", "line", "bubble", "sankey"}
 
 \item{position}{Position in bar charts. "identity", "stack" or "dodge"}
 
-\item{xData}{Default "x"}
+\item{xData}{X axis data variable (dataframe or table column name). Default "x".}
 
-\item{yData}{Default "value"}
+\item{yData}{Y axis data variable (dataframe or table column name).Default "value"}
 
-\item{class}{Default "class1"}
+\item{class}{Class data variable (dataframe or table column name).Default "class1"}
 
-\item{group}{Default "scenario"}
+\item{group}{Group (dataframe or table column name).Default "scenario"}
 
-\item{classPalette}{Default "classPalette1"}
+\item{classPalette}{Color palette to use for multiple classes. Must be a color palette eg. c("red","blue","green") or a metis.colors() palette eg. metis.colors()$pal_Basic. Default "classPalette1"}
 
-\item{classLabel}{Default "classLabel1"}
+\item{classLabel}{Label to be used for legend title. Default "classLabel1"}
 
-\item{xLabel}{Default "xLabel"}
+\item{color}{A single color name for single class charts. Default NULL}
 
-\item{yLabel}{Default "units"}
+\item{xLabel}{X axis title. Default "xLabel"}
 
-\item{facet_rows}{Default "region"}
+\item{yLabel}{Y axis title. Default "units"}
 
-\item{facet_columns}{Default "scenario"}
+\item{facet_rows}{Data variable to be used for facet rows (dataframe or table column name).Default "region"}
 
-\item{ncolrow}{Number of columns or Rows for Faceted plots}
+\item{facet_columns}{Data variable to be used for facet columns (dataframe or table column name).Default "scenario"}
 
-\item{scales}{Default "fixed"}
+\item{ncolrow}{Number of columns or Rows for Faceted plots.}
 
-\item{useNewLabels}{Default 0}
+\item{facetBGColor}{Facet background color. Default ="grey30",}
 
-\item{units}{Default "units"}
+\item{facetLabelColor}{Facet title text color. Default= "white",}
 
-\item{xBreaksMaj}{Default 10}
+\item{facetLabelSize}{Facet title text size. Default =1.5,}
 
-\item{xBreaksMin}{Default 5}
+\item{scales}{Fixed or free scales for multiple sankey plots. Default "fixed"}
 
-\item{yBreaksMajn}{Default 5}
+\item{useNewLabels}{"1" or "0". Converts labels to title-case.Default 0}
 
-\item{yBreaksMinn}{Default 10}
+\item{units}{Data units. Default "units"}
 
-\item{sizeBarLines}{Default 0.5}
+\item{xBreaksMaj}{X axis major breaks. Default 10}
 
-\item{sizeLines}{Default 1.5}
+\item{xBreaksMin}{X axis minor breaks. Default 5}
 
-\item{printFig}{Default = T,}
+\item{yBreaksMajn}{Y axis major breaks. Default 5}
 
-\item{fileName}{Default = "map",}
+\item{yBreaksMinn}{Y axis minor breaks. Default 10}
 
-\item{dirOutputs}{Default = paste(getwd(),"/outputs",sep Default = "")}
+\item{sizeBarLines}{Bar plot line size. Default 0.5}
 
-\item{figWidth}{Default = 9,}
+\item{sizeLines}{Line plot line size. Default 1.5}
 
-\item{figHeight}{Default = 7,}
+\item{sectorToOrder}{Order of "to" column variables in bubble plots. Default = NULL,}
 
-\item{pdfpng}{Default = "png",}
+\item{sectorFromOrder}{Order of "from" column variables in bubble plots. Default = NULL,}
+
+\item{removeCols}{Option to remove certain columns from bubble plots. Default = NULL,}
+
+\item{bubbleSize}{Bubble plot bubble size. Default = 10,}
+
+\item{sankeyAxis1}{Sankey axis 1 data variable (dataframe or table column name). Default = NULL,}
+
+\item{sankeyAxis2}{Sankey axis 2 data variable (dataframe or table column name).Default = NULL,}
+
+\item{sankeyAxis1Label}{Sankey axis 1 title data variable (dataframe or table column name).Default = "axis1Label",}
+
+\item{sankeyAxis2Label}{Sankey axis 2 title variable (dataframe or table column name).Default = "axis2Label",}
+
+\item{sankeyGroupColor}{Which axis variables will be used to color flow paths (One of the sankey axis). Default = NULL,}
+
+\item{printFig}{Whether plot should be printed or not. Default = T,}
+
+\item{fileName}{File name for plot to be saved. Default = "chart",}
+
+\item{title}{Figure title. Default = NULL}
+
+\item{dirOutputs}{Output directory to save figure. Default = paste(getwd(),"/outputs",sep Default = "")}
+
+\item{figWidth}{Figure width. Default = 9,}
+
+\item{figHeight}{Figure height. Default = 7,}
+
+\item{pdfpng}{Whether to save plot as pdf or png. Choice between "pdf" or "png". Default = "png",}
+
+\item{sankeyLabelsOn}{Turn on labels for sankey stratum categories. "1" or "0". Default =1}
+
+\item{colOrder1}{Order for sankey column 1. Default = NULL,}
+
+\item{colOrderName1}{Column name with sankey variables for column order 1. Default = NULL,}
+
+\item{colOrder2}{Order for sankey column 1. Default = NULL,}
+
+\item{colOrderName2}{Column name with sankey variables for column order 1. Default = NULL,}
 }
 \value{
 Returns the formatted data used to produce chart
@@ -86,19 +131,65 @@ This function produce different kinds of charts for the metis package.
 iIt requires a table in the Metis format. Each figure is accompanied with a csv table.
 }
 \examples{
-# Examples below show the default chart with minimum information
-# and then adding progressively more details.
-
 library(tibble)
-library(dplyr)
-tbl <- tribble (
-~x,     ~value,
-2010,   15,
-2020,   20,
-2030,   30
-)
-metis.chart(data=tbl,xData="x",yData="value",chartType = "line")
-metis.chart(data=tbl,xData="x",yData="value",chartType = "bar")
+
+# Simple example with progressively more features
+tbl <- tibble::tribble (
+  ~x,     ~value,
+  2010,   15,
+  2020,   20,
+  2030,   30)
+
+ metis.chart(data = tbl, xData = "x", yData = "value", chartType = "line")
+ metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar")
+ metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", color = "blue",
+            yLabel = "New y Label", xLabel = "New X label", printFig = TRUE,
+            fileName = "newFileName", title = "Title")
+ # More detailed data with facets
+  tbl_multi <- tibble::tribble (
+  ~x,     ~value, ~region,     ~scen,   ~fuel,
+  2010,   25,     "region1",   "scenA",  "Oil",
+  2020,   30,     "region1",   "scenA",  "Oil",
+  2030,   40,     "region1",   "scenA",  "Oil",
+  2010,   25,     "region2",   "scenA",  "Oil",
+  2020,   10,     "region2",   "scenA",  "Oil",
+  2030,   60,     "region2",   "scenA",  "Oil",
+  2010,   75,     "region1",   "scenB",  "Oil",
+  2020,   30,     "region1",   "scenB",  "Oil",
+  2030,   20,     "region1",   "scenB",  "Oil",
+  2010,   25,     "region2",   "scenB",  "Oil",
+  2020,   10,     "region2",   "scenB",  "Oil",
+  2030,   90,     "region2",   "scenB",  "Oil",
+  2010,   55,     "region1",   "scenA",  "Gas",
+  2020,   40,     "region1",   "scenA",  "Gas",
+  2030,   30,     "region1",   "scenA",  "Gas",
+  2010,   35,     "region2",   "scenA",  "Gas",
+  2020,   30,     "region2",   "scenA",  "Gas",
+  2030,   32,     "region2",   "scenA",  "Gas",
+  2010,   16,     "region1",   "scenB",  "Gas",
+  2020,   28,     "region1",   "scenB",  "Gas",
+  2030,   39,     "region1",   "scenB",  "Gas",
+  2010,   12,     "region2",   "scenB",  "Gas",
+  2020,   26,     "region2",   "scenB",  "Gas",
+  2030,   37,     "region2",   "scenB",  "Gas")
+
+  my_pal <- RColorBrewer::brewer.pal(9, "Set1")
+
+  metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel",
+            chartType = "line",  classPalette=my_pal,
+            facet_rows="region",facet_columns="scen")
+
+  my_pal <- metis.colors()$pal_Basic
+
+  metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel", position="stack",
+            group="fuel",chartType = "bar", classPalette=my_pal,
+            facet_rows="region",facet_columns="scen")
+
+  metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel", position="dodge",
+            group="fuel",chartType = "bar", classPalette=my_pal,
+            facet_rows="region",facet_columns="scen")
 }
+\keyword{bubble,}
 \keyword{charts,}
-\keyword{diffplots}
+\keyword{diffplots,}
+\keyword{sankey.}

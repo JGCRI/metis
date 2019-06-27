@@ -12,12 +12,10 @@ metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
   copySingleTethysScenbyXanthos = NULL, xanthosFolder = "NA",
   xanthosFiles = "NA", xanthosScenarioAssign = "NA",
   xanthosCoordinatesPath = "NA", xanthosGridAreaHecsPath = "NA",
-  biaFolder = "NA", biaFiles = "NA", biaScenarioAssign = "NA",
-  zelusFolder = "NA", zelusScenario = "NA", zelusUnits = "NA",
-  zelusFiles = "NA", scarcityXanthosRollMeanWindow = 10,
-  spanLowess = 0.25, popFolder = "NA", popFiles = "NA",
-  popUnits = "NA", dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  reReadData = 1, gridMetisData = paste(getwd(),
+  scarcityXanthosRollMeanWindow = 10, spanLowess = 0.25,
+  popFolder = "NA", popFiles = "NA", biaFolder = "NA",
+  biaFiles = "NA", popUnits = "NA", dirOutputs = paste(getwd(),
+  "/outputs", sep = ""), reReadData = 1, gridMetisData = paste(getwd(),
   "/outputs/Grids/gridMetis.RData", sep = ""), sqliteUSE = F,
   sqliteDBNamePath = paste(getwd(), "/outputs/Grids/gridMetis.sqlite",
   sep = ""))
@@ -51,20 +49,6 @@ metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
 
 \item{xanthosGridAreaHecsPath}{=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/reference/Grid_Areas_ID.csv",sep=""),}
 
-\item{biaFolder}{andym Bia Folder Path}
-
-\item{biaFiles}{andym Bia Files to Read}
-
-\item{biaScenarioAssign}{andym Default "NA". Scenario name if testing a single scenario.}
-
-\item{zelusFolder}{andym Full path to zelus outputs}
-
-\item{zelusScenario}{andym Scenario name for zelus run}
-
-\item{zelusUnits}{andym No Default}
-
-\item{zelusFiles}{andym Default =c(?_?'edtrnsp','edbld','edindus'?_?)}
-
 \item{scarcityXanthosRollMeanWindow}{Default = 10,}
 
 \item{spanLowess}{Default = 0.25}
@@ -72,6 +56,10 @@ metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
 \item{popFolder}{Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")}
 
 \item{popFiles}{Default = <-"grid_pop_map"}
+
+\item{biaFolder}{Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")}
+
+\item{biaFiles}{Default = <-"grid_bia_map"}
 
 \item{popUnits}{Default = <-"person"}
 

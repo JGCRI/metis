@@ -57,6 +57,8 @@
 #' @param mapTitleSize Default=1
 #' @param numeric2Cat_list Default=NULL,
 #' @param catParam Default=NULL
+#' @param innerMargins Default =c(0,0,0,0), # bottom, left, top, right
+#' @param outerMargins Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
 #' @export
@@ -76,7 +78,7 @@ metis.map<-function(dataPolygon=NULL,
                   labels=F,
                   labelsSize=1.2,
                   labelsColor="black",
-                  labelsAutoPlace=F,
+                  labelsAutoPlace=T,
                   figWidth=9,
                   figHeight=7,
                   legendWidth=-1,
@@ -104,9 +106,9 @@ metis.map<-function(dataPolygon=NULL,
                   facetLabelColor = "white",
                   facetLabelSize=1.5,
                   alpha=1,
-                  fillcolorNA="grey30",
+                  fillcolorNA="gray",
                   fillshowNA=NA,
-                  fillcolorNULL="grey30",
+                  fillcolorNULL="gray",
                   facetsON=T,
                   panelLabel=NULL,
                   multiFacetRows=NULL,
@@ -114,7 +116,9 @@ metis.map<-function(dataPolygon=NULL,
                   mapTitle=NULL,
                   mapTitleSize=1,
                   numeric2Cat_list=NULL,
-                  catParam=NULL
+                  catParam=NULL,
+                  innerMargins=c(0.01,0.01,0.01,0.01), # bottom, left, top, right
+                  outerMargins=c(0.01,0.01,0.01,0.01) # bottom, left, top, right
                   ){
 
 
@@ -176,6 +180,8 @@ metis.map<-function(dataPolygon=NULL,
   # mapTitleSize=1
   # numeric2Cat_list=NULL
   # catParam=NULL
+  # innerMargins=c(0,0,0,0)
+  # outerMargins=c(0.01,0.01,0.01,0.01)
 
 #------------------
 # Initialize variables to remove binding errors if needed
@@ -184,7 +190,8 @@ metis.map<-function(dataPolygon=NULL,
 NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette
 
 legendTitle=gsub(" ","\n",legendTitle)
-tmap::tmap_mode(mode = c("plot"), max.categories=10000)
+tmap::tmap_mode(mode = c("plot"))
+tmap::tmap_options(max.categories=10000)
 
 
 #------------------------------------------
@@ -215,11 +222,15 @@ if(!is.null(dataGrid)){
     if(!is.null(shape)){
     raster<-raster::stack(raster)
     raster::projection(raster)<-sp::proj4string(shape)
-    raster<-raster::mask(raster,shape)
+    shape_ras <- raster::rasterize(shape, raster[[1]], getCover=TRUE)
+    shape_ras[shape_ras==0] <- NA
+    raster<-raster::mask(raster,shape_ras)
     raster<-methods::as(raster, "SpatialPixelsDataFrame")
     raster@data<-Filter(function(x)!all(is.na(x)), raster@data)
+    # Replace spaces because raster::stack(raster) will add periods which then don't correspond to fillColumn names
+    fillColumn<-gsub("\\ ",".",fillColumn)
     fillColumn<-fillColumn[c(fillColumn %in% names(raster@data))]
-    }
+   }
 }
 
 
@@ -332,13 +343,16 @@ if(length(fillPalette)==1){
 if(!is.null(raster)){
 
 
-  if(is.null(legendBreaks)){legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(dataGrid@data%>%dplyr::select(fillColumn)%>%as.matrix())}
-  map<-tmap::tm_shape(raster) + tmap::tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
+  if(is.null(legendBreaks)){legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(raster@data%>%dplyr::select(fillColumn)%>%as.matrix())}
+
+  if(!is.null(shape)){map<-tmap::tm_shape(raster, bbox=shape@bbox)} else {map<-tmap::tm_shape(raster)}
+
+  map<- map + tmap::tm_raster(col=fillColumn,palette = fillPalette, title=legendTitle,
                                   style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks,legend.show = legendShow)
 
-  if(!is.null(raster)){checkFacets=length(names(raster))}else{
-  }
-  if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
+  if(!is.null(raster)){checkFacets=length(names(raster))}
+
+  if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn) & facetsON==T){
     map<- map + tmap::tm_facets(free.scales.fill=facetFreeScale,
                           nrow=facetRows,
                           ncol=min(facetCols,length(fillColumn))) +
@@ -351,6 +365,7 @@ if(!is.null(raster)){
 
 }
 
+if(!is.null(shape)){
 if(is.null(underLayer)){
   if(grepl("tmap",class(shape)[1],ignore.case=T)){
     if(!is.null(map)){map<-map+shape}else{map<-shape}
@@ -361,7 +376,7 @@ if(is.null(underLayer)){
       if(!is.null(map)){map<-map+underLayer+shape}else{map<-underLayer+shape}
       }else
         if(!is.null(map)){map<-underLayer+map+tmap::tm_shape(shape)}else{map<-underLayer+tmap::tm_shape(shape)}
-  }
+  }}
 
 if(!is.null(shape)){
 
@@ -378,7 +393,9 @@ if(is.null(legendBreaks)){
   if(length(scales::pretty_breaks(n=legendFixedBreaks)(shape@data%>%dplyr::select(fillColumn)%>%as.matrix()))>1){
     legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(shape@data%>%dplyr::select(fillColumn)%>%as.matrix())
   }else{legendBreaks=NULL}
-  }
+}
+
+if(length(unique(legendBreaks))==1){legendStyle="kmeans"}
 #names(shape)[names(shape) %in% fillColumn]<-gsub(" ","_",names(shape)[names(shape) %in% fillColumn])
 map<-map + tmap::tm_fill(col=fillColumn, palette = fillPalette, title=legendTitle,
                    style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks,alpha=alpha,colorNA=fillcolorNA,
@@ -443,7 +460,7 @@ if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
               legend.text.size = legendTextSize)+
     tmap::tm_layout(frame = frameShow,bg.color=bgColor)+
     tmap::tm_layout(main.title.position="left",main.title.size=1.5,
-              inner.margins = rep(0,4),outer.margins=rep(0.01,4)) +
+              inner.margins = innerMargins,outer.margins=outerMargins) +
     tmap::tm_layout(panel.label.bg.color = facetBGColor,
                     panel.label.color = facetLabelColor,
                     panel.label.size = facetLabelSize)
@@ -473,7 +490,17 @@ if(nchar(paste(dirOutputs,"/",fname,sep=""))>250){
 
 if(!dir.exists(dirOutputs)){
   print(paste("dirOutputs provided: ",dirOutputs," does not exist. Saving to: ", getwd(),sep=""))
-  diroutputs=getwd()}else{
+
+  if (!dir.exists(paste(dirOutputs, "/outputsTemp", sep = ""))){
+    dir.create(paste(dirOutputs, "/outputstemp", sep = ""))}
+
+  metis.printPdfPng(figure=map,
+                    dir=dirOutputs,
+                    filename=fname,
+                    figWidth=figWidth,
+                    figHeight=figHeight,
+                    pdfpng=pdfpng)
+  }else{
 metis.printPdfPng(figure=map,
                 dir=dirOutputs,
                 filename=fname,

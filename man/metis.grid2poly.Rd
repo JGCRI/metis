@@ -4,9 +4,9 @@
 \alias{metis.grid2poly}
 \title{metis.grid2poly}
 \usage{
-metis.grid2poly(grid = NULL, boundaryRegionsSelect = NULL,
-  subRegShape = NULL, subRegShpFolder = NULL, subRegShpFile = NULL,
-  subRegCol = NULL, subRegType = "subRegType", aggType = NULL,
+metis.grid2poly(grid = NULL, subRegShape = NULL,
+  subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
+  subRegType = "subRegType", aggType = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
   labelsSize = 1.2, paramsSelect = "All", sqliteUSE = F,
   sqliteDBNamePath = paste(getwd(), "/outputs/Grids/gridMetis.sqlite",
@@ -14,8 +14,6 @@ metis.grid2poly(grid = NULL, boundaryRegionsSelect = NULL,
 }
 \arguments{
 \item{grid}{Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",}
-
-\item{boundaryRegionsSelect}{Default=NULL. Larger region name which will be used as the folder name for outputs.}
 
 \item{subRegShape}{Default=NULL. shapefile over which grid data is to be aggregated.}
 

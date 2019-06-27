@@ -1,0 +1,1063 @@
+"scenario","region","param","sources","x","xLabel","vintage","units","aggregate","origScen","origQuery","origUnits","origX","value"
+"Eg1","Argentina","aggLandAlloc","Sources",1975,"Year","Vint_1975","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",1975,2754.9402735387
+"Eg1","Argentina","aggLandAlloc","Sources",1990,"Year","Vint_1990","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",1990,2754.94065195954
+"Eg1","Argentina","aggLandAlloc","Sources",2005,"Year","Vint_2005","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2005,2754.94175417516
+"Eg1","Argentina","aggLandAlloc","Sources",2010,"Year","Vint_2010","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2010,2754.93965017146
+"Eg1","Argentina","aggLandAlloc","Sources",2015,"Year","Vint_2015","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2015,2754.93955806019
+"Eg1","Argentina","aggLandAlloc","Sources",2020,"Year","Vint_2020","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2020,2754.93959290391
+"Eg1","Argentina","aggLandAlloc","Sources",2025,"Year","Vint_2025","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2025,2754.93941140127
+"Eg1","Argentina","aggLandAlloc","Sources",2030,"Year","Vint_2030","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2030,2754.939493707
+"Eg1","Argentina","aggLandAlloc","Sources",2035,"Year","Vint_2035","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2035,2754.93964026248
+"Eg1","Argentina","aggLandAlloc","Sources",2040,"Year","Vint_2040","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2040,2754.93956625299
+"Eg1","Argentina","aggLandAlloc","Sources",2045,"Year","Vint_2045","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2045,2754.93951851572
+"Eg1","Argentina","aggLandAlloc","Sources",2050,"Year","Vint_2050","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2050,2754.93951260163
+"Eg1","Argentina","aggLandAlloc","Sources",2055,"Year","Vint_2055","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2055,2754.9395185394
+"Eg1","Argentina","aggLandAlloc","Sources",2060,"Year","Vint_2060","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2060,2754.93935220282
+"Eg1","Argentina","aggLandAlloc","Sources",2065,"Year","Vint_2065","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2065,2754.93958004738
+"Eg1","Argentina","aggLandAlloc","Sources",2070,"Year","Vint_2070","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2070,2754.93949935786
+"Eg1","Argentina","aggLandAlloc","Sources",2075,"Year","Vint_2075","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2075,2754.93975904945
+"Eg1","Argentina","aggLandAlloc","Sources",2080,"Year","Vint_2080","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2080,2754.93968846549
+"Eg1","Argentina","aggLandAlloc","Sources",2085,"Year","Vint_2085","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2085,2754.93952000785
+"Eg1","Argentina","aggLandAlloc","Sources",2090,"Year","Vint_2090","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2090,2754.93935756396
+"Eg1","Argentina","aggLandAlloc","Sources",2095,"Year","Vint_2095","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2095,2754.93963257217
+"Eg1","Argentina","aggLandAlloc","Sources",2100,"Year","Vint_2100","Land Allocation (1000 km^2)","sum","ExampleScen1","aggregated land allocation","thous km2",2100,2754.93966222516
+"Eg1","Argentina","agProdBiomass",NA,2020,"Year","Vint_2020","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2020,12.0897636671895
+"Eg1","Argentina","agProdBiomass",NA,2025,"Year","Vint_2025","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2025,26.1213396740919
+"Eg1","Argentina","agProdBiomass",NA,2030,"Year","Vint_2030","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2030,47.8368603990307
+"Eg1","Argentina","agProdBiomass",NA,2035,"Year","Vint_2035","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2035,70.9375938013245
+"Eg1","Argentina","agProdBiomass",NA,2040,"Year","Vint_2040","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2040,83.1802693553618
+"Eg1","Argentina","agProdBiomass",NA,2045,"Year","Vint_2045","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2045,95.987247185548
+"Eg1","Argentina","agProdBiomass",NA,2050,"Year","Vint_2050","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2050,107.922617389356
+"Eg1","Argentina","agProdBiomass",NA,2055,"Year","Vint_2055","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2055,121.79833047687
+"Eg1","Argentina","agProdBiomass",NA,2060,"Year","Vint_2060","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2060,138.170094065537
+"Eg1","Argentina","agProdBiomass",NA,2065,"Year","Vint_2065","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2065,150.936270582865
+"Eg1","Argentina","agProdBiomass",NA,2070,"Year","Vint_2070","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2070,164.367243395568
+"Eg1","Argentina","agProdBiomass",NA,2075,"Year","Vint_2075","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2075,177.651137067899
+"Eg1","Argentina","agProdBiomass",NA,2080,"Year","Vint_2080","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2080,190.052755907032
+"Eg1","Argentina","agProdBiomass",NA,2085,"Year","Vint_2085","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2085,201.366948524621
+"Eg1","Argentina","agProdBiomass",NA,2090,"Year","Vint_2090","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2090,211.317779558946
+"Eg1","Argentina","agProdBiomass",NA,2095,"Year","Vint_2095","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2095,220.111587643343
+"Eg1","Argentina","agProdBiomass",NA,2100,"Year","Vint_2100","Biomass Production (TWh)","sum","ExampleScen1","Ag Production by Crop Type","EJ",2100,231.026681255996
+"Eg1","Argentina","agProdByCrop",NA,1975,"Year","Vint_1975","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",1975,168.055267485397
+"Eg1","Argentina","agProdByCrop",NA,1990,"Year","Vint_1990","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",1990,258.123873431045
+"Eg1","Argentina","agProdByCrop",NA,2005,"Year","Vint_2005","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2005,236.381143108008
+"Eg1","Argentina","agProdByCrop",NA,2010,"Year","Vint_2010","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2010,249.732920938911
+"Eg1","Argentina","agProdByCrop",NA,2015,"Year","Vint_2015","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2015,261.514243151504
+"Eg1","Argentina","agProdByCrop",NA,2020,"Year","Vint_2020","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2020,282.193183291615
+"Eg1","Argentina","agProdByCrop",NA,2025,"Year","Vint_2025","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2025,305.2328798793
+"Eg1","Argentina","agProdByCrop",NA,2030,"Year","Vint_2030","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2030,328.495393130755
+"Eg1","Argentina","agProdByCrop",NA,2035,"Year","Vint_2035","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2035,349.967267240071
+"Eg1","Argentina","agProdByCrop",NA,2040,"Year","Vint_2040","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2040,370.367896856469
+"Eg1","Argentina","agProdByCrop",NA,2045,"Year","Vint_2045","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2045,389.879227753522
+"Eg1","Argentina","agProdByCrop",NA,2050,"Year","Vint_2050","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2050,408.134723606719
+"Eg1","Argentina","agProdByCrop",NA,2055,"Year","Vint_2055","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2055,416.523848515151
+"Eg1","Argentina","agProdByCrop",NA,2060,"Year","Vint_2060","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2060,422.663256159442
+"Eg1","Argentina","agProdByCrop",NA,2065,"Year","Vint_2065","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2065,426.391179372636
+"Eg1","Argentina","agProdByCrop",NA,2070,"Year","Vint_2070","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2070,428.361088260153
+"Eg1","Argentina","agProdByCrop",NA,2075,"Year","Vint_2075","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2075,428.738371827211
+"Eg1","Argentina","agProdByCrop",NA,2080,"Year","Vint_2080","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2080,427.609120590943
+"Eg1","Argentina","agProdByCrop",NA,2085,"Year","Vint_2085","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2085,425.192516094057
+"Eg1","Argentina","agProdByCrop",NA,2090,"Year","Vint_2090","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2090,420.96416355133
+"Eg1","Argentina","agProdByCrop",NA,2095,"Year","Vint_2095","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2095,415.993480828198
+"Eg1","Argentina","agProdByCrop",NA,2100,"Year","Vint_2100","Agricultural Production (Mt)","sum","ExampleScen1","Ag Production by Crop Type","Mt",2100,410.678381589038
+"Eg1","Argentina","agProdbyIrrRfd","Sources",1975,"Year","Vint_1975","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",1975,168.055267485397
+"Eg1","Argentina","agProdbyIrrRfd","Sources",1990,"Year","Vint_1990","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",1990,258.123873431045
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2005,"Year","Vint_2005","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2005,236.381143108008
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2010,"Year","Vint_2010","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2010,249.732920938911
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2015,"Year","Vint_2015","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2015,261.514243151504
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2020,"Year","Vint_2020","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2020,282.193183291615
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2025,"Year","Vint_2025","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2025,305.2328798793
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2030,"Year","Vint_2030","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2030,328.495393130755
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2035,"Year","Vint_2035","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2035,349.967267240071
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2040,"Year","Vint_2040","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2040,370.367896856469
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2045,"Year","Vint_2045","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2045,389.879227753522
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2050,"Year","Vint_2050","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2050,408.134723606719
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2055,"Year","Vint_2055","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2055,416.523848515151
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2060,"Year","Vint_2060","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2060,422.663256159442
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2065,"Year","Vint_2065","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2065,426.391179372636
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2070,"Year","Vint_2070","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2070,428.361088260153
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2075,"Year","Vint_2075","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2075,428.738371827211
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2080,"Year","Vint_2080","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2080,427.609120590943
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2085,"Year","Vint_2085","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2085,425.192516094057
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2090,"Year","Vint_2090","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2090,420.96416355133
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2095,"Year","Vint_2095","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2095,415.993480828198
+"Eg1","Argentina","agProdbyIrrRfd","Sources",2100,"Year","Vint_2100","Ag Production (Mt)","sum","ExampleScen1","ag production by tech","Mt",2100,410.678381589038
+"Eg1","Argentina","agProdForest",NA,1975,"Year","Vint_1975","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",1975,0.014283612211
+"Eg1","Argentina","agProdForest",NA,1990,"Year","Vint_1990","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",1990,0.019353915211
+"Eg1","Argentina","agProdForest",NA,2005,"Year","Vint_2005","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2005,0.028024803111
+"Eg1","Argentina","agProdForest",NA,2010,"Year","Vint_2010","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2010,0.029243603111
+"Eg1","Argentina","agProdForest",NA,2015,"Year","Vint_2015","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2015,0.031148087722
+"Eg1","Argentina","agProdForest",NA,2020,"Year","Vint_2020","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2020,0.032945587011
+"Eg1","Argentina","agProdForest",NA,2025,"Year","Vint_2025","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2025,0.034478366744
+"Eg1","Argentina","agProdForest",NA,2030,"Year","Vint_2030","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2030,0.035977644114
+"Eg1","Argentina","agProdForest",NA,2035,"Year","Vint_2035","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2035,0.03768418935
+"Eg1","Argentina","agProdForest",NA,2040,"Year","Vint_2040","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2040,0.039224453735
+"Eg1","Argentina","agProdForest",NA,2045,"Year","Vint_2045","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2045,0.040737969797
+"Eg1","Argentina","agProdForest",NA,2050,"Year","Vint_2050","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2050,0.042164846128
+"Eg1","Argentina","agProdForest",NA,2055,"Year","Vint_2055","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2055,0.043160264738
+"Eg1","Argentina","agProdForest",NA,2060,"Year","Vint_2060","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2060,0.043905040986
+"Eg1","Argentina","agProdForest",NA,2065,"Year","Vint_2065","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2065,0.044467115798
+"Eg1","Argentina","agProdForest",NA,2070,"Year","Vint_2070","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2070,0.044792207531
+"Eg1","Argentina","agProdForest",NA,2075,"Year","Vint_2075","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2075,0.04498778461
+"Eg1","Argentina","agProdForest",NA,2080,"Year","Vint_2080","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2080,0.0450931834
+"Eg1","Argentina","agProdForest",NA,2085,"Year","Vint_2085","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2085,0.04508029497
+"Eg1","Argentina","agProdForest",NA,2090,"Year","Vint_2090","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2090,0.04492147475
+"Eg1","Argentina","agProdForest",NA,2095,"Year","Vint_2095","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2095,0.0446643731
+"Eg1","Argentina","agProdForest",NA,2100,"Year","Vint_2100","Agricultural Production (billion m3)","sum","ExampleScen1","Ag Production by Crop Type","billion m3",2100,0.04432199469
+"Eg1","Argentina","co2emission","Sources",1975,"Year","Vint_1975","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",1975,53.850988906
+"Eg1","Argentina","co2emission","Sources",1990,"Year","Vint_1990","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",1990,105.016451976333
+"Eg1","Argentina","co2emission","Sources",2005,"Year","Vint_2005","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2005,153.969816407
+"Eg1","Argentina","co2emission","Sources",2010,"Year","Vint_2010","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2010,177.53014059
+"Eg1","Argentina","co2emission","Sources",2015,"Year","Vint_2015","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2015,198.850235774667
+"Eg1","Argentina","co2emission","Sources",2020,"Year","Vint_2020","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2020,209.042711507667
+"Eg1","Argentina","co2emission","Sources",2025,"Year","Vint_2025","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2025,230.236312826667
+"Eg1","Argentina","co2emission","Sources",2030,"Year","Vint_2030","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2030,248.998796559333
+"Eg1","Argentina","co2emission","Sources",2035,"Year","Vint_2035","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2035,264.6028000253
+"Eg1","Argentina","co2emission","Sources",2040,"Year","Vint_2040","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2040,276.6629399996
+"Eg1","Argentina","co2emission","Sources",2045,"Year","Vint_2045","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2045,287.3225228335
+"Eg1","Argentina","co2emission","Sources",2050,"Year","Vint_2050","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2050,297.8096670868
+"Eg1","Argentina","co2emission","Sources",2055,"Year","Vint_2055","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2055,308.791855938317
+"Eg1","Argentina","co2emission","Sources",2060,"Year","Vint_2060","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2060,311.017320621587
+"Eg1","Argentina","co2emission","Sources",2065,"Year","Vint_2065","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2065,320.342411550873
+"Eg1","Argentina","co2emission","Sources",2070,"Year","Vint_2070","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2070,327.063326862532
+"Eg1","Argentina","co2emission","Sources",2075,"Year","Vint_2075","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2075,331.811015256154
+"Eg1","Argentina","co2emission","Sources",2080,"Year","Vint_2080","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2080,340.959067935644
+"Eg1","Argentina","co2emission","Sources",2085,"Year","Vint_2085","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2085,393.42788539692
+"Eg1","Argentina","co2emission","Sources",2090,"Year","Vint_2090","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2090,394.56996585439
+"Eg1","Argentina","co2emission","Sources",2095,"Year","Vint_2095","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2095,385.980596187487
+"Eg1","Argentina","co2emission","Sources",2100,"Year","Vint_2100","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions","MTC",2100,371.071880535767
+"Eg1","Argentina","co2emissionByEndUse","Sources",1975,"Year","Vint_1975","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",1975,53.850988906
+"Eg1","Argentina","co2emissionByEndUse","Sources",1980,"Year","Vint_1980","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",1980,19.369745484892
+"Eg1","Argentina","co2emissionByEndUse","Sources",1985,"Year","Vint_1985","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",1985,10.8387342576209
+"Eg1","Argentina","co2emissionByEndUse","Sources",1990,"Year","Vint_1990","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",1990,105.016228719685
+"Eg1","Argentina","co2emissionByEndUse","Sources",1990,"Year","Vint_1990","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",1990,5.58270057011333
+"Eg1","Argentina","co2emissionByEndUse","Sources",1995,"Year","Vint_1995","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",1995,18.0834115824186
+"Eg1","Argentina","co2emissionByEndUse","Sources",2000,"Year","Vint_2000","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2000,16.6021917938756
+"Eg1","Argentina","co2emissionByEndUse","Sources",2005,"Year","Vint_2005","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2005,153.96964495121
+"Eg1","Argentina","co2emissionByEndUse","Sources",2005,"Year","Vint_2005","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2005,14.3972191972327
+"Eg1","Argentina","co2emissionByEndUse","Sources",2010,"Year","Vint_2010","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2010,177.529960247988
+"Eg1","Argentina","co2emissionByEndUse","Sources",2010,"Year","Vint_2010","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2010,205.715550897553
+"Eg1","Argentina","co2emissionByEndUse","Sources",2015,"Year","Vint_2015","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2015,198.850120447646
+"Eg1","Argentina","co2emissionByEndUse","Sources",2015,"Year","Vint_2015","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2015,-2.9132547242073
+"Eg1","Argentina","co2emissionByEndUse","Sources",2020,"Year","Vint_2020","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2020,209.042595943569
+"Eg1","Argentina","co2emissionByEndUse","Sources",2020,"Year","Vint_2020","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2020,4.75386602101667
+"Eg1","Argentina","co2emissionByEndUse","Sources",2025,"Year","Vint_2025","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2025,230.236205489281
+"Eg1","Argentina","co2emissionByEndUse","Sources",2025,"Year","Vint_2025","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2025,12.3347810595977
+"Eg1","Argentina","co2emissionByEndUse","Sources",2030,"Year","Vint_2030","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2030,248.99870689736
+"Eg1","Argentina","co2emissionByEndUse","Sources",2030,"Year","Vint_2030","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2030,12.5203030066979
+"Eg1","Argentina","co2emissionByEndUse","Sources",2035,"Year","Vint_2035","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2035,264.602739647258
+"Eg1","Argentina","co2emissionByEndUse","Sources",2035,"Year","Vint_2035","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2035,10.7941693216247
+"Eg1","Argentina","co2emissionByEndUse","Sources",2040,"Year","Vint_2040","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2040,276.662915857113
+"Eg1","Argentina","co2emissionByEndUse","Sources",2040,"Year","Vint_2040","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2040,7.70801056783156
+"Eg1","Argentina","co2emissionByEndUse","Sources",2045,"Year","Vint_2045","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2045,287.322538771922
+"Eg1","Argentina","co2emissionByEndUse","Sources",2045,"Year","Vint_2045","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2045,3.41820759362086
+"Eg1","Argentina","co2emissionByEndUse","Sources",2050,"Year","Vint_2050","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2050,297.809722662698
+"Eg1","Argentina","co2emissionByEndUse","Sources",2050,"Year","Vint_2050","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2050,0.879478659700188
+"Eg1","Argentina","co2emissionByEndUse","Sources",2055,"Year","Vint_2055","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2055,308.791954068829
+"Eg1","Argentina","co2emissionByEndUse","Sources",2055,"Year","Vint_2055","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2055,-1.27256223144214
+"Eg1","Argentina","co2emissionByEndUse","Sources",2060,"Year","Vint_2060","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2060,311.017488178035
+"Eg1","Argentina","co2emissionByEndUse","Sources",2060,"Year","Vint_2060","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2060,-1.88196671700176
+"Eg1","Argentina","co2emissionByEndUse","Sources",2065,"Year","Vint_2065","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2065,320.342628357259
+"Eg1","Argentina","co2emissionByEndUse","Sources",2065,"Year","Vint_2065","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2065,-3.81052582310279
+"Eg1","Argentina","co2emissionByEndUse","Sources",2070,"Year","Vint_2070","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2070,327.063622636781
+"Eg1","Argentina","co2emissionByEndUse","Sources",2070,"Year","Vint_2070","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2070,-3.93858269412883
+"Eg1","Argentina","co2emissionByEndUse","Sources",2075,"Year","Vint_2075","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2075,331.811405246163
+"Eg1","Argentina","co2emissionByEndUse","Sources",2075,"Year","Vint_2075","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2075,-4.82240994525019
+"Eg1","Argentina","co2emissionByEndUse","Sources",2080,"Year","Vint_2080","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2080,340.959539854519
+"Eg1","Argentina","co2emissionByEndUse","Sources",2080,"Year","Vint_2080","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2080,-5.73786439360507
+"Eg1","Argentina","co2emissionByEndUse","Sources",2085,"Year","Vint_2085","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2085,393.428244320579
+"Eg1","Argentina","co2emissionByEndUse","Sources",2085,"Year","Vint_2085","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2085,-6.84731273319709
+"Eg1","Argentina","co2emissionByEndUse","Sources",2090,"Year","Vint_2090","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2090,394.570466727419
+"Eg1","Argentina","co2emissionByEndUse","Sources",2090,"Year","Vint_2090","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2090,-7.93064367627492
+"Eg1","Argentina","co2emissionByEndUse","Sources",2095,"Year","Vint_2095","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2095,385.980838208532
+"Eg1","Argentina","co2emissionByEndUse","Sources",2095,"Year","Vint_2095","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2095,-8.76953324386513
+"Eg1","Argentina","co2emissionByEndUse","Sources",2100,"Year","Vint_2100","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MTC",2100,371.071961172104
+"Eg1","Argentina","co2emissionByEndUse","Sources",2100,"Year","Vint_2100","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen1","CO2 Emissions by enduse","MtC/yr",2100,-9.23179002297616
+"Eg1","Argentina","elecByTech","Sources",1990,"Year","Vint_1990","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",1990,50.5339719444448
+"Eg1","Argentina","elecByTech","Sources",2005,"Year","Vint_2005","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2005,104.893916666667
+"Eg1","Argentina","elecByTech","Sources",2010,"Year","Vint_2010","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2010,124.199861111112
+"Eg1","Argentina","elecByTech","Sources",2015,"Year","Vint_2015","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2015,190.914487361113
+"Eg1","Argentina","elecByTech","Sources",2020,"Year","Vint_2020","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2020,200.971017894446
+"Eg1","Argentina","elecByTech","Sources",2025,"Year","Vint_2025","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2025,234.451576061113
+"Eg1","Argentina","elecByTech","Sources",2030,"Year","Vint_2030","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2030,267.857474561113
+"Eg1","Argentina","elecByTech","Sources",2035,"Year","Vint_2035","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2035,299.762178394447
+"Eg1","Argentina","elecByTech","Sources",2040,"Year","Vint_2040","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2040,328.680493338891
+"Eg1","Argentina","elecByTech","Sources",2045,"Year","Vint_2045","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2045,354.595530227781
+"Eg1","Argentina","elecByTech","Sources",2050,"Year","Vint_2050","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2050,378.684252472225
+"Eg1","Argentina","elecByTech","Sources",2055,"Year","Vint_2055","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2055,400.913022583336
+"Eg1","Argentina","elecByTech","Sources",2060,"Year","Vint_2060","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2060,419.702214805559
+"Eg1","Argentina","elecByTech","Sources",2065,"Year","Vint_2065","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2065,437.781718083337
+"Eg1","Argentina","elecByTech","Sources",2070,"Year","Vint_2070","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2070,452.587233805559
+"Eg1","Argentina","elecByTech","Sources",2075,"Year","Vint_2075","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2075,465.168151750004
+"Eg1","Argentina","elecByTech","Sources",2080,"Year","Vint_2080","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2080,477.037509944448
+"Eg1","Argentina","elecByTech","Sources",2085,"Year","Vint_2085","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2085,487.800142138893
+"Eg1","Argentina","elecByTech","Sources",2090,"Year","Vint_2090","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2090,494.397484638893
+"Eg1","Argentina","elecByTech","Sources",2095,"Year","Vint_2095","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2095,500.169521250004
+"Eg1","Argentina","elecByTech","Sources",2100,"Year","Vint_2100","Electricity Generation (TWh)","sum","ExampleScen1","Electricity generation by aggregate technology","EJ",2100,504.029902500004
+"Eg1","Argentina","elecCapBySubsector","Sources",1990,"Year","Vint_1990","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",1990,8.5522069562393
+"Eg1","Argentina","elecCapBySubsector","Sources",2005,"Year","Vint_2005","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2005,17.5956012596802
+"Eg1","Argentina","elecCapBySubsector","Sources",2010,"Year","Vint_2010","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2010,20.244213967203
+"Eg1","Argentina","elecCapBySubsector","Sources",2015,"Year","Vint_2015","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2015,29.9309924651043
+"Eg1","Argentina","elecCapBySubsector","Sources",2020,"Year","Vint_2020","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2020,31.5281915629973
+"Eg1","Argentina","elecCapBySubsector","Sources",2025,"Year","Vint_2025","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2025,36.701338691384
+"Eg1","Argentina","elecCapBySubsector","Sources",2030,"Year","Vint_2030","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2030,42.1055153424344
+"Eg1","Argentina","elecCapBySubsector","Sources",2035,"Year","Vint_2035","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2035,47.5111403307696
+"Eg1","Argentina","elecCapBySubsector","Sources",2040,"Year","Vint_2040","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2040,52.7076510998821
+"Eg1","Argentina","elecCapBySubsector","Sources",2045,"Year","Vint_2045","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2045,57.3811021930454
+"Eg1","Argentina","elecCapBySubsector","Sources",2050,"Year","Vint_2050","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2050,62.0449269214423
+"Eg1","Argentina","elecCapBySubsector","Sources",2055,"Year","Vint_2055","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2055,66.3002182520575
+"Eg1","Argentina","elecCapBySubsector","Sources",2060,"Year","Vint_2060","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2060,73.0137762192628
+"Eg1","Argentina","elecCapBySubsector","Sources",2065,"Year","Vint_2065","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2065,77.3673146816308
+"Eg1","Argentina","elecCapBySubsector","Sources",2070,"Year","Vint_2070","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2070,81.9340247578274
+"Eg1","Argentina","elecCapBySubsector","Sources",2075,"Year","Vint_2075","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2075,86.493566909677
+"Eg1","Argentina","elecCapBySubsector","Sources",2080,"Year","Vint_2080","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2080,90.8809376075577
+"Eg1","Argentina","elecCapBySubsector","Sources",2085,"Year","Vint_2085","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2085,94.9547482856515
+"Eg1","Argentina","elecCapBySubsector","Sources",2090,"Year","Vint_2090","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2090,96.2136127994481
+"Eg1","Argentina","elecCapBySubsector","Sources",2095,"Year","Vint_2095","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2095,98.331064295502
+"Eg1","Argentina","elecCapBySubsector","Sources",2100,"Year","Vint_2100","Electricity Capacity (GW)","sum","ExampleScen1","Electricity generation by aggregate technology","Electricity Capacity (GW)",2100,99.439843924444
+"Eg1","Argentina","finalNrgbySec","Sources",1975,"Year","Vint_1975","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",1975,260.643624000002
+"Eg1","Argentina","finalNrgbySec","Sources",1990,"Year","Vint_1990","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",1990,414.348646083337
+"Eg1","Argentina","finalNrgbySec","Sources",2005,"Year","Vint_2005","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2005,664.761819333339
+"Eg1","Argentina","finalNrgbySec","Sources",2010,"Year","Vint_2010","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2010,724.415478277784
+"Eg1","Argentina","finalNrgbySec","Sources",2015,"Year","Vint_2015","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2015,783.714489449728
+"Eg1","Argentina","finalNrgbySec","Sources",2020,"Year","Vint_2020","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2020,835.367279740562
+"Eg1","Argentina","finalNrgbySec","Sources",2025,"Year","Vint_2025","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2025,926.668008211118
+"Eg1","Argentina","finalNrgbySec","Sources",2030,"Year","Vint_2030","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2030,1013.95679498501
+"Eg1","Argentina","finalNrgbySec","Sources",2035,"Year","Vint_2035","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2035,1094.96659251945
+"Eg1","Argentina","finalNrgbySec","Sources",2040,"Year","Vint_2040","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2040,1168.45951892001
+"Eg1","Argentina","finalNrgbySec","Sources",2045,"Year","Vint_2045","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2045,1232.2999606139
+"Eg1","Argentina","finalNrgbySec","Sources",2050,"Year","Vint_2050","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2050,1291.61530573612
+"Eg1","Argentina","finalNrgbySec","Sources",2055,"Year","Vint_2055","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2055,1340.94425282779
+"Eg1","Argentina","finalNrgbySec","Sources",2060,"Year","Vint_2060","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2060,1384.72022678334
+"Eg1","Argentina","finalNrgbySec","Sources",2065,"Year","Vint_2065","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2065,1423.46394258334
+"Eg1","Argentina","finalNrgbySec","Sources",2070,"Year","Vint_2070","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2070,1456.61396646112
+"Eg1","Argentina","finalNrgbySec","Sources",2075,"Year","Vint_2075","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2075,1483.05664091668
+"Eg1","Argentina","finalNrgbySec","Sources",2080,"Year","Vint_2080","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2080,1501.94406685835
+"Eg1","Argentina","finalNrgbySec","Sources",2085,"Year","Vint_2085","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2085,1517.28145178612
+"Eg1","Argentina","finalNrgbySec","Sources",2090,"Year","Vint_2090","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2090,1532.35446285835
+"Eg1","Argentina","finalNrgbySec","Sources",2095,"Year","Vint_2095","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2095,1541.32494503335
+"Eg1","Argentina","finalNrgbySec","Sources",2100,"Year","Vint_2100","Final Energy (TWh)","sum","ExampleScen1","Total final energy by aggregate end-use sector","EJ",2100,1547.96506306946
+"Eg1","Argentina","gdp","Sources",1975,"Year","Vint_1975","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",1975,137.488
+"Eg1","Argentina","gdp","Sources",1990,"Year","Vint_1990","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",1990,135.643
+"Eg1","Argentina","gdp","Sources",2005,"Year","Vint_2005","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2005,233.513
+"Eg1","Argentina","gdp","Sources",2010,"Year","Vint_2010","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2010,307.677
+"Eg1","Argentina","gdp","Sources",2015,"Year","Vint_2015","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2015,351.594
+"Eg1","Argentina","gdp","Sources",2020,"Year","Vint_2020","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2020,388.864
+"Eg1","Argentina","gdp","Sources",2025,"Year","Vint_2025","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2025,460.826
+"Eg1","Argentina","gdp","Sources",2030,"Year","Vint_2030","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2030,537.138
+"Eg1","Argentina","gdp","Sources",2035,"Year","Vint_2035","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2035,616.744
+"Eg1","Argentina","gdp","Sources",2040,"Year","Vint_2040","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2040,696.631
+"Eg1","Argentina","gdp","Sources",2045,"Year","Vint_2045","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2045,775.627
+"Eg1","Argentina","gdp","Sources",2050,"Year","Vint_2050","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2050,856.818
+"Eg1","Argentina","gdp","Sources",2055,"Year","Vint_2055","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2055,940.518
+"Eg1","Argentina","gdp","Sources",2060,"Year","Vint_2060","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2060,1025.74
+"Eg1","Argentina","gdp","Sources",2065,"Year","Vint_2065","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2065,1111.97
+"Eg1","Argentina","gdp","Sources",2070,"Year","Vint_2070","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2070,1197.62
+"Eg1","Argentina","gdp","Sources",2075,"Year","Vint_2075","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2075,1281.08
+"Eg1","Argentina","gdp","Sources",2080,"Year","Vint_2080","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2080,1363.65
+"Eg1","Argentina","gdp","Sources",2085,"Year","Vint_2085","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2085,1446.22
+"Eg1","Argentina","gdp","Sources",2090,"Year","Vint_2090","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2090,1529.23
+"Eg1","Argentina","gdp","Sources",2095,"Year","Vint_2095","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2095,1611.86
+"Eg1","Argentina","gdp","Sources",2100,"Year","Vint_2100","GDP (Billion 1990 USD)","sum","ExampleScen1","GDP MER by region","Million1990US$",2100,1693.07
+"Eg1","Argentina","gdpGrowthRate","Sources",1990,"Year","Vint_1990","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",1990,-0.269839401000238
+"Eg1","Argentina","gdpGrowthRate","Sources",2005,"Year","Vint_2005","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2005,11.4763487011049
+"Eg1","Argentina","gdpGrowthRate","Sources",2010,"Year","Vint_2010","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2010,5.67123759318056
+"Eg1","Argentina","gdpGrowthRate","Sources",2015,"Year","Vint_2015","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2015,2.704455524255
+"Eg1","Argentina","gdpGrowthRate","Sources",2020,"Year","Vint_2020","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2020,2.03549056116288
+"Eg1","Argentina","gdpGrowthRate","Sources",2025,"Year","Vint_2025","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2025,3.45413337126401
+"Eg1","Argentina","gdpGrowthRate","Sources",2030,"Year","Vint_2030","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2030,3.11213533998314
+"Eg1","Argentina","gdpGrowthRate","Sources",2035,"Year","Vint_2035","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2035,2.80253193447952
+"Eg1","Argentina","gdpGrowthRate","Sources",2040,"Year","Vint_2040","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2040,2.46595041937006
+"Eg1","Argentina","gdpGrowthRate","Sources",2045,"Year","Vint_2045","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2045,2.17155999735561
+"Eg1","Argentina","gdpGrowthRate","Sources",2050,"Year","Vint_2050","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2050,2.01102998514018
+"Eg1","Argentina","gdpGrowthRate","Sources",2055,"Year","Vint_2055","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2055,1.88158810522256
+"Eg1","Argentina","gdpGrowthRate","Sources",2060,"Year","Vint_2060","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2060,1.74991052767488
+"Eg1","Argentina","gdpGrowthRate","Sources",2065,"Year","Vint_2065","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2065,1.62747976804429
+"Eg1","Argentina","gdpGrowthRate","Sources",2070,"Year","Vint_2070","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2070,1.49512760000501
+"Eg1","Argentina","gdpGrowthRate","Sources",2075,"Year","Vint_2075","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2075,1.35646194904657
+"Eg1","Argentina","gdpGrowthRate","Sources",2080,"Year","Vint_2080","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2080,1.25706458220021
+"Eg1","Argentina","gdpGrowthRate","Sources",2085,"Year","Vint_2085","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2085,1.18270586007025
+"Eg1","Argentina","gdpGrowthRate","Sources",2090,"Year","Vint_2090","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2090,1.12247469327116
+"Eg1","Argentina","gdpGrowthRate","Sources",2095,"Year","Vint_2095","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2095,1.05804716676932
+"Eg1","Argentina","gdpGrowthRate","Sources",2100,"Year","Vint_2100","GDP Growth Rate (Percent)","sum","ExampleScen1","Calculated","GDP Growth Rate (Percent)",2100,0.987941382016255
+"Eg1","Argentina","gdpPerCapita","Sources",1975,"Year","Vint_1975","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",1975,5.27198
+"Eg1","Argentina","gdpPerCapita","Sources",1990,"Year","Vint_1990","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",1990,4.15548
+"Eg1","Argentina","gdpPerCapita","Sources",2005,"Year","Vint_2005","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2005,6.0369
+"Eg1","Argentina","gdpPerCapita","Sources",2010,"Year","Vint_2010","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2010,7.61349
+"Eg1","Argentina","gdpPerCapita","Sources",2015,"Year","Vint_2015","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2015,8.36233
+"Eg1","Argentina","gdpPerCapita","Sources",2020,"Year","Vint_2020","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2020,8.92504
+"Eg1","Argentina","gdpPerCapita","Sources",2025,"Year","Vint_2025","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2025,10.2545
+"Eg1","Argentina","gdpPerCapita","Sources",2030,"Year","Vint_2030","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2030,11.6377
+"Eg1","Argentina","gdpPerCapita","Sources",2035,"Year","Vint_2035","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2035,13.0614
+"Eg1","Argentina","gdpPerCapita","Sources",2040,"Year","Vint_2040","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2040,14.4703
+"Eg1","Argentina","gdpPerCapita","Sources",2045,"Year","Vint_2045","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2045,15.8764
+"Eg1","Argentina","gdpPerCapita","Sources",2050,"Year","Vint_2050","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2050,17.3526
+"Eg1","Argentina","gdpPerCapita","Sources",2055,"Year","Vint_2055","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2055,18.9231
+"Eg1","Argentina","gdpPerCapita","Sources",2060,"Year","Vint_2060","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2060,20.5832
+"Eg1","Argentina","gdpPerCapita","Sources",2065,"Year","Vint_2065","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2065,22.3152
+"Eg1","Argentina","gdpPerCapita","Sources",2070,"Year","Vint_2070","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2070,24.1145
+"Eg1","Argentina","gdpPerCapita","Sources",2075,"Year","Vint_2075","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2075,25.959
+"Eg1","Argentina","gdpPerCapita","Sources",2080,"Year","Vint_2080","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2080,27.8854
+"Eg1","Argentina","gdpPerCapita","Sources",2085,"Year","Vint_2085","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2085,29.8854
+"Eg1","Argentina","gdpPerCapita","Sources",2090,"Year","Vint_2090","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2090,31.9721
+"Eg1","Argentina","gdpPerCapita","Sources",2095,"Year","Vint_2095","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2095,34.1336
+"Eg1","Argentina","gdpPerCapita","Sources",2100,"Year","Vint_2100","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen1","GDP per capita MER by region","Thous90US$/per",2100,36.3515
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",1975,"Year","Vint_1975","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",1975,0.0004179254
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",1975,"Year","Vint_1975","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",1975,53.850988906
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",1990,"Year","Vint_1990","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",1990,0.00270974982
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",1990,"Year","Vint_1990","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",1990,105.016451976333
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2005,"Year","Vint_2005","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2005,0.00073563812
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2005,"Year","Vint_2005","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2005,153.969816407
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2010,"Year","Vint_2010","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2010,0.000950124476508
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2010,"Year","Vint_2010","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2010,177.53014059
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2015,"Year","Vint_2015","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2015,0.002242762179334
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2015,"Year","Vint_2015","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2015,198.850235774667
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2020,"Year","Vint_2020","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2020,0.003590671671386
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2020,"Year","Vint_2020","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2020,209.042711507667
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2025,"Year","Vint_2025","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2025,0.005748243523754
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2025,"Year","Vint_2025","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2025,230.236312826667
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2030,"Year","Vint_2030","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2030,0.008487593969712
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2030,"Year","Vint_2030","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2030,248.998796559333
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2035,"Year","Vint_2035","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2035,0.00972624203148
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2035,"Year","Vint_2035","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2035,264.6028000253
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2040,"Year","Vint_2040","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2040,0.010901244512346
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2040,"Year","Vint_2040","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2040,276.6629399996
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2045,"Year","Vint_2045","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2045,0.011962587815348
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2045,"Year","Vint_2045","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2045,287.3225228335
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2050,"Year","Vint_2050","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2050,0.012935099599268
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2050,"Year","Vint_2050","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2050,297.8096670868
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2055,"Year","Vint_2055","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2055,0.013802029059866
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2055,"Year","Vint_2055","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2055,308.791855938317
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2060,"Year","Vint_2060","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2060,0.014552142951656
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2060,"Year","Vint_2060","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2060,311.017320621587
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2065,"Year","Vint_2065","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2065,0.015188349381048
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2065,"Year","Vint_2065","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2065,320.342411550873
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2070,"Year","Vint_2070","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2070,0.015658966339162
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2070,"Year","Vint_2070","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2070,327.063326862532
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2075,"Year","Vint_2075","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2075,0.015977441201978
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2075,"Year","Vint_2075","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2075,331.811015256154
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2080,"Year","Vint_2080","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2080,0.016174896923946
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2080,"Year","Vint_2080","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2080,340.959067935644
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2085,"Year","Vint_2085","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2085,0.016290403268788
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2085,"Year","Vint_2085","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2085,393.42788539692
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2090,"Year","Vint_2090","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2090,0.016296710983714
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2090,"Year","Vint_2090","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2090,394.56996585439
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2095,"Year","Vint_2095","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2095,0.016218518064614
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2095,"Year","Vint_2095","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2095,385.980596187487
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2100,"Year","Vint_2100","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","Gg",2100,0.016145167291806
+"Eg1","Argentina","ghgEmissByGHGGROUPS","Sources",2100,"Year","Vint_2100","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen1","X","MTC",2100,371.071880535767
+"Eg1","Argentina","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",1975,0.0004179254
+"Eg1","Argentina","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",1975,53.850988906
+"Eg1","Argentina","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",1975,9.79367735575
+"Eg1","Argentina","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",1990,0.00270974982
+"Eg1","Argentina","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",1990,105.016451976333
+"Eg1","Argentina","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",1990,34.4710997065
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2005,0.00073563812
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2005,153.969816407
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2005,33.7669235205
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2010,0.000950124476508
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2010,177.53014059
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2010,34.649783444625
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2015,0.002242762179334
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2015,198.850235774667
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2015,33.39727188825
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2020,0.003590671671386
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2020,209.042711507667
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2020,35.605721216275
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2025,0.005748243523754
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2025,230.236312826667
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2025,38.221650040875
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2030,0.008487593969712
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2030,248.998796559333
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2030,40.85223706109
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2035,0.00972624203148
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2035,264.6028000253
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2035,42.651893595675
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2040,0.010901244512346
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2040,276.6629399996
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2040,45.338675091235
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2045,0.011962587815348
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2045,287.3225228335
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2045,47.1254806341375
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2050,0.012935099599268
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2050,297.8096670868
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2050,48.9809276628075
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2055,"Year","Vint_2055","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2055,0.013802029059866
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2055,"Year","Vint_2055","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2055,308.791855938317
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2055,"Year","Vint_2055","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2055,50.0582974837225
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2060,"Year","Vint_2060","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2060,0.014552142951656
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2060,"Year","Vint_2060","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2060,311.017320621587
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2060,"Year","Vint_2060","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2060,52.3647009296012
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2065,"Year","Vint_2065","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2065,0.015188349381048
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2065,"Year","Vint_2065","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2065,320.342411550873
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2065,"Year","Vint_2065","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2065,53.6223272819525
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2070,"Year","Vint_2070","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2070,0.015658966339162
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2070,"Year","Vint_2070","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2070,327.063326862532
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2070,"Year","Vint_2070","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2070,54.6778954972575
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2075,"Year","Vint_2075","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2075,0.015977441201978
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2075,"Year","Vint_2075","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2075,331.811015256154
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2075,"Year","Vint_2075","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2075,55.0828361172325
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2080,"Year","Vint_2080","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2080,0.016174896923946
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2080,"Year","Vint_2080","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2080,340.959067935644
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2080,"Year","Vint_2080","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2080,48.594911050625
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2085,"Year","Vint_2085","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2085,0.016290403268788
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2085,"Year","Vint_2085","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2085,393.42788539692
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2085,"Year","Vint_2085","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2085,62.91192226165
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2090,"Year","Vint_2090","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2090,0.016296710983714
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2090,"Year","Vint_2090","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2090,394.56996585439
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2090,"Year","Vint_2090","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2090,63.401146971495
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2095,"Year","Vint_2095","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2095,0.016218518064614
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2095,"Year","Vint_2095","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2095,385.980596187487
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2095,"Year","Vint_2095","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2095,68.005249936465
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2100,"Year","Vint_2100","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Gg",2100,0.016145167291806
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2100,"Year","Vint_2100","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","MTC",2100,371.071880535767
+"Eg1","Argentina","ghgEmissionByGHG","Sources",2100,"Year","Vint_2100","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen1","GHG emissions by subsector","Tg",2100,56.78328763678
+"Eg1","Argentina","irrWatConsBasin","Sources",1975,"Year","Vint_1975","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",1975,3.0149742987762
+"Eg1","Argentina","irrWatConsBasin","Sources",1990,"Year","Vint_1990","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",1990,3.5606415776508
+"Eg1","Argentina","irrWatConsBasin","Sources",2005,"Year","Vint_2005","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2005,4.76833148760222
+"Eg1","Argentina","irrWatConsBasin","Sources",2010,"Year","Vint_2010","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2010,5.22835472124882
+"Eg1","Argentina","irrWatConsBasin","Sources",2015,"Year","Vint_2015","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2015,5.58129679194011
+"Eg1","Argentina","irrWatConsBasin","Sources",2020,"Year","Vint_2020","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2020,6.31239713236039
+"Eg1","Argentina","irrWatConsBasin","Sources",2025,"Year","Vint_2025","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2025,7.11548379809069
+"Eg1","Argentina","irrWatConsBasin","Sources",2030,"Year","Vint_2030","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2030,7.98654254755334
+"Eg1","Argentina","irrWatConsBasin","Sources",2035,"Year","Vint_2035","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2035,8.77676442185884
+"Eg1","Argentina","irrWatConsBasin","Sources",2040,"Year","Vint_2040","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2040,9.4773637040297
+"Eg1","Argentina","irrWatConsBasin","Sources",2045,"Year","Vint_2045","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2045,10.1297673378007
+"Eg1","Argentina","irrWatConsBasin","Sources",2050,"Year","Vint_2050","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2050,10.6915966412779
+"Eg1","Argentina","irrWatConsBasin","Sources",2055,"Year","Vint_2055","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2055,11.0506782036885
+"Eg1","Argentina","irrWatConsBasin","Sources",2060,"Year","Vint_2060","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2060,11.3374693704438
+"Eg1","Argentina","irrWatConsBasin","Sources",2065,"Year","Vint_2065","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2065,11.4954568781571
+"Eg1","Argentina","irrWatConsBasin","Sources",2070,"Year","Vint_2070","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2070,11.6000259573536
+"Eg1","Argentina","irrWatConsBasin","Sources",2075,"Year","Vint_2075","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2075,11.6324880128413
+"Eg1","Argentina","irrWatConsBasin","Sources",2080,"Year","Vint_2080","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2080,11.5927962902239
+"Eg1","Argentina","irrWatConsBasin","Sources",2085,"Year","Vint_2085","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2085,11.4876095103451
+"Eg1","Argentina","irrWatConsBasin","Sources",2090,"Year","Vint_2090","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2090,11.2957245255986
+"Eg1","Argentina","irrWatConsBasin","Sources",2095,"Year","Vint_2095","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2095,11.0691053932962
+"Eg1","Argentina","irrWatConsBasin","Sources",2100,"Year","Vint_2100","Irrigation Water Consumption (km^3)","sum","ExampleScen1","water consumption by water mapping source","km^3",2100,10.8432012040424
+"Eg1","Argentina","irrWatWithBasin","Sources",1975,"Year","Vint_1975","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",1975,5.5832853906974
+"Eg1","Argentina","irrWatWithBasin","Sources",1990,"Year","Vint_1990","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",1990,6.59378070357566
+"Eg1","Argentina","irrWatWithBasin","Sources",2005,"Year","Vint_2005","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2005,8.83024330666012
+"Eg1","Argentina","irrWatWithBasin","Sources",2010,"Year","Vint_2010","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2010,9.68213812371492
+"Eg1","Argentina","irrWatWithBasin","Sources",2015,"Year","Vint_2015","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2015,10.3357349908051
+"Eg1","Argentina","irrWatWithBasin","Sources",2020,"Year","Vint_2020","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2020,11.6896315188725
+"Eg1","Argentina","irrWatWithBasin","Sources",2025,"Year","Vint_2025","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2025,13.1768168188087
+"Eg1","Argentina","irrWatWithBasin","Sources",2030,"Year","Vint_2030","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2030,14.7898915110989
+"Eg1","Argentina","irrWatWithBasin","Sources",2035,"Year","Vint_2035","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2035,16.2532748932493
+"Eg1","Argentina","irrWatWithBasin","Sources",2040,"Year","Vint_2040","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2040,17.5506798926223
+"Eg1","Argentina","irrWatWithBasin","Sources",2045,"Year","Vint_2045","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2045,18.7588331818525
+"Eg1","Argentina","irrWatWithBasin","Sources",2050,"Year","Vint_2050","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2050,19.7992505860652
+"Eg1","Argentina","irrWatWithBasin","Sources",2055,"Year","Vint_2055","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2055,20.464225331274
+"Eg1","Argentina","irrWatWithBasin","Sources",2060,"Year","Vint_2060","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2060,20.9953308836199
+"Eg1","Argentina","irrWatWithBasin","Sources",2065,"Year","Vint_2065","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2065,21.287888613964
+"Eg1","Argentina","irrWatWithBasin","Sources",2070,"Year","Vint_2070","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2070,21.4815383004086
+"Eg1","Argentina","irrWatWithBasin","Sources",2075,"Year","Vint_2075","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2075,21.5416560424077
+"Eg1","Argentina","irrWatWithBasin","Sources",2080,"Year","Vint_2080","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2080,21.4681524876429
+"Eg1","Argentina","irrWatWithBasin","Sources",2085,"Year","Vint_2085","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2085,21.2733523835896
+"Eg1","Argentina","irrWatWithBasin","Sources",2090,"Year","Vint_2090","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2090,20.9180125343199
+"Eg1","Argentina","irrWatWithBasin","Sources",2095,"Year","Vint_2095","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2095,20.4983298582809
+"Eg1","Argentina","irrWatWithBasin","Sources",2100,"Year","Vint_2100","Irrigation Water Withdrawal (km^3)","sum","ExampleScen1","water withdrawals by water mapping source","km^3",2100,20.080001700037
+"Eg1","Argentina","landIrrRfd","Sources",1975,"Year","Vint_1975","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",1975,0.2056687712057
+"Eg1","Argentina","landIrrRfd","Sources",1990,"Year","Vint_1990","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",1990,0.23497804291654
+"Eg1","Argentina","landIrrRfd","Sources",2005,"Year","Vint_2005","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2005,0.26634697048316
+"Eg1","Argentina","landIrrRfd","Sources",2010,"Year","Vint_2010","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2010,0.31903376428046
+"Eg1","Argentina","landIrrRfd","Sources",2015,"Year","Vint_2015","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2015,0.31970974954819
+"Eg1","Argentina","landIrrRfd","Sources",2020,"Year","Vint_2020","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2020,0.330922636794908
+"Eg1","Argentina","landIrrRfd","Sources",2025,"Year","Vint_2025","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2025,0.344387089158265
+"Eg1","Argentina","landIrrRfd","Sources",2030,"Year","Vint_2030","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2030,0.357741121748001
+"Eg1","Argentina","landIrrRfd","Sources",2035,"Year","Vint_2035","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2035,0.371068009256482
+"Eg1","Argentina","landIrrRfd","Sources",2040,"Year","Vint_2040","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2040,0.381020588981994
+"Eg1","Argentina","landIrrRfd","Sources",2045,"Year","Vint_2045","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2045,0.388294096202719
+"Eg1","Argentina","landIrrRfd","Sources",2050,"Year","Vint_2050","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2050,0.393005455843628
+"Eg1","Argentina","landIrrRfd","Sources",2055,"Year","Vint_2055","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2055,0.396561291248396
+"Eg1","Argentina","landIrrRfd","Sources",2060,"Year","Vint_2060","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2060,0.399771746701817
+"Eg1","Argentina","landIrrRfd","Sources",2065,"Year","Vint_2065","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2065,0.400894903369379
+"Eg1","Argentina","landIrrRfd","Sources",2070,"Year","Vint_2070","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2070,0.402028416250861
+"Eg1","Argentina","landIrrRfd","Sources",2075,"Year","Vint_2075","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2075,0.402056562479445
+"Eg1","Argentina","landIrrRfd","Sources",2080,"Year","Vint_2080","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2080,0.400889792247491
+"Eg1","Argentina","landIrrRfd","Sources",2085,"Year","Vint_2085","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2085,0.398872314769848
+"Eg1","Argentina","landIrrRfd","Sources",2090,"Year","Vint_2090","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2090,0.395644256757962
+"Eg1","Argentina","landIrrRfd","Sources",2095,"Year","Vint_2095","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2095,0.392077827720166
+"Eg1","Argentina","landIrrRfd","Sources",2100,"Year","Vint_2100","Crop Land Allocation (1000 km^2)","sum","ExampleScen1","land allocation by crop and water source","thous km2",2100,0.388895380224163
+"Eg1","Argentina","LUCemiss","Sources",1980,"Year","Vint_1980","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",1980,19.369745484892
+"Eg1","Argentina","LUCemiss","Sources",1985,"Year","Vint_1985","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",1985,10.8387342576209
+"Eg1","Argentina","LUCemiss","Sources",1990,"Year","Vint_1990","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",1990,5.58270057011333
+"Eg1","Argentina","LUCemiss","Sources",1995,"Year","Vint_1995","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",1995,18.0834115824186
+"Eg1","Argentina","LUCemiss","Sources",2000,"Year","Vint_2000","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2000,16.6021917938756
+"Eg1","Argentina","LUCemiss","Sources",2005,"Year","Vint_2005","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2005,14.3972191972327
+"Eg1","Argentina","LUCemiss","Sources",2010,"Year","Vint_2010","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2010,205.715550897553
+"Eg1","Argentina","LUCemiss","Sources",2015,"Year","Vint_2015","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2015,-2.9132547242073
+"Eg1","Argentina","LUCemiss","Sources",2020,"Year","Vint_2020","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2020,4.75386602101667
+"Eg1","Argentina","LUCemiss","Sources",2025,"Year","Vint_2025","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2025,12.3347810595977
+"Eg1","Argentina","LUCemiss","Sources",2030,"Year","Vint_2030","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2030,12.5203030066979
+"Eg1","Argentina","LUCemiss","Sources",2035,"Year","Vint_2035","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2035,10.7941693216247
+"Eg1","Argentina","LUCemiss","Sources",2040,"Year","Vint_2040","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2040,7.70801056783156
+"Eg1","Argentina","LUCemiss","Sources",2045,"Year","Vint_2045","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2045,3.41820759362086
+"Eg1","Argentina","LUCemiss","Sources",2050,"Year","Vint_2050","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2050,0.879478659700188
+"Eg1","Argentina","LUCemiss","Sources",2055,"Year","Vint_2055","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2055,-1.27256223144214
+"Eg1","Argentina","LUCemiss","Sources",2060,"Year","Vint_2060","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2060,-1.88196671700176
+"Eg1","Argentina","LUCemiss","Sources",2065,"Year","Vint_2065","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2065,-3.81052582310279
+"Eg1","Argentina","LUCemiss","Sources",2070,"Year","Vint_2070","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2070,-3.93858269412883
+"Eg1","Argentina","LUCemiss","Sources",2075,"Year","Vint_2075","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2075,-4.82240994525019
+"Eg1","Argentina","LUCemiss","Sources",2080,"Year","Vint_2080","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2080,-5.73786439360507
+"Eg1","Argentina","LUCemiss","Sources",2085,"Year","Vint_2085","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2085,-6.84731273319709
+"Eg1","Argentina","LUCemiss","Sources",2090,"Year","Vint_2090","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2090,-7.93064367627492
+"Eg1","Argentina","LUCemiss","Sources",2095,"Year","Vint_2095","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2095,-8.76953324386513
+"Eg1","Argentina","LUCemiss","Sources",2100,"Year","Vint_2100","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen1","Land Use Change Emission (future)","MtC/yr",2100,-9.23179002297616
+"Eg1","Argentina","pop","Sources",1975,"Year","Vint_1975","Population (Millions)","sum","ExampleScen1","Population by region","thous",1975,26.079
+"Eg1","Argentina","pop","Sources",1990,"Year","Vint_1990","Population (Millions)","sum","ExampleScen1","Population by region","thous",1990,32.642
+"Eg1","Argentina","pop","Sources",2005,"Year","Vint_2005","Population (Millions)","sum","ExampleScen1","Population by region","thous",2005,38.681
+"Eg1","Argentina","pop","Sources",2010,"Year","Vint_2010","Population (Millions)","sum","ExampleScen1","Population by region","thous",2010,40.412
+"Eg1","Argentina","pop","Sources",2015,"Year","Vint_2015","Population (Millions)","sum","ExampleScen1","Population by region","thous",2015,42.045
+"Eg1","Argentina","pop","Sources",2020,"Year","Vint_2020","Population (Millions)","sum","ExampleScen1","Population by region","thous",2020,43.57
+"Eg1","Argentina","pop","Sources",2025,"Year","Vint_2025","Population (Millions)","sum","ExampleScen1","Population by region","thous",2025,44.939
+"Eg1","Argentina","pop","Sources",2030,"Year","Vint_2030","Population (Millions)","sum","ExampleScen1","Population by region","thous",2030,46.155
+"Eg1","Argentina","pop","Sources",2035,"Year","Vint_2035","Population (Millions)","sum","ExampleScen1","Population by region","thous",2035,47.219
+"Eg1","Argentina","pop","Sources",2040,"Year","Vint_2040","Population (Millions)","sum","ExampleScen1","Population by region","thous",2040,48.142
+"Eg1","Argentina","pop","Sources",2045,"Year","Vint_2045","Population (Millions)","sum","ExampleScen1","Population by region","thous",2045,48.854
+"Eg1","Argentina","pop","Sources",2050,"Year","Vint_2050","Population (Millions)","sum","ExampleScen1","Population by region","thous",2050,49.377
+"Eg1","Argentina","pop","Sources",2055,"Year","Vint_2055","Population (Millions)","sum","ExampleScen1","Population by region","thous",2055,49.702
+"Eg1","Argentina","pop","Sources",2060,"Year","Vint_2060","Population (Millions)","sum","ExampleScen1","Population by region","thous",2060,49.834
+"Eg1","Argentina","pop","Sources",2065,"Year","Vint_2065","Population (Millions)","sum","ExampleScen1","Population by region","thous",2065,49.83
+"Eg1","Argentina","pop","Sources",2070,"Year","Vint_2070","Population (Millions)","sum","ExampleScen1","Population by region","thous",2070,49.664
+"Eg1","Argentina","pop","Sources",2075,"Year","Vint_2075","Population (Millions)","sum","ExampleScen1","Population by region","thous",2075,49.35
+"Eg1","Argentina","pop","Sources",2080,"Year","Vint_2080","Population (Millions)","sum","ExampleScen1","Population by region","thous",2080,48.902
+"Eg1","Argentina","pop","Sources",2085,"Year","Vint_2085","Population (Millions)","sum","ExampleScen1","Population by region","thous",2085,48.392
+"Eg1","Argentina","pop","Sources",2090,"Year","Vint_2090","Population (Millions)","sum","ExampleScen1","Population by region","thous",2090,47.83
+"Eg1","Argentina","pop","Sources",2095,"Year","Vint_2095","Population (Millions)","sum","ExampleScen1","Population by region","thous",2095,47.222
+"Eg1","Argentina","pop","Sources",2100,"Year","Vint_2100","Population (Millions)","sum","ExampleScen1","Population by region","thous",2100,46.575
+"Eg1","Argentina","primNrgConsumByFuel","Sources",1975,"Year","Vint_1975","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",1975,245.706750000002
+"Eg1","Argentina","primNrgConsumByFuel","Sources",1990,"Year","Vint_1990","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",1990,519.023130833337
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2005,"Year","Vint_2005","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2005,788.828611111117
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2010,"Year","Vint_2010","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2010,882.202111111118
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2015,"Year","Vint_2015","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2015,1001.36455180581
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2020,"Year","Vint_2020","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2020,1055.17478454206
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2025,"Year","Vint_2025","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2025,1176.14481379209
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2030,"Year","Vint_2030","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2030,1291.16219518926
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2035,"Year","Vint_2035","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2035,1399.49459023161
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2040,"Year","Vint_2040","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2040,1498.97458898826
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2045,"Year","Vint_2045","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2045,1587.82021572669
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2050,"Year","Vint_2050","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2050,1666.28847235952
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2055,"Year","Vint_2055","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2055,1733.90781808725
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2060,"Year","Vint_2060","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2060,1769.02769581085
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2065,"Year","Vint_2065","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2065,1817.55872746777
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2070,"Year","Vint_2070","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2070,1853.6004899844
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2075,"Year","Vint_2075","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2075,1881.10591491503
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2080,"Year","Vint_2080","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2080,1916.4657640122
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2085,"Year","Vint_2085","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2085,2065.51649485256
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2090,"Year","Vint_2090","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2090,2073.15182333595
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2095,"Year","Vint_2095","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2095,2052.89613832466
+"Eg1","Argentina","primNrgConsumByFuel","Sources",2100,"Year","Vint_2100","Primary Energy Consumption (TWh)","sum","ExampleScen1","primary energy consumption by region (direct equivalent)","EJ",2100,2013.30321636966
+"Eg1","Argentina","watBioPhysCons","Sources",1975,"Year","Vint_1975","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",1975,76.719864324942
+"Eg1","Argentina","watBioPhysCons","Sources",1990,"Year","Vint_1990","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",1990,107.96600497347
+"Eg1","Argentina","watBioPhysCons","Sources",2005,"Year","Vint_2005","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2005,187.635687541084
+"Eg1","Argentina","watBioPhysCons","Sources",2010,"Year","Vint_2010","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2010,206.510113882754
+"Eg1","Argentina","watBioPhysCons","Sources",2015,"Year","Vint_2015","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2015,216.625007398435
+"Eg1","Argentina","watBioPhysCons","Sources",2020,"Year","Vint_2020","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2020,234.774394927672
+"Eg1","Argentina","watBioPhysCons","Sources",2025,"Year","Vint_2025","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2025,255.210005959438
+"Eg1","Argentina","watBioPhysCons","Sources",2030,"Year","Vint_2030","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2030,276.174579499945
+"Eg1","Argentina","watBioPhysCons","Sources",2035,"Year","Vint_2035","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2035,293.595382933234
+"Eg1","Argentina","watBioPhysCons","Sources",2040,"Year","Vint_2040","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2040,309.78058366459
+"Eg1","Argentina","watBioPhysCons","Sources",2045,"Year","Vint_2045","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2045,324.743477023774
+"Eg1","Argentina","watBioPhysCons","Sources",2050,"Year","Vint_2050","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2050,338.618493934147
+"Eg1","Argentina","watBioPhysCons","Sources",2055,"Year","Vint_2055","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2055,346.631406560715
+"Eg1","Argentina","watBioPhysCons","Sources",2060,"Year","Vint_2060","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2060,354.334041399087
+"Eg1","Argentina","watBioPhysCons","Sources",2065,"Year","Vint_2065","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2065,360.306153823569
+"Eg1","Argentina","watBioPhysCons","Sources",2070,"Year","Vint_2070","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2070,365.737779106004
+"Eg1","Argentina","watBioPhysCons","Sources",2075,"Year","Vint_2075","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2075,369.58481088074
+"Eg1","Argentina","watBioPhysCons","Sources",2080,"Year","Vint_2080","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2080,371.577031905332
+"Eg1","Argentina","watBioPhysCons","Sources",2085,"Year","Vint_2085","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2085,372.419611769235
+"Eg1","Argentina","watBioPhysCons","Sources",2090,"Year","Vint_2090","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2090,371.649844388716
+"Eg1","Argentina","watBioPhysCons","Sources",2095,"Year","Vint_2095","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2095,370.250280418755
+"Eg1","Argentina","watBioPhysCons","Sources",2100,"Year","Vint_2100","Biophysical Water Consumption (km^3)","sum","ExampleScen1","biophysical water demand by crop type and land region","km^3",2100,368.852051669193
+"Eg1","Argentina","watConsumBySec","Sources",1975,"Year","Vint_1975","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",1975,4.5775826718462
+"Eg1","Argentina","watConsumBySec","Sources",1990,"Year","Vint_1990","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",1990,5.4780644516778
+"Eg1","Argentina","watConsumBySec","Sources",2005,"Year","Vint_2005","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2005,7.21996525460222
+"Eg1","Argentina","watConsumBySec","Sources",2010,"Year","Vint_2010","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2010,7.85658296594882
+"Eg1","Argentina","watConsumBySec","Sources",2015,"Year","Vint_2015","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2015,8.35389065189207
+"Eg1","Argentina","watConsumBySec","Sources",2020,"Year","Vint_2020","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2020,9.16342917957265
+"Eg1","Argentina","watConsumBySec","Sources",2025,"Year","Vint_2025","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2025,10.1168850460659
+"Eg1","Argentina","watConsumBySec","Sources",2030,"Year","Vint_2030","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2030,11.1499878764596
+"Eg1","Argentina","watConsumBySec","Sources",2035,"Year","Vint_2035","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2035,12.0829004013245
+"Eg1","Argentina","watConsumBySec","Sources",2040,"Year","Vint_2040","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2040,12.921797680743
+"Eg1","Argentina","watConsumBySec","Sources",2045,"Year","Vint_2045","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2045,13.6915971070026
+"Eg1","Argentina","watConsumBySec","Sources",2050,"Year","Vint_2050","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2050,14.3648343539711
+"Eg1","Argentina","watConsumBySec","Sources",2055,"Year","Vint_2055","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2055,14.796734093641
+"Eg1","Argentina","watConsumBySec","Sources",2060,"Year","Vint_2060","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2060,15.158688014794
+"Eg1","Argentina","watConsumBySec","Sources",2065,"Year","Vint_2065","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2065,15.3730239642806
+"Eg1","Argentina","watConsumBySec","Sources",2070,"Year","Vint_2070","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2070,15.5238097759712
+"Eg1","Argentina","watConsumBySec","Sources",2075,"Year","Vint_2075","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2075,15.5876274942214
+"Eg1","Argentina","watConsumBySec","Sources",2080,"Year","Vint_2080","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2080,15.5757437966019
+"Eg1","Argentina","watConsumBySec","Sources",2085,"Year","Vint_2085","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2085,15.4883718623248
+"Eg1","Argentina","watConsumBySec","Sources",2090,"Year","Vint_2090","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2090,15.3051215643074
+"Eg1","Argentina","watConsumBySec","Sources",2095,"Year","Vint_2095","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2095,15.0838833467886
+"Eg1","Argentina","watConsumBySec","Sources",2100,"Year","Vint_2100","Water Consumption (km^3)","sum","ExampleScen1","water consumption by sector","km^3",2100,14.8297259718598
+"Eg1","Argentina","watWithdrawByCrop","Sources",1975,"Year","Vint_1975","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",1975,5.5832853906974
+"Eg1","Argentina","watWithdrawByCrop","Sources",1990,"Year","Vint_1990","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",1990,6.59378070357566
+"Eg1","Argentina","watWithdrawByCrop","Sources",2005,"Year","Vint_2005","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2005,8.83024330666012
+"Eg1","Argentina","watWithdrawByCrop","Sources",2010,"Year","Vint_2010","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2010,9.68213812371492
+"Eg1","Argentina","watWithdrawByCrop","Sources",2015,"Year","Vint_2015","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2015,10.3357349908051
+"Eg1","Argentina","watWithdrawByCrop","Sources",2020,"Year","Vint_2020","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2020,11.6896315188725
+"Eg1","Argentina","watWithdrawByCrop","Sources",2025,"Year","Vint_2025","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2025,13.1768168188087
+"Eg1","Argentina","watWithdrawByCrop","Sources",2030,"Year","Vint_2030","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2030,14.7898915110989
+"Eg1","Argentina","watWithdrawByCrop","Sources",2035,"Year","Vint_2035","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2035,16.2532748932493
+"Eg1","Argentina","watWithdrawByCrop","Sources",2040,"Year","Vint_2040","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2040,17.5506798926223
+"Eg1","Argentina","watWithdrawByCrop","Sources",2045,"Year","Vint_2045","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2045,18.7588331818525
+"Eg1","Argentina","watWithdrawByCrop","Sources",2050,"Year","Vint_2050","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2050,19.7992505860652
+"Eg1","Argentina","watWithdrawByCrop","Sources",2055,"Year","Vint_2055","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2055,20.464225331274
+"Eg1","Argentina","watWithdrawByCrop","Sources",2060,"Year","Vint_2060","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2060,20.9953308836199
+"Eg1","Argentina","watWithdrawByCrop","Sources",2065,"Year","Vint_2065","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2065,21.287888613964
+"Eg1","Argentina","watWithdrawByCrop","Sources",2070,"Year","Vint_2070","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2070,21.4815383004086
+"Eg1","Argentina","watWithdrawByCrop","Sources",2075,"Year","Vint_2075","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2075,21.5416560424077
+"Eg1","Argentina","watWithdrawByCrop","Sources",2080,"Year","Vint_2080","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2080,21.4681524876429
+"Eg1","Argentina","watWithdrawByCrop","Sources",2085,"Year","Vint_2085","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2085,21.2733523835896
+"Eg1","Argentina","watWithdrawByCrop","Sources",2090,"Year","Vint_2090","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2090,20.9180125343199
+"Eg1","Argentina","watWithdrawByCrop","Sources",2095,"Year","Vint_2095","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2095,20.4983298582809
+"Eg1","Argentina","watWithdrawByCrop","Sources",2100,"Year","Vint_2100","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by crop","km^3",2100,20.080001700037
+"Eg1","Argentina","watWithdrawBySec","Sources",1975,"Year","Vint_1975","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",1975,11.8876582269274
+"Eg1","Argentina","watWithdrawBySec","Sources",1990,"Year","Vint_1990","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",1990,13.8889983310457
+"Eg1","Argentina","watWithdrawBySec","Sources",2005,"Year","Vint_2005","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2005,18.3236334938601
+"Eg1","Argentina","watWithdrawBySec","Sources",2010,"Year","Vint_2010","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2010,20.4379570767149
+"Eg1","Argentina","watWithdrawBySec","Sources",2015,"Year","Vint_2015","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2015,21.687138991087
+"Eg1","Argentina","watWithdrawBySec","Sources",2020,"Year","Vint_2020","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2020,23.5516831161447
+"Eg1","Argentina","watWithdrawBySec","Sources",2025,"Year","Vint_2025","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2025,25.978477066725
+"Eg1","Argentina","watWithdrawBySec","Sources",2030,"Year","Vint_2030","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2030,28.3245811311561
+"Eg1","Argentina","watWithdrawBySec","Sources",2035,"Year","Vint_2035","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2035,30.3839542865759
+"Eg1","Argentina","watWithdrawBySec","Sources",2040,"Year","Vint_2040","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2040,32.1543455649445
+"Eg1","Argentina","watWithdrawBySec","Sources",2045,"Year","Vint_2045","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2045,33.7572968007374
+"Eg1","Argentina","watWithdrawBySec","Sources",2050,"Year","Vint_2050","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2050,35.1216281473484
+"Eg1","Argentina","watWithdrawBySec","Sources",2055,"Year","Vint_2055","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2055,36.0667770546716
+"Eg1","Argentina","watWithdrawBySec","Sources",2060,"Year","Vint_2060","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2060,37.1166521727541
+"Eg1","Argentina","watWithdrawBySec","Sources",2065,"Year","Vint_2065","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2065,37.4518073053945
+"Eg1","Argentina","watWithdrawBySec","Sources",2070,"Year","Vint_2070","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2070,37.7667153792392
+"Eg1","Argentina","watWithdrawBySec","Sources",2075,"Year","Vint_2075","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2075,37.8595514950019
+"Eg1","Argentina","watWithdrawBySec","Sources",2080,"Year","Vint_2080","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2080,37.7389117473819
+"Eg1","Argentina","watWithdrawBySec","Sources",2085,"Year","Vint_2085","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2085,37.4333092902104
+"Eg1","Argentina","watWithdrawBySec","Sources",2090,"Year","Vint_2090","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2090,37.076896103973
+"Eg1","Argentina","watWithdrawBySec","Sources",2095,"Year","Vint_2095","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2095,36.4972341904322
+"Eg1","Argentina","watWithdrawBySec","Sources",2100,"Year","Vint_2100","Water Withdrawals (km^3)","sum","ExampleScen1","water withdrawals by sector","km^3",2100,35.9452691607604
+"Eg2","Argentina","aggLandAlloc","Sources",1975,"Year","Vint_1975","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",1975,2754.9402735387
+"Eg2","Argentina","aggLandAlloc","Sources",1990,"Year","Vint_1990","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",1990,2754.94065195954
+"Eg2","Argentina","aggLandAlloc","Sources",2005,"Year","Vint_2005","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2005,2754.94175417516
+"Eg2","Argentina","aggLandAlloc","Sources",2010,"Year","Vint_2010","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2010,2754.93965017146
+"Eg2","Argentina","aggLandAlloc","Sources",2015,"Year","Vint_2015","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2015,2754.93951891959
+"Eg2","Argentina","aggLandAlloc","Sources",2020,"Year","Vint_2020","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2020,2754.93945630042
+"Eg2","Argentina","aggLandAlloc","Sources",2025,"Year","Vint_2025","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2025,2754.93958861907
+"Eg2","Argentina","aggLandAlloc","Sources",2030,"Year","Vint_2030","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2030,2754.93964278154
+"Eg2","Argentina","aggLandAlloc","Sources",2035,"Year","Vint_2035","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2035,2754.93954235701
+"Eg2","Argentina","aggLandAlloc","Sources",2040,"Year","Vint_2040","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2040,2754.93959434651
+"Eg2","Argentina","aggLandAlloc","Sources",2045,"Year","Vint_2045","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2045,2754.93974723547
+"Eg2","Argentina","aggLandAlloc","Sources",2050,"Year","Vint_2050","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2050,2754.93970192823
+"Eg2","Argentina","aggLandAlloc","Sources",2055,"Year","Vint_2055","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2055,0
+"Eg2","Argentina","aggLandAlloc","Sources",2060,"Year","Vint_2060","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2060,0
+"Eg2","Argentina","aggLandAlloc","Sources",2065,"Year","Vint_2065","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2065,0
+"Eg2","Argentina","aggLandAlloc","Sources",2070,"Year","Vint_2070","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2070,0
+"Eg2","Argentina","aggLandAlloc","Sources",2075,"Year","Vint_2075","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2075,0
+"Eg2","Argentina","aggLandAlloc","Sources",2080,"Year","Vint_2080","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2080,0
+"Eg2","Argentina","aggLandAlloc","Sources",2085,"Year","Vint_2085","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2085,0
+"Eg2","Argentina","aggLandAlloc","Sources",2090,"Year","Vint_2090","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2090,0
+"Eg2","Argentina","aggLandAlloc","Sources",2095,"Year","Vint_2095","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2095,0
+"Eg2","Argentina","aggLandAlloc","Sources",2100,"Year","Vint_2100","Land Allocation (1000 km^2)","sum","ExampleScen2","aggregated land allocation","thous km2",2100,0
+"Eg2","Argentina","agProdBiomass",NA,2020,"Year","Vint_2020","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2020,12.0974161592423
+"Eg2","Argentina","agProdBiomass",NA,2025,"Year","Vint_2025","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2025,26.1371074998824
+"Eg2","Argentina","agProdBiomass",NA,2030,"Year","Vint_2030","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2030,47.8621579696295
+"Eg2","Argentina","agProdBiomass",NA,2035,"Year","Vint_2035","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2035,70.9734278043772
+"Eg2","Argentina","agProdBiomass",NA,2040,"Year","Vint_2040","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2040,83.2251480028951
+"Eg2","Argentina","agProdBiomass",NA,2045,"Year","Vint_2045","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2045,96.0411604754896
+"Eg2","Argentina","agProdBiomass",NA,2050,"Year","Vint_2050","Biomass Production (TWh)","sum","ExampleScen2","Ag Production by Crop Type","EJ",2050,107.985818552993
+"Eg2","Argentina","agProdByCrop",NA,1975,"Year","Vint_1975","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",1975,168.055267485397
+"Eg2","Argentina","agProdByCrop",NA,1990,"Year","Vint_1990","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",1990,258.123873431045
+"Eg2","Argentina","agProdByCrop",NA,2005,"Year","Vint_2005","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2005,236.381143108008
+"Eg2","Argentina","agProdByCrop",NA,2010,"Year","Vint_2010","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2010,249.732920938911
+"Eg2","Argentina","agProdByCrop",NA,2015,"Year","Vint_2015","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2015,261.465954045123
+"Eg2","Argentina","agProdByCrop",NA,2020,"Year","Vint_2020","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2020,282.094967066251
+"Eg2","Argentina","agProdByCrop",NA,2025,"Year","Vint_2025","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2025,305.076368052773
+"Eg2","Argentina","agProdByCrop",NA,2030,"Year","Vint_2030","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2030,328.269322781187
+"Eg2","Argentina","agProdByCrop",NA,2035,"Year","Vint_2035","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2035,349.69085676478
+"Eg2","Argentina","agProdByCrop",NA,2040,"Year","Vint_2040","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2040,370.035931964199
+"Eg2","Argentina","agProdByCrop",NA,2045,"Year","Vint_2045","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2045,389.509708518822
+"Eg2","Argentina","agProdByCrop",NA,2050,"Year","Vint_2050","Agricultural Production (Mt)","sum","ExampleScen2","Ag Production by Crop Type","Mt",2050,407.7428477192
+"Eg2","Argentina","agProdbyIrrRfd","Sources",1975,"Year","Vint_1975","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",1975,168.055267485397
+"Eg2","Argentina","agProdbyIrrRfd","Sources",1990,"Year","Vint_1990","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",1990,258.123873431045
+"Eg2","Argentina","agProdbyIrrRfd","Sources",2005,"Year","Vint_2005","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2005,236.381143108008
+"Eg2","Argentina","agProdbyIrrRfd","Sources",2010,"Year","Vint_2010","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2010,249.732920938911
+"Eg2","Argentina","agProdbyIrrRfd","Sources",2015,"Year","Vint_2015","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2015,261.465954045123
+"Eg2","Argentina","agProdbyIrrRfd","Sources",2020,"Year","Vint_2020","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2020,282.094967066251
+"Eg2","Argentina","agProdbyIrrRfd","Sources",2025,"Year","Vint_2025","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2025,305.076368052773
+"Eg2","Argentina","agProdbyIrrRfd","Sources",2030,"Year","Vint_2030","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2030,328.269322781187
+"Eg2","Argentina","agProdbyIrrRfd","Sources",2035,"Year","Vint_2035","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2035,349.69085676478
+"Eg2","Argentina","agProdbyIrrRfd","Sources",2040,"Year","Vint_2040","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2040,370.035931964199
+"Eg2","Argentina","agProdbyIrrRfd","Sources",2045,"Year","Vint_2045","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2045,389.509708518822
+"Eg2","Argentina","agProdbyIrrRfd","Sources",2050,"Year","Vint_2050","Ag Production (Mt)","sum","ExampleScen2","ag production by tech","Mt",2050,407.7428477192
+"Eg2","Argentina","agProdForest",NA,1975,"Year","Vint_1975","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",1975,0.014283612211
+"Eg2","Argentina","agProdForest",NA,1990,"Year","Vint_1990","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",1990,0.019353915211
+"Eg2","Argentina","agProdForest",NA,2005,"Year","Vint_2005","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2005,0.028024803111
+"Eg2","Argentina","agProdForest",NA,2010,"Year","Vint_2010","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2010,0.029243603111
+"Eg2","Argentina","agProdForest",NA,2015,"Year","Vint_2015","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2015,0.031145542715
+"Eg2","Argentina","agProdForest",NA,2020,"Year","Vint_2020","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2020,0.032943009309
+"Eg2","Argentina","agProdForest",NA,2025,"Year","Vint_2025","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2025,0.034474056854
+"Eg2","Argentina","agProdForest",NA,2030,"Year","Vint_2030","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2030,0.035971275633
+"Eg2","Argentina","agProdForest",NA,2035,"Year","Vint_2035","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2035,0.037676366569
+"Eg2","Argentina","agProdForest",NA,2040,"Year","Vint_2040","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2040,0.039213938739
+"Eg2","Argentina","agProdForest",NA,2045,"Year","Vint_2045","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2045,0.0407260258
+"Eg2","Argentina","agProdForest",NA,2050,"Year","Vint_2050","Agricultural Production (billion m3)","sum","ExampleScen2","Ag Production by Crop Type","billion m3",2050,0.042151990143
+"Eg2","Argentina","co2emission","Sources",1975,"Year","Vint_1975","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",1975,53.850988906
+"Eg2","Argentina","co2emission","Sources",1990,"Year","Vint_1990","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",1990,105.016451976333
+"Eg2","Argentina","co2emission","Sources",2005,"Year","Vint_2005","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2005,153.969816407
+"Eg2","Argentina","co2emission","Sources",2010,"Year","Vint_2010","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2010,177.53014059
+"Eg2","Argentina","co2emission","Sources",2015,"Year","Vint_2015","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2015,198.851544342
+"Eg2","Argentina","co2emission","Sources",2020,"Year","Vint_2020","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2020,209.044065549
+"Eg2","Argentina","co2emission","Sources",2025,"Year","Vint_2025","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2025,230.237492477667
+"Eg2","Argentina","co2emission","Sources",2030,"Year","Vint_2030","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2030,248.999979822
+"Eg2","Argentina","co2emission","Sources",2035,"Year","Vint_2035","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2035,264.606087281433
+"Eg2","Argentina","co2emission","Sources",2040,"Year","Vint_2040","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2040,276.666245295
+"Eg2","Argentina","co2emission","Sources",2045,"Year","Vint_2045","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2045,287.325963495633
+"Eg2","Argentina","co2emission","Sources",2050,"Year","Vint_2050","CO2 Emissions by Sector (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions","MTC",2050,297.814804836633
+"Eg2","Argentina","co2emissionByEndUse","Sources",1975,"Year","Vint_1975","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",1975,53.850988906
+"Eg2","Argentina","co2emissionByEndUse","Sources",1980,"Year","Vint_1980","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",1980,19.369745484892
+"Eg2","Argentina","co2emissionByEndUse","Sources",1985,"Year","Vint_1985","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",1985,10.8387342576209
+"Eg2","Argentina","co2emissionByEndUse","Sources",1990,"Year","Vint_1990","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",1990,105.015653273847
+"Eg2","Argentina","co2emissionByEndUse","Sources",1990,"Year","Vint_1990","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",1990,5.58270057011333
+"Eg2","Argentina","co2emissionByEndUse","Sources",1995,"Year","Vint_1995","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",1995,18.0834115824186
+"Eg2","Argentina","co2emissionByEndUse","Sources",2000,"Year","Vint_2000","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2000,16.6021917938756
+"Eg2","Argentina","co2emissionByEndUse","Sources",2005,"Year","Vint_2005","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2005,153.969203020526
+"Eg2","Argentina","co2emissionByEndUse","Sources",2005,"Year","Vint_2005","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2005,14.3972191972327
+"Eg2","Argentina","co2emissionByEndUse","Sources",2010,"Year","Vint_2010","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2010,177.529495422291
+"Eg2","Argentina","co2emissionByEndUse","Sources",2010,"Year","Vint_2010","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2010,205.715550897553
+"Eg2","Argentina","co2emissionByEndUse","Sources",2015,"Year","Vint_2015","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2015,198.850997221616
+"Eg2","Argentina","co2emissionByEndUse","Sources",2015,"Year","Vint_2015","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2015,-2.9328584447932
+"Eg2","Argentina","co2emissionByEndUse","Sources",2020,"Year","Vint_2020","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2020,209.043364348487
+"Eg2","Argentina","co2emissionByEndUse","Sources",2020,"Year","Vint_2020","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2020,4.65108562977109
+"Eg2","Argentina","co2emissionByEndUse","Sources",2025,"Year","Vint_2025","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2025,230.236571932274
+"Eg2","Argentina","co2emissionByEndUse","Sources",2025,"Year","Vint_2025","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2025,12.2650308625236
+"Eg2","Argentina","co2emissionByEndUse","Sources",2030,"Year","Vint_2030","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2030,248.998815260165
+"Eg2","Argentina","co2emissionByEndUse","Sources",2030,"Year","Vint_2030","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2030,12.4448900846057
+"Eg2","Argentina","co2emissionByEndUse","Sources",2035,"Year","Vint_2035","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2035,264.604622288016
+"Eg2","Argentina","co2emissionByEndUse","Sources",2035,"Year","Vint_2035","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2035,10.7337815342076
+"Eg2","Argentina","co2emissionByEndUse","Sources",2040,"Year","Vint_2040","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2040,276.664353559418
+"Eg2","Argentina","co2emissionByEndUse","Sources",2040,"Year","Vint_2040","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2040,7.676187582041
+"Eg2","Argentina","co2emissionByEndUse","Sources",2045,"Year","Vint_2045","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2045,287.323460428534
+"Eg2","Argentina","co2emissionByEndUse","Sources",2045,"Year","Vint_2045","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2045,3.39509568550768
+"Eg2","Argentina","co2emissionByEndUse","Sources",2050,"Year","Vint_2050","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MTC",2050,297.811196546753
+"Eg2","Argentina","co2emissionByEndUse","Sources",2050,"Year","Vint_2050","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2050,0.866957672618476
+"Eg2","Argentina","co2emissionByEndUse","Sources",2055,"Year","Vint_2055","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2055,-3.46070843772958
+"Eg2","Argentina","co2emissionByEndUse","Sources",2060,"Year","Vint_2060","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2060,-2.64681444407886
+"Eg2","Argentina","co2emissionByEndUse","Sources",2065,"Year","Vint_2065","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2065,-1.94619737211263
+"Eg2","Argentina","co2emissionByEndUse","Sources",2070,"Year","Vint_2070","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2070,-1.40920274479267
+"Eg2","Argentina","co2emissionByEndUse","Sources",2075,"Year","Vint_2075","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2075,-1.00958971824619
+"Eg2","Argentina","co2emissionByEndUse","Sources",2080,"Year","Vint_2080","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2080,-0.717506190866006
+"Eg2","Argentina","co2emissionByEndUse","Sources",2085,"Year","Vint_2085","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2085,-0.506925313409607
+"Eg2","Argentina","co2emissionByEndUse","Sources",2090,"Year","Vint_2090","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2090,-0.356667433180926
+"Eg2","Argentina","co2emissionByEndUse","Sources",2095,"Year","Vint_2095","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2095,-0.250251983661753
+"Eg2","Argentina","co2emissionByEndUse","Sources",2100,"Year","Vint_2100","CO2 Emission by Enduse (MTCO2 Eq.)","sum","ExampleScen2","CO2 Emissions by enduse","MtC/yr",2100,-0.175280580970302
+"Eg2","Argentina","elecByTech","Sources",1990,"Year","Vint_1990","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",1990,50.5339719444448
+"Eg2","Argentina","elecByTech","Sources",2005,"Year","Vint_2005","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2005,104.893916666667
+"Eg2","Argentina","elecByTech","Sources",2010,"Year","Vint_2010","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2010,124.199861111112
+"Eg2","Argentina","elecByTech","Sources",2015,"Year","Vint_2015","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2015,190.917034405557
+"Eg2","Argentina","elecByTech","Sources",2020,"Year","Vint_2020","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2020,200.974565444446
+"Eg2","Argentina","elecByTech","Sources",2025,"Year","Vint_2025","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2025,234.457221722224
+"Eg2","Argentina","elecByTech","Sources",2030,"Year","Vint_2030","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2030,267.866695500002
+"Eg2","Argentina","elecByTech","Sources",2035,"Year","Vint_2035","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2035,299.781947861114
+"Eg2","Argentina","elecByTech","Sources",2040,"Year","Vint_2040","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2040,328.704122861114
+"Eg2","Argentina","elecByTech","Sources",2045,"Year","Vint_2045","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2045,354.624329027781
+"Eg2","Argentina","elecByTech","Sources",2050,"Year","Vint_2050","Electricity Generation (TWh)","sum","ExampleScen2","Electricity generation by aggregate technology","EJ",2050,378.719156250003
+"Eg2","Argentina","elecCapBySubsector","Sources",1990,"Year","Vint_1990","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",1990,8.5522069562393
+"Eg2","Argentina","elecCapBySubsector","Sources",2005,"Year","Vint_2005","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2005,17.5956012596802
+"Eg2","Argentina","elecCapBySubsector","Sources",2010,"Year","Vint_2010","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2010,20.244213967203
+"Eg2","Argentina","elecCapBySubsector","Sources",2015,"Year","Vint_2015","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2015,29.9313205466212
+"Eg2","Argentina","elecCapBySubsector","Sources",2020,"Year","Vint_2020","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2020,31.5286948293078
+"Eg2","Argentina","elecCapBySubsector","Sources",2025,"Year","Vint_2025","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2025,36.7021216610899
+"Eg2","Argentina","elecCapBySubsector","Sources",2030,"Year","Vint_2030","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2030,42.1067409219757
+"Eg2","Argentina","elecCapBySubsector","Sources",2035,"Year","Vint_2035","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2035,47.5137683991752
+"Eg2","Argentina","elecCapBySubsector","Sources",2040,"Year","Vint_2040","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2040,52.7104951284578
+"Eg2","Argentina","elecCapBySubsector","Sources",2045,"Year","Vint_2045","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2045,57.3841356565899
+"Eg2","Argentina","elecCapBySubsector","Sources",2050,"Year","Vint_2050","Electricity Capacity (GW)","sum","ExampleScen2","Electricity generation by aggregate technology","Electricity Capacity (GW)",2050,62.0481041489578
+"Eg2","Argentina","finalNrgbySec","Sources",1975,"Year","Vint_1975","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",1975,260.643624000002
+"Eg2","Argentina","finalNrgbySec","Sources",1990,"Year","Vint_1990","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",1990,414.348646083337
+"Eg2","Argentina","finalNrgbySec","Sources",2005,"Year","Vint_2005","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2005,664.761819333339
+"Eg2","Argentina","finalNrgbySec","Sources",2010,"Year","Vint_2010","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2010,724.415478277784
+"Eg2","Argentina","finalNrgbySec","Sources",2015,"Year","Vint_2015","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2015,783.713081702784
+"Eg2","Argentina","finalNrgbySec","Sources",2020,"Year","Vint_2020","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2020,835.366783672229
+"Eg2","Argentina","finalNrgbySec","Sources",2025,"Year","Vint_2025","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2025,926.66845123973
+"Eg2","Argentina","finalNrgbySec","Sources",2030,"Year","Vint_2030","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2030,1013.96032282167
+"Eg2","Argentina","finalNrgbySec","Sources",2035,"Year","Vint_2035","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2035,1094.97814955584
+"Eg2","Argentina","finalNrgbySec","Sources",2040,"Year","Vint_2040","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2040,1168.47703787473
+"Eg2","Argentina","finalNrgbySec","Sources",2045,"Year","Vint_2045","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2045,1232.32585450279
+"Eg2","Argentina","finalNrgbySec","Sources",2050,"Year","Vint_2050","Final Energy (TWh)","sum","ExampleScen2","Total final energy by aggregate end-use sector","EJ",2050,1291.65415645834
+"Eg2","Argentina","gdp","Sources",1975,"Year","Vint_1975","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",1975,137.488
+"Eg2","Argentina","gdp","Sources",1990,"Year","Vint_1990","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",1990,135.643
+"Eg2","Argentina","gdp","Sources",2005,"Year","Vint_2005","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2005,233.513
+"Eg2","Argentina","gdp","Sources",2010,"Year","Vint_2010","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2010,307.677
+"Eg2","Argentina","gdp","Sources",2015,"Year","Vint_2015","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2015,351.594
+"Eg2","Argentina","gdp","Sources",2020,"Year","Vint_2020","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2020,388.864
+"Eg2","Argentina","gdp","Sources",2025,"Year","Vint_2025","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2025,460.826
+"Eg2","Argentina","gdp","Sources",2030,"Year","Vint_2030","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2030,537.138
+"Eg2","Argentina","gdp","Sources",2035,"Year","Vint_2035","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2035,616.744
+"Eg2","Argentina","gdp","Sources",2040,"Year","Vint_2040","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2040,696.631
+"Eg2","Argentina","gdp","Sources",2045,"Year","Vint_2045","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2045,775.627
+"Eg2","Argentina","gdp","Sources",2050,"Year","Vint_2050","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2050,856.818
+"Eg2","Argentina","gdp","Sources",2055,"Year","Vint_2055","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2055,940.518
+"Eg2","Argentina","gdp","Sources",2060,"Year","Vint_2060","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2060,1025.74
+"Eg2","Argentina","gdp","Sources",2065,"Year","Vint_2065","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2065,1111.97
+"Eg2","Argentina","gdp","Sources",2070,"Year","Vint_2070","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2070,1197.62
+"Eg2","Argentina","gdp","Sources",2075,"Year","Vint_2075","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2075,1281.08
+"Eg2","Argentina","gdp","Sources",2080,"Year","Vint_2080","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2080,1363.65
+"Eg2","Argentina","gdp","Sources",2085,"Year","Vint_2085","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2085,1446.22
+"Eg2","Argentina","gdp","Sources",2090,"Year","Vint_2090","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2090,1529.23
+"Eg2","Argentina","gdp","Sources",2095,"Year","Vint_2095","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2095,1611.86
+"Eg2","Argentina","gdp","Sources",2100,"Year","Vint_2100","GDP (Billion 1990 USD)","sum","ExampleScen2","GDP MER by region","Million1990US$",2100,1693.07
+"Eg2","Argentina","gdpGrowthRate","Sources",1990,"Year","Vint_1990","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",1990,-0.269839401000238
+"Eg2","Argentina","gdpGrowthRate","Sources",2005,"Year","Vint_2005","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2005,11.4763487011049
+"Eg2","Argentina","gdpGrowthRate","Sources",2010,"Year","Vint_2010","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2010,5.67123759318056
+"Eg2","Argentina","gdpGrowthRate","Sources",2015,"Year","Vint_2015","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2015,2.704455524255
+"Eg2","Argentina","gdpGrowthRate","Sources",2020,"Year","Vint_2020","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2020,2.03549056116288
+"Eg2","Argentina","gdpGrowthRate","Sources",2025,"Year","Vint_2025","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2025,3.45413337126401
+"Eg2","Argentina","gdpGrowthRate","Sources",2030,"Year","Vint_2030","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2030,3.11213533998314
+"Eg2","Argentina","gdpGrowthRate","Sources",2035,"Year","Vint_2035","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2035,2.80253193447952
+"Eg2","Argentina","gdpGrowthRate","Sources",2040,"Year","Vint_2040","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2040,2.46595041937006
+"Eg2","Argentina","gdpGrowthRate","Sources",2045,"Year","Vint_2045","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2045,2.17155999735561
+"Eg2","Argentina","gdpGrowthRate","Sources",2050,"Year","Vint_2050","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2050,2.01102998514018
+"Eg2","Argentina","gdpGrowthRate","Sources",2055,"Year","Vint_2055","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2055,1.88158810522256
+"Eg2","Argentina","gdpGrowthRate","Sources",2060,"Year","Vint_2060","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2060,1.74991052767488
+"Eg2","Argentina","gdpGrowthRate","Sources",2065,"Year","Vint_2065","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2065,1.62747976804429
+"Eg2","Argentina","gdpGrowthRate","Sources",2070,"Year","Vint_2070","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2070,1.49512760000501
+"Eg2","Argentina","gdpGrowthRate","Sources",2075,"Year","Vint_2075","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2075,1.35646194904657
+"Eg2","Argentina","gdpGrowthRate","Sources",2080,"Year","Vint_2080","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2080,1.25706458220021
+"Eg2","Argentina","gdpGrowthRate","Sources",2085,"Year","Vint_2085","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2085,1.18270586007025
+"Eg2","Argentina","gdpGrowthRate","Sources",2090,"Year","Vint_2090","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2090,1.12247469327116
+"Eg2","Argentina","gdpGrowthRate","Sources",2095,"Year","Vint_2095","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2095,1.05804716676932
+"Eg2","Argentina","gdpGrowthRate","Sources",2100,"Year","Vint_2100","GDP Growth Rate (Percent)","sum","ExampleScen2","Calculated","GDP Growth Rate (Percent)",2100,0.987941382016255
+"Eg2","Argentina","gdpPerCapita","Sources",1975,"Year","Vint_1975","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",1975,5.27198
+"Eg2","Argentina","gdpPerCapita","Sources",1990,"Year","Vint_1990","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",1990,4.15548
+"Eg2","Argentina","gdpPerCapita","Sources",2005,"Year","Vint_2005","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2005,6.0369
+"Eg2","Argentina","gdpPerCapita","Sources",2010,"Year","Vint_2010","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2010,7.61349
+"Eg2","Argentina","gdpPerCapita","Sources",2015,"Year","Vint_2015","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2015,8.36233
+"Eg2","Argentina","gdpPerCapita","Sources",2020,"Year","Vint_2020","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2020,8.92504
+"Eg2","Argentina","gdpPerCapita","Sources",2025,"Year","Vint_2025","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2025,10.2545
+"Eg2","Argentina","gdpPerCapita","Sources",2030,"Year","Vint_2030","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2030,11.6377
+"Eg2","Argentina","gdpPerCapita","Sources",2035,"Year","Vint_2035","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2035,13.0614
+"Eg2","Argentina","gdpPerCapita","Sources",2040,"Year","Vint_2040","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2040,14.4703
+"Eg2","Argentina","gdpPerCapita","Sources",2045,"Year","Vint_2045","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2045,15.8764
+"Eg2","Argentina","gdpPerCapita","Sources",2050,"Year","Vint_2050","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2050,17.3526
+"Eg2","Argentina","gdpPerCapita","Sources",2055,"Year","Vint_2055","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2055,18.9231
+"Eg2","Argentina","gdpPerCapita","Sources",2060,"Year","Vint_2060","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2060,20.5832
+"Eg2","Argentina","gdpPerCapita","Sources",2065,"Year","Vint_2065","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2065,22.3152
+"Eg2","Argentina","gdpPerCapita","Sources",2070,"Year","Vint_2070","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2070,24.1145
+"Eg2","Argentina","gdpPerCapita","Sources",2075,"Year","Vint_2075","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2075,25.959
+"Eg2","Argentina","gdpPerCapita","Sources",2080,"Year","Vint_2080","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2080,27.8854
+"Eg2","Argentina","gdpPerCapita","Sources",2085,"Year","Vint_2085","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2085,29.8854
+"Eg2","Argentina","gdpPerCapita","Sources",2090,"Year","Vint_2090","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2090,31.9721
+"Eg2","Argentina","gdpPerCapita","Sources",2095,"Year","Vint_2095","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2095,34.1336
+"Eg2","Argentina","gdpPerCapita","Sources",2100,"Year","Vint_2100","GDP per Capita (Thousand 1990 USD per Person)","sum","ExampleScen2","GDP per capita MER by region","Thous90US$/per",2100,36.3515
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",1975,"Year","Vint_1975","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",1975,0.0004179254
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",1975,"Year","Vint_1975","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",1975,53.850988906
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",1990,"Year","Vint_1990","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",1990,0.00270974982
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",1990,"Year","Vint_1990","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",1990,105.016451976333
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2005,"Year","Vint_2005","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2005,0.00073563812
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2005,"Year","Vint_2005","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2005,153.969816407
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2010,"Year","Vint_2010","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2010,0.000950124476508
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2010,"Year","Vint_2010","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2010,177.53014059
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2015,"Year","Vint_2015","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2015,0.0022427771117
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2015,"Year","Vint_2015","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2015,198.851544342
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2020,"Year","Vint_2020","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2020,0.003590700305154
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2020,"Year","Vint_2020","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2020,209.044065549
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2025,"Year","Vint_2025","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2025,0.005748307625168
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2025,"Year","Vint_2025","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2025,230.237492477667
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2030,"Year","Vint_2030","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2030,0.008487741503418
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2030,"Year","Vint_2030","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2030,248.999979822
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2035,"Year","Vint_2035","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2035,0.00972655877905
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2035,"Year","Vint_2035","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2035,264.606087281433
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2040,"Year","Vint_2040","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2040,0.010901678624134
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2040,"Year","Vint_2040","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2040,276.666245295
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2045,"Year","Vint_2045","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2045,0.011963122085914
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2045,"Year","Vint_2045","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2045,287.325963495633
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2050,"Year","Vint_2050","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","Gg",2050,0.012935781392978
+"Eg2","Argentina","ghgEmissByGHGGROUPS","Sources",2050,"Year","Vint_2050","GHG Emissions by Group (MTCO2 Eq.)","sum","ExampleScen2","X","MTC",2050,297.814804836633
+"Eg2","Argentina","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",1975,0.0004179254
+"Eg2","Argentina","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",1975,53.850988906
+"Eg2","Argentina","ghgEmissionByGHG","Sources",1975,"Year","Vint_1975","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",1975,9.79367735575
+"Eg2","Argentina","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",1990,0.00270974982
+"Eg2","Argentina","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",1990,105.016451976333
+"Eg2","Argentina","ghgEmissionByGHG","Sources",1990,"Year","Vint_1990","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",1990,34.4710997065
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2005,0.00073563812
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2005,153.969816407
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2005,"Year","Vint_2005","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2005,33.7669235205
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2010,0.000950124476508
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2010,177.53014059
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2010,"Year","Vint_2010","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2010,34.649783444625
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2015,0.0022427771117
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2015,198.851544342
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2015,"Year","Vint_2015","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2015,33.387805685425
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2020,0.003590700305154
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2020,209.044065549
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2020,"Year","Vint_2020","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2020,35.5919449381
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2025,0.005748307625168
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2025,230.237492477667
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2025,"Year","Vint_2025","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2025,38.20423569605
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2030,0.008487741503418
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2030,248.999979822
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2030,"Year","Vint_2030","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2030,40.8270352640425
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2035,0.00972655877905
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2035,264.606087281433
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2035,"Year","Vint_2035","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2035,42.6041887687
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2040,0.010901678624134
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2040,276.666245295
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2040,"Year","Vint_2040","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2040,45.296990478165
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2045,0.011963122085914
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2045,287.325963495633
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2045,"Year","Vint_2045","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2045,47.0738409826525
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Gg",2050,0.012935781392978
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","MTC",2050,297.814804836633
+"Eg2","Argentina","ghgEmissionByGHG","Sources",2050,"Year","Vint_2050","GHG Emissions (MTCO2 Eq.)","sum","ExampleScen2","GHG emissions by subsector","Tg",2050,48.9319387263375
+"Eg2","Argentina","irrWatConsBasin","Sources",1975,"Year","Vint_1975","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",1975,3.0149742987762
+"Eg2","Argentina","irrWatConsBasin","Sources",1990,"Year","Vint_1990","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",1990,3.5606415776508
+"Eg2","Argentina","irrWatConsBasin","Sources",2005,"Year","Vint_2005","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2005,4.76833148760222
+"Eg2","Argentina","irrWatConsBasin","Sources",2010,"Year","Vint_2010","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2010,5.22835472124882
+"Eg2","Argentina","irrWatConsBasin","Sources",2015,"Year","Vint_2015","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2015,5.57978385226909
+"Eg2","Argentina","irrWatConsBasin","Sources",2020,"Year","Vint_2020","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2020,6.3091481842471
+"Eg2","Argentina","irrWatConsBasin","Sources",2025,"Year","Vint_2025","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2025,7.10996310227667
+"Eg2","Argentina","irrWatConsBasin","Sources",2030,"Year","Vint_2030","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2030,7.97802478501498
+"Eg2","Argentina","irrWatConsBasin","Sources",2035,"Year","Vint_2035","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2035,8.76567497145156
+"Eg2","Argentina","irrWatConsBasin","Sources",2040,"Year","Vint_2040","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2040,9.46355416617649
+"Eg2","Argentina","irrWatConsBasin","Sources",2045,"Year","Vint_2045","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2045,10.1139449596397
+"Eg2","Argentina","irrWatConsBasin","Sources",2050,"Year","Vint_2050","Irrigation Water Consumption (km^3)","sum","ExampleScen2","water consumption by water mapping source","km^3",2050,10.6745292650074
+"Eg2","Argentina","irrWatWithBasin","Sources",1975,"Year","Vint_1975","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",1975,5.5832853906974
+"Eg2","Argentina","irrWatWithBasin","Sources",1990,"Year","Vint_1990","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",1990,6.59378070357566
+"Eg2","Argentina","irrWatWithBasin","Sources",2005,"Year","Vint_2005","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2005,8.83024330666012
+"Eg2","Argentina","irrWatWithBasin","Sources",2010,"Year","Vint_2010","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2010,9.68213812371492
+"Eg2","Argentina","irrWatWithBasin","Sources",2015,"Year","Vint_2015","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2015,10.3329273901193
+"Eg2","Argentina","irrWatWithBasin","Sources",2020,"Year","Vint_2020","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2020,11.6835983066802
+"Eg2","Argentina","irrWatWithBasin","Sources",2025,"Year","Vint_2025","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2025,13.1665997787882
+"Eg2","Argentina","irrWatWithBasin","Sources",2030,"Year","Vint_2030","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2030,14.7741293099428
+"Eg2","Argentina","irrWatWithBasin","Sources",2035,"Year","Vint_2035","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2035,16.2327316957342
+"Eg2","Argentina","irrWatWithBasin","Sources",2040,"Year","Vint_2040","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2040,17.5250963128937
+"Eg2","Argentina","irrWatWithBasin","Sources",2045,"Year","Vint_2045","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2045,18.7295255390044
+"Eg2","Argentina","irrWatWithBasin","Sources",2050,"Year","Vint_2050","Irrigation Water Withdrawal (km^3)","sum","ExampleScen2","water withdrawals by water mapping source","km^3",2050,19.7676521936928
+"Eg2","Argentina","landIrrRfd","Sources",1975,"Year","Vint_1975","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",1975,0.2056687712057
+"Eg2","Argentina","landIrrRfd","Sources",1990,"Year","Vint_1990","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",1990,0.23497804291654
+"Eg2","Argentina","landIrrRfd","Sources",2005,"Year","Vint_2005","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2005,0.26634697048316
+"Eg2","Argentina","landIrrRfd","Sources",2010,"Year","Vint_2010","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2010,0.31903376428046
+"Eg2","Argentina","landIrrRfd","Sources",2015,"Year","Vint_2015","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2015,0.31968854364659
+"Eg2","Argentina","landIrrRfd","Sources",2020,"Year","Vint_2020","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2020,0.330850970286424
+"Eg2","Argentina","landIrrRfd","Sources",2025,"Year","Vint_2025","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2025,0.344280575845071
+"Eg2","Argentina","landIrrRfd","Sources",2030,"Year","Vint_2030","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2030,0.357595764668536
+"Eg2","Argentina","landIrrRfd","Sources",2035,"Year","Vint_2035","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2035,0.370895017859009
+"Eg2","Argentina","landIrrRfd","Sources",2040,"Year","Vint_2040","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2040,0.380829203484511
+"Eg2","Argentina","landIrrRfd","Sources",2045,"Year","Vint_2045","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2045,0.388090077991467
+"Eg2","Argentina","landIrrRfd","Sources",2050,"Year","Vint_2050","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2050,0.392797162990229
+"Eg2","Argentina","landIrrRfd","Sources",2055,"Year","Vint_2055","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2055,0
+"Eg2","Argentina","landIrrRfd","Sources",2060,"Year","Vint_2060","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2060,0
+"Eg2","Argentina","landIrrRfd","Sources",2065,"Year","Vint_2065","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2065,0
+"Eg2","Argentina","landIrrRfd","Sources",2070,"Year","Vint_2070","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2070,0
+"Eg2","Argentina","landIrrRfd","Sources",2075,"Year","Vint_2075","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2075,0
+"Eg2","Argentina","landIrrRfd","Sources",2080,"Year","Vint_2080","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2080,0
+"Eg2","Argentina","landIrrRfd","Sources",2085,"Year","Vint_2085","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2085,0
+"Eg2","Argentina","landIrrRfd","Sources",2090,"Year","Vint_2090","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2090,0
+"Eg2","Argentina","landIrrRfd","Sources",2095,"Year","Vint_2095","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2095,0
+"Eg2","Argentina","landIrrRfd","Sources",2100,"Year","Vint_2100","Crop Land Allocation (1000 km^2)","sum","ExampleScen2","land allocation by crop and water source","thous km2",2100,0
+"Eg2","Argentina","LUCemiss","Sources",1980,"Year","Vint_1980","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",1980,19.369745484892
+"Eg2","Argentina","LUCemiss","Sources",1985,"Year","Vint_1985","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",1985,10.8387342576209
+"Eg2","Argentina","LUCemiss","Sources",1990,"Year","Vint_1990","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",1990,5.58270057011333
+"Eg2","Argentina","LUCemiss","Sources",1995,"Year","Vint_1995","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",1995,18.0834115824186
+"Eg2","Argentina","LUCemiss","Sources",2000,"Year","Vint_2000","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2000,16.6021917938756
+"Eg2","Argentina","LUCemiss","Sources",2005,"Year","Vint_2005","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2005,14.3972191972327
+"Eg2","Argentina","LUCemiss","Sources",2010,"Year","Vint_2010","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2010,205.715550897553
+"Eg2","Argentina","LUCemiss","Sources",2015,"Year","Vint_2015","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2015,-2.9328584447932
+"Eg2","Argentina","LUCemiss","Sources",2020,"Year","Vint_2020","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2020,4.65108562977109
+"Eg2","Argentina","LUCemiss","Sources",2025,"Year","Vint_2025","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2025,12.2650308625236
+"Eg2","Argentina","LUCemiss","Sources",2030,"Year","Vint_2030","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2030,12.4448900846057
+"Eg2","Argentina","LUCemiss","Sources",2035,"Year","Vint_2035","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2035,10.7337815342076
+"Eg2","Argentina","LUCemiss","Sources",2040,"Year","Vint_2040","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2040,7.676187582041
+"Eg2","Argentina","LUCemiss","Sources",2045,"Year","Vint_2045","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2045,3.39509568550768
+"Eg2","Argentina","LUCemiss","Sources",2050,"Year","Vint_2050","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2050,0.866957672618476
+"Eg2","Argentina","LUCemiss","Sources",2055,"Year","Vint_2055","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2055,-3.46070843772958
+"Eg2","Argentina","LUCemiss","Sources",2060,"Year","Vint_2060","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2060,-2.64681444407886
+"Eg2","Argentina","LUCemiss","Sources",2065,"Year","Vint_2065","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2065,-1.94619737211263
+"Eg2","Argentina","LUCemiss","Sources",2070,"Year","Vint_2070","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2070,-1.40920274479267
+"Eg2","Argentina","LUCemiss","Sources",2075,"Year","Vint_2075","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2075,-1.00958971824619
+"Eg2","Argentina","LUCemiss","Sources",2080,"Year","Vint_2080","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2080,-0.717506190866006
+"Eg2","Argentina","LUCemiss","Sources",2085,"Year","Vint_2085","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2085,-0.506925313409607
+"Eg2","Argentina","LUCemiss","Sources",2090,"Year","Vint_2090","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2090,-0.356667433180926
+"Eg2","Argentina","LUCemiss","Sources",2095,"Year","Vint_2095","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2095,-0.250251983661753
+"Eg2","Argentina","LUCemiss","Sources",2100,"Year","Vint_2100","LUC CO2 Emissions (MTCO2 Eq.)","sum","ExampleScen2","Land Use Change Emission (future)","MtC/yr",2100,-0.175280580970302
+"Eg2","Argentina","pop","Sources",1975,"Year","Vint_1975","Population (Millions)","sum","ExampleScen2","Population by region","thous",1975,26.079
+"Eg2","Argentina","pop","Sources",1990,"Year","Vint_1990","Population (Millions)","sum","ExampleScen2","Population by region","thous",1990,32.642
+"Eg2","Argentina","pop","Sources",2005,"Year","Vint_2005","Population (Millions)","sum","ExampleScen2","Population by region","thous",2005,38.681
+"Eg2","Argentina","pop","Sources",2010,"Year","Vint_2010","Population (Millions)","sum","ExampleScen2","Population by region","thous",2010,40.412
+"Eg2","Argentina","pop","Sources",2015,"Year","Vint_2015","Population (Millions)","sum","ExampleScen2","Population by region","thous",2015,42.045
+"Eg2","Argentina","pop","Sources",2020,"Year","Vint_2020","Population (Millions)","sum","ExampleScen2","Population by region","thous",2020,43.57
+"Eg2","Argentina","pop","Sources",2025,"Year","Vint_2025","Population (Millions)","sum","ExampleScen2","Population by region","thous",2025,44.939
+"Eg2","Argentina","pop","Sources",2030,"Year","Vint_2030","Population (Millions)","sum","ExampleScen2","Population by region","thous",2030,46.155
+"Eg2","Argentina","pop","Sources",2035,"Year","Vint_2035","Population (Millions)","sum","ExampleScen2","Population by region","thous",2035,47.219
+"Eg2","Argentina","pop","Sources",2040,"Year","Vint_2040","Population (Millions)","sum","ExampleScen2","Population by region","thous",2040,48.142
+"Eg2","Argentina","pop","Sources",2045,"Year","Vint_2045","Population (Millions)","sum","ExampleScen2","Population by region","thous",2045,48.854
+"Eg2","Argentina","pop","Sources",2050,"Year","Vint_2050","Population (Millions)","sum","ExampleScen2","Population by region","thous",2050,49.377
+"Eg2","Argentina","pop","Sources",2055,"Year","Vint_2055","Population (Millions)","sum","ExampleScen2","Population by region","thous",2055,49.702
+"Eg2","Argentina","pop","Sources",2060,"Year","Vint_2060","Population (Millions)","sum","ExampleScen2","Population by region","thous",2060,49.834
+"Eg2","Argentina","pop","Sources",2065,"Year","Vint_2065","Population (Millions)","sum","ExampleScen2","Population by region","thous",2065,49.83
+"Eg2","Argentina","pop","Sources",2070,"Year","Vint_2070","Population (Millions)","sum","ExampleScen2","Population by region","thous",2070,49.664
+"Eg2","Argentina","pop","Sources",2075,"Year","Vint_2075","Population (Millions)","sum","ExampleScen2","Population by region","thous",2075,49.35
+"Eg2","Argentina","pop","Sources",2080,"Year","Vint_2080","Population (Millions)","sum","ExampleScen2","Population by region","thous",2080,48.902
+"Eg2","Argentina","pop","Sources",2085,"Year","Vint_2085","Population (Millions)","sum","ExampleScen2","Population by region","thous",2085,48.392
+"Eg2","Argentina","pop","Sources",2090,"Year","Vint_2090","Population (Millions)","sum","ExampleScen2","Population by region","thous",2090,47.83
+"Eg2","Argentina","pop","Sources",2095,"Year","Vint_2095","Population (Millions)","sum","ExampleScen2","Population by region","thous",2095,47.222
+"Eg2","Argentina","pop","Sources",2100,"Year","Vint_2100","Population (Millions)","sum","ExampleScen2","Population by region","thous",2100,46.575
+"Eg2","Argentina","primNrgConsumByFuel","Sources",1975,"Year","Vint_1975","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",1975,245.706750000002
+"Eg2","Argentina","primNrgConsumByFuel","Sources",1990,"Year","Vint_1990","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",1990,519.023130833337
+"Eg2","Argentina","primNrgConsumByFuel","Sources",2005,"Year","Vint_2005","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2005,788.828611111117
+"Eg2","Argentina","primNrgConsumByFuel","Sources",2010,"Year","Vint_2010","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2010,882.202111111118
+"Eg2","Argentina","primNrgConsumByFuel","Sources",2015,"Year","Vint_2015","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2015,1001.3662357947
+"Eg2","Argentina","primNrgConsumByFuel","Sources",2020,"Year","Vint_2020","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2020,1055.17506006707
+"Eg2","Argentina","primNrgConsumByFuel","Sources",2025,"Year","Vint_2025","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2025,1176.14723906706
+"Eg2","Argentina","primNrgConsumByFuel","Sources",2030,"Year","Vint_2030","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2030,1291.16797121391
+"Eg2","Argentina","primNrgConsumByFuel","Sources",2035,"Year","Vint_2035","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2035,1399.51277086697
+"Eg2","Argentina","primNrgConsumByFuel","Sources",2040,"Year","Vint_2040","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2040,1498.99317523177
+"Eg2","Argentina","primNrgConsumByFuel","Sources",2045,"Year","Vint_2045","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2045,1587.84568389266
+"Eg2","Argentina","primNrgConsumByFuel","Sources",2050,"Year","Vint_2050","Primary Energy Consumption (TWh)","sum","ExampleScen2","primary energy consumption by region (direct equivalent)","EJ",2050,1666.32277867667
+"Eg2","Argentina","watBioPhysCons","Sources",1975,"Year","Vint_1975","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",1975,76.719864324942
+"Eg2","Argentina","watBioPhysCons","Sources",1990,"Year","Vint_1990","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",1990,107.96600497347
+"Eg2","Argentina","watBioPhysCons","Sources",2005,"Year","Vint_2005","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2005,187.635687541084
+"Eg2","Argentina","watBioPhysCons","Sources",2010,"Year","Vint_2010","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2010,206.510113882754
+"Eg2","Argentina","watBioPhysCons","Sources",2015,"Year","Vint_2015","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2015,216.608200693196
+"Eg2","Argentina","watBioPhysCons","Sources",2020,"Year","Vint_2020","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2020,234.716118457876
+"Eg2","Argentina","watBioPhysCons","Sources",2025,"Year","Vint_2025","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2025,255.118902810234
+"Eg2","Argentina","watBioPhysCons","Sources",2030,"Year","Vint_2030","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2030,276.044418646537
+"Eg2","Argentina","watBioPhysCons","Sources",2035,"Year","Vint_2035","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2035,293.435895450527
+"Eg2","Argentina","watBioPhysCons","Sources",2040,"Year","Vint_2040","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2040,309.597229684287
+"Eg2","Argentina","watBioPhysCons","Sources",2045,"Year","Vint_2045","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2045,324.540257431917
+"Eg2","Argentina","watBioPhysCons","Sources",2050,"Year","Vint_2050","Biophysical Water Consumption (km^3)","sum","ExampleScen2","biophysical water demand by crop type and land region","km^3",2050,338.401714083558
+"Eg2","Argentina","watConsumBySec","Sources",1975,"Year","Vint_1975","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",1975,4.5775826718462
+"Eg2","Argentina","watConsumBySec","Sources",1990,"Year","Vint_1990","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",1990,5.4780644516778
+"Eg2","Argentina","watConsumBySec","Sources",2005,"Year","Vint_2005","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2005,7.21996525460222
+"Eg2","Argentina","watConsumBySec","Sources",2010,"Year","Vint_2010","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2010,7.85658296594882
+"Eg2","Argentina","watConsumBySec","Sources",2015,"Year","Vint_2015","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2015,8.35238483219165
+"Eg2","Argentina","watConsumBySec","Sources",2020,"Year","Vint_2020","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2020,9.16019053463096
+"Eg2","Argentina","watConsumBySec","Sources",2025,"Year","Vint_2025","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2025,10.1113805325986
+"Eg2","Argentina","watConsumBySec","Sources",2030,"Year","Vint_2030","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2030,11.1414967640297
+"Eg2","Argentina","watConsumBySec","Sources",2035,"Year","Vint_2035","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2035,12.0718517167544
+"Eg2","Argentina","watConsumBySec","Sources",2040,"Year","Vint_2040","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2040,12.9080382465177
+"Eg2","Argentina","watConsumBySec","Sources",2045,"Year","Vint_2045","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2045,13.6758353509261
+"Eg2","Argentina","watConsumBySec","Sources",2050,"Year","Vint_2050","Water Consumption (km^3)","sum","ExampleScen2","water consumption by sector","km^3",2050,14.3478340744207
+"Eg2","Argentina","watWithdrawByCrop","Sources",1975,"Year","Vint_1975","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",1975,5.5832853906974
+"Eg2","Argentina","watWithdrawByCrop","Sources",1990,"Year","Vint_1990","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",1990,6.59378070357566
+"Eg2","Argentina","watWithdrawByCrop","Sources",2005,"Year","Vint_2005","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2005,8.83024330666012
+"Eg2","Argentina","watWithdrawByCrop","Sources",2010,"Year","Vint_2010","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2010,9.68213812371492
+"Eg2","Argentina","watWithdrawByCrop","Sources",2015,"Year","Vint_2015","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2015,10.3329273901193
+"Eg2","Argentina","watWithdrawByCrop","Sources",2020,"Year","Vint_2020","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2020,11.6835983066802
+"Eg2","Argentina","watWithdrawByCrop","Sources",2025,"Year","Vint_2025","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2025,13.1665997787882
+"Eg2","Argentina","watWithdrawByCrop","Sources",2030,"Year","Vint_2030","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2030,14.7741293099428
+"Eg2","Argentina","watWithdrawByCrop","Sources",2035,"Year","Vint_2035","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2035,16.2327316957343
+"Eg2","Argentina","watWithdrawByCrop","Sources",2040,"Year","Vint_2040","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2040,17.5250963128937
+"Eg2","Argentina","watWithdrawByCrop","Sources",2045,"Year","Vint_2045","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2045,18.7295255390044
+"Eg2","Argentina","watWithdrawByCrop","Sources",2050,"Year","Vint_2050","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by crop","km^3",2050,19.7676521936928
+"Eg2","Argentina","watWithdrawBySec","Sources",1975,"Year","Vint_1975","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",1975,11.8876582269274
+"Eg2","Argentina","watWithdrawBySec","Sources",1990,"Year","Vint_1990","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",1990,13.8889983310457
+"Eg2","Argentina","watWithdrawBySec","Sources",2005,"Year","Vint_2005","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2005,18.3236334938601
+"Eg2","Argentina","watWithdrawBySec","Sources",2010,"Year","Vint_2010","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2010,20.4379570767149
+"Eg2","Argentina","watWithdrawBySec","Sources",2015,"Year","Vint_2015","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2015,21.6843388956319
+"Eg2","Argentina","watWithdrawBySec","Sources",2020,"Year","Vint_2020","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2020,23.5456741260541
+"Eg2","Argentina","watWithdrawBySec","Sources",2025,"Year","Vint_2025","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2025,25.9682810960091
+"Eg2","Argentina","watWithdrawBySec","Sources",2030,"Year","Vint_2030","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2030,28.3088459161615
+"Eg2","Argentina","watWithdrawBySec","Sources",2035,"Year","Vint_2035","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2035,30.3634847572721
+"Eg2","Argentina","watWithdrawBySec","Sources",2040,"Year","Vint_2040","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2040,32.1287855816169
+"Eg2","Argentina","watWithdrawBySec","Sources",2045,"Year","Vint_2045","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2045,33.7279911055117
+"Eg2","Argentina","watWithdrawBySec","Sources",2050,"Year","Vint_2050","Water Withdrawals (km^3)","sum","ExampleScen2","water withdrawals by sector","km^3",2050,35.0900067741401

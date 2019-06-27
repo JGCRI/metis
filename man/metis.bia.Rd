@@ -5,56 +5,30 @@
 \title{metis.bia}
 \usage{
 metis.bia(biaInputsFolder = "NA", biaInputsFiles = "NA",
-  biaScenarioAssign = "NA", zelusFolder = "NA", zelusScenario = "NA",
-  zelusUnits = "NA", zelusFiles = "NA", popFolder = "NA",
-  popFiles = "NA", popUnits = "NA", biaOutputsFolder = paste(getwd(),
-  "/dataFiles/grids/bia/biaOutputs", sep = ""), reReadData = 1,
-  gridMetisData = paste(getwd(), "/outputs/Grids/gridMetis.RData", sep =
-  ""), sqliteUSE = F, sqliteDBNamePath = paste(getwd(),
-  "/outputs/Grids/gridMetis.sqlite", sep = ""), regionsSelect = NULL,
-  queriesSelect = "All", dataProj = gcamdataProjFile,
-  scenOrigNames = c("GCAMOrig", "GCAMModified"),
-  scenNewNames = c("GCAMOrig", "GCAMModified"),
-  gcamdatabasePath = gcamdatabasePath,
-  gcamdatabaseName = gcamdatabaseName, queryxml = "metisQueries.xml",
-  paramsSelect = c("elecByTech"))
+  reReadData = 1, regionsSelect = NULL, dataProj = "dataProj.proj",
+  dataProjPath = gcamdatabasePath, scenOrigNames = NULL,
+  scenNewNames = NULL, gcamdatabasePath = "NA",
+  gcamdatabaseName = "NA", queryxml = "metisQueries.xml",
+  queryPath = paste(getwd(), "/dataFiles/gcam", sep = ""),
+  queriesSelect = "All", paramsSelect = c("elecByTech",
+  "elecCapBySubsector"), gridChoice = "grid_050", diagnosticsON = T,
+  subsectorNAdistribute = "even", nameAppend = "")
 }
 \arguments{
-\item{biaInputsFolder}{andym Bia Inputs Folder Path}
+\item{biaInputsFolder}{Bia Inputs Folder Path}
 
-\item{biaInputsFiles}{andym Bia Files to Read}
+\item{biaInputsFiles}{Bia Inputs Folder Path}
 
-\item{biaScenarioAssign}{andym Default "NA". Scenario name if testing a single scenario.}
-
-\item{zelusFolder}{andym Full path to zelus outputs}
-
-\item{zelusScenario}{andym Scenario name for zelus run}
-
-\item{zelusUnits}{andym No Default}
-
-\item{zelusFiles}{andym Default =c(?_?'edtrnsp','edbld','edindus'?_?)}
-
-\item{popFolder}{Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")}
-
-\item{popFiles}{Default = <-"grid_pop_map"}
-
-\item{popUnits}{Default = <-"person"}
-
-\item{biaOutputsFolder}{Default =paste(getwd(),"/dataFiles/grids/bia/biaOutputs",sep=""),}
-
-\item{reReadData}{Default =1,}
-
-\item{gridMetisData}{Default = paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")}
-
-\item{sqliteUSE}{Default = T,}
-
-\item{sqliteDBNamePath}{Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")}
+\item{reReadData}{Default = 1. will read the GCAM data base and create a queryData.proj file
+in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
+with full path is provided otherwise it will search for a dataProj.proj file in the existing
+folder which may have been created from an old run.}
 
 \item{regionsSelect}{The regions to analyze in a vector. Example c('Colombia','Argentina')}
 
-\item{queriesSelect}{Default = "All". Vector of queries to read from the queryxml for example}
-
 \item{dataProj}{Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.}
+
+\item{dataProjPath}{Folder that contains the dataProj or where it will be produced.}
 
 \item{scenOrigNames}{Original Scenarios names in GCAM database in a string vector.
 For example c('scenario1','scenario2).}
@@ -68,13 +42,23 @@ Default will use Original Names. For example c('scenario1','scenario2)}
 
 \item{queryxml}{Full path to query.xml file}
 
-\item{reReadData}{If TRUE will read the GCAM data base and create a queryData.proj file
-in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
-with full path is provided otherwise it will search for a dataProj.proj file in the existing
-folder which may have been created from an old run.}
+\item{queryPath}{Folder that contains the query.xml file.By default it is
+the same folder as specified by gcamdatabasePath}
+
+\item{queriesSelect}{Default = "All". Vector of queries to read from the queryxml for example}
+
+\item{paramsSelect}{Default = c("elecByTech", "elecCapBySubsector") . Vector of parameters to be read from the GCAM database}
+
+\item{gridChoice}{Default = "grid_050" . Choice of whether to use 50 km x 50 km grid cells ("grid_050") or 25 km x 25 km ("grid_025").}
+
+\item{diagnosticsON}{Default = T.}
+
+\item{subsectorNAdistribute}{Default = "even". Choose "even" for even distribution or "totalOther" to distribute based on sum of all other subsectors..}
+
+\item{nameAppend}{Default=""}
 }
 \value{
-#andym a tibble with GCAM electricity generation distributed on a grid for a selected region
+A tibble with GCAM electricity generation distributed on a grid for selected regions
 }
 \description{
 This function downscales GCAM electricity generation and installed capacity onto a grid, based on WRI PowerWatch dataset of present capacity

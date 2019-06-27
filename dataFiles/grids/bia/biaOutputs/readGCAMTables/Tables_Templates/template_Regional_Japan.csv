@@ -1,0 +1,20 @@
+"scenario","region","sources","param","units","class","x","value"
+"Local Data","Japan","Sources","elecByTech","Electricity Generation (TWh)","a Coal",2010,0
+"Local Data","Japan","Sources","elecByTech","Electricity Generation (TWh)","c Gas",2010,0
+"Local Data","Japan","Sources","elecByTech","Electricity Generation (TWh)","e Oil",2010,0
+"Local Data","Japan","Sources","elecByTech","Electricity Generation (TWh)","g Biomass",2010,0
+"Local Data","Japan","Sources","elecByTech","Electricity Generation (TWh)","i Nuclear",2010,0
+"Local Data","Japan","Sources","elecByTech","Electricity Generation (TWh)","j Geothermal",2010,0
+"Local Data","Japan","Sources","elecByTech","Electricity Generation (TWh)","k Hydro",2010,0
+"Local Data","Japan","Sources","elecByTech","Electricity Generation (TWh)","l Wind",2010,0
+"Local Data","Japan","Sources","elecByTech","Electricity Generation (TWh)","m Solar",2010,0
+"Local Data","Japan","Sources","elecByTech","Electricity Generation (TWh)","n CHP",2010,0
+"Local Data","Japan","Sources","elecCapBySubsector","Electricity Capacity (GW)","a Coal",2010,0
+"Local Data","Japan","Sources","elecCapBySubsector","Electricity Capacity (GW)","c Gas",2010,0
+"Local Data","Japan","Sources","elecCapBySubsector","Electricity Capacity (GW)","e Oil",2010,0
+"Local Data","Japan","Sources","elecCapBySubsector","Electricity Capacity (GW)","g Biomass",2010,0
+"Local Data","Japan","Sources","elecCapBySubsector","Electricity Capacity (GW)","i Nuclear",2010,0
+"Local Data","Japan","Sources","elecCapBySubsector","Electricity Capacity (GW)","j Geothermal",2010,0
+"Local Data","Japan","Sources","elecCapBySubsector","Electricity Capacity (GW)","k Hydro",2010,0
+"Local Data","Japan","Sources","elecCapBySubsector","Electricity Capacity (GW)","l Wind",2010,0
+"Local Data","Japan","Sources","elecCapBySubsector","Electricity Capacity (GW)","m Solar",2010,0

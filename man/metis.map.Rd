@@ -8,7 +8,7 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   shpFolder = NULL, shpFile = NULL, fillPalette = "Spectral",
   borderColor = "gray20", lwd = 1, lty = 1, bgColor = "white",
   frameShow = F, fillColumn = NULL, labels = F, labelsSize = 1.2,
-  labelsColor = "black", labelsAutoPlace = F, figWidth = 9,
+  labelsColor = "black", labelsAutoPlace = T, figWidth = 9,
   figHeight = 7, legendWidth = -1, legendShow = F,
   legendOutside = F, legendTextSize = 1, legendTitleSize = 2,
   legendOutsidePosition = NULL, legendPosition = NULL,
@@ -18,11 +18,12 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   printFig = T, fileName = "map", dirOutputs = paste(getwd(),
   "/outputs", sep = ""), facetFreeScale = F, facetRows = NA,
   facetCols = 3, facetBGColor = "grey30", facetLabelColor = "white",
-  facetLabelSize = 1.5, alpha = 1, fillcolorNA = "grey30",
-  fillshowNA = NA, fillcolorNULL = "grey30", facetsON = T,
+  facetLabelSize = 1.5, alpha = 1, fillcolorNA = "gray",
+  fillshowNA = NA, fillcolorNULL = "gray", facetsON = T,
   panelLabel = NULL, multiFacetRows = NULL, multiFacetCols = NULL,
   mapTitle = NULL, mapTitleSize = 1, numeric2Cat_list = NULL,
-  catParam = NULL)
+  catParam = NULL, innerMargins = c(0.01, 0.01, 0.01, 0.01),
+  outerMargins = c(0.01, 0.01, 0.01, 0.01))
 }
 \arguments{
 \item{dataPolygon}{Default = NULL,}
@@ -132,6 +133,10 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
 \item{numeric2Cat_list}{Default=NULL,}
 
 \item{catParam}{Default=NULL}
+
+\item{innerMargins}{Default =c(0,0,0,0), # bottom, left, top, right}
+
+\item{outerMargins}{Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right}
 }
 \value{
 Returns the formatted data used to produce chart

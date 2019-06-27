@@ -10,8 +10,10 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   paramsSelect = "All", regionsSelect = "All", xData = "x",
   yData = "value", xLabel = "xLabel", yLabel = "units",
   aggregate = "sum", class = "class", classPalette = "pal_Basic",
-  regionCompareOnly = 1, useNewLabels = 0, sizeBarLines = 0,
-  sizeLines = 1.5, nameAppend = "", scensSelect = "All")
+  regionCompareOnly = 0, scenarioCompareOnly = 0, useNewLabels = 0,
+  sizeBarLines = 0, sizeLines = 1.5, nameAppend = "",
+  scensSelect = "All", colOrder1 = NULL, colOrderName1 = NULL,
+  colOrder2 = NULL, colOrderName2 = NULL)
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -60,6 +62,8 @@ c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 
 \item{regionCompareOnly}{Default 0. If set to 1, will only run comparison plots and not individual}
 
+\item{scenarioCompareOnly}{Default 0. If set to 1, will only run comparison plots and not individual}
+
 \item{useNewLabels}{Default 0}
 
 \item{sizeBarLines}{Default 0.5}
@@ -69,6 +73,14 @@ c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 \item{nameAppend}{Default =""}
 
 \item{scensSelect}{Default = "All". Select regions to create charts for.}
+
+\item{colOrder1}{Default = NULL,}
+
+\item{colOrderName1}{Default = NULL,}
+
+\item{colOrder2}{Default = NULL,}
+
+\item{colOrderName2}{Default = NULL,}
 }
 \value{
 Produces charts in output folder and also returns combined table in metis format.

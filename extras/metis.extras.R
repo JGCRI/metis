@@ -78,12 +78,18 @@ install_github(repo="zarrarkhan/metis",'dev_metis')
 #----------------
 
 size = 0
+dfSize = data.frame()
 for (x in ls() ){
   thisSize = object.size(get(x))
   size = size + thisSize
-  message(x, " = ", appendLF = F); print(thisSize, units='auto')
+  #message(x, " = ", appendLF = F); print(thisSize, units='auto')
+  dfSizeTemp <- data.frame(file=c(paste(x)),size=paste(print(thisSize, units='Mb')),units="MB")
+  dfSize <- dfSize %>% bind_rows(dfSizeTemp)
 }
 message("total workspace is ",appendLF = F); print(size, units='auto')
+dfSize$size = as.numeric(dfSize$size);
+dfSize %>% arrange(size)
+gc()
 
 
 #--------------
@@ -102,5 +108,41 @@ ggplot(data=df)+
   scale_fill_manual(name="",values=metis.colors()$pal_elec_subsec)+
   theme(legend.position="bottom")+
   guides(fill=guide_legend(nrow=1,byrow=TRUE))
+
+
+
+#----------------------------
+# Profiling Code
+#------------------------------
+if("profvis" %in% rownames(installed.packages()) == F){install.packages("profvis")}
+library(profvis)
+
+
+#profvis(metis.colors("pal_hot"))
+
+
+# countryName="Argentina"
+# grid=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = "")
+# boundaryRegionsSelect=countryName
+# subRegShpFolder=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep="")
+# subRegShpFile=paste(countryName,"NE1",sep="")
+# subRegCol="name"
+# subRegType = "state"
+# nameAppend="_NEState"
+# sqliteUSE = T
+# sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+# paramsSelect= c("All")
+
+profvis(metis.grid2poly(
+  #grid=grid,
+  boundaryRegionsSelect=countryName,
+  subRegShpFolder=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""),
+  subRegShpFile=paste(countryName,"NE1",sep=""),
+  subRegCol="name",
+  subRegType = "state",
+  nameAppend="_NEState",
+  sqliteUSE = sqliteUSE,
+  sqliteDBNamePath = sqliteDBNamePath,
+  paramsSelect=c("All")))
 
 
