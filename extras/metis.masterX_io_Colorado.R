@@ -66,7 +66,7 @@ ioTable0$units <- as.character(ioTable0$units)
 
 
 # Run Metis IO model
-io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario", combSubRegionPlots = 1)  # ioTable0=ioTable0
+io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario", combSubRegionPlots = 0)  # ioTable0=ioTable0
 io1$ioTbl_Output %>% as.data.frame()
 io1$A_Output %>% as.data.frame()
 
