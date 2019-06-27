@@ -19,25 +19,7 @@
 #' @param sqliteDBNamePath Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 #' @export
 #' @examples
-#'    # Example Grid File (csv with lats and lons that overlap the shapefile)
-#'        gridExample<-paste(getwd(),
-#'        "/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
-#'
-#'        # Polygons. An example Shapefile is Provided with metis in ./metis/dataFiles/examples.
-#'        examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
-#'        examplePolyFile_i<-paste("bermejo3Cropped",sep="")
-#'        bermejo3Cropped=readOGR(dsn=examplePolyFolder,
-#'                                layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
-#'        head(bermejo3Cropped@data) # TO choose subRegCol name
-#'        subRegCol_i = "SUB_NAME"
-#'
-#'        # Run metis.grid2poly
-#'        polyBermeo3Cropped<-metis.grid2poly(grid=gridExample,
-#'                                            subRegShpFolder=examplePolyFolder_i,
-#'                                            subRegShpFile=examplePolyFile_i,
-#'                                            subRegCol=subRegCol_i,
-#'                                            aggType="depth", # Aggregation type. See ?metis.grid2poly
-#'                                            nameAppend="_Bermeo3")
+
 
 metis.grid2poly<- function(grid=NULL,
                            subRegShape=NULL,
