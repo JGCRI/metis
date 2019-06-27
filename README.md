@@ -163,13 +163,10 @@ if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}
 library(tmap)
 ```  
 
-6. Download the relevant shapefiles (gis.zip) from Open Science Framework (OSF) at https://osf.io/pbta5/.
-Save and unzip the file in ./metis/datafiles/gis.
-
-7. After downloading and unzipping you should have the following folder structure with the following sub-folders in ./metis/datafiles:
+6. After downloading and unzipping you should have the following folder structure with the following sub-folders in ./metis/datafiles:
 - examples: Contains example shapefiles, as well as gridded and polygon data to work with
 - gcam: Contains an example gcam run output
-- gis: This is the unzipped osf folder (https://osf.io/pbta5/) and contains other shape files including sub-basins, gcam regions, gcam basins, naturalEarth boundaries and other country specific boundaries.
+- gis: This folder contains shape files for gcam regions, gcam basins and naturalEarth adminstrative boundaries.
 - mapping: This contains two files which are used to map color palettes and other parameters not provided by stakeholder tables.
 
 <details><summary>Click here to expand for further details, code and example figures.</summary>
