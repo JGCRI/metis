@@ -34,14 +34,16 @@ library(ggalluvial)
 # Read GCAM Data (metis.readgcam.R)
 #---------------------------
 
-# Connect to gcam database or project
+# Connect directly to a gcam database and produce a .proj file for future uses.
   # gcamdatabasePath_i <-paste(getwd(),"/dataFiles/gcam",sep="") # Use if gcamdatabase is needed
   # gcamdatabaseName_i <-"example_database_basexdb" # Use if gcamdatabse is needed
+  # rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
+
+# Connect to gcam database or project
   dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="") # Path to dataProj file.
   dataProj_i <-"Example_dataProj.proj"  # Use if gcamdata has been saved as .proj file
 
 # Get list of scenarios and rename if desired.
-  # rgcam::localDBConn(gcamdatabasePath,gcamdatabaseName) # if connecting directly to gcam database
   dataProjLoaded <- loadProject(paste(dataProjPath_i, "/",dataProj_i , sep = ""))
   listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
   scenOrigNames_i = c("ExampleScen1","ExampleScen2")
@@ -54,8 +56,8 @@ library(ggalluvial)
   regionsSelect_i <- c("Pakistan","China","Argentina")
 
   dataGCAM<-metis.readgcam(reReadData = F,
-                         #gcamdatabasePath = NULL,
-                         #gcamdatabaseName = NULL,
+                         #gcamdatabasePath = gcamdatabasePath_i,
+                         #gcamdatabaseName = gcamdatabaseName_i,
                          scenOrigNames = scenOrigNames_i,
                          scenNewNames = scenNewNames_i,
                          dataProj = dataProj_i,
@@ -170,9 +172,8 @@ library(ggalluvial)
    dataTables_i =  c(paste(getwd(), "/outputs/example_localFile.csv", sep = ""))
 
 # Can also add data .csv outputs from metis.readgcam.R which are autmatically saved in
-  # ./metis/outputs/readGCAMTables/Tables_gcam
-  # for each of the regions selected.
-  # gcamDataTable_Argentina.csv, gcamDataTable_China.csv, gcamDataTable_Pakistan.csv
+  # ./metis/outputs/readGCAMTables/Tables_gcam for each of the regions selected.
+  # eg. gcamDataTable_Argentina.csv, gcamDataTable_China.csv, gcamDataTable_Pakistan.csv
   # This would be added to dataTables_i as:
   # dataTables_i = c(paste(getwd(), "/example_localFile.csv", sep = ""),
   #                  paste(getwd(), "outputs/readGCAMTables/Tables_gcam/gcamDataTable_Argentina.csv", sep = ""),
@@ -191,7 +192,7 @@ library(ggalluvial)
 
 # Charts Process
   charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
-                          dataTables=dataTables_i, # Default is NULL
+                          dataTables=dataTables_i, # Default is NULL.
                           paramsSelect=paramsSelect_i, # Default is "All"
                           regionsSelect=regionsSelect_i, # Default is "All"
                           xCompare=c("2015","2030","2050","2100"), # Default is c("2015","2030","2050","2100")

@@ -18,8 +18,6 @@
 #' @param sqliteUSE Default = T,
 #' @param sqliteDBNamePath Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 #' @export
-#' @examples
-
 
 metis.grid2poly<- function(grid=NULL,
                            subRegShape=NULL,

@@ -22,7 +22,7 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   fillshowNA = NA, fillcolorNULL = "gray", facetsON = T,
   panelLabel = NULL, multiFacetRows = NULL, multiFacetCols = NULL,
   mapTitle = NULL, mapTitleSize = 1, numeric2Cat_list = NULL,
-  catParam = NULL, innerMargins = c(0, 0, 0, 0),
+  catParam = NULL, innerMargins = c(0.01, 0.01, 0.01, 0.01),
   outerMargins = c(0.01, 0.01, 0.01, 0.01))
 }
 \arguments{

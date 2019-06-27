@@ -66,12 +66,12 @@ ioTable0$units <- as.character(ioTable0$units)
 
 
 # Run Metis IO model
-io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
+io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario", combSubRegionPlots = 1)  # ioTable0=ioTable0
 io1$ioTbl_Output %>% as.data.frame()
 io1$A_Output %>% as.data.frame()
 
 ioTableTest <- ioTable0 %>% filter(subRegion=="Corfo")
-io2 <- metis.io(ioTable0=ioTableTest, nameAppend = "_SingleRegionTest")  # ioTable0=ioTable0
+io2 <- metis.io(ioTable0=ioTableTest, nameAppend = "_SingleRegionTest", combSubRegionPlots = 0)  # ioTable0=ioTable0
 
 
 #----------------------------------------------------------------------------------------------------------------------#

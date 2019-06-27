@@ -8,7 +8,8 @@
 #' @param nameAppend Modified intensity matrix. Default =NULL,
 #' @param figWidth Default = 9,
 #' @param figHeight Default = 7,
-#' @param sankeyLabelAbsPlots Default = 0
+#' @param sankeyLabelAbsPlots Default = 1
+#' @param combSubRegionPlots Default = 1
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @export
@@ -21,7 +22,8 @@ metis.io<-function(ioTable0 = NULL,
                    nameAppend="",
                    figWidth = 9,
                    figHeight = 7,
-                   sankeyLabelAbsPlots=1
+                   sankeyLabelAbsPlots=1,
+                   combSubRegionPlots=1
                         ){
 
   # ioTable0 = NULL
@@ -31,6 +33,7 @@ metis.io<-function(ioTable0 = NULL,
   # nameAppend=""
   # figWidth = 9
   # figHeight = 7
+  # sankeyLabelAbsPlots=1
 
 #----------------
 # Defaults:
@@ -860,13 +863,16 @@ ioTbl_Output = ioTbl_Output %>% dplyr::bind_rows(ioTable_complete %>% tibble::as
     for(scenario_i in scenarios){
         # for(year_i in years){
 
+      if (!dir.exists(paste(dirOutputs, "/IO/",region_i, sep = ""))){
+        dir.create(paste(dirOutputs, "/IO/",region_i,  sep = ""))}
+      if (!dir.exists(paste(dirOutputs, "/IO/",region_i,"/",scenario_i, sep = ""))){
+        dir.create(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,  sep = ""))}
+
 
       if(length(unique((sol_list$ioTbl_Output)$subRegion))>1){
 
-          if (!dir.exists(paste(dirOutputs, "/IO/",region_i, sep = ""))){
-            dir.create(paste(dirOutputs, "/IO/",region_i,  sep = ""))}
-          if (!dir.exists(paste(dirOutputs, "/IO/",region_i,"/",scenario_i, sep = ""))){
-            dir.create(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,  sep = ""))}
+        if(combSubRegionPlots==1){
+
           if (!dir.exists(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg", sep = ""))){
             dir.create(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",  sep = ""))}
 
@@ -897,6 +903,9 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   sectorFromOrder <- sort(unique(A_matx$sectorFrom)); sectorFromOrder
   sectorToOrder <-  sort(unique(A_matx$sectorTo)); sectorToOrder
 
+  data.table::fwrite(A_matx,file=paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",region_i,"_",scenario_i,"_Amatrix.csv",sep=""))
+
+
   if(nrow(A_matx)>0){
 
   fname = paste("A_sub_",scenario_i,nameAppend,sep="")
@@ -922,6 +931,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   sectorFromOrder <- sort(unique(A_matxAgg $sectorFrom)); sectorFromOrder
   sectorToOrder <-  sort(unique(A_matxAgg $sectorTo)); sectorToOrder
 
+  data.table::fwrite(A_matxAgg,file=paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",region_i,"_",scenario_i,"_Amatrix_AggDemands.csv",sep=""))
 
   if(nrow(A_matxAgg )>0){
 
@@ -971,6 +981,8 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       sort(unique(df_Mnx$sectorTo)[!unique(c(df_Mnx$sectorTo)) %in% c(unique(sol$supplySubSector),"export",nonFlowCols)]),
       "export",nonFlowCols); sectorToOrder
 
+  data.table::fwrite(df_Mnx,file=paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",region_i,"_",scenario_i,"_IO.csv",sep=""))
+
   # ioTable normalized bubbles
   if(nrow(df_Mnx)>0){
   fname = paste("ioNORM_",scenario_i,nameAppend,sep="")
@@ -1010,6 +1022,8 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     c(sort(unique(df_Mnx_AggDem$sectorTo)[unique(df_Mnx_AggDem$sectorTo) %in% unique(df_Mnx_AggDem$supplySubSector)]),
       sort(unique(df_Mnx_AggDem$sectorTo)[!unique(c(df_Mnx_AggDem$sectorTo)) %in% c(unique(df_Mnx_AggDem$supplySubSector),"export",nonFlowCols)]),
       "export",nonFlowCols); sectorToOrder
+
+  data.table::fwrite(df_Mnx_AggDem,file=paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",region_i,"_",scenario_i,"_IO_AggDemands.csv",sep=""))
 
   # ioTable normalized bubbles
   if(nrow(df_Mnx_AggDem)>0){
@@ -1523,15 +1537,15 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               figHeight=figHeight_ix,pdfpng="png")
 
   }
-
-
-    } # Close if more than one subRegion loop
+    } # Close combSubRegionPlot
+      } # Close if more than one subRegion loop
 
 #----------------
 # By SubRegion
 #---------------
 
   for(subRegion_i in subRegions){
+
 
     if (!dir.exists(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",subRegion_i, sep = ""))){
       dir.create(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",subRegion_i,  sep = ""))}
