@@ -17,7 +17,6 @@
 #' @param subRegShpFolder Default = paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
 #' @param subRegShpFile Default = paste("gadm36_1",sep=""),
 #' @param subRegCol Default ="NAME_1",
-#' @param subRegType Default ="subRegType",
 #' @param dirNameAppend Default =""
 #' @param nameAppend Default =""
 #' @param legendOutsideSingle Default =F, Single plots by default have legends inside. This can be moved out if wanted.
@@ -81,7 +80,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                            subRegShpFolder=NULL,
                            subRegShpFile=NULL,
                            subRegCol=NULL,
-                           subRegType="subRegType",
                            dirNameAppend="",
                            nameAppend="",
                            legendOutsideSingle=F,
@@ -143,7 +141,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # subRegShpFolder=NULL
   # subRegShpFile=NULL
   # subRegCol=NULL
-  # subRegType="subRegType"
   # dirNameAppend=""
   # legendOutsideSingle=F
   # legendOutsidePosition=NULL
