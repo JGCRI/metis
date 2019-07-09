@@ -52,6 +52,8 @@
 #' @param colOrder2 Order for sankey column 1. Default = NULL,
 #' @param colOrderName2 Column name with sankey variables for column order 1. Default = NULL,
 #' @param title Figure title. Default = NULL
+#' @param pointsOn Include points on lines. Default = 1
+#' @param pointsSize ISize of points on line. Default = 4
 #' @keywords charts, diffplots, bubble, sankey.
 #' @return Returns the formatted data used to produce chart
 #' @import ggplot2
@@ -154,7 +156,9 @@ metis.chart<-function(data,
                          colOrder1 = NULL,
                          colOrderName1 = NULL,
                          colOrder2 = NULL,
-                         colOrderName2 = NULL)
+                         colOrderName2 = NULL,
+                         pointsOn = 1,
+                         pointsSize = 4)
                         {
 
   # dataNorm=NULL
@@ -203,6 +207,8 @@ metis.chart<-function(data,
   # colOrderName2 = NULL
   # title = NULL
   # sankeyLabelsOn=1
+  # pointsOn = 1
+  # pointsSize = 4
 
 #------------------
 # Initialize variables to remove binding errors if needed
@@ -427,17 +433,17 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
   if(chartType=="line"){
   p <- p +  geom_line(aes(color=get(class),group=get(class)),size=sizeLines, stat="identity",position="identity") +
-            scale_color_manual(values=paletteX) +
-            geom_point(aes(shape = get(class), color=get(class)),size = 4 )
+            scale_color_manual(values=paletteX)
+  if(pointsOn==1){ p = p + geom_point(aes(shape = get(class), color=get(class)),size = pointsSize )}
   if(!grepl("class",class)){
-    p = p + guides(color = guide_legend(title=tools::toTitleCase(paste(class,sep=""))),
-                   shape = guide_legend(title=tools::toTitleCase(paste(class,sep=""))))}else{
+    p = p + guides(color = guide_legend(title=tools::toTitleCase(paste(class,sep=""))))
+    if(pointsOn==1){  p = p + guides(shape = guide_legend(title=tools::toTitleCase(paste(class,sep=""))))}}else{
       if(length(unique(l1[[class]]))<2){
         if(!is.null(color)){value1=color}else{value1="firebrick"}
         p = p + theme(legend.position="none") + scale_color_manual(values=value1)
       }else{
-    p = p + guides(color = guide_legend(title=unique(l1[[classLabel]])),
-                   shape = guide_legend(title=unique(l1[[classLabel]])))
+    p = p + guides(color = guide_legend(title=unique(l1[[classLabel]])))
+    if(pointsOn==1){p = p + guides(shape = guide_legend(title=unique(l1[[classLabel]]))) }
     }
     }
   }

@@ -22,7 +22,7 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
   dirOutputs = paste(getwd(), "/outputs", sep = ""), figWidth = 13,
   figHeight = 9, pdfpng = "png", sankeyLabelsOn = 1,
   colOrder1 = NULL, colOrderName1 = NULL, colOrder2 = NULL,
-  colOrderName2 = NULL)
+  colOrderName2 = NULL, pointsOn = 1, pointsSize = 4)
 }
 \arguments{
 \item{data}{Data table for charting}
@@ -122,6 +122,10 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
 \item{colOrder2}{Order for sankey column 1. Default = NULL,}
 
 \item{colOrderName2}{Column name with sankey variables for column order 1. Default = NULL,}
+
+\item{pointsOn}{Include points on lines. Default = 1}
+
+\item{pointsSize}{ISize of points on line. Default = 4}
 }
 \value{
 Returns the formatted data used to produce chart

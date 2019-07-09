@@ -8,9 +8,9 @@ metis.readgcam(gcamdatabasePath = NULL, gcamdatabaseName = NULL,
   queryxml = "metisQueries.xml", queryPath = paste(getwd(),
   "/dataFiles/gcam", sep = ""), scenOrigNames = NULL,
   scenNewNames = NULL, reReadData = T, dataProj = "dataProj.proj",
-  dataProjPath = NULL, dirOutputs = paste(getwd(), "/outputs", sep =
-  ""), regionsSelect = NULL, queriesSelect = "All",
-  paramsSelect = "All")
+  dataProjPath = paste(getwd(), "/outputs", sep = ""),
+  dirOutputs = paste(getwd(), "/outputs", sep = ""),
+  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All")
 }
 \arguments{
 \item{gcamdatabasePath}{Path to gcam database folder}
@@ -71,8 +71,9 @@ Parameters generated: agProdbyIrrRfd
 \item "land allocation by crop and water source". Parameters generated: landIrrRfd
 \item "aggregated land allocation". Parameters generated: aggLandAlloc
 \item "Land Use Change Emission". Parameters generated: LUCemissFut
-\item "CO2 Emissions by enduse". Parameters generated: co2emission, co2emissionByEndUse,
 \item "GHG emissions by subsector". Parameters generated: ghgEmissByGHGGROUPS, ghgEmissionByGHG
+\item "CO2 emissions by sector". Parameters generated:co2emissionBySector
+\item "nonCO2 emissions by sector". Parameters generated: nonco2emissionBySectorGWPAR5, nonco2emissionBySectorGTPAR5,nonco2emissionBySectorOrigUnits
 }}
 
 \item{paramsSelect}{Default = "All". If desired select a subset of paramaters to analyze from the full list of parameters:
@@ -80,7 +81,7 @@ c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
 "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
 "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-"LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")}
+"LUCemiss", "co2emissionBySector","nonco2emissionBySectorGWPAR5,nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")}
 }
 \value{
 A list with the scenarios in the gcam database, queries in the queryxml file and a

@@ -6,10 +6,10 @@
 \usage{
 metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  mapsOutFolderName = "mapOutputs", xRange = "All", labels = F,
-  labelsSize = 1.2, subRegShape = NULL, subRegShpFolder = NULL,
-  subRegShpFile = NULL, subRegCol = NULL, subRegType = "subRegType",
-  dirNameAppend = "", nameAppend = "", legendOutsideSingle = F,
+  mapsOutFolderName = "mapOutputs", frameShow = T, xRange = "All",
+  labels = F, labelsSize = 1.2, subRegShape = NULL,
+  subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
+  dirNameAppend = "", nameAppend = "", legendOutsideSingle = T,
   legendOutsidePosition = NULL, legendPosition = NULL,
   legendFixedBreaks = 5, legendTitleSizeO = 2, legendTextSizeO = 1,
   legendTitleSizeI = 1.5, legendTextSizeI = 1, animateOn = T,
@@ -40,6 +40,8 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{mapsOutFolderName}{Default="mapOutputs",}
 
+\item{frameShow}{Default = T. Whether to plot frame around maps and facets.}
+
 \item{xRange}{Default ="All",}
 
 \item{labels}{Default = F,}
@@ -53,8 +55,6 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{subRegShpFile}{Default = paste("gadm36_1",sep=""),}
 
 \item{subRegCol}{Default ="NAME_1",}
-
-\item{subRegType}{Default ="subRegType",}
 
 \item{dirNameAppend}{Default =""}
 

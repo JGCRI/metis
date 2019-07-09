@@ -17,7 +17,6 @@
 #' @param subRegShpFolder Default = paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
 #' @param subRegShpFile Default = paste("gadm36_1",sep=""),
 #' @param subRegCol Default ="NAME_1",
-#' @param subRegType Default ="subRegType",
 #' @param dirNameAppend Default =""
 #' @param nameAppend Default =""
 #' @param legendOutsideSingle Default =F, Single plots by default have legends inside. This can be moved out if wanted.
@@ -67,6 +66,7 @@
 #' @param facetLabelSizeMulti Default =3
 #' @param numeric2Cat_list Default=NULL,
 #' @param diffOn Default = F. Whether to calculate diff values between scenarios.
+#' @param frameShow Default = T. Whether to plot frame around maps and facets.
 #' @export
 
 
@@ -74,6 +74,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                            gridDataTables=NULL,
                            dirOutputs=paste(getwd(),"/outputs",sep=""),
                            mapsOutFolderName="mapOutputs",
+                           frameShow = T,
                            xRange="All",
                            labels=F,
                            labelsSize=1.2,
@@ -81,10 +82,9 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                            subRegShpFolder=NULL,
                            subRegShpFile=NULL,
                            subRegCol=NULL,
-                           subRegType="subRegType",
                            dirNameAppend="",
                            nameAppend="",
-                           legendOutsideSingle=F,
+                           legendOutsideSingle=T,
                            legendOutsidePosition=NULL,
                            legendPosition=NULL,
                            legendFixedBreaks=5,
@@ -143,7 +143,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # subRegShpFolder=NULL
   # subRegShpFile=NULL
   # subRegCol=NULL
-  # subRegType="subRegType"
   # dirNameAppend=""
   # legendOutsideSingle=F
   # legendOutsidePosition=NULL
@@ -216,16 +215,38 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # -----------------
 
   addMissing<-function(data){
-    if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
+    if(!any(grepl("scenario",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenario="scenario")}else{
+      data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("scenario",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
     if(!"x"%in%names(data)){if("year"%in%names(data)){
       data<-data%>%dplyr::mutate(x=year)}else{data<-data%>%dplyr::mutate(x="x")}}
-    if(!"region"%in%names(data)){data<-data%>%dplyr::mutate(region="region")}
-    if(!"classPalette"%in%names(data)){data<-data%>%dplyr::mutate(classPalette="pal_hot")}
-    if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}
-    if(!"scenarioGCM"%in%names(data)){data<-data%>%dplyr::mutate(scenarioGCM="scenarioGCM")}
-    if(!"scenarioRCP"%in%names(data)){data<-data%>%dplyr::mutate(scenarioRCP="scenarioRCP")}
-    if(!"scenarioSSP"%in%names(data)){data<-data%>%dplyr::mutate(scenarioSSP="scenarioSSP")}
-    if(!"scenarioPolicy"%in%names(data)){data<-data%>%dplyr::mutate(scenarioPolicy="scenarioPolicy")}
+    if(!any(grepl("subregtype",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(subRegType="subRegType")}else{
+      data <- data %>% dplyr::rename(!!"subRegType" := (names(data)[grepl("subregtype",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(subRegType=dplyr::case_when(is.na(subRegType)~"subRegType",TRUE~subRegType))}
+    if(!any(grepl("unit",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(units="units")}else{
+      data <- data %>% dplyr::rename(!!"units" := (names(data)[grepl("unit",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(units=dplyr::case_when(is.na(units)~"units",TRUE~units))}
+    if(!any(grepl("region",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(region="region")}else{
+      data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("region",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
+    if(!any(grepl("classpalette",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(classPalette="pal_hot")}else{
+      data <- data %>% dplyr::rename(!!"classPalette" := (names(data)[grepl("classpalette",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(classPalette=dplyr::case_when(is.na(classPalette)~"classPalette",TRUE~classPalette))}
+    if(!any(grepl("param",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(param="param")}else{
+      data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("param",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(param=dplyr::case_when(is.na(param)~"param",TRUE~param))}
+    if(!any(grepl("scenariogcm",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenarioGCM="scenarioGCM")}else{
+      data <- data %>% dplyr::rename(!!"scenarioGCM" := (names(data)[grepl("scenariogcm",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(scenarioGCM=dplyr::case_when(is.na(scenarioGCM)~"scenarioGCM",TRUE~scenarioGCM))}
+    if(!any(grepl("scenariorcp",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenarioRCP="scenarioRCP")}else{
+      data <- data %>% dplyr::rename(!!"scenarioRCP" := (names(data)[grepl("scenariorcp",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(scenarioRCP=dplyr::case_when(is.na(scenarioRCP)~"scenarioRCP",TRUE~scenarioRCP))}
+    if(!any(grepl("scenariossp",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenarioSSP="scenarioSSP")}else{
+      data <- data %>% dplyr::rename(!!"scenarioSSP" := (names(data)[grepl("scenariossp",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(scenarioSSP=dplyr::case_when(is.na(scenarioSSP)~"scenarioSSP",TRUE~scenarioSSP))}
+    if(!any(grepl("scenariopolicy",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenarioPolicy="scenarioPolicy")}else{
+      data <- data %>% dplyr::rename(!!"scenarioPolicy" := (names(data)[grepl("scenariopolicy",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(scenarioPolicy=dplyr::case_when(is.na(scenarioPolicy)~"scenarioPolicy",TRUE~scenarioPolicy))}
     return(data)
   }
 
@@ -902,6 +923,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                (max(range(animScaleGrid))-min(range(animScaleGrid)))>-1E-10){animScaleGridRange=min(animScaleGrid)}else{
                  animScaleGridRange=range(animScaleGrid)
                }
+
+            if(abs(min(animScaleGridRange,na.rm = T))==abs(max(animScaleGridRange,na.rm = T))){animScaleGridRange=abs(min(animScaleGridRange,na.rm = T))}
             if(mean(animScaleGridRange,na.rm = T)<0.01 & mean(animScaleGridRange,na.rm = T)>(-0.01)){animLegendDigits<-5}else{
               if(mean(animScaleGridRange,na.rm = T)<0.1 & mean(animScaleGridRange,na.rm = T)>(-0.1)){animLegendDigits<-4}else{
                 if(mean(animScaleGridRange,na.rm = T)<1 & mean(animScaleGridRange,na.rm = T)>(-1)){animLegendDigits<-3}else{
@@ -925,12 +948,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 rasterx<-sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(datax$lon,datax$lat))),data=datax)
                 sp::proj4string(rasterx)<-sp::proj4string(shape)
                 sp::gridded(rasterx)<-T
-
-                scaleData<-datax%>%dplyr::select(-lat,-lon)
-                if(mean(range(scaleData,na.rm=T),na.rm = T)<0.01 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.01)){legendDigits<-5}else{
-                  if(mean(range(scaleData,na.rm=T),na.rm = T)<0.1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.1)){legendDigits<-4}else{
-                    if(mean(range(scaleData,na.rm=T),na.rm = T)<1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-1)){legendDigits<-3}else{
-                      if(mean(range(scaleData,na.rm=T),na.rm = T)<10 & mean(range(scaleData,na.rm=T),na.rm = T)>(-10)){legendDigits<-2}else{legendDigits<-1}}}}
 
                 mapx<-rasterx
                 mapx@data<-mapx@data%>%dplyr::select(-lat,-lon)
@@ -963,7 +980,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendShow = T,
                           legendOutside = legendOutsideAnimated,
                           facetFreeScale = F,
-                          frameShow = T,
+                          frameShow = frameShow,
                           labels=labels,
                           labelsSize = labelsSize,
                           legendTitle =legendTitleAnimated,
@@ -991,7 +1008,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 # legendShow = T
                 # legendOutside = legendOutsideAnimated
                 # facetFreeScale = F
-                # frameShow = T
+                # frameShow = frameShow
                 # labels=labels
                 # labelsSize = labelsSize
                 # legendTitle =legendTitleAnimated
@@ -1024,7 +1041,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendShow = T,
                           legendOutside = legendOutsideAnimated,
                           facetFreeScale = F,
-                          frameShow = T,
+                          frameShow = frameShow,
                           labels=labels,
                           labelsSize = labelsSize,
                           legendTitle =legendTitleAnimated,
@@ -1046,7 +1063,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   legendOutsideAnimated=legendOutsideSingle
                   legendTitleSizeAnim = legendTitleSizeS
                   legendTextSizeAnim = legendTextSizeS}else{
-                    legendOutsideAnimated=F
+                     legendOutsideAnimated=legendOutsideSingle
                     legendAnimatedPosition=legendPosition
                     legendTitleSizeAnim = legendTitleSizeI
                     legendTextSizeAnim = legendTextSizeI
@@ -1059,13 +1076,13 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendShow = T,
                           legendOutside = legendOutsideAnimated,
                           facetFreeScale = T,
-                          frameShow = T,
+                          frameShow = frameShow,
                           labels=labels,
                           labelsSize = labelsSize,
                           legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                           legendTitle = legendTitleAnimated,
                           legendStyle="kmeans",
-                          legendDigits = animLegendDigits,
+                          legendDigits = NULL,
                           legendFixedBreaks=legendFixedBreaks,
                           legendOutsidePosition = legendOutsidePosition,
                           legendPosition = legendAnimatedPosition,
@@ -1086,7 +1103,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 # legendShow = T
                 # legendOutside = legendOutsideAnimated
                 # facetFreeScale = T
-                # frameShow = T
+                # frameShow = frameShow
                 # labels=labels
                 # labelsSize = labelsSize
                 # legendTitleSize = legendTitleSizeAnim
@@ -1188,6 +1205,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                    (max(range(animScaleGrid))-min(range(animScaleGrid)))>-1E-10){animScaleGridRange=min(animScaleGrid)}else{
                      animScaleGridRange=range(animScaleGrid)
                    }
+                if(abs(min(animScaleGridRange,na.rm = T))==abs(max(animScaleGridRange,na.rm = T))){animScaleGridRange=abs(min(animScaleGridRange,na.rm = T))}
                 if(mean(animScaleGridRange,na.rm = T)<0.01 & mean(animScaleGridRange,na.rm = T)>(-0.01)){animLegendDigits<-5}else{
                   if(mean(animScaleGridRange,na.rm = T)<0.1 & mean(animScaleGridRange,na.rm = T)>(-0.1)){animLegendDigits<-4}else{
                     if(mean(animScaleGridRange,na.rm = T)<1 & mean(animScaleGridRange,na.rm = T)>(-1)){animLegendDigits<-3}else{
@@ -1211,14 +1229,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendShow = T,
                           legendOutside = legendOutsideSingle,
                           facetFreeScale = F,
-                          frameShow = T,
+                          frameShow = frameShow,
                           labels=labels,
                           labelsSize = labelsSize,
                           legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
                           legendStyle="fixed",
                           legendBreaks = animKmeanBreaksGrid,
                           legendFixedBreaks=legendFixedBreaks,
-                          legendDigits = animlegendDigits,
+                          legendDigits = animLegendDigits,
                           legendOutsidePosition = legendOutsidePosition,
                           legendPosition = legendPositionS,
                           fillPalette = fillPalette,
@@ -1233,7 +1251,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendShow = T,
                           legendOutside = legendOutsideSingle,
                           facetFreeScale = F,
-                          frameShow = T,
+                          frameShow = frameShow,
                           labels=labels,
                           labelsSize = labelsSize,
                           legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
@@ -1254,7 +1272,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   legendOutsideAnimated=legendOutsideSingle
                   legendTitleSizeAnim = legendTitleSizeS
                   legendTextSizeAnim = legendTextSizeS}else{
-                    legendOutsideAnimated=F
+                     legendOutsideAnimated=legendOutsideSingle
                     legendTitleSizeAnim = legendTitleSizeI
                     legendTextSizeAnim = legendTextSizeI
                   }
@@ -1265,13 +1283,13 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendShow = T,
                           legendOutside = legendOutsideAnimated,
                           facetFreeScale = T,
-                          frameShow = T,
+                          frameShow = frameShow,
                           labels=labels,
                           labelsSize = labelsSize,
                           legendTitle =legendTitle,legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                           legendStyle="kmeans",
                           legendFixedBreaks=legendFixedBreaks,
-                          legendDigits = legendDigits,
+                          legendDigits = NULL,
                           legendOutsidePosition = legendOutsidePosition,
                           legendPosition = legendPosition,
                           fillPalette = fillPalette,
@@ -1323,6 +1341,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                      (max(range(animScaleGrid))-min(range(animScaleGrid)))>-1E-10){animScaleGridRange=min(animScaleGrid)}else{
                        animScaleGridRange=range(animScaleGrid)
                      }
+                  if(abs(min(animScaleGridRange,na.rm = T))==abs(max(animScaleGridRange,na.rm = T))){animScaleGridRange=abs(min(animScaleGridRange,na.rm = T))}
                   if(mean(animScaleGridRange,na.rm = T)<0.01 & mean(animScaleGridRange,na.rm = T)>(-0.01)){animLegendDigits<-5}else{
                     if(mean(animScaleGridRange,na.rm = T)<0.1 & mean(animScaleGridRange,na.rm = T)>(-0.1)){animLegendDigits<-4}else{
                       if(mean(animScaleGridRange,na.rm = T)<1 & mean(animScaleGridRange,na.rm = T)>(-1)){animLegendDigits<-3}else{
@@ -1343,7 +1362,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendShow = T,
                           legendOutside = legendOutsideSingle,
                           facetFreeScale = F,
-                          frameShow = T,
+                          frameShow = frameShow,
                           labels=labels,
                           labelsSize = labelsSize,
                           panelLabel = paste(names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
@@ -1367,7 +1386,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendShow = T,
                           legendOutside = legendOutsideSingle,
                           facetFreeScale = F,
-                          frameShow = T,
+                          frameShow = frameShow,
                           labels=labels,
                           labelsSize = labelsSize,
                           panelLabel = paste(names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
@@ -1389,7 +1408,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   legendOutsideAnimated=legendOutsideSingle
                   legendTitleSizeAnim = legendTitleSizeS
                   legendTextSizeAnim = legendTextSizeS}else{
-                    legendOutsideAnimated=F
+                     legendOutsideAnimated=legendOutsideSingle
                     legendTitleSizeAnim = legendTitleSizeI
                     legendTextSizeAnim = legendTextSizeI
                   }
@@ -1400,14 +1419,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendShow = T,
                           legendOutside = legendOutsideAnimated,
                           facetFreeScale = T,
-                          frameShow = T,
+                          frameShow = frameShow,
                           labels=labels,
                           labelsSize = labelsSize,
                           panelLabel = paste(names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
                           legendTitle =paste(legendTitle,sep=""),legendTitleSize = legendTitleSizeAnim,legendTextSize =  legendTextSizeAnim,
                           legendStyle="kmeans",
                           legendFixedBreaks=legendFixedBreaks,
-                          legendDigits = legendDigits,
+                          legendDigits = NULL,
                           legendOutsidePosition = legendOutsidePosition,
                           legendPosition = legendPositionS,
                           fillPalette = fillPalette,
@@ -1466,7 +1485,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                         }
                       if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
                         animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                          animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minxScale,
+                          animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
                                               animScalePoly[animScalePoly>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
                         }
                       }
@@ -1481,7 +1500,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                        (max(range(animScalePoly))-min(range(animScalePoly)))>-1E-10){animScalePolyRange=min(animScalePoly)}else{
                          animScalePolyRange=range(animScalePoly)
                        }
-
+                    if(abs(min(animScalePolyRange,na.rm = T))==abs(max(animScalePolyRange,na.rm = T))){animScalePolyRange=abs(min(animScalePolyRange,na.rm = T))}
                     if(mean(animScalePolyRange,na.rm = T)<0.01 & mean(animScalePolyRange,na.rm = T)>(-0.01)){animLegendDigits<-4}else{
                       if(mean(animScalePolyRange,na.rm = T)<0.1 & mean(animScalePolyRange,na.rm = T)>(-0.1)){animLegendDigits<-3}else{
                         if(mean(animScalePolyRange,na.rm = T)<1 & mean(animScalePolyRange,na.rm = T)>(-1)){animLegendDigits<-2}else{
@@ -1504,13 +1523,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                         dplyr::group_by(subRegion,scenarioGCM,scenarioRCP) %>%
                         dplyr::summarize(!!paste("Mean_",min(chosenRefMeanYearsX),"to",max(chosenRefMeanYearsX),sep=""):=mean(value)) %>%
                         dplyr::ungroup()
-
-
-                      scaleData<-datax%>%dplyr::select(-subRegion,-scenarioGCM,-scenarioRCP)
-                      if(mean(range(scaleData,na.rm=T),na.rm = T)<0.01 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.01)){legendDigits<-4}else{
-                        if(mean(range(scaleData,na.rm=T),na.rm = T)<0.1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.1)){legendDigits<-3}else{
-                          if(mean(range(scaleData,na.rm=T),na.rm = T)<1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-1)){legendDigits<-2}else{
-                            if(mean(range(scaleData,na.rm=T),na.rm = T)<10 & mean(range(scaleData,na.rm=T),na.rm = T)>(-10)){legendDigits<-1}else{legendDigits<-0}}}}
 
                       # Need to makeunique ID's when assigning multiple variable for faceted plotting
                       mapx<-NULL
@@ -1545,7 +1557,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                 legendOutside = legendOutsideMulti,
                                 facetFreeScale = F,
                                 facetLabelSize = facetLabelSizeMulti,
-                                frameShow = T,
+                                frameShow = frameShow,
                                 labels=labels,
                                 labelsSize = labelsSize,
                                 legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
@@ -1574,7 +1586,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       # legendOutside = legendOutsideMulti
                       # facetFreeScale = F
                       # facetLabelSize = facetLabelSizeMulti
-                      # frameShow = T
+                      # frameShow = frameShow
                       # labels=labels
                       # labelsSize = labelsSize
                       # legendTitleSize = legendTitleSizeMulti
@@ -1603,7 +1615,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                 legendOutside = legendOutsideMulti,
                                 facetLabelSize = facetLabelSizeMulti,
                                 facetFreeScale = F,
-                                frameShow = T,
+                                frameShow = frameShow,
                                 labels=labels,
                                 labelsSize = labelsSize,
                                 legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
@@ -1631,14 +1643,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                 legendOutside = F,
                                 facetFreeScale = T,
                                 facetLabelSize = facetLabelSizeMulti,
-                                frameShow = T,
+                                frameShow = frameShow,
                                 labels=labels,
                                 labelsSize = labelsSize,
                                 legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
                                 legendTitle =legendTitleMulti,
                                 legendStyle="kmeans",
                                 legendFixedBreaks=legendFixedBreaks,
-                                legendDigits = animLegendDigits,
+                                legendDigits = NULL,
                                 legendOutsidePosition = legendOutsidePosition,
                                 legendPosition = legendPosition,
                                 fillPalette = fillPalette,
@@ -1693,12 +1705,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             dplyr::distinct(subRegion,class,scenarioGCM,scenarioRCP,.keep_all = TRUE) %>%
                             tidyr::spread(key=class,value=value)
 
-                          scaleData<-datax%>%dplyr::select(-subRegion,-scenarioGCM,-scenarioRCP)
-                          if(mean(range(scaleData,na.rm=T),na.rm = T)<0.01 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.01)){legendDigits<-4}else{
-                            if(mean(range(scaleData,na.rm=T),na.rm = T)<0.1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.1)){legendDigits<-3}else{
-                              if(mean(range(scaleData,na.rm=T),na.rm = T)<1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-1)){legendDigits<-2}else{
-                                if(mean(range(scaleData,na.rm=T),na.rm = T)<10 & mean(range(scaleData,na.rm=T),na.rm = T)>(-10)){legendDigits<-1}else{legendDigits<-0}}}}
-
                           # Need to makeunique ID's when assigning multiple variable for faceted plotting
                           mapx<-NULL
                           GCMRCPcomb<-datax%>%dplyr::select(scenarioGCM,scenarioRCP)%>%unique();GCMRCPcomb
@@ -1732,7 +1738,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                     legendOutside = legendOutsideMulti,
                                     facetFreeScale = F,
                                     facetLabelSize = facetLabelSizeMulti,
-                                    frameShow = T,
+                                    frameShow = frameShow,
                                     labels=labels,
                                     labelsSize = labelsSize,
                                     legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
@@ -1760,7 +1766,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                     legendOutside = legendOutsideMulti,
                                     facetFreeScale = F,
                                     facetLabelSize = facetLabelSizeMulti,
-                                    frameShow = T,
+                                    frameShow = frameShow,
                                     labels=labels,
                                     labelsSize = labelsSize,
                                     legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
@@ -1788,14 +1794,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                     legendOutside = F,
                                     facetFreeScale = T,
                                     facetLabelSize = facetLabelSizeMulti,
-                                    frameShow = T,
+                                    frameShow = frameShow,
                                     labels=labels,
                                     labelsSize = labelsSize,
                                     legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
                                     legendTitle =legendTitleMulti,
                                     legendStyle="kmeans",
                                     legendFixedBreaks=legendFixedBreaks,
-                                    legendDigits = animLegendDigits,
+                                    legendDigits = NULL,
                                     legendOutsidePosition = legendOutsidePosition,
                                     legendPosition = legendPosition,
                                     fillPalette = fillPalette,
@@ -1877,7 +1883,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                        (max(range(animScalePoly))-min(range(animScalePoly)))>-1E-10){animScalePolyRange=min(animScalePoly)}else{
                          animScalePolyRange=range(animScalePoly)
                        }
-
+                    if(abs(min(animScalePolyRange,na.rm = T))==abs(max(animScalePolyRange,na.rm = T))){animScalePolyRange=abs(min(animScalePolyRange,na.rm = T))}
                     if(mean(animScalePolyRange,na.rm = T)<0.01 & mean(animScalePolyRange,na.rm = T)>(-0.01)){animLegendDigits<-4}else{
                       if(mean(animScalePolyRange,na.rm = T)<0.1 & mean(animScalePolyRange,na.rm = T)>(-0.1)){animLegendDigits<-3}else{
                         if(mean(animScalePolyRange,na.rm = T)<1 & mean(animScalePolyRange,na.rm = T)>(-1)){animLegendDigits<-2}else{
@@ -1902,12 +1908,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                         datax<-datax%>%dplyr::select(subRegion,class,value,scenarioGCM,scenarioRCP)%>%
                           dplyr::distinct(subRegion,class,scenarioGCM,scenarioRCP,.keep_all = TRUE) %>%
                           tidyr::spread(key=class,value=value)
-
-                        scaleData<-datax%>%dplyr::select(-subRegion,-scenarioGCM,-scenarioRCP)
-                        if(mean(range(scaleData,na.rm=T),na.rm = T)<0.01 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.01)){legendDigits<-4}else{
-                          if(mean(range(scaleData,na.rm=T),na.rm = T)<0.1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.1)){legendDigits<-3}else{
-                            if(mean(range(scaleData,na.rm=T),na.rm = T)<1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-1)){legendDigits<-2}else{
-                              if(mean(range(scaleData,na.rm=T),na.rm = T)<10 & mean(range(scaleData,na.rm=T),na.rm = T)>(-10)){legendDigits<-1}else{legendDigits<-0}}}}
 
                         # Need to makeunique ID's when assigning multiple variable for faceted plotting
                         mapx<-NULL
@@ -1946,7 +1946,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                   legendOutside = legendOutsideMulti,
                                   facetFreeScale = F,
                                   facetLabelSize = facetLabelSizeMulti,
-                                  frameShow = T,
+                                  frameShow = frameShow,
                                   labels=labels,
                                   labelsSize = labelsSize,
                                   legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
@@ -1976,7 +1976,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                   legendOutside = legendOutsideMulti,
                                   facetFreeScale = F,
                                   facetLabelSize = facetLabelSizeMulti,
-                                  frameShow = T,
+                                  frameShow = frameShow,
                                   labels=labels,
                                   labelsSize = labelsSize,
                                   legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
@@ -2005,14 +2005,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                   legendOutside = F,
                                   facetFreeScale = T,
                                   facetLabelSize = facetLabelSizeMulti,
-                                  frameShow = T,
+                                  frameShow = frameShow,
                                   labels=labels,
                                   labelsSize = labelsSize,
                                   legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
                                   legendTitle =legendTitleMulti,
                                   legendStyle="kmeans",
                                   legendFixedBreaks=legendFixedBreaks,
-                                  legendDigits = animLegendDigits,
+                                  legendDigits = NULL,
                                   legendOutsidePosition = legendOutsidePosition,
                                   legendPosition = legendPosition,
                                   fillPalette = fillPalette,
@@ -2115,7 +2115,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   }
                 if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
                   animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                    animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minxScale,
+                    animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
                                         animScalePoly[animScalePoly>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
                   }
               }}
@@ -2129,6 +2129,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                    animScalePolyRange=range(animScalePoly)
                  }
 
+              if(abs(min(animScalePolyRange,na.rm = T))==abs(max(animScalePolyRange,na.rm = T))){animScalePolyRange=abs(min(animScalePolyRange,na.rm = T))}
               if(mean(animScalePolyRange,na.rm = T)<0.01 & mean(animScalePolyRange,na.rm = T)>(-0.01)){animLegendDigits<-4}else{
                 if(mean(animScalePolyRange,na.rm = T)<0.1 & mean(animScalePolyRange,na.rm = T)>(-0.1)){animLegendDigits<-3}else{
                   if(mean(animScalePolyRange,na.rm = T)<1 & mean(animScalePolyRange,na.rm = T)>(-1)){animLegendDigits<-2}else{
@@ -2158,12 +2159,6 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     dplyr::distinct(subRegion,class,.keep_all = TRUE) %>%
                     tidyr::spread(key=class,value=value)
 
-                  scaleData<-datax%>%dplyr::select(-subRegion)
-                  if(mean(range(scaleData,na.rm=T),na.rm = T)<0.01 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.01)){legendDigits<-4}else{
-                    if(mean(range(scaleData,na.rm=T),na.rm = T)<0.1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-0.1)){legendDigits<-3}else{
-                      if(mean(range(scaleData,na.rm=T),na.rm = T)<1 & mean(range(scaleData,na.rm=T),na.rm = T)>(-1)){legendDigits<-2}else{
-                        if(mean(range(scaleData,na.rm=T),na.rm = T)<10 & mean(range(scaleData,na.rm=T),na.rm = T)>(-10)){legendDigits<-1}else{legendDigits<-0}}}}
-#
 #                   # Add in any missing subRegions to datax
 #                   datax1<-expand.grid(unique(shape@data$subRegion)[!unique(shape@data$subRegion) %in% unique(datax$subRegion)]) %>%
 #                     dplyr::select(subRegion=Var1)%>%
@@ -2203,7 +2198,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             legendShow = T,
                             legendOutside = legendOutsideAnimated,
                             facetFreeScale = F,
-                            frameShow = T,
+                            frameShow = frameShow,
                             labels=labels,
                             labelsSize = labelsSize,
                             legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
@@ -2231,7 +2226,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   # legendShow = T
                   # legendOutside = legendOutsideAnimated
                   # facetFreeScale = F
-                  # frameShow = T
+                  # frameShow = frameShow
                   # labels=labels
                   # labelsSize = labelsSize
                   # legendTitleSize = legendTitleSizeAnim
@@ -2256,7 +2251,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             legendShow = T,
                             legendOutside = legendOutsideAnimated,
                             facetFreeScale = F,
-                            frameShow = T,
+                            frameShow = frameShow,
                             labels=labels,
                             labelsSize = labelsSize,
                             legendTitle =legendTitleAnimated,
@@ -2281,7 +2276,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   # legendShow = T
                   # legendOutside = legendOutsideAnimated
                   # facetFreeScale = F
-                  # frameShow = T
+                  # frameShow = frameShow
                   # labels=labels
                   # labelsSize = labelsSize
                   # legendTitle =legendTitleAnimated
@@ -2305,7 +2300,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     legendAnimatedPosition
                     legendTitleSizeAnim = legendTitleSizeS
                     legendTextSizeAnim = legendTextSizeS}else{
-                      legendOutsideAnimated=F
+                       legendOutsideAnimated=legendOutsideSingle
                       legendAnimatedPosition=legendPosition
                       legendTitleSizeAnim = legendTitleSizeI
                       legendTextSizeAnim = legendTextSizeI
@@ -2316,14 +2311,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             legendShow = T,
                             legendOutside = legendOutsideAnimated,
                             facetFreeScale = T,
-                            frameShow = T,
+                            frameShow = frameShow,
                             labels=labels,
                             labelsSize = labelsSize,
                             legendTitle =legendTitleAnimated,
                             legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                             legendStyle="kmeans",
                             legendFixedBreaks=legendFixedBreaks,
-                            legendDigits = animLegendDigits,
+                            legendDigits = NULL,
                             legendOutsidePosition = legendOutsidePosition,
                             legendPosition = legendAnimatedPosition,
                             fillPalette = fillPalette,
@@ -2415,7 +2410,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                         }
                       if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
                         animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                          animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minxScale,
+                          animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
                                               animScalePoly[animScalePoly>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
                         }
                     }}
@@ -2429,6 +2424,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                        animScalePolyRange=range(animScalePoly)
                      }
 
+                  if(abs(min(animScalePolyRange,na.rm = T))==abs(max(animScalePolyRange,na.rm = T))){animScalePolyRange=abs(min(animScalePolyRange,na.rm = T))}
                   if(mean(animScalePolyRange,na.rm = T)<0.01 & mean(animScalePolyRange,na.rm = T)>(-0.01)){animLegendDigits<-4}else{
                     if(mean(animScalePolyRange,na.rm = T)<0.1 & mean(animScalePolyRange,na.rm = T)>(-0.1)){animLegendDigits<-3}else{
                       if(mean(animScalePolyRange,na.rm = T)<1 & mean(animScalePolyRange,na.rm = T)>(-1)){animLegendDigits<-2}else{
@@ -2456,7 +2452,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             legendShow = T,
                             legendOutside = legendOutsideSingle,
                             facetFreeScale = F,
-                            frameShow = T,
+                            frameShow = frameShow,
                             labels=labels,
                             labelsSize = labelsSize,
                             legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
@@ -2476,7 +2472,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             legendShow = T,
                             legendOutside = legendOutsideSingle,
                             facetFreeScale = F,
-                            frameShow = T,
+                            frameShow = frameShow,
                             labels=labels,
                             labelsSize = labelsSize,
                             legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
@@ -2496,7 +2492,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     legendOutsideAnimated=legendOutsideSingle
                     legendTitleSizeAnim = legendTitleSizeS
                     legendTextSizeAnim = legendTextSizeS}else{
-                      legendOutsideAnimated=F
+                      legendOutsideAnimated=legendOutsideSingle
                       legendTitleSizeAnim = legendTitleSizeI
                       legendTextSizeAnim = legendTextSizeI
                     }
@@ -2506,13 +2502,13 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             legendShow = T,
                             legendOutside = legendOutsideAnimated,
                             facetFreeScale = T,
-                            frameShow = T,
+                            frameShow = frameShow,
                             labels=labels,
                             labelsSize = labelsSize,
                             legendTitle =legendTitle,legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                             legendStyle="kmeans",
                             legendFixedBreaks=legendFixedBreaks,
-                            legendDigits = animLegendDigits,
+                            legendDigits = NULL,
                             legendOutsidePosition = legendOutsidePosition,
                             legendPosition = legendPosition,
                             fillPalette = fillPalette,
@@ -2550,7 +2546,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           }
                         if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
                           animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                            animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minxScale,
+                            animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
                                                 animScalePoly[animScalePoly>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
                           }
                       }}
@@ -2564,6 +2560,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                          animScalePolyRange=range(animScalePoly)
                        }
 
+                    if(abs(min(animScalePolyRange,na.rm = T))==abs(max(animScalePolyRange,na.rm = T))){animScalePolyRange=abs(min(animScalePolyRange,na.rm = T))}
                     if(mean(animScalePolyRange,na.rm = T)<0.01 & mean(animScalePolyRange,na.rm = T)>(-0.01)){animLegendDigits<-4}else{
                       if(mean(animScalePolyRange,na.rm = T)<0.1 & mean(animScalePolyRange,na.rm = T)>(-0.1)){animLegendDigits<-3}else{
                         if(mean(animScalePolyRange,na.rm = T)<1 & mean(animScalePolyRange,na.rm = T)>(-1)){animLegendDigits<-2}else{
@@ -2586,7 +2583,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                               legendShow = T,
                               legendOutside = legendOutsideSingle,
                               facetFreeScale = F,
-                              frameShow = T,
+                              frameShow = frameShow,
                               labels=labels,
                               labelsSize = labelsSize,
                               panelLabel = paste((names(datax%>%dplyr::select(-subRegion))[!names(datax%>%dplyr::select(-subRegion)) %in% c("lat","lon")]),sep=""),
@@ -2608,7 +2605,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                               legendShow = T,
                               legendOutside = legendOutsideSingle,
                               facetFreeScale = F,
-                              frameShow = T,
+                              frameShow = frameShow,
                               labels=labels,
                               labelsSize = labelsSize,
                               panelLabel = paste((names(datax%>%dplyr::select(-subRegion))[!names(datax%>%dplyr::select(-subRegion)) %in% c("lat","lon")]),sep=""),
@@ -2629,7 +2626,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       legendOutsideAnimated=legendOutsideSingle
                       legendTitleSizeAnim = legendTitleSizeS
                       legendTextSizeAnim = legendTextSizeS}else{
-                        legendOutsideAnimated=F
+                         legendOutsideAnimated=legendOutsideSingle
                         legendTitleSizeAnim = legendTitleSizeI
                         legendTextSizeAnim = legendTextSizeI
                       }
@@ -2639,7 +2636,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                               legendShow = T,
                               legendOutside = legendOutsideAnimated,
                               facetFreeScale = T,
-                              frameShow = T,
+                              frameShow = frameShow,
                               labels=labels,
                               labelsSize = labelsSize,
                               panelLabel = paste((names(datax%>%dplyr::select(-subRegion))[!names(datax%>%dplyr::select(-subRegion)) %in% c("lat","lon")]),sep=""),
@@ -2647,7 +2644,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                               legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                               legendStyle="kmeans",
                               legendFixedBreaks=legendFixedBreaks,
-                              legendDigits = animLegendDigits,
+                              legendDigits = NULL,
                               legendOutsidePosition = legendOutsidePosition,
                               legendPosition = legendPositionS,
                               fillPalette = fillPalette,

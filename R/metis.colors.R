@@ -137,14 +137,25 @@ metis.colors <- function(palx=NULL) {
     #------------------------------------------
     # New Metis Color Schemes
     #-------------------------------------------
-
-    # Creating Colors getcol = colorRampPalette(brewer.pal(9, 'RdGy')) values=getcol(9); values
+    # Creating Colors
+    # library(RColorBrewer)
+    # getcol = colorRampPalette(brewer.pal(9, 'Pastel1')); values=getcol(9); values
+    # pie(rep(1,length(values)),label=names(values),col=values)
     # library(colorspace) pal<-choose_palette() pal(9)
     # colx1<-pal_div_BlRd;pie(rep(1,length(colx1)),label=names(colx1),col=colx1)
 
+    # Add Alpha
+    add.alpha <- function(col, alpha=1){
+      if(missing(col))
+        stop("Please provide a vector of colours.")
+      apply(sapply(col, col2rgb)/255, 2,
+            function(x)
+              rgb(x[1], x[2], x[3], alpha=alpha))
+    }
 
     # Basic Colors
-    pal_Basic <- rep(c("red", "green3", "blue", "black", "magenta", "yellow", "cyan", "gray"),100)
+    pal_Basic <- add.alpha(rep(c("firebrick3", "forestgreen", "dodgerblue3", "black", "magenta", "yellow", "cyan", "gray"),100),alpha=0.8)
+
 
 
     # Gas Colors
@@ -208,6 +219,8 @@ metis.colors <- function(palx=NULL) {
                  `Total` = "black", `total` = "black",
                  `Other` = "grey70", other = "grey70",
                  `Electricity` = "lavender", electricity="lavender", `5 electricity` = "lavender",
+                 `energy` = "grey50", `Energy` = "grey50",
+                 `Fossil` = "gray20", `fossil` = "gray20", `FOSSIL` = "gray20",
                  #---------------
                  # Sectors
                  #--------------
@@ -226,7 +239,7 @@ metis.colors <- function(palx=NULL) {
     # Agriculture Production Type
     pal_ag_type <- c(Forest = "darkgreen" , NonFoodDemand_Forest = "darkolivegreen1",
                      biomass = "grey50", Corn = "gold3" ,
-                     FiberCrop = "gold4",  MiscCrop = "darkorange4", OilCrop = "gray20",
+                     FiberCrop = "gold4",  MiscCrop = "darkorange4", OilCrop = "gray20", SoySunflower = "gray20",
                      OtherGrain  = "indianred2",
                      PalmFruit = "firebrick3" ,  Rice = "steelblue2", Root_Tuber  = "lightslateblue", SugarCrop = "yellow2",
                      Wheat  = "burlywood", FodderGrass = "darkseagreen1",

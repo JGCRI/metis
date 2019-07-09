@@ -1,5 +1,5 @@
 ---
-title: 'Metis 1.0'
+title: 'Metis 1.0.0'
 tags:
   - sub-region
   - nexus
@@ -61,9 +61,11 @@ date: January 2019
 
 [Back to Contents](#Contents)
 
-The Metis model is a joint effort by the Pacific Northwest National Laboratory (PNNL) and the University of Maryland (UMD). The name "Metis" is inspired by the the Greek Goddes of "good counsel, planning, cunning and wisdom". The overall goal of the Metis model is to develop a framework allowing analysis of dynamics across multiple sectors including water, energy, land and socio-economics at various spatial and temporal scales. The Metis model is designed to be a flexible tool to be used in conjunction with both global integrated assessment models (IAMs) which capture global dynamics as well as more detailed models which can capture specific sub-regional and sectoral details at finer resolutions. Metis integrates with these other tools by sharing data in standarized formats across the platforms and stakeholders. 
+The Metis model is a joint effort by the Pacific Northwest National Laboratory (PNNL) and the University of Maryland (UMD). Metis provides a framework allowing analysis of dynamics across multiple sectors including water, energy, land and socio-economics at various spatial and temporal scales. It is designed to be a flexible tool which can take inputs from both global integrated assessment models (IAMs) which capture global dynamics as well as more detailed models which can capture specific sub-regional and sectoral details at finer resolutions. Metis integrates across tools by sharing data in standardized formats.
 
-In most projects looking at multi-sector dynamics one of the key constraints is data availability and a key goal of Metis is to overcome this barrier by providing users with default data across sectors for their specific region. This default data comes from GCAM which operates at a relatively aggregated resolution when compared with sub-basins or states. The GCAM data is downscaled to 0.5 degree grids and offers users a first look at the water-energy-land situation in their regions of interest. The idea is to use this as a starting point and then improve the data as and when it becomes available while working with local stakeholders. The advantage of this system is that even without more precise local data the baseline data already permits users to review trends across the WEL nexus for various socio-economic and climate change pathways which will hold even if the underlying absolute data is adjusted.
+In most projects looking at multi-sector dynamics one of the key constraints is data availability and a key goal of Metis is to overcome this barrier by providing users with default data across sectors for their specific region. The default data is built from outputs of the open-source Global Change Assessment Model (GCAM) eco-system which provides downscaled gridded global data for water, energy and land. Metis aggregates gridded data to any spatial boundary and offers users a first look at the water-energy-land situation in their regions of interest. The idea is to use this as a starting point and then improve the data as and when it becomes available while working with local stakeholders. 
+
+After aggregating data to relevant spatial and temporal scales, metis finds relationships between the sectors using input/output methods to establish correlation matrices. The correlation matrices represent the inter-sectoral links throughout the system and are then used to investigate impacts of changes in one sector on others.
 
 <p align="center"> <b> Metis - A model to bridge the gap between coarse resolution IAMs and finer-resolution sector specific models </b> </p>
 <p align="center"> <img src="READMEfigs/metis_MidSpatial.PNG"></p>
@@ -879,7 +881,6 @@ Grid |  Basin
                      boundaryRegShape=boundaryRegShp_i,
                      subRegShape=subRegShp_i_Crop,
                      subRegCol=subRegCol_i,
-                     subRegType="GCAMBasin",
                      nameAppend="",
                      animateOn=T,
                      delay=100,
@@ -909,7 +910,6 @@ Grid |  Basin
                      boundaryRegShape=boundaryRegShp_i,
                      subRegShape=subRegShp_i_Crop,
                      subRegCol=subRegCol_i,
-                     subRegType="GCAMBasin",
                      nameAppend="_improvedFig",
                      legendPosition=c("LEFT","bottom"),
                      animateOn=T,
