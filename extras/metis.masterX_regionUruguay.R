@@ -67,9 +67,9 @@ dataGCAM<-metis.readgcam(reReadData=T, # Default Value is T
                                  paramsSelect="All" # Default value is "All"
 )
 
-# reReadData=F # Default Value is T
-# dataProj = gcamdataProjFile_i # Default Value is "dataProj.proj"
-# dataProjPath = gcamdatabasePath_i
+# reReadData=T # Default Value is T
+# dataProj = dataProj_i # Default Value is "dataProj.proj"
+# dataProjPath = dataProjPath_i
 # scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef")
 # scenNewNames=c("GCAMOrig","GCAMRef")
 # gcamdatabasePath=gcamdatabasePath_i
@@ -95,22 +95,46 @@ unique(dataGCAM$data$scenario)
 #---------------------------
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-paramsSelect_i=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech", "elecCapBySubsector",
-                 "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
-                 "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
-                 "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-                 "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS",
-                 "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec")
+# paramsSelect_i=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech", "elecCapBySubsector",
+#                  "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
+#                  "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
+#                  "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
+#                  "LUCemiss",
+#                  "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec",
+#                 "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
+
+#Choose parameters for Report
+paramsSelect_i=c("finalNrgbySec", "elecByTech", "elecCapBySubsector",
+                  "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec",
+                 "watConsumBySec", "watWithdrawBySec",
+                 "gdp", "gdpGrowthRate", "pop",
+                 "agProdByCrop",
+                "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
 
 
 # Read in Tables (If exist)
-dataTables_i<-c(paste(getwd(),"/outputs/readGCAMTables/Tables_Local/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
+dataTables_i<-c(paste(getwd(),"/dataFiles/localData/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
 a<-read.csv(dataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
 
 # Read in the data from the function metis.readgcam
-rTable_i <- dataGCAM$data
+rTable_i <- dataGCAM$data %>% dplyr::filter(value!=0) %>% droplevels()
 
 regionsSelect_i=c("Uruguay")
+
+rTable_iMod <- rTable_i %>%
+  dplyr::mutate(class1=case_when(param=="elecByTech" ~ gsub("a Coal","Fossil",class1),TRUE~class1),
+                class1=case_when(param=="elecByTech" ~ gsub("c Gas","Fossil",class1),TRUE~class1),
+                class1=case_when(param=="elecByTech" ~ gsub("e Oil","Fossil",class1),TRUE~class1),
+                class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1),
+                class1=case_when(param=="finalNrgbyFuelbySec" ~ gsub("hydrogen","Other",class1),TRUE~class1),
+                class1=case_when(param=="co2emissionBySector" ~ gsub("electricity","energy",class1),TRUE~class1)) %>%
+  dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                  origScen, origQuery, origUnits, origX)%>%
+  dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%
+  dplyr::ungroup() %>% droplevels()
+
+paramsSelect_iMod=c("elecByTech","agProdByCrop","finalNrgbyFuelbySec","co2emissionBySector")
 
 charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             dataTables=dataTables_i, # Default is NULL
@@ -121,16 +145,16 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                             pdfpng="png", # Default is "png"
                             regionCompareOnly=0, # Default is "0"
-                            scenarioCompareOnly=1, # Default is "0"
+                            scenarioCompareOnly=0, # Default is "0"
                             useNewLabels=1,
-                            xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
+                            xRange=c(2010:2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
-                            colOrderName1 = "scenario"
-                            )
+                            colOrderName1 = "scenario",
+                            folderName = "Reference")
 
-charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
+charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             dataTables=dataTables_i, # Default is NULL
-                            paramsSelect=c("gdpPerCapita", "gdp", "gdpGrowthRate", "pop"), # Default is "All"
+                            paramsSelect=paramsSelect_iMod, # Default is "All"
                             regionsSelect=regionsSelect_i, # Default is "All"
                             xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
                             scenRef="GCAMOrig", # Default is NULL
@@ -139,22 +163,11 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             regionCompareOnly=0, # Default is "0"
                             scenarioCompareOnly=1, # Default is "0"
                             useNewLabels=1,
-                            xRange=c(2010:2050),
+                            xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
-                            colOrderName1 = "scenario"
-)
+                            colOrderName1 = "scenario",
+                            folderName = "Reference")
 
-# rTable=rTable_i # Default is NULL
-# dataTables=dataTables_i # Default is NULL
-# paramsSelect=paramsSelect_i # Default is "All"
-# regionsSelect=regionsSelect_i # Default is "All"
-# xCompare=c("2010","2015","2020","2030") # Default is c("2015","2030","2050","2100")
-# scenRef="GCAMOrig" # Default is NULL
-# dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
-# pdfpng="png" # Default is "png
-# regionCompareOnly=0 # Default is "0"
-# useNewLabels=1
-# xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050) # Default is All
 
 
 #------------

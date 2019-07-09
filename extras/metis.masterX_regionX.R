@@ -72,7 +72,7 @@ scenRef_i <- c("GCAMRef")
 # "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
 
 paramsSelect_GCAM_i = c("All")
-paramsSelect_Chart_i = c("pop","gdpGrowthRate","agProdByCrop","aggLandAlloc","watConsumBySec")
+paramsSelect_Chart_i = c("LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
 
 
 paramsSelect_Map_i = c("All")
