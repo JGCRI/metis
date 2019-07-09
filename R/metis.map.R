@@ -117,7 +117,7 @@ metis.map<-function(dataPolygon=NULL,
                   mapTitleSize=1,
                   numeric2Cat_list=NULL,
                   catParam=NULL,
-                  innerMargins=c(0.01,0.01,0.01,0.01), # bottom, left, top, right
+                  innerMargins=c(0,0,0,0), # bottom, left, top, right
                   outerMargins=c(0.01,0.01,0.01,0.01) # bottom, left, top, right
                   ){
 
