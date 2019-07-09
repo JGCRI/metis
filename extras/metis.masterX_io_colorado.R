@@ -100,6 +100,7 @@ save_dir <- 'C:/Users/twild/all_git_repositories/metis/metis/outputs/Maps/Tables
 export_df <- mapping_df %>% filter(param %in% params) %>% select(-classPalette1)  # Deal with Palette separately in map
 write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
 #-----------------------------------------------------------------------------------------------------------------------
+
 # Store/export data related to runoff
 colnames <- c('scenario', 'region', 'subRegion', 'sources', 'param', 'units', 'class', 'x', 'value', 'subRegType',
               'classPalette1', 'classLabel1')
@@ -142,10 +143,76 @@ new_df_append['classLabel'] <- 'IrrigationDemand'
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
     select(-subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
-      select(contains("Ag_")) %>%
-      mutate(rowsum=rowSums(., na.rm=TRUE))
+    select(contains("Ag_")) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
   irrig_wat_dem_val <- sum((df)$rowsum, na.rm=TRUE)
   new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, irrig_wat_dem_val, value))
+}
+mapping_df <- rbind(mapping_df, new_df_append)
+export_df <- mapping_df %>% filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+
+# Store/export data related to municipal water demand
+params <- c('municipal_water_demand')
+new_df_append['param'] <- params
+new_df_append['units'] <- 'km3'
+new_df_append['class'] <- 'Municipal'
+new_df_append['subRegType'] <- 'localBasin'
+new_df_append['x'] <- 2010
+new_df_append['value'] <- 0
+new_df_append['classPalette'] <- 'Blues'
+new_df_append['classLabel'] <- 'MunicipalDemand'
+for (subReg in subregions){
+  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
+    select(-subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
+    select(contains("municipal")) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
+  municipal_water_demand <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, municipal_water_demand, value))
+}
+mapping_df <- rbind(mapping_df, new_df_append)
+export_df <- mapping_df %>% filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+
+# Store/export data related to electricity water demand
+params <- c('electricity_water_demand')
+new_df_append['param'] <- params
+new_df_append['units'] <- 'km3'
+new_df_append['class'] <- 'Electricity'
+new_df_append['subRegType'] <- 'localBasin'
+new_df_append['x'] <- 2010
+new_df_append['value'] <- 0
+new_df_append['classPalette'] <- 'Blues'
+new_df_append['classLabel'] <- 'ElectricityDemand'
+for (subReg in subregions){
+  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
+    select(-subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
+    select(contains("Electricity_")) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
+  electricity_water_demand <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, electricity_water_demand, value))
+}
+mapping_df <- rbind(mapping_df, new_df_append)
+export_df <- mapping_df %>% filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+
+# Store/export data related to livestock water demand
+params <- c('livestock_water_demand')
+new_df_append['param'] <- params
+new_df_append['units'] <- 'km3'
+new_df_append['class'] <- 'Livestock'
+new_df_append['subRegType'] <- 'localBasin'
+new_df_append['x'] <- 2010
+new_df_append['value'] <- 0
+new_df_append['classPalette'] <- 'Blues'
+new_df_append['classLabel'] <- 'ElectricityDemand'
+for (subReg in subregions){
+  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
+    select(-subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
+    select(contains("Livestock_")) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
+  livestock_water_demand <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, livestock_water_demand, value))
 }
 mapping_df <- rbind(mapping_df, new_df_append)
 export_df <- mapping_df %>% filter(param %in% params)

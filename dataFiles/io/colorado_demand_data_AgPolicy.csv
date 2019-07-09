@@ -80,7 +80,7 @@ Argentina,Neuquen_alta_barrancas,elecDemand,GWh,2010,residential,7.46025,7.46025
 Argentina,Neuquen_media,elecDemand,GWh,2010,residential,57.470153,18.39044896,Electricity,Electricity_RefLiqDiesel,COIRCO_2013_report,,
 Argentina,Neuquen_media,elecDemand,GWh,2010,residential,57.470153,39.07970404,Electricity,Electricity_Gas,COIRCO_2013_report,,
 Argentina,RioNegro_media,elecDemand,GWh,2010,residential,40.98290205,40.98290205,Electricity,Electricity_Hydro,COIRCO_2013_report,,
-Argentina,RioNegro_media,elecDemand,GWh,2010,residential,229.8456243,229.8456243,Electricity,Electricity_Hydro,COIRCO_2013_report,,
+Argentina,RioNegro_media,elecDemand,GWh,2010,residential,229.8456243,229.8456243,Electricity,Electricity_Import,COIRCO_2013_report,,
 Argentina,RioNegro_baja,elecDemand,GWh,2010,residential,36.956574,36.956574,Electricity,Electricity_Import,COIRCO_2013_report,,
 Argentina,LaPampa_media,elecDemand,GWh,2010,residential,9.236426,9.236426,Electricity,Electricity_Hydro,COIRCO_2013_report,,
 Argentina,LaPampa_baja,elecDemand,GWh,2010,residential,4.064913,0.379168795,Electricity,Electricity_RefLiqDiesel,COIRCO_2013_report,,
