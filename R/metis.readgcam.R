@@ -50,8 +50,9 @@
 #' \item "land allocation by crop and water source". Parameters generated: landIrrRfd
 #' \item "aggregated land allocation". Parameters generated: aggLandAlloc
 #' \item "Land Use Change Emission". Parameters generated: LUCemissFut
-#' \item "CO2 Emissions by enduse". Parameters generated: co2emission, co2emissionByEndUse,
 #' \item "GHG emissions by subsector". Parameters generated: ghgEmissByGHGGROUPS, ghgEmissionByGHG
+#' \item "CO2 emissions by sector". Parameters generated:co2emissionBySector
+#' \item "nonCO2 emissions by sector". Parameters generated: nonco2emissionBySectorGWPAR5, nonco2emissionBySectorGTPAR5,nonco2emissionBySectorOrigUnits
 #' }
 #'
 #' @param paramsSelect Default = "All". If desired select a subset of paramaters to analyze from the full list of parameters:
@@ -59,7 +60,7 @@
 #' "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
 #' "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
 #' "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-#' "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
+#' "LUCemiss", "co2emissionBySector","nonco2emissionBySectorGWPAR5,nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
 #'
 #' @return A list with the scenarios in the gcam database, queries in the queryxml file and a
 #' tibble with gcam data formatted for metis charts.
@@ -188,8 +189,9 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                     "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
                     "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
                     "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-                    "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS",
-                    "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec")
+                    "LUCemiss", "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits",
+                    "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec"
+                    )
   }else{paramsSelectx=paramsSelect}
 
   paramx<-"finalNrgbySec"
@@ -228,7 +230,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%
         dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
@@ -297,7 +299,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -344,7 +346,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -363,30 +365,30 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       }
       tbl <- tbl %>%
         dplyr::filter(grepl("elect",input))%>%
-        dplyr::mutate(sector=gsub("process heat cement","industry",sector),
+        dplyr::mutate(sector=gsub("process\\sheat\\scement","industry",sector),
                       sector=gsub("cement","industry",sector),
-                      sector=gsub("industrial energy use","industry",sector),
-                      sector=gsub("industrial feedstocks","industry",sector),
-                      sector=gsub("N fertilizer","industry",sector),
+                      sector=gsub("industrial\\senergy\\suse","industry",sector),
+                      sector=gsub("industrial\\sfeedstocks","industry",sector),
+                      sector=gsub("N\\sfertilizer","industry",sector),
                       sector = replace(sector, stringr::str_detect(sector, "trn"), "transport"),
-                      sector=gsub("comm cooling","buildings",sector),
-                      sector=gsub("comm heating","buildings",sector),
-                      sector=gsub("comm others","buildings",sector),
-                      sector=gsub("resid cooling","buildings",sector),
-                      sector=gsub("resid heating","buildings",sector),
-                      sector=gsub("resid others","buildings",sector),
+                      sector=gsub("comm\\scooling","buildings",sector),
+                      sector=gsub("comm\\sheating","buildings",sector),
+                      sector=gsub("comm\\sothers","buildings",sector),
+                      sector=gsub("resid\\scooling","buildings",sector),
+                      sector=gsub("resid\\sheating","buildings",sector),
+                      sector=gsub("resid\\sothers","buildings",sector),
                       input=gsub("elect\\_td\\_ind","electricity",input),
                       input=gsub("elect\\_td\\_bld","electricity",input),
                       input=gsub("elect\\_td\\_trn","electricity",input),
-                      input=gsub("delivered coal","coal",input),
-                      input=gsub("refined liquids enduse","oil",input),
-                      input=gsub("delivered biomass","biomass",input),
-                      input=gsub("H2 enduse","hydrogen",input),
-                      input=gsub("refined liquids industrial","oil",input),
-                      input=gsub("wholesale gas","gas",input),
-                      input=gsub("traditional biomass","biomass",input),
-                      input=gsub("delivered gas","gas",input),
-                      input=gsub("district heat","Other",input))%>%
+                      input=gsub("delivered\\scoal","coal",input),
+                      input=gsub("refined\\sliquids\\senduse","oil",input),
+                      input=gsub("delivered\\sbiomass","biomass",input),
+                      input=gsub("H2\\senduse","hydrogen",input),
+                      input=gsub("refined\\sliquids industrial","oil",input),
+                      input=gsub("wholesale\\sgas","gas",input),
+                      input=gsub("traditional\\sbiomass","biomass",input),
+                      input=gsub("delivered\\sgas","gas",input),
+                      input=gsub("district\\sheat","Other",input))%>%
         dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "finalElecbyServiceDet",
                       sources = "Sources",
@@ -413,7 +415,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -431,30 +433,30 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       }
       tbl <- tbl %>%
         #dplyr::filter(grepl("elect",input))%>%
-        dplyr::mutate(sector=gsub("process heat cement","industry",sector),
+        dplyr::mutate(sector=gsub("process\\sheat\\scement","industry",sector),
                       sector=gsub("cement","industry",sector),
-                      sector=gsub("industrial energy use","industry",sector),
-                      sector=gsub("industrial feedstocks","industry",sector),
-                      sector=gsub("N fertilizer","industry",sector),
+                      sector=gsub("industrial\\senergy\\suse","industry",sector),
+                      sector=gsub("industrial\\sfeedstocks","industry",sector),
+                      sector=gsub("N\\sfertilizer","industry",sector),
                       sector = replace(sector, stringr::str_detect(sector, "trn"), "transport"),
-                      sector=gsub("comm cooling","buildings",sector),
-                      sector=gsub("comm heating","buildings",sector),
-                      sector=gsub("comm others","buildings",sector),
-                      sector=gsub("resid cooling","buildings",sector),
-                      sector=gsub("resid heating","buildings",sector),
-                      sector=gsub("resid others","buildings",sector),
+                      sector=gsub("comm\\scooling","buildings",sector),
+                      sector=gsub("comm\\sheating","buildings",sector),
+                      sector=gsub("comm\\sothers","buildings",sector),
+                      sector=gsub("resid\\scooling","buildings",sector),
+                      sector=gsub("resid\\sheating","buildings",sector),
+                      sector=gsub("resid\\sothers","buildings",sector),
                       input=gsub("elect\\_td\\_ind","electricity",input),
                       input=gsub("elect\\_td\\_bld","electricity",input),
                       input=gsub("elect\\_td\\_trn","electricity",input),
-                      input=gsub("delivered coal","coal",input),
-                      input=gsub("refined liquids enduse","oil",input),
-                      input=gsub("delivered biomass","biomass",input),
-                      input=gsub("H2 enduse","hydrogen",input),
-                      input=gsub("refined liquids industrial","oil",input),
-                      input=gsub("wholesale gas","gas",input),
-                      input=gsub("traditional biomass","biomass",input),
-                      input=gsub("delivered gas","gas",input),
-                      input=gsub("district heat","Other",input))%>%
+                      input=gsub("delivered\\scoal","coal",input),
+                      input=gsub("refined\\sliquids\\senduse","oil",input),
+                      input=gsub("delivered\\sbiomass","biomass",input),
+                      input=gsub("H2\\senduse","hydrogen",input),
+                      input=gsub("refined\\sliquids industrial","oil",input),
+                      input=gsub("wholesale\\sgas","gas",input),
+                      input=gsub("traditional\\sbiomass","biomass",input),
+                      input=gsub("delivered\\sgas","gas",input),
+                      input=gsub("district\\sheat","Other",input))%>%
         dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "finalNrgbySecbyFuel",
                       sources = "Sources",
@@ -481,7 +483,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -499,30 +501,30 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       }
       tbl <- tbl %>%
         #dplyr::filter(grepl("elect",input))%>%
-        dplyr::mutate(sector=gsub("process heat cement","industry",sector),
+        dplyr::mutate(sector=gsub("process\\sheat\\scement","industry",sector),
                       sector=gsub("cement","industry",sector),
-                      sector=gsub("industrial energy use","industry",sector),
-                      sector=gsub("industrial feedstocks","industry",sector),
-                      sector=gsub("N fertilizer","industry",sector),
+                      sector=gsub("industrial\\senergy\\suse","industry",sector),
+                      sector=gsub("industrial\\sfeedstocks","industry",sector),
+                      sector=gsub("N\\sfertilizer","industry",sector),
                       sector = replace(sector, stringr::str_detect(sector, "trn"), "transport"),
-                      sector=gsub("comm cooling","buildings",sector),
-                      sector=gsub("comm heating","buildings",sector),
-                      sector=gsub("comm others","buildings",sector),
-                      sector=gsub("resid cooling","buildings",sector),
-                      sector=gsub("resid heating","buildings",sector),
-                      sector=gsub("resid others","buildings",sector),
+                      sector=gsub("comm\\scooling","buildings",sector),
+                      sector=gsub("comm\\sheating","buildings",sector),
+                      sector=gsub("comm\\sothers","buildings",sector),
+                      sector=gsub("resid\\scooling","buildings",sector),
+                      sector=gsub("resid\\sheating","buildings",sector),
+                      sector=gsub("resid\\sothers","buildings",sector),
                       input=gsub("elect\\_td\\_ind","electricity",input),
                       input=gsub("elect\\_td\\_bld","electricity",input),
                       input=gsub("elect\\_td\\_trn","electricity",input),
-                      input=gsub("delivered coal","coal",input),
-                      input=gsub("refined liquids enduse","oil",input),
-                      input=gsub("delivered biomass","biomass",input),
-                      input=gsub("H2 enduse","hydrogen",input),
-                      input=gsub("refined liquids industrial","oil",input),
-                      input=gsub("wholesale gas","gas",input),
-                      input=gsub("traditional biomass","biomass",input),
-                      input=gsub("delivered gas","gas",input),
-                      input=gsub("district heat","Other",input))%>%
+                      input=gsub("delivered\\scoal","coal",input),
+                      input=gsub("refined\\sliquids\\senduse","oil",input),
+                      input=gsub("delivered\\sbiomass","biomass",input),
+                      input=gsub("H2\\senduse","hydrogen",input),
+                      input=gsub("refined\\sliquids industrial","oil",input),
+                      input=gsub("wholesale\\sgas","gas",input),
+                      input=gsub("traditional\\sbiomass","biomass",input),
+                      input=gsub("delivered\\sgas","gas",input),
+                      input=gsub("district\\sheat","Other",input))%>%
         dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "finalNrgbyFuelbySec",
                       sources = "Sources",
@@ -549,7 +551,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -592,7 +594,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -636,7 +638,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblElecbyTech<-tbl
@@ -714,7 +716,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -757,7 +759,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -802,7 +804,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -845,7 +847,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -891,7 +893,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -938,7 +940,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -981,7 +983,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1024,7 +1026,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
@@ -1059,7 +1061,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1103,7 +1105,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1150,7 +1152,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1316,7 +1318,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1370,7 +1372,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -1395,7 +1397,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origUnits = Units,
                       origX = year,
                       scenario = scenNewNames,
-                      value = value*(metis.assumptions()$GWP%>%dplyr::filter(ghg=="CO2")%>%dplyr::select(metis.assumptions()$GWPType))[1,1],
+                      value = value,
                       origValue = value,
                       units = "LUC CO2 Emissions (MTCO2 Eq.)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -1413,7 +1415,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       tblLUEmiss<-tbl
       datax <- dplyr::bind_rows(datax, tbl)
@@ -1421,239 +1423,455 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
 
-  paramx <- "co2emission"
-  if(any(grepl("\\bco2emission\\b",paramsSelectx))){
-    # CO2 Emissions
-    queryx <- "CO2 Emissions"
-    if (queryx %in% queriesx) {
-      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
-      if (!is.null(regionsSelect)) {
-        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
-      }
-      tbl <- tbl %>%
-        dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-        dplyr::mutate(param = "co2emission",
-                      sources = "Sources",
-                      origScen = scenario,
-                      origQuery = queryx,
-                      origUnits = Units,
-                      origX = year,
-                      scenario = scenNewNames,
-                      value = value*(metis.assumptions()$GWP%>%dplyr::filter(ghg=="CO2")%>%dplyr::select(metis.assumptions()$GWPType))[1,1],
-                      origValue = value,
-                      units = "CO2 Emissions by Sector (MTCO2 Eq.)",
-                      vintage = paste("Vint_", year, sep = ""),
-                      x = year,
-                      xLabel = "Year",
-                      aggregate = "sum",
-                      class1 = sector,
-                      classLabel1 = "Type",
-                      classPalette1 = "pal_16",
-                      class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
-                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                      origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
-                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::filter(!is.na(value))
-      datax <- dplyr::bind_rows(datax, tbl)
-    } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}
-
-  paramx <- "co2emissionByEndUse"
+  # AWB - Agricultural Waste Burning
+  # AGR - Agirculture
+  paramx <- "co2emissionBySector"
   if(paramx %in% paramsSelectx){
-    # CO2 Emissions by enduse
-    queryx <- "CO2 Emissions by enduse"
+    queryx <- "CO2 emissions by sector"
     if (queryx %in% queriesx) {
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if (!is.null(regionsSelect)) {
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(value>=0)%>%
+        dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
+        dplyr::mutate(origValue=value,value=value*Convert*44/12,
+                      origUnits=Units,units="MegaTonnes of CO2 eq. (MTCO2eq)")%>%
+        dplyr::mutate(
+          class1=sector,
+          class2=sector) %>%
+        dplyr::mutate(
+                class1=gsub("comm\\scooling","buildings",class1),
+                class1=gsub("comm\\sheating","buildings",class1),
+                class1=gsub("comm\\sothers","buildings",class1),
+                class1=gsub("elec\\_biomass\\s\\(conv\\)","electricity",class1),
+                class1=gsub("elec\\_biomass\\s\\(IGCC\\)","electricity",class1),
+                class1=gsub("elec\\_coal\\s\\(conv\\spul\\)","electricity",class1),
+                class1=gsub("elec\\_coal\\s\\(IGCC\\)","electricity",class1),
+                class1=gsub("elec\\_gas\\s\\(CC\\)","electricity",class1),
+                class1=gsub("elec\\_gas\\s\\(steam/CT\\)","electricity",class1),
+                class1=gsub("elec\\_refined\\sliquids\\s\\(CC\\)","electricity",class1),
+                class1=gsub("elec\\_refined\\sliquids\\s\\(steam/CT\\)","electricity",class1),
+                class1=gsub("gas\\spipeline","energy",class1),
+                class1=gsub("gas\\sprocessing","energy",class1),
+                class1=gsub("H2\\scentral\\sproduction","energy",class1),
+                class1=gsub("H2\\sforecourt\\sproduction","energy",class1),
+                class1=gsub("industrial\\senergy\\suse","energy",class1),
+                class1=gsub("industrial\\sfeedstocks","industry",class1),
+                class1=gsub("N\\sfertilizer","industry",class1),
+                class1=gsub("process\\sheat\\scement","industry",class1),
+                class1=gsub("cement","industry",class1),
+                class1=gsub("refining","energy",class1),
+                class1=gsub("regional\\sbiomassOil","energy",class1),
+                class1=gsub("regional\\ssugar\\sfor\\sethanol","energy",class1),
+                class1=gsub("regional\\sbiomass","energy",class1),
+                class1=gsub("regional\\scorn\\sfor\\sethanol","energy",class1),
+                class1=gsub("resid\\scooling","buildings",class1),
+                class1=gsub("resid\\sheating","buildings",class1),
+                class1=gsub("resid\\sothers","buildings",class1),
+                class1=gsub("district\\sheat","energy",class1),
+                class1=gsub("trn\\_aviation\\_intl","transport",class1),
+                class1=gsub("trn\\_freight\\_road","transport",class1),
+                class1=gsub("trn\\_freight","transport",class1),
+                class1=gsub("trn\\_pass\\_road\\_LDV\\_2W","transport",class1),
+                class1=gsub("trn\\_pass\\_road\\_LDV\\_4W","transport",class1),
+                class1=gsub("trn\\_pass\\_road","transport",class1),
+                class1=gsub("trn\\_shipping\\_intl","transport",class1),
+                class1=gsub("transport\\_LDV","transport",class1),
+                class1=gsub("transport\\_bus","transport",class1),
+                class1=gsub("trn\\_pass","transport",class1),
+                class1=gsub("unconventional\\soil\\sproduction","energy",class1),
+                class1=gsub("backup\\_electricity","energy",class1),
+                class1=gsub("csp\\_backup","energy",class1))%>%
         dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-        dplyr::mutate(param = "co2emissionByEndUse",
+        dplyr::mutate(param = "co2emissionBySector",
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
-                      origUnits = Units,
                       origX = year,
                       scenario = scenNewNames,
-                      value = value*(metis.assumptions()$GWP%>%dplyr::filter(ghg=="CO2")%>%dplyr::select(metis.assumptions()$GWPType))[1,1],
-                      origValue = value,
-                      units = "CO2 Emission by Enduse (MTCO2 Eq.)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
                       aggregate = "sum",
-                      class1 = sector,
-                      classLabel1 = "Type",
+                      classLabel1 = "sector",
                       classPalette1 = "pal_nrg",
-                      class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2") %>%
+                      classLabel2 = "sectorDetail",
+                      classPalette2 = "pal_nrg") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::filter(!is.na(value))
-
-      # Add LU Change Emissions
-      tblLUEmiss <- rgcam::getQuery(dataProjLoaded, "Land Use Change Emission (future)")  # Tibble
-      if (!is.null(regionsSelect)) {
-        tblLUEmiss <- tblLUEmiss %>% dplyr::filter(region %in% regionsSelect)
-      }
-      tblLUEmiss <- tblLUEmiss %>%
-        dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-        dplyr::mutate(param = "LUCemiss",
-                      sources = "Sources",
-                      origScen = scenario,
-                      origQuery = queryx,
-                      origUnits = Units,
-                      origX = year,
-                      scenario = scenNewNames,
-                      value = value*(metis.assumptions()$GWP%>%dplyr::filter(ghg=="CO2")%>%dplyr::select(metis.assumptions()$GWPType))[1,1],
-                      origValue = value,
-                      units = "LUC CO2 Emissions (MTCO2 Eq.)",
-                      vintage = paste("Vint_", year, sep = ""),
-                      x = year,
-                      xLabel = "Year",
-                      aggregate = "sum",
-                      class1 = "class1",
-                      classLabel1 = "Land Type",
-                      classPalette1 = "pal_16",
-                      class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
-                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                      origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
-                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::filter(!is.na(value))
-
-
-      dfLUCAbs<-tblLUEmiss%>%dplyr::filter(value<0)%>%dplyr::mutate(class1="LUC_Absorption")
-      dfLUCAbs<-dfLUCAbs%>%dplyr::group_by_at(dplyr::vars(-value,-origValue)) %>% dplyr::summarize(value = sum(value,na.rm=T))%>%
-        dplyr::ungroup()%>%dplyr::mutate(origValue=value,class1="LUC Absorption")
-      dfLUCEmit<-tblLUEmiss%>%dplyr::filter(value>0)%>%dplyr::mutate(class1="LUC_Absorption")
-      dfLUCEmit<-dfLUCEmit%>%dplyr::group_by_at(dplyr::vars(-value,-origValue)) %>% dplyr::summarize(value = sum(value,na.rm=T))%>%
-        dplyr::ungroup()%>%dplyr::mutate(origValue=value,class1="LUC Emission")
-      dfLUC<-dplyr::bind_rows(dfLUCAbs,dfLUCEmit);
-      dfLUC<-dfLUC%>%dplyr::mutate(param=unique(tbl$param),
-                                   classLabel1=unique(tbl$classLabel1),
-                                   classPalette1=unique(tbl$classPalette1))
-
-      tbl<-dplyr::bind_rows(tbl,dfLUC)%>%dplyr::filter(!is.na(value))%>%dplyr::mutate(units = "CO2 Emission by Enduse (MTCO2 Eq.)")
-      datax <- dplyr::bind_rows(datax, tbl)
-    } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}
-
-
-  paramx<-"ghgEmissionByGHG"
-  if(paramx %in% paramsSelectx){
-    # GHG emissions by subsector
-    queryx <- "GHG emissions by subsector"
-    if (queryx %in% queriesx) {
-      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
-      if (!is.null(regionsSelect)) {
-        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
-      }
-      tbl <- tbl %>%
-        dplyr::left_join(metis.assumptions()$GWP%>%dplyr::select(ghg,metis.assumptions()$GWPType),by="ghg")%>%
-        dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
-        dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-        dplyr::mutate(param = "ghgEmissionByGHG",
-                      sources = "Sources",
-                      origScen = scenario,
-                      origQuery = queryx,
-                      origUnits = Units,
-                      origX = year,
-                      scenario = scenNewNames,
-                      value=value*get(metis.assumptions()$GWPType)*Convert,
-                      origValue = value,
-                      units = "GHG Emissions (MTCO2 Eq.)",
-                      vintage = paste("Vint_", year, sep = ""),
-                      x = year,
-                      xLabel = "Year",
-                      aggregate = "sum",
-                      class1 = ghg,
-                      classLabel1 = "GHG",
-                      classPalette1 = "pal_16",
-                      class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
-                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                      origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
-                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
 
-  paramx <- "ghgEmissByGHGGROUPS"
-  if(paramx %in% paramsSelectx){
-    # GHG emissions by subsector
-    queryx <- "GHG emissions by subsector"
-    if (queryx %in% queriesx) {
-      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
-      if (!is.null(regionsSelect)) {
-        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
-      }
-      tbl <- tbl %>%
-        dplyr::left_join(metis.assumptions()$GWP%>%dplyr::select(ghg,metis.assumptions()$GWPType),by="ghg")%>%
-        dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
-        dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-        dplyr::mutate(param = "ghgEmissByGHGGROUPS",
-                      sources = "Sources",
-                      origScen = scenario,
-                      origQuery = "X",
-                      origUnits = Units,
-                      origX = year,
-                      scenario = scenNewNames,
-                      value=value*get(metis.assumptions()$GWPType)*Convert,
-                      origValue = value,
-                      units = "GHG Emissions by Group (MTCO2 Eq.)",
-                      vintage = paste("Vint_", year, sep = ""),
-                      x = year,
-                      xLabel = "Year",
-                      aggregate = "sum",
-                      class1 = ghg,
-                      classLabel1 = "GHG",
-                      classPalette1 = "pal_16",
-                      class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2") %>%
-        dplyr::mutate(class1 = dplyr::case_when ((grepl("HFC", class1)) ~ "HFCs",
-                                                 (grepl("SF6", class1)) ~ "SF6",
-                                                 (grepl("CO2", class1)) ~ "CO2",
-                                                 (grepl("N2O", class1)) ~ "N2O",
-                                                 (grepl("CH4", class1)) ~ "CH4",
-                                                 (grepl("SO2", class1)) ~ "SO2",
-                                                 (grepl("NH3", class1)) ~ "NH3",
-                                                 TRUE ~ "Other"))%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
-                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                      origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+
+    paramx <- "nonco2emissionBySectorGWPAR5"
+    if(paramx %in% paramsSelectx){
+      # GHG emissions by subsector
+      queryx <- "nonCO2 emissions by sector"
+      if (queryx %in% queriesx) {
+        tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+        if (!is.null(regionsSelect)) {
+          tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+        }
+        tbl <- tbl %>%
+          dplyr::filter(value>0)%>%
+          dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+          dplyr::mutate(class1=ghg, class2=sector) %>%
+          dplyr::mutate(class1 = dplyr::case_when ((grepl("HFC", class1)) ~ "HFCs",
+                                                   (grepl("SF6", class1)) ~ "SF6",
+                                                   (grepl("CO2", class1)) ~ "CO2",
+                                                   (grepl("N2O", class1)) ~ "N2O",
+                                                   (grepl("N2O", class1)) ~ "N2O",
+                                                   (grepl("CH4", class1)) ~ "CH4",
+                                                   (grepl("SO2", class1)) ~ "SO2",
+                                                   (grepl("NH3", class1)) ~ "NH3",
+                                                   TRUE ~ "Other"))%>%
+          dplyr::mutate(
+            class2=gsub("comm\\scooling","buildings",class2),
+            class2=gsub("comm\\sheating","buildings",class2),
+            class2=gsub("comm\\sothers","buildings",class2),
+            class2=gsub("elec\\_biomass\\s\\(conv\\)","electricity",class2),
+            class2=gsub("elec\\_biomass\\s\\(IGCC\\)","electricity",class2),
+            class2=gsub("elec\\_coal\\s\\(conv\\spul\\)","electricity",class2),
+            class2=gsub("elec\\_coal\\s\\(IGCC\\)","electricity",class2),
+            class2=gsub("elec\\_gas\\s\\(CC\\)","electricity",class2),
+            class2=gsub("elec\\_gas\\s\\(steam/CT\\)","electricity",class2),
+            class2=gsub("elec\\_refined\\sliquids\\s\\(CC\\)","electricity",class2),
+            class2=gsub("elec\\_refined\\sliquids\\s\\(steam/CT\\)","electricity",class2),
+            class2=gsub("gas\\spipeline","energy",class2),
+            class2=gsub("gas\\sprocessing","energy",class2),
+            class2=gsub("H2\\scentral\\sproduction","energy",class2),
+            class2=gsub("H2\\sforecourt\\sproduction","energy",class2),
+            class2=gsub("industrial\\senergy\\suse","energy",class2),
+            class2=gsub("industrial\\sfeedstocks","industry",class2),
+            class2=gsub("N\\sfertilizer","industry",class2),
+            class2=gsub("process\\sheat\\scement","industry",class2),
+            class2=gsub("cement","industry",class2),
+            class2=gsub("refining","energy",class2),
+            class2=gsub("regional\\sbiomassOil","energy",class2),
+            class2=gsub("regional\\ssugar\\sfor\\sethanol","energy",class2),
+            class2=gsub("regional\\sbiomass","energy",class2),
+            class2=gsub("regional\\scorn\\sfor\\sethanol","energy",class2),
+            class2=gsub("resid\\scooling","buildings",class2),
+            class2=gsub("resid\\sheating","buildings",class2),
+            class2=gsub("resid\\sothers","buildings",class2),
+            class2=gsub("district\\sheat","energy",class2),
+            class2=gsub("trn\\_aviation\\_intl","transport",class2),
+            class2=gsub("trn\\_freight\\_road","transport",class2),
+            class2=gsub("trn\\_freight","transport",class2),
+            class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","transport",class2),
+            class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","transport",class2),
+            class2=gsub("trn\\_pass\\_road","transport",class2),
+            class2=gsub("trn\\_shipping\\_intl","transport",class2),
+            class2=gsub("transport\\_LDV","transport",class2),
+            class2=gsub("transport\\_bus","transport",class2),
+            class2=gsub("trn\\_pass","transport",class2),
+            class2=gsub("unconventional\\soil\\sproduction","energy",class2),
+            class2=gsub("backup\\_electricity","energy",class2),
+            class2=gsub("csp\\_backup","energy",class2),
+            class2=gsub("urban\\sprocesses","buildings",class2),
+            class2=gsub("electricity\\_net\\_ownuse","energy",class2),
+            class2=gsub("Beef","livestock",class2),
+            class2=gsub("Dairy","livestock",class2),
+            class2=gsub("FiberCrop","agriculture",class2),
+            class2=gsub("MiscCrop","agriculture",class2),
+            class2=gsub("OilCrop","agriculture",class2),
+            class2=gsub("OtherGrain","agriculture",class2),
+            class2=gsub("PalmFruit","agriculture",class2),
+            class2=gsub("Pork","livestock",class2),
+            class2=gsub("Poultry","livestock",class2),
+            class2=gsub("Corn","agriculture",class2),
+            class2=gsub("Rice","agriculture",class2),
+            class2=gsub("Root_Tuber","agriculture",class2),
+            class2=gsub("SheepGoat","agriculture",class2),
+            class2=gsub("SugarCrop","agriculture",class2),
+            class2=gsub("UnmanagedLand","agriculture",class2),
+            class2=gsub("Wheat","agriculture",class2),
+            class2=gsub("industrial\\sprocesses","industry",class2),
+            class2=gsub("biomass","agriculture",class2),
+            class2=gsub("FodderGrass","agriculture",class2),
+            class2=gsub("FodderHerb","agriculture",class2))%>%
+          dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class1=ghg),by="class1")%>%
+          dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
+          dplyr::mutate(origValue=value,
+                        value=value*GWPAR5*Convert,
+                        origUnits=Units,
+                        units="100 yr GWP AR5")%>%
+          dplyr::mutate(param = "nonco2emissionBySectorGWPAR5",
+                        sources = "Sources",
+                        origScen = scenario,
+                        origQuery = queryx,
+                        origX = year,
+                        scenario = scenNewNames,
+                        vintage = paste("Vint_", year, sep = ""),
+                        x = year,
+                        xLabel = "Year",
+                        aggregate = "sum",
+                        classLabel1 = "GHG",
+                        classPalette1 = "pal_nrg",
+                        classLabel2 = "sector",
+                        classPalette2 = "pal_nrg") %>%
+          dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum))%>%dplyr::ungroup()%>%
-        dplyr::filter(!is.na(value))
-      datax <- dplyr::bind_rows(datax, tbl)
-    } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
-    }}
+                        origScen, origQuery, origValue, origUnits, origX)%>%
+          dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                          aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                          origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+          dplyr::filter(!is.na(value))
+        datax <- dplyr::bind_rows(datax, tbl)
+      } else {
+        print(paste("Query '", queryx, "' not found in database", sep = ""))
+      }}
+
+
+    paramx <- "nonco2emissionBySectorGTPAR5"
+    if(paramx %in% paramsSelectx){
+      # GHG emissions by subsector
+      queryx <- "nonCO2 emissions by sector"
+      if (queryx %in% queriesx) {
+        tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+        if (!is.null(regionsSelect)) {
+          tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+        }
+        tbl <- tbl %>%
+          dplyr::filter(value>0)%>%
+          dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+          dplyr::mutate(class1=ghg, class2=sector) %>%
+          dplyr::mutate(class1 = dplyr::case_when ((grepl("HFC", class1)) ~ "HFCs",
+                                                   (grepl("SF6", class1)) ~ "SF6",
+                                                   (grepl("CO2", class1)) ~ "CO2",
+                                                   (grepl("N2O", class1)) ~ "N2O",
+                                                   (grepl("N2O", class1)) ~ "N2O",
+                                                   (grepl("CH4", class1)) ~ "CH4",
+                                                   (grepl("SO2", class1)) ~ "SO2",
+                                                   (grepl("NH3", class1)) ~ "NH3",
+                                                   TRUE ~ "Other"))%>%
+          dplyr::mutate(
+            class2=gsub("comm\\scooling","buildings",class2),
+            class2=gsub("comm\\sheating","buildings",class2),
+            class2=gsub("comm\\sothers","buildings",class2),
+            class2=gsub("elec\\_biomass\\s\\(conv\\)","electricity",class2),
+            class2=gsub("elec\\_biomass\\s\\(IGCC\\)","electricity",class2),
+            class2=gsub("elec\\_coal\\s\\(conv\\spul\\)","electricity",class2),
+            class2=gsub("elec\\_coal\\s\\(IGCC\\)","electricity",class2),
+            class2=gsub("elec\\_gas\\s\\(CC\\)","electricity",class2),
+            class2=gsub("elec\\_gas\\s\\(steam/CT\\)","electricity",class2),
+            class2=gsub("elec\\_refined\\sliquids\\s\\(CC\\)","electricity",class2),
+            class2=gsub("elec\\_refined\\sliquids\\s\\(steam/CT\\)","electricity",class2),
+            class2=gsub("gas\\spipeline","energy",class2),
+            class2=gsub("gas\\sprocessing","energy",class2),
+            class2=gsub("H2\\scentral\\sproduction","energy",class2),
+            class2=gsub("H2\\sforecourt\\sproduction","energy",class2),
+            class2=gsub("industrial\\senergy\\suse","energy",class2),
+            class2=gsub("industrial\\sfeedstocks","industry",class2),
+            class2=gsub("N\\sfertilizer","industry",class2),
+            class2=gsub("process\\sheat\\scement","industry",class2),
+            class2=gsub("cement","industry",class2),
+            class2=gsub("refining","energy",class2),
+            class2=gsub("regional\\sbiomassOil","energy",class2),
+            class2=gsub("regional\\ssugar\\sfor\\sethanol","energy",class2),
+            class2=gsub("regional\\sbiomass","energy",class2),
+            class2=gsub("regional\\scorn\\sfor\\sethanol","energy",class2),
+            class2=gsub("resid\\scooling","buildings",class2),
+            class2=gsub("resid\\sheating","buildings",class2),
+            class2=gsub("resid\\sothers","buildings",class2),
+            class2=gsub("district\\sheat","energy",class2),
+            class2=gsub("trn\\_aviation\\_intl","transport",class2),
+            class2=gsub("trn\\_freight\\_road","transport",class2),
+            class2=gsub("trn\\_freight","transport",class2),
+            class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","transport",class2),
+            class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","transport",class2),
+            class2=gsub("trn\\_pass\\_road","transport",class2),
+            class2=gsub("trn\\_shipping\\_intl","transport",class2),
+            class2=gsub("transport\\_LDV","transport",class2),
+            class2=gsub("transport\\_bus","transport",class2),
+            class2=gsub("trn\\_pass","transport",class2),
+            class2=gsub("unconventional\\soil\\sproduction","energy",class2),
+            class2=gsub("backup\\_electricity","energy",class2),
+            class2=gsub("csp\\_backup","energy",class2),
+            class2=gsub("urban\\sprocesses","buildings",class2),
+            class2=gsub("electricity\\_net\\_ownuse","energy",class2),
+            class2=gsub("Beef","livestock",class2),
+            class2=gsub("Dairy","livestock",class2),
+            class2=gsub("FiberCrop","agriculture",class2),
+            class2=gsub("MiscCrop","agriculture",class2),
+            class2=gsub("OilCrop","agriculture",class2),
+            class2=gsub("OtherGrain","agriculture",class2),
+            class2=gsub("PalmFruit","agriculture",class2),
+            class2=gsub("Pork","livestock",class2),
+            class2=gsub("Poultry","livestock",class2),
+            class2=gsub("Corn","agriculture",class2),
+            class2=gsub("Rice","agriculture",class2),
+            class2=gsub("Root_Tuber","agriculture",class2),
+            class2=gsub("SheepGoat","agriculture",class2),
+            class2=gsub("SugarCrop","agriculture",class2),
+            class2=gsub("UnmanagedLand","agriculture",class2),
+            class2=gsub("Wheat","agriculture",class2),
+            class2=gsub("industrial\\sprocesses","industry",class2),
+            class2=gsub("biomass","agriculture",class2),
+            class2=gsub("FodderGrass","agriculture",class2),
+            class2=gsub("FodderHerb","agriculture",class2))%>%
+          dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class1=ghg),by="class1")%>%
+          dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
+          dplyr::mutate(origValue=value,
+                        value=case_when(!is.na(GTPAR5) ~ value*GTPAR5*Convert,
+                                        TRUE ~  value*GWPAR5*Convert),
+                        origUnits=Units,
+                        units="100 yr GTP AR5")%>%
+          dplyr::mutate(param = "nonco2emissionBySectorGTPAR5",
+                        sources = "Sources",
+                        origScen = scenario,
+                        origQuery = queryx,
+                        origX = year,
+                        scenario = scenNewNames,
+                        vintage = paste("Vint_", year, sep = ""),
+                        x = year,
+                        xLabel = "Year",
+                        aggregate = "sum",
+                        classLabel1 = "GHG",
+                        classPalette1 = "pal_nrg",
+                        classLabel2 = "sector",
+                        classPalette2 = "pal_nrg") %>%
+          dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origValue, origUnits, origX)%>%
+          dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                          aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                          origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+          dplyr::filter(!is.na(value))
+        datax <- dplyr::bind_rows(datax, tbl)
+      } else {
+        print(paste("Query '", queryx, "' not found in database", sep = ""))
+      }}
+
+
+
+    paramx <- "nonco2emissionBySectorOrigUnits"
+    if(paramx %in% paramsSelectx){
+      # GHG emissions by subsector
+      queryx <- "nonCO2 emissions by sector"
+      if (queryx %in% queriesx) {
+        tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+        if (!is.null(regionsSelect)) {
+          tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+        }
+        tbl <- tbl %>%
+          dplyr::filter(value>0)%>%
+          dplyr::mutate(origValue=value,
+                        origUnits=Units,
+                        units="Variable Units")%>%
+          dplyr::left_join(dplyr::data_frame(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+          dplyr::mutate(class1=ghg, class2=sector) %>%
+          dplyr::mutate(class1 = dplyr::case_when ((grepl("HFC", class1)) ~ paste("HFCs",units,sep="_"),
+                                                   (grepl("SF6", class1)) ~ paste("SF6",units,sep="_"),
+                                                   (grepl("CO2", class1)) ~ paste("CO2",units,sep="_"),
+                                                   (grepl("N2O", class1)) ~ paste("N2O",units,sep="_"),
+                                                   (grepl("N2O", class1)) ~ paste("N2O",units,sep="_"),
+                                                   (grepl("CH4", class1)) ~ paste("CH4",units,sep="_"),
+                                                   (grepl("SO2", class1)) ~ paste("SO2",units,sep="_"),
+                                                   (grepl("NH3", class1)) ~ paste("NH3",units,sep="_"),
+                                                   (grepl("NOx", class1)) ~ paste("NOx",units,sep="_"),
+                                                   (grepl("VOC", class1)) ~ paste("VOC",units,sep="_"),
+                                                   (grepl("SO2", class1)) ~ paste("SO2",units,sep="_"),
+                                                   TRUE ~ "Other"))%>%
+          dplyr::mutate(
+            class2=gsub("comm\\scooling","buildings",class2),
+            class2=gsub("comm\\sheating","buildings",class2),
+            class2=gsub("comm\\sothers","buildings",class2),
+            class2=gsub("elec\\_biomass\\s\\(conv\\)","electricity",class2),
+            class2=gsub("elec\\_biomass\\s\\(IGCC\\)","electricity",class2),
+            class2=gsub("elec\\_coal\\s\\(conv\\spul\\)","electricity",class2),
+            class2=gsub("elec\\_coal\\s\\(IGCC\\)","electricity",class2),
+            class2=gsub("elec\\_gas\\s\\(CC\\)","electricity",class2),
+            class2=gsub("elec\\_gas\\s\\(steam/CT\\)","electricity",class2),
+            class2=gsub("elec\\_refined\\sliquids\\s\\(CC\\)","electricity",class2),
+            class2=gsub("elec\\_refined\\sliquids\\s\\(steam/CT\\)","electricity",class2),
+            class2=gsub("gas\\spipeline","energy",class2),
+            class2=gsub("gas\\sprocessing","energy",class2),
+            class2=gsub("H2\\scentral\\sproduction","energy",class2),
+            class2=gsub("H2\\sforecourt\\sproduction","energy",class2),
+            class2=gsub("industrial\\senergy\\suse","energy",class2),
+            class2=gsub("industrial\\sfeedstocks","industry",class2),
+            class2=gsub("N\\sfertilizer","industry",class2),
+            class2=gsub("process\\sheat\\scement","industry",class2),
+            class2=gsub("cement","industry",class2),
+            class2=gsub("refining","energy",class2),
+            class2=gsub("regional\\sbiomassOil","energy",class2),
+            class2=gsub("regional\\ssugar\\sfor\\sethanol","energy",class2),
+            class2=gsub("regional\\sbiomass","energy",class2),
+            class2=gsub("regional\\scorn\\sfor\\sethanol","energy",class2),
+            class2=gsub("resid\\scooling","buildings",class2),
+            class2=gsub("resid\\sheating","buildings",class2),
+            class2=gsub("resid\\sothers","buildings",class2),
+            class2=gsub("district\\sheat","energy",class2),
+            class2=gsub("trn\\_aviation\\_intl","transport",class2),
+            class2=gsub("trn\\_freight\\_road","transport",class2),
+            class2=gsub("trn\\_freight","transport",class2),
+            class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","transport",class2),
+            class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","transport",class2),
+            class2=gsub("trn\\_pass\\_road","transport",class2),
+            class2=gsub("trn\\_shipping\\_intl","transport",class2),
+            class2=gsub("transport\\_LDV","transport",class2),
+            class2=gsub("transport\\_bus","transport",class2),
+            class2=gsub("trn\\_pass","transport",class2),
+            class2=gsub("unconventional\\soil\\sproduction","energy",class2),
+            class2=gsub("backup\\_electricity","energy",class2),
+            class2=gsub("csp\\_backup","energy",class2),
+            class2=gsub("urban\\sprocesses","buildings",class2),
+            class2=gsub("electricity\\_net\\_ownuse","energy",class2),
+            class2=gsub("Beef","livestock",class2),
+            class2=gsub("Dairy","livestock",class2),
+            class2=gsub("FiberCrop","agriculture",class2),
+            class2=gsub("MiscCrop","agriculture",class2),
+            class2=gsub("OilCrop","agriculture",class2),
+            class2=gsub("OtherGrain","agriculture",class2),
+            class2=gsub("PalmFruit","agriculture",class2),
+            class2=gsub("Pork","livestock",class2),
+            class2=gsub("Poultry","livestock",class2),
+            class2=gsub("Corn","agriculture",class2),
+            class2=gsub("Rice","agriculture",class2),
+            class2=gsub("Root_Tuber","agriculture",class2),
+            class2=gsub("SheepGoat","agriculture",class2),
+            class2=gsub("SugarCrop","agriculture",class2),
+            class2=gsub("UnmanagedLand","agriculture",class2),
+            class2=gsub("Wheat","agriculture",class2),
+            class2=gsub("industrial\\sprocesses","industry",class2),
+            class2=gsub("biomass","agriculture",class2),
+            class2=gsub("FodderGrass","agriculture",class2),
+            class2=gsub("FodderHerb","agriculture",class2))%>%
+          dplyr::mutate(param = "nonco2emissionBySectorOrigUnits",
+                        sources = "Sources",
+                        origScen = scenario,
+                        origQuery = queryx,
+                        origX = year,
+                        scenario = scenNewNames,
+                        vintage = paste("Vint_", year, sep = ""),
+                        x = year,
+                        xLabel = "Year",
+                        aggregate = "sum",
+                        classLabel1 = "GHG",
+                        classPalette1 = "pal_nrg",
+                        classLabel2 = "sector",
+                        classPalette2 = "pal_nrg") %>%
+          dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origValue, origUnits, origX)%>%
+          dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                          aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                          origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+          dplyr::filter(!is.na(value))
+        datax <- dplyr::bind_rows(datax, tbl)
+      } else {
+        print(paste("Query '", queryx, "' not found in database", sep = ""))
+      }}
 
 
   datax<-datax%>%unique()
@@ -1719,7 +1937,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(aggregate=="sum")%>%
         dplyr::select(-tidyselect::contains("class"))%>%
         dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
-        dplyr::summarize_at(c("value"),dplyr::funs(sum))
+        dplyr::summarize_at(c("value"),dplyr::funs(sum(.,na.rm = T)))
       dataxAggmeans<-datax%>%
         dplyr::filter(aggregate=="mean")%>%
         dplyr::select(-tidyselect::contains("class"))%>%
