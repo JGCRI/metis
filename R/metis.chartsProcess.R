@@ -134,77 +134,93 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
 
 
 addMissing<-function(data){
-  if(!any(grepl("scenario",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenario="scenario")}else{
-    data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("scenario",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<scenario\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenario="scenario")}else{
+    data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenario\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
-  if(!any(grepl("region",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(region="region")}else{
-    data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("region",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<scenarios\\>",names(data),ignore.case = T))){}else{
+    data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenarios\\>",names(data),ignore.case = T)])[1])
+    data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
+  if(!any(grepl("\\<region\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(region="region")}else{
+    data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<region\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
-  if(!any(grepl("param",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(param="param")}else{
-    data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("param",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<regions\\>",names(data),ignore.case = T))){}else{
+    data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<regions\\>",names(data),ignore.case = T)])[1])
+    data<-data%>%dplyr::mutate(region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
+  if(!any(grepl("\\<param\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(param="param")}else{
+    data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<param\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(param=dplyr::case_when(is.na(param)~"param",TRUE~param))}
-  if(!any(grepl("value",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(value=get(yData))}else{
-    data <- data %>% dplyr::rename(!!"value" := (names(data)[grepl("value",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<params\\>",names(data),ignore.case = T))){}else{
+    data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<params\\>",names(data),ignore.case = T)])[1])
+    data<-data%>%dplyr::mutate(param=dplyr::case_when(is.na(param)~"param",TRUE~param))}
+  if(!any(grepl("\\<value\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(value=get(yData))}else{
+    data <- data %>% dplyr::rename(!!"value" := (names(data)[grepl("\\<value\\>",names(data),ignore.case = T)])[1])
     data$value = as.numeric(data$value)
     data<-data%>%dplyr::mutate(value=dplyr::case_when(is.na(value)~0,TRUE~value))}
-  if(!any(grepl("origvalue",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(origValue=value)}else{
-    data <- data %>% dplyr::rename(!!"origValue" := (names(data)[grepl("origvalue",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<values\\>",names(data),ignore.case = T))){}else{
+    data <- data %>% dplyr::rename(!!"value" := (names(data)[grepl("\\<values\\>",names(data),ignore.case = T)])[1])
+    data$value = as.numeric(data$value)
+    data<-data%>%dplyr::mutate(value=dplyr::case_when(is.na(value)~0,TRUE~value))}
+  if(!any(grepl("\\<origvalue\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(origValue=value)}else{
+    data <- data %>% dplyr::rename(!!"origValue" := (names(data)[grepl("\\<origvalue\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(origValue=dplyr::case_when(is.na(origValue)~value,TRUE~origValue))}
-  if(!any(grepl("unit",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(units="units")}else{
-    data <- data %>% dplyr::rename(!!"units" := (names(data)[grepl("unit",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<unit\\>",names(data),ignore.case = T))){}else{
+    data <- data %>% dplyr::rename(!!"units" := (names(data)[grepl("\\<unit\\>",names(data),ignore.case = T)])[1])
+    data<-data%>%dplyr::mutate(units=dplyr::case_when(is.na(units)~"units",TRUE~units))}
+  if(!any(grepl("\\<units\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(units="units")}else{
+    data <- data %>% dplyr::rename(!!"units" := (names(data)[grepl("\\<units\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(units=dplyr::case_when(is.na(units)~"units",TRUE~units))}
   if(!"x"%in%names(data)){data<-data%>%dplyr::mutate(x="x")}
-  if(!any(grepl("vintage",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(vintage = paste("Vint_", x, sep = ""))}else{
-    data <- data %>% dplyr::rename(!!"vintage" := (names(data)[grepl("vintage",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<vintage\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(vintage = paste("Vint_", x, sep = ""))}else{
+    data <- data %>% dplyr::rename(!!"vintage" := (names(data)[grepl("\\<vintage\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(vintage=dplyr::case_when(is.na(vintage)~paste("Vint_", x, sep = ""),TRUE~vintage))}
-  if(!any(grepl("xlabel",names(data),ignore.case = T))){
+  if(!any(grepl("\\<xlabel\\>",names(data),ignore.case = T))){
     if(is.null(xLabel)){data<-data%>%dplyr::mutate(xLabel="xLabel")}else{
       data<-data%>%dplyr::mutate(xLabel=xLabel)}}else{
-        data <- data %>% dplyr::rename(!!"xLabel" := (names(data)[grepl("xlabel",names(data),ignore.case = T)])[1])
+        data <- data %>% dplyr::rename(!!"xLabel" := (names(data)[grepl("\\<xlabel\\>",names(data),ignore.case = T)])[1])
         data<-data%>%dplyr::mutate(xLabel=dplyr::case_when(is.na(xLabel)~"xLabel",TRUE~xLabel))}
-  if(!any(grepl("aggregate",names(data),ignore.case = T))){
+  if(!any(grepl("\\<aggregate\\>",names(data),ignore.case = T))){
     if(is.null(aggregate)){data<-data%>%dplyr::mutate(aggregate=aggregate_i)}else{
       data<-data%>%dplyr::mutate(aggregate=aggregate_i)}
   }else{
-    data <- data %>% dplyr::rename(!!"aggregate" := (names(data)[grepl("aggregate",names(data),ignore.case = T)])[1])
+    data <- data %>% dplyr::rename(!!"aggregate" := (names(data)[grepl("\\<aggregate\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(aggregate=dplyr::case_when(is.na(aggregate)~aggregate_i,
                                                          TRUE~aggregate))}
-  if(!any(grepl("class1",names(data),ignore.case = T))){
-    if(!any(grepl("class",names(data),ignore.case = T))){
+  if(!any(grepl("\\<class1\\>",names(data),ignore.case = T))){
+    if(!any(grepl("\\<class\\>",names(data),ignore.case = T))){
     data<-data%>%dplyr::rename(class1=class)}else{data<-data%>%dplyr::mutate(class1="class1")}}else{
-      data <- data %>% dplyr::rename(!!"class1" := (names(data)[grepl("class1",names(data),ignore.case = T)])[1])
+      data <- data %>% dplyr::rename(!!"class1" := (names(data)[grepl("\\<class1\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(class1=dplyr::case_when(is.na(class1)~"class1",TRUE~class1))}
-  if(!any(grepl("classlabel1",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(classLabel1="classLabel1")}else{
-    data <- data %>% dplyr::rename(!!"classLabel1" := (names(data)[grepl("classlabel1",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<classlabel1\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(classLabel1="classLabel1")}else{
+    data <- data %>% dplyr::rename(!!"classLabel1" := (names(data)[grepl("\\<classlabel1\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(classLabel1=dplyr::case_when(is.na(classLabel1)~"classLabel1",TRUE~classLabel1))}
-  if(!any(grepl("classpalette1",names(data),ignore.case = T))){ if(is.null(classPalette)){data<-data%>%dplyr::mutate(classPalette1="pal_Basic")}else{
+  if(!any(grepl("\\<classpalette1\\>",names(data),ignore.case = T))){ if(is.null(classPalette)){data<-data%>%dplyr::mutate(classPalette1="pal_Basic")}else{
     data<-data%>%dplyr::mutate(classPalette1=classPalette)}}else{
-      data <- data %>% dplyr::rename(!!"classPalette1" := (names(data)[grepl("classpalette1",names(data),ignore.case = T)])[1])
+      data <- data %>% dplyr::rename(!!"classPalette1" := (names(data)[grepl("\\<classpalette1\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(classPalette1=dplyr::case_when(is.na(classPalette1)~classPalette,TRUE~classPalette1))}
-  if(!any(grepl("class2",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(class2="class2")}else{
-    data <- data %>% dplyr::rename(!!"class2" := (names(data)[grepl("class2",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<class2\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(class2="class2")}else{
+    data <- data %>% dplyr::rename(!!"class2" := (names(data)[grepl("\\<class2\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(class2=dplyr::case_when(is.na(class2)~"class2",TRUE~class2))}
-  if(!any(grepl("classlabel2",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(classLabel2="classLabel2")}else{
-    data <- data %>% dplyr::rename(!!"classLabel2" := (names(data)[grepl("classlabel2",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<classlabel2\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(classLabel2="classLabel2")}else{
+    data <- data %>% dplyr::rename(!!"classLabel2" := (names(data)[grepl("\\<classlabel2\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(classLabel2=dplyr::case_when(is.na(classLabel2)~"classLabel2",TRUE~classLabel2))}
-  if(!any(grepl("classpalette2",names(data),ignore.case = T))){ if(is.null(classPalette)){data<-data%>%dplyr::mutate(classPalette2="pal_Basic")}else{
+  if(!any(grepl("\\<classpalette2\\>",names(data),ignore.case = T))){ if(is.null(classPalette)){data<-data%>%dplyr::mutate(classPalette2="pal_Basic")}else{
     data<-data%>%dplyr::mutate(classPalette2=classPalette)}}else{
-      data <- data %>% dplyr::rename(!!"classPalette2" := (names(data)[grepl("classpalette2",names(data),ignore.case = T)])[1])
+      data <- data %>% dplyr::rename(!!"classPalette2" := (names(data)[grepl("\\<classpalette2\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(classPalette2=dplyr::case_when(is.na(classPalette2)~classPalette,TRUE~classPalette2))}
-  if(!any(grepl("origscen",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(origScen="origScen")}else{
-    data <- data %>% dplyr::rename(!!"origScen" := (names(data)[grepl("origscen",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<origscen\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(origScen="origScen")}else{
+    data <- data %>% dplyr::rename(!!"origScen" := (names(data)[grepl("\\<origscen\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(origScen=dplyr::case_when(is.na(origScen)~"origScen",TRUE~origScen))}
-  if(!any(grepl("origquery",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(origQuery="origQuery")}else{
-    data <- data %>% dplyr::rename(!!"origQuery" := (names(data)[grepl("origquery",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<origquery\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(origQuery="origQuery")}else{
+    data <- data %>% dplyr::rename(!!"origQuery" := (names(data)[grepl("\\<origquery\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(origQuery=dplyr::case_when(is.na(origQuery)~"origQuery",TRUE~origQuery))}
-  if(!any(grepl("origunit",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(origUnits="origUnits")}else{
-    data <- data %>% dplyr::rename(!!"origUnits" := (names(data)[grepl("origunit",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<origunit\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(origUnits="origUnits")}else{
+    data <- data %>% dplyr::rename(!!"origUnits" := (names(data)[grepl("\\<origunit\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(origUnits=dplyr::case_when(is.na(origUnits)~"origUnits",TRUE~origUnits))}
-  if(!any(grepl("origx",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(origX="origX")}else{
-    data <- data %>% dplyr::rename(!!"origX" := (names(data)[grepl("origx",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<origx\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(origX="origX")}else{
+    data <- data %>% dplyr::rename(!!"origX" := (names(data)[grepl("\\<origx\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(origX=dplyr::case_when(is.na(origX)~"origX",TRUE~origUnits))}
-  if(!any(grepl("source",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(sources="sources")}else{
-    data <- data %>% dplyr::rename(!!"sources" := (names(data)[grepl("source",names(data),ignore.case = T)])[1])
+  if(!any(grepl("\\<source\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(sources="sources")}else{
+    data <- data %>% dplyr::rename(!!"sources" := (names(data)[grepl("\\<source\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(sources=dplyr::case_when(is.na(sources)~"sources",TRUE~sources))}
   return(data)
 }
