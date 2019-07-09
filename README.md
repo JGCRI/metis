@@ -190,7 +190,7 @@ library(tmap)
 
 [Back to Contents](#Contents)
 
-This section walks through the different features of the metis package using the example data provided in order to familiarize the user with the different functions. All metis R functions are stored in ./metis/R. The key functions available are:
+This section walks through the different features of the metis package using the example data provided in order to familiarize the user with the different functions. The following sections describes different functions within the metis package and provides example code to test out the functionality. The same code for each function is also available as a single script in the metis.master.R file in the metis parent directory. All metis R functions are stored in ./metis/R. The key functions available are:
 
 | Function  | Description |
 | ------------- | ------------- |
@@ -517,21 +517,42 @@ The following section shows some basic example to use metis.map.R.
 # Maps (metis.map.R)
 #-------------------
 
-# Polygons. An example Shapefile is Provided with metis in ./metis/dataFiles/examples.
+
+# Example 1. Using a custom example Shapefile is Provided with metis in ./metis/dataFiles/examples.
   examplePolyFolder<-paste(getwd(),"/dataFiles/examples",sep="")
   examplePolyFile<-paste("bermejo3Cropped",sep="")
-
   # Read in the shape file and not the column name to use for fills and labels.
-  bermejo3Cropped=readOGR(dsn=examplePolyFolder,
-                          layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
-  head(bermejo3Cropped@data) # Choose the column name
-
+  bermejo3Cropped=readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  head(bermejo3Cropped@data) # Choose the appropriate column name
+  colName_i = "SUB_NAME"
   # Categorical Shapefile
   metis.map(dataPolygon=bermejo3Cropped,fillColumn = "SUB_NAME",labels=T ,printFig=F,facetsON=F)
-
   # Shapefile with values
   metis.map(dataPolygon=bermejo3Cropped,fillColumn = "SUB_AREA",labels=T ,printFig=F,facetsON=T,
             legendShow = T, legendOutside = T, fillPalette = "Reds", labelsAutoPlace = F)
+
+# Example 2. Using the natural earth Shapefiles provided with metis in ./metis/dataFiles/gis/metis/naturalEarth
+  examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
+  examplePolyFile<-paste("ne_10m_admin_1_states_provinces",sep="")
+  # Read in the shape file and not the column name to use for fills and labels.
+  exampleNE1=readOGR(dsn=examplePolyFolder, layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  head(exampleNE1@data) # Choose the column name
+  colName_i = "name"
+  # Crop the shapefile to desired boundary by subsetting
+  exampleNE1Cropped = exampleNE1[exampleNE1$admin=="Argentina",]
+  exampleNE1Cropped@data = droplevels(exampleNE1Cropped@data)
+  plot(exampleNE1Cropped)
+  metis.map(dataPolygon=exampleNE1Cropped,fillColumn = colName_i,labels=T ,printFig=F,facetsON=F,labelsAutoPlace = F)
+
+# The cropped shapefile can be saved for later use if desired.
+  # Create a directory to save the file to
+  if (!dir.exists(paste(getwd(),"/outputs",sep=""))){dir.create(paste(getwd(),"/outputs",sep=""))}
+  if (!dir.exists(paste(getwd(),"/outputs/ExampleShapefile",sep=""))){dir.create(paste(getwd(),"/outputs/ExampleShapefile",sep=""))}
+  rgdal::writeOGR(obj=exampleNE1Cropped,
+                  dsn=paste(getwd(),"/outputs/ExampleShapefile",sep=""),
+                  layer=paste("Argentina_states_example",sep=""),
+                  driver="ESRI Shapefile", overwrite_layer=TRUE)
+
 ```
 
 </p>
@@ -576,6 +597,11 @@ metis.boundaries is used to create maps showing where the sub-region lies in the
 <p>
 
 ```r
+
+#------------
+# Boundaries
+#------------
+
 # Example Shape File. Provided with metis in ./metis/dataFiles/examples
   examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
   examplePolyFile_i<-paste("bermejo3Cropped",sep="")
@@ -741,7 +767,6 @@ Grid |  Basin
                  subRegShpFolder=examplePolyFolder_i,
                  subRegShpFile=examplePolyFile_i,
                  subRegCol=subRegCol_i,
-                 subRegType="subBasin",
                  nameAppend="_exampleSubRegionMap",
                  legendPosition=c("RIGHT","top"),
                  animateOn=T,
@@ -749,6 +774,22 @@ Grid |  Basin
                  scenRef="Eg1",
                  #expandPercent = 2,
                  extension=F)
+
+    polygonDataTables=examplePolygonTable_i
+    gridDataTables=exampleGridTable_i
+    xRange=c(2005,2010,2020)
+    mapsOutFolderName="BermejoExample"
+    subRegShape=NULL
+    subRegShpFolder=examplePolyFolder_i
+    subRegShpFile=examplePolyFile_i
+    subRegCol=subRegCol_i
+    nameAppend="_exampleSubRegionMap"
+    legendPosition=c("RIGHT","top")
+    animateOn=T
+    delay=100
+    scenRef="Eg1"
+    #expandPercent = 2
+    extension=F
 
 # Extended Map showing the subregion within a wider boudnary region
 
@@ -774,7 +815,6 @@ Grid |  Basin
                      subRegShpFolder=examplePolyFolder_i,
                      subRegShpFile=examplePolyFile_i,
                      subRegCol=subRegCol_i,
-                     subRegType="subBasin",
                      nameAppend="_exampleSubRegionMapExtended",
                      legendPosition=c("RIGHT","top"),
                      animateOn=T,
@@ -794,7 +834,6 @@ Grid |  Basin
     # Run metis.boundaries.R to crop the sub-region shapefile to the boudnary region selected.
     # Read in polygon data table with data per sub-regions of interest
     # Runs metis.mapsProcess.R
-
 
 # Read in Boundary Region
     # Read in the GCAM 32 regions shapefile which comes with metis.
@@ -850,6 +889,7 @@ Grid |  Basin
       extension = T,
       cropSubShape2Bound = T)
 
+
 # The subregion shapefile created by boundaries can now be selected to be used for mapping values.
     subRegShp_i_Crop = boundaries$subRegShape # or can point to the subRegShapeFolder and subRegShpFile as produced by metis.boundaries.R
     head(subRegShp_i_Crop@data); levels(subRegShp_i_Crop@data[[subRegCol_i]])
@@ -888,7 +928,6 @@ Grid |  Basin
                      extension=F,
                      diffOn = F)
 
-
 # Improved map using available parameters.
     # Shift legend outside and change the scale_range to get conistent scale across scenarios.
 
@@ -900,7 +939,7 @@ Grid |  Basin
 
     scaleRange_i = tibble::tribble(
       ~param,~minScale, ~maxScale,
-      "waterConsumption", 0, 10)
+      "waterConsumption", 0, 60)
 
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
@@ -919,6 +958,7 @@ Grid |  Basin
                      diffOn = F,
                      legendOutsideSingle = T,
                      scaleRange = scaleRange_i)
+
 
 ```
 
