@@ -64,16 +64,16 @@ Argentina,Neuquen_media,watWithdrawBySec,km3,2010,Electricity_Gas,7.17E-05,7.17E
 Argentina,Neuquen_media,watWithdrawBySec,km3,2010,Electricity_RefLiqDiesel,3.44E-05,3.44E-05,Water,W_SW_Upstream,GCAM cooling technology water withdrawal
 Argentina,LaPampa_baja,watWithdrawBySec,km3,2010,Electricity_RefLiqDiesel,1.49E-07,1.49E-07,Water,W_SW_Upstream,GCAM cooling technology water withdrawal
 Argentina,LaPampa_media,watWithdrawBySec,km3,2010,Electricity_Hydro,0,0.00E+00,Water,W_SW_Upstream,GCAM cooling technology water withdrawal
-Argentina,Corfo,watWithdrawBySec,km3,2010,Animal_vacas,0.002967654,2.67E-03,Water,W_SW_Upstream,COIRCO_2013_report
-Argentina,Corfo,watWithdrawBySec,km3,2010,Animal_vacas,0.002967654,2.97E-04,Water,W_GW_Reservoir,COIRCO_2013_report
-Argentina,Corfo,watWithdrawBySec,km3,2010,Animal_vaquillonas,0.000867497,7.81E-04,Water,W_SW_Upstream,COIRCO_2013_report
-Argentina,Corfo,watWithdrawBySec,km3,2010,Animal_vaquillonas,0.000867497,8.67E-05,Water,W_GW_Reservoir,COIRCO_2013_report
-Argentina,Corfo,watWithdrawBySec,km3,2010,Animal_novillos,0.000590848,0.000531763,Water,W_SW_Upstream,COIRCO_2013_report
-Argentina,Corfo,watWithdrawBySec,km3,2010,Animal_novillos,0.000590848,5.91E-05,Water,W_GW_Reservoir,COIRCO_2013_report
-Argentina,Corfo,watWithdrawBySec,km3,2010,Animal_terneros,0.000571593,0.000514434,Water,W_SW_Upstream,COIRCO_2013_report
-Argentina,Corfo,watWithdrawBySec,km3,2010,Animal_terneros,0.000571593,5.72E-05,Water,W_GW_Reservoir,COIRCO_2013_report
-Argentina,Corfo,watWithdrawBySec,km3,2010,Animal_toros,6.73E-05,6.06E-05,Water,W_SW_Upstream,COIRCO_2013_report
-Argentina,Corfo,watWithdrawBySec,km3,2010,Animal_toros,6.73E-05,6.73E-06,Water,W_GW_Reservoir,COIRCO_2013_report
+Argentina,Corfo,watWithdrawBySec,km3,2010,Livestock_vacas,0.002967654,2.67E-03,Water,W_SW_Upstream,COIRCO_2013_report
+Argentina,Corfo,watWithdrawBySec,km3,2010,Livestock_vacas,0.002967654,2.97E-04,Water,W_GW_Reservoir,COIRCO_2013_report
+Argentina,Corfo,watWithdrawBySec,km3,2010,Livestock_vaquillonas,0.000867497,7.81E-04,Water,W_SW_Upstream,COIRCO_2013_report
+Argentina,Corfo,watWithdrawBySec,km3,2010,Livestock_vaquillonas,0.000867497,8.67E-05,Water,W_GW_Reservoir,COIRCO_2013_report
+Argentina,Corfo,watWithdrawBySec,km3,2010,Livestock_novillos,0.000590848,0.000531763,Water,W_SW_Upstream,COIRCO_2013_report
+Argentina,Corfo,watWithdrawBySec,km3,2010,Livestock_novillos,0.000590848,5.91E-05,Water,W_GW_Reservoir,COIRCO_2013_report
+Argentina,Corfo,watWithdrawBySec,km3,2010,Livestock_terneros,0.000571593,0.000514434,Water,W_SW_Upstream,COIRCO_2013_report
+Argentina,Corfo,watWithdrawBySec,km3,2010,Livestock_terneros,0.000571593,5.72E-05,Water,W_GW_Reservoir,COIRCO_2013_report
+Argentina,Corfo,watWithdrawBySec,km3,2010,Livestock_toros,6.73E-05,6.06E-05,Water,W_SW_Upstream,COIRCO_2013_report
+Argentina,Corfo,watWithdrawBySec,km3,2010,Livestock_toros,6.73E-05,6.73E-06,Water,W_GW_Reservoir,COIRCO_2013_report
 Argentina,Mendoza_alta_riogrande,elecDemand,GWh,2010,residential,23.828639,0.756570742,Electricity,Electricity_RefLiqDiesel,COIRCO_2013_report
 Argentina,Mendoza_alta_riogrande,elecDemand,GWh,2010,residential,23.828639,23.07206826,Electricity,Electricity_Import,COIRCO_2013_report
 Argentina,Neuquen_alta_barrancas,elecDemand,GWh,2010,residential,7.46025,7.46025,Electricity,Electricity_Import,COIRCO_2013_report
@@ -147,8 +147,8 @@ Argentina,Neuquen_media,agDemand,mil pesos,2010,export,0.040553486,0.040553486,A
 Argentina,Neuquen_alta_barrancas,agDemand,mil pesos,2010,export,0.018839664,0.018839664,Agriculture,Ag_pasture,"no data, just assumed export"
 Argentina,Neuquen_alta_barrancas,agDemand,mil pesos,2010,export,0,0,Agriculture,Ag_forest,"no data, just assumed export"
 Argentina,Mendoza_alta_barrancas,agDemand,mil pesos,2010,export,0.017581298,0.017581298,Agriculture,Ag_fruittrees,"no data, just assumed export"
-Argentina,Corfo,meatDemand,head,2010,export,127040,127040,Livestock,Animal_vacas,COIRCO land sheet
-Argentina,Corfo,meatDemand,head,2010,export,37136,37136,Livestock,Animal_vaquillonas,COIRCO land sheet
-Argentina,Corfo,meatDemand,head,2010,export,47471,47471,Livestock,Animal_novillos,COIRCO land sheet
-Argentina,Corfo,meatDemand,head,2010,export,45924,45924,Livestock,Animal_terneros,COIRCO land sheet
-Argentina,Corfo,meatDemand,head,2010,export,5408,5408,Livestock,Animal_toros,COIRCO land sheet
+Argentina,Corfo,meatDemand,head,2010,export,127040,127040,Livestock,Livestock_vacas,COIRCO land sheet
+Argentina,Corfo,meatDemand,head,2010,export,37136,37136,Livestock,Livestock_vaquillonas,COIRCO land sheet
+Argentina,Corfo,meatDemand,head,2010,export,47471,47471,Livestock,Livestock_novillos,COIRCO land sheet
+Argentina,Corfo,meatDemand,head,2010,export,45924,45924,Livestock,Livestock_terneros,COIRCO land sheet
+Argentina,Corfo,meatDemand,head,2010,export,5408,5408,Livestock,Livestock_toros,COIRCO land sheet
