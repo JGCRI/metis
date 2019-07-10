@@ -126,9 +126,11 @@ Local Data,Uruguay,DCCMVOTMA,co2emissionBySector,MegaTonnes of CO2 eq. (MTCO2eq)
 Local Data,Uruguay,DCCMVOTMA,nonco2emissionBySectorGTPAR5,100 yr GTP AR5,CH4,class2,2010,3.008
 Local Data,Uruguay,DCCMVOTMA,nonco2emissionBySectorGTPAR5,100 yr GTP AR5,CO2,class2,2010,8.619
 Local Data,Uruguay,DCCMVOTMA,nonco2emissionBySectorGTPAR5,100 yr GTP AR5,HFCs,class2,2010,0
+Local Data,Uruguay,DCCMVOTMA,nonco2emissionBySectorGTPAR5,100 yr GTP AR5,N2O,class2,2010,9.929
 Local Data,Uruguay,DCCMVOTMA,nonco2emissionBySectorGWPAR5,100 yr GWP AR5,CH4,class2,2010,22.375
 Local Data,Uruguay,DCCMVOTMA,nonco2emissionBySectorGWPAR5,100 yr GWP AR5,CO2,class2,2010,8.619
 Local Data,Uruguay,DCCMVOTMA,nonco2emissionBySectorGWPAR5,100 yr GWP AR5,HFCs,class2,2010,0
+Local Data,Uruguay,DCCMVOTMA,nonco2emissionBySectorGWPAR5,100 yr GWP AR5,N2O,class2,2010,11.31
 Local Data,Uruguay,PlanAguas,watWithdrawBySec,Water Withdrawals (km^3),agriculture,class2,2010,3.55
 Local Data,Uruguay,PlanAguas,watWithdrawBySec,Water Withdrawals (km^3),electricity,class2,2010,0
 Local Data,Uruguay,PlanAguas,watWithdrawBySec,Water Withdrawals (km^3),industry,class2,2010,0.54
