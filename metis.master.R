@@ -53,7 +53,7 @@ library(ggalluvial)
   paramsSelect_i = "All"
 
 # Select regions from the 32 GCAM regions.
-  regionsSelect_i <- c("Pakistan","China","Argentina")
+  regionsSelect_i <- c("China","Argentina")
 
   dataGCAM<-metis.readgcam(reReadData = F,
                          #gcamdatabasePath = gcamdatabasePath_i,
@@ -185,10 +185,20 @@ library(ggalluvial)
 
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.chartsProcess
-  paramsSelect_i=c("All")
+  # paramsSelect_i=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech", "elecCapBySubsector",
+  #                  "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
+  #                  "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
+  #                  "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
+  #                  "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec",
+  #                 "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
+  paramsSelect_i=c("gdp", "gdpGrowthRate", "pop",
+                   "finalNrgbySec","elecByTech",
+                   "co2emissionBySector","nonco2emissionBySectorGWPAR5",
+                   "agProdByCrop","aggLandAlloc",
+                   "watConsumBySec", "watWithdrawBySec")
 
 # Select regions from the 32 GCAM regions.
-  regionsSelect_i=c("Argentina","China","Pakistan")
+  regionsSelect_i=c("Argentina","China")
 
 # Charts Process
   charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
@@ -316,7 +326,7 @@ library(ggalluvial)
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                  gridDataTables=exampleGridTable_i,
                  xRange=c(2005,2010,2020),
-                 mapsOutFolderName="BermejoExample",
+                 folderName="BermejoExample",
                  subRegShape=NULL,
                  subRegShpFolder=examplePolyFolder_i,
                  subRegShpFile=examplePolyFile_i,
@@ -329,21 +339,6 @@ library(ggalluvial)
                  #expandPercent = 2,
                  extension=F)
 
-    polygonDataTables=examplePolygonTable_i
-    gridDataTables=exampleGridTable_i
-    xRange=c(2005,2010,2020)
-    mapsOutFolderName="BermejoExample"
-    subRegShape=NULL
-    subRegShpFolder=examplePolyFolder_i
-    subRegShpFile=examplePolyFile_i
-    subRegCol=subRegCol_i
-    nameAppend="_exampleSubRegionMap"
-    legendPosition=c("RIGHT","top")
-    animateOn=T
-    delay=100
-    scenRef="Eg1"
-    #expandPercent = 2
-    extension=F
 
 # Extended Map showing the subregion within a wider boudnary region
 
@@ -360,7 +355,7 @@ library(ggalluvial)
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                      gridDataTables=exampleGridTable_i,
                      xRange=c(2005,2010,2020),
-                     mapsOutFolderName="BermejoExampleExtended",
+                     folderName="BermejoExampleExtended",
                      boundaryRegionsSelect=boundaryRegionsSelect_i,
                      boundaryRegShpFolder = boundaryRegShpFolder_i,
                      boundaryRegShpFile = boundaryRegShpFile_i,
@@ -470,7 +465,7 @@ library(ggalluvial)
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2100),
-                     mapsOutFolderName=boundaryRegionsSelect_i,
+                     folderName=boundaryRegionsSelect_i,
                      boundaryRegionsSelect=boundaryRegionsSelect_i,
                      boundaryRegShape=boundaryRegShp_i,
                      subRegShape=subRegShp_i_Crop,
@@ -498,7 +493,7 @@ library(ggalluvial)
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2100),
-                     mapsOutFolderName=paste(boundaryRegionsSelect_i,"_Edited",sep=""),
+                     folderName=paste(boundaryRegionsSelect_i,"_Edited",sep=""),
                      boundaryRegionsSelect=boundaryRegionsSelect_i,
                      boundaryRegShape=boundaryRegShp_i,
                      subRegShape=subRegShp_i_Crop,

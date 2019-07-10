@@ -53,7 +53,7 @@ regionsSelect_i <- c("Uruguay")
 #listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 #queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
-dataGCAM<-metis.readgcam(reReadData=T, # Default Value is T
+dataGCAM<-metis.readgcam(reReadData=F, # Default Value is T
                                  dataProj = dataProj_i, # Default Value is "dataProj.proj"
                                  dataProjPath = dataProjPath_i,
                                  scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef"),
@@ -67,7 +67,7 @@ dataGCAM<-metis.readgcam(reReadData=T, # Default Value is T
                                  paramsSelect="All" # Default value is "All"
 )
 
-# reReadData=T # Default Value is T
+# reReadData=F # Default Value is T
 # dataProj = dataProj_i # Default Value is "dataProj.proj"
 # dataProjPath = dataProjPath_i
 # scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef")
@@ -108,7 +108,7 @@ paramsSelect_i=c("finalNrgbySec", "elecByTech", "elecCapBySubsector",
                   "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec",
                  "watConsumBySec", "watWithdrawBySec",
                  "gdp", "gdpGrowthRate", "pop",
-                 "agProdByCrop",
+                 "agProdByCrop","aggLandAlloc",
                 "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
 
 
@@ -117,7 +117,15 @@ dataTables_i<-c(paste(getwd(),"/dataFiles/localData/local_Regional_Uruguay.csv",
 a<-read.csv(dataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
 
 # Read in the data from the function metis.readgcam
-rTable_i <- dataGCAM$data %>% dplyr::filter(value!=0) %>% droplevels()
+rTable_i <- dataGCAM$data %>% dplyr::filter(value!=0)  %>%
+  dplyr::mutate(class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1),
+                class1=case_when(param=="finalNrgbyFuelbySec" ~ gsub("hydrogen","Other",class1),TRUE~class1),
+                class1=case_when(param=="co2emissionBySector" ~ gsub("electricity","energy",class1),TRUE~class1)) %>%
+  dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                  aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                  origScen, origQuery, origUnits, origX)%>%
+  dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%
+  dplyr::ungroup() %>% droplevels()
 
 regionsSelect_i=c("Uruguay")
 
@@ -134,7 +142,7 @@ rTable_iMod <- rTable_i %>%
   dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%
   dplyr::ungroup() %>% droplevels()
 
-paramsSelect_iMod=c("elecByTech","agProdByCrop","finalNrgbyFuelbySec","co2emissionBySector")
+paramsSelect_iMod=c("elecByTech","agProdByCrop","finalNrgbyFuelbySec","co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5")
 
 charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             dataTables=dataTables_i, # Default is NULL
@@ -691,41 +699,3 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  chosenRefMeanYears=c(2000:2050),
                  numeric2Cat_list=numeric2Cat_list)
 
-# polygonDataTables=polygonDataTables_i
-# gridDataTables=gridDataTables_i
-# xRange=xRange_i
-# boundaryRegShape=boundaryRegShape_i
-# boundaryRegShpFolder=boundaryRegShpFolder_i
-# boundaryRegShpFile=boundaryRegShpFile_i
-# boundaryRegCol=boundaryRegCol_i
-# boundaryRegionsSelect=boundaryRegionsSelect_i
-# subRegShape=subRegShape_i
-# subRegShpFolder=subRegShpFolder_i
-# subRegShpFile=subRegShpFile_i
-# subRegCol=subRegCol_i
-# subRegType=subRegType_i
-# nameAppend=nameAppend_i
-# legendOutsideSingle=legendOutsideSingle_i
-# legendPosition=legendPosition_i
-# animateOn=animateOn_i
-# delay=delay_i
-# scenRef=scenRef_i
-# extension=T
-# expandPercent = 3
-# figWidth=6
-# figHeight=7
-# paramsSelect = paramsSelect_i
-# scaleRange = scaleRange_i
-# indvScenarios=indvScenarios_i
-# GCMRCPSSPPol=F
-# multiFacetCols="scenarioRCP"
-# multiFacetRows="scenarioGCM"
-# legendOutsideMulti=T
-# legendPositionMulti=NULL
-# legendTitleSizeMulti=NULL
-# legendTextSizeAnim=NULL
-# legendTextSizeMulti=NULL
-# refGCM="gfdl-esm2m"
-# refRCP="rcp2p6"
-# chosenRefMeanYears=c(2000:2050)
-# numeric2Cat_list=numeric2Cat_list
