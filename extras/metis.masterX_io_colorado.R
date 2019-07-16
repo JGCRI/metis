@@ -238,7 +238,6 @@ mapping_df <- rbind(mapping_df, new_df_append)
 export_df <- mapping_df %>% filter(param %in% params)
 write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
 
-
 # Store/export data related to total water demand
 params <- c('total_water_demand')
 new_df_append['param'] <- params
@@ -273,6 +272,28 @@ new_df_append['classLabel'] <- 'ElecSupply'
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("Electricity_", supplySubSector)) %>%
     filter(!grepl("Electricity_Import", supplySubSector)) %>%
+    select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
+  total_elec_supply <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_elec_supply, value))
+}
+mapping_df <- rbind(mapping_df, new_df_append)
+export_df <- mapping_df %>% filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+
+
+# Store/export data related to total agricultural production/value
+params <- c('total_ag_supply')
+new_df_append['param'] <- params
+new_df_append['units'] <- 'million pesos'
+new_df_append['class'] <- 'AgSupply'
+new_df_append['subRegType'] <- 'localBasin'
+new_df_append['x'] <- 2010
+new_df_append['value'] <- 0
+new_df_append['classPalette'] <- 'Greens'
+new_df_append['classLabel'] <- 'AgSupply'
+for (subReg in subregions){
+  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("Ag_", supplySubSector)) %>%
     select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   total_elec_supply <- sum((df)$rowsum, na.rm=TRUE)
