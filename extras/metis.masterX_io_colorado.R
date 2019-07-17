@@ -43,7 +43,7 @@ from_to <- output$from_to
 # Import user-defined supply/demand/capacity files
 # Import demands across sectors, with corresponding supplies specified
 # Import base data
-demand_data_file = paste(getwd(),'/datafiles/io/colorado_demand_data_AgPolicy.csv',sep="")  # _AgPolicy
+demand_data_file = paste(getwd(),'/datafiles/io/colorado_demand_data.csv',sep="")  # _AgPolicy
 capacity_data_file = paste(getwd(),'/datafiles/io/colorado_capacity_data.csv',sep="")
 demand_data <- read.csv(demand_data_file)
 demand_data <- demand_data %>% as_tibble()
@@ -296,8 +296,29 @@ for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("Ag_", supplySubSector)) %>%
     select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
-  total_elec_supply <- sum((df)$rowsum, na.rm=TRUE)
-  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_elec_supply, value))
+  total_ag_supply <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_ag_supply, value))
+}
+mapping_df <- rbind(mapping_df, new_df_append)
+export_df <- mapping_df %>% filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+
+# Store/export data related to population
+params <- c('total_ag_supply')
+new_df_append['param'] <- params
+new_df_append['units'] <- 'million pesos'
+new_df_append['class'] <- 'AgSupply'
+new_df_append['subRegType'] <- 'localBasin'
+new_df_append['x'] <- 2010
+new_df_append['value'] <- 0
+new_df_append['classPalette'] <- 'Greens'
+new_df_append['classLabel'] <- 'AgSupply'
+for (subReg in subregions){
+  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("Ag_", supplySubSector)) %>%
+    select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
+  total_ag_supply <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_ag_supply, value))
 }
 mapping_df <- rbind(mapping_df, new_df_append)
 export_df <- mapping_df %>% filter(param %in% params)
