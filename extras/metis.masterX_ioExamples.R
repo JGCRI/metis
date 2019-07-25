@@ -27,20 +27,13 @@ library(rgeos)
 # Blair and Miller Problems Chapter 2 - Simple I/O
 
 # Problem 2.1
-Z0=tibble::tribble( # Initial Flows
-  ~sector ,    ~ag,         ~man,
-  "ag"     ,    500,         350,
-  "man"     ,    320,        360);Z0
+ioTable0=tibble::tribble( # Initial Flows
+ ~supplySubSector,    ~ag,         ~man, ~total,
+  "ag",            500,         350,  1000,
+  "man",           320,         360,  800);ioTable0
 
 
-X0=tibble::tribble( # Initial total demand
-  ~total,
-  1000,
-  800
-);X0
-
-
-io<-metis.io(Z0=Z0,X0=X0,D=c(200,100))
+io<-metis.io(ioTable0 = ioTable0)
 io$A
 io$L
 

@@ -8,7 +8,7 @@
 #' @param polygonDataTables Default = NULL,
 #' @param gridDataTables Default = NULL,
 #' @param dirOutputs Default = paste(getwd(),"/outputs",sep=""),
-#' @param folderName Default="mapOutputs",
+#' @param folderName Default ="folderNameDefault",
 #' @param xRange Default ="All",
 #' @param labels Default = F,
 #' @param labelsSize Default = 1.2,
@@ -50,7 +50,8 @@
 #' @param figWidth Default =9
 #' @param figHeight Default =7
 #' @param scaleRange Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.
-#' @param indvScenarios Default ="All",
+#' @param indvScenarios Default ="All", If only want to run single scenarios without comparing with others
+#' @param scensSelect Default ="All", choose scenarios from data
 #' @param GCMRCPSSPPol Default = F,
 #' @param multiFacetCols Default ="scenarioRCP",
 #' @param multiFacetRows Default ="scenarioGCM",
@@ -73,7 +74,7 @@
 metis.mapProcess<-function(polygonDataTables=NULL,
                            gridDataTables=NULL,
                            dirOutputs=paste(getwd(),"/outputs",sep=""),
-                           folderName="mapOutputs",
+                           folderName="folderNameDefault",
                            xRange="All",
                            labels=F,
                            labelsSize=1.2,
@@ -116,6 +117,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                            scaleRange=NULL,
                            paramsSelect="All",
                            indvScenarios="All",
+                           scensSelect="All",
                            GCMRCPSSPPol=F,
                            multiFacetCols="scenarioRCP",
                            multiFacetRows="scenarioGCM",
@@ -544,6 +546,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
         }
     }
 
+      if(any(scensSelect!="All")){
+        if(any(scensSelect %in% unique(shapeTbl$param))){
+          shapeTbl<-shapeTbl%>%dplyr::filter(scenario %in% scensSelect);
+          print(paste("Subset shapeTbl scenario to scensSelect: ",scensSelect,sep=""))}else{
+            print(paste("None of the scensSelect: ",paste(scensSelect,collapse=", ")," are present in shapeTbl params. Skipping subset.",sep=""))
+          }
+      }
+
     shapeTbl<-droplevels(shapeTbl)
     }
   }
@@ -556,6 +566,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
         gridTbl<-gridTbl%>%dplyr::filter(param %in% paramsSelect);
         print(paste("Subset gridTbl param to paramsSelect: ",paramsSelect,sep=""))}else{
           print(paste("None of the paramsSelect: ",paste(paramsSelect,collapse=", ")," are present in gridTbl params. Skipping subset.",sep=""))
+        }
+    }
+
+    if(any(scensSelect!="All")){
+      if(any(scensSelect %in% unique(gridTbl$param))){
+        gridTbl<-gridTbl%>%dplyr::filter(scenario %in% scensSelect);
+        print(paste("Subset gridTbl scenario to scensSelect: ",scensSelect,sep=""))}else{
+          print(paste("None of the scensSelect: ",paste(scensSelect,collapse=", ")," are present in gridTbl params. Skipping subset.",sep=""))
         }
     }
 

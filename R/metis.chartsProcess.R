@@ -61,7 +61,7 @@
 #' @param regionsSelect Default = "All". Select regions to create charts for.
 #' @param scensSelect Default = "All". Select regions to create charts for.
 #' @param xRange Default "All". Range of x values eg. c(2001:2005)
-#' @param folderName Default ="analysis"
+#' @param folderName Default ="folderNameDefault"
 #' @param nameAppend Default =""
 #' @param colOrder1 Default = NULL,
 #' @param colOrderName1 Default = NULL,
@@ -82,7 +82,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        aggregate="sum",class="class", classPalette="pal_Basic",
                        regionCompareOnly=0,scenarioCompareOnly=0,useNewLabels=0,
                        sizeBarLines=0,sizeLines=1.5,
-                       folderName="analysis",
+                       folderName="folderNameDefault",
                        nameAppend="",
                        scensSelect="All",
                        colOrder1 = NULL,

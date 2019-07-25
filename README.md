@@ -65,13 +65,13 @@ The Metis model is a joint effort by the Pacific Northwest National Laboratory (
 
 In most projects looking at multi-sector dynamics one of the key constraints is data availability and a key goal of Metis is to overcome this barrier by providing users with default data across sectors for their specific region. The default data is built from outputs of the open-source Global Change Assessment Model (GCAM) eco-system which provides downscaled gridded global data for water, energy and land. Metis aggregates gridded data to any spatial boundary and offers users a first look at the water-energy-land situation in their regions of interest. The idea is to use this as a starting point and then improve the data as and when it becomes available while working with local stakeholders. 
 
-After aggregating data to relevant spatial and temporal scales, metis finds relationships between the sectors using input/output methods to establish correlation matrices. The correlation matrices represent the inter-sectoral links throughout the system and are then used to investigate impacts of changes in one sector on others.
+After aggregating data to relevant spatial and temporal scales, Metis finds relationships between the sectors using input/output methods to establish correlation matrices. The correlation matrices represent the inter-sectoral links throughout the system and are then used to investigate impacts of changes in one sector on others.
 
 <p align="center"> <b> Metis - A model to bridge the gap between coarse resolution IAMs and finer-resolution sector specific models </b> </p>
-<p align="center"> <img src="READMEfigs/metis_MidSpatial.PNG"></p>
+<p align="center"> <img src="READMEfigs/Metis_MidSpatial.PNG"></p>
 
-- The Metis modeling development platform is hosted on github at: https://github.com/JGCRI/metis
-- To clone this repo is: https://github.com/JGCRI/metis.git
+- The Metis modeling development platform is hosted on github at: https://github.com/JGCRI/Metis
+- To clone this repo is: https://github.com/JGCRI/Metis.git
 - The model is comprised of an R package and additional files with sample data
 
 
@@ -84,7 +84,7 @@ After aggregating data to relevant spatial and temporal scales, metis finds rela
 
 [Back to Contents](#Contents)
 
-The motivation behind developing the Metis model is to bridge the gap between models working at different spatial and temporal resolutions. Sector specific details such as diurnal electricity demand profiles and the availability of intermittent technologies are often captured by fine resolution sector specific models. These finer scale models are however often limited in scope to the specific sector in question. With increasing pressures on limited resources from growing populations, technological advances and a changing climate the links across human-earth systems are becoming more critical. These links include feedbacks across system such as water demands for powerplant cooling and hydropower; energy demands for water purification, transfers and distribution; both energy and water demands for agriculture production and harvesting; and the impacts of land-use change emissions and water demands as a result of biofuel expansion and deforestation. All of these are driven by socio-economic developments and policy decisions across these systems. Global integrateed assessment models are often used to capture these broader longterm dynamics on larger spatial and temporal scales. The development of the Metis model will address this need to capture both broader long-term dynamcis across systems and global markets as well as sub-regional details. The model will do this by taking global data and dynamcis from an IAM such as GCAM and then downscale the results to relevant sub-regional boundaries based on the needs of local stakeholders. The downscaled data will then be refined and calibrated with local sector specific data. This will be followed by calibration of the local inter-sectoral links and the model will then be used for future sector specific policy analysis at the relevant scales while still including global dynamics.
+The motivation behind developing the Metis model is to bridge the gap between models working at different spatial and temporal resolutions. Sector specific details such as diurnal electricity demand profiles and the availability of intermittent technologies are often captured by fine resolution sector specific models. These finer scale models are however often limited in scope to the specific sector in question. With increasing pressures on limited resources from growing populations, technological advances and a changing climate the links across human-earth systems are becoming more critical. These links include feedbacks across system such as water demands for power plant cooling and hydro power; energy demands for water purification, transfers and distribution; both energy and water demands for agriculture production and harvesting; and the impacts of land-use change emissions and water demands as a result of bio-fuel expansion and deforestation. All of these are driven by socio-economic developments and policy decisions across these systems. Global integrated assessment models are often used to capture these broader long-term dynamics on larger spatial and temporal scales. The development of the Metis model will address this need to capture both broader long-term dynamics across systems and global markets as well as sub-regional details. The model will do this by taking global data and dynamics from an IAM such as GCAM and then downscale the results to relevant sub-regional boundaries based on the needs of local stakeholders. The downscaled data will then be refined and calibrated with local sector specific data. This will be followed by calibration of the local inter-sectoral links and the model will then be used for future sector specific policy analysis at the relevant scales while still including global dynamics.
 
 
 <!-- ------------------------>
@@ -96,11 +96,11 @@ The motivation behind developing the Metis model is to bridge the gap between mo
 
 [Back to Contents](#Contents)
 
-Metis is designed to be accesible to a range of stakeholders with varying expertise and goals related to nexus analyses. The various functions of metis can be used independently for different purposes ranging from visualization, charting, spatial aggregation, mapping and inter-sectoral dynamics. The following lists and figure provides a summary of the existing and planned capabilities of metis. The lists and figure are updated as progress is made and new developments are planned. 
+Metis is designed to be accesible to a range of stakeholders with varying expertise and goals related to nexus analyses. The various functions of Metis can be used independently for different purposes ranging from visualization, charting, spatial aggregation, mapping and inter-sectoral dynamics. The following lists and figure provides a summary of the existing and planned capabilities of mess. The lists and figure are updated as progress is made and new developments are planned. 
 
 <p align="left"> <b> Metis Module & Functions </b> </p>
 
-- Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: metis.chart.R, metis.chartsProcess.R)
+- Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: mess.chart.R, mess.chartsProcess.R)
 - Maps: Various functions to vizualize spatial boundaries and data as rasters and polygon
 (functions: metis.boundaries.R, mets.map.R, metis.mapsProcess.R)
 - Spatial Aggregation: Functions to aggregate gridded data to different spatial boundaries.

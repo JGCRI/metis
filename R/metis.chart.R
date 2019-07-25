@@ -247,12 +247,15 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
         dplyr::mutate(tempName = as.character(names(paletteX)),
                       value=as.character(value)); paletteX_df %>% tibble::as_tibble()
 
-     paletteDF_temp <- data.frame(tempName=unique(l1[[sankeyGroupColor]])) %>%
+     namesAvail = unique(l1[[sankeyGroupColor]])[unique(l1[[sankeyGroupColor]]) %in% unique(paletteX_df$tempName)]; namesAvail
+     namesUnAvail = unique(l1[[sankeyGroupColor]])[!unique(l1[[sankeyGroupColor]]) %in% unique(paletteX_df$tempName)]; namesUnAvail
+
+     paletteDF_temp <- data.frame(tempName=namesAvail) %>%
        dplyr::mutate(tempName = as.character(tempName)) %>%
          dplyr::left_join(paletteX_df); paletteDF_temp
 
-     paletteX <- as.vector(c(paletteDF_temp$value,metis.colors()$pal_16))
-     names(paletteX) <-c(paletteDF_temp$tempName);paletteX
+     paletteX <- as.vector(c(paletteDF_temp$value,metis.colors()$pal_Basic))[1:(length(namesAvail)+length(namesUnAvail))]; paletteX
+     names(paletteX) <-c(paletteDF_temp$tempName,namesUnAvail);paletteX
 
     }
 

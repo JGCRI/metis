@@ -11,9 +11,10 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   yData = "value", xLabel = "xLabel", yLabel = "units",
   aggregate = "sum", class = "class", classPalette = "pal_Basic",
   regionCompareOnly = 0, scenarioCompareOnly = 0, useNewLabels = 0,
-  sizeBarLines = 0, sizeLines = 1.5, folderName = "analysis",
-  nameAppend = "", scensSelect = "All", colOrder1 = NULL,
-  colOrderName1 = NULL, colOrder2 = NULL, colOrderName2 = NULL)
+  sizeBarLines = 0, sizeLines = 1.5,
+  folderName = "folderNameDefault", nameAppend = "",
+  scensSelect = "All", colOrder1 = NULL, colOrderName1 = NULL,
+  colOrder2 = NULL, colOrderName2 = NULL)
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -70,7 +71,7 @@ c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 
 \item{sizeLines}{Default 1.5}
 
-\item{folderName}{Default ="analysis"}
+\item{folderName}{Default ="folderNameDefault"}
 
 \item{nameAppend}{Default =""}
 
