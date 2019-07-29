@@ -21,7 +21,8 @@ library(tools)
 if("metis" %in% rownames(installed.packages()) == F){install.packages("metis")}
 library(metis)
 
-#setwd('C:/Users/twild/all_git_repositories/metis/metis')
+
+setwd('C:/Users/twild/all_git_repositories/metis/metis')
 countryName="Argentina"
 
 
@@ -49,7 +50,8 @@ subRegType_i = "subBasin"
 nameAppend_i = "_local"
 
 
-polygonDataTables_i=paste("C:/Users/khan404/Desktop/livestock_water_demand.csv",sep = "")
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/livestock_water_demand.csv",sep="")
+
 a1<-read.csv(polygonDataTables_i); head(a1); unique(a1$scenario); unique(a1$param); unique(a1$x)
 
 
@@ -168,3 +170,4 @@ refRCP="rcp2p6"
 chosenRefMeanYears=c(2000:2050)
 numeric2Cat_list=numeric2Cat_list
 folderName = "livestocktest"
+>>>>>>> c7962aff79f0fc9958ef7c0b984800edd715f977

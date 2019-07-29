@@ -49,7 +49,7 @@ subRegType_i = "subBasin"
 nameAppend_i = "_local"
 
 
-polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/total_water_demand.csv",sep="")
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/municipal_water_demand.csv",sep="")
 a1<-read.csv(polygonDataTables_i); head(a1); unique(a1$scenario); unique(a1$param); unique(a1$x)
 
 
@@ -63,10 +63,10 @@ paramsSelect_i = c("All")
 indvScenarios_i = "All"
 GCMRCPSSPPol_i=F
 
-scaleRange_i=data.frame(param=c("total_water_demand"),
+scaleRange_i=data.frame(param=c("municipal_water_demand"),
                         maxScale=c(5),
                         minScale=c(0))
-numeric2Cat_param <- list("total_water_demand","param2")
+numeric2Cat_param <- list("municipal_water_demand","param2")
 numeric2Cat_palette <- list(c("xx")) # Can be a custom scale or an R brewer paletter or a metis.pal
 numeric2Cat_legendTextSize <- list(c(0.7),c(NULL))
 numeric2Cat_breaks <- list(c(0, 0.25, 1, 3, 5),c(0,1,2,3,4,5))
@@ -77,7 +77,7 @@ numeric2Cat_list <-list(numeric2Cat_param=numeric2Cat_param,
                         numeric2Cat_palette=numeric2Cat_palette,
                         numeric2Cat_legendTextSize=numeric2Cat_legendTextSize)
 
-list_index <- which(numeric2Cat_list$numeric2Cat_param=="total_water_demand")
+list_index <- which(numeric2Cat_list$numeric2Cat_param=="municipal_water_demand")
 catBreaks <- numeric2Cat_list$numeric2Cat_breaks[[list_index]]; catBreaks
 #catLabels <- numeric2Cat_list$numeric2Cat_labels[[list_index]]; catLabels
 catPalette <- numeric2Cat_list$numeric2Cat_palette[[list_index]]; catPalette
@@ -102,6 +102,7 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  subRegShpFolder=subRegShpFolder_i,
                  subRegShpFile=subRegShpFile_i,
                  subRegCol=subRegCol_i,
+                 #subRegType=subRegType_i,
                  nameAppend=nameAppend_i,
                  legendOutsideSingle=legendOutsideSingle_i,
                  legendPosition=legendPosition_i,

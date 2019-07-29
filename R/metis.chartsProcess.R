@@ -976,7 +976,7 @@ for(i in unique(tbl$region)){
       for (k in unique(tbl_rp$scenario)[unique(tbl_rp$scenario)!=scenRef_i]){
         tbl_temp <- tbl_rp%>%
           dplyr::filter(scenario %in% c(scenRef_i,k))%>%
-          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,
+          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,-vintage,
                         -xLabel,classLabel1,classPalette1,classLabel2,classPalette2)
         if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-dplyr::one_of(c(yData)))}
         tbl_temp <- tbl_temp%>%

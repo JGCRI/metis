@@ -120,6 +120,16 @@
          </emissionsQueryBuilder>
      </aQuery>
 
+    <aQuery>
+       <region name="Colombia" />
+      <emissionsQueryBuilder title="nonCO2 emissions by resource production">
+         <axis1 name="GHG">GHG</axis1>
+         <axis2 name="Year">emissions</axis2>
+         <xPath buildList="true" dataName="emissions" group="false" sumAll="false">*[@type = 'resource']//*[@type = 'GHG']/emissions/node()</xPath>
+         <comments/>
+      </emissionsQueryBuilder>
+    </aQuery>
+
 <aQuery>
 		<all-regions/>
 <supplyDemandQuery title="CO2 Emissions by enduse">

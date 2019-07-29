@@ -53,13 +53,13 @@ library(ggalluvial)
 # Select regions from the 32 GCAM regions.
   regionsSelect_i <- c("Colombia")
 
-  dataGCAM<-metis.readgcam(reReadData = F,
+  dataGCAM<-metis.readgcam(reReadData = T,  # F
                          gcamdatabasePath = gcamdatabasePath_i ,
                          gcamdatabaseName = gcamdatabaseName_i,
                          scenOrigNames = scenOrigNames_i,
                          scenNewNames = scenNewNames_i,
-                         dataProj = dataProj_i,
-                         dataProjPath = dataProjPath_i,
+                         #dataProj = dataProj_i,
+                         #dataProjPath = dataProjPath_i,
                          regionsSelect = regionsSelect_i ,
                          paramsSelect=paramsSelect_i
                        )
@@ -89,15 +89,15 @@ library(ggalluvial)
 
 # Charts Process
   charts<-metis.chartsProcess(
-                          #rTable=rTable_i, # Default is NULL
-                          dataTables=dataTables_i, # Default is NULL
+                          rTable=rTable_i, # Default is NULL
+                          #dataTables=dataTables_i, # Default is NULL
                           paramsSelect=paramsSelect_i, # Default is "All"
                           regionsSelect=regionsSelect_i, # Default is "All"
                           xCompare=c("2015","2030","2050","2100"), # Default is c("2015","2030","2050","2100")
                           scenRef="Reference", # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           regionCompareOnly=0, # Default 0. If set to 1, will only run comparison plots and not individual
-                          scenarioCompareOnly=1) # Default 0. If set to 1, will only run comparison plots and not individual
+                          scenarioCompareOnly=0) # Default 0. If set to 1, will only run comparison plots and not individual
 
 
 #-------------------
