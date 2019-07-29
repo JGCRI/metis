@@ -87,12 +87,12 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
   # gcamdatabasePath = NULL
   # gcamdatabaseName = NULL
   # queryxml = "metisQueries.xml"
-  # queryPath = gcamdatabasePath
+  # queryPath = paste(getwd(),"/dataFiles/gcam",sep="")
   # scenOrigNames = NULL
   # scenNewNames = NULL
   # reReadData = T
   # dataProj = "dataProj.proj"
-  # dataProjPath = gcamdatabasePath
+  # dataProjPath = paste(getwd(), "/outputs", sep = "")
   # dirOutputs = paste(getwd(), "/outputs", sep = "")
   # regionsSelect = NULL
   # queriesSelect="All"
@@ -1604,6 +1604,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
           dplyr::mutate(origValue=value,
                         value=value*GWPAR5*Convert,
                         origUnits=Units,
+                        origUnits = case_when(class1=="Other"~"Units",TRUE~origUnits),
                         units="100 yr GWP AR5")%>%
           dplyr::mutate(param = "nonco2emissionBySectorGWPAR5",
                         sources = "Sources",
@@ -1725,6 +1726,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                         value=dplyr::case_when(!is.na(GTPAR5) ~ value*GTPAR5*Convert,
                                         TRUE ~  value*GWPAR5*Convert),
                         origUnits=Units,
+                        origUnits = case_when(class1=="Other"~"Units",TRUE~origUnits),
                         units="100 yr GTP AR5")%>%
           dplyr::mutate(param = "nonco2emissionBySectorGTPAR5",
                         sources = "Sources",
@@ -1860,7 +1862,8 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                         classLabel1 = "GHG",
                         classPalette1 = "pal_nrg",
                         classLabel2 = "sector",
-                        classPalette2 = "pal_nrg") %>%
+                        classPalette2 = "pal_nrg",
+                        origUnits = case_when(class1=="Other"~"Units",TRUE~origUnits)) %>%
           dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origValue, origUnits, origX)%>%
