@@ -283,36 +283,36 @@
          <comments/>
          <labelRewriteList append-values="false">
             <level name="technology">
-               <rewrite from="gas (CC CCS)" to="d Gas w/CCS"/>
-               <rewrite from="hydro" to="k Hydro"/>
-               <rewrite from="biomass (conv)" to="g Biomass"/>
-               <rewrite from="rooftop_pv" to="m Solar"/>
-               <rewrite from="PV" to="m Solar"/>
-               <rewrite from="coal (IGCC)" to="a Coal"/>
-               <rewrite from="biomass (conv CCS)" to="h Biomass w/CCS"/>
-               <rewrite from="hydrogen cogen" to="n CHP"/>
-               <rewrite from="CSP_storage" to="m Solar"/>
-               <rewrite from="coal cogen" to="n CHP"/>
-               <rewrite from="biomass (IGCC)" to="g Biomass"/>
-               <rewrite from="gas cogen" to="n CHP"/>
-               <rewrite from="coal (conv pul CCS)" to="b Coal w/CCS"/>
-               <rewrite from="biomass (IGCC CCS)" to="h Biomass w/CCS"/>
-               <rewrite from="geothermal" to="j Geothermal"/>
-               <rewrite from="refined liquids (CC CCS)" to="f Oil w/CCS"/>
-               <rewrite from="refined liquids (steam/CT)" to="e Oil"/>
-               <rewrite from="gas (CC)" to="c Gas"/>
-               <rewrite from="CSP" to="m Solar"/>
-               <rewrite from="coal (IGCC CCS)" to="b Coal w/CCS"/>
-               <rewrite from="Gen_II_LWR" to="i Nuclear"/>
-               <rewrite from="coal (conv pul)" to="a Coal"/>
-               <rewrite from="gas (steam/CT)" to="c Gas"/>
-               <rewrite from="wind_storage" to="l Wind"/>
-               <rewrite from="PV_storage" to="m Solar"/>
-               <rewrite from="Gen_III" to="i Nuclear"/>
-               <rewrite from="refined liquids (CC)" to="e Oil"/>
-               <rewrite from="refined liquids cogen" to="n CHP"/>
-               <rewrite from="biomass cogen" to="n CHP"/>
-               <rewrite from="wind" to="l Wind"/>
+               <rewrite from="gas (CC CCS)" to="Gas w/CCS"/>
+               <rewrite from="hydro" to="Hydro"/>
+               <rewrite from="biomass (conv)" to="Biomass"/>
+               <rewrite from="rooftop_pv" to="Solar"/>
+               <rewrite from="PV" to="Solar"/>
+               <rewrite from="coal (IGCC)" to="Coal"/>
+               <rewrite from="biomass (conv CCS)" to="Biomass w/CCS"/>
+               <rewrite from="hydrogen cogen" to="CHP"/>
+               <rewrite from="CSP_storage" to="Solar"/>
+               <rewrite from="coal cogen" to="CHP"/>
+               <rewrite from="biomass (IGCC)" to="Biomass"/>
+               <rewrite from="gas cogen" to="CHP"/>
+               <rewrite from="coal (conv pul CCS)" to="Coal w/CCS"/>
+               <rewrite from="biomass (IGCC CCS)" to="Biomass w/CCS"/>
+               <rewrite from="geothermal" to="Geothermal"/>
+               <rewrite from="refined liquids (CC CCS)" to="Oil w/CCS"/>
+               <rewrite from="refined liquids (steam/CT)" to="Oil"/>
+               <rewrite from="gas (CC)" to="Gas"/>
+               <rewrite from="CSP" to="Solar"/>
+               <rewrite from="coal (IGCC CCS)" to="Coal w/CCS"/>
+               <rewrite from="Gen_II_LWR" to="Nuclear"/>
+               <rewrite from="coal (conv pul)" to="Coal"/>
+               <rewrite from="gas (steam/CT)" to="Gas"/>
+               <rewrite from="wind_storage" to="Wind"/>
+               <rewrite from="PV_storage" to="Solar"/>
+               <rewrite from="Gen_III" to="Nuclear"/>
+               <rewrite from="refined liquids (CC)" to="Oil"/>
+               <rewrite from="refined liquids cogen" to="CHP"/>
+               <rewrite from="biomass cogen" to="CHP"/>
+               <rewrite from="wind" to="Wind"/>
             </level>
          </labelRewriteList>
       </supplyDemandQuery>
@@ -443,25 +443,25 @@
             <comments/>
             <labelRewriteList append-values="false">
                <level name="input">
-                  <rewrite from="traditional biomass" to="j traditional biomass"/>
-                  <rewrite from="geothermal-elect" to="i geothermal"/>
-                  <rewrite from="biomass" to="d biomass"/>
-                  <rewrite from="total biomass" to="d biomass"/>
-                  <rewrite from="nuclear-H2" to="e nuclear"/>
-                  <rewrite from="natural gas" to="b natural gas"/>
-                  <rewrite from="wind-elect" to="g wind"/>
-                  <rewrite from="exotic-elect" to="j breakthrough"/>
+                  <rewrite from="traditional biomass" to="traditional biomass"/>
+                  <rewrite from="geothermal-elect" to="geothermal"/>
+                  <rewrite from="biomass" to="biomass"/>
+                  <rewrite from="total biomass" to="biomass"/>
+                  <rewrite from="nuclear-H2" to="nuclear"/>
+                  <rewrite from="natural gas" to="natural gas"/>
+                  <rewrite from="wind-elect" to="wind"/>
+                  <rewrite from="exotic-elect" to="breakthrough"/>
                   <rewrite from="elect_td_ind" to=""/>
-                  <rewrite from="k new" to="k new"/>
-                  <rewrite from="solar-elect" to="h solar"/>
-                  <rewrite from="solar-H2" to="h solar"/>
+                  <rewrite from="k new" to="new"/>
+                  <rewrite from="solar-elect" to="solar"/>
+                  <rewrite from="solar-H2" to="solar"/>
                   <rewrite from="regional natural gas" to=""/>
-                  <rewrite from="coal" to="c coal"/>
-                  <rewrite from="crude oil" to="a oil"/>
-                  <rewrite from="hydro-elect" to="f hydro"/>
-                  <rewrite from="nuclear-elect" to="e nuclear"/>
-                  <rewrite from="traded unconventional oil" to="a oil"/>
-                  <rewrite from="wind-H2" to="g wind"/>
+                  <rewrite from="coal" to="coal"/>
+                  <rewrite from="crude oil" to="oil"/>
+                  <rewrite from="hydro-elect" to="hydro"/>
+                  <rewrite from="nuclear-elect" to="nuclear"/>
+                  <rewrite from="traded unconventional oil" to="oil"/>
+                  <rewrite from="wind-H2" to="wind"/>
                   <rewrite from="seawater" to=""/>
                   <rewrite from="water_td_pri_C" to=""/>
                   <rewrite from="water_td_pri_W" to=""/>
