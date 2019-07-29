@@ -1,0 +1,201 @@
+scenario,region,sources,param,units,class1,class2,x,value,units
+Local Data,Colombia,Sources,agProdbyIrrRfd,Ag Production (Mt),irrigation,class2,2010,0,
+Local Data,Colombia,Sources,agProdbyIrrRfd,Ag Production (Mt),rainfed,class2,2010,0,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Corn,class2,2005,1.31,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),FiberCrop,class2,2005,0.08,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),MiscCrop,class2,2005,9.06,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),OilCrop,class2,2005,0.1,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),OtherGrain,class2,2005,0.44,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),PalmFruit,class2,2005,3.24,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Rice,class2,2005,2.53,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Root_Tuber,class2,2005,4.99,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),SugarCrop,class2,2005,21.75,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Wheat,class2,2005,0.05,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Corn,class2,2010,1.12,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),FiberCrop,class2,2010,0.06,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),MiscCrop,class2,2010,9.5,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),OilCrop,class2,2010,0.12,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),OtherGrain,class2,2010,0.3,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),PalmFruit,class2,2010,3.76,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Rice,class2,2010,2.27,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Root_Tuber,class2,2010,5.32,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),SugarCrop,class2,2010,20.24,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Wheat,class2,2010,0.02,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Corn,class2,2015,1.06,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),FiberCrop,class2,2015,0.04,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),MiscCrop,class2,2015,11.34,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),OilCrop,class2,2015,0.17,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),OtherGrain,class2,2015,0.27,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),PalmFruit,class2,2015,6.08,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Rice,class2,2015,2.38,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Root_Tuber,class2,2015,6.26,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),SugarCrop,class2,2015,24.77,
+Local Data,Colombia,APinchao_AgCensus,agProdByCrop,Agricultural Production (Mt),Wheat,class2,2015,0.04,
+Local Data,Colombia,Sources,landIrrRfd,Crop Land Allocation (1000 km^2),IRR,class2,2010,0,
+Local Data,Colombia,Sources,landIrrRfd,Crop Land Allocation (1000 km^2),RFD,class2,2010,0,
+Local Data,Colombia,APinchao_AgCensus,aggLandAlloc,Land Allocation (1000 km^2),biomass,class2,2010,0,
+Local Data,Colombia,APinchao_AgCensus,aggLandAlloc,Land Allocation (1000 km^2),crops,class2,2010,45,
+Local Data,Colombia,APinchao_AgCensus,aggLandAlloc,Land Allocation (1000 km^2),forest,class2,2010,588.8,
+Local Data,Colombia,APinchao_AgCensus,aggLandAlloc,Land Allocation (1000 km^2),grass,class2,2010,145,
+Local Data,Colombia,APinchao_AgCensus,aggLandAlloc,Land Allocation (1000 km^2),otherarable,class2,2010,30,
+Local Data,Colombia,APinchao_AgCensus,aggLandAlloc,Land Allocation (1000 km^2),pasture,class2,2010,218,
+Local Data,Colombia,APinchao_AgCensus,aggLandAlloc,Land Allocation (1000 km^2),rock and desert,class2,2010,9,
+Local Data,Colombia,APinchao_AgCensus,aggLandAlloc,Land Allocation (1000 km^2),shrubs,class2,2010,65,
+Local Data,Colombia,APinchao_AgCensus,aggLandAlloc,Land Allocation (1000 km^2),tundra,class2,2010,0,
+Local Data,Colombia,APinchao_AgCensus,aggLandAlloc,Land Allocation (1000 km^2),urban,class2,2010,4,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),buildings,class2,2005,0,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),electricity,class2,2005,0,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),industry,class2,2005,7.384,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),transportation,class2,2005,0,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),LUC Absorption,class2,2005,-77.697,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),LUC Emission,class2,2005,187.405,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),energy,class2,2005,56.873,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),waste,class2,2005,11.409,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),buildings,class2,2010,0,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),electricity,class2,2010,0,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),industry,class2,2010,7.217,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),transportation,class2,2010,0,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),LUC Absorption,class2,2010,-72.576,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),LUC Emission,class2,2010,198.922,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),energy,class2,2010,73.634,
+Local Data,Colombia,RDelgado,co2emissionByEndUse,CO2 Emission by Enduse (MTCO2 Eq.),waste,class2,2010,13.124,
+Local Data,Colombia,Sources,ghgEmissionByGHG,GHG Emissions (MTCO2 Eq.),C2F6,class2,2010,0,
+Local Data,Colombia,Sources,ghgEmissionByGHG,GHG Emissions (MTCO2 Eq.),CH4,class2,2010,0,
+Local Data,Colombia,Sources,ghgEmissionByGHG,GHG Emissions (MTCO2 Eq.),CO2,class2,2010,0,
+Local Data,Colombia,Sources,ghgEmissionByGHG,GHG Emissions (MTCO2 Eq.),HFC134a,class2,2010,0,
+Local Data,Colombia,Sources,ghgEmissionByGHG,GHG Emissions (MTCO2 Eq.),HFC143a,class2,2010,0,
+Local Data,Colombia,Sources,ghgEmissionByGHG,GHG Emissions (MTCO2 Eq.),HFC32,class2,2010,0,
+Local Data,Colombia,Sources,ghgEmissionByGHG,GHG Emissions (MTCO2 Eq.),SF6,class2,2010,0,
+Local Data,Colombia,Sources,ghgEmissByGHGGROUPS,GHG Emissions by Group (MTCO2 Eq.),CO2,class2,2005,201.845,
+Local Data,Colombia,Sources,ghgEmissByGHGGROUPS,GHG Emissions by Group (MTCO2 Eq.),CH4,class2,2005,35,
+Local Data,Colombia,Sources,ghgEmissByGHGGROUPS,GHG Emissions by Group (MTCO2 Eq.),N2O,class2,2005,20,
+Local Data,Colombia,Sources,ghgEmissByGHGGROUPS,GHG Emissions by Group (MTCO2 Eq.),HFCs,class2,2005,1,
+Local Data,Colombia,Sources,ghgEmissByGHGGROUPS,GHG Emissions by Group (MTCO2 Eq.),Other,class2,2005,0,
+Local Data,Colombia,Sources,ghgEmissByGHGGROUPS,GHG Emissions by Group (MTCO2 Eq.),SF6,class2,2005,5,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,1990,33.203,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2005,43.041,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2010,44.87933313,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2015,46.96247762,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2020,49.44582905,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2025,50.53823992,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2030,51.90813808,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2035,53.00854457,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2040,53.77319622,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2045,54.22136688,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2050,54.37743307,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2055,54.24304776,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2060,53.843017,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2065,53.18424318,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2070,52.29314256,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2075,51.18776844,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2080,49.89424459,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2085,48.45908612,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2090,46.94652036,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2095,45.42275219,
+Local Data,Colombia,Rdelgado_DANE,pop,Population (Millions),class1,class2,2100,43.94409882,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,1990,0.01934,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2005,0.01212,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2010,0.03022,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2015,0.036,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2020,0.035,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2025,0.035,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2030,0.034,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2035,0.034,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2040,0.034,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2045,0.033,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2050,0.033,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2055,0.033,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2060,0.033,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2065,0.033,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2070,0.033,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2075,0.033,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2080,0.033,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2085,0.033,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2090,0.033,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2095,0.033,
+Local Data,Colombia,Rdelgado_DANE,gdpGrowthRate,GDP Growth Rate (Percent),class1,class2,2100,0.033,
+Local Data,Colombia,APinchao_ENA2014,watWithdrawBySec,Water Withdrawals (km^3),agriculture,class2,2015,16760,
+Local Data,Colombia,APinchao_ENA2014,watWithdrawBySec,Water Withdrawals (km^3),electricity,class2,2015,7739,
+Local Data,Colombia,APinchao_ENA2014,watWithdrawBySec,Water Withdrawals (km^3),industry,class2,2015,2106,
+Local Data,Colombia,APinchao_ENA2014,watWithdrawBySec,Water Withdrawals (km^3),livestock,class2,2015,3049,
+Local Data,Colombia,APinchao_ENA2014,watWithdrawBySec,Water Withdrawals (km^3),mining,class2,2015,1233,
+Local Data,Colombia,APinchao_ENA2014,watWithdrawBySec,Water Withdrawals (km^3),municipal,class2,2015,2963,
+Local Data,Colombia,APinchao_ENA2014,watConsumBySec,Water Consumption (km^3),agriculture,class2,2015,16760,
+Local Data,Colombia,APinchao_ENA2014,watConsumBySec,Water Consumption (km^3),electricity,class2,2015,6465,
+Local Data,Colombia,APinchao_ENA2014,watConsumBySec,Water Consumption (km^3),industry,class2,2015,105,
+Local Data,Colombia,APinchao_ENA2014,watConsumBySec,Water Consumption (km^3),livestock,class2,2015,3049,
+Local Data,Colombia,APinchao_ENA2014,watConsumBySec,Water Consumption (km^3),mining,class2,2015,1233,
+Local Data,Colombia,APinchao_ENA2014,watConsumBySec,Water Consumption (km^3),municipal,class2,2015,1293,
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Refined Liquids,class2,2015,1.576711539,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Natural Gas,class2,2015,12.80950414,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Coal,class2,2015,6.244988052,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Hydro,class2,2015,42.46378647,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Others,class2,2015,3.453536929,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Hydro,class2,2020,58.49602402,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Coal,class2,2020,4.754258803,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Natural Gas,class2,2020,10.47725199,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Wind,class2,2020,0.616071048,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Solar,class2,2020,1.409764461,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Biomass,class2,2020,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Geothermal ,class2,2020,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Nuclear,class2,2020,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Refined Liquids,class2,2020,4.14E-03,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Hydro,class2,2025,75.97557467,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Coal,class2,2025,0.439377852,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Natural Gas,class2,2025,1.881844839,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Wind,class2,2025,7.102933182,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Solar,class2,2025,1.982772975,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Biomass,class2,2025,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Geothermal ,class2,2025,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Nuclear,class2,2025,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Refined Liquids,class2,2025,4.72E-04,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Hydro,class2,2030,82.88073103,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Coal,class2,2030,2.36783495,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Natural Gas,class2,2030,8.962399114,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Wind,class2,2030,6.961869458,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Solar,class2,2030,1.982722697,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Biomass,class2,2030,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Geothermal ,class2,2030,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Nuclear,class2,2030,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Refined Liquids,class2,2030,1.69E-03,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Hydro,class2,2035,86.15286309,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Coal,class2,2035,2.703851608,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Natural Gas,class2,2035,10.23424263,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Wind,class2,2035,7.949819971,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Solar,class2,2035,2.264088756,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Biomass,class2,2035,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Geothermal ,class2,2035,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Nuclear,class2,2035,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Refined Liquids,class2,2035,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Hydro,class2,2040,90.3236192,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Coal,class2,2040,3.087552192,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Natural Gas,class2,2040,11.68657185,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Wind,class2,2040,9.077969762,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Solar,class2,2040,2.585382902,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Biomass,class2,2040,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Geothermal ,class2,2040,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Nuclear,class2,2040,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Refined Liquids,class2,2040,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Hydro,class2,2045,94.69628603,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Coal,class2,2045,3.525703098,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Natural Gas,class2,2045,13.34499956,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Wind,class2,2045,10.36621357,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Solar,class2,2045,2.952271528,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Biomass,class2,2045,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Geothermal ,class2,2045,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Nuclear,class2,2045,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Refined Liquids,class2,2045,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Hydro,class2,2050,99.28063887,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Coal,class2,2050,4.026031554,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Natural Gas,class2,2050,15.23877275,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Wind,class2,2050,11.83727086,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Solar,class2,2050,3.371224919,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Biomass,class2,2050,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Geothermal ,class2,2050,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Nuclear,class2,2050,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Refined Liquids,class2,2050,0,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Refined Liquids,class2,2010,0.483342609,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Natural Gas,class2,2010,11.54506951,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Coal,class2,2010,3.464602216,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Hydro,class2,2010,38.0886063,TWh
+Local Data,Colombia,RDelgado_UPME,elecByTech,Electricity Generation (TWh),Others,class2,2010,3.206056454,TWh
