@@ -23,26 +23,21 @@ library(rgeos)
 #  Polygons
 #----------------
 
-NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
                        layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
 
 data(World)
 
-NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
              layer="ne_10m_admin_1_states_provinces",use_iconv=T,encoding='UTF-8')
 
-hydrobasinsLev3<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/subbasin_hydrobasin",sep=""),
-                         layer="hydrobasins_level_3",use_iconv=T,encoding='UTF-8')
-
-
-GCAMBasins<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
+GCAMBasins<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
                     layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
 #metis.map(GCAMBasins,fillColumn = "basin_name",facetsON = F,printFig = F)
 
 projX<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
 NE0<-spTransform(NE0,CRS(projX))
 NE1<-spTransform(NE1,CRS(projX))
-hydrobasinsLev3<-spTransform(hydrobasinsLev3,CRS(projX))
 GCAMBasins<-spTransform(GCAMBasins,CRS(projX))
 
 

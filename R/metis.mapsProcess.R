@@ -8,7 +8,7 @@
 #' @param polygonDataTables Default = NULL,
 #' @param gridDataTables Default = NULL,
 #' @param dirOutputs Default = paste(getwd(),"/outputs",sep=""),
-#' @param mapsOutFolderName Default="mapOutputs",
+#' @param folderName Default ="folderNameDefault",
 #' @param xRange Default ="All",
 #' @param labels Default = F,
 #' @param labelsSize Default = 1.2,
@@ -50,7 +50,8 @@
 #' @param figWidth Default =9
 #' @param figHeight Default =7
 #' @param scaleRange Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.
-#' @param indvScenarios Default ="All",
+#' @param indvScenarios Default ="All", If only want to run single scenarios without comparing with others
+#' @param scensSelect Default ="All", choose scenarios from data
 #' @param GCMRCPSSPPol Default = F,
 #' @param multiFacetCols Default ="scenarioRCP",
 #' @param multiFacetRows Default ="scenarioGCM",
@@ -73,8 +74,7 @@
 metis.mapProcess<-function(polygonDataTables=NULL,
                            gridDataTables=NULL,
                            dirOutputs=paste(getwd(),"/outputs",sep=""),
-                           mapsOutFolderName="mapOutputs",
-                           frameShow = T,
+                           folderName="folderNameDefault",
                            xRange="All",
                            labels=F,
                            labelsSize=1.2,
@@ -117,6 +117,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                            scaleRange=NULL,
                            paramsSelect="All",
                            indvScenarios="All",
+                           scensSelect="All",
                            GCMRCPSSPPol=F,
                            multiFacetCols="scenarioRCP",
                            multiFacetRows="scenarioGCM",
@@ -131,7 +132,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                            mapTitleSize=0.5,
                            facetLabelSizeMulti=3,
                            numeric2Cat_list=NULL,
-                           diffOn = F){
+                           diffOn = F,
+                           frameShow = T){
 
   # polygonDataTables=NULL
   # gridDataTables=NULL
@@ -191,13 +193,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # facetLabelSizeMulti=3
   # numeric2Cat_list=NULL
   # diffOn=F
+  # frameShow = T
 
 
   #------------------
   # Initialize variables to remove binding errors
   # -----------------
 
-  NULL->lat->lon->param->region->scenario->subRegion->
+  NULL->lat->lon->param->region->scenario->subRegion->subRegType -> value
     value->x->year->gridID->underLayer->maxScale->minScale->scenarioGCM->scenarioRCP->scenarioSSP->
     scenarioPolicy->valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX
 
@@ -543,6 +546,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
         }
     }
 
+      if(any(scensSelect!="All")){
+        if(any(scensSelect %in% unique(shapeTbl$param))){
+          shapeTbl<-shapeTbl%>%dplyr::filter(scenario %in% scensSelect);
+          print(paste("Subset shapeTbl scenario to scensSelect: ",scensSelect,sep=""))}else{
+            print(paste("None of the scensSelect: ",paste(scensSelect,collapse=", ")," are present in shapeTbl params. Skipping subset.",sep=""))
+          }
+      }
+
     shapeTbl<-droplevels(shapeTbl)
     }
   }
@@ -555,6 +566,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
         gridTbl<-gridTbl%>%dplyr::filter(param %in% paramsSelect);
         print(paste("Subset gridTbl param to paramsSelect: ",paramsSelect,sep=""))}else{
           print(paste("None of the paramsSelect: ",paste(paramsSelect,collapse=", ")," are present in gridTbl params. Skipping subset.",sep=""))
+        }
+    }
+
+    if(any(scensSelect!="All")){
+      if(any(scensSelect %in% unique(gridTbl$param))){
+        gridTbl<-gridTbl%>%dplyr::filter(scenario %in% scensSelect);
+        print(paste("Subset gridTbl scenario to scensSelect: ",scensSelect,sep=""))}else{
+          print(paste("None of the scensSelect: ",paste(scensSelect,collapse=", ")," are present in gridTbl params. Skipping subset.",sep=""))
         }
     }
 
@@ -752,31 +771,31 @@ metis.mapProcess<-function(polygonDataTables=NULL,
     if (!dir.exists(paste(dirOutputs, "/Maps", sep = ""))){
       dir.create(paste(dirOutputs, "/Maps", sep = ""))}
 
-    if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,sep = ""))){
-      dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,sep = ""))}
+    if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,sep = ""))){
+      dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,sep = ""))}
 
     if(!is.null(gridTbl)){
 
-    if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster",sep = ""))){
-      dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster",sep = ""))}
+    if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster",sep = ""))){
+      dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster",sep = ""))}
 
 
     if(GCMRCPSSPPol==T){
 
-      if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareGCMRCPSSP",sep = ""))){
-        dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareGCMRCPSSP",sep = ""))}
+      if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP",sep = ""))){
+        dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP",sep = ""))}
 
       if(!is.null(gridTbl)){
         for(ssp_i in unique(gridTbl$scenarioSSP)){
-          if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,sep = ""))){
-            dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,sep = ""))}
+          if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,sep = ""))){
+            dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,sep = ""))}
           for(policy_i in unique(gridTbl$scenarioPolicy)){
-            if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))){
-              dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))}
-            if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/byYear",sep = ""))){
-              dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/byYear",sep = ""))}
-            if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/compareYear",sep = ""))){
-              dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/compareYear",sep = ""))}
+            if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))){
+              dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))}
+            if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/byYear",sep = ""))){
+              dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/byYear",sep = ""))}
+            if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/compareYear",sep = ""))){
+              dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/compareYear",sep = ""))}
           }
         }
       }
@@ -785,8 +804,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
     if(!is.null(indvScenarios)){
 
-      if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareScen",sep = ""))){
-        dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/compareScen",sep = ""))}
+      if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareScen",sep = ""))){
+        dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareScen",sep = ""))}
 
       if(!is.null(gridTbl)){
         if(indvScenarios=="All"){
@@ -805,11 +824,11 @@ metis.mapProcess<-function(polygonDataTables=NULL,
           }
 
         for (scenario_i in scenarios) {
-          if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,sep = ""))){
-            dir.create(paste(dirOutputs,  "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/",scenario_i,sep = ""))}
+          if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,sep = ""))){
+            dir.create(paste(dirOutputs,  "/Maps/",folderName,dirNameAppend,"/raster/",scenario_i,sep = ""))}
 
-          if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = ""))){
-            dir.create(paste(dirOutputs,  "/Maps/",mapsOutFolderName,dirNameAppend,"/raster/",scenario_i,"/byYear",sep = ""))}
+          if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = ""))){
+            dir.create(paste(dirOutputs,  "/Maps/",folderName,dirNameAppend,"/raster/",scenario_i,"/byYear",sep = ""))}
 
         } # Close for scenario i
       }
@@ -817,27 +836,27 @@ metis.mapProcess<-function(polygonDataTables=NULL,
    } # Close if !is.null(gridTbl)
 
     for (subRegion_i in unique(shapeTbl$subRegType)) {
-      if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,sep = ""))){
-        dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,sep = ""))} # Close subRegion directory
+      if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,sep = ""))){
+        dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,sep = ""))} # Close subRegion directory
     } # Close subRegion
 
 
     if(GCMRCPSSPPol==T){
 
-      if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP",sep = ""))){
-        dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP",sep = ""))}
+      if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP",sep = ""))){
+        dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP",sep = ""))}
 
       if(!is.null(shapeTbl) & nrow(shapeTbl)>0){
         for(ssp_i in unique(shapeTbl$scenarioSSP)){
-          if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,sep = ""))){
-            dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,sep = ""))}
+          if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,sep = ""))){
+            dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,sep = ""))}
           for(policy_i in unique(shapeTbl$scenarioPolicy)){
-            if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))){
-              dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))}
-            if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/byYear",sep = ""))){
-              dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/byYear",sep = ""))}
-            if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/compareYear",sep = ""))){
-              dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/compareYear",sep = ""))}
+            if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))){
+              dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))}
+            if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/byYear",sep = ""))){
+              dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/byYear",sep = ""))}
+            if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/compareYear",sep = ""))){
+              dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/compareYear",sep = ""))}
           }
         }
       }
@@ -846,8 +865,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
     if(!is.null(indvScenarios)){
 
-      if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareScen",sep = ""))){
-        dir.create(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareScen",sep = ""))}
+      if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareScen",sep = ""))){
+        dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareScen",sep = ""))}
 
       if(!is.null(shapeTbl) & nrow(shapeTbl)>0){
         if(indvScenarios=="All"){
@@ -866,11 +885,11 @@ metis.mapProcess<-function(polygonDataTables=NULL,
           }
 
         for (scenario_i in scenarios) {
-          if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))){
-            dir.create(paste(dirOutputs,  "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))}
+          if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))){
+            dir.create(paste(dirOutputs,  "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))}
 
-          if (!dir.exists(paste(dirOutputs, "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/",scenario_i,"/byYear",sep = ""))){
-            dir.create(paste(dirOutputs,  "/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/",scenario_i,"/byYear",sep = ""))}
+          if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",scenario_i,"/byYear",sep = ""))){
+            dir.create(paste(dirOutputs,  "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",scenario_i,"/byYear",sep = ""))}
 
         } # Close for scenario i
 
@@ -927,7 +946,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
             }
             animPrettyBreaksGrid<-scales::pretty_breaks(n=legendFixedBreaks)(animScaleGrid)
             animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,
-                                                               centers=min(length(unique(animScaleGrid)),(legendFixedBreaks-2))))$centers[,1]))
+                                                               centers=max(1,min(length(unique(animScaleGrid))-1,(legendFixedBreaks-2)))))$centers[,1]))
             animKmeanBreaksGrid <- sort(c(min(animScaleGrid),animKmeanBreaksGrid,max(animScaleGrid)))
 
 
@@ -1007,8 +1026,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,
                           figHeight=figHeight,
-                          fileName = paste("map_",mapsOutFolderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-                          dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = ""))
+                          fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
+                          dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = ""))
 
                 # numeric2Cat_list=numeric2Cat_list
                 # catParam=param_i
@@ -1036,8 +1055,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 # bgColor = bgColorChosen
                 # figWidth=figWidth
                 # figHeight=figHeight
-                # fileName = paste("map_",mapsOutFolderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-                # dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = "")
+                # fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
+                # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = "")
 
                 if(length(names(mapx@data))==1){
                   legendBreaksAnim = animPrettyBreaksGrid
@@ -1068,8 +1087,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,
                           figHeight=figHeight,
-                          fileName = paste("map_",mapsOutFolderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
-                          dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = ""))
+                          fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
+                          dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = ""))
 
                 if(length(names(mapx@data))==1){
                   legendOutsideAnimated=legendOutsideSingle
@@ -1102,8 +1121,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,
                           figHeight=figHeight,
-                          fileName = paste("map_",mapsOutFolderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
-                          dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = ""))
+                          fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
+                          dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = ""))
 
                 # numeric2Cat_list=numeric2Cat_list
                 # catParam=param_i
@@ -1130,8 +1149,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 # bgColor = bgColorChosen
                 # figWidth=figWidth
                 # figHeight=figHeight
-                # fileName = paste("map_",mapsOutFolderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep="")
-                # dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = "")
+                # fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep="")
+                # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep = "")
 
               } # if nrow(datax) > 1
             }# Close years loop
@@ -1143,34 +1162,34 @@ metis.mapProcess<-function(polygonDataTables=NULL,
               checkIM <- system("cmd.exe",input="magick -version")
               if (checkIM!=0) stop("Could not find ImageMagick. Make sure it is installed and included in the systems PATH")
 
-              animName<-paste("anim_",mapsOutFolderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
+              animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
               processed <- system("cmd.exe",input=paste("magick -delay ",
                                                         delay=delay,
-                                                        " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/byYear",
+                                                        " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",
                                                                    "/*",param_i,"*PRETTY.png ",sep = ""),
-                                                        paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/",
+                                                        paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                                                               animName,sep = ""),
                                                         "\"",sep=""))
 
-              animName<-paste("anim_",mapsOutFolderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
+              animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
               processed <- system("cmd.exe",input=paste("magick -delay ",
                                                         delay=delay,
-                                                        " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/byYear",
+                                                        " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",
                                                                    "/*",param_i,"*KMEANS.png ",sep = ""),
-                                                        paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/",
+                                                        paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                                                               animName,sep = ""),
                                                         "\"",sep=""))
 
-              animName<-paste("anim_",mapsOutFolderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
+              animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
               processed <- system("cmd.exe",input=paste("magick -delay ",
                                                         delay=delay,
-                                                        " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/byYear",
+                                                        " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",
                                                                    "/*",param_i,"*FREESCALE.png ",sep = ""),
-                                                        paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/",
+                                                        paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                                                               animName,sep = ""),
                                                         "\"",sep=""))
 
-              #unlink(paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+              #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
             } # If Animate ON==t
 
 
@@ -1209,7 +1228,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 }
                 animPrettyBreaksGrid<-scales::pretty_breaks(n=legendFixedBreaks)(animScaleGrid)
                 animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,
-                                                                   centers=min(length(unique(animScaleGrid)),(legendFixedBreaks-2))))$centers[,1]))
+                                                                   centers=max(1,min(length(unique(animScaleGrid))-1,(legendFixedBreaks-2)))))$centers[,1]))
                 animKmeanBreaksGrid <- sort(c(min(animScaleGrid),animKmeanBreaksGrid,max(animScaleGrid)))
 
 
@@ -1254,8 +1273,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           fillPalette = fillPalette,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight,
-                          fileName = paste("map_",mapsOutFolderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-                          dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
+                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
+                          dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
 
                 metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=shape,
                           dataGrid=mapx,
@@ -1270,14 +1289,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendStyle="fixed",
                           legendBreaks = animPrettyBreaksGrid,
                           legendFixedBreaks=legendFixedBreaks,
-                          legendDigits = animlegendDigits,
+                          legendDigits = animLegendDigits,
                           legendOutsidePosition = legendOutsidePosition,
                           legendPosition = legendPositionS,
                           fillPalette = fillPalette,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight,
-                          fileName = paste("map_",mapsOutFolderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
-                          dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
+                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
+                          dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
 
 
                 if(length(names(mapx@data))==1){
@@ -1307,8 +1326,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           fillPalette = fillPalette,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight,
-                          fileName = paste("map_",mapsOutFolderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
-                          dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
+                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
+                          dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
 
               } # if(nrow(datax)>1){
 
@@ -1345,7 +1364,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   }
                   animPrettyBreaksGrid<-scales::pretty_breaks(n=legendFixedBreaks)(animScaleGrid)
                   animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,
-                                                                     centers=min(length(unique(animScaleGrid)),(legendFixedBreaks-2))))$centers[,1]))
+                                                                     centers=max(1,min(length(unique(animScaleGrid))-1,(legendFixedBreaks-2)))))$centers[,1]))
                   animKmeanBreaksGrid <- sort(c(min(animScaleGrid),animKmeanBreaksGrid,max(animScaleGrid)))
 
 
@@ -1383,14 +1402,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendStyle="fixed",
                           legendBreaks = animKmeanBreaksGrid,
                           legendFixedBreaks=legendFixedBreaks,
-                          legendDigits = animlegendDigits,
+                          legendDigits = animLegendDigits,
                           legendOutsidePosition = legendOutsidePosition,
                           legendPosition = legendPositionS,
                           fillPalette = fillPalette,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight,
-                          fileName = paste("map_",mapsOutFolderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
-                          dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
+                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
+                          dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
 
                 metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=shape,
                           dataGrid=mapx,
@@ -1406,14 +1425,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendStyle="fixed",
                           legendBreaks = animPrettyBreaksGrid,
                           legendFixedBreaks=legendFixedBreaks,
-                          legendDigits = animlegendDigits,
+                          legendDigits = animLegendDigits,
                           legendOutsidePosition = legendOutsidePosition,
                           legendPosition = legendPositionS,
                           fillPalette = fillPalette,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight,
-                          fileName = paste("map_",mapsOutFolderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
-                          dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
+                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
+                          dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
 
 
                 if(length(names(mapx@data))==1){
@@ -1444,8 +1463,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           fillPalette = fillPalette,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight,
-                          fileName = paste("map_",mapsOutFolderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
-                          dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
+                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
+                          dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
 
 
               } # if(nrow(datax)>1){
@@ -1504,7 +1523,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       }
                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
                     animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
-                                                                       centers=min(length(unique(animScalePoly)),(legendFixedBreaks-2))))$centers[,1]))
+                                                                       centers=max(1,min(length(unique(animScalePoly))-1,(legendFixedBreaks-2)))))$centers[,1]))
                     animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly,max(animScalePoly)))
 
 
@@ -1586,8 +1605,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                 figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                 multiFacetRows=multiFacetRows,
                                 multiFacetCols=multiFacetCols,
-                                fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_MEAN_KMEANS",sep=""),
-                                dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,sep = ""))
+                                fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_MEAN_KMEANS",sep=""),
+                                dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,sep = ""))
 
 
                       # panelLabel=panelLabelMulti
@@ -1616,8 +1635,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       # figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2))
                       # multiFacetRows=multiFacetRows
                       # multiFacetCols=multiFacetCols
-                      # fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_MEAN_KMEANS",sep="")
-                      # dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,sep = "")
+                      # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_MEAN_KMEANS",sep="")
+                      # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,sep = "")
 
 
                       metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -1644,8 +1663,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                 figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                 multiFacetRows=multiFacetRows,
                                 multiFacetCols=multiFacetCols,
-                                fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_MEAN_PRETTY",sep=""),
-                                dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,sep = ""))
+                                fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_MEAN_PRETTY",sep=""),
+                                dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,sep = ""))
 
 
                       metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -1671,8 +1690,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                 figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                 multiFacetRows=multiFacetRows,
                                 multiFacetCols=multiFacetCols,
-                                fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_MEAN_FREESCALE",sep=""),
-                                dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,sep = ""))
+                                fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_MEAN_FREESCALE",sep=""),
+                                dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,sep = ""))
 
 
 
@@ -1767,8 +1786,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                     figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                     multiFacetRows=multiFacetRows,
                                     multiFacetCols=multiFacetCols,
-                                    fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_KMEANS",sep=""),
-                                    dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",sep = ""))
+                                    fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_KMEANS",sep=""),
+                                    dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",sep = ""))
 
 
                           metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -1795,8 +1814,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                     figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                     multiFacetRows=multiFacetRows,
                                     multiFacetCols=multiFacetCols,
-                                    fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_PRETTY",sep=""),
-                                    dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",sep = ""))
+                                    fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_PRETTY",sep=""),
+                                    dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",sep = ""))
 
 
                           metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -1822,8 +1841,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                     figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                     multiFacetRows=multiFacetRows,
                                     multiFacetCols=multiFacetCols,
-                                    fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_FREESCALE",sep=""),
-                                    dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",sep = ""))
+                                    fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_FREESCALE",sep=""),
+                                    dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",sep = ""))
 
 
 
@@ -1838,34 +1857,34 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       checkIM <- system("cmd.exe",input="magick -version")
                       if (checkIM!=0) stop("Could not find ImageMagick. Make sure it is installed and included in the systems PATH")
 
-                      animName<-paste("anim_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_PRETTY.gif",sep="")
+                      animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_PRETTY.gif",sep="")
                       processed <- system("cmd.exe",input=paste("magick -delay ",
                                                                 delay=delay,
-                                                                " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",
+                                                                " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",
                                                                            "/*",param_i,"*",class_i,"*PRETTY.png ",sep = ""),
-                                                                paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                                                paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                                       animName,sep = ""),
                                                                 "\"",sep=""))
 
-                      animName<-paste("anim_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_KMEANS.gif",sep="")
+                      animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_KMEANS.gif",sep="")
                       processed <- system("cmd.exe",input=paste("magick -delay ",
                                                                 delay=delay,
-                                                                " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",
+                                                                " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",
                                                                            "/*",param_i,"*",class_i,"*KMEANS.png ",sep = ""),
-                                                                paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                                                paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                                       animName,sep = ""),
                                                                 "\"",sep=""))
 
-                      animName<-paste("anim_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_FREESCALE.gif",sep="")
+                      animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_FREESCALE.gif",sep="")
                       processed <- system("cmd.exe",input=paste("magick -delay ",
                                                                 delay=delay,
-                                                                " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",
+                                                                " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",
                                                                            "/*",param_i,"*",class_i,"*FREESCALE.png ",sep = ""),
-                                                                paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                                                paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                                       animName,sep = ""),
                                                                 "\"",sep=""))
 
-                      #unlink(paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+                      #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
                     } # If Animate ON==t
 
 
@@ -1887,7 +1906,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     }}
                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
                     animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
-                                                                       centers=min(length(unique(animScalePoly)),(legendFixedBreaks-2))))$centers[,1]))
+                                                                       centers=max(1,min(length(unique(animScalePoly))-1,(legendFixedBreaks-2)))))$centers[,1]))
                     animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly,max(animScalePoly)))
 
 
@@ -1976,8 +1995,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                   multiFacetRows=multiFacetRows,
                                   multiFacetCols=multiFacetCols,
                                   mapTitleSize=mapTitleSize,
-                                  fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_KMEANS",sep=""),
-                                  dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep = ""))
+                                  fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_KMEANS",sep=""),
+                                  dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep = ""))
 
 
 
@@ -2006,8 +2025,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                   multiFacetRows=multiFacetRows,
                                   multiFacetCols=multiFacetCols,
                                   mapTitleSize=mapTitleSize,
-                                  fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_PRETTY",sep=""),
-                                  dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep = ""))
+                                  fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_PRETTY",sep=""),
+                                  dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep = ""))
 
 
                         metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, mapTitle = mapTitle,panelLabel=panelLabelMulti,
@@ -2034,8 +2053,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                                   multiFacetRows=multiFacetRows,
                                   multiFacetCols=multiFacetCols,
                                   mapTitleSize=mapTitleSize,
-                                  fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_FREESCALE",sep=""),
-                                  dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep = ""))
+                                  fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_FREESCALE",sep=""),
+                                  dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep = ""))
 
 
 
@@ -2050,34 +2069,34 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     checkIM <- system("cmd.exe",input="magick -version")
                     if (checkIM!=0) stop("Could not find ImageMagick. Make sure it is installed and included in the systems PATH")
 
-                    animName<-paste("anim_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_PRETTY.gif",sep="")
+                    animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_PRETTY.gif",sep="")
                     processed <- system("cmd.exe",input=paste("magick -delay ",
                                                               delay=delay,
-                                                              " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",
+                                                              " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",
                                                                          "/*",param_i,"*",class_i,"*PRETTY.png ",sep = ""),
-                                                              paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                                              paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                                     animName,sep = ""),
                                                               "\"",sep=""))
 
-                    animName<-paste("anim_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_KMEANS.gif",sep="")
+                    animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_KMEANS.gif",sep="")
                     processed <- system("cmd.exe",input=paste("magick -delay ",
                                                               delay=delay,
-                                                              " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",
+                                                              " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",
                                                                          "/*",param_i,"*",class_i,"*KMEANS.png ",sep = ""),
-                                                              paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                                              paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                                     animName,sep = ""),
                                                               "\"",sep=""))
 
-                    animName<-paste("anim_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_FREESCALE.gif",sep="")
+                    animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_FREESCALE.gif",sep="")
                     processed <- system("cmd.exe",input=paste("magick -delay ",
                                                               delay=delay,
-                                                              " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",
+                                                              " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",
                                                                          "/*",param_i,"*",class_i,"*FREESCALE.png ",sep = ""),
-                                                              paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                                              paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                                     animName,sep = ""),
                                                               "\"",sep=""))
 
-                    #unlink(paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+                    #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
                   } # If Animate ON==t
 
 
@@ -2133,7 +2152,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
               }}
               animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
               animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
-                                                                 centers=min(length(unique(animScalePoly)),(legendFixedBreaks-2))))$centers[,1]))
+                                                                 centers=max(1,min(length(unique(animScalePoly))-1,(legendFixedBreaks-2)))))$centers[,1]))
               animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly,max(animScalePoly)))
 
               if((max(range(animScalePoly))-min(range(animScalePoly)))<1E-10 &
@@ -2225,8 +2244,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             bgColor = bgColorChosen,
                             figWidth=figWidth,
                             figHeight=figHeight,
-                            fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-                            dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
+                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
+                            dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
 
 
                   # numeric2Cat_list=numeric2Cat_list
@@ -2254,8 +2273,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   # bgColor = bgColorChosen
                   # figWidth=figWidth
                   # figHeight=figHeight
-                  # fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-                  # dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = "")
+                  # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
+                  # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = "")
 
                   metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
                             underLayer=underLayer, dataPolygon=mapx,
@@ -2278,8 +2297,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             bgColor = bgColorChosen,
                             figWidth=figWidth,
                             figHeight=figHeight,
-                            fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
-                            dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
+                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
+                            dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
 
                   # panelLabel=panelLabelAnimated
                   # underLayer=underLayer
@@ -2304,8 +2323,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   # bgColor = bgColorChosen
                   # figWidth=figWidth
                   # figHeight=figHeight
-                  # fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep="")
-                  # dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = "")
+                  # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep="")
+                  # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = "")
 
                   if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
                     legendOutsideAnimated=legendOutsideSingle
@@ -2337,8 +2356,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             bgColor = bgColorChosen,
                             figWidth=figWidth,
                             figHeight=figHeight,
-                            fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
-                            dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
+                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
+                            dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
 
 
                 }# if(nrow(datax)>1){
@@ -2354,34 +2373,34 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
 
 
-                animName<-paste("anim_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
+                animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
                 processed <- system("cmd.exe",input=paste("magick -delay ",
                                                           delay=delay,
-                                                          " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",
+                                                          " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",
                                                                      "/*",param_i,"*PRETTY.png ",sep = ""),
-                                                          paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
+                                                          paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                                                                 animName,sep = ""),
                                                           "\"",sep=""))
 
-                animName<-paste("anim_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
+                animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
                 processed <- system("cmd.exe",input=paste("magick -delay ",
                                                           delay=delay,
-                                                          " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",
+                                                          " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",
                                                                      "/*",param_i,"*KMEANS.png ",sep = ""),
-                                                          paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
+                                                          paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                                                                 animName,sep = ""),
                                                           "\"",sep=""))
 
-                animName<-paste("anim_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
+                animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
                 processed <- system("cmd.exe",input=paste("magick -delay ",
                                                           delay=delay,
-                                                          " ", paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",
+                                                          " ", paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",
                                                                      "/*",param_i,"*FREESCALE.png ",sep = ""),
-                                                          paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
+                                                          paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                                                                 animName,sep = ""),
                                                           "\"",sep=""))
 
-                #unlink(paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+                #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
               } # If Animate ON==t
 
 
@@ -2428,7 +2447,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     }}
                   animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
                   animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
-                                                                     centers=min(length(unique(animScalePoly)),(legendFixedBreaks-2))))$centers[,1]))
+                                                                     centers=max(1,min(length(unique(animScalePoly))-1,(legendFixedBreaks-2)))))$centers[,1]))
                   animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly,max(animScalePoly)))
 
                   if((max(range(animScalePoly))-min(range(animScalePoly)))<1E-10 &
@@ -2476,8 +2495,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             legendPosition = NULL,
                             fillPalette = fillPalette,
                             bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
-                            fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-                            dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
+                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
+                            dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
 
                   metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
@@ -2496,8 +2515,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             legendPosition = NULL,
                             fillPalette = fillPalette,
                             bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
-                            fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
-                            dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
+                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
+                            dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
 
 
                   if(length(names(mapx@data))==1){
@@ -2525,8 +2544,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                             legendPosition = legendPosition,
                             fillPalette = fillPalette,
                             bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
-                            fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
-                            dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
+                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
+                            dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
 
                   # Animate 2 : each param: If class == 1 { (Map x Anim Years}
 
@@ -2564,7 +2583,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       }}
                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
                     animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
-                                                                       centers=min(length(unique(animScalePoly)),(legendFixedBreaks-2))))$centers[,1]))
+                                                                       centers=max(1,min(length(unique(animScalePoly))-1,(legendFixedBreaks-2)))))$centers[,1]))
                     animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly,max(animScalePoly)))
 
                     if((max(range(animScalePoly))-min(range(animScalePoly)))<1E-10 &
@@ -2609,8 +2628,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                               legendPosition = legendPositionS,
                               fillPalette = fillPalette,
                               bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
-                              fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
-                              dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
+                              fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
+                              dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
 
                     metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=mapx,
                               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
@@ -2631,8 +2650,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                               legendPosition = legendPositionS,
                               fillPalette = fillPalette,
                               bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
-                              fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
-                              dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
+                              fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
+                              dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
 
                     if(length(names(mapx@data))==1){
                       legendOutsideAnimated=legendOutsideSingle
@@ -2661,8 +2680,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                               legendPosition = legendPositionS,
                               fillPalette = fillPalette,
                               bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight,
-                              fileName = paste("map_",mapsOutFolderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
-                              dirOutputs = paste(dirOutputs,"/Maps/",mapsOutFolderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
+                              fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
+                              dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
 
 
                     # Animate 2 : each param: If class == 1 { (Map x Anim Years}

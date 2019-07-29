@@ -19,10 +19,11 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
   sankeyAxis2 = NULL, sankeyAxis1Label = "axis1Label",
   sankeyAxis2Label = "axis2Label", sankeyGroupColor = NULL,
   printFig = T, fileName = "chart", title = NULL,
-  dirOutputs = paste(getwd(), "/outputs", sep = ""), figWidth = 13,
-  figHeight = 9, pdfpng = "png", sankeyLabelsOn = 1,
-  colOrder1 = NULL, colOrderName1 = NULL, colOrder2 = NULL,
-  colOrderName2 = NULL, pointsOn = 1, pointsSize = 4)
+  dirOutputs = paste(getwd(), "/outputs/Charts", sep = ""),
+  folderName = NULL, figWidth = 13, figHeight = 9, pdfpng = "png",
+  sankeyLabelsOn = 1, colOrder1 = NULL, colOrderName1 = NULL,
+  colOrder2 = NULL, colOrderName2 = NULL, pointsOn = 1,
+  pointsSize = 4)
 }
 \arguments{
 \item{data}{Data table for charting}
@@ -105,7 +106,9 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
 
 \item{title}{Figure title. Default = NULL}
 
-\item{dirOutputs}{Output directory to save figure. Default = paste(getwd(),"/outputs",sep Default = "")}
+\item{dirOutputs}{Output directory to save figure. Default = paste(getwd(),"/outputs/Charts",sep Default = "")}
+
+\item{folderName}{Foldername within output directory. Default=NULL,}
 
 \item{figWidth}{Figure width. Default = 9,}
 

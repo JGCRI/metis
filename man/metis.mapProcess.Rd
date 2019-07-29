@@ -6,10 +6,10 @@
 \usage{
 metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  mapsOutFolderName = "mapOutputs", frameShow = T, xRange = "All",
-  labels = F, labelsSize = 1.2, subRegShape = NULL,
-  subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
-  dirNameAppend = "", nameAppend = "", legendOutsideSingle = T,
+  folderName = "folderNameDefault", xRange = "All", labels = F,
+  labelsSize = 1.2, subRegShape = NULL, subRegShpFolder = NULL,
+  subRegShpFile = NULL, subRegCol = NULL, dirNameAppend = "",
+  nameAppend = "", legendOutsideSingle = T,
   legendOutsidePosition = NULL, legendPosition = NULL,
   legendFixedBreaks = 5, legendTitleSizeO = 2, legendTextSizeO = 1,
   legendTitleSizeI = 1.5, legendTextSizeI = 1, animateOn = T,
@@ -23,13 +23,14 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   extendedShape = NULL, extendedShapeCol = NULL, expandPercent = 3,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 6, figHeight = 7, scaleRange = NULL,
-  paramsSelect = "All", indvScenarios = "All", GCMRCPSSPPol = F,
-  multiFacetCols = "scenarioRCP", multiFacetRows = "scenarioGCM",
-  legendOutsideMulti = T, legendPositionMulti = NULL,
-  legendTitleSizeMulti = NULL, legendTextSizeAnim = NULL,
-  legendTextSizeMulti = NULL, refGCM = NULL, refRCP = NULL,
-  chosenRefMeanYears = NULL, mapTitleSize = 0.5,
-  facetLabelSizeMulti = 3, numeric2Cat_list = NULL, diffOn = F)
+  paramsSelect = "All", indvScenarios = "All", scensSelect = "All",
+  GCMRCPSSPPol = F, multiFacetCols = "scenarioRCP",
+  multiFacetRows = "scenarioGCM", legendOutsideMulti = T,
+  legendPositionMulti = NULL, legendTitleSizeMulti = NULL,
+  legendTextSizeAnim = NULL, legendTextSizeMulti = NULL,
+  refGCM = NULL, refRCP = NULL, chosenRefMeanYears = NULL,
+  mapTitleSize = 0.5, facetLabelSizeMulti = 3,
+  numeric2Cat_list = NULL, diffOn = F, frameShow = T)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -38,9 +39,7 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{dirOutputs}{Default = paste(getwd(),"/outputs",sep=""),}
 
-\item{mapsOutFolderName}{Default="mapOutputs",}
-
-\item{frameShow}{Default = T. Whether to plot frame around maps and facets.}
+\item{folderName}{Default ="folderNameDefault",}
 
 \item{xRange}{Default ="All",}
 
@@ -124,7 +123,9 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{paramsSelect}{Default ="All"}
 
-\item{indvScenarios}{Default ="All",}
+\item{indvScenarios}{Default ="All", If only want to run single scenarios without comparing with others}
+
+\item{scensSelect}{Default ="All", choose scenarios from data}
 
 \item{GCMRCPSSPPol}{Default = F,}
 
@@ -155,6 +156,8 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{numeric2Cat_list}{Default=NULL,}
 
 \item{diffOn}{Default = F. Whether to calculate diff values between scenarios.}
+
+\item{frameShow}{Default = T. Whether to plot frame around maps and facets.}
 }
 \value{
 Returns the formatted data used to produce chart

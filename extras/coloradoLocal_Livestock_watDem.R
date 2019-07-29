@@ -21,6 +21,7 @@ library(tools)
 if("metis" %in% rownames(installed.packages()) == F){install.packages("metis")}
 library(metis)
 
+
 setwd('C:/Users/twild/all_git_repositories/metis/metis')
 countryName="Argentina"
 
@@ -50,6 +51,7 @@ nameAppend_i = "_local"
 
 
 polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/livestock_water_demand.csv",sep="")
+
 a1<-read.csv(polygonDataTables_i); head(a1); unique(a1$scenario); unique(a1$param); unique(a1$x)
 
 
@@ -127,4 +129,45 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  refGCM="gfdl-esm2m",
                  refRCP="rcp2p6",
                  chosenRefMeanYears=c(2000:2050),
-                 numeric2Cat_list=numeric2Cat_list)
+                 numeric2Cat_list=numeric2Cat_list,
+                 folderName = "livestocktest")
+
+polygonDataTables=polygonDataTables_i
+#gridDataTables=gridDataTables_i
+# boundaryRegShape=boundaryRegShape_i
+# boundaryRegShpFolder=boundaryRegShpFolder_i
+# boundaryRegShpFile=boundaryRegShpFile_i
+# boundaryRegCol=boundaryRegCol_i
+boundaryRegionsSelect=boundaryRegionsSelect_i
+#subRegShape=subRegShape_i,
+subRegShpFolder=subRegShpFolder_i
+subRegShpFile=subRegShpFile_i
+subRegCol=subRegCol_i
+#subRegType=subRegType_i
+nameAppend=nameAppend_i
+legendOutsideSingle=legendOutsideSingle_i
+legendPosition=legendPosition_i
+animateOn=animateOn_i
+delay=delay_i
+scenRef=scenRef_i
+extension=T
+expandPercent = 3
+figWidth=6
+figHeight=7
+paramsSelect = paramsSelect_i
+scaleRange = scaleRange_i
+indvScenarios=indvScenarios_i
+GCMRCPSSPPol=GCMRCPSSPPol_i
+multiFacetCols="scenarioRCP"
+multiFacetRows="scenarioGCM"
+legendOutsideMulti=T
+legendPositionMulti=NULL
+legendTitleSizeMulti=NULL
+legendTextSizeAnim=NULL
+legendTextSizeMulti=NULL
+refGCM="gfdl-esm2m"
+refRCP="rcp2p6"
+chosenRefMeanYears=c(2000:2050)
+numeric2Cat_list=numeric2Cat_list
+folderName = "livestocktest"
+>>>>>>> c7962aff79f0fc9958ef7c0b984800edd715f977

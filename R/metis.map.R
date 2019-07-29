@@ -10,6 +10,7 @@
 #' @param shpFolder Default = paste(getwd(),"/dataFiles/gis/admin_gadm36_1",sep Default = ""),
 #' @param shpFile Default = paste("gadm36_1",sep Default = ""),
 #' @param dirOutputs Default = paste(getwd(),"/outputs",sep Default = ""),
+#' @param folderName Default = NULL,
 #' @param fillPalette Default = "Spectral",
 #' @param borderColor Default = "gray20",
 #' @param lwd Default = 1,
@@ -98,7 +99,8 @@ metis.map<-function(dataPolygon=NULL,
                   overLayer=NULL,
                   printFig=T,
                   fileName="map",
-                  dirOutputs=paste(getwd(),"/outputs",sep=""),
+                  dirOutputs=paste(getwd(),"/outputs/Maps",sep=""),
+                  folderName=NULL,
                   facetFreeScale=F,
                   facetRows=NA,
                   facetCols=3,
@@ -198,7 +200,12 @@ tmap::tmap_options(max.categories=10000)
 # Read data and check inputs
 #------------------------------------------
 
-if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
+if (!dir.exists(paste(getwd(),"/outputs",sep=""))){dir.create(paste(getwd(),"/outputs",sep=""))}
+if (!dir.exists(paste(getwd(),"/outputs/Maps",sep=""))){dir.create(paste(getwd(),"/outputs/Maps",sep=""))}
+if(!is.null(folderName)){
+  if (!dir.exists(paste(getwd(),"/outputs/Maps/",folderName,sep=""))){dir.create(paste(getwd(),"/outputs/Maps/",folderName,sep=""))}
+  if(dirOutputs==paste(getwd(),"/outputs/Maps",sep="")){dirOutputs=paste(getwd(),"/outputs/Maps/",folderName,sep="")}
+}
 
 if(!is.null(dataPolygon)){
   print("Using given dataPolygon file as shape.")

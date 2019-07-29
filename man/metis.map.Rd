@@ -16,14 +16,14 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   legendStyle = "pretty", legendFixedBreaks = 5, legendBreaks = NULL,
   pdfpng = "png", underLayer = NULL, overLayer = NULL,
   printFig = T, fileName = "map", dirOutputs = paste(getwd(),
-  "/outputs", sep = ""), facetFreeScale = F, facetRows = NA,
-  facetCols = 3, facetBGColor = "grey30", facetLabelColor = "white",
-  facetLabelSize = 1.5, alpha = 1, fillcolorNA = "gray",
-  fillshowNA = NA, fillcolorNULL = "gray", facetsON = T,
-  panelLabel = NULL, multiFacetRows = NULL, multiFacetCols = NULL,
-  mapTitle = NULL, mapTitleSize = 1, numeric2Cat_list = NULL,
-  catParam = NULL, innerMargins = c(0, 0, 0, 0),
-  outerMargins = c(0.01, 0.01, 0.01, 0.01))
+  "/outputs/Maps", sep = ""), folderName = NULL, facetFreeScale = F,
+  facetRows = NA, facetCols = 3, facetBGColor = "grey30",
+  facetLabelColor = "white", facetLabelSize = 1.5, alpha = 1,
+  fillcolorNA = "gray", fillshowNA = NA, fillcolorNULL = "gray",
+  facetsON = T, panelLabel = NULL, multiFacetRows = NULL,
+  multiFacetCols = NULL, mapTitle = NULL, mapTitleSize = 1,
+  numeric2Cat_list = NULL, catParam = NULL, innerMargins = c(0, 0, 0,
+  0), outerMargins = c(0.01, 0.01, 0.01, 0.01))
 }
 \arguments{
 \item{dataPolygon}{Default = NULL,}
@@ -97,6 +97,8 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
 \item{fileName}{Default = "map",}
 
 \item{dirOutputs}{Default = paste(getwd(),"/outputs",sep Default = ""),}
+
+\item{folderName}{Default = NULL,}
 
 \item{facetFreeScale}{Default = F,}
 
