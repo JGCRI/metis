@@ -32,7 +32,8 @@
 #' @param ncolrow Number of columns or Rows for Faceted plots.
 #' @param printFig Whether plot should be printed or not. Default = T,
 #' @param fileName File name for plot to be saved. Default = "chart",
-#' @param dirOutputs Output directory to save figure. Default = paste(getwd(),"/outputs",sep Default = "")
+#' @param dirOutputs Output directory to save figure. Default = paste(getwd(),"/outputs/Charts",sep Default = "")
+#' @param folderName Foldername within output directory. Default=NULL,
 #' @param figWidth Figure width. Default = 9,
 #' @param figHeight Figure height. Default = 7,
 #' @param pdfpng Whether to save plot as pdf or png. Choice between "pdf" or "png". Default = "png",
@@ -148,7 +149,8 @@ metis.chart<-function(data,
                          printFig = T,
                          fileName = "chart",
                          title = NULL,
-                         dirOutputs=paste(getwd(),"/outputs",sep=""),
+                         dirOutputs=paste(getwd(),"/outputs/Charts",sep=""),
+                         folderName=NULL,
                          figWidth=13,
                          figHeight=9,
                          pdfpng="png",
@@ -216,6 +218,17 @@ metis.chart<-function(data,
 
 NULL -> value -> tempName -> sankeyHjustCheck -> value1
 StatStratum <- ggalluvial::StatStratum # This is done so that ggplot2 recognizes stat stratum
+
+
+#------------------
+# Create Directories
+# -----------------
+if (!dir.exists(paste(getwd(),"/outputs",sep=""))){dir.create(paste(getwd(),"/outputs",sep=""))}
+if (!dir.exists(paste(getwd(),"/outputs/Charts",sep=""))){dir.create(paste(getwd(),"/outputs/Charts",sep=""))}
+if(!is.null(folderName)){
+  if (!dir.exists(paste(getwd(),"/outputs/Charts/",folderName,sep=""))){dir.create(paste(getwd(),"/outputs/Charts/",folderName,sep=""))}
+  if(dirOutputs==paste(getwd(),"/outputs/Charts",sep="")){dirOutputs=paste(getwd(),"/outputs/Charts/",folderName,sep="")}
+  }
 
 
 #------------------------------------------
@@ -326,24 +339,25 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
       )
   }
 
-  # Chart Type
-  if(chartType=="sankey"){
 
-    # Calculate number of facets. If both are one then
-    if(is.null(facet_columns) & is.null(facet_rows)){
-      nFacets = 1
-    } else {
+  # Calculate number of facets. If both are one then
+  if(is.null(facet_columns) & is.null(facet_rows)){
+    nFacets = 1
+  } else {
 
     if(!is.null(facet_columns) & !is.null(facet_rows)){
-    nFacets = length(unique(l1[[facet_columns]])) + length(unique(l1[[facet_rows]]))-1}
+      nFacets = length(unique(l1[[facet_columns]]))*length(unique(l1[[facet_rows]]))}
 
     if(!is.null(facet_columns) & is.null(facet_rows)){
-    nFacets = length(unique(l1[[facet_columns]]))}
+      nFacets = length(unique(l1[[facet_columns]]))}
 
     if(is.null(facet_columns) & !is.null(facet_rows)){
-    nFacets = length(unique(l1[[facet_rows]]))}
+      nFacets = length(unique(l1[[facet_rows]]))}
 
-    }
+  }
+
+  # Chart Type
+  if(chartType=="sankey"){
 
     # https://stackoverflow.com/questions/56113973/variable-align-ggrepel-text-labels-in-faceted-alluvial-plot
 
@@ -356,10 +370,10 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
       scale_fill_manual(values=paletteX, name="From",na.translate=F, drop=F) +
       coord_cartesian(clip = "off")+
       theme(aspect.ratio = 0.5) +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5,size = 15),
-            strip.text  = element_text(size = 18),
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5,size = 24),
+            strip.text  = element_text(size = 24),
             #strip.background = element_blank(),
-            axis.title.x = element_text(size = 15),
+            axis.title.x = element_text(size = 24),
             axis.ticks.x = element_blank(),
             axis.ticks.y = element_blank(),
             axis.text.y = element_blank(),
@@ -394,15 +408,15 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
       labs(title=fileName) +
       geom_point(data=dataNorm%>%dplyr::filter(!(!!as.name(xData) %in% removeCols)),aes(col=value, size=value)) +
       scale_color_gradient(low = "white", high = "indianred1", guide="none") +
-      geom_text(aes(label=round(value,2)),col="black", size=3) +
+      geom_text(aes(label=round(value,2)),col="black", size = 5*max(1,nFacets/1.5) ) +
       coord_fixed(ratio = 1) +
       scale_x_discrete(limits = sectorToOrder, expand = c(0.1,0.1)) +
       scale_y_discrete(limits = rev(sectorFromOrder), expand = c(0.1,0.1)) +
-      scale_size_continuous(range = c(1,bubbleSize), guide="none") +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 15),
-            axis.text.y = element_text(size = 15),
-            strip.text  = element_text(size = 15),
-            axis.title = element_text(size = 15)) +
+      scale_size_continuous(range = c(1,bubbleSize*nFacets), guide="none") +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 24),
+            axis.text.y = element_text(size = 24),
+            strip.text  = element_text(size = 24),
+            axis.title = element_text(size = 24)) +
       theme(aspect.ratio = ifelse(length(unique(l1[[yData]]))/length(unique(l1[[xData]])) > 1, 1,
             ifelse(length(unique(l1[[yData]]))/length(unique(l1[[xData]])) < 0.05, 0.05, length(unique(l1[[yData]]))/length(unique(l1[[xData]])))))
 
@@ -501,12 +515,9 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
   if(printFig!=F){
     fname<-paste(fileName,sep="")
     if(!dir.exists(dirOutputs)){
-      print(paste("dirOutputs provided: ",dirOutputs," does not exist. Saving to: ", paste(getwd(),"/outputsTemp/Charts",sep=""),sep=""))
-      if (!dir.exists(paste(getwd(),"/outputsTemp",sep="")))
-      {dir.create(paste(getwd(),"/outputsTemp",sep=""))}
-      if (!dir.exists(paste(getwd(),"/outputsTemp/Charts",sep="")))
-      {dir.create(paste(getwd(),"/outputsTemp/Charts",sep=""))}
-      dirOutputs=paste(getwd(),"/outputsTemp/Charts",sep="")
+      print(paste("dirOutputs provided: ",dirOutputs," does not exist. Saving to: ", paste(getwd(),"/outputs/Charts/Temp",sep=""),sep=""))
+      if (!dir.exists(paste(getwd(),"/outputs/Charts/Temp",sep=""))){dir.create(paste(getwd(),"/outputs/Charts/Temp",sep=""))}
+      dirOutputs=paste(getwd(),"/outputs/Charts/Temp",sep="")
       }
 
 

@@ -903,6 +903,7 @@ if(useIntensity==1){
 
 } else {
   ioTable_adjustIntensity <- ioTable_adjustCap
+  print("useIntensity is set to 0 or has not been assigned. Ignoring A0 provided and using flow data provided.")
 }
 
 ioTable_adjustIntensity %>% as.data.frame()
@@ -961,9 +962,9 @@ ioTbl_Output = ioTbl_Output %>% dplyr::bind_rows(ioTable_complete %>% tibble::as
   } # close loop subRegion
 } # close loop year
 
-    sol_list<-list(A_Output=A_Output %>% dplyr::filter(!grepl("_all",supplySubSector)) %>% dplyr::select(-contains("_all")),
-                   L_Output=L_Output %>% dplyr::filter(!grepl("_all",supplySubSector)) %>% dplyr::select(-contains("_all")),
-                   ioTbl_Output=ioTbl_Output)
+    sol_list<-list(A=A_Output %>% dplyr::filter(!grepl("_all",supplySubSector)) %>% dplyr::select(-dplyr::contains("_all")),
+                   L=L_Output %>% dplyr::filter(!grepl("_all",supplySubSector)) %>% dplyr::select(-dplyr::contains("_all")),
+                   ioTbl=ioTbl_Output)
 
   sol_list<-sol_list[sapply(sol_list, function(x) dim(x)[1]) > 0]
 
@@ -997,7 +998,7 @@ ioTbl_Output = ioTbl_Output %>% dplyr::bind_rows(ioTable_complete %>% tibble::as
         dir.create(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,  sep = ""))}
 
 
-      if(length(unique((sol_list$ioTbl_Output)$subRegion))>1){
+      if(length(unique((sol_list$ioTbl)$subRegion))>1){
 
         if(combSubRegionPlots==1){
 
@@ -1019,7 +1020,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
 
   # A Intensity Matrix
 
-  A_mat <- sol_list$A_Output %>%
+  A_mat <- sol_list$A %>%
     dplyr::filter(region==region_i,scenario==scenario_i); A_mat
 
   A_matx <- A_mat %>%
@@ -1041,7 +1042,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
   figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
   metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
               xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
-              removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+              removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png")
 
@@ -1079,7 +1080,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
     figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
     metis.chart(data=plotx , chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
                 xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
-                removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                 figHeight=figHeight_ix,pdfpng="png")
 
@@ -1092,7 +1093,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
 
   # ioTable normalized
 
-  sol<- sol_list$ioTbl_Output %>%
+  sol<- sol_list$ioTbl %>%
     dplyr::filter(scenario==scenario_i,region==region_i); sol
 
 
@@ -1754,7 +1755,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
 
     # A Intensity Matrix
 
-    A_mat <- sol_list$A_Output %>%
+    A_mat <- sol_list$A %>%
       dplyr::filter(region==region_i, subRegion==subRegion_i,scenario==scenario_i); A_mat
 
     A_matx <- A_mat %>%
@@ -1775,7 +1776,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
                   xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
-                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
 
@@ -1815,7 +1816,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
                   xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
-                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
 
@@ -1829,7 +1830,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
 
     # ioTable normalized
 
-    sol<- sol_list$ioTbl_Output %>%
+    sol<- sol_list$ioTbl %>%
       dplyr::filter(scenario==scenario_i,region==region_i, subRegion==subRegion_i); sol
 
 

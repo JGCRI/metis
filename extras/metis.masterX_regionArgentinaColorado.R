@@ -362,14 +362,30 @@ boundariesX<- metis.boundaries(
   boundaryRegionsSelect=boundaryRegionsSelect_i,
   subRegShape=subRegShape_i,
   subRegCol=subRegCol_i,
+  subRegCol1="FID_Subcue",
   subRegType=subRegType_i,
   nameAppend=nameAppend_i,
-  expandPercent=expandPercent_i,
-  overlapShape = overlapShape_i,
+  expandPercent=1,
+  #overlapShape = overlapShape_i,
   extension = extension_i,
   grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
             paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
   cropSubShape2Bound=cropSubShape2Bound_i)
+
+#labelsSize=0.5,
+boundaryRegShape=boundaryRegShape_i
+boundaryRegCol=boundaryRegCol_i
+boundaryRegionsSelect=boundaryRegionsSelect_i
+subRegShape=subRegShape_i
+subRegCol=subRegCol_i
+subRegType=subRegType_i
+nameAppend=nameAppend_i
+expandPercent=expandPercent_i
+overlapShape = overlapShape_i
+extension = extension_i
+grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+          paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""))
+cropSubShape2Bound=cropSubShape2Bound_i
 
 
 #--------------------

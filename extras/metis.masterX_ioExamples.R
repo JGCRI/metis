@@ -27,15 +27,57 @@ library(rgeos)
 # Blair and Miller Problems Chapter 2 - Simple I/O
 
 # Problem 2.1
-ioTable0=tibble::tribble( # Initial Flows
- ~supplySubSector,    ~ag,         ~man, ~total,
-  "ag",            500,         350,  1000,
-  "man",           320,         360,  800);ioTable0
+# Dollar values of last year’s interindustry transactions and total outputs for a
+# two-sector economy (agriculture and manufacturing) are as shown below:
+#  Z = 500 350
+#      320 360
+#  x = 1000
+#      800
+#  a. What are the two elements in the final-demand vector f = (f1, f2) ?
+#  b. Suppose that f1 increases by $50 and f2 decreases by $20. What new gross outputs
+#     would be necessary to satisfy the new final demands?
 
+# Solution:
+# a. f = x - Zi = (150, 120)
+# b. x = (1138.90, 844.40)
 
-io<-metis.io(ioTable0 = ioTable0)
-io$A
-io$L
+# Construct the IO Table
+ioTable0a=tibble::tribble(
+ ~supplySector,    ~ag,         ~manufact, ~total,
+          "ag",    500,          350,   1000,
+         "manufact",    320,          360,    800  );ioTable0a
+
+# Enter into metis.io
+io_a<-metis.io(ioTable0 = ioTable0a, plotSankeys = T, folderName = "2.1a")
+# Explore solution
+io_a$ioTbl
+io_a$A
+io_a$L
+
+# Final-demand is calultaed in metis.io as a column vector called adjustedDemands
+
+ioTable0b=tibble::tribble(
+  ~supplySector,    ~ag,         ~manufact, ~adjustedDemandsNew,
+           "ag",    500,          350,   200,
+          "manufact",    320,          360,   100);ioTable0b
+
+io_b<-metis.io(ioTable0 = ioTable0b, useIntensity=1, A0=io_a$A ,plotSankeys = T, folderName = "2.1b")
+io_b$ioTbl
+io_b$A
+io_b$L
+
+# Can Combine the tables and add more details for comparative plots
+io_comb <- io_a$ioTbl %>%
+  filter(!grepl("_all",supplySubSector)) %>%
+  select("supplySubSector",unique(ioTable0a$supplySector), "total") %>%
+  mutate(subRegion = "p2.1a") %>%
+  bind_rows(io_b$ioTbl %>%
+              filter(!grepl("_all",supplySubSector)) %>%
+              select("supplySubSector",unique(ioTable0a$supplySector), "total") %>%
+              mutate(subRegion = "p2.1b"));io_comb
+
+io_c<-metis.io(ioTable0 = io_comb, plotSankeys = T, folderName = "2.1comb")
+
 
 #Problem 2.1b
 #(diag(nrow(io$ioTbl)) + io$A + io$A%*%io$A + io$A%*%io$A%*%io$A + io$A%*%io$A%*%io$A%*%io$A)%*%as.matrix(io$D)

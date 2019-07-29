@@ -23,35 +23,43 @@ if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggal
 library(ggalluvial)
 
 
-#----------------------------
-# Read GCAM Data
-#---------------------------
-
-# # Example 1
-# ioTable0=tibble::tribble( # Initial Flows
-#  ~supplySubSector,    ~ag,         ~man, ~total,
-#   "ag",            500,         350,  1000,
-#   "man",           320,         360,  800);ioTable0
-#
-# ioTable0=tibble::tribble( # Initial Flows
-#   ~supplySubSector,     ~supplySector, ~w_groundWater, ~w_surface,   ~Ag_corn,  ~Ag_rice, ~E_biofuel, ~E_solar, ~other,
-#   "w_groundWater"     ,  "water",            0,                0,            5,        10,         5,       1,        20,
-#   "w_surface"         ,  "water",            0,                0,            1,        2,          3,       1,        5,
-#   "Ag_biofuel"        ,  "ag",               0,                0,            0,        0,          1,       0,        0,
-#   "Ag_rice"           ,  "ag",               0,                0,            0,        0,          0,       0,        10,
-#   "E_biofuel"         ,  "elec",             6,                0.6,          1,        1,          0,       0,        10,
-#   "E_solar"           ,  "elec",             3,                0.3,          0.5,      0.5,        0,       0,        5);ioTable0
-
+# IO test 1 - Simple
 ioTable0=tibble::tribble( # Initial Flows
-  ~supplySubSector,  ~water,  ~ag,   ~elec,  ~domestic, ~export, ~mining, ~other,
-   "water",            0,    30,      5,        8,         5,       5,    5,
-   "ag",               0,    0,      1,        0,          10,      0,    0,
-   "elec",             3,    0.3,    0,        0.5,        1,       2,    5);ioTable0
+  ~supplySubSector,  ~water,  ~ag,   ~elec,  ~domestic, ~export, ~mining, ~other, ~units,
+   "water",            0,    30,      5,        8,         5,       5,    5, "km3",
+   "ag",               0,    0,      1,        0,          10,      0,    0, "ton",
+   "elec",             3,    0.3,    0,        0.5,        1,       2,    5, "TWh",
+   "livestock",        1,    0.1,    0,        0.3,        2,       3,    2, "head");ioTable0
 
 
-io<-metis.io(ioTable0 = ioTable0, folderName = "test",plotSankeys=F)
+io<-metis.io(ioTable0 = ioTable0, folderName = "test",plotSankeys=T)
+# View Outputs
 io$A
 io$L
+io$ioTbl
+
+
+# IO test 2 with subSectors
+ioTable0=tibble::tribble( # Initial Flows
+  ~supplySubSector,  ~supplySector, ~w_GW,  ~ag_Wheat,   ~elec_Coal,  ~domestic, ~export, ~mining, ~other, ~units,
+  "w_GW",            "water",     0,    10,      1,        3,         1,       2,    1, "km3",
+  "w_SW",            "water",     0,    30,      5,        8,         5,       5,    5, "km3",
+  "ag_Biofuel",      "ag",      0,    0,       2,        0,         8,       0,    0, "ton",
+  "ag_Wheat",        "ag",      0,    0,       0,        6,         9,       0,    0, "ton",
+  "ag_Rice",         "ag",     0,    0,       0,        5,         20,      0,    0, "ton",
+  "elec_Coal",       "elec",     3,    0.3,     0,        0.6,       1,       3,    6, "TWh",
+  "elec_Wind",       "elec",     2,    0.2,     0,        0.4,       0.677,       2,    4, "TWh",
+  "elec_Oil",        "elec",     1,    0.1,     0,        0.2,       0.333,       1,    2, "TWh",
+  "livestock_Cow",   "livestock",     0,    0,     0,        0,    30,       60,    0, "head",
+  "livestock_Chicken", "livestock",   0,    0,     0,        0,    50,       90,    0, "head");ioTable0
+
+
+io_sub<-metis.io(ioTable0 = ioTable0, folderName = "test_subSectors",plotSankeys=T)
+# View Outputs
+io_sub$A
+io_sub$L
+io_sub$ioTbl
+
 
 # Example Using Fixed A table
 # Increase irrigation efficiency i.e. decrease water used in ag by half
@@ -62,13 +70,13 @@ io1$A
 io1$L
 
 # Compare Scenarios
-io$ioTbl_Output
-io1$ioTbl_Output
-ioTable1 = io$ioTbl_Output %>%
+io$ioTbl
+io1$ioTbl
+ioTable1 = io$ioTbl %>%
   dplyr::select(names(ioTable0)) %>%
   dplyr::mutate(subRegion="Orig") %>%
   dplyr::filter(!grepl("_all",supplySubSector)) %>%
-  dplyr::bind_rows(io1$ioTbl_Output %>% dplyr::select(names(ioTable0)) %>% dplyr::mutate(subRegion="New_A")
+  dplyr::bind_rows(io1$ioTbl %>% dplyr::select(names(ioTable0)) %>% dplyr::mutate(subRegion="New_A")
                    %>% dplyr::filter(!grepl("_all",supplySubSector))); ioTable1
 
 io2<-metis.io(ioTable0 = ioTable1, folderName = "test_comparefixedA", plotSankeys=T)
@@ -90,62 +98,4 @@ io1$A
 io1$L
 
 
-
-# Commodities
-# 1. Water demands
-# 2. Agricultural production by Crop
-# 3. Electricity Production by Type
-
-# Downscaled Outputs:
-# 1. Ag production by crop
-# 2. Elec production by fuel
-# 3. Water demands by ag, elec, other
-
-# Initial Coefficient Assumptions
-# A0
-
-# Steps
-# 1. Use A0 and D0 (Demand other) to find Intermediate flows and total production
-# 2. Compare Aggregated demands to initial assumption
-# 3. Adjust A to reflect actual data
-# 4.
-
-
-A0=tibble::tribble( # Initial Flows
-  ~sector     ,    ~W,   ~Ag_corn,  ~Ag_rice, ~E_coal, ~E_solar, ~E,
-  "W"         ,    0,       0.1,     2,     0.5,    0.01,   0,
-  "Ag_corn"     ,    0,        0,      0,     0,      0,      0,
-  "Ag_rice"     ,    0,        0,      0,     0,      0,      0,
-  "E_coal"     ,    0,        0,      0,     0,      0,      0,
-  "E_solar"    ,    0,        0,      0,     0,      0,      0,
-  "E"         ,    1,      0.3,    0.4,   0,      0,      0);A0
-
-Dreal = tibble::tribble( # From tethys
-  ~sector, ~W,
-  "Ag"   ,  1000,
-  "E"    ,    20);Dreal
-
-
-
-D0=tibble::tribble( # Other demands (Not internal flows)
-  ~other,
-  1000, # W
-  10,  # Acorn
-  10,  # Arice
-  50, # Ecoal
-  50,   # Esolar
-  100 # E
-);D0
-
-
-io<-metis.io(D0=D0,A0=A0, D=c(10,0,0,0,1,1))
-io$A
-io$L
-
-install.packages("corrplot")
-library(corrplot)
-M<-as.matrix(A0%>%dplyr::select(-sector))
-rownames(M)<-colnames(M);M
-col<- colorRampPalette(metis.colors()$pal_div_wet)(20)
-corrplot(M, method="circle", is.corr=F, type="upper",addCoef.col="red", col=col, add=F, cl.length=20, cl.lim=c(0,2))
 

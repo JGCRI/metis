@@ -5,30 +5,60 @@
 #----------------------------
 # Install necessary packages
 #----------------------------
-if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}
-library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/metis")}
-library(metis)
-if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
-library(rgcam)
-if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}
-library(tibble)
-if("rgdal" %in% rownames(installed.packages()) == F){install.packages("rgdal")}
-library(rgdal)
-if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}
-library(tmap)
-if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dplyr")}
-library(dplyr)
-if("zoo" %in% rownames(installed.packages()) == F){install.packages("zoo")}
-library(zoo)
-if("dbplyr" %in% rownames(installed.packages()) == F){install.packages("dbplyr")}
-library(dbplyr)
-if("RSQLite" %in% rownames(installed.packages()) == F){install.packages("RSQLite")}
-library(RSQLite)
-if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("ggplot2")}
-library(ggplot2)
-if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggalluvial")}
-library(ggalluvial)
+if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}; library(devtools)
+if("metis" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/metis")}; library(metis)
+if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}; library(rgcam)
+if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}; library(tibble)
+if("rgdal" %in% rownames(installed.packages()) == F){install.packages("rgdal")}; library(rgdal)
+if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}; library(tmap)
+if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dplyr")}; library(dplyr)
+if("zoo" %in% rownames(installed.packages()) == F){install.packages("zoo")}; library(zoo)
+if("dbplyr" %in% rownames(installed.packages()) == F){install.packages("dbplyr")}; library(dbplyr)
+if("RSQLite" %in% rownames(installed.packages()) == F){install.packages("RSQLite")}; library(RSQLite)
+if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("ggplot2")}; library(ggplot2)
+if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggalluvial")}; library(ggalluvial)
+
+#----------------------------
+# Input/Output (metis.io.R)
+#---------------------------
+
+# IO test 1 - Simple
+ioTable0=tibble::tribble( # Initial Flows
+  ~supplySubSector,  ~water,  ~ag,   ~elec,  ~domestic, ~export, ~mining, ~other, ~units,
+  "water",            0,    30,      5,        8,         5,       5,    5, "km3",
+  "ag",               0,    0,      1,        0,          10,      0,    0, "ton",
+  "elec",             3,    0.3,    0,        0.5,        1,       2,    5, "TWh",
+  "livestock",        1,    0.1,    0,        0.3,        2,       3,    2, "head");ioTable0
+
+
+io<-metis.io(ioTable0 = ioTable0, folderName = "metisExample",plotSankeys=T, nameAppend = "_testSimple")
+# View Outputs
+io$A
+io$L
+io$ioTbl
+
+
+# IO test 2 with subSectors
+ioTable0=tibble::tribble( # Initial Flows
+  ~supplySubSector,  ~supplySector, ~w_GW,  ~ag_Wheat,   ~elec_Coal,  ~domestic, ~export, ~mining, ~other, ~units,
+  "w_GW",            "water",     0,    10,      1,        3,         1,       2,    1, "km3",
+  "w_SW",            "water",     0,    30,      5,        8,         5,       5,    5, "km3",
+  "ag_Biofuel",      "ag",      0,    0,       2,        0,         8,       0,    0, "ton",
+  "ag_Wheat",        "ag",      0,    0,       0,        6,         9,       0,    0, "ton",
+  "ag_Rice",         "ag",     0,    0,       0,        5,         20,      0,    0, "ton",
+  "elec_Coal",       "elec",     3,    0.3,     0,        0.6,       1,       3,    6, "TWh",
+  "elec_Wind",       "elec",     2,    0.2,     0,        0.4,       0.677,       2,    4, "TWh",
+  "elec_Oil",        "elec",     1,    0.1,     0,        0.2,       0.333,       1,    2, "TWh",
+  "livestock_Cow",   "livestock",     0,    0,     0,        0,    30,       60,    0, "head",
+  "livestock_Chicken", "livestock",   0,    0,     0,        0,    50,       90,    0, "head");ioTable0
+
+
+io_sub<-metis.io(ioTable0 = ioTable0, folderName = "metisExample",plotSankeys=T, nameAppend = "_testSubSector")
+# View Outputs
+io_sub$A
+io_sub$L
+io_sub$ioTbl
+
 
 #----------------------------
 # Read GCAM Data (metis.readgcam.R)
@@ -80,9 +110,9 @@ library(ggalluvial)
    2020,   20,
    2030,   30
    )
-   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "line", fileName = "chart_eg_line")
-   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", fileName = "chart_eg_bar")
-   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", color = "blue",
+   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "line", fileName = "chart_eg_line", folderName = "metisExample")
+   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", fileName = "chart_eg_bar", folderName = "metisExample")
+   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", color = "blue",folderName = "metisExample",
                yLabel = "New y Label", xLabel = "New X label", fileName = "chart_eg_bar_blue", title = "Title")
    # See ?metis.chart for more details on further customization eg. tick marks, title size ect.
 
@@ -120,31 +150,35 @@ library(ggalluvial)
 
    metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel",
                chartType = "line",  classPalette=my_pal,
-               facet_rows="region",facet_columns="scen", fileName="chart_eg_line_multi_Set1")
+               facet_rows="region",facet_columns="scen",
+               fileName="chart_eg_line_multi_Set1",folderName = "metisExample"
+               )
 
    my_pal <- metis.colors()$pal_Basic
 
    metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel", position="stack",
                group="fuel",chartType = "bar", classPalette=my_pal,
-               facet_rows="region",facet_columns="scen", fileName="chart_eg_barStack_multi_palBasic")
+               facet_rows="region",facet_columns="scen",
+               fileName="chart_eg_barStack_multi_palBasic",folderName = "metisExample")
 
    metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel", position="dodge",
                group="fuel",chartType = "bar", classPalette=my_pal,
-               facet_rows="region",facet_columns="scen", fileName="chart_eg_barDodge_multi_Set1")
+               facet_rows="region",facet_columns="scen",
+               fileName="chart_eg_barDodge_multi_Set1",folderName = "metisExample")
 
 
 # Sankey Diagram Example
 
-   # Data Frame with 2 regions, 3 supply sectors and 3 demand sectors
-   df <- data.frame(region = c("A","A","A","B","B","B"),
-                    supplySector = c("coal","gas","wind","coal","gas","wind"),
-                    demandSector = c("resid","indus","ag","resid","indus","ag"),
-                    value = 10*runif(6)); df
+   # Data Frame with 2 regions, 3 supply sectors and 3 demand sectors and random values
+   df <- data.frame(region = c("A","A","A","A","A","A","B","B","B","B","B","B"),
+                    supplySector = c("coal","coal","gas","gas","wind","wind","coal","coal","gas","gas","wind","wind"),
+                    demandSector = c("resid","indus","ag","resid","ag","indus","resid","indus","ag","resid","indus","ag"),
+                    value = c(4.70,7.33,9.52,6.5,6.70,3.57,8.43,1.68,7.61,1.10,1.58,3.45)); df
 
    metis.chart(data=df, chartType="sankey", yData="value", sankeyGroupColor="supplySector",
                classLabel="From", class = "supplySector", classPalette = metis.colors()$pal_Basic,
                sankeyAxis1="supplySector",sankeyAxis2="demandSector",sankeyAxis1Label ="From",sankeyAxis2Label="To",
-               facet_columns="region", fileName="chart_eg_sankey_multi")
+               facet_columns="region", fileName="chart_eg_sankey_multi",folderName = "metisExample")
 
 
 #------------------------------------------------------------------------------------------
@@ -168,8 +202,10 @@ library(ggalluvial)
      "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "transportation",  "2015", "34")
 
    if (!dir.exists(paste(getwd(), "/outputs", sep = ""))){dir.create(paste(getwd(), "/outputs", sep = ""))}
-   data.table::fwrite(localData, file = paste(getwd(), "/outputs/example_localFile.csv", sep = ""),row.names = F)
-   dataTables_i =  c(paste(getwd(), "/outputs/example_localFile.csv", sep = ""))
+   if (!dir.exists(paste(getwd(), "/outputs/Charts", sep = ""))){dir.create(paste(getwd(), "/outputs/Charts", sep = ""))}
+   if (!dir.exists(paste(getwd(), "/outputs/Charts/metisExample", sep = ""))){dir.create(paste(getwd(), "/outputs/metisExample", sep = ""))}
+   data.table::fwrite(localData, file = paste(getwd(), "/outputs/Charts/metisExample/example_localFile.csv", sep = ""),row.names = F)
+   dataTables_i =  c(paste(getwd(), "/outputs/Charts/metisExample/example_localFile.csv", sep = ""))
 
 # Can also add data .csv outputs from metis.readgcam.R which are autmatically saved in
   # ./metis/outputs/readGCAMTables/Tables_gcam for each of the regions selected.
@@ -210,7 +246,7 @@ library(ggalluvial)
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           regionCompareOnly=0, # Default 0. If set to 1, will only run comparison plots and not individual
                           scenarioCompareOnly=0,
-                          folderName = "MetisTest") # Default 0. If set to 1, will only run comparison plots and not individual
+                          folderName = "metisExample") # Default 0. If set to 1, will only run comparison plots and not individual
 
 #-------------------
 # Maps (metis.map.R)
@@ -224,10 +260,10 @@ library(ggalluvial)
   head(bermejo3Cropped@data) # Choose the appropriate column name
   colName_i = "SUB_NAME"
   # Categorical Shapefile
-  metis.map(dataPolygon=bermejo3Cropped,fillColumn = "SUB_NAME",labels=T ,printFig=F,facetsON=F)
+  metis.map(dataPolygon=bermejo3Cropped,fillColumn = "SUB_NAME",labels=T ,printFig=F,facetsON=F, folderName="metisExample")
   # Shapefile with values
   metis.map(dataPolygon=bermejo3Cropped,fillColumn = "SUB_AREA",labels=T ,printFig=F,facetsON=T,
-            legendShow = T, legendOutside = T, fillPalette = "Reds", labelsAutoPlace = F)
+            legendShow = T, legendOutside = T, fillPalette = "Reds", labelsAutoPlace = F, folderName="metisExample")
 
 # Example 2. using the natural earth Shapefiles provided with metis in ./metis/dataFiles/gis/metis/naturalEarth
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
@@ -240,14 +276,18 @@ library(ggalluvial)
   exampleNE1Cropped = exampleNE1[exampleNE1$admin=="Argentina",]
   exampleNE1Cropped@data = droplevels(exampleNE1Cropped@data)
   plot(exampleNE1Cropped)
-  metis.map(dataPolygon=exampleNE1Cropped,fillColumn = colName_i,labels=T ,printFig=F,facetsON=F,labelsAutoPlace = F)
+  metis.map(dataPolygon=exampleNE1Cropped,fillColumn = colName_i,labels=T ,printFig=T,facetsON=F,
+            labelsAutoPlace = F, folderName="metisExample")
 
 # The cropped shapefile can be saved for later use if desired.
   # Create a directory to save the file to
   if (!dir.exists(paste(getwd(),"/outputs",sep=""))){dir.create(paste(getwd(),"/outputs",sep=""))}
-  if (!dir.exists(paste(getwd(),"/outputs/ExampleShapefile",sep=""))){dir.create(paste(getwd(),"/outputs/ExampleShapefile",sep=""))}
+  if (!dir.exists(paste(getwd(),"/outputs/Maps",sep=""))){dir.create(paste(getwd(),"/outputs/Maps",sep=""))}
+  if (!dir.exists(paste(getwd(),"/outputs/Maps/metisExample",sep=""))){dir.create(paste(getwd(),"/outputs/Maps/metisExample",sep=""))}
+  if (!dir.exists(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""))){
+    dir.create(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""))}
   rgdal::writeOGR(obj=exampleNE1Cropped,
-                  dsn=paste(getwd(),"/outputs/ExampleShapefile",sep=""),
+                  dsn=paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""),
                   layer=paste("Argentina_states_example",sep=""),
                   driver="ESRI Shapefile", overwrite_layer=TRUE)
 
@@ -262,7 +302,7 @@ library(ggalluvial)
                         layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
   head(bermejo3Cropped@data)
   subRegCol_i = "SUB_NAME"
-  metis.map(dataPolygon=bermejo3Cropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F)
+  metis.map(dataPolygon=bermejo3Cropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
 
 
   bermejoBoundaries<- metis.boundaries(
@@ -280,7 +320,8 @@ library(ggalluvial)
                             overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
                             extension = T,
                             grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
-                                      paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")))
+                                      paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+                            folderName="metisExample")
 
 #-----------
 # Grid to Poly
@@ -303,7 +344,8 @@ library(ggalluvial)
                                     subRegShpFile=examplePolyFile_i,
                                     subRegCol=subRegCol_i,
                                     aggType="depth", # Aggregation type. Depth or volume. See docuemntation for further details.
-                                    nameAppend="_Bermeo3")
+                                    nameAppend="_Bermeo3",
+                                    folderName="metisExample")
 
 
 #------------------------------
@@ -326,7 +368,7 @@ library(ggalluvial)
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                  gridDataTables=exampleGridTable_i,
                  xRange=c(2005,2010,2020),
-                 folderName="BermejoExample",
+                 folderName="metisExample",
                  subRegShape=NULL,
                  subRegShpFolder=examplePolyFolder_i,
                  subRegShpFile=examplePolyFile_i,
@@ -355,7 +397,7 @@ library(ggalluvial)
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                      gridDataTables=exampleGridTable_i,
                      xRange=c(2005,2010,2020),
-                     folderName="BermejoExampleExtended",
+                     folderName="metisExample",
                      boundaryRegionsSelect=boundaryRegionsSelect_i,
                      boundaryRegShpFolder = boundaryRegShpFolder_i,
                      boundaryRegShpFile = boundaryRegShpFile_i,
@@ -436,7 +478,8 @@ library(ggalluvial)
       #overlapShpFile="Global235_CLM_final_5arcmin_multipart",
       #overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
       extension = T,
-      cropSubShape2Bound = T)
+      cropSubShape2Bound = T,
+      folderName="metisExample")
 
 
 # The subregion shapefile created by boundaries can now be selected to be used for mapping values.
@@ -465,7 +508,7 @@ library(ggalluvial)
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2100),
-                     folderName=boundaryRegionsSelect_i,
+                     folderName="metisExample_extended",
                      boundaryRegionsSelect=boundaryRegionsSelect_i,
                      boundaryRegShape=boundaryRegShp_i,
                      subRegShape=subRegShp_i_Crop,
@@ -493,7 +536,7 @@ library(ggalluvial)
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2100),
-                     folderName=paste(boundaryRegionsSelect_i,"_Edited",sep=""),
+                     folderName="metisExample_extended_Edited",
                      boundaryRegionsSelect=boundaryRegionsSelect_i,
                      boundaryRegShape=boundaryRegShp_i,
                      subRegShape=subRegShp_i_Crop,

@@ -8,9 +8,10 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   boundaryRegShpFile = NULL, boundaryRegCol = NULL,
   boundaryRegionsSelect = NULL, subRegShape = NULL,
   subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
-  subRegionsSelect = NULL, subRegType = "subRegType",
-  dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
-  expandPercent = 2, overlapShape = NULL, overlapShpFolder = NULL,
+  subRegCol1 = NULL, subRegionsSelect = NULL,
+  subRegType = "subRegType", dirOutputs = paste(getwd(), "/outputs",
+  sep = ""), folderName = NULL, nameAppend = "", expandPercent = 2,
+  overlapShape = NULL, overlapShpFolder = NULL,
   overlapShpFile = NULL, labelsSize = 1.2, fillcolorNA = NULL,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   extendedFillColor = "grey75", extendedBGColor = "lightblue1",
@@ -38,11 +39,15 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
 
 \item{subRegCol}{Default= NULL. Suggested for states "name",}
 
+\item{subRegCol1}{Default= NULL. Suggested for states "name",}
+
 \item{subRegionsSelect}{Default=NULL. The region to choose from the given sub-region shapefile.}
 
 \item{subRegType}{Default="subRegType". Type of subregion. Eg. "states", "basins" etc.}
 
 \item{dirOutputs}{Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.}
+
+\item{folderName}{Default = NULL,}
 
 \item{nameAppend}{Default="". Name to append to saved files.}
 

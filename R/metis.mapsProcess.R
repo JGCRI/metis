@@ -200,7 +200,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
   # Initialize variables to remove binding errors
   # -----------------
 
-  NULL->lat->lon->param->region->scenario->subRegion->
+  NULL->lat->lon->param->region->scenario->subRegion->subRegType -> value
     value->x->year->gridID->underLayer->maxScale->minScale->scenarioGCM->scenarioRCP->scenarioSSP->
     scenarioPolicy->valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX
 
@@ -1289,7 +1289,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendStyle="fixed",
                           legendBreaks = animPrettyBreaksGrid,
                           legendFixedBreaks=legendFixedBreaks,
-                          legendDigits = animlegendDigits,
+                          legendDigits = animLegendDigits,
                           legendOutsidePosition = legendOutsidePosition,
                           legendPosition = legendPositionS,
                           fillPalette = fillPalette,
@@ -1402,7 +1402,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendStyle="fixed",
                           legendBreaks = animKmeanBreaksGrid,
                           legendFixedBreaks=legendFixedBreaks,
-                          legendDigits = animlegendDigits,
+                          legendDigits = animLegendDigits,
                           legendOutsidePosition = legendOutsidePosition,
                           legendPosition = legendPositionS,
                           fillPalette = fillPalette,
@@ -1425,7 +1425,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                           legendStyle="fixed",
                           legendBreaks = animPrettyBreaksGrid,
                           legendFixedBreaks=legendFixedBreaks,
-                          legendDigits = animlegendDigits,
+                          legendDigits = animLegendDigits,
                           legendOutsidePosition = legendOutsidePosition,
                           legendPosition = legendPositionS,
                           fillPalette = fillPalette,
