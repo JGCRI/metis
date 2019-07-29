@@ -65,13 +65,13 @@ The Metis model is a joint effort by the Pacific Northwest National Laboratory (
 
 In most projects looking at multi-sector dynamics one of the key constraints is data availability and a key goal of Metis is to overcome this barrier by providing users with default data across sectors for their specific region. The default data is built from outputs of the open-source Global Change Assessment Model (GCAM) eco-system which provides downscaled gridded global data for water, energy and land. Metis aggregates gridded data to any spatial boundary and offers users a first look at the water-energy-land situation in their regions of interest. The idea is to use this as a starting point and then improve the data as and when it becomes available while working with local stakeholders. 
 
-After aggregating data to relevant spatial and temporal scales, metis finds relationships between the sectors using input/output methods to establish correlation matrices. The correlation matrices represent the inter-sectoral links throughout the system and are then used to investigate impacts of changes in one sector on others.
+After aggregating data to relevant spatial and temporal scales, Metis finds relationships between the sectors using input/output methods to establish correlation matrices. The correlation matrices represent the inter-sectoral links throughout the system and are then used to investigate impacts of changes in one sector on others.
 
 <p align="center"> <b> Metis - A model to bridge the gap between coarse resolution IAMs and finer-resolution sector specific models </b> </p>
-<p align="center"> <img src="READMEfigs/metis_MidSpatial.PNG"></p>
+<p align="center"> <img src="READMEfigs/Metis_MidSpatial.PNG"></p>
 
-- The Metis modeling development platform is hosted on github at: https://github.com/JGCRI/metis
-- To clone this repo is: https://github.com/JGCRI/metis.git
+- The Metis modeling development platform is hosted on github at: https://github.com/JGCRI/Metis
+- To clone this repo is: https://github.com/JGCRI/Metis.git
 - The model is comprised of an R package and additional files with sample data
 
 
@@ -84,7 +84,7 @@ After aggregating data to relevant spatial and temporal scales, metis finds rela
 
 [Back to Contents](#Contents)
 
-The motivation behind developing the Metis model is to bridge the gap between models working at different spatial and temporal resolutions. Sector specific details such as diurnal electricity demand profiles and the availability of intermittent technologies are often captured by fine resolution sector specific models. These finer scale models are however often limited in scope to the specific sector in question. With increasing pressures on limited resources from growing populations, technological advances and a changing climate the links across human-earth systems are becoming more critical. These links include feedbacks across system such as water demands for powerplant cooling and hydropower; energy demands for water purification, transfers and distribution; both energy and water demands for agriculture production and harvesting; and the impacts of land-use change emissions and water demands as a result of biofuel expansion and deforestation. All of these are driven by socio-economic developments and policy decisions across these systems. Global integrateed assessment models are often used to capture these broader longterm dynamics on larger spatial and temporal scales. The development of the Metis model will address this need to capture both broader long-term dynamcis across systems and global markets as well as sub-regional details. The model will do this by taking global data and dynamcis from an IAM such as GCAM and then downscale the results to relevant sub-regional boundaries based on the needs of local stakeholders. The downscaled data will then be refined and calibrated with local sector specific data. This will be followed by calibration of the local inter-sectoral links and the model will then be used for future sector specific policy analysis at the relevant scales while still including global dynamics.
+The motivation behind developing the Metis model is to bridge the gap between models working at different spatial and temporal resolutions. Sector specific details such as diurnal electricity demand profiles and the availability of intermittent technologies are often captured by fine resolution sector specific models. These finer scale models are however often limited in scope to the specific sector in question. With increasing pressures on limited resources from growing populations, technological advances and a changing climate the links across human-earth systems are becoming more critical. These links include feedbacks across system such as water demands for power plant cooling and hydro power; energy demands for water purification, transfers and distribution; both energy and water demands for agriculture production and harvesting; and the impacts of land-use change emissions and water demands as a result of bio-fuel expansion and deforestation. All of these are driven by socio-economic developments and policy decisions across these systems. Global integrated assessment models are often used to capture these broader long-term dynamics on larger spatial and temporal scales. The development of the Metis model will address this need to capture both broader long-term dynamics across systems and global markets as well as sub-regional details. The model will do this by taking global data and dynamics from an IAM such as GCAM and then downscale the results to relevant sub-regional boundaries based on the needs of local stakeholders. The downscaled data will then be refined and calibrated with local sector specific data. This will be followed by calibration of the local inter-sectoral links and the model will then be used for future sector specific policy analysis at the relevant scales while still including global dynamics.
 
 
 <!-- ------------------------>
@@ -96,11 +96,11 @@ The motivation behind developing the Metis model is to bridge the gap between mo
 
 [Back to Contents](#Contents)
 
-Metis is designed to be accesible to a range of stakeholders with varying expertise and goals related to nexus analyses. The various functions of metis can be used independently for different purposes ranging from visualization, charting, spatial aggregation, mapping and inter-sectoral dynamics. The following lists and figure provides a summary of the existing and planned capabilities of metis. The lists and figure are updated as progress is made and new developments are planned. 
+Metis is designed to be accesible to a range of stakeholders with varying expertise and goals related to nexus analyses. The various functions of Metis can be used independently for different purposes ranging from visualization, charting, spatial aggregation, mapping and inter-sectoral dynamics. The following lists and figure provides a summary of the existing and planned capabilities of mess. The lists and figure are updated as progress is made and new developments are planned. 
 
 <p align="left"> <b> Metis Module & Functions </b> </p>
 
-- Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: metis.chart.R, metis.chartsProcess.R)
+- Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: mess.chart.R, mess.chartsProcess.R)
 - Maps: Various functions to vizualize spatial boundaries and data as rasters and polygon
 (functions: metis.boundaries.R, mets.map.R, metis.mapsProcess.R)
 - Spatial Aggregation: Functions to aggregate gridded data to different spatial boundaries.
@@ -223,6 +223,79 @@ The workflow for data processing, charting and mapping is shown below. The follo
 
 </p>
 </details>
+
+
+<!-- ------------------------>
+<!-- ------------------------>
+## <a name="metis.io"></a> metis.io
+<p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
+<!-- ------------------------>
+<!-- ------------------------>
+
+[Back to Contents](#Contents)
+
+
+<b> Key Inputs </b>  
+- ioTable0: An input-output table with flow of commodity from a "supplySector" or "supplySubSector" to other sectors.
+
+metis.io.R is the Metis function to analyze inter-sectoral intensities. metis.io.R uses an input/output methodology [4] to calculate linear intensity co-efficient matrices. The function accepts a table of values giving flows of commodities labelled “supplySector” to any number of other sectors including the “supplySector” categories. The function then finds inter-sectoral links by analyzing the flows from given supply sectors to other supply sector categories within the region. Outputs of the function include tables, bubble charts and Sankey diagrams showing the intensity matrices and inter-sectoral links as shown in the example figures below.
+
+<p align="center"> <b> metis.io.R examples (a) Sankey diagram (b) Inter-sectoral intensity matrix as a bubble chart </b> </p>
+<p align="center"> <img src="READMEfigs/metis_moduleIO1.PNG"></p>
+
+
+<details><summary>Click here to expand for further details, code and example figures.</summary>
+<p>
+
+
+```r
+#----------------------------
+# Input/Output (metis.io.R)
+#---------------------------
+
+# IO test 1 - Simple
+ioTable0=tibble::tribble( # Initial Flows
+  ~supplySubSector,  ~water,  ~ag,   ~elec,  ~domestic, ~export, ~mining, ~other, ~units,
+  "water",            0,    30,      5,        8,         5,       5,    5, "km3",
+  "ag",               0,    0,      1,        0,          10,      0,    0, "ton",
+  "elec",             3,    0.3,    0,        0.5,        1,       2,    5, "TWh",
+  "livestock",        1,    0.1,    0,        0.3,        2,       3,    2, "head");ioTable0
+
+
+io<-metis.io(ioTable0 = ioTable0, folderName = "metisExample",plotSankeys=T, nameAppend = "testSimple")
+# View Outputs
+io$A
+io$L
+io$ioTbl
+
+
+# IO test 2 with subSectors
+ioTable0=tibble::tribble( # Initial Flows
+  ~supplySubSector,  ~supplySector, ~w_GW,  ~ag_Wheat,   ~elec_Coal,  ~domestic, ~export, ~mining, ~other, ~units,
+  "w_GW",            "water",     0,    10,      1,        3,         1,       2,    1, "km3",
+  "w_SW",            "water",     0,    30,      5,        8,         5,       5,    5, "km3",
+  "ag_Biofuel",      "ag",      0,    0,       2,        0,         8,       0,    0, "ton",
+  "ag_Wheat",        "ag",      0,    0,       0,        6,         9,       0,    0, "ton",
+  "ag_Rice",         "ag",     0,    0,       0,        5,         20,      0,    0, "ton",
+  "elec_Coal",       "elec",     3,    0.3,     0,        0.6,       1,       3,    6, "TWh",
+  "elec_Wind",       "elec",     2,    0.2,     0,        0.4,       0.677,       2,    4, "TWh",
+  "elec_Oil",        "elec",     1,    0.1,     0,        0.2,       0.333,       1,    2, "TWh",
+  "livestock_Cow",   "livestock",     0,    0,     0,        0,    30,       60,    0, "head",
+  "livestock_Chicken", "livestock",   0,    0,     0,        0,    50,       90,    0, "head");ioTable0
+
+
+io_sub<-metis.io(ioTable0 = ioTable0, folderName = "metisExample",plotSankeys=T, nameAppend = "testSubSector")
+# View Outputs
+io_sub$A
+io_sub$L
+io_sub$ioTbl
+
+                       
+```  
+
+</p>
+</details>
+
 
 
 <!-- ------------------------>
@@ -984,37 +1057,5 @@ Grid |  Basin
 
 This section describes functions currently under development. Comments and suggestions are welcome. Functions under development include:
 
-- metis.io.R: Input Output analysis
 - metis.irio.R: Regional Input Output analysis
 
-<!-- ------------------------>
-<!-- ------------------------>
-## <a name="metis.io"></a> metis.io
-<p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<!-- ------------------------>
-<!-- ------------------------>
-
-[Back to Contents](#Contents)
-
-
-<b> Key Inputs </b>  
-
-
-<!-- ------------------------>
-<!-- ------------------------>
-## <a name="metis.irio"></a> metis.irio
-<p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
-<!-- ------------------------>
-<!-- ------------------------>
-
-[Back to Contents](#Contents)
-
-
-<b> Key Inputs </b>  
-
-
-
-
-<p align="center"> <img src="READMEfigs/metisHeaderThin.PNG"></p>
-
-[Back to Contents](#Contents)

@@ -7,7 +7,8 @@
 metis.io(ioTable0 = NULL, useIntensity = 0, A0 = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
   figWidth = 9, figHeight = 7, sankeyLabelAbsPlots = 1,
-  combSubRegionPlots = 1)
+  combSubRegionPlots = 1, folderName = "folderNameDefault",
+  plotSankeys = T)
 }
 \arguments{
 \item{ioTable0}{Initial ioTable. Must have columns: supplySubSector,total,export and cap. Each supply sector should also have imports. Default = NULL,}
@@ -27,6 +28,10 @@ metis.io(ioTable0 = NULL, useIntensity = 0, A0 = NULL,
 \item{sankeyLabelAbsPlots}{Default = 1}
 
 \item{combSubRegionPlots}{Default = 1}
+
+\item{folderName}{Default ="folderNameDefault"}
+
+\item{plotSankeys}{Default = T}
 }
 \value{
 A table with data by polygon ID for each shapefile provided

@@ -148,9 +148,9 @@ metis.colors <- function(palx=NULL) {
     add.alpha <- function(col, alpha=1){
       if(missing(col))
         stop("Please provide a vector of colours.")
-      apply(sapply(col, col2rgb)/255, 2,
+      apply(sapply(col, grDevices::col2rgb)/255, 2,
             function(x)
-              rgb(x[1], x[2], x[3], alpha=alpha))
+              grDevices::rgb(x[1], x[2], x[3], alpha=alpha))
     }
 
     # Basic Colors
@@ -255,10 +255,12 @@ metis.colors <- function(palx=NULL) {
                 crops="yellow2",biomass="grey50",naturalOther="grey75")
 
     pal_sankey <- c(Agriculture = "forestgreen", agriculture = "forestgreen", Ag = "forestgreen", AG = "forestgreen", Agri = "forestgreen",
+                    ag = "forestgreen",
                     AGRI = "forestgreen", agri = "forestgreen", irri = "forestgreen", IRRI = "forestgreen", IRRIGATION = "forestgreen",
                     irrigation = "forestgreen",
                     LIVESTOCK="goldenrod2", Livestock="goldenrod2",livestock="goldenrod2",
                     Electricity = "red", ELECTRICITY = "red", elec = "red", ELEC = "red", Elec = "red", E = "red",
+                    Energy = "darkorange3", ENERGY = "darkorange3", nrg = "darkorange3", NRG = "darkorange3", Nrg = "darkorange3", En = "darkorange3",
                     W = "dodgerblue4", Water = "dodgerblue4", WATER = "dodgerblue4", water = "dodgerblue4", WAT = "dodgerblue4", Wat = "dodgerblue4",
                     wat = "dodgerblue4"); pal_sankey
 

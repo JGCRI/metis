@@ -7,10 +7,10 @@
 metis.grid2poly(grid = NULL, subRegShape = NULL,
   subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
   subRegType = "subRegType", aggType = NULL,
-  dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
-  labelsSize = 1.2, paramsSelect = "All", sqliteUSE = F,
-  sqliteDBNamePath = paste(getwd(), "/outputs/Grids/gridMetis.sqlite",
-  sep = ""))
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), folderName = NULL,
+  nameAppend = "", labelsSize = 1.2, paramsSelect = "All",
+  sqliteUSE = F, sqliteDBNamePath = paste(getwd(),
+  "/outputs/Grids/gridMetis.sqlite", sep = ""))
 }
 \arguments{
 \item{grid}{Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",}
@@ -28,6 +28,8 @@ metis.grid2poly(grid = NULL, subRegShape = NULL,
 \item{aggType}{Default=NULL. Aggregation method to be used. Either "vol" or "depth" dependening on the type of data provided.}
 
 \item{dirOutputs}{Default=paste(getwd(),"/outputs",sep  Default=""),}
+
+\item{folderName}{Default = NULL}
 
 \item{nameAppend}{Default="",}
 

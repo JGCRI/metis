@@ -6,7 +6,7 @@
 \usage{
 metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  folderName = "mapOutputs", xRange = "All", labels = F,
+  folderName = "folderNameDefault", xRange = "All", labels = F,
   labelsSize = 1.2, subRegShape = NULL, subRegShpFolder = NULL,
   subRegShpFile = NULL, subRegCol = NULL, dirNameAppend = "",
   nameAppend = "", legendOutsideSingle = T,
@@ -23,14 +23,14 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   extendedShape = NULL, extendedShapeCol = NULL, expandPercent = 3,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 6, figHeight = 7, scaleRange = NULL,
-  paramsSelect = "All", indvScenarios = "All", GCMRCPSSPPol = F,
-  multiFacetCols = "scenarioRCP", multiFacetRows = "scenarioGCM",
-  legendOutsideMulti = T, legendPositionMulti = NULL,
-  legendTitleSizeMulti = NULL, legendTextSizeAnim = NULL,
-  legendTextSizeMulti = NULL, refGCM = NULL, refRCP = NULL,
-  chosenRefMeanYears = NULL, mapTitleSize = 0.5,
-  facetLabelSizeMulti = 3, numeric2Cat_list = NULL, diffOn = F,
-  frameShow = T)
+  paramsSelect = "All", indvScenarios = "All", scensSelect = "All",
+  GCMRCPSSPPol = F, multiFacetCols = "scenarioRCP",
+  multiFacetRows = "scenarioGCM", legendOutsideMulti = T,
+  legendPositionMulti = NULL, legendTitleSizeMulti = NULL,
+  legendTextSizeAnim = NULL, legendTextSizeMulti = NULL,
+  refGCM = NULL, refRCP = NULL, chosenRefMeanYears = NULL,
+  mapTitleSize = 0.5, facetLabelSizeMulti = 3,
+  numeric2Cat_list = NULL, diffOn = F, frameShow = T)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -39,7 +39,7 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{dirOutputs}{Default = paste(getwd(),"/outputs",sep=""),}
 
-\item{folderName}{Default="mapOutputs",}
+\item{folderName}{Default ="folderNameDefault",}
 
 \item{xRange}{Default ="All",}
 
@@ -123,7 +123,9 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{paramsSelect}{Default ="All"}
 
-\item{indvScenarios}{Default ="All",}
+\item{indvScenarios}{Default ="All", If only want to run single scenarios without comparing with others}
+
+\item{scensSelect}{Default ="All", choose scenarios from data}
 
 \item{GCMRCPSSPPol}{Default = F,}
 

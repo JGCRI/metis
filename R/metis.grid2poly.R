@@ -12,6 +12,7 @@
 #' @param subRegType  Default="subRegType". Eg. "states", "basins" etc.
 #' @param aggType  Default=NULL. Aggregation method to be used. Either "vol" or "depth" dependening on the type of data provided.
 #' @param dirOutputs  Default=paste(getwd(),"/outputs",sep  Default=""),
+#' @param folderName Default = NULL
 #' @param nameAppend  Default="",
 #' @param labelsSize Default =1.2. Label size for the region names for the gridoverlay plot.
 #' @param paramsSelect Default ="All"
@@ -27,6 +28,7 @@ metis.grid2poly<- function(grid=NULL,
                            subRegType="subRegType",
                            aggType=NULL,
                            dirOutputs=paste(getwd(),"/outputs",sep=""),
+                           folderName = NULL,
                            nameAppend="",
                            labelsSize=1.2,
                            paramsSelect="All",
@@ -198,7 +200,13 @@ metis.grid2poly<- function(grid=NULL,
 
   if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
   if (!dir.exists(paste(dirOutputs, "/Grid2Poly", sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly", sep = ""))}
-  dir=paste(dirOutputs, "/Grid2Poly",sep = "")
+  if(!is.null(folderName)){
+  if (!dir.exists(paste(dirOutputs, "/Grid2Poly/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly/",folderName, sep = ""))}
+  dir=paste(dirOutputs, "/Grid2Poly/",folderName,sep = "")} else {
+    if (!dir.exists(paste(dirOutputs, "/Grid2Poly", sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly", sep = ""))}
+    dir=paste(dirOutputs, "/Grid2Poly",sep = "")
+  }
+
 
   # Delete temporary grid folder
   if (dir.exists(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))){unlink(paste(dirOutputs, "/Grid2Poly/temp", sep = ""),recursive = T)}
@@ -477,13 +485,13 @@ metis.grid2poly<- function(grid=NULL,
      data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","value","subRegion","subRegType","region")[
                              c("scenario","param","units","class","value","subRegion","subRegType","region") %in% names(poly)])%>%
                            dplyr::mutate(value=0,x=2015)%>%unique,
-                         file = paste(dirOutputs, "/Grid2Poly/subReg_grid2poly_template_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
+                         file = paste(dir, "/subReg_grid2poly_template_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
       data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","value","subRegion","subRegType","region","classPalette")[
                              c("scenario","param","units","class","value","subRegion","subRegType","region","classPalette") %in% names(poly)]),
-                              file = paste(dirOutputs, "/Grid2Poly/subReg_grid2poly_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
+                              file = paste(dir, "/subReg_grid2poly_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
 
-    print(paste("Subregional Polygon template .csv files written to: ",dirOutputs, "/Grid2Poly/subReg_grid2poly_template",nameAppend,".csv", sep = ""))
-    print(paste("Subregional Polygon data .csv files written to: ",dirOutputs, "/Grid2Poly/subReg_grid2poly_",subRegType,nameAppend,".csv", sep = ""))
+    print(paste("Subregional Polygon template .csv files written to: ",dir, "/subReg_grid2poly_template",nameAppend,".csv", sep = ""))
+    print(paste("Subregional Polygon data .csv files written to: ",dir, "/subReg_grid2poly_",subRegType,nameAppend,".csv", sep = ""))
 
   }else{print("Polygon data has 0 rows")}
 
@@ -493,7 +501,7 @@ metis.grid2poly<- function(grid=NULL,
   if(length(list.files(paste(dirOutputs, "/Grid2Poly/temp", sep = "")))>0){
 
     #gridCroppedCompiled <- tibble::tibble()
-    grid_fnameComp<-paste(dirOutputs, "/Grid2Poly/gridCropped_",subRegType,nameAppend,".csv", sep = "")
+    grid_fnameComp<-paste(dir, "/gridCropped_",subRegType,nameAppend,".csv", sep = "")
 
     gridTempX <- tibble::tibble()
     for (file_i in list.files(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))){

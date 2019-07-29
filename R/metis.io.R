@@ -10,6 +10,8 @@
 #' @param figHeight Default = 7,
 #' @param sankeyLabelAbsPlots Default = 1
 #' @param combSubRegionPlots Default = 1
+#' @param folderName Default ="folderNameDefault"
+#' @param plotSankeys Default = T
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @export
@@ -23,7 +25,9 @@ metis.io<-function(ioTable0 = NULL,
                    figWidth = 9,
                    figHeight = 7,
                    sankeyLabelAbsPlots=1,
-                   combSubRegionPlots=1
+                   combSubRegionPlots=1,
+                   folderName="folderNameDefault",
+                   plotSankeys=T
                         ){
 
   # ioTable0 = NULL
@@ -34,6 +38,7 @@ metis.io<-function(ioTable0 = NULL,
   # figWidth = 9
   # figHeight = 7
   # sankeyLabelAbsPlots=1
+  # folderName="folderNameDefault"
 
 #----------------
 # Defaults:
@@ -104,6 +109,8 @@ if (!dir.exists(dirOutputs)){
   dir.create(dirOutputs)}
 if (!dir.exists(paste(dirOutputs, "/IO", sep = ""))){
   dir.create(paste(dirOutputs, "/IO", sep = ""))}
+  if (!dir.exists(paste(dirOutputs, "/IO/",folderName, sep = ""))){
+    dir.create(paste(dirOutputs, "/IO/",folderName, sep = ""))}
 
 
 #----------------
@@ -123,18 +130,43 @@ NULL -> ioTable -> A -> year -> Year -> YEAR -> supplySubSector -> supplySector 
 # Small Internal Functions
 # -----------------
 
-addMissing<-function(data){
-  if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
-  if(!"x"%in%names(data)){if("year"%in%names(data)){data<-data%>%dplyr::mutate(x=year)%>%dplyr::select(-year)}else{
-    if("Year"%in%names(data)){data<-data%>%dplyr::mutate(x=Year)%>%dplyr::select(-Year)}else{
-      if("YEAR"%in%names(data)){data<-data%>%dplyr::mutate(x=YEAR)%>%dplyr::select(-YEAR)}else{
-      data<-data%>%dplyr::mutate(x=000)}}}}
-  if(!"region"%in%names(data)){data<-data%>%dplyr::mutate(region="region")}
-  if(!"subRegion"%in%names(data)){data<-data%>%dplyr::mutate(subRegion="subRegion")}
-  if(!"units"%in%names(data)){data<-data%>%dplyr::mutate(units="units")}
-  if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}
-  return(data)
-}
+  addMissing<-function(data){
+    if(!any(grepl("\\<scenario\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenario="scenario")}else{
+      data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenario\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
+    if(!any(grepl("\\<scenarios\\>",names(data),ignore.case = T))){}else{
+      data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenarios\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
+    if(!"x"%in%names(data)){if("year"%in%names(data)){data<-data%>%dplyr::mutate(x=year)%>%dplyr::select(-year)}else{
+      if("Year"%in%names(data)){data<-data%>%dplyr::mutate(x=Year)%>%dplyr::select(-Year)}else{
+        if("YEAR"%in%names(data)){data<-data%>%dplyr::mutate(x=YEAR)%>%dplyr::select(-YEAR)}else{
+          data<-data%>%dplyr::mutate(x=000)}}}}
+    if(!any(grepl("\\<unit\\>",names(data),ignore.case = T))){}else{
+      data <- data %>% dplyr::rename(!!"units" := (names(data)[grepl("\\<unit\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(units=dplyr::case_when(is.na(units)~"units",TRUE~units))}
+    if(!any(grepl("\\<units\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(units="units")}else{
+      data <- data %>% dplyr::rename(!!"units" := (names(data)[grepl("\\<units\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(units=dplyr::case_when(is.na(units)~"units",TRUE~units))}
+    if(!any(grepl("\\<region\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(region="region")}else{
+      data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<region\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
+    if(!any(grepl("\\<regions\\>",names(data),ignore.case = T))){}else{
+      data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<regions\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
+    if(!any(grepl("\\<subregion\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(subRegion="subRegion")}else{
+      data <- data %>% dplyr::rename(!!"subRegion" := (names(data)[grepl("\\<subregion\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(subRegion=dplyr::case_when(is.na(subRegion)~"subRegion",TRUE~subRegion))}
+    if(!any(grepl("\\<subregions\\>",names(data),ignore.case = T))){}else{
+      data <- data %>% dplyr::rename(!!"subRegion" := (names(data)[grepl("\\<subRegions\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(subRegion=dplyr::case_when(is.na(region)~"subRegion",TRUE~region))}
+    if(!any(grepl("\\<param\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(param="param")}else{
+      data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<param\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(param=dplyr::case_when(is.na(param)~"param",TRUE~param))}
+    if(!any(grepl("\\<params\\>",names(data),ignore.case = T))){}else{
+      data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<param\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(param=dplyr::case_when(is.na(param)~"params",TRUE~param))}
+    return(data)
+  }
 
 addedColumns <- names(addMissing(data.frame())); addedColumns
 
@@ -146,15 +178,27 @@ nonFlowColsAll <- c("supplySubSector","supplySector",nonFlowCols,addedColumns); 
 # Check Columns
 # ------------------
 
-if(!is.null(ioTable0)){ioTable <- addMissing(ioTable0)}
-if(!is.null(A0)){ A <- addMissing(A0)}
+if(!is.null(ioTable0)){ioTable <- addMissing(ioTable0); ioTable}
+if(!is.null(A0)){ A <- addMissing(A0); A}
 
 
 if(!is.null(ioTable)){
 
-  for (column_i in c("supplySubSector","supplySector")){
-    if(!any(grepl(column_i,colnames(ioTable)))){
-      stop(print(paste("Column names in ioTable0: ",paste(colnames(ioTable),collapse=", ")," must include ",column_i,".",sep="")))}}
+
+  if(!any(grepl("\\<supplysubsector\\>",names(ioTable),ignore.case = T)) & !any(grepl("\\<supplysector\\>",names(ioTable),ignore.case = T))){
+    stop(print(paste("Column names in ioTable: ",paste(colnames(ioTable),collapse=", "),
+                     " must include either atleast one of supplySector or supplySubSector.",sep="")))
+  } else {
+    if(any(grepl("\\<supplysubsector\\>",names(ioTable),ignore.case = T)) & !any(grepl("\\<supplysector\\>",names(ioTable),ignore.case = T))){
+      ioTable <- ioTable %>% dplyr::rename(!!"supplySubSector" := (names(ioTable)[grepl("\\<supplysubsector\\>",names(ioTable),ignore.case = T)])[1])
+      ioTable<-ioTable%>%dplyr::mutate(supplySector=supplySubSector)
+    }
+    if(!any(grepl("\\<supplysubsector\\>",names(ioTable),ignore.case = T)) & any(grepl("\\<supplysector\\>",names(ioTable),ignore.case = T))){
+      ioTable <- ioTable %>% dplyr::rename(!!"supplySector" := (names(ioTable)[grepl("\\<supplysector\\>",names(ioTable),ignore.case = T)])[1])
+      ioTable<-ioTable%>%dplyr::mutate(supplySubSector=supplySector)
+    }
+  }
+
 
   # Check that each supplySector has a total (supplySector_all category. If not add it and sum the supplySubSector values
   for (sectorTotal_i in paste(unique(ioTable$supplySector),"_all",sep="")){
@@ -174,30 +218,9 @@ if(!is.null(ioTable)){
       ioTable <- ioTable %>%
         dplyr::bind_rows(sectorTotalTemp) %>%
         dplyr::distinct(); ioTable
-    }
-
-    if(!is.null(A)){
-    if(!sectorTotal_i %in% unique(A$supplySubSector)){
-      colsToEdit <- names(A)[!names(A) %in% c(addedColumns,"supplySector","supplySubSector")]
-
-      # Create empty supplySector_all column and sum across supplySubSectors to get total value
-      sectorTotalTemp <- A %>%
-        dplyr::filter(supplySector == gsub("_all","",sectorTotal_i)) %>%
-        dplyr::group_by(supplySector,scenario,region,subRegion,x) %>%
-        dplyr::mutate_at(dplyr::vars(colsToEdit),function(x) 0) %>%
-        dplyr::mutate(supplySubSector=sectorTotal_i,
-                      !!sectorTotal_i := 0) %>%
-        dplyr::distinct() %>%
-        dplyr::ungroup();sectorTotalTemp
-
-      # Bind to main iotable
-      A <- A %>%
-        dplyr::bind_rows(sectorTotalTemp) %>%
-        dplyr::mutate_at(dplyr::vars(!!sectorTotal_i),dplyr::funs(replace(., is.na(.), 0)))%>%
-        dplyr::distinct(); A
     }}
-  }
 
+# Get Sums for Totals
 for (column_i in c("export","adjustedDemand","cap","capNew","capOrig","surplus")){
   if(!any(grepl(column_i,colnames(ioTable)))){
     print(paste(column_i,"added as new column in ioTable0.",sep=""))
@@ -216,15 +239,47 @@ for (column_i in c("export","adjustedDemand","cap","capNew","capOrig","surplus")
 
 if(!is.null(A)){
 
-  for (column_i in c("supplySubSector","supplySector")){
-    if(!any(grepl(column_i,colnames(A)))){
-      stop(print(paste("Column names in A0: ",paste(colnames(A),collapse=", ")," must include ",column_i,".",sep="")))}}
+  if(!any(grepl("\\<supplysubsector\\>",names(A),ignore.case = T)) & !any(grepl("\\<supplysector\\>",names(A),ignore.case = T))){
+    stop(print(paste("Column names in A: ",paste(colnames(A),collapse=", "),
+                     " must include either atleast one of supplySector or supplySubSector.",sep="")))
+  } else {
+    if(any(grepl("\\<supplysubsector\\>",names(A),ignore.case = T)) & !any(grepl("\\<supplysector\\>",names(A),ignore.case = T))){
+      A <- A %>% dplyr::rename(!!"supplySubSector" := (names(A)[grepl("\\<supplysubsector\\>",names(A),ignore.case = T)])[1])
+      A<-A%>%dplyr::mutate(supplySector=supplySubSector)
+    }
+    if(!any(grepl("\\<supplysubsector\\>",names(A),ignore.case = T)) & any(grepl("\\<supplysector\\>",names(A),ignore.case = T))){
+      A <- A %>% dplyr::rename(!!"supplySector" := (names(A)[grepl("\\<supplysector\\>",names(A),ignore.case = T)])[1])
+      A<-A%>%dplyr::mutate(supplySubSector=supplySector)
+    }
+  }
+
+  # for (sectorTotal_i in paste(unique(A$supplySector),"_all",sep="")){
+  #   if(!is.null(A)){
+  #     if(!sectorTotal_i %in% unique(A$supplySubSector)){
+  #       colsToEdit <- names(A)[!names(A) %in% c(addedColumns,"supplySector","supplySubSector")]
+  #
+  #       # Create empty supplySector_all column and sum across supplySubSectors to get total value
+  #       sectorTotalTemp <- A %>%
+  #         dplyr::filter(supplySector == gsub("_all","",sectorTotal_i)) %>%
+  #         dplyr::group_by(supplySector,scenario,region,subRegion,x) %>%
+  #         dplyr::mutate_at(dplyr::vars(colsToEdit),function(x) 0) %>%
+  #         dplyr::mutate(supplySubSector=sectorTotal_i,
+  #                       !!sectorTotal_i := 0) %>%
+  #         dplyr::distinct() %>%
+  #         dplyr::ungroup();sectorTotalTemp
+  #
+  #       # Bind to main iotable
+  #       A <- A %>%
+  #         dplyr::bind_rows(sectorTotalTemp) %>%
+  #         dplyr::mutate_at(dplyr::vars(!!sectorTotal_i),dplyr::funs(replace(., is.na(.), 0)))%>%
+  #         dplyr::distinct(); A
+  #     }}
+  }
+
 
   # Make sure supplSubSector column names are the same as the row names as this needs to be a square matrix
   if(any(!unique(A$supplySubSector) %in% names(A))){
     stop(print(paste("All suppluySubSectors in A0 must be represented as columns for a square intensity matrix.",sep="")))}
-
-}
 
 
 if(!is.null(A) & !is.null(ioTable)) {
@@ -244,7 +299,8 @@ if(!is.null(supplySubSector_default0)){
 
   # Check that each supplySector has a total (supplySector_all category. If not add it and sum the supplySubSector values
 
-  for (sectorTotal_i in paste(unique(ioTable0$supplySector),"_all",sep="")){
+
+  for (sectorTotal_i in paste(unique(ioTable$supplySector),"_all",sep="")){
 
     if(!sectorTotal_i %in% unique(supplySubSector_default0$supplySubSector)){
 
@@ -288,7 +344,7 @@ supplySubSector_default_ioTable0 <- ioTable %>%
   dplyr::select(supplySubSector,supplySector) %>%
   dplyr::distinct() %>%
   dplyr::filter(!supplySubSector %in% unique(supplySubSector_default_subSet$supplySubSector)) %>%
-  dplyr::mutate(percentDistribution=NA); supplySubSector_default_ioTable0
+  dplyr::mutate(percentDistribution=NA_real_); supplySubSector_default_ioTable0
 
 supplySubSector_default_completeNA <- supplySubSector_default_ioTable0 %>%
   dplyr::bind_rows(supplySubSector_default_subSet) %>%
@@ -296,7 +352,6 @@ supplySubSector_default_completeNA <- supplySubSector_default_ioTable0 %>%
   dplyr::select(-supplySubSector_supplySector); supplySubSector_default_completeNA
 
 # Distribute Remaining categories evenly
-
 supplySubSector_default <- supplySubSector_default_completeNA %>%
   dplyr::filter(!grepl("all",supplySubSector)) %>%
   dplyr::group_by(supplySector) %>%
@@ -317,17 +372,30 @@ supplySubSector_default <- supplySubSector_default_completeNA %>%
                                                 TRUE~percentDistribution)); supplySubSector_default %>% as.data.frame()
 
 
+#------------------------------------------
+# Update Defaults A
+#---------------------------------------
 
-if(!is.null(A_default0)){
-  if(!any(grepl("supplySubSector",colnames(A_default0)))){
-    stop(print(paste("Column names in A_default0: ",paste(colnames(A_default0),collapse=", ")," must include 'supplySubSector'.",sep="")))}
+# Subset Defaults A
+A_default <- A_default0 %>%dplyr::filter(supplySubSector %in% unique(A$supplySubSector)); A_default%>%as.data.frame()
+if(nrow(A_default) < 1){ print("No supplySubSectors in A default match given supplySubSectors. Setting A default to NULL.")
+  A_default <- NULL}
 
-  if(!any(grepl("supplySector",colnames(A_default0)))){
-    stop(print(paste("Column names in A_default0: ",paste(colnames(A_default0),collapse=", ")," must include 'supplySector'.",sep="")))}
+#------------------------------------------
+# Check Defaults
+#---------------------------------------
+
+
+if(!is.null(A_default)){
+  if(!any(grepl("supplySubSector",colnames(A_default)))){
+    stop(print(paste("Column names in A_default: ",paste(colnames(A_default),collapse=", ")," must include 'supplySubSector'.",sep="")))}
+
+  if(!any(grepl("supplySector",colnames(A_default)))){
+    stop(print(paste("Column names in A_default: ",paste(colnames(A_default),collapse=", ")," must include 'supplySector'.",sep="")))}
 
   # Make sure supplySubSector column names are the same as the row names as this needs to be a square matrix
-  if(any(!unique(A_default0$supplySubSector) %in% names(A_default0))){
-    stop(print(paste("All suppluySubSectors in A_default0 must be represented as columns for a square intensity matrix.",sep="")))}
+  if(any(!unique(A_default$supplySubSector) %in% names(A_default))){
+    stop(print(paste("All suppluySubSectors in A_default must be represented as columns for a square intensity matrix.",sep="")))}
 
 }
 
@@ -340,10 +408,10 @@ if(!is.null(supplySubSector_default)){
 }
 
 
-# Check that supplySubSector_default and A_default0 have all supplySubSectors listed in A0 and ioTable
-if(!is.null(A) & !is.null(A_default0)) {
-  if(!any(unique(A$supplySubSector) %in% unique(A_default0$supplySubSector))){
-    stop(print(paste("supplySubSector names in A0 are different from supplySubSector names in A_default0.",sep="")))}
+# Check that supplySubSector_default and A_default have all supplySubSectors listed in A0 and ioTable
+if(!is.null(A) & !is.null(A_default)) {
+  if(!any(unique(A$supplySubSector) %in% unique(A_default$supplySubSector))){
+    stop(print(paste("supplySubSector names in A0 are different from supplySubSector names in A_default.",sep="")))}
 }
 
 if(!is.null(ioTable) & !is.null(supplySubSector_default)) {
@@ -363,7 +431,7 @@ if(!is.null(supplySubSector_default)){
 for (scenario_i in scenarios[!scenarios %in% unique(supplySubSector_default$scenario)]){
   for (region_i in regions[!regions %in% unique(supplySubSector_default$region)]){
     for (subRegion_i in subRegions[!subRegions %in% unique(supplySubSector_default$subRegions)]){
-      for (year_i in years[!years %in% unique(supplySubSector_default$years)]){
+      for (year_i in years[!years %in% unique(supplySubSector_default$x)]){
 
         supplySubSector_default_temp <- supplySubSector_default_temp  %>%
           dplyr::bind_rows(supplySubSector_default %>%
@@ -377,15 +445,15 @@ for (scenario_i in scenarios[!scenarios %in% unique(supplySubSector_default$scen
 
 A_temp <- data.frame()
 
-if(!is.null(A_default0)){
+if(!is.null(A_default)){
 
-for (scenario_i in scenarios[!scenarios %in% unique(A_default0$scenario)]){
-  for (region_i in regions[!regions %in% unique(A_default0$region)]){
-    for (subRegion_i in subRegions[!subRegions %in% unique(A_default0$subRegions)]){
-      for (year_i in years[!years %in% unique(A_default0$years)]){
+for (scenario_i in scenarios[!scenarios %in% unique(A_default$scenario)]){
+  for (region_i in regions[!regions %in% unique(A_default$region)]){
+    for (subRegion_i in subRegions[!subRegions %in% unique(A_default$subRegions)]){
+      for (year_i in years[!years %in% unique(A_default$x)]){
 
         A_temp <- A_temp %>%
-          dplyr::bind_rows(A_default0 %>%
+          dplyr::bind_rows(A_default %>%
                       dplyr::mutate(scenario = scenario_i,
                                     region = region_i,
                                     subRegion = subRegion_i,
@@ -739,16 +807,46 @@ if(useIntensity==1){
 
   print("Using A0 intensity matrix provided to recaclulate Z and new totals.")
 
-  Ai <- as.matrix(A0i%>%dplyr::select(c(A0i$supplySubSector))); Ai
-  Li <- solve(diag(nrow(Ai))-Ai); Li
-
   # Calculate nonNexusTotals
-  colsRemove <- names(ioTable_adjustCap)[names(ioTable_adjustCap) %in% c(nonFlowCols,addedColumns,unique(ioTable_adjustCap$supplySubSector))];
+  ioTable_adjustCap_NoTotNoAdj <- ioTable_adjustCap %>%
+    dplyr::filter(!grepl("_adjusted|_all",supplySubSector)); ioTable_adjustCap_NoTotNoAdj
+
+  ioTable_adjustCap_Adj <- ioTable_adjustCap %>%
+    dplyr::filter(grepl("_adjusted",supplySubSector)); ioTable_adjustCap_Adj
+
+  colsRemove <- names(ioTable_adjustCap_NoTotNoAdj)[names(ioTable_adjustCap_NoTotNoAdj) %in% c(nonFlowCols,addedColumns,unique(ioTable_adjustCap_NoTotNoAdj$supplySubSector))];
   colsRemove
-  Di <- ioTable_adjustCap %>%
+  Di <- ioTable_adjustCap_NoTotNoAdj %>%
     dplyr::select(-colsRemove) %>%
     dplyr::mutate(otherTotal=rowSums(dplyr::select(.,-supplySubSector,-supplySector),na.rm=T)); Di
 
+  colsRemove1<-colsRemove[!colsRemove %in% addedColumns]
+  ioTable_adjustCap_Adj_otherTotals <- ioTable_adjustCap_Adj %>%
+    dplyr::select(-colsRemove1) %>%
+    dplyr::mutate(otherTotal=rowSums(dplyr::select(.,-supplySubSector,-supplySector,-scenario,-x,-units,-region,-subRegion,-param),na.rm=T));
+  ioTable_adjustCap_Adj_otherTotals %>% as.data.frame()
+
+  ioTable_adjustCap_Adj_nexusTotals <- ioTable_adjustCap_Adj %>%
+    dplyr::select(c(supplySubSector,supplySector,addedColumns,unique(ioTable_adjustCap_NoTotNoAdj$supplySubSector))) %>%
+    dplyr::mutate(nexusTotal=rowSums(dplyr::select(.,-supplySubSector,-supplySector,-scenario,-x,-units,-region,-subRegion,-param),na.rm=T));
+  ioTable_adjustCap_Adj_nexusTotals %>% as.data.frame()
+
+  ioTable_adjustCap_Adj_totals <- ioTable_adjustCap_Adj_otherTotals %>%
+    dplyr::left_join(ioTable_adjustCap_Adj_nexusTotals) %>%
+    dplyr::left_join(ioTable_adjustCap_Adj %>% dplyr::select(nonFlowColsAll,-total))%>%
+    dplyr::mutate(total=otherTotal+nexusTotal);
+  ioTable_adjustCap_Adj_totals %>% as.data.frame()
+
+  # Recalculate Z using A provided
+  Ai <- as.matrix(A0i%>%dplyr::select(c(A0i$supplySubSector))); Ai
+  Li <- solve(diag(nrow(Ai))-Ai); Li
+
+  # Need to check what it means when Li becomes -ve. This is when Ai values go out of bounds.
+  if(any(Li<0)){
+    print("A0 value provided is out of bounds and results in negative values. Ignoring AO provided.")
+    print("Recalculating A based on flows provided in ioTable0.")
+    ioTable_adjustIntensity <- ioTable_adjustCap
+  }else{
   # Calculate New Total based on the intensities and existing other demands
   Xi <- tibble::as_tibble(Li %*% as.matrix(Di$otherTotal)); Xi
   Xi <- dplyr::bind_cols(Di%>%dplyr::select(supplySubSector),Xi)
@@ -762,23 +860,50 @@ if(useIntensity==1){
   dplyr::mutate(nexusTotal=rowSums(Zi %>% dplyr::select(-supplySubSector),na.rm=T)); Zi
 
   # Join nexus and other demands to get totals and recalculate new Cap needed
-  ZiCols <- names(Zi%>%dplyr::select(-supplySubSector))[names(Zi%>%dplyr::select(-supplySubSector)) %in% names(ioTable_adjustCap)]
-  DiCols <- names(Di%>%dplyr::select(-supplySubSector))[names(Di%>%dplyr::select(-supplySubSector)) %in% names(ioTable_adjustCap)]
+  ZiCols <- names(Zi%>%dplyr::select(-supplySubSector))[names(Zi%>%dplyr::select(-supplySubSector)) %in% names(ioTable_adjustCap_NoTotNoAdj)]; ZiCols
+  DiCols <- names(Di%>%dplyr::select(-supplySubSector))[names(Di%>%dplyr::select(-supplySubSector)) %in% names(ioTable_adjustCap_NoTotNoAdj)]; DiCols
 
-  ioTable_adjustIntensity <- ioTable_adjustCap %>%
+  ioTable_adjustCap_AdjNew <- ioTable_adjustCap_NoTotNoAdj %>%
     dplyr::select(-ZiCols,-DiCols) %>%
     dplyr::left_join(Zi) %>%
     dplyr::left_join(Di) %>%
+    dplyr::bind_rows(ioTable_adjustCap_Adj_totals); ioTable_adjustCap_AdjNew
+
+  # Check that each supplySector has a total (supplySector_all category. If not add it and sum the supplySubSector values
+  for (sectorTotal_i in paste(unique(ioTable_adjustCap_AdjNew$supplySector),"_all",sep="")){
+    if(!sectorTotal_i %in% unique(ioTable_adjustCap_AdjNew$supplySubSector)){
+      colsToEdit <- names(ioTable_adjustCap_AdjNew)[!names(ioTable_adjustCap_AdjNew) %in% c(addedColumns,"supplySector","supplySubSector")]
+      # Create empty supplySector_all column and sum across supplySubSectors to get total value
+      sectorTotalTemp <- ioTable_adjustCap_AdjNew %>%
+        dplyr::filter(supplySector == gsub("_all","",sectorTotal_i)) %>%
+        dplyr::group_by(supplySector,scenario,region,subRegion,x) %>%
+        dplyr::mutate_at(dplyr::vars(colsToEdit),sum, na.rm=T) %>%
+        dplyr::select(-supplySubSector) %>%
+        dplyr::distinct() %>%
+        dplyr::mutate(supplySubSector=sectorTotal_i) %>%
+        dplyr::ungroup();sectorTotalTemp
+
+      # Bind to main iotable
+      ioTable_adjustCap_AdjNew <- ioTable_adjustCap_AdjNew %>%
+        dplyr::bind_rows(sectorTotalTemp) %>%
+        dplyr::distinct(); ioTable_adjustCap_AdjNew
+    }}
+
+  ioTable_adjustCap_AdjNew %>% as.data.frame()
+
+  ioTable_adjustIntensity <-ioTable_adjustCap_AdjNew %>%
     dplyr::mutate(total = nexusTotal + otherTotal,
                   capNew = dplyr::case_when(total > cap ~ (total-cap), TRUE~0),
                   cap = dplyr::case_when(total > cap ~ cap + capNew, TRUE~cap),
                   capOrig = cap - capNew) %>%
-    dplyr::select(-otherTotal,-nexusTotal)
+    dplyr::select(-otherTotal,-nexusTotal); ioTable_adjustIntensity
+}
 
 } else {print("No A intensity matrix provided. Skipping calculation using A.")}
 
 } else {
   ioTable_adjustIntensity <- ioTable_adjustCap
+  print("useIntensity is set to 0 or has not been assigned. Ignoring A0 provided and using flow data provided.")
 }
 
 ioTable_adjustIntensity %>% as.data.frame()
@@ -837,12 +962,16 @@ ioTbl_Output = ioTbl_Output %>% dplyr::bind_rows(ioTable_complete %>% tibble::as
   } # close loop subRegion
 } # close loop year
 
-    sol_list<-list(A_Output=A_Output,
-                   L_Output=L_Output,
-                   ioTbl_Output=ioTbl_Output)
+    sol_list<-list(A=A_Output %>% dplyr::filter(!grepl("_all",supplySubSector)) %>% dplyr::select(-dplyr::contains("_all")),
+                   L=L_Output %>% dplyr::filter(!grepl("_all",supplySubSector)) %>% dplyr::select(-dplyr::contains("_all")),
+                   ioTbl=ioTbl_Output)
 
   sol_list<-sol_list[sapply(sol_list, function(x) dim(x)[1]) > 0]
 
+
+  data.table::fwrite(ioTbl_Output,
+                   file = paste(dirOutputs,"/IO/",folderName,"/ioTable.csv", sep = ""),row.names = F)
+  print(paste("ioTbl_Output saved as ", paste(dirOutputs,"/IO/",folderName,"/ioTable.csv", sep = ""),sep=""))
 
 
 #-------------------------------------------------------------------------------------------------------
@@ -863,25 +992,25 @@ ioTbl_Output = ioTbl_Output %>% dplyr::bind_rows(ioTable_complete %>% tibble::as
     for(scenario_i in scenarios){
         # for(year_i in years){
 
-      if (!dir.exists(paste(dirOutputs, "/IO/",region_i, sep = ""))){
-        dir.create(paste(dirOutputs, "/IO/",region_i,  sep = ""))}
-      if (!dir.exists(paste(dirOutputs, "/IO/",region_i,"/",scenario_i, sep = ""))){
-        dir.create(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,  sep = ""))}
+      if (!dir.exists(paste(dirOutputs, "/IO/",folderName,"/",region_i, sep = ""))){
+        dir.create(paste(dirOutputs, "/IO/",folderName,"/",region_i,  sep = ""))}
+      if (!dir.exists(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i, sep = ""))){
+        dir.create(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,  sep = ""))}
 
 
-      if(length(unique((sol_list$ioTbl_Output)$subRegion))>1){
+      if(length(unique((sol_list$ioTbl)$subRegion))>1){
 
         if(combSubRegionPlots==1){
 
-          if (!dir.exists(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg", sep = ""))){
-            dir.create(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",  sep = ""))}
+          if (!dir.exists(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubReg", sep = ""))){
+            dir.create(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubReg",  sep = ""))}
 
 
 #--------------
 # Combined Subregions
 #----------
 
-dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
+dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
 
 #---------------------
@@ -891,19 +1020,18 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
   # A Intensity Matrix
 
-  A_mat <- sol_list$A_Output %>%
+  A_mat <- sol_list$A %>%
     dplyr::filter(region==region_i,scenario==scenario_i); A_mat
 
   A_matx <- A_mat %>%
     tidyr::gather(-c("supplySubSector",addedColumns[addedColumns %in% names(A_mat)]),key="sectorTo",value="value") %>%
     dplyr::rename (sectorFrom=supplySubSector) %>%
     dplyr::arrange(sectorFrom) %>%
-    dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)); A_matx
+    dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value))%>%
+    dplyr::filter(!grepl("_all",sectorFrom) & !grepl("_all",sectorTo)); A_matx
 
   sectorFromOrder <- sort(unique(A_matx$sectorFrom)); sectorFromOrder
   sectorToOrder <-  sort(unique(A_matx$sectorTo)); sectorToOrder
-
-  data.table::fwrite(A_matx,file=paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",region_i,"_",scenario_i,"_Amatrix.csv",sep=""))
 
 
   if(nrow(A_matx)>0){
@@ -914,7 +1042,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
   metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
               xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
-              removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+              removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png")
 
@@ -924,14 +1052,25 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
   # figHeight=figHeight_ix;pdfpng="png"
 
+  data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+  print(paste("A_matx saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
   }
+
+  A_matx <- A_mat %>%
+    tidyr::gather(-c("supplySubSector",addedColumns[addedColumns %in% names(A_mat)]),key="sectorTo",value="value") %>%
+    dplyr::rename (sectorFrom=supplySubSector) %>%
+    dplyr::arrange(sectorFrom) %>%
+    dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)); A_matx
+
+  sectorFromOrder <- sort(unique(A_matx$sectorFrom)); sectorFromOrder
+  sectorToOrder <-  sort(unique(A_matx$sectorTo)); sectorToOrder
 
 
   A_matxAgg <- A_matx %>% dplyr::filter(grepl("_all",sectorFrom) & grepl("_all",sectorTo)); A_matxAgg %>% as.data.frame()
   sectorFromOrder <- sort(unique(A_matxAgg $sectorFrom)); sectorFromOrder
   sectorToOrder <-  sort(unique(A_matxAgg $sectorTo)); sectorToOrder
 
-  data.table::fwrite(A_matxAgg,file=paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",region_i,"_",scenario_i,"_Amatrix_AggDemands.csv",sep=""))
 
   if(nrow(A_matxAgg )>0){
 
@@ -941,9 +1080,12 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
     metis.chart(data=plotx , chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
                 xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
-                removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                 figHeight=figHeight_ix,pdfpng="png")
+
+    data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+    print(paste("A_matxAgg saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
 
   }
 
@@ -951,7 +1093,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
   # ioTable normalized
 
-  sol<- sol_list$ioTbl_Output %>%
+  sol<- sol_list$ioTbl %>%
     dplyr::filter(scenario==scenario_i,region==region_i); sol
 
 
@@ -973,7 +1115,8 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     dplyr::rename (sectorFrom=supplySubSector) %>%
     dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
     dplyr::arrange(sectorFrom) %>%
-    dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)); df_Mnx
+    dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value))%>%
+    dplyr::filter(!grepl("_all",sectorFrom)); df_Mnx
 
   sectorFromOrder <- sort(unique(df_Mnx$sectorFrom)); sectorFromOrder
   sectorToOrder <-
@@ -981,7 +1124,6 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       sort(unique(df_Mnx$sectorTo)[!unique(c(df_Mnx$sectorTo)) %in% c(unique(sol$supplySubSector),"export",nonFlowCols)]),
       "export",nonFlowCols); sectorToOrder
 
-  data.table::fwrite(df_Mnx,file=paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",region_i,"_",scenario_i,"_IO.csv",sep=""))
 
   # ioTable normalized bubbles
   if(nrow(df_Mnx)>0){
@@ -1006,8 +1148,24 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png")
+
+  data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+  print(paste("solx saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
   }
   }
+
+  df_Mnx <- df_Mn %>%
+    tidyr::gather(-c("supplySubSector","supplySector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
+    dplyr::rename (sectorFrom=supplySubSector) %>%
+    dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
+    dplyr::arrange(sectorFrom) %>%
+    dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)); df_Mnx
+
+  sectorFromOrder <- sort(unique(df_Mnx$sectorFrom)); sectorFromOrder
+  sectorToOrder <-
+    c(sort(unique(df_Mnx$sectorTo)[unique(df_Mnx$sectorTo) %in% unique(sol$supplySubSector)]),
+      sort(unique(df_Mnx$sectorTo)[!unique(c(df_Mnx$sectorTo)) %in% c(unique(sol$supplySubSector),"export",nonFlowCols)]),
+      "export",nonFlowCols); sectorToOrder
 
 
   df_Mnx_AggDem <- df_Mnx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
@@ -1023,7 +1181,6 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       sort(unique(df_Mnx_AggDem$sectorTo)[!unique(c(df_Mnx_AggDem$sectorTo)) %in% c(unique(df_Mnx_AggDem$supplySubSector),"export",nonFlowCols)]),
       "export",nonFlowCols); sectorToOrder
 
-  data.table::fwrite(df_Mnx_AggDem,file=paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",region_i,"_",scenario_i,"_IO_AggDemands.csv",sep=""))
 
   # ioTable normalized bubbles
   if(nrow(df_Mnx_AggDem)>0){
@@ -1048,6 +1205,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
+
+      data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("solx_AggDem saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
     }}
 
 
@@ -1098,6 +1259,8 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   #-----------------
   # Sankey
   #--------------
+
+  if(plotSankeys==T){
 
   df <- sol %>%
     dplyr::select(-nonFlowCols); df
@@ -1155,6 +1318,9 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
+  data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+  print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
   # data=dfx_sankey; chartType="sankey"; xData="sectorTo"; yData="normValue"; sankeyGroupColor="supplySector";
   # classLabel="From"; class = "supplySector"; classPalette = "pal_sankey";
   # sankeyAxis1="fromLabel";sankeyAxis2="sectorTo";sankeyAxis1Label ="From";sankeyAxis2Label="To";
@@ -1204,6 +1370,8 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png")
 
+  data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+  print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
 
   # Sankey Aggregated to supply sectors and agg Demand
 
@@ -1247,6 +1415,8 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png",sankeyLabelsOn=sankeyLabelAbsPlots)
 
+  data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+  print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
 
 
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
@@ -1288,6 +1458,9 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png")
+
+  data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+  print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
 
   }
 
@@ -1346,6 +1519,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                 figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
+    data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+    print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
+
 
     dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
       dplyr::group_by(supplySector,region,subRegion,x) %>%
@@ -1383,6 +1560,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                 removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                 figHeight=figHeight_ix,pdfpng="png")
+
+    data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+    print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
 
 
     # SubSupply to Total Demands
@@ -1424,6 +1605,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
+  data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+  print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
+
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
     dplyr::group_by(supplySector,region,subRegion,x) %>%
     dplyr::mutate(normValue=value/sum(value)) %>%
@@ -1460,6 +1645,8 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png")
 
+  data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+  print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
 
 
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
@@ -1499,6 +1686,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png")
 
+  data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+  print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
+
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
     dplyr::group_by(supplySector,region,subRegion,x) %>%
     dplyr::mutate(normValue=value/sum(value)) %>%
@@ -1536,6 +1727,11 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
               figHeight=figHeight_ix,pdfpng="png")
 
+  data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+  print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
+  } # if(plotSankeys==T){
+
   }
     } # Close combSubRegionPlot
       } # Close if more than one subRegion loop
@@ -1547,10 +1743,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
   for(subRegion_i in subRegions){
 
 
-    if (!dir.exists(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",subRegion_i, sep = ""))){
-      dir.create(paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",subRegion_i,  sep = ""))}
+    if (!dir.exists(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/",subRegion_i, sep = ""))){
+      dir.create(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/",subRegion_i,  sep = ""))}
 
-    dir<- paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/",subRegion_i,  sep = "")
+    dir<- paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/",subRegion_i,  sep = "")
 
     #---------------------
     # sol_Output
@@ -1559,14 +1755,15 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
     # A Intensity Matrix
 
-    A_mat <- sol_list$A_Output %>%
+    A_mat <- sol_list$A %>%
       dplyr::filter(region==region_i, subRegion==subRegion_i,scenario==scenario_i); A_mat
 
     A_matx <- A_mat %>%
       tidyr::gather(-c("supplySubSector",addedColumns[addedColumns %in% names(A_mat)]),key="sectorTo",value="value") %>%
       dplyr::rename (sectorFrom=supplySubSector) %>%
       dplyr::arrange(sectorFrom) %>%
-      dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)); A_matx
+      dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)) %>%
+      dplyr::filter(!grepl("_all",sectorFrom) & !grepl("_all",sectorTo)); A_matx
 
     sectorFromOrder <- sort(unique(A_matx$sectorFrom)); sectorFromOrder
     sectorToOrder <-  sort(unique(A_matx$sectorTo)); sectorToOrder
@@ -1579,7 +1776,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
                   xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
-                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
 
@@ -1589,10 +1786,24 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
       # figHeight=figHeight_ix;pdfpng="png"
 
+      data.table::fwrite(A_matx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("A_matx saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
+
     }
 
+    A_matx <- A_mat %>%
+      tidyr::gather(-c("supplySubSector",addedColumns[addedColumns %in% names(A_mat)]),key="sectorTo",value="value") %>%
+      dplyr::rename (sectorFrom=supplySubSector) %>%
+      dplyr::arrange(sectorFrom) %>%
+      dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)) %>%
+      dplyr::filter(grepl("_all",sectorFrom) & grepl("_all",sectorTo)); A_matx
 
-    A_matxAgg <- A_matx %>% dplyr::filter(grepl("_all",sectorFrom) & grepl("_all",sectorTo)); A_matxAgg %>% as.data.frame()
+    sectorFromOrder <- sort(unique(A_matx$sectorFrom)); sectorFromOrder
+    sectorToOrder <-  sort(unique(A_matx$sectorTo)); sectorToOrder
+
+
+    A_matxAgg <- A_matx; A_matxAgg %>% as.data.frame()
     sectorFromOrder <- sort(unique(A_matxAgg $sectorFrom)); sectorFromOrder
     sectorToOrder <-  sort(unique(A_matxAgg $sectorTo)); sectorToOrder
 
@@ -1605,9 +1816,13 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="bubble", xData="sectorTo", yData="sectorFrom", classLabel="classLabel1",
                   xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
-                  removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
+                  removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
+
+      data.table::fwrite(A_matxAgg,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("A_matxAgg saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
 
     }
 
@@ -1615,7 +1830,7 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
     # ioTable normalized
 
-    sol<- sol_list$ioTbl_Output %>%
+    sol<- sol_list$ioTbl %>%
       dplyr::filter(scenario==scenario_i,region==region_i, subRegion==subRegion_i); sol
 
 
@@ -1637,7 +1852,8 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
       dplyr::rename (sectorFrom=supplySubSector) %>%
       dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
       dplyr::arrange(sectorFrom) %>%
-      dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)); df_Mnx
+      dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)) %>%
+      dplyr::ungroup() %>% dplyr::filter(!grepl("_all",sectorFrom)); df_Mnx
 
     sectorFromOrder <- sort(unique(df_Mnx$sectorFrom)); sectorFromOrder
     sectorToOrder <-
@@ -1668,6 +1884,9 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                     removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                     fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                     figHeight=figHeight_ix,pdfpng="png")
+
+        data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+        print(paste("solx saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
       }
     }
 
@@ -1708,8 +1927,25 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                     removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                     fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                     figHeight=figHeight_ix,pdfpng="png")
+
+        data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+        print(paste("solx_AggDem saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
       }}
 
+
+    df_Mnx <- df_Mn %>%
+      tidyr::gather(-c("supplySubSector","supplySector",addedColumns[addedColumns %in% names(df_Mn)]),key="sectorTo",value="value") %>%
+      dplyr::rename (sectorFrom=supplySubSector) %>%
+      dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
+      dplyr::arrange(sectorFrom) %>%
+      dplyr::filter(!is.nan(value),!is.infinite(value),value!=0, !is.na(value)); df_Mnx
+
+    sectorFromOrder <- sort(unique(df_Mnx$sectorFrom)); sectorFromOrder
+    sectorToOrder <-
+      c(sort(unique(df_Mnx$sectorTo)[unique(df_Mnx$sectorTo) %in% unique(sol$supplySubSector)]),
+        sort(unique(df_Mnx$sectorTo)[!unique(c(df_Mnx$sectorTo)) %in% c(unique(sol$supplySubSector),"export",nonFlowCols)]),
+        "export",nonFlowCols); sectorToOrder
 
 
     df_Mnx_AggDemAggSup <- df_Mnx %>% dplyr::mutate(sectorTo=sectorToAgg) %>% dplyr::select(-sectorToAgg) %>%
@@ -1750,6 +1986,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                     removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                     fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                     figHeight=figHeight_ix,pdfpng="png")
+
+        data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+        print(paste("solx_AggDemAggSup saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
       }}
 
 
@@ -1758,6 +1998,8 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
     #-----------------
     # Sankey
     #--------------
+
+  if(plotSankeys==T){
 
     df <- sol %>%
       dplyr::select(-nonFlowCols); df
@@ -1815,10 +2057,14 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
-      # data=dfx_sankey; chartType="sankey"; xData="sectorTo"; yData="normValue"; sankeyGroupColor="supplySector";
+      data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
+
+      # data=plotx; chartType="sankey";  xData="sectorTo"; yData="normValue"; sankeyGroupColor="supplySector";
       # classLabel="From"; class = "supplySector"; classPalette = "pal_sankey";
       # sankeyAxis1="fromLabel";sankeyAxis2="sectorTo";sankeyAxis1Label ="From";sankeyAxis2Label="To";
-      # labelTextSize=5; sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
+      # sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
       # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
       # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
       # figHeight=figHeight_ix;pdfpng="png"; sankeyLabelsOn=sankeyLabelAbsPlots
@@ -1864,6 +2110,9 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
 
+      data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
 
       # Sankey Aggregated to supply sectors and agg Demand
 
@@ -1907,6 +2156,8 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png",sankeyLabelsOn=sankeyLabelAbsPlots)
 
+      data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
 
 
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
@@ -1948,6 +2199,9 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
+
+      data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
 
     }
 
@@ -2006,6 +2260,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
+      data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
+
 
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
         dplyr::group_by(supplySector,region,subRegion,x) %>%
@@ -2043,6 +2301,9 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
+
+      data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
 
 
       # SubSupply to Total Demands
@@ -2084,6 +2345,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
 
+      data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
+
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
         dplyr::group_by(supplySector,region,subRegion,x) %>%
         dplyr::mutate(normValue=value/sum(value)) %>%
@@ -2120,6 +2385,8 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
 
+      data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
 
 
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
@@ -2159,6 +2426,10 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
 
+      data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
+
+
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, grepl("_all",sectorFrom)) %>%
         dplyr::group_by(supplySector,region,subRegion,x) %>%
         dplyr::mutate(normValue=value/sum(value)) %>%
@@ -2196,10 +2467,11 @@ dir<-paste(dirOutputs, "/IO/",region_i,"/",scenario_i,"/combSubReg",sep = "")
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
                   figHeight=figHeight_ix,pdfpng="png")
 
+      data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
+      print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
     }
 
-
-
+  } # if(plotSankeys==T){
 
 
   } # Close subRegion_i

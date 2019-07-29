@@ -13,9 +13,11 @@
 #' @param subRegShpFolder  Default=NULL. Folder containing boundary region shapefile. Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),
 #' @param subRegShpFile  Default=NULL. Name of sub-region shapefile. Suggested paste("ne_10m_admin_1_states_provinces",sep  Default=""),
 #' @param subRegCol  Default= NULL. Suggested for states "name",
+#' @param subRegCol1  Default= NULL. Suggested for states "name",
 #' @param subRegionsSelect  Default=NULL. The region to choose from the given sub-region shapefile.
 #' @param subRegType  Default="subRegType". Type of subregion. Eg. "states", "basins" etc.
 #' @param dirOutputs  Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.
+#' @param folderName Default = NULL,
 #' @param nameAppend  Default="". Name to append to saved files.
 #' @param extension Default = T. Should the map be extended beyond chosen shapefile boudnaries.
 #' @param expandPercent  Default=2. Percentage to expand boundary region beyond chosen region.
@@ -49,9 +51,11 @@ metis.boundaries<- function(boundaryRegShape=NULL,
                          subRegShpFolder=NULL,
                          subRegShpFile=NULL,
                          subRegCol=NULL,
+                         subRegCol1=NULL,
                          subRegionsSelect=NULL,
                          subRegType="subRegType",
                          dirOutputs=paste(getwd(),"/outputs",sep=""),
+                         folderName=NULL,
                          nameAppend="",
                          expandPercent=2,
                          overlapShape=NULL,
@@ -181,8 +185,15 @@ if(!is.null(boundaryRegShape)){boundaryRegShape<-sp::spTransform(boundaryRegShap
 
 if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
 if (!dir.exists(paste(dirOutputs, "/Boundaries", sep = ""))){dir.create(paste(dirOutputs, "/Boundaries", sep = ""))}
-if (!dir.exists(paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect, sep = ""))){dir.create(paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect,sep = ""))}
-dir=paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect,sep = "")
+if(!is.null(folderName)){
+  if (!dir.exists(paste(dirOutputs, "/Boundaries/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/Boundaries/",folderName, sep = ""))}
+  if (!dir.exists(paste(dirOutputs, "/Boundaries/",folderName,"/",boundaryRegionsSelect, sep = ""))){dir.create(paste(dirOutputs, "/Boundaries/",folderName,"/",boundaryRegionsSelect,sep = ""))}
+  dir=paste(dirOutputs, "/Boundaries/",folderName,"/",boundaryRegionsSelect,sep = "")
+} else {
+  if (!dir.exists(paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect, sep = ""))){dir.create(paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect,sep = ""))}
+  dir=paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect,sep = "")
+  }
+
 
 #----------------
 # Create Boundary and subRegional shapefiles
@@ -317,8 +328,11 @@ if(!is.null(extendedShape)){
   boundaryHighlight<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=boundaryRegShape,
                                fillColumn = boundaryRegCol, fillPalette = extendedHighLightColor, labels=T, outerMargins = outerMargins,printFig = F,facetsON = F)
   if(!is.null(subRegShape)){
-    subRegHighlight<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, dataPolygon=subRegShape,
+    subRegHighlightLabels<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, dataPolygon=subRegShape,
                                fillColumn = subRegCol, fillPalette = extendedHighLightColor, labels=T, outerMargins = outerMargins,printFig = F,facetsON = F)
+
+    subRegHighlight<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, dataPolygon=subRegShape,
+                               fillColumn = subRegCol, fillPalette = extendedHighLightColor, labels=F, outerMargins = outerMargins,printFig = F,facetsON = F)
   }
 
   }else{
@@ -328,8 +342,10 @@ if(!is.null(extendedShape)){
                            labels=T, outerMargins = outerMargins,
                            fillPalette = extendedFillColor,
                            bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
+    subRegHighlightLabels<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=subRegShape,
+                               fillColumn = subRegCol, fillPalette = extendedHighLightColor, labels=T, outerMargins = outerMargins,printFig = F,facetsON = F)
     subRegHighlight<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=subRegShape,
-                                 fillColumn = subRegCol, fillPalette = extendedHighLightColor, labels=T, outerMargins = outerMargins,printFig = F,facetsON = F)
+                                 fillColumn = subRegCol, fillPalette = extendedHighLightColor, labels=F, outerMargins = outerMargins,printFig = F,facetsON = F)
   }}
 } else {
   if(!is.null(boundaryRegShape)){
@@ -355,11 +371,11 @@ regionHL<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labels
           underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,facetsON = F,labels=F)
 }
 if(!is.null(subRegHighlight) & !is.null(underLayer)){
-subRegionHL<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=subRegHighlight,
+subRegionHLNoLabel<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labels=F, dataPolygon=subRegHighlight,
                     fileName = paste(boundaryRegionsSelect,"_",subRegType,nameAppend,sep=""),dirOutputs = dir,
                     underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,facetsON = F)}
 if(!is.null(subRegHighlightLabels) & !is.null(underLayer)){
-subRegionHL<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, dataPolygon=subRegHighlightLabels,
+subRegionHL<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=subRegHighlightLabels,
                        fileName = paste(boundaryRegionsSelect,"_Labels_",subRegType,nameAppend,sep=""),dirOutputs = dir,
                        underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,facetsON = F)}
 
@@ -368,9 +384,29 @@ metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labe
           fileName = paste(boundaryRegionsSelect,"_fill_",subRegType,nameAppend,sep=""),dirOutputs = dir,
           underLayer = regionHL,bgColor=extendedBGColor,frameShow=T,labels=F,facetsON = F,fillPalette=fillPaletteOrig)
 metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize,  dataPolygon=subRegShape,fillColumn = subRegCol,
-            fileName = paste(boundaryRegionsSelect,"_fill_Labels_",subRegType,nameAppend,sep=""),dirOutputs = dir,
+            fileName = paste(boundaryRegionsSelect,"_fill_Labels_",subRegType,nameAppend,sep=""),dirOutputs = dir,labelsAutoPlace=F,
             underLayer = regionHL,bgColor=extendedBGColor,frameShow=T,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
+if(!is.null(subRegCol1)){
+metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize,  dataPolygon=subRegShape,fillColumn = subRegCol1,
+          fileName = paste(boundaryRegionsSelect,"_fill_Labels1_",subRegType,nameAppend,sep=""),dirOutputs = dir,labelsAutoPlace=F,
+          underLayer = regionHL,bgColor=extendedBGColor,frameShow=T,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
 }
+}
+
+if(!is.null(subRegShape) & !is.null(underLayer)){
+metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F,  dataPolygon=subRegShape,fillColumn = subRegCol,
+          fileName = paste(boundaryRegionsSelect,"_fill_under_",subRegType,nameAppend,sep=""),dirOutputs = dir,
+          underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,labels=F,facetsON = F,fillPalette=fillPaletteOrig)
+metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize,  dataPolygon=subRegShape,fillColumn = subRegCol,
+          fileName = paste(boundaryRegionsSelect,"_fill_under_Labels_",subRegType,nameAppend,sep=""),dirOutputs = dir,labelsAutoPlace=F,
+          underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
+if(!is.null(subRegCol1)){
+metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize,  dataPolygon=subRegShape,fillColumn = subRegCol1,
+          fileName = paste(boundaryRegionsSelect,"_fill_under_Labels1_",subRegType,nameAppend,sep=""),dirOutputs = dir,labelsAutoPlace=F,
+          underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
+}
+}
+
 
 if(!is.null(overlapShape)){
   if(!is.null(regionHL)){

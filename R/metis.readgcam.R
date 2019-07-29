@@ -106,7 +106,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
   NULL -> vintage -> year -> xLabel -> x -> value -> sector -> scenario -> region -> param -> origX -> origValue ->
     origUnits -> origScen -> origQuery -> classPalette2 -> classPalette1 -> classLabel2 -> classLabel1 -> class2 ->
     class1 -> connx -> aggregate -> Units -> sources -> paramx -> fuel -> technology -> input -> output -> water ->
-    landleaf -> ghg -> Convert -> regionsSelectAll->cf1971to2100->gcamCapacityFactor
+    landleaf -> ghg -> Convert -> regionsSelectAll->cf1971to2100->gcamCapacityFactor -> . -> GWPAR5
 
   # Create necessary directories if they dont exist.
   if (!dir.exists(dirOutputs)){
@@ -1722,7 +1722,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
           dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class1=ghg),by="class1")%>%
           dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
           dplyr::mutate(origValue=value,
-                        value=case_when(!is.na(GTPAR5) ~ value*GTPAR5*Convert,
+                        value=dplyr::case_when(!is.na(GTPAR5) ~ value*GTPAR5*Convert,
                                         TRUE ~  value*GWPAR5*Convert),
                         origUnits=Units,
                         units="100 yr GTP AR5")%>%
