@@ -35,8 +35,8 @@ library(ggalluvial)
 #---------------------------
 
 # Connect to gcam database or project
-  gcamdatabasePath_i <-'C:/Users/twild/all_git_repositories/idb_results/Colombia/GCAM/GCAM_runs' # Use if gcamdatabase is needed
-  gcamdatabaseName_i <-"Reference" # Use if gcamdatabse is needed
+  gcamdatabasePath_i <-'C:/Users/twild/Downloads/pic'  # 'C:/Users/twild/all_git_repositories/idb_results/Colombia/GCAM/GCAM_runs' # Use if gcamdatabase is needed
+  gcamdatabaseName_i <-"Reference_originalSW" # "Reference" Use if gcamdatabse is needed
   dataProjPath_i <- paste(getwd(),"/outputs",sep="") # Path to dataProj file.
   dataProj_i <-"dataProj.proj"  # Use if gcamdata has been saved as .proj file
 
@@ -64,6 +64,16 @@ library(ggalluvial)
                          paramsSelect=paramsSelect_i
                        )
 
+  # reReadData = T  # F
+  # gcamdatabasePath = gcamdatabasePath_i
+  # gcamdatabaseName = gcamdatabaseName_i
+  # scenOrigNames = scenOrigNames_i
+  # scenNewNames = scenNewNames_i
+  # #dataProj = dataProj_i
+  # #dataProjPath = dataProjPath_i
+  # regionsSelect = regionsSelect_i
+  # paramsSelect=paramsSelect_i
+
   dataGCAM$data # To view the data read that was read.
 
 #------------------------------------------------------------------------------------------
@@ -75,8 +85,9 @@ library(ggalluvial)
   # for each of the regions selected.
   # gcamDataTable_Argentina.csv, gcamDataTable_China.csv, gcamDataTable_Pakistan.csv
   # This would be added to dataTables_i as:
-  dataTables_i = c(paste(getwd(), "/outputs/readGCAMTables/Tables_local/local_Regional_Colombia.csv", sep = ""),
-                   paste(getwd(), "/outputs/readGCAMTables/Tables_gcam/gcamDataTable_Colombia.csv", sep = ""))
+  dataTables_i = c(paste(getwd(), "/outputs/readGCAMTables/Tables_local/local_Regional_Colombia.csv", sep = "")
+                   #paste(getwd(), "/outputs/readGCAMTables/Tables_gcam/gcamDataTable_Colombia.csv", sep = "")
+                   )
 
 # Read in the data from the function metis.readgcam.
   rTable_i <- dataGCAM$data;
@@ -90,14 +101,26 @@ library(ggalluvial)
 # Charts Process
   charts<-metis.chartsProcess(
                           rTable=rTable_i, # Default is NULL
-                          #dataTables=dataTables_i, # Default is NULL
+                          dataTables=dataTables_i, # Default is NULL
                           paramsSelect=paramsSelect_i, # Default is "All"
                           regionsSelect=regionsSelect_i, # Default is "All"
                           xCompare=c("2015","2030","2050","2100"), # Default is c("2015","2030","2050","2100")
                           scenRef="Reference", # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           regionCompareOnly=0, # Default 0. If set to 1, will only run comparison plots and not individual
-                          scenarioCompareOnly=0) # Default 0. If set to 1, will only run comparison plots and not individual
+                          scenarioCompareOnly=0,
+                          useNewLabels = 0,
+                          folderName = "Colombia") # Default 0. If set to 1, will only run comparison plots and not individual
+
+  # rTable=rTable_i # Default is NULL
+  # dataTables=dataTables_i # Default is NULL
+  # paramsSelect=paramsSelect_i # Default is "All"
+  # regionsSelect=regionsSelect_i # Default is "All"
+  # xCompare=c("2015","2030","2050","2100") # Default is c("2015","2030","2050","2100")
+  # scenRef="Reference" # Default is NULL
+  # dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+  # regionCompareOnly=0 # Default 0. If set to 1, will only run comparison plots and not individual
+  # scenarioCompareOnly=0
 
 
 #-------------------
