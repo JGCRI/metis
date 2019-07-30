@@ -850,7 +850,7 @@ for(i in unique(tbl$region)){
                 "'. Setting ",yLabel," to Ref Scenario Units.",
                 sep=""))
 
-          tbl_rp <- tbl_rp %>% mutate(!!yLabel:=as.character(unique(tbl_rp%>%dplyr::filter(scenario==scenRef_i)%>%dplyr::select(yLabel))[1,1]))
+          tbl_rp <- tbl_rp %>% dplyr::mutate(!!yLabel:=as.character(unique(tbl_rp%>%dplyr::filter(scenario==scenRef_i)%>%dplyr::select(yLabel))[1,1]))
           }}}
 
 
