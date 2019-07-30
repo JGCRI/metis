@@ -15,6 +15,8 @@ metis.grid2poly(grid = NULL, regionName = "region",
 \arguments{
 \item{grid}{Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",}
 
+\item{regionName}{Default = "region"}
+
 \item{subRegShape}{Default=NULL. shapefile over which grid data is to be aggregated.}
 
 \item{subRegShpFolder}{Default=NULL. Folder containing boundary region shapefile. Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),}

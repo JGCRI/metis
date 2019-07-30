@@ -13,6 +13,7 @@
 #' @param aggType  Default=NULL. Aggregation method to be used. Either "vol" or "depth" dependening on the type of data provided.
 #' @param dirOutputs  Default=paste(getwd(),"/outputs",sep  Default=""),
 #' @param folderName Default = NULL
+#' @param regionName Default = "region"
 #' @param nameAppend  Default="",
 #' @param labelsSize Default =1.2. Label size for the region names for the gridoverlay plot.
 #' @param paramsSelect Default ="All"
