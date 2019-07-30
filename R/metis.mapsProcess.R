@@ -424,6 +424,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
     sp::proj4string(boundaryRegShape) <- sp::proj4string(subRegShape)
   }
 
+  extendedLabels <- T
+
   if(is.null(boundaryRegShape) & !is.null(subRegShape)){
     boundaryRegShape<-subRegShape
     boundaryRegCol <- subRegCol
@@ -506,7 +508,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
     if(!is.null(extendedShape)){
       if(extendedShapeCol %in% names(extendedShape)){
-        underLayer<-metis.map(fillcolorNA=fillcolorNA, dataPolygon=extendedShape, printFig=F,
+        underLayer<-metis.map(fillcolorNA=fillcolorNA, dataPolygon=extendedShape, printFig=F,labelsAutoPlace = F,
                               fillColumn = extendedShapeCol,labels=extendedLabels, fillPalette = extendedFillColor,legendShow=F,
                               bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,
                               facetsON=F, figWidth=figWidth,figHeight=figHeight)
@@ -529,13 +531,17 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
     if(boundaryRegionsSelect!="region"){
      if(any(!boundaryRegionsSelect %in% unique(shapeTbl$region))){
-      stop(paste("boundaryRegionsSelect: ",boundaryRegionsSelect," not in shapeTbl regions"))}}}
+      print(paste("boundaryRegionsSelect: ",boundaryRegionsSelect," not in shapeTbl regions"))}}}
 
 
   if(!is.null(shapeTbl)){
     if(nrow(shapeTbl)>0){
     #shapeTbl<-shapeTbl%>%unique()
-    if(boundaryRegionsSelect != "region"){shapeTbl <- shapeTbl %>% dplyr::filter(region %in% boundaryRegionsSelect)}
+    if(boundaryRegionsSelect != "region"){
+      if(any(boundaryRegionsSelect %in% unique(shapeTbl$region))){
+      shapeTbl <- shapeTbl %>% dplyr::filter(region %in% boundaryRegionsSelect)
+      }
+      }
     if(any(xRange!="All")){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange);
     print(paste("Subset shapeTbl x to xRange: ",paste(xRange,collapse=", "),sep=""))}
     if(any(paramsSelect!="All")){
@@ -1094,7 +1100,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   legendOutsideAnimated=legendOutsideSingle
                   legendTitleSizeAnim = legendTitleSizeS
                   legendTextSizeAnim = legendTextSizeS}else{
-                     legendOutsideAnimated=legendOutsideSingle
+                     legendOutsideAnimated=F
                     legendAnimatedPosition=legendPosition
                     legendTitleSizeAnim = legendTitleSizeI
                     legendTextSizeAnim = legendTextSizeI
@@ -1303,7 +1309,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   legendOutsideAnimated=legendOutsideSingle
                   legendTitleSizeAnim = legendTitleSizeS
                   legendTextSizeAnim = legendTextSizeS}else{
-                     legendOutsideAnimated=legendOutsideSingle
+                     legendOutsideAnimated=F
                     legendTitleSizeAnim = legendTitleSizeI
                     legendTextSizeAnim = legendTextSizeI
                   }
@@ -1339,14 +1345,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 legendTitle<-unique(datax$units)
                 fillPalette<-as.character(unique(datax$classPalette))
 
+                meanCol = paste("Mean_",min(datax$x),"to",max(datax$x),sep="")
+
                 datax<-datax%>%dplyr::select(lat,lon,x,value)%>%
                   dplyr::group_by(lat,lon)%>%
-                  dplyr::summarize(!!paste("Mean_",min(xRange),"to",max(xRange),sep=""):=mean(value))%>%
+                  dplyr::summarize(!!meanCol:=mean(value))%>%
                   dplyr::ungroup()
 
-                datax<-gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)
-
-                  animScaleGrid<-datax[[paste("Mean_",min(xRange),"to",max(xRange),sep="")]]
+                  animScaleGrid<-datax[[meanCol]];animScaleGrid
 
                   if(!is.null(scaleRange)){
                     if(grepl(param_i,unique(scaleRange$param))){
@@ -1439,7 +1445,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                   legendOutsideAnimated=legendOutsideSingle
                   legendTitleSizeAnim = legendTitleSizeS
                   legendTextSizeAnim = legendTextSizeS}else{
-                     legendOutsideAnimated=legendOutsideSingle
+                     legendOutsideAnimated=F
                     legendTitleSizeAnim = legendTitleSizeI
                     legendTextSizeAnim = legendTextSizeI
                   }
@@ -1549,10 +1555,11 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       legendTitle<-unique(datax$units)
                       fillPalette<-as.character(unique(datax$classPalette))
 
+                      meanCol = paste("Mean_",min(chosenRefMeanYearsX),"to",max(chosenRefMeanYearsX),sep="")
 
                       datax<-datax%>%dplyr::select(subRegion,class,value,scenarioGCM,scenarioRCP)%>%
                         dplyr::group_by(subRegion,scenarioGCM,scenarioRCP) %>%
-                        dplyr::summarize(!!paste("Mean_",min(chosenRefMeanYearsX),"to",max(chosenRefMeanYearsX),sep=""):=mean(value)) %>%
+                        dplyr::summarize(!!meanCol:=mean(value)) %>%
                         dplyr::ungroup()
 
                       # Need to makeunique ID's when assigning multiple variable for faceted plotting
@@ -2331,7 +2338,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     legendAnimatedPosition
                     legendTitleSizeAnim = legendTitleSizeS
                     legendTextSizeAnim = legendTextSizeS}else{
-                       legendOutsideAnimated=legendOutsideSingle
+                       legendOutsideAnimated=F
                       legendAnimatedPosition=legendPosition
                       legendTitleSizeAnim = legendTitleSizeI
                       legendTextSizeAnim = legendTextSizeI
@@ -2523,7 +2530,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     legendOutsideAnimated=legendOutsideSingle
                     legendTitleSizeAnim = legendTitleSizeS
                     legendTextSizeAnim = legendTextSizeS}else{
-                      legendOutsideAnimated=legendOutsideSingle
+                      legendOutsideAnimated=F
                       legendTitleSizeAnim = legendTitleSizeI
                       legendTextSizeAnim = legendTextSizeI
                     }
@@ -2561,12 +2568,14 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     legendTitle<-paste(unique(datax$units),sep="")
                     fillPalette<-as.character(unique(datax$classPalette))
 
+                    meanCol = paste("Mean_",min(datax$x),"to",max(datax$x),sep="")
+
                     datax<-datax%>%dplyr::select(subRegion,x,value)%>%
                       dplyr::group_by(subRegion)%>%
-                      dplyr::summarize(!!paste("Mean_",min(xRange),"to",max(xRange),sep=""):=mean(value))%>%
+                      dplyr::summarize(!!meanCol:=mean(value))%>%
                       dplyr::ungroup()
 
-                    animScalePoly<-datax[[paste("Mean_",min(xRange),"to",max(xRange),sep="")]]
+                    animScalePoly<-datax[[meanCol]]
 
                     if(!is.null(scaleRange)){
                       if(grepl(param_i,unique(scaleRange$param))){
@@ -2657,7 +2666,7 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       legendOutsideAnimated=legendOutsideSingle
                       legendTitleSizeAnim = legendTitleSizeS
                       legendTextSizeAnim = legendTextSizeS}else{
-                         legendOutsideAnimated=legendOutsideSingle
+                         legendOutsideAnimated=F
                         legendTitleSizeAnim = legendTitleSizeI
                         legendTextSizeAnim = legendTextSizeI
                       }

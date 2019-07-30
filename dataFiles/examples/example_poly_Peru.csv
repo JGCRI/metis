@@ -1,0 +1,1717 @@
+scenario,param,units,class,x,value,subRegion,subRegType,region,classPalette
+popGWP,population,millions,class,1990,0.19982027386,Tacna,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.22644759467,Tacna,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.25590259435,Tacna,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.28702970957,Tacna,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.31918698293,Tacna,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.3521328129,Tacna,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.07283709386,Madre de Dios,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.08696957449,Madre de Dios,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.10377218649,Madre de Dios,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.12301110395,Madre de Dios,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.14461196188,Madre de Dios,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.16864343093,Madre de Dios,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.71551399872,Loreto,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.83308539169,Loreto,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.9683287701,Loreto,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,1.11692159021,Loreto,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,1.27658245781,Loreto,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.44604819127,Loreto,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.41577151422,Amazonas,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.46227797008,Amazonas,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.51349431702,Amazonas,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.56647134532,Amazonas,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.61969885421,Amazonas,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.67244675893,Amazonas,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,1.2373901664,Cajamarca,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,1.3624448596,Cajamarca,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,1.4977988884,Cajamarca,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,1.6340611754,Cajamarca,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,1.766357913,Cajamarca,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.8922290851,Cajamarca,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.1003941985,Tumbes,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.1153643468,Tumbes,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.1322424394,Tumbes,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.1504729932,Tumbes,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.169763798,Tumbes,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.1899621658,Tumbes,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,1.186501653,Piura,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,1.29301057217,Piura,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,1.40650373521,Piura,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,1.51806882112,Piura,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,1.62327306397,Piura,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.72005657573,Piura,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.26982160199,Ucayali,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.32267585876,Ucayali,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.38546972653,Ucayali,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.4572456614,Ucayali,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.53768102303,Ucayali,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.62685734962,Ucayali,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.98078880334,Puno,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,1.09216105534,Puno,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,1.21379901826,Puno,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,1.33859768649,Puno,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,1.46250826749,Puno,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.5836388982,Puno,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.10030885471,Moquegua,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.10882349013,Moquegua,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.11788335866,Moquegua,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.126744044,Moquegua,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.1350327477,Moquegua,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.1425960189,Moquegua,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.92934233425,Arequipa,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.99852416902,Arequipa,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,1.07102546106,Arequipa,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,1.1398681796,Arequipa,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,1.20180907313,Arequipa,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.25558693485,Arequipa,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.42058562292,Ica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.45559413006,Ica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.4927015988,Ica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.52870901013,Ica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.56208440194,Ica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.59214417226,Ica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,2.0441339373,Lima,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,2.2055553311,Lima,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,2.3757610211,Lima,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,2.5393264382,Lima,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,2.6889576521,Lima,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,2.8215990359,Lima,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,1.444585136,Lima Province,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,1.55942458,Lima Province,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,1.680483664,Lima Province,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,1.796837518,Lima Province,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,1.903297918,Lima Province,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.997672292,Lima Province,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.06397701,Callao,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.06906354,Callao,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.07442556,Callao,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.0795792,Callao,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.08429466,Callao,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.08847498,Callao,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.89203058628,Áncash,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.93659987168,Áncash,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.98215924826,Áncash,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,1.02243007932,Áncash,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,1.0549857143,Áncash,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.07928767908,Áncash,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.74304036111,La Libertad,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.8049888296,La Libertad,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.87080142123,La Libertad,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.93488318595,La Libertad,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.99455414046,La Libertad,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.04865213232,La Libertad,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.88127188476,Lambayeque,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.95236702939,Lambayeque,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,1.02743905715,Lambayeque,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,1.09981509054,Lambayeque,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,1.16631450009,Lambayeque,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.22557476761,Lambayeque,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,1.00100449834,Cusco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,1.07810774774,Cusco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,1.15941325555,Cusco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,1.23741765896,Cusco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,1.30865379947,Cusco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.37172594679,Cusco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.47528778863,Ayacucho,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.50359458229,Ayacucho,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.5331176886,Ayacucho,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.5604410836,Ayacucho,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.58417413063,Ayacucho,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.60391405104,Ayacucho,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.32662473638,Apurímac,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.36951414586,Apurímac,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.41769839559,Apurímac,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.46890356054,Apurímac,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.52189799559,Apurímac,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.57606139838,Apurímac,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.4701292531,Huancavelica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.4830309475,Huancavelica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.495702922,Huancavelica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.5050354715,Huancavelica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.5100237817,Huancavelica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.5106827454,Huancavelica,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.49540797819,San Martín,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.59515677728,San Martín,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.71424422445,San Martín,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.85099200974,San Martín,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,1.00501232952,San Martín,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.17667814712,San Martín,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.57015252812,Huánuco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.65535980411,Huánuco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.75341031488,Huánuco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.86083522034,Huánuco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.97585707235,Huánuco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.09763574301,Huánuco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.27163135468,Pasco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,0.28164315877,Pasco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,0.29283168097,Pasco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,0.30352724065,Pasco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,0.31322287008,Pasco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,0.32192751645,Pasco,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1990,0.99782695819,Junín,subRegType,Peru,pal_hot
+popGWP,population,millions,class,1995,1.0620290531,Junín,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2000,1.12875634174,Junín,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2005,1.19069412733,Junín,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2010,1.24465685834,Junín,subRegType,Peru,pal_hot
+popGWP,population,millions,class,2015,1.2895704987,Junín,subRegType,Peru,pal_hot
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0272143637539902,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00541024627137833,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00606170288373047,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00645382484077203,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00695264079938311,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00738650944400418,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00775473895578011,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00808107591523906,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00836142748778463,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00859004950357422,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.0153830624324381,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0310969397668548,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0456947139798834,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0585633291442949,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0779975956136164,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0920485439704523,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.10266172734363,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.110701295145815,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.119438982202445,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.126660721494091,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.803564480837346,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.87727023528537,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.96980906757218,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,1.13464495764184,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,1.31876847178269,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,1.51516031226039,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,1.65568936174482,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,1.77960340223818,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,1.88950687165938,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,1.98242607014628,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.00492070311565349,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.00555326940252093,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.00594440616989527,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.0062904495539831,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.00669155146759313,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.00707259388417196,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.00737584822728744,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.00766185409375219,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.00791409163986234,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.00812497217217587,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0368065876441023,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0421940988014658,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0520859400244409,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0599017553267664,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0708817827117321,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0814375150023415,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0913843334744532,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.101019874566135,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.11016644566149,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.11854037382739,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00446600060000852,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00599540635545044,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00667516057646074,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00712891032519887,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.0079041806525372,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00835840161391297,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00854237199397771,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00860473134533197,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00859571057186661,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00852628646185709,Tacna,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.000575804926918786,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.000133709169104135,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.000156058342175061,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.000165147432867635,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.000177558572560731,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.000188253421712556,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.000197254563874921,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00020517732797319,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.000211919078171914,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.000217333992260282,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.000318721778349558,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.000680838801646147,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.00105732109846025,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.00135474653783214,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.00180529352262294,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.00213103407461993,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.00237713942911195,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.00256373523070637,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.00276635124513871,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.00293379381451609,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.00355658833501184,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.00395644583216994,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.00439625643502722,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.00520033246881499,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,0.00611909419047211,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,0.00712404135529088,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,0.0079127691416144,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,0.00860954024501442,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,0.0092405601812726,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,0.0097688854555617,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.000212322975154222,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.000248962357239634,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.000267787469792449,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.00028436122764617,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.000303742891100073,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.000322188927044168,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.000337088328739173,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.000350875324108274,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.000363098842630394,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.000373523924791832,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.000766842897373517,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.000929813314767749,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.00121151666502066,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.00139211102691323,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.00164660339566746,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.00189113977991993,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.00212148614310916,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.00234456043553095,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.00255625573499624,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.00275000813851925,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,9.2692178406004e-05,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.000131483789756089,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.000154807953389324,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.000165269493723178,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.000183238315215938,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.000193761495834449,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.000198021548910083,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00019946856104952,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.000199253981105556,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.000197630201938544,Madre de Dios,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.000317317881655203,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,8.05101848712363e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,9.23749306539175e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,9.79032592506229e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.000105113016062652,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.000111447107406335,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.000116857554686322,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.000121671441532371,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.000125810463232999,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.000129184834204538,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.000171307354099053,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.000355616708023289,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.000536400888011566,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.000687112992108582,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.000915379638989756,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.00108074800534012,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.00120579502133596,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.00130078354410083,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.00140391400363804,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.00148929832864097,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.000570436019225841,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.0006346183015584,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.000705103425076392,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.000834021701642365,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,0.000981331630136008,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,0.00114245412347467,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,0.00126895523718651,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,0.00138070969111396,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,0.00148191268255141,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,0.00156664004212679,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,5.32267222237789e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,6.29437137360824e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,6.81812971718914e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,7.2825745649596e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,7.8234232293819e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,8.34045338304799e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,8.76496784523568e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,9.15876458593895e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,9.51229071180035e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,9.82290402162407e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.000413174463632756,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.000486919985311019,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.000616558932705097,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.000708478213217097,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.000837858407306353,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.000962269714539326,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.00107954034124836,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0011931728429926,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.0013010640235966,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.00139987663014371,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,4.99041301350152e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,6.87794448823211e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,7.86927018136764e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,8.40155916528051e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,9.31384154880991e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,9.84932502910453e-05,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.000100671691052445,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.000101424733414826,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.000101334649140118,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.000100532966429023,Loreto,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.00861185560018758,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00168427693759407,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00185616762216977,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.0019762401656784,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00212898371846853,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00226183960808885,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00237459599002491,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00247452436156511,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00256037144455805,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00263037830164476,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.00486789672938241,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.00968086401351327,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0139922807713564,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.017932808251679,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0238838185382402,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0281863909271414,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0314362775963599,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.0338980916664884,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.0365736783972694,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.0387850633717577,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.275589199761609,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.306572806850853,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.340652538793468,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.402958065511627,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,0.474150243822405,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,0.552020697836785,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,0.613136816959419,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,0.667127487042438,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,0.716023314629617,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,0.756961657767583,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.00349936740429074,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.00394415162026949,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.0042241313740626,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.00447089334021675,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.00475916562516189,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.00503313162407646,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.00525621653367287,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.00546062809703759,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.00564069428958613,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.00579691525195129,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0116473186365155,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0131362761678572,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0159492059091188,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0183426507362415,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0217048695231339,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0249371639693789,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0279830015488166,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0309335221768994,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.0337343142077754,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0362985135189898,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00141324458914543,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00186644454125558,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00204401588244499,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00218295960431278,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00242035687925114,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00255944488913722,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.002615778874477,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00263487407120359,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00263211179866055,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00261085328220432,Amazonas,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0398278505389674,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00769673530553902,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00837383678951302,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00891552700007395,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00960460786540173,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.0102039683579557,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.0107126527834993,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.0111634654325342,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.0115507523679019,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.0118665783625604,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.0225129022608029,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0442391902578086,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0631241886633563,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0809013191079021,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.107748457351328,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.127158901981752,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.141820304403256,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.152926429155015,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.164996958944505,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.174973308357957,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,1.71158538047985,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,1.88839275831561,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,2.09823314826235,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,2.47568410853417,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,2.90377915865383,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,3.36844522528201,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,3.71891882748671,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,4.02801410420742,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,4.30671006213977,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,4.54108416145207,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.024498711571733,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.0272464340939938,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.0291093649615887,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.0307573981429129,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0326688182854549,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0344827523391983,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0359352773025933,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0372939819429768,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0384877479605663,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0394970293705072,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0538659394770176,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0600262527622953,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0719532396219563,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0827502652842348,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0979184381393913,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.112500475738169,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.126241339647444,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.13955219468915,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.152187570409099,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.163755591654449,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00653593103772877,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00852919689963779,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.0092212875267918,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00984811242193229,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.0109190965013124,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.0115465723353152,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.0118007151254596,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.0118868604031027,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.0118743987654058,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.0117784940011126,Cajamarca,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0887859555446603,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.0179029983533327,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.0203408268810322,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.0216566427495501,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.0233304840819538,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.0247863864002454,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.0260220280562345,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.0271170938574438,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.0280578497127442,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.0288250204244004,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.0501867289886811,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.102902609853748,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.153334514059469,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.196516814102163,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.261731005126194,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.308880776924482,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.34449468439861,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.371472492414235,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.400792929752573,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.425026408593121,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,3.57143042353446,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,4.1856151125194,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,4.56836028488399,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,5.15161584220456,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,5.76558134973763,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,6.38042025871183,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,6.83314928737681,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,7.25858127187922,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,7.64274741169101,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,7.98723716560608,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.0423123489579693,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.0472903642459115,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.0506988504079375,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.0537478972559612,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0572439969722621,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0605853965794938,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.062996317321616,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0655854304839498,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.067912134858417,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0695989693099226,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.120080266561392,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.139624121386111,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.174781098410642,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.201008075999995,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.237852975892995,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.273274098865429,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.306651932884215,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.338985235382518,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.369677735958185,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.397777533452682,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.0145701782539717,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.0198393464016208,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.0223993633596057,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.0239219792192055,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.0265234989695917,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.0280476960761487,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.0286650324280518,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.0288742873473845,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.0288440168966024,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.0286110552890206,Tumbes,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0316061137432099,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00604159679159535,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00650127357457529,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00692183060828836,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00745681876847026,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00792214983518715,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00831708189069008,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00866708349668001,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00896776508046795,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00921296583759653,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.0178655224087096,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0347258078836193,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0490083136750304,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0628101097946665,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0836536724037976,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0987235396949775,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.110106349237757,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.118728914149609,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.128100224253406,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.135845654088104,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,1.25320760092563,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,1.35266426666994,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,1.50281874446791,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,1.76092783182382,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,2.04738401255035,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,2.35119623526674,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,2.55192861420363,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,2.72788623506698,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,2.88397281538825,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,3.0174005769046,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.0138357839723798,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.0154727058375528,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.0165868621439992,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.0175785766095649,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0187244937199155,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0198185018072071,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0206396651297745,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.021478137318409,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0222279852206643,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0228045888597549,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0427462940497287,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0471179534683711,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0558630060200749,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0642455932739999,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0760218487377836,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0873430409241588,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0980111632723535,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.108345435625478,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.118155279822978,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.127136452087504,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.0051867066886449,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00669504234369643,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00715921677799125,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00764587065686388,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00847736053105036,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00896451976194398,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00916183097249623,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00922871237098732,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00921903743191632,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00914457894487118,Piura,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0014418235917239,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.000493660360868239,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.000569967464824244,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.000590711551217096,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.000630707875268278,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.000663888461989593,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.000690835778262071,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.000713846348311047,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.000732579185451857,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.000746527179826106,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.000722566177376095,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0015403077712888,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.00238773169128442,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.00305473543031162,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.00408405880259526,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.00482818917073404,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.00539124915636528,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.00582048207851499,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.00628405573327054,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.00666687267870524,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.000302098222121149,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.000336062491656236,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.000373419986929892,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.000441718388787401,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,0.000519758235043864,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,0.000605118670231657,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,0.000672113556579973,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,0.000731297611318723,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,0.000784896708764937,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,0.000829772858790233,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.000125494576743564,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.000145748649279916,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.000156654008562405,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.000166170463511366,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.000177660126013077,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.000188614383346425,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.000197534956683062,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.000205701694369925,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.000212971527147489,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.000219287816417077,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.00178697552263768,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.00217891299152405,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.002822844158362,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.00322717613748942,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.00380778125028219,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.00436399841806254,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0048867867456304,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.00539219592669295,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.00587101552528183,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0063084217917323,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00021197907661859,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.000300219946776239,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.000354457392029429,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.000377563535317372,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.000418555273961158,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.000442499285970189,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.000452163763435866,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.000455487860519632,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.000454922731598863,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.000451016326161263,Ucayali,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.00757414262610769,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00147940680153708,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.0016269183847622,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.0017321611564436,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00186603984807084,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00198248713819033,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00208131735115691,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.0021689038867499,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00224414827737858,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00230550881464157,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.00428132400629036,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.00850331424451625,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0122641395827658,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0157179853033487,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0209340056224592,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0247051812601422,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0275536849707828,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.0297114483736713,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.0320565820742671,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.0339948460642192,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.0856913065033308,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.0921016350828434,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.104238023802825,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.126206465082108,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,0.151726895757133,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,0.18013370857749,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,0.203709915793521,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,0.224989509336701,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,0.244405293511928,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,0.260982575322696,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.00335543324087052,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.00373961957455958,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.00398862611882535,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.00420865939316901,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.00446301681145778,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0047035206080024,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.004900133285056,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.00507855062017289,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.00523383268344716,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.00536898980024952,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0102437943000487,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0115377810295656,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0139794996595113,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0160772094710397,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0190241715288931,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0218572557740018,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0245269118367169,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0271130232416458,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.0295678985408619,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0318154019164677,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.0012429511818371,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00163941611501818,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00179156611129146,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00191334935180212,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00212142645368941,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00224333615609199,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00229271251391095,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00230944932539768,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00230702820826268,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00228839526546293,Puno,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0116106725424846,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00221162792071213,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00237213417437812,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00252558378340535,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.002720786097565,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00289057247669084,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00303467223386572,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00316237809781266,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.0032720884356432,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00336155539905123,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.00656299379713021,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0127119648082316,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0178817726881389,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0229176648374161,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0305229019732676,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0360214781065101,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0401747491606638,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.0433208838363391,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.0467402144349555,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.0495663071940741,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.605398016551421,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.652818382931263,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.72550307763447,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.850335601420263,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,0.988879362512397,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,1.13582145356046,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,1.23284737801217,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,1.31794236649829,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,1.39342594179107,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,1.45800409371806,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.00364580856455627,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.00416645073265982,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.00446413264852926,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.00472725163975009,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.00503206594814354,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.00532149452860886,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.00555332530327334,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0057699507040233,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0059608704205566,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.00612169913032553,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0157030765165812,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0172483177737813,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0203828596124839,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0234414329116594,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0277382615152181,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.031869050161907,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0357615517506086,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0395322407503114,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.0431115804858371,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0463885608531135,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00190536406370792,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00245083262461476,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00261219939781541,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00278976588946284,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00309315345081263,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00327090432811089,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00334289770223982,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00336730087144664,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00336377074429922,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00333660291178653,Moquegua,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.00861942934733878,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00162468788123672,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00172387593942946,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00183539074710069,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00197724805030126,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00210063511311321,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.0022053551924655,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00229816152825058,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00237789016686877,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00244290753764044,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.00487217783047025,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.00933835886041406,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0129950312084675,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0166547117459658,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0221815851497824,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0261775071409489,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0291957698065922,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.0314821269255183,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.0339670208157405,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.0360207972705905,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.27840644914836,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.300664946705925,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.334048655747616,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.391505400115135,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,0.455313649635578,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,0.523035785440893,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,0.567973592625341,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,0.607374932624607,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,0.642346809266317,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,0.672226231540796,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.0011373583948291,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.00127149603666956,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.00135876990772858,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.00143627608202328,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0015254937411849,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.00161018544153264,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.00167618220193797,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.00174009796216788,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.00179643643349058,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.00184202350331608,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0116575123550584,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0126708171180344,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0148126195995767,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0170353441772175,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0201579328987564,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.023159857163464,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0259886136084565,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0287288464744327,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.0313300221172664,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0337114673245652,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00141448747548447,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00180041047339727,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00189833598675362,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00202737700000879,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00224785462861835,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00237702964479473,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00242934862748218,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00244708288530752,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00244451748060441,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00242477409236482,Arequipa,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0282499715143374,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00536925690466598,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00574468043207405,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00611629469947367,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.0065890229540563,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00700020061350134,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00734917200070373,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00765844177452103,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00792413117219033,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00814079641581868,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.0159684451631011,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0308613416631898,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0433049151634492,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0555005115128967,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0739183806112257,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0872344750501674,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0972925970079379,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.104911701512735,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.1131924141748,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.12003646197885,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,1.73835052728431,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,1.87472070239867,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,2.08281842386394,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,2.43988038817442,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,2.83580080589826,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,3.25529739520003,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,3.53077904902867,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,3.77218746374676,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,3.98615871716947,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,4.16921791604945,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.00682849239813486,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.00771805441038028,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.00827117912968149,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.00876300302938266,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.00932974124706287,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.00986954598014274,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0102808051941322,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0106918017712005,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0110575098766633,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0113438185591932,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0382072151989356,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0418744259323297,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.04936188493314,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0567689390230654,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0671747193116433,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.077178394832992,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0866050022706075,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0957366118933642,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.104404824258304,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.112340802353306,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00463594854047272,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00594998367556021,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.0063260547579567,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00675607372642162,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.0074907980177252,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.0079212635505576,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00809561244724933,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00815471043756435,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00814616143776792,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00808036815804694,Ica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0567923538190558,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.010751455105788,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.011457880129672,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.0121990722227352,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.013141938211281,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.0139620402565027,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.014658070690382,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.0152749154435029,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.0158048382749095,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.0162369814471598,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.0321021770662867,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0617970671098543,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0863725202668143,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.110696881354104,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.147431690016471,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.173990906958863,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.194052032553995,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.209248489036801,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.225764536229754,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.239415126585538,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,1.04949408090981,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,1.13538209425621,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,1.26143058156805,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,1.47916438774553,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,1.72139384408705,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,1.97897402717219,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,2.15191665249858,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,2.30363346479648,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,2.43850259669563,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,2.55354796328319,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.0170144405906639,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.0191179624413169,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.020522042903872,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.021762628550818,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0232153090834534,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0246022776138509,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.025695038303996,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0267443800568154,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0276798675771556,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0284547329448435,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0768099069558131,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0838497799907957,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0984532677398114,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.113226785425315,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.133981322546424,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.153933853662329,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.172735410895916,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.190948589079521,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.20823751220051,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.224065979385442,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00931988302099298,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.0119143083364583,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.0126174428554402,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.0134751243152915,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.01494054662261,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.0157991187426527,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.0161468610814696,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.0162647332560835,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.0162476820720407,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.016116456050302,Lima,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,2.15445837313265,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.4079899580076,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.434905185642465,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.463038512276159,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.498826747564807,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.529955248455209,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.556374380229991,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.579787872010741,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.599902079980556,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.616304879338209,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,1.21781894128733,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,2.34503911906372,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,3.27842991345522,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,4.20170635298529,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,5.59604445071513,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,6.60414900831075,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,7.36560640270889,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,7.94241621842822,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,8.56931355772042,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,9.08744714568278,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,3.8932962699312,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,4.19871769515542,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,4.66478369765365,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,5.4644774256472,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,6.35120047853073,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,7.29072589758919,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,7.90770830522628,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,8.44837859308083,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,8.92759924947815,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,9.33758773504449,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.0289762824091992,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.032441820791168,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.0347880293962737,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.0368663564834969,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0392872485775286,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0415971401544071,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0433920375296551,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0451453365850431,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0467076324723247,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0479739308521722,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,2.91383850220909,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,3.18188262667353,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,3.73697718952784,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,4.29773357561608,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,5.08551069631237,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,5.84284618470305,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,6.55649431618528,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,7.24780942362469,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,7.90404270922866,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,8.50484166853056,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.353556397411436,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.452117235136734,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.478918549101836,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.511473446707584,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.567096280490918,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.599684984686796,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.612884193159569,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.61735825093378,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.616711041285516,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.611730113323602,Lima Province,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,7.3353003350139,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,1.38909402152627,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,1.48074244072628,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,1.57652932064173,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,1.69837923323474,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,1.80436392585218,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,1.8943144050496,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,1.97403143766552,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,2.04251524118971,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,2.09836263511519,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,4.14631714432565,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,7.98421568198606,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,11.1622267866101,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,14.3057501432695,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,19.0531196066461,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,22.4854613028152,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,25.0780316377039,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,27.0419235407002,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,29.1763508313685,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,30.9404649816941,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.804484852087719,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.867595104434963,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.963899884170586,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,1.12914327833209,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,1.31236983315966,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,1.50650711838216,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,1.63399626067494,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,1.74571677331253,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,1.8447397431492,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,1.92945703741903,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,8.57085382556968e-07,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,9.59588082691982e-07,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,1.03141407521168e-06,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,1.09508679610815e-06,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,1.1695507115891e-06,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,1.24086654630957e-06,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,1.29521863177953e-06,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,1.34982649013643e-06,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,1.39892007936721e-06,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,1.43772654014614e-06,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,9.92076747014171,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,10.8334385374483,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,12.7234645786405,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,14.6326986089311,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,17.314880966657,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,19.8934172466113,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,22.3232090972707,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,24.6769626374199,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,26.9112714248628,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,28.9568403128519,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,1.20375607753796,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,1.53933530962866,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,1.63059683997469,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,1.74143805361566,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,1.93081977037936,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,2.04177608667142,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,2.08671606161853,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,2.1019490997106,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,2.0997455138301,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,2.08278671092577,Callao,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0214618990183398,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00395903620769851,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00411341271945953,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00437950285672241,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00471799452145661,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.0050124135813155,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00526229055271266,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00548373963046711,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00567398349144279,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00582912416559181,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.0121314514453187,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0227556943513736,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0310079891836601,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0397405064608515,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.052928410969915,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0624632480788517,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0696652512605951,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.075120823902078,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.0810501334828153,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.0859507356400991,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,1.09114037470059,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,1.18588355112382,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,1.31756736458869,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,1.54725617486526,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,1.80399846599242,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,2.07841113421691,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,2.26836252330434,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,2.43524320138007,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,2.58417423970878,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,2.71071676182079,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.0184598432664591,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.0205142619638729,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.0219393648847325,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.0232042717966774,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0246676086112301,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0260598185846813,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0271402909955607,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0281947458135744,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.029128391208955,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0298819580774356,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0290265564886887,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0308762220369126,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0353450131050977,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0406487494645396,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0480996894314945,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0552627068631208,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0620125212902057,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0685511059105784,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.0747578802385917,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0804403465823652,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00352199503953104,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00438723666716632,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00452969914586151,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00483760931836108,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00536370024300197,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00567193016912085,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00579677068843363,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.0058390871476662,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00583296572134954,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00578585518797564,Áncash,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0290152057287585,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00551784607643134,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00590830798233191,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00629050704703358,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00677670018497925,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00719958953153916,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00755850079181324,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00787657959261313,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00814983670685531,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00837267329608272,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.0164009978296651,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0317154004573238,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0445383827267541,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0570813500995321,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0760238211834155,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0897192021486817,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.1000638127586,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.107899934633417,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.11641650944641,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.123455498419706,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,2.14983475851183,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,2.34138625842029,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,2.60140594288509,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,3.0569248586926,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,3.56716771521872,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,4.1137591062758,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,4.49710800175792,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,4.83410280255481,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,5.1353435839516,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,5.3908792571149,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.0194622298619061,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.0216750581370795,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.0231812353990401,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.0245151463557861,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0260626949659896,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.027533975335027,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0286954837338257,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0298037891877874,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0307824997296726,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.031592952940072,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0392421708636323,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0430332615415982,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.050767875076686,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0583859066331241,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0690880780539404,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0793766914231965,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.089071799881421,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0984635080195859,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.107378619832429,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.115540640897926,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00476152694533744,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00611464390598638,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00650624176758446,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00694850911475506,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00770416078955502,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00814688740055834,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00832620232045225,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00838698364093528,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00837819111949003,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00831052383220515,La Libertad,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.111732828202217,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.0211833055995571,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.0226073220905405,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.0240697538986896,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.0259301045935944,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.0275482321155282,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.0289215563269495,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.0301386407908917,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.0311842212775366,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.0320368746281166,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.063157569568952,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.121757115211005,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.170419952321692,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.218413879635999,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.290894621418271,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.343298099654403,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.382880319326278,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.412864154181243,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.445451648033194,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.472385364332306,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,6.14236337020455,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,6.63006682432117,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,7.36604834395604,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,8.63126501440816,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,10.0354881340857,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,11.5248525039279,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,12.5091428491804,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,13.3719610513539,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,14.1373663426921,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,14.7916368973634,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.0230544332791011,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.0258213070854288,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.0276599458357141,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.029293600891511,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0311824343101195,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0329825055638864,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0343594424425275,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0357298384767435,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0369494644479289,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0379125823451677,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.151115204111268,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.165206987965114,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.194256241919623,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.223405584381535,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.264355961032282,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.303723914849739,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.340820904566253,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.376756974880671,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.410869415375391,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.442100258416008,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.0183358642361677,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.0234744443435147,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.0248952329185159,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.026587507658853,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.0294789041159154,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.0311729362009048,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.031859059887191,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.0320916312029333,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.03205798782047,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.0317990682886699,Lambayeque,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.00630084219998875,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00119132635158897,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00126826864358458,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00135031093042898,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00145467642818307,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00154545322858152,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00162249659096194,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00169077491369586,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00174943188267626,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00179726565492688,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.00356158423337109,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.00684748936673653,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.00956054329609468,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0122529981031797,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0163191608996095,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0192589910999076,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.021479549900739,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.0231616402186398,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.0249897955580619,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.0265007745110183,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.164247523144247,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.182706560654624,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.203019058847759,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.240153478280443,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,0.282584249957625,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,0.328995165472114,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,0.365419177743354,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,0.397596984255338,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,0.426738250804421,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,0.451137535890113,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.00273407835676489,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.00306325565379737,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.00327473816138098,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.00346168287287097,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.00367852490390086,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.00388426004629131,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.00404981203484258,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.00420361442113006,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.00433869944475361,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.00445362059245849,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.00852169474589334,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.00929106353646119,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.010897756900693,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0125330322746437,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0148303445476756,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0170388830626167,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0191200206918998,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0211360308535407,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.0230497355562195,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0248017829119398,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00103399680554995,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00132017753332523,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00139662022377533,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00149155667677607,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00165376374892052,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.0017487987870974,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00178729026223174,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00180033749228551,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00179845010260307,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00178392474042354,Cusco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.00755863365878545,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.0014086065640021,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00147900303684566,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00157467740117937,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00169638418112929,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00180224436583489,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00189208918658083,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00197171257264804,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00204011593491026,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00209589772381326,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.00427255748291007,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.00809636960567959,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0111491147082405,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0142889454169991,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0190307382286236,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0224590480157556,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.025048572898294,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.027010157845353,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.0291420778621642,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.0309041197369152,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.652535610301789,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.720901452544405,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.801013814470566,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.945499024351115,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,1.10957121174087,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,1.28788701863993,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,1.42328952444784,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,1.54274023298326,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,1.65052503228395,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,1.7410993341397,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.00881976104783092,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.00978990248225028,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.010463267302384,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.0110621061725751,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0117519087697331,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0124078025003125,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0129113797460172,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0134093217747762,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0138500176963631,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0141995632347064,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0102228189006345,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0109856153687742,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0127085185389398,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0146155098194263,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0172945414694119,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0198700487817022,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0222969863964387,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0246479750232112,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.0268796592008217,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.028922825200693,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.0012404060873181,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00156095828293567,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.0016286814063116,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00173939241154747,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00192855166817531,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00203937764759675,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00208426483419339,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00209947997124551,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00209727897888032,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.0020803401005705,Ayacucho,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0250462016483591,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00498314519925969,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00558550337474381,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00594682072133105,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00640645033821188,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00680623483809611,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.0071455367218825,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00744623706119791,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00770456458081139,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00791522634233465,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.0141574973898321,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0286420540404761,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0421049964986061,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0539626699198247,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0718702056150959,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0848173296882406,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0945967551443303,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.102004744917104,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.110056010613384,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.116710419403641,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,1.42163426851217,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,1.58146403617416,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,1.75726524677011,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,2.07866997470096,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,2.44591673336844,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,2.84761355593758,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,3.16288269320726,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,3.44139501191414,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,3.69362544780638,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,3.90480698819643,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.0268842279946494,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.0298466219922944,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.0318893991481258,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.0336996129905665,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.035795076809161,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0377850817701543,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0393571467750279,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0408545266536568,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0421734054497893,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0432659393200995,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.033874215258464,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0388631701041376,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0479941361062726,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0551959510678302,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0653134017431062,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0750398893993292,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0842052987279483,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0930838841960351,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.101511912515434,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.109227995758411,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00411019535691337,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00552211098164844,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00615076862158947,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00656887237178897,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00728323847621428,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00770177640753099,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00787129432582483,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00792875482651837,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.0079204426841253,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00785647244136221,Apurímac,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.021362172711851,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00385774578735036,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00392401854499812,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00417785707630551,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00450076354769303,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00478162664102674,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00501999849940601,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00523125139700361,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00541273583869239,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00556073335028473,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.0120750806307426,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0221734986092816,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0295802859827529,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0379107313047415,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0504914241388625,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0595872480214593,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0664576488329709,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.0716620301071077,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.0773183360568259,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.0819932994080185,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,1.22199696447703,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,1.35141276455424,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,1.50159977662688,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,1.77302034725028,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,2.0815252821341,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,2.41713990141359,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,2.67329182382009,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,2.89931552916686,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,3.10338217953905,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,3.27476587968854,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.0138473981273982,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.0154446972192115,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.0165333975329652,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.0175023482696634,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0186194891125486,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0196839620128262,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0204898513082468,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0213024479618878,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.02202575122478,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.022588118519909,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0288916797485792,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0300862656944371,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0337176199843964,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0387771560161298,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0458850317952374,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0527182418692764,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0591572740788751,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0653948021544049,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.0713157974888046,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0767366256103285,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00350562949504631,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00427499090243702,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00432113787849234,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00461487090559514,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00511673898882294,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.0054107770610733,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00552986953999706,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00557023761874849,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00556439804330498,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00551945662474822,Huancavelica,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.00789789272422484,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00166748796321467,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00198275947586478,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00211102103960092,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00227418180861737,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00241609855361891,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00253654499917402,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00264328855138728,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00273499045734956,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00280977183037269,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.00446432545384306,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0095843645889106,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0149465635028939,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.019155837552044,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0255127106448417,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.030108721294241,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0335802523663236,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.0362099637726602,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.0390680272830863,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.0414302301563722,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.145563767632255,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.161929033751984,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.179929645544561,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.212838871312346,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,0.250441947599221,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,0.291572429793134,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,0.323853421094201,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,0.352370813556826,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,0.378197155415558,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,0.399820424672835,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.00167382273832324,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.00189072469164694,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.00203103503974989,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.00215448801518577,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.00229999773269578,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.00243886629340722,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0025513446502629,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.00265553970742163,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.00274817918485857,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0028281880758101,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0106816563293941,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.013004611705822,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0170371087212968,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0195936315565257,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0231851558798103,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0266378949235166,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0298914606211452,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0330432086988526,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.036035016587955,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0387740959742692,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00129608004379402,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00184783971338915,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00218341910563845,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00233183888204838,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00258542680237421,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00273400071108521,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00279417671211537,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00281457421833891,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00281162354816959,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00278891518949724,San Martín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0171799012176638,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00348144787043619,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00397672582771088,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.004233973910304,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.0045612176600815,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00484585329478145,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00508742696473944,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00530151739459867,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.0054854395314372,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00563542494758642,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.00971102962882565,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0200106186216354,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0299776074083767,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0384199469974423,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0511696232659482,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0603876219525404,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0673503057509291,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.0726245921159529,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.0783568733687029,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.0830946306835312,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.618734934438417,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.688243230912558,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.764750537990781,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.904601938583608,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,1.06438932619666,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,1.23915336055364,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,1.3762665551972,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,1.4973921101509,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,1.60708335957808,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,1.69892663746227,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.00711615956300704,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.00796227772157152,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.0085372042031546,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.00904528814202057,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.00963935297700919,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0102058971249254,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0106538350986929,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0110816518398212,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0114619507058179,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0117784871282607,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0232352865293251,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0271515469588806,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0341705139423427,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.039298009486939,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.0465013580001642,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0534263515373427,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0599518726206953,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0662731829583761,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.072273708916674,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0777673494172413,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00281929975951136,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00385799345618984,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00437917925324735,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00467685769608786,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00518546685419086,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.0054834544345235,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.0056041465632041,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00564505686071688,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00563913884498575,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00559359378023203,Huánuco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.011729710281361,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00216166404098807,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00225390303121364,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00239970444478603,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.00258517754273026,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00274650149380327,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00288341906607583,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00300475985218075,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.00310900205548744,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00319400982850331,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.00663028050152013,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0124247831428583,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.016990515127016,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0217754099475795,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0290015892860004,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0342261071704108,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0381723722230328,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.0411616982556976,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.0444106036788365,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.047095839231246,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.225393810480685,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.249843481167703,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.277612410024265,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.328027694505703,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,0.38545173688092,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,0.44805799980817,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,0.496383545191602,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,0.539045397139707,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,0.577611239494046,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,0.609959698874936,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.00810711773206984,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.00911725300361399,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.00979080466257772,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.0103843774567595,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.0110827674906541,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.0117495852426752,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.0122836525589798,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.0127858714117227,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.0132330771535596,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.0136130418032933,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0158640713855047,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0168586533678319,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0193669436620437,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0222730725528193,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.026355739986027,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0302806431909761,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.0339791359785765,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0375618875097451,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.0409628269360263,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0440764770974268,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00192489870374352,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00239546477737406,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00248200299872589,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00265071926338635,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.0029389854836131,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.00310787696270594,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00317628207041828,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00319946894731388,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00319611476439725,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00317030104031237,Pasco,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.0153899748340521,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00287656105488912,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00302736921629526,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2020,0.00322320493252079,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2025,0.0034723263650065,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2030,0.00368901144122754,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2035,0.00387291467049279,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2040,0.00403589567822872,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2045,0.0041759104091504,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2050,0.00429009008194512,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2005,0.00869926432170263,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2010,0.0165338584470873,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2015,0.0228211070771727,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2020,0.0292480221104681,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2025,0.0389539910833088,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2030,0.0459713935171908,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2035,0.0512718883276834,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2040,0.0552870537890784,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2045,0.059650877845529,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,2050,0.0632575988603213,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2005,0.362019441315002,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2010,0.402447016289566,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2015,0.447183068352505,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2020,0.52886264037911,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2025,0.622136383898576,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2030,0.724097079445886,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2035,0.803871710801454,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2040,0.874336481323945,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2045,0.938130296277285,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,2050,0.991560154839209,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2005,0.00410640929898082,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2010,0.0046157294277343,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2015,0.00494563084276963,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2020,0.00523632639340604,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2025,0.00557673663777811,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2030,0.00590062225801012,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2035,0.00616367742461216,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2040,0.00640581885280173,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2045,0.00661963566991641,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,2050,0.00680467717119799,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2005,0.0208144663090257,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2010,0.0224340807478246,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2015,0.0260130485691483,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2020,0.0299164663263258,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2025,0.035400172395672,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2030,0.0406719746696789,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2035,0.045639669837359,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2040,0.0504519051229408,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2045,0.0550199363023024,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,2050,0.0592020898800742,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2005,0.00252556472214913,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2010,0.00318768344439859,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2015,0.00333374566064163,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2020,0.00356035986387579,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2025,0.00394754967133283,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2030,0.0041743992120278,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00426627872613257,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00429742258195886,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00429291736921042,Junín,subRegType,Peru,pal_wet
+Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00425824519073823,Junín,subRegType,Peru,pal_wet

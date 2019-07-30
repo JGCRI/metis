@@ -241,7 +241,7 @@ io_sub$ioTbl
                    "watConsumBySec", "watWithdrawBySec")
 
 # Select regions from the 32 GCAM regions.
-  regionsSelect_i=c("Argentina","China")
+  regionsSelect_i=c("Peru","China")
 
 # Charts Process
   charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
@@ -260,28 +260,26 @@ io_sub$ioTbl
 # Maps (metis.map.R)
 #-------------------
 
-# Example 1. Using a custom example Shapefile is Provided with metis in ./metis/dataFiles/examples.
-  examplePolyFolder<-paste(getwd(),"/dataFiles/examples",sep="")
-  examplePolyFile<-paste("bermejo3Cropped",sep="")
-  # Read in the shape file and not the column name to use for fills and labels.
-  bermejo3Cropped=readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
-  head(bermejo3Cropped@data) # Choose the appropriate column name
-  colName_i = "SUB_NAME"
+# Example 1. Using example Shapefile for US States Provided with metis in ./metis/dataFiles/examples.
+  examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
+  examplePolyFile<-paste("US_states_mainland_ne1",sep="")
+  exampleUSmainland=readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  head(exampleUSmainland@data) # Choose the appropriate column name
+  colName_i = "postal"
   # Categorical Shapefile
-  metis.map(dataPolygon=bermejo3Cropped,fillColumn = "SUB_NAME",labels=T ,printFig=F,facetsON=F, folderName="metisExample")
+  metis.map(dataPolygon=exampleUSmainland,fillColumn = colName_i,labels=T ,labelsAutoPlace = F, printFig=F,facetsON=F, folderName="metisExample")
   # Shapefile with values
-  metis.map(dataPolygon=bermejo3Cropped,fillColumn = "SUB_AREA",labels=T ,printFig=F,facetsON=T,
-            legendShow = T, legendOutside = T, fillPalette = "Reds", labelsAutoPlace = F, folderName="metisExample")
+  metis.map(dataPolygon=exampleUSmainland,fillColumn = "latitude",labels=T ,printFig=F,facetsON=T,
+            legendShow = T, legendOutside = T, fillPalette = "Spectral", labelsAutoPlace = F, folderName="metisExample")
 
 # Example 2. using the natural earth Shapefiles provided with metis in ./metis/dataFiles/gis/metis/naturalEarth
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
   examplePolyFile<-paste("ne_10m_admin_1_states_provinces",sep="")
-  # Read in the shape file and not the column name to use for fills and labels.
   exampleNE1=readOGR(dsn=examplePolyFolder, layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
   head(exampleNE1@data) # Choose the column name
   colName_i = "name"
   # Crop the shapefile to desired boundary by subsetting
-  exampleNE1Cropped = exampleNE1[exampleNE1$admin=="Argentina",]
+  exampleNE1Cropped = exampleNE1[exampleNE1$admin=="Peru",]
   exampleNE1Cropped@data = droplevels(exampleNE1Cropped@data)
   plot(exampleNE1Cropped)
   metis.map(dataPolygon=exampleNE1Cropped,fillColumn = colName_i,labels=T ,printFig=T,facetsON=F,
@@ -293,7 +291,7 @@ io_sub$ioTbl
   if (!dir.exists(paste(getwd(),"/outputs/Maps",sep=""))){dir.create(paste(getwd(),"/outputs/Maps",sep=""))}
   if (!dir.exists(paste(getwd(),"/outputs/Maps/metisExample",sep=""))){dir.create(paste(getwd(),"/outputs/Maps/metisExample",sep=""))}
   if (!dir.exists(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""))){
-    dir.create(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""))}
+  dir.create(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""))}
   rgdal::writeOGR(obj=exampleNE1Cropped,
                   dsn=paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""),
                   layer=paste("Argentina_states_example",sep=""),
@@ -303,26 +301,36 @@ io_sub$ioTbl
 # Boundaries
 #------------
 
-# Example Shape File. Provided with metis in ./metis/dataFiles/examples
-  examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
-  examplePolyFile_i<-paste("bermejo3Cropped",sep="")
-  bermejo3Cropped=readOGR(dsn=examplePolyFolder_i,
+# Example 1: Peru
+  countryName = "Peru"
+  examplePolyFolder_i<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
+  examplePolyFile_i<-paste("ne_10m_admin_1_states_provinces",sep="")
+  exampleSubRegion=readOGR(dsn=examplePolyFolder_i,
                         layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
-  head(bermejo3Cropped@data)
-  subRegCol_i = "SUB_NAME"
-  metis.map(dataPolygon=bermejo3Cropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
+  head(exampleSubRegion@data)
+  subRegCol_i = "name"
+  # Crop the shapefile to the desired subRegion
+  exampleSubRegionCropped<-exampleSubRegion[(exampleSubRegion$admin==countryName),]
+  head(exampleSubRegionCropped@data)
+  metis.map(dataPolygon=exampleSubRegionCropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
 
+  # Can Further subset the shapefile if desired
+  chosenSubRegions = c("Cusco","Madre de Dios", "Pasco")
+  exampleSubRegion_chooseState<-exampleSubRegionCropped[(exampleSubRegionCropped[[subRegCol_i]] %in% chosenSubRegions),]
+  exampleSubRegion_chooseState@data <- droplevels(exampleSubRegion_chooseState@data)
+    head(exampleSubRegion_chooseState@data)
+  metis.map(dataPolygon=exampleSubRegion_chooseState,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
 
-  bermejoBoundaries<- metis.boundaries(
+  exampleBoundaries<- metis.boundaries(
                             boundaryRegShape=NULL,
                             boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
                             boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),
-                            boundaryRegCol="NAME",
-                            boundaryRegionsSelect="Argentina",
-                            subRegShape=bermejo3Cropped,
+                            boundaryRegCol="ADMIN",
+                            boundaryRegionsSelect=countryName,
+                            subRegShape=exampleSubRegionCropped,
                             subRegCol=subRegCol_i,
-                            subRegType="subRegType",
-                            nameAppend="_test",
+                            subRegType="state",
+                            nameAppend="_example",
                             expandPercent=2,
                             overlapShpFile="Global235_CLM_final_5arcmin_multipart",
                             overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
@@ -331,29 +339,87 @@ io_sub$ioTbl
                                       paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
                             folderName="metisExample")
 
+# Example 2: USA
+  countryName = "United States of America"
+  examplePolyFolder_i<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
+  examplePolyFile_i<-paste("US_states_mainland_ne1_states",sep="")
+  exampleSubRegion=readOGR(dsn=examplePolyFolder_i,layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
+  head(exampleSubRegion@data)
+  subRegCol_i = "postal"
+  # Crop the shapefile to the desired subRegion
+  exampleSubRegionCropped<-exampleSubRegion[(exampleSubRegion$admin==countryName),]
+  head(exampleSubRegionCropped@data)
+  metis.map(dataPolygon=exampleSubRegionCropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
+
+  # Can Further subset the shapefile if desired
+  chosenSubRegions = c("CA","NV","UT","CO","AZ","TX","OK","WY","TX")
+  exampleSubRegion_chooseState<-exampleSubRegionCropped[(exampleSubRegionCropped[[subRegCol_i]] %in% chosenSubRegions),]
+  exampleSubRegion_chooseState@data <- droplevels(exampleSubRegion_chooseState@data)
+  head(exampleSubRegion_chooseState@data)
+  metis.map(dataPolygon=exampleSubRegion_chooseState,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
+
+  exampleBoundaries<- metis.boundaries(
+                          boundaryRegShape=NULL,
+                          boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
+                          boundaryRegShpFile=paste("ne0_USMainLand_cropped",sep=""),
+                          boundaryRegCol="ADMIN",
+                          boundaryRegionsSelect=countryName,
+                          subRegShape=exampleSubRegionCropped,
+                          subRegCol=subRegCol_i,
+                          subRegType="state",
+                          nameAppend="_example",
+                          expandPercent=10,
+                          overlapShpFile="Global235_CLM_final_5arcmin_multipart",
+                          overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
+                          extension = T,
+                          #grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+                          #          paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+                          folderName="metisExample")
+
+  exampleBoundaries<- metis.boundaries(
+                            boundaryRegShape=NULL,
+                            boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
+                            boundaryRegShpFile=paste("ne0_USMainLand_cropped",sep=""),
+                            boundaryRegCol="ADMIN",
+                            boundaryRegionsSelect=countryName,
+                            subRegShape=exampleSubRegion_chooseState,
+                            subRegCol=subRegCol_i,
+                            subRegType="state",
+                            nameAppend="_exampleSubset",
+                            expandPercent=10,
+                            overlapShpFile="Global235_CLM_final_5arcmin_multipart",
+                            overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
+                            extension = T,
+                            #grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+                            #          paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+                            folderName="metisExample")
+
+
 #-----------
 # Grid to Poly
 #-------------
 
 # Example Grid File (csv with lats and lons that overlap the shapefile)
-    gridExample<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+    gridExample<-paste(getwd(),"/dataFiles/examples/example_grid_Peru.csv",sep="")
 
 # Polygons. An example Shapefile is Provided with metis in ./metis/dataFiles/examples.
+    # This is the same file as produced in the boundaries example above.
     examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
-    examplePolyFile_i<-paste("bermejo3Cropped",sep="")
-    bermejo3Cropped=readOGR(dsn=examplePolyFolder_i,
+    examplePolyFile_i<-paste("Peru_subRegion_example",sep="")
+    exampleSubRegionCropped=readOGR(dsn=examplePolyFolder_i,
                             layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
-    head(bermejo3Cropped@data) # TO choose subRegCol name
-    subRegCol_i = "SUB_NAME"
+    head(exampleSubRegionCropped@data) # TO choose subRegCol name
+    subRegCol_i = "name"
 
 # Run metis.grid2poly
-    polyBermeo3Cropped<-metis.grid2poly(grid=gridExample,
+    exampleGrid2poly<-metis.grid2poly(grid=gridExample,
                                     subRegShpFolder=examplePolyFolder_i,
                                     subRegShpFile=examplePolyFile_i,
                                     subRegCol=subRegCol_i,
-                                    aggType="depth", # Aggregation type. Depth or volume. See docuemntation for further details.
-                                    nameAppend="_Bermeo3",
-                                    folderName="metisExample")
+                                    #aggType="depth", # Aggregation type. Depth or volume. See docuemntation for further details.
+                                    nameAppend="_examplePeru",
+                                    folderName="metisExample",
+                                    regionName = "Peru")
 
 
 #------------------------------
@@ -361,66 +427,40 @@ io_sub$ioTbl
 #------------------------------
 
 # Simple Example. See example csv tables provided for ideal column names needed.
-    exampleGridTable_i<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
-    examplePolygonTable_i<-paste(getwd(),"/dataFiles/examples/example_poly_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+    exampleGridTable_i<-paste(getwd(),"/dataFiles/examples/example_grid_Peru.csv",sep="")
+    examplePolygonTable_i<-paste(getwd(),"/dataFiles/examples/example_poly_Peru.csv",sep="")
     gridTable=read.csv(exampleGridTable_i);head(gridTable)
     polyTable=read.csv(examplePolygonTable_i);head(polyTable)
 
-    subRegShpFolder_i <- paste(getwd(),"/dataFiles/examples",sep="")
-    subRegShpFile_i <- paste("bermejo3Cropped",sep="")
-    subRegShp_i = readOGR(dsn=subRegShpFolder_i,layer=subRegShpFile_i,use_iconv=T,encoding='UTF-8')
-    head(subRegShp_i@data)
-    subRegCol_i = "SUB_NAME"
-    metis.map(dataPolygon=subRegShp_i,fillColumn = subRegCol_i,labels=F ,printFig=F,facetsON=F)
+    examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
+    examplePolyFile_i<-paste("Peru_subRegion_example",sep="")
+    exampleSubRegionCropped=readOGR(dsn=examplePolyFolder_i,
+                                    layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
+    head(exampleSubRegionCropped@data) # TO choose subRegCol name
+    subRegCol_i = "name"
+    metis.map(dataPolygon=exampleSubRegionCropped,fillColumn = subRegCol_i,labels=F ,printFig=F,facetsON=F)
+
+    countryName= "Peru"
 
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                  gridDataTables=exampleGridTable_i,
-                 xRange=c(2005,2010,2020),
+                 xRange=c(2005,2010,2015,2020,2025,2030),
                  folderName="metisExample",
+                 boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
+                 boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),
+                 boundaryRegCol="NAME",
+                 boundaryRegionsSelect=countryName,
                  subRegShape=NULL,
                  subRegShpFolder=examplePolyFolder_i,
                  subRegShpFile=examplePolyFile_i,
                  subRegCol=subRegCol_i,
                  nameAppend="_exampleSubRegionMap",
-                 legendPosition=c("RIGHT","top"),
+                 legendPosition=c("LEFT","bottom"),
                  animateOn=T,
                  delay=100,
                  scenRef="Eg1",
-                 #expandPercent = 2,
-                 extension=F)
-
-
-# Extended Map showing the subregion within a wider boudnary region
-
-    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
-    boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
-    boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
-    head(boundaryRegShp_i@data)
-    boundaryRegCol_i = "NAME"
-    metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
-    # Pick country names from the list of countries in the natural earth shapefile.
-    unique(boundaryRegShp_i@data[[boundaryRegCol_i]])
-    boundaryRegionsSelect_i = c("Argentina") # Must be a region in the boundaryRegShp
-
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
-                     gridDataTables=exampleGridTable_i,
-                     xRange=c(2005,2010,2020),
-                     folderName="metisExample_extendedBoundary",
-                     boundaryRegionsSelect=boundaryRegionsSelect_i,
-                     boundaryRegShpFolder = boundaryRegShpFolder_i,
-                     boundaryRegShpFile = boundaryRegShpFile_i,
-                     boundaryRegCol = boundaryRegCol_i,
-                     subRegShape=NULL,
-                     subRegShpFolder=examplePolyFolder_i,
-                     subRegShpFile=examplePolyFile_i,
-                     subRegCol=subRegCol_i,
-                     nameAppend="_exampleSubRegionMapExtended",
-                     legendPosition=c("RIGHT","top"),
-                     animateOn=T,
-                     delay=100,
-                     scenRef="Eg1",
-                     expandPercent = 10,
-                     extension=T)
+                 expandPercent = 2,
+                 extension=T)
 
 
 #--------------------------------------------------

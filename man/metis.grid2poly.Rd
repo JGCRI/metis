@@ -4,9 +4,9 @@
 \alias{metis.grid2poly}
 \title{metis.grid2poly}
 \usage{
-metis.grid2poly(grid = NULL, subRegShape = NULL,
-  subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
-  subRegType = "subRegType", aggType = NULL,
+metis.grid2poly(grid = NULL, regionName = "region",
+  subRegShape = NULL, subRegShpFolder = NULL, subRegShpFile = NULL,
+  subRegCol = NULL, subRegType = "subRegType", aggType = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), folderName = NULL,
   nameAppend = "", labelsSize = 1.2, paramsSelect = "All",
   sqliteUSE = F, sqliteDBNamePath = paste(getwd(),
