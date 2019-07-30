@@ -21,6 +21,7 @@
 #' @export
 
 metis.grid2poly<- function(grid=NULL,
+                           regionName ="region",
                            subRegShape=NULL,
                            subRegShpFolder=NULL,
                            subRegShpFile=NULL,
@@ -341,7 +342,7 @@ metis.grid2poly<- function(grid=NULL,
             if (!dir.exists(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))}
 
             grid_fname<-paste(dirOutputs, "/Grid2Poly/temp/gridCropped_",polyType,"_",param_i,"_",scenario_i,nameAppend,".csv", sep = "")
-            data.table::fwrite(gridCroppedX%>%dplyr::mutate(polyType=polyType),
+            data.table::fwrite(gridCroppedX%>%dplyr::mutate(polyType=polyType, region=regionName),
                                file = grid_fname,row.names = F)
             print(paste("Subregional grid data files written to: ",grid_fname, sep = ""))
 
@@ -426,9 +427,13 @@ metis.grid2poly<- function(grid=NULL,
           polyData<-polyData%>%dplyr::mutate(subRegType=subRegType)
 
           polyx<-shape
-          polyx@data<-dplyr::left_join(polyx@data,polyData)
           polyx@data<-polyx@data%>%
+            dplyr::rename(subRegion:= !!paste(subRegCol))%>%
+            dplyr::select(subRegion)
+          polyData <- polyData%>%
             dplyr::rename(subRegion:= !!paste(subRegCol))
+          polyx@data<-dplyr::left_join(polyx@data,polyData)
+
 
           if("x" %in% names(polyx@data)){
             polyx@data <- polyx@data%>%
@@ -484,10 +489,11 @@ metis.grid2poly<- function(grid=NULL,
 
      data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","value","subRegion","subRegType","region")[
                              c("scenario","param","units","class","value","subRegion","subRegType","region") %in% names(poly)])%>%
-                           dplyr::mutate(value=0,x=2015)%>%unique,
+                           dplyr::mutate(value=0,x=2015, region=regionName)%>%unique,
                          file = paste(dir, "/subReg_grid2poly_template_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
-      data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","value","subRegion","subRegType","region","classPalette")[
-                             c("scenario","param","units","class","value","subRegion","subRegType","region","classPalette") %in% names(poly)]),
+      data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","x","value","subRegion","subRegType","region","classPalette")[
+                             c("scenario","param","units","class","x","value","subRegion","subRegType","region","classPalette") %in% names(poly)]) %>%
+                           dplyr::mutate( region=regionName),
                               file = paste(dir, "/subReg_grid2poly_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
 
     print(paste("Subregional Polygon template .csv files written to: ",dir, "/subReg_grid2poly_template",nameAppend,".csv", sep = ""))
