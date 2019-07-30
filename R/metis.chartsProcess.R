@@ -827,6 +827,33 @@ for(i in unique(tbl$region)){
       tbl_rp<-tbl%>%dplyr::filter(region==i,
                                    param==j)
 
+      if(is.null(scenRef)){
+        print(paste("No reference scenario provided",sep=""))
+        print(paste("Using ",unique(tbl_rp$scenario)[1]," as reference",sep=""))
+        scenRef_i = unique(tbl_rp$scenario)[1]}else{
+          if(!scenRef %in% unique(tbl_rp$scenario)){
+            print(paste("scenario ",scenRef," not in scenarios",sep=""))
+            print(paste("Using ",unique(tbl_rp$scenario)[1]," as reference",sep=""))
+            scenRef_i = unique(tbl_rp$scenario)[1]}else{
+              scenRef_i <- scenRef}
+        } # Check if Ref Scenario Chosen
+
+      # Check for Different yLabels
+      for (scen_i in unique(tbl_rp$scenario)){
+        if(yLabel!="yLabel"){
+        if(unique(tbl_rp%>%dplyr::filter(scenario==scenRef_i)%>%dplyr::select(yLabel))[1,1] !=
+           unique(tbl_rp%>%dplyr::filter(scenario==scen_i)%>%dplyr::select(yLabel))[1,1]){
+          print(paste("Warning. ",yLabel," in reference scenario '", scenRef_i, "': '",
+                      unique(tbl_rp%>%dplyr::filter(scenario==scenRef_i)%>%dplyr::select(yLabel))[1,1],
+                "' are not the same as ",yLabel," in diff scenario '", scen_i, "': '",
+                unique(tbl_rp%>%dplyr::filter(scenario==scen_i)%>%dplyr::select(yLabel))[1,1],
+                "'. Setting ",yLabel," to Ref Scenario Units.",
+                sep=""))
+
+          tbl_rp <- tbl_rp %>% mutate(!!yLabel:=as.character(unique(tbl_rp%>%dplyr::filter(scenario==scenRef_i)%>%dplyr::select(yLabel))[1,1]))
+          }}}
+
+
       if(length(unique((tbl_rp%>%dplyr::filter(value>0))$scenario))>1){
 
       if(nrow(tbl_rp)>0){
@@ -857,12 +884,12 @@ for(i in unique(tbl$region)){
         figHeight = 9*max((length(unique(tbl_rp$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )
 
-      # data=a; xData=xData;yData=yData;xLabel=xLabel;yLabel=yLabel; sizeBarLines=sizeBarLines;useNewLabels=useNewLabels;sizeLines=sizeLines; chartType = "bar";
+      # data=tbl_rpC1; xData=xData;yData=yData;xLabel=xLabel;yLabel=yLabel; sizeBarLines=sizeBarLines;useNewLabels=useNewLabels;sizeLines=sizeLines; chartType = "bar";
       # dirOutputs = paste(dirOutputs, "/Charts/", i,"/compareScen",sep = "")
       # fileName = paste(j,"_figBar_",i,"_compareScen",nameAppend,sep="")
       # figWidth = 13*max((length(unique(tbl_rp$scenario))/2),1)*figWMult
       # figHeight = 9*max((length(unique(tbl_rp$region))/2),1)
-      # pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+      # pdfpng=pdfpng; colOrder1 = colOrder1; colOrderName1 = colOrderName1; colOrder2 = colOrder2; colOrderName2 = colOrderName2
 
       # Line Chart
       metis.chart(tbl_rpC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
@@ -954,30 +981,33 @@ for(i in unique(tbl$region)){
 # Diff Plots
 #------------------------
 
-      if(is.null(scenRef)){
-        print(paste("No reference scenario provided",sep=""))
-        print(paste("Using ",unique(tbl_rp$scenario)[1]," as reference",sep=""))
-        scenRef_i = unique(tbl_rp$scenario)[1]}else{
-        if(!scenRef %in% unique(tbl_rp$scenario)){
-          print(paste("scenario ",scenRef," not in scenarios",sep=""))
-          print(paste("Using ",unique(tbl_rp$scenario)[1]," as reference",sep=""))
-          scenRef_i = unique(tbl_rp$scenario)[1]}else{
-        scenRef_i <- scenRef}
-      } # Check if Ref Scenario Chosen
+
+      # Aggregate across classes
+      tbl_rpAggsums<-tbl_rp%>%
+        dplyr::filter(aggregate=="sum")%>%
+        dplyr::select(-class2,-classLabel2,-classPalette2,-classLabel1,-classPalette1,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage,-xLabel)%>%
+        dplyr::group_by_at(dplyr::vars(-yData))%>%
+        dplyr::summarize_at(c(yData),dplyr::funs(sum))
+      tbl_rpAggmeans<-tbl_rp%>%
+        dplyr::filter(aggregate=="mean")%>%
+        dplyr::select(-class2,-classLabel2,-classPalette2,-classLabel1,-classPalette1,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage, -xLabel)%>%
+        dplyr::group_by_at(dplyr::vars(-yData))%>%
+        dplyr::summarize_at(c(yData),dplyr::funs(mean))
+      tbl_rpAgg<-dplyr::bind_rows(tbl_rpAggsums,tbl_rpAggmeans)%>%dplyr::ungroup()
+
 
       # Calculate Diff Values
-      tbl_rpd<-tbl_rp%>%
-        dplyr::filter(scenario==scenRef_i)%>%
-        dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
-      if(!yData %in% names(tbl_rp)){tbl_rpd<-tbl_rpd%>%dplyr::select(-dplyr::one_of(c(yData)))}
+      tbl_rpd<-tbl_rpAgg%>%
+        dplyr::filter(scenario==scenRef_i)
+      if(!yData %in% names(tbl_rpAgg)){tbl_rpd<-tbl_rpd%>%dplyr::select(-dplyr::one_of(c(yData)))}
 
-      tbl_rpd_fixedCols <- tbl_rpd %>% dplyr::select("xLabel","classLabel1","classPalette1","classLabel2","classPalette2") %>% unique()
+      tbl_rpd_fixedCols <- tbl_rp %>%
+        dplyr::filter(scenario==scenRef_i) %>%
+        dplyr::select("param","xLabel","classLabel1","classPalette1","classLabel2","classPalette2") %>% unique()
 
-      for (k in unique(tbl_rp$scenario)[unique(tbl_rp$scenario)!=scenRef_i]){
-        tbl_temp <- tbl_rp%>%
-          dplyr::filter(scenario %in% c(scenRef_i,k))%>%
-          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,-vintage,
-                        -xLabel,classLabel1,classPalette1,classLabel2,classPalette2)
+      for (k in unique(tbl_rpAgg$scenario)[unique(tbl_rpAgg$scenario)!=scenRef_i]){
+        tbl_temp <- tbl_rpAgg%>%
+          dplyr::filter(scenario %in% c(scenRef_i,k))
         if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-dplyr::one_of(c(yData)))}
         tbl_temp <- tbl_temp%>%
           tidyr::spread(scenario,yData)%>%
@@ -1006,12 +1036,12 @@ for(i in unique(tbl$region)){
       # Aggregate across classes
       tblAggsums<-tbl_rpd%>%
         dplyr::filter(aggregate=="sum")%>%
-        dplyr::select(-class2,-classLabel2,-classPalette2)%>%
+        dplyr::select(-classLabel2,-classPalette2)%>%
         dplyr::group_by_at(dplyr::vars(-value))%>%
         dplyr::summarize_at(c("value"),dplyr::funs(sum))
       tblAggmeans<-tbl_rpd%>%
         dplyr::filter(aggregate=="mean")%>%
-        dplyr::select(-class2,-classLabel2,-classPalette2)%>%
+        dplyr::select(-classLabel2,-classPalette2)%>%
         dplyr::group_by_at(dplyr::vars(-value))%>%
         dplyr::summarize_at(c("value"),dplyr::funs(mean))
       tbl_rpdC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
