@@ -194,16 +194,23 @@ io_sub$ioTbl
 
    localData <- tibble::tribble (
      ~scenario,    ~region,     ~sources,	 ~param,          ~units,               ~class,             ~x,    ~value,
-     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "building",        "2010", "10",
-     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "industry",        "2010", "20",
-     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "transportation",  "2010", "30",
-     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "building",        "2015", "15",
-     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "industry",        "2015", "22",
-     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "transportation",  "2015", "34")
+     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "building",        "2010", "50",
+     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "industry",        "2010", "100",
+     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "transportation",  "2010", "150",
+     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "building",        "2015", "70",
+     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "industry",        "2015", "60",
+     "Local Data", "Argentina", "Sources", "finalNrgbySec", "Final Energy (TWh)", "transportation",  "2015", "70",
+     "Local Data", "Argentina", "Sources",  "aggLandAlloc", "Land Allocation (1000 km^2)", "crops",           "2010", "100",
+     "Local Data", "Argentina", "Sources",  "aggLandAlloc", "Land Allocation (1000 km^2)", "forest",          "2010", "200",
+     "Local Data", "Argentina", "Sources",  "aggLandAlloc", "Land Allocation (1000 km^2)", "shrubs",          "2010", "30",
+     "Local Data", "Argentina", "Sources",  "aggLandAlloc", "Land Allocation (1000 km^2)", "naturalOther",    "2010", "15",
+     "Local Data", "Argentina", "Sources",  "aggLandAlloc", "Land Allocation (1000 km^2)", "pasture",         "2010", "220")
+
+   localData <- localData %>% mutate(vintage="Vintage", class2="class2")
 
    if (!dir.exists(paste(getwd(), "/outputs", sep = ""))){dir.create(paste(getwd(), "/outputs", sep = ""))}
    if (!dir.exists(paste(getwd(), "/outputs/Charts", sep = ""))){dir.create(paste(getwd(), "/outputs/Charts", sep = ""))}
-   if (!dir.exists(paste(getwd(), "/outputs/Charts/metisExample", sep = ""))){dir.create(paste(getwd(), "/outputs/metisExample", sep = ""))}
+   if (!dir.exists(paste(getwd(), "/outputs/Charts/metisExample", sep = ""))){dir.create(paste(getwd(), "/outputs/Charts/metisExample", sep = ""))}
    data.table::fwrite(localData, file = paste(getwd(), "/outputs/Charts/metisExample/example_localFile.csv", sep = ""),row.names = F)
    dataTables_i =  c(paste(getwd(), "/outputs/Charts/metisExample/example_localFile.csv", sep = ""))
 
@@ -245,8 +252,9 @@ io_sub$ioTbl
                           scenRef="Eg1", # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           regionCompareOnly=0, # Default 0. If set to 1, will only run comparison plots and not individual
-                          scenarioCompareOnly=0,
+                          scenarioCompareOnly=1,
                           folderName = "metisExample") # Default 0. If set to 1, will only run comparison plots and not individual
+
 
 #-------------------
 # Maps (metis.map.R)
