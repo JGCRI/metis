@@ -134,16 +134,17 @@ Metis is designed to be accesible to a range of stakeholders with varying expert
 # Clone repo
 git clone https://github.com/JGCRI/metis.git
 
-# Or download from github https://github.com/JGCRI/metis 
+# Or download directly from github https://github.com/JGCRI/metis
 ```  
 
-2. Download R studio (https://www.rstudio.com/) and R (https://www.r-project.org/)
+2. Download and install R studio (https://www.rstudio.com/) and R (https://www.r-project.org/)
 
-3. Open the metis.Rproj file.
+3. Download and install Image Magick (https://imagemagick.org/script/download.php) (Used to create animations)
 
-4. Open the "metis.master.R"" file which contains code to help install and run remaining model.
+4. Open the metis.Rproj file.
 
-5. Install the necessary R packages including Metis.
+5. Open the "metis.master.R"" file which contains code to help install and run remaining model.
+
 
 ```r
 #----------------------------
@@ -217,9 +218,10 @@ This section walks through the different features of the metis package using the
 
 The workflow for data processing, charting and mapping is shown below. The following subsections will guide the user through each of these processes further expaning on the functionality within each of the functions.
 
-<p align="center"> <b> Metis chart and mapping processes </b> </p>
+<p align="center"> <b> Metis charts, maps and IO workflows </b> </p>
 <p align="center"> <img src="READMEfigs/metis_workflowChart.png"></p>
 <p align="center"> <img src="READMEfigs/metis_workflowMap.png"></p>
+<p align="center"> <img src="READMEfigs/metis_workflowIO.png"></p>
 
 </p>
 </details>
@@ -664,7 +666,6 @@ metis.boundaries is used to create maps showing where the sub-region lies in the
 
 <p align="center"> <b> metis.boundaries Outputs and Example Charts </b> </p>
 <p align="center"> <img src="READMEfigs/metis_moduleBoundary1.png"></p>
-<p align="center"> <img src="READMEfigs/metis_moduleBoundary2.png"></p>
 
 <details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
@@ -1035,11 +1036,8 @@ Grid |  Basin
 
 ```
 
-<p align="center"> <b> metis.mapsProcess Outputs Folders </b> </p>
-<p align="center"> <img src="READMEfigs/metis_moduleMapsProcessFolders.png"></p>
-
 <p align="center"> <b> metis.mapsProcess Example Output Data Scales </b> </p>
-<p align="center"> <img src="READMEfigs/metis_moduleMapsProcessRaster.png"></p>
+<p align="center"> <img src="READMEfigs/metis_moduleMapsProcess1.png"></p>
 
 
 </p>
