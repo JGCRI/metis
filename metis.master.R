@@ -17,6 +17,7 @@ if("dbplyr" %in% rownames(installed.packages()) == F){install.packages("dbplyr")
 if("RSQLite" %in% rownames(installed.packages()) == F){install.packages("RSQLite")}; library(RSQLite)
 if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("ggplot2")}; library(ggplot2)
 if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggalluvial")}; library(ggalluvial)
+if("raster" %in% rownames(installed.packages()) == F){install.packages("raster")}; library(raster)
 
 #----------------------------
 # Input/Output (metis.io.R)
@@ -241,7 +242,7 @@ io_sub$ioTbl
                    "watConsumBySec", "watWithdrawBySec")
 
 # Select regions from the 32 GCAM regions.
-  regionsSelect_i=c("Peru","China")
+  regionsSelect_i=c("Argentina","China")
 
 # Charts Process
   charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
@@ -555,18 +556,19 @@ io_sub$ioTbl
 
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
-                     xRange=c(2010,2020,2100),
+                     xRange=c(2010,2020,2030,2040,2050),
                      folderName="metisExample_extended",
                      boundaryRegionsSelect=boundaryRegionsSelect_i,
                      boundaryRegShape=boundaryRegShp_i,
                      subRegShape=subRegShp_i_Crop,
+                     boundaryRegCol = boundaryRegCol_i,
                      subRegCol=subRegCol_i,
                      nameAppend="",
                      animateOn=T,
                      delay=100,
                      scenRef="SSP2_Ref",
                      extension=F,
-                     diffOn = F)
+                     diffOn = T)
 
 # Improved map using available parameters.
     # Shift legend outside and change the scale_range to get conistent scale across scenarios.
@@ -583,10 +585,11 @@ io_sub$ioTbl
 
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
-                     xRange=c(2010,2020,2100),
+                     xRange=c(2010,2020,2030,2040,2050),
                      folderName="metisExample_extendedRefined",
                      boundaryRegionsSelect=boundaryRegionsSelect_i,
                      boundaryRegShape=boundaryRegShp_i,
+                     boundaryRegCol = boundaryRegCol_i,
                      subRegShape=subRegShp_i_Crop,
                      subRegCol=subRegCol_i,
                      nameAppend="_improvedFig",
@@ -594,8 +597,8 @@ io_sub$ioTbl
                      animateOn=T,
                      delay=100,
                      scenRef="SSP2_Ref",
-                     extension=F,
-                     diffOn = F,
+                     extension=T,
+                     diffOn = T,
                      legendOutsideSingle = T,
                      scaleRange = scaleRange_i)
 
