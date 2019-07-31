@@ -19,11 +19,34 @@ authors:
     affiliation: "1,2"
   - name: Fernando Miralles
     affiliation: "1,2"
+  - name: Andy miller
+    affiliation: "3"
+  - name: Fekadu Moreda
+    affiliation: "4"
+  - name: Raul Castillo Munoz
+    affiliation: "5"
+  - name: Julia Lacas Bereslawski
+    affiliation: "6"
+  - name: Micaela Suriano
+    affiliation: "7"
+    
+
 affiliations:
- - name: Joint Global Change Research Institute (JGCRI) - PNNL
+ - name: Joint Global Change Research institute, Pacific Northwest National Laboratory (PNNL), College Park, MD 20740, USA
    index: 1
- - name: University of Maryland
+ - name: Earth System Science Interdisciplinary Center (ESSIC), University of Maryland, College Park, MD 20740, USA
    index: 2
+ - name: National Peace Corps Association, Washington, DC 20036, USA
+   index: 3
+   - name: Research Triangle Institute (RTI), Research Triangle Park, NC, 27709-2194, USA
+   index: 4
+    - name: Inter-American Development Bank (IDB), Washington, D.C. 20577, USA
+   index: 5
+    - name: Independent Consultant for the Inter-American Development Bank, Washington, D.C. 20577, USA 
+   index: 6
+    - name: Instituto Nacional del Agua (INA), Buenos Aires, Argentina 
+   index: 7
+   
 date: January 2019
 ---
 <p align="center"> <img src="READMEfigs/metisHeaderThin.PNG"></p>
@@ -68,7 +91,7 @@ In most projects looking at multi-sector dynamics one of the key constraints is 
 After aggregating data to relevant spatial and temporal scales, Metis finds relationships between the sectors using input/output methods to establish correlation matrices. The correlation matrices represent the inter-sectoral links throughout the system and are then used to investigate impacts of changes in one sector on others.
 
 <p align="center"> <b> Metis - A model to bridge the gap between coarse resolution IAMs and finer-resolution sector specific models </b> </p>
-<p align="center"> <img src="READMEfigs/Metis_MidSpatial.PNG"></p>
+<p align="center"> <img src="READMEfigs/metis_MidSpatial_MultiSectDynamic.PNG"></p>
 
 - The Metis modeling development platform is hosted on github at: https://github.com/JGCRI/Metis
 - To clone this repo is: https://github.com/JGCRI/Metis.git
