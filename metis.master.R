@@ -84,7 +84,7 @@ io_sub$ioTbl
   paramsSelect_i = "All"
 
 # Select regions from the 32 GCAM regions.
-  regionsSelect_i <- c("China","Argentina")
+  regionsSelect_i <- c("Argentina","Colombia")
 
   dataGCAM<-metis.readgcam(reReadData = F,
                          #gcamdatabasePath = gcamdatabasePath_i,
@@ -242,7 +242,7 @@ io_sub$ioTbl
                    "watConsumBySec", "watWithdrawBySec")
 
 # Select regions from the 32 GCAM regions.
-  regionsSelect_i=c("Argentina","China")
+  regionsSelect_i=c("Argentina","Colombia")
 
 # Charts Process
   charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
@@ -391,8 +391,8 @@ io_sub$ioTbl
                             overlapShpFile="Global235_CLM_final_5arcmin_multipart",
                             overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
                             extension = T,
-                            #grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
-                            #          paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+                            grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+                                      paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
                             folderName="metisExample")
 
 
