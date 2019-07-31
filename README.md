@@ -29,8 +29,6 @@ authors:
     affiliation: "6"
   - name: Micaela Suriano
     affiliation: "7"
-    
-
 affiliations:
  - name: Joint Global Change Research institute, Pacific Northwest National Laboratory (PNNL), College Park, MD 20740, USA
    index: 1
@@ -38,15 +36,14 @@ affiliations:
    index: 2
  - name: National Peace Corps Association, Washington, DC 20036, USA
    index: 3
-   - name: Research Triangle Institute (RTI), Research Triangle Park, NC, 27709-2194, USA
+ - name: Research Triangle Institute (RTI), Research Triangle Park, NC, 27709-2194, USA
    index: 4
-    - name: Inter-American Development Bank (IDB), Washington, D.C. 20577, USA
+ - name: Inter-American Development Bank (IDB), Washington, D.C. 20577, USA
    index: 5
-    - name: Independent Consultant for the Inter-American Development Bank, Washington, D.C. 20577, USA 
+ - name: Independent Consultant for the Inter-American Development Bank, Washington, D.C. 20577, USA 
    index: 6
-    - name: Instituto Nacional del Agua (INA), Buenos Aires, Argentina 
+ - name: Instituto Nacional del Agua (INA), Buenos Aires, Argentina 
    index: 7
-   
 date: January 2019
 ---
 <p align="center"> <img src="READMEfigs/metisHeaderThin.PNG"></p>
