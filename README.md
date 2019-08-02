@@ -214,16 +214,15 @@ This section walks through the different features of the metis package using the
 
 | Function  | Description |
 | ------------- | ------------- |
+| metis.io.R  | This functions is designed to interact specifically with GCAM outputs. The function processes GCAM outputs into .csv files by GCAM region which can then be used as inputs to metis.chartsProcess.R |
 | metis.readgcam.R  | This functions is designed to interact specifically with GCAM outputs. The function processes GCAM outputs into .csv files by GCAM region which can then be used as inputs to metis.chartsProcess.R |
 | metis.chart.R  | metis charting function which allows quick and easy access to features like facets, labels and colors. The function is based on ggplot and returns a ggplot chart.  |
 | metis.chartsProcess.R  | metis charting function used to compare scenarios and regions. The function also creates diff plots with percentage and absolute differences from a given reference scenario.  |
 | metis.map.R  | metis mapping function to plot raster and polygon data. The function uses the tmap package and returns a tmap object. Several maps can be combined by overlaying and underlaying using this function. Options allow for different colors palettes, labels, text-size as well as legend breaks which are freescale, kmeans or equally divided to highlight different kinds of data.  |
 | metis.boundaries.R  | metis mapping function to plot shape file boundaries and surrounding regions for quick visualization of region of interest.  |
 | metis.grid2poly.R  | Function used to crop and aggregate gridded data by a given polygon shape file. If no grid is provided the function can still be used to produce regional and subregional maps  |
-| metis.gridByPoly.R  | Function used to crop and aggregate gridded data by a given polygon shape file. If no grid is provided the function can still be used to produce regional and subregional maps  |
 | metis.mapsProcess.R  | metis mapping function used to compare across scenarios. The function produces diff maps with percentage and absolute differences from a given reference scenario.  |
 | metis.prepGrid.R  | This function is designed to be used with specific open-source downscaling models Xanthos, Demeter and Tethys which downscale GCAM data to the grid level. The function takes outputs from these various models and processes them into the metis format which is then used as an input to the metis.mapsProcess.R function.  |
-| metis.io.R  | This functions is designed to interact specifically with GCAM outputs. The function processes GCAM outputs into .csv files by GCAM region which can then be used as inputs to metis.chartsProcess.R |
 | metis.assumptions.R  | Contains all conversions and assumptions used in the model  |
 | metis.colors.R  | Collection of metis color palettes. A list of palettes can be viewed in the function help file (?metis.colors). To view a particular palette metis.colors("pal_hot")  |
 
@@ -849,6 +848,10 @@ metis.grid2poly is used to aggregate gridded data to given sub-regional spatial 
 
 metis.grid2poly can also be used to create maps showing where the sub-region lies in the greater region. For this option a boundary region should be defined. naturalEarth boundary region files have been made available throught the osf repository https://osf.io/pbta5/). Once grid2poly has been run a folder for "Maps" and a folder for "Grids" (if a grid file was provided) are created. Within the Maps folder (./metis/outputs/Maps) the user will find a Tables folder which contains all the data used to create the map as a well as a template for stakeholders to input their own data as a new scenario by sub-region. The Maps folder will also contain a "Boundary" folder which contains the boundary files defining each region and subregion and also includes shapefiles incase these need to be shared with others. The folder structure and example output boundary maps are shown in the figures that follow. If a grid has been provided then a "Grid" folder is also created which contains the cropped gridded data which can be used in for mapping.
 
+<p align="center"> <b> metis.grid2poly metis.grid2poly conceptual aggregation methods  </b> </p>
+<p align="center"> <img src="READMEfigs/metis_moduleGrid2PolySpatAgg.png"></p>
+
+
 <details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
 
@@ -880,13 +883,6 @@ metis.grid2poly can also be used to create maps showing where the sub-region lie
                                     regionName = "Peru")
 
 ```
-
-<p align="center"> <b> metis.grid2poly Outputs and Example Charts </b> </p>
-<p align="center"> <img src="READMEfigs/metis_moduleGrid2Poly1.png"></p>
-
-<p align="center"> <b> metis.grid2poly metis.grid2poly conceptual aggregation methods  </b> </p>
-<p align="center"> <img src="READMEfigs/metis_moduleGrid2PolySpatAgg.png"></p>
-
 
 </p>
 </details>
