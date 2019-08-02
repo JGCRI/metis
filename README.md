@@ -120,9 +120,9 @@ Metis is designed to be accesible to a range of stakeholders with varying expert
 
 <p align="left"> <b> Metis Module & Functions </b> </p>
 
-- Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: mess.chart.R, mess.chartsProcess.R)
+- Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: metis.chart.R, mess.chartsProcess.R)
 - Maps: Various functions to vizualize spatial boundaries and data as rasters and polygon
-(functions: metis.boundaries.R, mets.map.R, metis.mapsProcess.R)
+(functions: metis.boundaries.R, metis.map.R, metis.mapsProcess.R)
 - Spatial Aggregation: Functions to aggregate gridded data to different spatial boundaries.
 (functions: metis.grid2poly.R)
 - Data preparation: Functions to prepare data from other modules into the appropriate format.
