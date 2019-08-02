@@ -116,7 +116,7 @@ The motivation behind developing the Metis model is to bridge the gap between mo
 
 [Back to Contents](#Contents)
 
-Metis is designed to be accesible to a range of stakeholders with varying expertise and goals related to nexus analyses. The various functions of Metis can be used independently for different purposes ranging from visualization, charting, spatial aggregation, mapping and inter-sectoral dynamics. The following lists and figure provides a summary of the existing and planned capabilities of mess. The lists and figure are updated as progress is made and new developments are planned. 
+Metis is designed to be accesible to a range of stakeholders with varying expertise and goals related to nexus analyses. The various functions of Metis can be used independently for different purposes ranging from visualization, charting, spatial aggregation, mapping and inter-sectoral dynamics. The following lists and figure provides a summary of the existing and planned capabilities of Metis. The lists and figure are updated as progress is made and new developments are planned. 
 
 <p align="left"> <b> Metis Module & Functions </b> </p>
 
@@ -214,7 +214,7 @@ This section walks through the different features of the metis package using the
 
 | Function  | Description |
 | ------------- | ------------- |
-| metis.io.R  | This functions is designed to interact specifically with GCAM outputs. The function processes GCAM outputs into .csv files by GCAM region which can then be used as inputs to metis.chartsProcess.R |
+| metis.io.R  | This function is designed to interact specifically with GCAM outputs. The function processes GCAM outputs into .csv files by GCAM region which can then be used as inputs to metis.chartsProcess.R |
 | metis.readgcam.R  | This functions is designed to interact specifically with GCAM outputs. The function processes GCAM outputs into .csv files by GCAM region which can then be used as inputs to metis.chartsProcess.R |
 | metis.chart.R  | metis charting function which allows quick and easy access to features like facets, labels and colors. The function is based on ggplot and returns a ggplot chart.  |
 | metis.chartsProcess.R  | metis charting function used to compare scenarios and regions. The function also creates diff plots with percentage and absolute differences from a given reference scenario.  |
@@ -695,7 +695,7 @@ The following section shows some basic example to use metis.map.R.
 <b> Key Inputs </b>  
 
 - boundaryRegShape: A polygon shapefile which has already been read into R defining the boundary region. Default is NULL. If left NULL then a folder and filename should be specified if a boundary is desired.
-- boundaryRegShpFolder: If an extended map is desired then this can be provided. naturalEarth admin boundaries are available if downloaded from the osf link https://osf.io/pbta5/). These will be lying in ./metis/dataFiles/gis/metis/naturalEarth, The default value is NULL and in this case no extended boundary will be drawn.
+- boundaryRegShpFolder: If an extended map is desired then this can be provided. naturalEarth admin boundaries are in ./metis/dataFiles/gis/metis/naturalEarth, The default value is NULL and in this case no extended boundary will be drawn.
 - boundaryRegShpFile: If desired and chosen from the naturalEarth data then "ne_10m_admin_0_countries" can be chosen.
 - boundaryRegCol: If boundaryRegShpFolder and File are specified then this column should be specified. If the naturalEarth data is used the column is "NAME".
 - boundaryRegionsSelect: Desired boundary region. In the naturalEarth data these are country names eg. "Argentina",
@@ -710,7 +710,7 @@ The following section shows some basic example to use metis.map.R.
 - overlapShpFolder: If an overlapping shapefile is desired then the folder should be specified. For example GCAM basin boundaries saved in ./metis/dataFiles/gis/metis/gcam
 - overlapShpFile: Overlapping shapefile name for eg. "Global235_CLM_final_5arcmin_multipart"
 
-metis.boundaries is used to create maps showing where the sub-region lies in the greater region. For this option a boundary region should be defined. NaturalEarth boundary region files have been made available throught the osf repository https://osf.io/pbta5/). Once metis.boundaries has been run a folder for "Maps" is created. The Maps folder will contain a "Boundary" folder which contains the boundary files defining each region and subregion. The function also shows how different grid cells sizes compare with the selected regions. This is useful to understand if the desired regional resolution is too fine for a particular grid size. The folder structure and example output boundary maps are shown in the figures that follow.
+metis.boundaries is used to create maps showing where the sub-region lies in the greater region. For this option a boundary region should be defined. NaturalEarth boundary region files come with the download of Metis. Once metis.boundaries has been run a folder for "Maps" is created. The Maps folder will contain a "Boundary" folder which contains the boundary files defining each region and subregion. The function also shows how different grid cells sizes compare with the selected regions. This is useful to understand if the desired regional resolution is too fine for a particular grid size. The folder structure and example output boundary maps are shown in the figures that follow.
 
 <p align="center"> <b> metis.boundaries Outputs and Example Charts </b> </p>
 <p align="center"> <img src="READMEfigs/metis_moduleBoundary1.png"></p>
@@ -846,7 +846,7 @@ metis.boundaries is used to create maps showing where the sub-region lies in the
 
 metis.grid2poly is used to aggregate gridded data to given sub-regional spatial scales. Depending on the type of gridded data (volume or depth) the aggregation is done based on the part of the polygon which intersect with the grid cells as shown in the figure below. 
 
-metis.grid2poly can also be used to create maps showing where the sub-region lies in the greater region. For this option a boundary region should be defined. naturalEarth boundary region files have been made available throught the osf repository https://osf.io/pbta5/). Once grid2poly has been run a folder for "Maps" and a folder for "Grids" (if a grid file was provided) are created. Within the Maps folder (./metis/outputs/Maps) the user will find a Tables folder which contains all the data used to create the map as a well as a template for stakeholders to input their own data as a new scenario by sub-region. The Maps folder will also contain a "Boundary" folder which contains the boundary files defining each region and subregion and also includes shapefiles incase these need to be shared with others. The folder structure and example output boundary maps are shown in the figures that follow. If a grid has been provided then a "Grid" folder is also created which contains the cropped gridded data which can be used in for mapping.
+metis.grid2poly can also be used to create maps showing where the sub-region lies in the greater region. For this option a boundary region should be defined. NaturalEarth boundary region files come with the download of Metis. Once grid2poly has been run a folder for "Maps" and a folder for "Grids" (if a grid file was provided) are created. Within the Maps folder (./metis/outputs/Maps) the user will find a Tables folder which contains all the data used to create the map as a well as a template for stakeholders to input their own data as a new scenario by sub-region. The Maps folder will also contain a "Boundary" folder which contains the boundary files defining each region and subregion and also includes shapefiles incase these need to be shared with others. The folder structure and example output boundary maps are shown in the figures that follow. If a grid has been provided then a "Grid" folder is also created which contains the cropped gridded data which can be used in for mapping.
 
 <p align="center"> <b> metis.grid2poly metis.grid2poly conceptual aggregation methods  </b> </p>
 <p align="center"> <img src="READMEfigs/metis_moduleGrid2PolySpatAgg.png"></p>
