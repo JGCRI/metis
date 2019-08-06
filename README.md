@@ -163,7 +163,11 @@ git clone https://github.com/JGCRI/metis.git
 
 4. Open the metis.Rproj file.
 
-5. Open the "metis.master.R"" file which contains code to help install and run remaining model.
+5. In R studio go to 'Build' then click  'Install and Restart'
+
+<p align="center"> <img src="READMEfigs/metisBuildPackage.PNG"></p>
+
+6. Open the "metis.master.R"" file which contains code to help install and run remaining model.
 
 
 ```r
