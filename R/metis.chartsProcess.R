@@ -68,6 +68,7 @@
 #' @param colOrder2 Default = NULL,
 #' @param colOrderName2 Default = NULL,
 #' @param scaleRange Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.
+#' @param xScenCompFacetLabelSize Default = 2
 #' @keywords charts, diffplots
 #' @return Produces charts in output folder and also returns combined table in metis format.
 #' @export
@@ -90,7 +91,8 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        colOrderName1 = NULL,
                        colOrder2 = NULL,
                        colOrderName2 = NULL,
-                       scaleRange = NULL) {
+                       scaleRange = NULL,
+                       xScenCompFacetLabelSize = 35) {
 
 
   # dataTables=NULL
@@ -648,7 +650,8 @@ if(length(unique(tbl$scenario))>1){
 
 
         # Bar Chart
-        metis.chart(tbl_pyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+
+        metis.chart(tbl_pyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = xScenCompFacetLabelSize,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData, facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegion_xScenSelectYears",nameAppend,sep=""),
@@ -999,8 +1002,9 @@ for(i in unique(tbl$region)){
 
 
       # Bar Chart
-      metis.chart(tbl_rpyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData,
-        dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+      metis.chart(tbl_rpyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, facetLabelSize = xScenCompFacetLabelSize,
+                  sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData,
+       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figBar_",i,"_compareScen_xScenSelectYears",nameAppend,sep=""),
         figWidth = 13*max((length(unique(tbl_rpy$x)[unique(tbl_rpy$x) %in% xCompare])/3),1)*figWMult,
         figHeight = 9*max((length(unique(tbl_rpy$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
