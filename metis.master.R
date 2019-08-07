@@ -583,6 +583,15 @@ io_sub$ioTbl
       ~param,~minScale, ~maxScale,
       "waterConsumption", 0, 60)
 
+    # Select natural Earth country Map
+    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
+    boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
+    boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    head(boundaryRegShp_i@data)
+    boundaryRegCol_i = "NAME"
+    metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
+    boundaryRegionsSelect_i = c("China")
+
     metis.mapProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2030,2040,2050),

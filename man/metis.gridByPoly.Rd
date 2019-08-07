@@ -6,7 +6,7 @@
 \usage{
 metis.gridByPoly(grid = NULL, boundaryRegShpFolder = NULL,
   boundaryRegShpFile = NULL, colName = NULL,
-  outputDir = paste(getwd(), "/outputs", sep = ""),
+  dirOutputs = paste(getwd(), "/outputs", sep = ""),
   fname = "gridByPoly", saveFile = F)
 }
 \arguments{
@@ -18,7 +18,7 @@ metis.gridByPoly(grid = NULL, boundaryRegShpFolder = NULL,
 
 \item{colName}{Default = NULL,}
 
-\item{outputDir}{Default = paste(getwd(),"/outputs",sep=""),}
+\item{dirOutputs}{Default = paste(getwd(),"/outputs",sep=""),}
 
 \item{fname}{Default = "gridByPoly"}
 

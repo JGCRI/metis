@@ -23,7 +23,7 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
 \arguments{
 \item{boundaryRegShape}{Default=NULL. Boundary region shape if already read into R.}
 
-\item{boundaryRegShpFolder}{Default= NULL. Folder containing boundary region shapefile. Suggested: paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),}
+\item{boundaryRegShpFolder}{Default= NULL. Folder containing boundary region shapefile. Suggested: paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep  Default=""),}
 
 \item{boundaryRegShpFile}{Default=NULL. Name of shapefile. Suggested: paste("ne_10m_admin_0_countries",sep  Default=""),}
 
@@ -33,7 +33,7 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
 
 \item{subRegShape}{Default=NULL. Sub-region shape if already read into R.}
 
-\item{subRegShpFolder}{Default=NULL. Folder containing boundary region shapefile. Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),}
+\item{subRegShpFolder}{Default=NULL. Folder containing boundary region shapefile. Suggested paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep  Default=""),}
 
 \item{subRegShpFile}{Default=NULL. Name of sub-region shapefile. Suggested paste("ne_10m_admin_1_states_provinces",sep  Default=""),}
 
@@ -55,7 +55,7 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
 
 \item{overlapShape}{Default = NULL. If boundary lines of another shapefile are desired specify the shape here.}
 
-\item{overlapShpFolder}{Default = NULL. For GCAM basins use paste(getwd(),"/dataFiles/gis/basin_gcam",sep="").}
+\item{overlapShpFolder}{Default = NULL. For GCAM basins use paste(getwd(),"/dataFiles/gis/metis/gcam",sep="").}
 
 \item{overlapShpFile}{Default = NULL. For GCAM basins use ="Global235_CLM_final_5arcmin_multipart"}
 

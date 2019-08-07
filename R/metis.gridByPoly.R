@@ -6,7 +6,7 @@
 #' @param boundaryRegShpFolder Default = NULL,
 #' @param boundaryRegShpFile Default = NULL,
 #' @param colName Default = NULL,
-#' @param outputDir Default = paste(getwd(),"/outputs",sep=""),
+#' @param dirOutputs Default = paste(getwd(),"/outputs",sep=""),
 #' @param fname Default = "gridByPoly"
 #' @param saveFile Default = F. If want csv output then change to T
 #' @keywords grid, shape, polygon
@@ -21,11 +21,20 @@ metis.gridByPoly <- function(grid = NULL,
                               boundaryRegShpFolder = NULL,
                               boundaryRegShpFile = NULL,
                               colName = NULL,
-                              outputDir = paste(getwd(),"/outputs",sep=""),
+                              dirOutputs = paste(getwd(),"/outputs",sep=""),
                               fname = "gridByPoly",
                               saveFile = F){
 
   NULL->lat->lon
+
+
+#----------------
+# Create Folders
+#---------------
+
+  if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
+  if (!dir.exists(paste(dirOutputs, "/GridByPoly", sep = ""))){dir.create(paste(dirOutputs, "/GridByPoly", sep = ""))}
+  dir = paste(dirOutputs, "/GridByPoly", sep = "")
 
 
 # Check inputs provided
@@ -74,7 +83,7 @@ gridByPoly<-x@data %>%
 # Save Data
 if(saveFile){
 fname<-gsub(".csv","",fname)
-fname<- paste(getwd(),"/",fname,".csv",sep="")
+fname<- paste(dir,"/",fname,".csv",sep="")
 data.table::fwrite(gridByPoly, file = fname,row.names = F)}
 
 return(gridByPoly)

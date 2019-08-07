@@ -14,7 +14,7 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   sizeBarLines = 0, sizeLines = 1.5,
   folderName = "folderNameDefault", nameAppend = "",
   scensSelect = "All", colOrder1 = NULL, colOrderName1 = NULL,
-  colOrder2 = NULL, colOrderName2 = NULL)
+  colOrder2 = NULL, colOrderName2 = NULL, scaleRange = NULL)
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -84,6 +84,8 @@ c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
 \item{colOrder2}{Default = NULL,}
 
 \item{colOrderName2}{Default = NULL,}
+
+\item{scaleRange}{Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.}
 }
 \value{
 Produces charts in output folder and also returns combined table in metis format.

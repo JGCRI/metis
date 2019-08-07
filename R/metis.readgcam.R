@@ -1434,10 +1434,10 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
-        dplyr::filter(value>=0)%>%
+        #dplyr::filter(value>=0)%>%
         dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
         dplyr::mutate(origValue=value,value=value*Convert*44/12,
-                      origUnits=Units,units="MegaTonnes of CO2 eq. (MTCO2eq)")%>%
+                      origUnits=Units,units="CO2 Emissions (MTCO2 eq.)")%>%
         dplyr::mutate(
           class1=sector,
           class2=sector) %>%
@@ -1605,7 +1605,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                         value=value*GWPAR5*Convert,
                         origUnits=Units,
                         origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits),
-                        units="100 yr GWP AR5")%>%
+                        units="GHG 100 yr GWP AR5 (MTCO2 eq.)")%>%
           dplyr::mutate(param = "nonco2emissionBySectorGWPAR5",
                         sources = "Sources",
                         origScen = scenario,
@@ -1727,7 +1727,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                                         TRUE ~  value*GWPAR5*Convert),
                         origUnits=Units,
                         origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits),
-                        units="100 yr GTP AR5")%>%
+                        units="GHG 100 yr GTP AR5 (MTCO2 eq.)")%>%
           dplyr::mutate(param = "nonco2emissionBySectorGTPAR5",
                         sources = "Sources",
                         origScen = scenario,
