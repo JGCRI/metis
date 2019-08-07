@@ -6,11 +6,11 @@
 #' @keywords gcam, gcam database, query
 #' @param boundaryRegShape  Default=NULL. Boundary region shape if already read into R.
 #' @param subRegShape  Default=NULL. Sub-region shape if already read into R.
-#' @param boundaryRegShpFolder  Default= NULL. Folder containing boundary region shapefile. Suggested: paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),
+#' @param boundaryRegShpFolder  Default= NULL. Folder containing boundary region shapefile. Suggested: paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep  Default=""),
 #' @param boundaryRegShpFile  Default=NULL. Name of shapefile. Suggested: paste("ne_10m_admin_0_countries",sep  Default=""),
 #' @param boundaryRegCol  Default=NULL. Column name with region names. Suggested "NAME_0",
 #' @param boundaryRegionsSelect  Default=NULL. The region to choose from the given shapefile.
-#' @param subRegShpFolder  Default=NULL. Folder containing boundary region shapefile. Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default=""),
+#' @param subRegShpFolder  Default=NULL. Folder containing boundary region shapefile. Suggested paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep  Default=""),
 #' @param subRegShpFile  Default=NULL. Name of sub-region shapefile. Suggested paste("ne_10m_admin_1_states_provinces",sep  Default=""),
 #' @param subRegCol  Default= NULL. Suggested for states "name",
 #' @param subRegCol1  Default= NULL. Suggested for states "name",
@@ -22,7 +22,7 @@
 #' @param extension Default = T. Should the map be extended beyond chosen shapefile boudnaries.
 #' @param expandPercent  Default=2. Percentage to expand boundary region beyond chosen region.
 #' @param overlapShape Default = NULL. If boundary lines of another shapefile are desired specify the shape here.
-#' @param overlapShpFolder Default = NULL. For GCAM basins use paste(getwd(),"/dataFiles/gis/basin_gcam",sep="").
+#' @param overlapShpFolder Default = NULL. For GCAM basins use paste(getwd(),"/dataFiles/gis/metis/gcam",sep="").
 #' @param overlapShpFile Default = NULL. For GCAM basins use ="Global235_CLM_final_5arcmin_multipart"
 #' @param fillcolorNA Default =NULL. Fill color for NA values.
 #' @param labelsSize Default =1.2.

@@ -27,6 +27,8 @@
 #' @param xBreaksMin X axis minor breaks. Default 5
 #' @param yBreaksMajn Y axis major breaks. Default 5
 #' @param yBreaksMinn Y axis minor breaks. Default 10
+#' @param yMax Y axis max value
+#' @param yMin Y axis min value
 #' @param sizeBarLines Bar plot line size. Default 0.5
 #' @param sizeLines Line plot line size. Default 1.5
 #' @param ncolrow Number of columns or Rows for Faceted plots.
@@ -137,6 +139,8 @@ metis.chart<-function(data,
                          xBreaksMaj=10, xBreaksMin=5,
                          yBreaksMajn=5, yBreaksMinn=10,
                          sizeBarLines=0.5,sizeLines=1.5,
+                         yMax=NULL,
+                         yMin=NULL,
                          sectorToOrder=NULL,
                          sectorFromOrder=NULL,
                          removeCols=NULL,
@@ -446,6 +450,11 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
         p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))
       }
     }
+
+  if(!is.null(yMax) & !is.null(yMin)){p = p +  coord_cartesian(ylim=c(yMin, yMax)) }
+  if(!is.null(yMax) & is.null(yMin)) {p = p +  coord_cartesian(ylim=c(min(l1[[yData]]), yMax)) }
+  if(is.null(yMax) & !is.null(yMin)) {p = p +  coord_cartesian(ylim=c(yMin, max(l1[[yData]]))) }
+
   }
 
   if(chartType=="line"){
@@ -463,6 +472,11 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
     if(pointsOn==1){p = p + guides(shape = guide_legend(title=unique(l1[[classLabel]]))) }
     }
     }
+
+  if(!is.null(yMax) & !is.null(yMin)){p = p +  coord_cartesian(ylim=c(yMin, yMax)) }
+  if(!is.null(yMax) & is.null(yMin)) {p = p +  coord_cartesian(ylim=c(min(l1[[yData]]), yMax)) }
+  if(is.null(yMax) & !is.null(yMin)) {p = p +  coord_cartesian(ylim=c(yMin, max(l1[[yData]]))) }
+
   }
 
 

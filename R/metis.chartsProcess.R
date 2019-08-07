@@ -67,6 +67,7 @@
 #' @param colOrderName1 Default = NULL,
 #' @param colOrder2 Default = NULL,
 #' @param colOrderName2 Default = NULL,
+#' @param scaleRange Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.
 #' @keywords charts, diffplots
 #' @return Produces charts in output folder and also returns combined table in metis format.
 #' @export
@@ -88,7 +89,8 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        colOrder1 = NULL,
                        colOrderName1 = NULL,
                        colOrder2 = NULL,
-                       colOrderName2 = NULL) {
+                       colOrderName2 = NULL,
+                       scaleRange = NULL) {
 
 
   # dataTables=NULL
@@ -123,7 +125,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
 # -----------------
 
   NULL->scenario->value->x->region->param->origValue->origScen->origQuery->
-  origUnits->origX->sources->vintage->class1->classLabel1->classPalette1->
+  origUnits->origX->sources->vintage->class1->classLabel1->classPalette1->yMax_i->yMin_i->
   class2->classLabel2->classPalette2->i->j->k->figWMult->classLabel1x ->classLabel2x-> classPalette1x-> classPalette2x
 
   aggregate_i <- aggregate
@@ -273,6 +275,19 @@ tbl<-dplyr::bind_rows(tbl,rTable)
 }
 
 
+#----------------
+# Check scaleRange
+#---------------
+
+  scaleRange[is.na(scaleRange)]<-NA_real_
+  scaleRange[scaleRange=="NA"]<-NA_real_
+  if(!all(c("param","maxScale","minScale") %in% names(scaleRange))){
+    paste("Incorrect column names for scaleRange: ",names(scaleRange),". Should include param, maxScale, minscale.")
+    paste("Setting scaleRange to NULL.")
+    scaleRange=NULL
+  }
+
+
 #------------------------
 # Subset Data
 #------------------------
@@ -323,6 +338,7 @@ if(any(xRange!="All")){if(is.numeric(tbl$x)){tbl<-tbl%>%dplyr::filter(x %in% xRa
 
 
 if(any(is.na(unique(tbl$scenario)))){stop("NA scenario not valid. Please check your input scenarios.")}
+
 
 #------------------
 # Create Folders if needed
@@ -460,6 +476,19 @@ if(length(unique(tbl$region))>1){
       tbl_sp<-tbl%>%dplyr::filter(scenario==j,
                                    param==k)
 
+
+    if(k %in% unique(scaleRange$param)){
+      yMax_i = scaleRange %>% dplyr::filter(param==k) %>% unique()
+      if(nrow(yMax_i)==1){yMax_i = yMax_i$maxScale}else{
+        yMax_i=NULL
+        print("number of rows for scaleRange maxScale for param ", k," incorrect. Setting yMax to NULL")}
+
+      yMin_i = scaleRange %>% dplyr::filter(param==k) %>% unique()
+      if(nrow(yMin_i)==1){yMin_i = yMin_i$minScale}else{
+        yMin_i=NULL
+        print("number of rows for scaleRange minScale for param ", k," incorrect. Setting yMin to NULL")}
+    }else{yMax_i=NULL;yMin_i=NULL}
+
       if(nrow(tbl_sp)>0){
 
         if(length(unique(tbl_sp$class1))>1){figWMult=1.3}else{figWMult=1}
@@ -480,7 +509,7 @@ if(length(unique(tbl$region))>1){
 
 
         # Bar Chart
-       metis.chart(tbl_spC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+       metis.chart(tbl_spC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows=NULL,
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figBar_",j,"_compareRegions",nameAppend,sep=""),
@@ -488,7 +517,7 @@ if(length(unique(tbl$region))>1){
         )
 
         # Line Chart
-        metis.chart(tbl_spC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_spC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows=NULL,
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figLines_",j,"_compareRegions",nameAppend,sep=""),
@@ -499,7 +528,7 @@ if(length(unique(tbl$region))>1){
         if(length(unique(tbl_sp$class2))>1){
 
           # Bar Chart
-          metis.chart(tbl_sp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+          metis.chart(tbl_sp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows="class2",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
                       fileName = paste(k,"_figBar_",j,"_compareRegionsClass2",nameAppend,sep=""),
@@ -508,7 +537,7 @@ if(length(unique(tbl$region))>1){
           )
 
           # Line Chart
-          metis.chart(tbl_sp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+          metis.chart(tbl_sp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows="class2",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
                       fileName = paste(k,"_figLines_",j,"_compareRegionsClass2",nameAppend,sep=""),
@@ -536,6 +565,20 @@ if(length(unique(tbl$scenario))>1){
 
       tbl_p<-tbl%>%dplyr::filter(param==j)
 
+      if(j %in% unique(scaleRange$param)){
+        yMax_i = scaleRange %>% dplyr::filter(param==j) %>% unique()
+        if(nrow(yMax_i)==1){yMax_i = yMax_i$maxScale}else{
+          yMax_i=NULL
+          print("number of rows for scaleRange maxScale for param ", k," incorrect. Setting yMax to NULL")}
+
+        yMin_i = scaleRange %>% dplyr::filter(param==j) %>% unique()
+        if(nrow(yMin_i)==1){yMin_i = yMin_i$minScale}else{
+          yMin_i=NULL
+          print("number of rows for scaleRange minScale for param ", k," incorrect. Setting yMin to NULL")}
+      }else{yMax_i=NULL;yMin_i=NULL}
+
+
+
       if(length(unique((tbl_p%>%dplyr::filter(value>0))$scenario))>1){
 
       if(nrow(tbl_p)>0){
@@ -557,7 +600,7 @@ if(length(unique(tbl$scenario))>1){
         tbl_pC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
 
         # Bar Chart
-        metis.chart(tbl_pC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="scenario",facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegions",nameAppend,sep=""),
@@ -566,7 +609,7 @@ if(length(unique(tbl$scenario))>1){
         )
 
         # Line Chart
-        metis.chart(tbl_pC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="scenario",facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figLine_compareScenRegions",nameAppend,sep=""),
@@ -605,7 +648,7 @@ if(length(unique(tbl$scenario))>1){
 
 
         # Bar Chart
-        metis.chart(tbl_pyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData, facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegion_xScenSelectYears",nameAppend,sep=""),
@@ -635,7 +678,7 @@ if(length(unique(tbl$scenario))>1){
         if(nrow(tbl_pAgg)>0){
 
           # Bar Chart Dodged
-          metis.chart(tbl_pAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+          metis.chart(tbl_pAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge", classPalette = classPalette,
                       facet_columns="region",facet_rows=NULL,
             dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
@@ -644,7 +687,7 @@ if(length(unique(tbl$scenario))>1){
           )
 
           # Line Chart Overlapped
-          metis.chart(tbl_pAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+          metis.chart(tbl_pAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario", classPalette = classPalette,
                       facet_columns="region",facet_rows=NULL,
             dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
@@ -713,7 +756,7 @@ if(length(unique(tbl$scenario))>1){
 
 
         # Bar Chart
-        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBarDiff_compareScenRegion",nameAppend,sep=""),
@@ -722,7 +765,7 @@ if(length(unique(tbl$scenario))>1){
         )
 
         # Line Chart
-        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figLineDiff_compareScenRegion",nameAppend,sep=""),
@@ -753,6 +796,19 @@ if(scenarioCompareOnly!=1){
                           scenario==j,
                           param==k)
 
+    if(k %in% unique(scaleRange$param)){
+      yMax_i = scaleRange %>% dplyr::filter(param==k) %>% unique()
+      if(nrow(yMax_i)==1){yMax_i = yMax_i$maxScale}else{
+        yMax_i=NULL
+        print("number of rows for scaleRange maxScale for param ", k," incorrect. Setting yMax to NULL")}
+
+      yMin_i = scaleRange %>% dplyr::filter(param==k) %>% unique()
+      if(nrow(yMin_i)==1){yMin_i = yMin_i$minScale}else{
+        yMin_i=NULL
+        print("number of rows for scaleRange minScale for param ", k," incorrect. Setting yMin to NULL")}
+    }else{yMax_i=NULL;yMin_i=NULL}
+
+
     if(nrow(tbl_rsp)>0){
 
       if(length(unique(tbl_rsp$class1))>1){figWMult=1.3}else{figWMult=1}
@@ -773,7 +829,7 @@ if(scenarioCompareOnly!=1){
 
 
     # Bar Chart
-    metis.chart(tbl_rspC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+    metis.chart(tbl_rspC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
     fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
     )
@@ -783,7 +839,7 @@ if(scenarioCompareOnly!=1){
     # fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep="");pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
 
     # Line Chart
-    metis.chart(tbl_rspC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+    metis.chart(tbl_rspC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
       fileName = paste(k,"_figLine_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
     )
@@ -792,13 +848,13 @@ if(scenarioCompareOnly!=1){
     if(length(unique(tbl_rsp$class2))>1){
 
       # Bar Chart
-      metis.chart(tbl_rsp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rsp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                   facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
                   fileName = paste(k,"_figBar_",i,"_Class2_",j,nameAppend,sep="")
       )
 
       # Line Chart
-      metis.chart(tbl_rsp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+      metis.chart(tbl_rsp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                   facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
                   fileName = paste(k,"_figLine_",i,"_Class2_",j,nameAppend,sep="")
       )
@@ -826,6 +882,19 @@ for(i in unique(tbl$region)){
 
       tbl_rp<-tbl%>%dplyr::filter(region==i,
                                    param==j)
+
+      if(j %in% unique(scaleRange$param)){
+      yMax_i = scaleRange %>% dplyr::filter(param==j) %>% unique()
+      if(nrow(yMax_i)==1){yMax_i = yMax_i$maxScale}else{
+        yMax_i=NULL
+        print("number of rows for scaleRange maxScale for param ", k," incorrect. Setting yMax to NULL")}
+
+      yMin_i = scaleRange %>% dplyr::filter(param==j) %>% unique()
+      if(nrow(yMin_i)==1){yMin_i = yMin_i$minScale}else{
+        yMin_i=NULL
+        print("number of rows for scaleRange minScale for param ", k," incorrect. Setting yMin to NULL")}
+      }else{yMax_i=NULL;yMin_i=NULL}
+
 
       if(is.null(scenRef)){
         print(paste("No reference scenario provided",sep=""))
@@ -876,7 +945,7 @@ for(i in unique(tbl$region)){
 
 
       # Bar Chart
-      metis.chart(tbl_rpC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figBar_",i,"_compareScen",nameAppend,sep=""),
@@ -892,7 +961,7 @@ for(i in unique(tbl$region)){
       # pdfpng=pdfpng; colOrder1 = colOrder1; colOrderName1 = colOrderName1; colOrder2 = colOrder2; colOrderName2 = colOrderName2
 
       # Line Chart
-      metis.chart(tbl_rpC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+      metis.chart(tbl_rpC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figLine_",i,"_compareScen",nameAppend,sep=""),
@@ -930,7 +999,7 @@ for(i in unique(tbl$region)){
 
 
       # Bar Chart
-      metis.chart(tbl_rpyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData,
+      metis.chart(tbl_rpyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData,
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figBar_",i,"_compareScen_xScenSelectYears",nameAppend,sep=""),
         figWidth = 13*max((length(unique(tbl_rpy$x)[unique(tbl_rpy$x) %in% xCompare])/3),1)*figWMult,
@@ -961,7 +1030,7 @@ for(i in unique(tbl$region)){
         if(length(unique(tbl_rpAgg$class1))>1){figWMult=1.3}else{figWMult=1}
 
       # Bar Chart Dodged
-      metis.chart(tbl_rpAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
+      metis.chart(tbl_rpAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                   class ="scenario", position ="dodge", classPalette = classPalette,
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figBarDodged_",i,"_compareScen_",nameAppend,sep=""),
@@ -969,7 +1038,7 @@ for(i in unique(tbl$region)){
       )
 
       # Line Chart Overlapped
-      metis.chart(tbl_rpAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
+      metis.chart(tbl_rpAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
                   class ="scenario", classPalette = classPalette,
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep=""),
@@ -1048,7 +1117,7 @@ for(i in unique(tbl$region)){
 
 
       # Bar Chart
-      metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figBarDiff_",i,"_compareScen",nameAppend,sep=""),
@@ -1065,7 +1134,7 @@ for(i in unique(tbl$region)){
 
 
       # Line Chart
-     metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+     metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figLineDiff_",i,"_compareScen",nameAppend,sep=""),

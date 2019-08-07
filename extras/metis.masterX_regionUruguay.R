@@ -55,7 +55,7 @@ dataProjLoaded <- loadProject(paste(dataProjPath_i, "/", dataProj_i, sep = ""))
 listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 #queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
-dataGCAMRef<-metis.readgcam(reReadData=F, # Default Value is T
+dataGCAMRef<-metis.readgcam(reReadData=T, # Default Value is T
                                  dataProj = dataProj_i, # Default Value is "dataProj.proj"
                                  dataProjPath = dataProjPath_i,
                                  scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef_NoImpacts"),
@@ -79,7 +79,7 @@ dataProjLoaded <- loadProject(paste(dataProjPath_i, "/", dataProj_i, sep = ""))
 listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 #queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
-dataGCAMImpacts<-metis.readgcam(reReadData=F, # Default Value is T
+dataGCAMImpacts<-metis.readgcam(reReadData=T, # Default Value is T
                             dataProj = dataProj_i, # Default Value is "dataProj.proj"
                             dataProjPath = dataProjPath_i,
                             scenOrigNames=c("IDBUruguay_GCAMRef_ImpactsGFDLrcp8p5","IDBUruguay_GCAMRef_ImpactsGFDLrcp2p6"),
@@ -160,6 +160,11 @@ paramsSelect_iMod=paramsSelect_i
 
 scensSelect_i = c("GCAMOrig","GCAMRef","Local Data")
 
+scaleRange_i = tibble::tribble(
+  ~param,~minScale, ~maxScale,
+  "watConsumBySec", 0, 10,
+  "watWithdrawBySec", 0, 10)
+
 charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             dataTables=dataTables_i, # Default is NULL
                             paramsSelect=paramsSelect_i, # Default is "All"
@@ -175,7 +180,8 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             xRange=c(2010:2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
                             colOrderName1 = "scenario",
-                            folderName = "Reference")
+                            folderName = "Reference",
+                            scaleRange=scaleRange_i)
 
 charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             dataTables=dataTables_i, # Default is NULL
@@ -192,7 +198,8 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
                             colOrderName1 = "scenario",
-                            folderName = "Reference")
+                            folderName = "Reference",
+                            scaleRange=scaleRange_i)
 
 
 #----------------------------
@@ -216,7 +223,8 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             xRange=c(2010:2050),
                             colOrder1 = c("GCAMRef","GFDL_RCP2p6","GFDL_RCP8p5"),
                             colOrderName1 = "scenario",
-                            folderName = "Impacts")
+                            folderName = "Impacts",
+                            scaleRange=scaleRange_i)
 
 charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             #dataTables=dataTables_i, # Default is NULL
@@ -233,7 +241,8 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
                             colOrder1 = c("GCAMRef","GFDL_RCP2p6","GFDL_RCP8p5"),
                             colOrderName1 = "scenario",
-                            folderName = "Impacts")
+                            folderName = "Impacts",
+                            scaleRange=scaleRange_i)
 
 
 
@@ -242,24 +251,24 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
 #----------------
 
 countryName= "Uruguay"
-localBasinShapeFileFolder = paste(getwd(),"/dataFiles/gis/shapefiles_Uruguay",sep="")
-localBasinShapeFile = "c097Polygon"
-localBasinsShapeFileColName = "codcuenca" # Will need to load the file to see which name this would be
+localBasinShapeFileFolder = paste(getwd(),"/dataFiles/gis/other/shapefiles_urugay_8cuencas",sep="")
+localBasinShapeFile = "uruguay_8cuencas"
+localBasinsShapeFileColName = "code" # Will need to load the file to see which name this would be
 countryName <- tools::toTitleCase(countryName); countryName
 
 
 # Create directory for country
-if (!dir.exists(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""))){
-  dir.create(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""))}
+if (!dir.exists(paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep=""))){
+  dir.create(paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep=""))}
 
 
 # View default metis country shapefile (Natural Earth maps)
-NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
              layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
 
 if(!countryName %in% unique(NE0@data$NAME)){stop(print(paste(countryName, " not in NE0 countries. Please check data.", sep="")))}
 
-countryNE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+countryNE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
                      layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
 countryNE0<-countryNE0[(countryNE0$NAME==countryName),]
 head(countryNE0@data)
@@ -267,7 +276,7 @@ plot(countryNE0)
 projX<-proj4string(countryNE0)
 
 # Natural earth level 1 admin boundaries
-NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
              layer="ne_10m_admin_1_states_provinces",use_iconv=T,encoding='UTF-8')
 if(!countryName %in% unique(NE1@data$admin)){stop(print(paste(countryName, " not in NE1 countries. Please check data.", sep="")))}
 countryNE1<-NE1[(NE1$admin==countryName),]
@@ -276,19 +285,19 @@ countryNE1<-countryNE1[(!countryNE1$name %in% "San Andrés y Providencia") & !is
 head(countryNE1@data)
 plot(countryNE1)
 countryNE1<-spTransform(countryNE1,CRS(projX))
-writeOGR(obj=countryNE1, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"NE1",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+writeOGR(obj=countryNE1, dsn=paste(getwd(),"/dataFiles/gis/metis/shapefiles_",countryName,sep=""), layer=paste(countryName,"NE1",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 metis.map(dataPolygon=countryNE1,fillColumn = "name",printFig=F, facetsON = F, labels=T, legendStyle = "cat")
 
 
 # GCAM Basins
-GCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
+GCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
                    layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
 GCAMBasin<-spTransform(GCAMBasin,CRS(projX))
 countryGCAMBasin<-raster::crop(GCAMBasin,countryNE1)
 countryLocalBasin@data <- droplevels(countryLocalBasin@data)
 head(countryGCAMBasin@data)
 plot(countryGCAMBasin)
-writeOGR(obj=countryGCAMBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"GCAMBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+writeOGR(obj=countryGCAMBasin, dsn=paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep=""), layer=paste(countryName,"GCAMBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 metis.map(dataPolygon=countryGCAMBasin,fillColumn = "basin_name",printFig=F,facetsON = F, labels=T, legendStyle = "cat")
 
 
@@ -300,7 +309,7 @@ countryLocalBasin<-raster::crop(countryLocalBasin,countryNE1)
 countryLocalBasin@data <- droplevels(countryLocalBasin@data)
 head(countryLocalBasin@data)
 plot(countryLocalBasin)
-writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
 
 # dataPolygon=countryLocalBasin
@@ -310,6 +319,20 @@ metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName
 # labels=T
 # legendStyle = "cat"
 # fillPalette = eval(parse(text=paste(b[1,2])))
+
+metis.gridByPoly(grid = paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+                 boundaryRegShpFile = localBasinShapeFile,
+                 boundaryRegShpFolder = localBasinShapeFileFolder,
+                 colName = localBasinsShapeFileColName,
+                 saveFile = T,
+                 fname = "gridByPoly_Uruguay8cuencas_0.25")
+
+metis.gridByPoly(grid = paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""),
+                 boundaryRegShpFile = localBasinShapeFile,
+                 boundaryRegShpFolder = localBasinShapeFileFolder,
+                 colName = localBasinsShapeFileColName,
+                 saveFile = T,
+                 fname = "gridByPoly_Uruguay8cuencas_0.50")
 
 #-----------
 # Boundaries
