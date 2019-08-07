@@ -133,7 +133,7 @@ metis.chart<-function(data,
                          facet_rows=NULL,facet_columns=NULL,ncolrow=4,
                          facetBGColor="grey30",
                          facetLabelColor = "white",
-                         facetLabelSize=1.5,
+                         facetLabelSize=24,
                          scales="fixed",
                          useNewLabels=0,units="units",
                          xBreaksMaj=10, xBreaksMin=5,
@@ -455,6 +455,10 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
   if(!is.null(yMax) & is.null(yMin)) {p = p +  coord_cartesian(ylim=c(min(l1[[yData]]), yMax)) }
   if(is.null(yMax) & !is.null(yMin)) {p = p +  coord_cartesian(ylim=c(yMin, max(l1[[yData]]))) }
 
+  # General Themes
+  p <- p + theme(strip.text = element_text(size=facetLabelSize))
+
+
   }
 
   if(chartType=="line"){
@@ -476,6 +480,10 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
   if(!is.null(yMax) & !is.null(yMin)){p = p +  coord_cartesian(ylim=c(yMin, yMax)) }
   if(!is.null(yMax) & is.null(yMin)) {p = p +  coord_cartesian(ylim=c(min(l1[[yData]]), yMax)) }
   if(is.null(yMax) & !is.null(yMin)) {p = p +  coord_cartesian(ylim=c(yMin, max(l1[[yData]]))) }
+
+  # General Themes
+  p <- p + theme(strip.text = element_text(size=facetLabelSize))
+
 
   }
 

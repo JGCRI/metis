@@ -55,7 +55,7 @@ dataProjLoaded <- loadProject(paste(dataProjPath_i, "/", dataProj_i, sep = ""))
 listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 #queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
-dataGCAMRef<-metis.readgcam(reReadData=T, # Default Value is T
+dataGCAMRef<-metis.readgcam(reReadData=F, # Default Value is T
                                  dataProj = dataProj_i, # Default Value is "dataProj.proj"
                                  dataProjPath = dataProjPath_i,
                                  scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef_NoImpacts"),
@@ -79,7 +79,7 @@ dataProjLoaded <- loadProject(paste(dataProjPath_i, "/", dataProj_i, sep = ""))
 listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 #queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
-dataGCAMImpacts<-metis.readgcam(reReadData=T, # Default Value is T
+dataGCAMImpacts<-metis.readgcam(reReadData=F, # Default Value is T
                             dataProj = dataProj_i, # Default Value is "dataProj.proj"
                             dataProjPath = dataProjPath_i,
                             scenOrigNames=c("IDBUruguay_GCAMRef_ImpactsGFDLrcp8p5","IDBUruguay_GCAMRef_ImpactsGFDLrcp2p6"),
@@ -175,7 +175,7 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                             pdfpng="png", # Default is "png"
                             regionCompareOnly=0, # Default is "0"
-                            scenarioCompareOnly=0, # Default is "0"
+                            scenarioCompareOnly=1, # Default is "0"
                             useNewLabels=1,
                             xRange=c(2010:2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
