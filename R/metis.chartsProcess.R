@@ -121,6 +121,8 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   # colOrderName1 = NULL
   # colOrder2 = NULL
   # colOrderName2 = NULL
+  # scaleRange = NULL
+  # xScenCompFacetLabelSize = 35
 
 #------------------
 # Initialize variables to remove binding errors
@@ -726,7 +728,11 @@ if(length(unique(tbl$scenario))>1){
             dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources)
           if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-dplyr::one_of(c(yData)))}
           tbl_temp <- tbl_temp%>%
-            tidyr::spread(scenario,yData)%>%
+            tidyr::spread(scenario,yData)
+
+          tbl_temp[is.na(tbl_temp)] <- 0
+
+          tbl_temp <- tbl_temp %>%
             dplyr::mutate(!!paste(k,"_diff",sep=""):=get(k)-get(scenRef_i))%>%
             dplyr::select(-dplyr::one_of(c(k,scenRef_i)))
           tbl_temp<-tbl_temp%>%
@@ -1083,7 +1089,11 @@ for(i in unique(tbl$region)){
           dplyr::filter(scenario %in% c(scenRef_i,k))
         if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-dplyr::one_of(c(yData)))}
         tbl_temp <- tbl_temp%>%
-          tidyr::spread(scenario,yData)%>%
+          tidyr::spread(scenario,yData)
+
+        tbl_temp[is.na(tbl_temp)] <- 0
+
+        tbl_temp <- tbl_temp %>%
           dplyr::mutate(!!paste(k,"_diff",sep=""):=get(k)-get(scenRef_i))%>%
           dplyr::select(-dplyr::one_of(c(k,scenRef_i)))
         tbl_temp<-tbl_temp%>%
