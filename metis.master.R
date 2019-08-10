@@ -5,19 +5,13 @@
 #----------------------------
 # Install necessary packages
 #----------------------------
+
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}; library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/metis")}; library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}; library(rgcam)
-if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}; library(tibble)
-if("rgdal" %in% rownames(installed.packages()) == F){install.packages("rgdal")}; library(rgdal)
-if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}; library(tmap)
-if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dplyr")}; library(dplyr)
-if("zoo" %in% rownames(installed.packages()) == F){install.packages("zoo")}; library(zoo)
-if("dbplyr" %in% rownames(installed.packages()) == F){install.packages("dbplyr")}; library(dbplyr)
-if("RSQLite" %in% rownames(installed.packages()) == F){install.packages("RSQLite")}; library(RSQLite)
-if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("ggplot2")}; library(ggplot2)
-if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggalluvial")}; library(ggalluvial)
-if("raster" %in% rownames(installed.packages()) == F){install.packages("raster")}; library(raster)
+if("metis" %in% rownames(installed.packages()) == F){devtools::install()}; library(metis)
+Packages <- c("ggalluvial","tibble","dplyr","rgdal")
+lapply(Packages, library, character.only = TRUE)
+
 
 #----------------------------
 # Input/Output (metis.io.R)
@@ -105,7 +99,7 @@ io_sub$ioTbl
 #---------------------------
 
 # Simple example with progressively more features
-   tbl <- tribble (
+   tbl <- tibble::tribble (
    ~x,     ~value,
    2010,   15,
    2020,   20,
@@ -119,7 +113,7 @@ io_sub$ioTbl
 
 # More detailed data with facets
    # Simple example with progressively more features
-   tbl_multi <- tribble (
+   tbl_multi <- tibble::tribble (
      ~x,     ~value, ~region,     ~scen,   ~fuel,
      2010,   25,     "region1",   "scenA",  "Oil",
      2020,   30,     "region1",   "scenA",  "Oil",
@@ -256,6 +250,16 @@ io_sub$ioTbl
                           scenarioCompareOnly=1,
                           folderName = "metisExample") # Default 0. If set to 1, will only run comparison plots and not individual
 
+  # rTable=rTable_i # Default is NULL
+  # dataTables=dataTables_i # Default is NULL.
+  # paramsSelect=paramsSelect_i # Default is "All"
+  # regionsSelect=regionsSelect_i # Default is "All"
+  # xCompare=c("2015","2030","2050","2100") # Default is c("2015","2030","2050","2100")
+  # scenRef="Eg1" # Default is NULL
+  # dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+  # regionCompareOnly=0 # Default 0. If set to 1, will only run comparison plots and not individual
+  # scenarioCompareOnly=1
+  # folderName = "metisExample"
 
 #-------------------
 # Maps (metis.map.R)
@@ -264,7 +268,7 @@ io_sub$ioTbl
 # Example 1. Using example Shapefile for US States Provided with metis in ./metis/dataFiles/examples.
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
   examplePolyFile<-paste("US_states_mainland_ne1",sep="")
-  exampleUSmainland=readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  exampleUSmainland=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
   head(exampleUSmainland@data) # Choose the appropriate column name
   colName_i = "postal"
   # Categorical Shapefile
@@ -276,7 +280,7 @@ io_sub$ioTbl
 # Example 2. using the natural earth Shapefiles provided with metis in ./metis/dataFiles/gis/metis/naturalEarth
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
   examplePolyFile<-paste("ne_10m_admin_1_states_provinces",sep="")
-  exampleNE1=readOGR(dsn=examplePolyFolder, layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  exampleNE1=rgdal::readOGR(dsn=examplePolyFolder, layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
   head(exampleNE1@data) # Choose the column name
   colName_i = "name"
   # Crop the shapefile to desired boundary by subsetting
@@ -306,7 +310,7 @@ io_sub$ioTbl
   countryName = "Peru"
   examplePolyFolder_i<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
   examplePolyFile_i<-paste("ne_10m_admin_1_states_provinces",sep="")
-  exampleSubRegion=readOGR(dsn=examplePolyFolder_i,
+  exampleSubRegion=rgdal::readOGR(dsn=examplePolyFolder_i,
                         layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
   head(exampleSubRegion@data)
   subRegCol_i = "name"
@@ -344,7 +348,7 @@ io_sub$ioTbl
   countryName = "United States of America"
   examplePolyFolder_i<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
   examplePolyFile_i<-paste("US_states_mainland_ne1_states",sep="")
-  exampleSubRegion=readOGR(dsn=examplePolyFolder_i,layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
+  exampleSubRegion=rgdal::readOGR(dsn=examplePolyFolder_i,layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
   head(exampleSubRegion@data)
   subRegCol_i = "postal"
   # Crop the shapefile to the desired subRegion
@@ -407,7 +411,7 @@ io_sub$ioTbl
     # This is the same file as produced in the boundaries example above.
     examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
     examplePolyFile_i<-paste("Peru_subRegion_example",sep="")
-    exampleSubRegionCropped=readOGR(dsn=examplePolyFolder_i,
+    exampleSubRegionCropped=rgdal::readOGR(dsn=examplePolyFolder_i,
                             layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
     head(exampleSubRegionCropped@data) # TO choose subRegCol name
     subRegCol_i = "name"
@@ -435,7 +439,7 @@ io_sub$ioTbl
 
     examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
     examplePolyFile_i<-paste("Peru_subRegion_example",sep="")
-    exampleSubRegionCropped=readOGR(dsn=examplePolyFolder_i,
+    exampleSubRegionCropped=rgdal::readOGR(dsn=examplePolyFolder_i,
                                     layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
     head(exampleSubRegionCropped@data) # TO choose subRegCol name
     subRegCol_i = "name"
@@ -479,7 +483,7 @@ io_sub$ioTbl
     # Read in the GCAM 32 regions shapefile which comes with metis.
     boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
     boundaryRegShpFile_i <- paste("region32_0p5deg_regions",sep="")
-    boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    boundaryRegShp_i = rgdal::readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
     head(boundaryRegShp_i@data)
     boundaryRegCol_i = "region"
     metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
@@ -495,7 +499,7 @@ io_sub$ioTbl
     # Uncomment the following lines of code and choose and appropriate region to crop to.
     # boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
     # boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
-    # boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    # boundaryRegShp_i = rgdal::readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
     # head(boundaryRegShp_i@data)
     # boundaryRegCol_i = "NAME"
     # metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
@@ -509,7 +513,7 @@ io_sub$ioTbl
     # Read in the  SubBasin GCAM Basins shapefile which comes with metis.
     subRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
     subRegShpFile_i <- paste("Global235_CLM_final_5arcmin_multipart",sep="")
-    subRegShp_i = readOGR(dsn=subRegShpFolder_i,layer=subRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    subRegShp_i = rgdal::readOGR(dsn=subRegShpFolder_i,layer=subRegShpFile_i,use_iconv=T,encoding='UTF-8')
     head(subRegShp_i@data)
     subRegCol_i = "basin_name"
     metis.map(dataPolygon=subRegShp_i,fillColumn = subRegCol_i,labels=F ,printFig=F,facetsON=F)
@@ -586,7 +590,7 @@ io_sub$ioTbl
     # Select natural Earth country Map
     boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
     boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
-    boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    boundaryRegShp_i = rgdal::readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
     head(boundaryRegShp_i@data)
     boundaryRegCol_i = "NAME"
     metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)

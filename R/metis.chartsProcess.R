@@ -248,12 +248,12 @@ if(!is.null(dataTables)){
 
 for(i in dataTables){
   if(file.exists(i)){
-  tblNew<-utils::read.csv(paste(i), stringsAsFactors = F)%>%tibble::as.tibble()
+  tblNew<-utils::read.csv(paste(i), stringsAsFactors = F)%>%tibble::as_tibble()
   if("class"%in%names(tblNew) & !"class1"%in%names(tblNew)){tblNew<-tblNew%>%dplyr::mutate(class1=class)}
 
   # Join relevant colors and classes using the mapping file if it exists
   if(file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
-    map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""), stringsAsFactors = F)%>%tibble::as.tibble()
+    map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""), stringsAsFactors = F)%>%tibble::as_tibble()
     for(missing_i in c( "classLabel1","classPalette1","classLabel2","classPalette2")){
       if(!missing_i %in% names(tblNew))
     tblNew<-tblNew%>%dplyr::left_join(map%>%dplyr::select(param,missing_i)%>%dplyr::distinct(),by=c("param"))}}
@@ -388,11 +388,13 @@ if(regionCompareOnly!=1){
 
 # Aggregate across classes
 tblAggsums<-tbl%>%
+  dplyr::mutate(scenario=as.character(scenario))%>%
   dplyr::filter(aggregate=="sum")%>%
   dplyr::select(scenario,region,param,units,x,value)%>%
   dplyr::group_by_at(dplyr::vars(-value))%>%
   dplyr::summarize_at(c("value"),dplyr::funs(sum))
 tblAggmeans<-tbl%>%
+  dplyr::mutate(scenario=as.character(scenario))%>%
   dplyr::filter(aggregate=="mean")%>%
   dplyr::select(scenario,region,param,units,x, value)%>%
   dplyr::group_by_at(dplyr::vars(-value))%>%
@@ -400,11 +402,13 @@ tblAggmeans<-tbl%>%
 tblAgg<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
 
 tblAggClass1sums<-tbl%>%
+  dplyr::mutate(scenario=as.character(scenario))%>%
   dplyr::filter(aggregate=="sum")%>%
   dplyr::select(scenario,region,param,units,x,value,class1)%>%
   dplyr::group_by_at(dplyr::vars(-value))%>%
   dplyr::summarize_at(c("value"),dplyr::funs(sum))
 tblAggClass1means<-tbl%>%
+  dplyr::mutate(scenario=as.character(scenario))%>%
   dplyr::filter(aggregate=="mean")%>%
   dplyr::select(scenario,region,param,units,x, value, class1)%>%
   dplyr::group_by_at(dplyr::vars(-value))%>%
@@ -412,11 +416,13 @@ tblAggClass1means<-tbl%>%
 tblAggClass1<-dplyr::bind_rows(tblAggClass1sums,tblAggClass1means)%>%dplyr::ungroup()
 
 tblAggClass2sums<-tbl%>%
+  dplyr::mutate(scenario=as.character(scenario))%>%
   dplyr::filter(aggregate=="sum")%>%
   dplyr::select(scenario,region,param,units,x,value,class2)%>%
   dplyr::group_by_at(dplyr::vars(-value))%>%
   dplyr::summarize_at(c("value"),dplyr::funs(sum))
 tblAggClass2means<-tbl%>%
+  dplyr::mutate(scenario=as.character(scenario))%>%
   dplyr::filter(aggregate=="mean")%>%
   dplyr::select(scenario,region,param,units,x, value, class2)%>%
   dplyr::group_by_at(dplyr::vars(-value))%>%
@@ -500,11 +506,13 @@ if(length(unique(tbl$region))>1){
         # Aggregated Class 1
         # Aggregate across classes
         tblAggsums<-tbl_sp%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="sum")%>%
           dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-value))%>%
           dplyr::summarize_at(c("value"),dplyr::funs(sum))
         tblAggmeans<-tbl_sp%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="mean")%>%
           dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-value))%>%
@@ -592,11 +600,13 @@ if(length(unique(tbl$scenario))>1){
         # Aggregated Class 1
         # Aggregate across classes
         tblAggsums<-tbl_p%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="sum")%>%
           dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-value))%>%
           dplyr::summarize_at(c("value"),dplyr::funs(sum))
         tblAggmeans<-tbl_p%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="mean")%>%
           dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-value))%>%
@@ -638,11 +648,13 @@ if(length(unique(tbl$scenario))>1){
         # Aggregated Class 1
         # Aggregate across classes
         tblAggsums<-tbl_py%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="sum")%>%
           dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-value))%>%
           dplyr::summarize_at(c("value"),dplyr::funs(sum))
         tblAggmeans<-tbl_py%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="mean")%>%
           dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-value))%>%
@@ -668,11 +680,13 @@ if(length(unique(tbl$scenario))>1){
 
         # Aggregate across classes
         tbl_pAggsums<-tbl_p%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="sum")%>%
           dplyr::select(-tidyselect::contains("class"),-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-yData))%>%
           dplyr::summarize_at(c(yData),dplyr::funs(sum))
         tbl_pAggmeans<-tbl_p%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="mean")%>%
           dplyr::select(-tidyselect::contains("class"),-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-yData))%>%
@@ -751,11 +765,13 @@ if(length(unique(tbl$scenario))>1){
         # Aggregated Class 1
         # Aggregate across classes
         tblAggsums<-tbl_pd%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="sum")%>%
           dplyr::select(-class2,-classLabel2,-classPalette2)%>%
           dplyr::group_by_at(dplyr::vars(-value))%>%
           dplyr::summarize_at(c("value"),dplyr::funs(sum))
         tblAggmeans<-tbl_pd%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="mean")%>%
           dplyr::select(-class2,-classLabel2,-classPalette2)%>%
           dplyr::group_by_at(dplyr::vars(-value))%>%
@@ -825,11 +841,13 @@ if(scenarioCompareOnly!=1){
       # Aggregated Class 1
       # Aggregate across classes
       tblAggsums<-tbl_rsp%>%
+        dplyr::mutate(scenario=as.character(scenario))%>%
         dplyr::filter(aggregate=="sum")%>%
         dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
         dplyr::group_by_at(dplyr::vars(-value))%>%
         dplyr::summarize_at(c("value"),dplyr::funs(sum))
       tblAggmeans<-tbl_rsp%>%
+        dplyr::mutate(scenario=as.character(scenario))%>%
         dplyr::filter(aggregate=="mean")%>%
         dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
         dplyr::group_by_at(dplyr::vars(-value))%>%
@@ -941,11 +959,13 @@ for(i in unique(tbl$region)){
         # Aggregated Class 1
         # Aggregate across classes
         tblAggsums<-tbl_rp%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="sum")%>%
           dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-value))%>%
           dplyr::summarize_at(c("value"),dplyr::funs(sum))
         tblAggmeans<-tbl_rp%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
           dplyr::filter(aggregate=="mean")%>%
           dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
           dplyr::group_by_at(dplyr::vars(-value))%>%
@@ -995,11 +1015,13 @@ for(i in unique(tbl$region)){
       # Aggregated Class 1
       # Aggregate across classes
       tblAggsums<-tbl_rpy%>%
+        dplyr::mutate(scenario=as.character(scenario))%>%
         dplyr::filter(aggregate=="sum")%>%
         dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
         dplyr::group_by_at(dplyr::vars(-value))%>%
         dplyr::summarize_at(c("value"),dplyr::funs(sum))
       tblAggmeans<-tbl_rpy%>%
+        dplyr::mutate(scenario=as.character(scenario))%>%
         dplyr::filter(aggregate=="mean")%>%
         dplyr::select(-class2,-classLabel2,-classPalette2,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
         dplyr::group_by_at(dplyr::vars(-value))%>%
@@ -1023,11 +1045,13 @@ for(i in unique(tbl$region)){
 
       # Aggregate across classes
       tbl_rpAggsums<-tbl_rp%>%
+        dplyr::mutate(scenario=as.character(scenario))%>%
         dplyr::filter(aggregate=="sum")%>%
         dplyr::select(-tidyselect::contains("class"),-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
         dplyr::group_by_at(dplyr::vars(-yData))%>%
         dplyr::summarize_at(c(yData),dplyr::funs(sum))
       tbl_rpAggmeans<-tbl_rp%>%
+        dplyr::mutate(scenario=as.character(scenario))%>%
         dplyr::filter(aggregate=="mean")%>%
         dplyr::select(-tidyselect::contains("class"),-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage)%>%
         dplyr::group_by_at(dplyr::vars(-yData))%>%
@@ -1063,11 +1087,13 @@ for(i in unique(tbl$region)){
 
       # Aggregate across classes
       tbl_rpAggsums<-tbl_rp%>%
+        dplyr::mutate(scenario=as.character(scenario))%>%
         dplyr::filter(aggregate=="sum")%>%
         dplyr::select(-class2,-classLabel2,-classPalette2,-classLabel1,-classPalette1,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage,-xLabel)%>%
         dplyr::group_by_at(dplyr::vars(-yData))%>%
         dplyr::summarize_at(c(yData),dplyr::funs(sum))
       tbl_rpAggmeans<-tbl_rp%>%
+        dplyr::mutate(scenario=as.character(scenario))%>%
         dplyr::filter(aggregate=="mean")%>%
         dplyr::select(-class2,-classLabel2,-classPalette2,-classLabel1,-classPalette1,-origValue,-origScen,-origQuery,-origUnits,-origX,-vintage, -xLabel)%>%
         dplyr::group_by_at(dplyr::vars(-yData))%>%
@@ -1118,11 +1144,13 @@ for(i in unique(tbl$region)){
       # Aggregated Class 1
       # Aggregate across classes
       tblAggsums<-tbl_rpd%>%
+        dplyr::mutate(scenario=as.character(scenario))%>%
         dplyr::filter(aggregate=="sum")%>%
         dplyr::select(-classLabel2,-classPalette2)%>%
         dplyr::group_by_at(dplyr::vars(-value))%>%
         dplyr::summarize_at(c("value"),dplyr::funs(sum))
       tblAggmeans<-tbl_rpd%>%
+        dplyr::mutate(scenario=as.character(scenario))%>%
         dplyr::filter(aggregate=="mean")%>%
         dplyr::select(-classLabel2,-classPalette2)%>%
         dplyr::group_by_at(dplyr::vars(-value))%>%
