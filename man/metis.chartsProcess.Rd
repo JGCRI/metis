@@ -15,7 +15,7 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   folderName = "folderNameDefault", nameAppend = "",
   scensSelect = "All", colOrder1 = NULL, colOrderName1 = NULL,
   colOrder2 = NULL, colOrderName2 = NULL, scaleRange = NULL,
-  xScenCompFacetLabelSize = 2)
+  xScenCompFacetLabelSize = 35)
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.

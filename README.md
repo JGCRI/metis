@@ -157,17 +157,16 @@ git clone https://github.com/JGCRI/metis.git
 # Or download directly from github https://github.com/JGCRI/metis
 ```  
 
-2. Download and install R studio (https://www.rstudio.com/) and R (https://www.r-project.org/)
+2. Download and install:
+  - R (https://www.r-project.org/)
+  - R studio (https://www.rstudio.com/) 
+  - (For Windows) Rtools (https://cran.rstudio.com/bin/windows/Rtools/)
 
 3. Download and install Image Magick (https://imagemagick.org/script/download.php) (Used to create animations)
 
 4. Open the metis.Rproj file.
 
-5. In R studio go to 'Build' then click  'Install and Restart'
-
-<p align="center"> <img src="READMEfigs/metisBuildPackage.PNG"></p>
-
-6. Open the "metis.master.R"" file which contains code to help install and run remaining model.
+5. Open the "metis.master.R"" file which contains code to help install and run remaining model.
 
 
 ```r
@@ -175,18 +174,11 @@ git clone https://github.com/JGCRI/metis.git
 # Install necessary packages
 #----------------------------
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}; library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/metis")}; library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}; library(rgcam)
-if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}; library(tibble)
-if("rgdal" %in% rownames(installed.packages()) == F){install.packages("rgdal")}; library(rgdal)
-if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}; library(tmap)
-if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dplyr")}; library(dplyr)
-if("zoo" %in% rownames(installed.packages()) == F){install.packages("zoo")}; library(zoo)
-if("dbplyr" %in% rownames(installed.packages()) == F){install.packages("dbplyr")}; library(dbplyr)
-if("RSQLite" %in% rownames(installed.packages()) == F){install.packages("RSQLite")}; library(RSQLite)
-if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("ggplot2")}; library(ggplot2)
-if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggalluvial")}; library(ggalluvial)
-if("raster" %in% rownames(installed.packages()) == F){install.packages("raster")}; library(raster)
+if("metis" %in% rownames(installed.packages()) == F){devtools::install()}; library(metis)
+Packages <- c("ggalluvial","tibble","dplyr")
+lapply(Packages, library, character.only = TRUE)
+
 ```  
 
 6. After downloading and unzipping you should have the following folder structure with the following sub-folders in ./metis/datafiles:
