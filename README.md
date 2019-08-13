@@ -150,8 +150,7 @@ Metis is designed to be accesible to a range of stakeholders with varying expert
 1. Clone the repo from github:
 
 ```r
-# Download a git software (eg. https://git-scm.com/downloads)
-# Clone repo
+# Download a git software (eg. https://git-scm.com/downloads) to clone the repo
 git clone https://github.com/JGCRI/metis.git
 
 # Or download directly from github https://github.com/JGCRI/metis
@@ -161,8 +160,7 @@ git clone https://github.com/JGCRI/metis.git
     - R (https://www.r-project.org/)
     - R studio (https://www.rstudio.com/) 
     - (For Windows) Rtools (https://cran.rstudio.com/bin/windows/Rtools/)
-
-3. Download and install Image Magick (https://imagemagick.org/script/download.php) (Used to create animations)
+    - Image Magick (https://imagemagick.org/script/download.php)
 
 4. Open the metis.Rproj file.
 
