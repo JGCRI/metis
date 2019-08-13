@@ -157,12 +157,13 @@ metis.bia<- function(biaInputsFolder = "NA",
   #------------------
 
   # Loading a list that gives which of the 32 regions each country is in
-  ctor<-data.table::fread(file=paste(biaInputsFolder,"/country_to_region.csv",sep=""), header=T,stringsAsFactors = F)%>%
+  ctor<-data.table::fread(file=paste(biaInputsFolder,"/country_to_region.csv",sep=""), header=T,stringsAsFactors = F,encoding="Latin-1")%>%
     tibble::as_tibble()%>%
     dplyr::mutate(country_long=ctry_name)
 
 
-  listOfGridCells<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/emptyGrids/",gridChoice,".csv",sep=""), header=T,stringsAsFactors = F)%>%
+  listOfGridCells<-data.table::fread(file=paste(getwd(),"/dataFiles/grids/emptyGrids/",gridChoice,".csv",sep=""), header=T,stringsAsFactors = F,
+                                     encoding="Latin-1")%>%
     tibble::as_tibble()
 
   if(!("id" %in% names(listOfGridCells))){
@@ -223,7 +224,7 @@ metis.bia<- function(biaInputsFolder = "NA",
           }else{
 
             print(paste("Reading bia input file: ",biaInputsFile_i,"...",sep=""))
-            gridWRI<-data.table::fread(paste(biaInputsFolder,"/",biaInputsFile_i,sep=""), header=T,stringsAsFactors = F)
+            gridWRI<-data.table::fread(paste(biaInputsFolder,"/",biaInputsFile_i,sep=""), header=T,stringsAsFactors = F,encoding="Latin-1")
 
             gridWRI[gridWRI==unique(gridWRI$country_long)[grepl("United States",unique(gridWRI$country_long),ignore.case=T)]]<-
               unique(ctor$country_long)[grepl("United States",unique(ctor$country_long),ignore.case=T)]
@@ -456,11 +457,11 @@ metis.bia<- function(biaInputsFolder = "NA",
 
        biaInputsFile_i<-biaInputsFiles[1]
 
-       ctr<-data.table::fread(file = paste(biaInputsFolder,"/country_to_region.csv",sep=""), header=T,stringsAsFactors = F)%>%
+       ctr<-data.table::fread(file = paste(biaInputsFolder,"/country_to_region.csv",sep=""), header=T,stringsAsFactors = F,encoding="Latin-1")%>%
          tibble::as_tibble()%>%
          dplyr::mutate(country_long=ctry_name)
 
-       gWRI<-data.table::fread(file = paste(biaInputsFolder,"/",biaInputsFile_i, '.csv',sep=""), header=T)
+       gWRI<-data.table::fread(file = paste(biaInputsFolder,"/",biaInputsFile_i, '.csv',sep=""), header=T,encoding="Latin-1")
 
        gWRI[gWRI==unique(gWRI$country_long)[grepl("United States",unique(gWRI$country_long),ignore.case=T)]]<-
          unique(ctor$country_long)[grepl("United States",unique(ctor$country_long),ignore.case=T)]

@@ -9,9 +9,7 @@
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}; library(devtools)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}; library(rgcam)
 if("metis" %in% rownames(installed.packages()) == F){devtools::install()}; library(metis)
-Packages <- c("ggalluvial","tibble","dplyr","rgdal")
-lapply(Packages, library, character.only = TRUE)
-
+library(ggalluvial);library(tibble);library(dplyr);library(rgdal)
 
 #----------------------------
 # Input/Output (metis.io.R)
@@ -434,8 +432,8 @@ io_sub$ioTbl
 # Simple Example. See example csv tables provided for ideal column names needed.
     exampleGridTable_i<-paste(getwd(),"/dataFiles/examples/example_grid_Peru.csv",sep="")
     examplePolygonTable_i<-paste(getwd(),"/dataFiles/examples/example_poly_Peru.csv",sep="")
-    gridTable=read.csv(exampleGridTable_i);head(gridTable)
-    polyTable=read.csv(examplePolygonTable_i);head(polyTable)
+    gridTable=read.csv(exampleGridTable_i,encoding="Latin-1");head(gridTable)
+    polyTable=read.csv(examplePolygonTable_i,encoding="Latin-1");head(polyTable)
 
     examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
     examplePolyFile_i<-paste("Peru_subRegion_example",sep="")
@@ -462,7 +460,7 @@ io_sub$ioTbl
                  nameAppend="_exampleSubRegionMap",
                  legendPosition=c("LEFT","bottom"),
                  animateOn=T,
-                 delay=100,
+                 fps=1,
                  scenRef="Eg1",
                  expandPercent = 2,
                  extension=T)
@@ -552,7 +550,7 @@ io_sub$ioTbl
 
 # Read in the datatable with values by subRegion
     examplePolygonTable_i<-paste(getwd(),"/dataFiles/examples/example_GCAMBasins_analysis.csv",sep="")
-    polyTable=read.csv(examplePolygonTable_i);head(polyTable)
+    polyTable=read.csv(examplePolygonTable_i,encoding="Latin-1");head(polyTable)
     unique(polyTable$x); # check available number of years.
 
     # Make sure shapefile subRegions and PolygonTable subregions match
@@ -569,7 +567,7 @@ io_sub$ioTbl
                      subRegCol=subRegCol_i,
                      nameAppend="",
                      animateOn=T,
-                     delay=100,
+                     fps=1,
                      scenRef="SSP2_Ref",
                      extension=F,
                      diffOn = T)
@@ -608,7 +606,7 @@ io_sub$ioTbl
                      nameAppend="_improvedFig",
                      legendPosition=c("LEFT","bottom"),
                      animateOn=T,
-                     delay=100,
+                     fps=1,
                      scenRef="SSP2_Ref",
                      extension=T,
                      diffOn = T,

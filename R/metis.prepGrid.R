@@ -178,7 +178,7 @@ if(!file.exists(paste(demeterFolder,"/landcover_",timestepx,"_timestep.csv",sep=
   print(paste("Skipping file: ",demeterFolder,"/landcover_",timestepx,"_timestep.csv",sep=""))
 }else{
   print(paste("Reading demeter data file: ",demeterFolder,"/landcover_",timestepx,"_timestep.csv...",sep=""))
-gridx<-data.table::fread(paste(demeterFolder,"/landcover_",timestepx,"_timestep.csv",sep=""))%>%
+gridx<-data.table::fread(paste(demeterFolder,"/landcover_",timestepx,"_timestep.csv",sep=""),encoding="Latin-1")%>%
   tibble::as_tibble()%>%
   dplyr::mutate(lat=latitude,lon=longitude,
                 scenarioGCM=NA,
@@ -243,7 +243,7 @@ if(!dir.exists(tethysFolder)){
         print(paste("Skipping file: ",tethysFolder,"/",tethysFile_i,sep=""))
       }else{
         print(paste("Reading tethys data file: ",tethysFile_i,"...",sep=""))
-        gridx<-data.table::fread(paste(tethysFolder,"/",tethysFile_i,sep=""),fill=T)%>%
+        gridx<-data.table::fread(paste(tethysFolder,"/",tethysFile_i,sep=""),fill=T,encoding="Latin-1")%>%
           tibble::as_tibble()%>%dplyr::select(-'# ID',-ilon,-ilat)
         print("File read.")
         names(gridx)<-gsub("X","",names(gridx))
@@ -342,14 +342,14 @@ if(!dir.exists(xanthosFolder)){
         print(paste("Skipping file: ",xanthosFolder,"/",xanthosFile_i,sep=""))
       }else{
 
-        xanthosCoords<-data.table::fread(xanthosCoordinatesPath, header=F);
+        xanthosCoords<-data.table::fread(xanthosCoordinatesPath, header=F,encoding="Latin-1");
         xanthosCoords<-xanthosCoords%>%dplyr::rename(lon=V2,lat=V3)%>%dplyr::select(lon,lat)
-        xanthosGridArea<-data.table::fread(xanthosGridAreaHecsPath, header=F);
+        xanthosGridArea<-data.table::fread(xanthosGridAreaHecsPath, header=F,encoding="Latin-1");
         xanthosGridArea<-xanthosGridArea%>%dplyr::rename(Area_hec=V1)%>%dplyr::mutate(Area_km2=0.01*Area_hec)%>%
           dplyr::select(Area_hec,Area_km2)
 
         print(paste("Reading xanthos data file: ",xanthosFile_i,"...",sep=""))
-        gridx<-data.table::fread(paste(xanthosFolder,"/",xanthosFile_i,sep=""), header=T,stringsAsFactors = F)%>%
+        gridx<-data.table::fread(paste(xanthosFolder,"/",xanthosFile_i,sep=""), header=T,stringsAsFactors = F,encoding="Latin-1")%>%
           tibble::as_tibble()%>%dplyr::select(-id)
         print(paste("Xanthos data file: ",xanthosFile_i," read.",sep=""))
 
@@ -658,7 +658,7 @@ if(!dir.exists(popFolder)){
       }else{
         print(paste("Reading population data file: ",popFile_i,"...",sep=""))
 
-        gridx<-data.table::fread(paste(popFolder,"/",popFile_i,sep=""))%>%
+        gridx<-data.table::fread(paste(popFolder,"/",popFile_i,sep=""),encoding="Latin-1")%>%
           tibble::as_tibble()%>%dplyr::select(lon,lat,dplyr::contains("popGWP"))%>%
           tidyr::gather(key="key",value="value",-c("lat","lon"))%>%
           tidyr::separate(col="key",into=c("scenario","x"),sep="_")%>%
@@ -717,7 +717,7 @@ if(!dir.exists(biaFolder)){
       }else{
         print(paste("Reading bia data file: ",biaFile_i,"...",sep=""))
 
-        gridx<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""))%>%
+        gridx<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""),encoding="Latin-1")%>%
           tibble::as_tibble()%>%
           dplyr::select(-value, -origValue)%>%
           dplyr::mutate(aggType = "vol")%>%
