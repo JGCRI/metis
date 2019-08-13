@@ -61,16 +61,16 @@ date: January 2019
 - [Framework](#Framework)
 - [Installation Guide](#InstallGuide)
 - [Metis Step-by-step walkthrough](#WalkThrough) 
+    + [metis.io.R](#metis.io.R)
     + [metis.readgcam.R](#metis.readgcam.R)
     + [metis.chart.R](#metis.chart.R)
     + [metis.chartsProcess.R](#metis.chartsProcess.R)
     + [metis.map.R](#metis.map.R)
     + [metis.boundaries.R](#metis.boundaries.R)
     + [metis.grid2poly.R](#metis.grid2poly.R)
-    + [metis.mapProcess.R](#metis.mapProcess.R)
-    + [metis.io.R](#metis.io.R)
-- [Under development](#underDevelopment) 
-    + [metis.infra.R](#metis.infra.R)
+    + [metis.mapsProcess.R](#metis.mapsProcess.R)
+    + [testing](#testing)
+- [Under development](#underDevelopment)
   
 <!-- ------------------------>
 <!-- ------------------------>
@@ -122,7 +122,7 @@ Metis is designed to be accesible to a range of stakeholders with varying expert
 
 - Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: metis.chart.R, metis.chartsProcess.R)
 - Maps: Various functions to vizualize spatial boundaries and data as rasters and polygon
-(functions: metis.boundaries.R, metis.map.R, metis.mapProcess.R)
+(functions: metis.boundaries.R, metis.map.R, metis.mapsProcess.R)
 - Spatial Aggregation: Functions to aggregate gridded data to different spatial boundaries.
 (functions: metis.grid2poly.R)
 - Data preparation: Functions to prepare data from other modules into the appropriate format.
@@ -150,19 +150,17 @@ Metis is designed to be accesible to a range of stakeholders with varying expert
 1. Clone the repo from github:
 
 ```r
-# Download a git software (eg. https://git-scm.com/downloads)
-# Clone repo
+# Download a git software (eg. https://git-scm.com/downloads) to clone the repo
 git clone https://github.com/JGCRI/metis.git
 
 # Or download directly from github https://github.com/JGCRI/metis
 ```  
 
 2. Download and install:
-    + R (https://www.r-project.org/)
-    + R studio (https://www.rstudio.com/) 
-    + (For Windows) Rtools (https://cran.rstudio.com/bin/windows/Rtools/)
-
-3. Download and install Image Magick (https://imagemagick.org/script/download.php) (Used to create animations)
+    - R (https://www.r-project.org/)
+    - R studio (https://www.rstudio.com/) 
+    - (For Windows) Rtools (https://cran.rstudio.com/bin/windows/Rtools/)
+    - Image Magick (https://imagemagick.org/script/download.php)
 
 4. Open the metis.Rproj file.
 
@@ -211,12 +209,6 @@ library(ggalluvial);library(tibble);library(dplyr);library(rgdal)
 
 ```  
 
-6. After downloading and unzipping you should have the following folder structure with the following sub-folders in ./metis/datafiles:
-- examples: Contains example shapefiles, as well as gridded and polygon data to work with
-- gcam: Contains an example gcam run output
-- gis: This folder contains shape files for gcam regions, gcam basins and naturalEarth adminstrative boundaries.
-- mapping: This contains two files which are used to map color palettes and other parameters not provided by stakeholder tables.
-
 <details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
 
@@ -247,8 +239,8 @@ This section walks through the different features of the metis package using the
 | metis.map.R  | metis mapping function to plot raster and polygon data. The function uses the tmap package and returns a tmap object. Several maps can be combined by overlaying and underlaying using this function. Options allow for different colors palettes, labels, text-size as well as legend breaks which are freescale, kmeans or equally divided to highlight different kinds of data.  |
 | metis.boundaries.R  | metis mapping function to plot shape file boundaries and surrounding regions for quick visualization of region of interest.  |
 | metis.grid2poly.R  | Function used to crop and aggregate gridded data by a given polygon shape file. If no grid is provided the function can still be used to produce regional and subregional maps  |
-| metis.mapProcess.R  | metis mapping function used to compare across scenarios. The function produces diff maps with percentage and absolute differences from a given reference scenario.  |
-| metis.prepGrid.R  | This function is designed to be used with specific open-source downscaling models Xanthos, Demeter and Tethys which downscale GCAM data to the grid level. The function takes outputs from these various models and processes them into the metis format which is then used as an input to the metis.mapProcess.R function.  |
+| metis.mapsProcess.R  | metis mapping function used to compare across scenarios. The function produces diff maps with percentage and absolute differences from a given reference scenario.  |
+| metis.prepGrid.R  | This function is designed to be used with specific open-source downscaling models Xanthos, Demeter and Tethys which downscale GCAM data to the grid level. The function takes outputs from these various models and processes them into the metis format which is then used as an input to the metis.mapsProcess.R function.  |
 | metis.assumptions.R  | Contains all conversions and assumptions used in the model  |
 | metis.colors.R  | Collection of metis color palettes. A list of palettes can be viewed in the function help file (?metis.colors). To view a particular palette metis.colors("pal_hot")  |
 
@@ -649,7 +641,7 @@ Tables with the data used for each figure will also be provided in ./metis/outpu
 
 [Back to Contents](#Contents)
 
-metis.map.R is the metis charting software used in metis.mapProcess.R and boundaries. It allows users to map outputs to shapefile polygons and raster. The default settings maintain a conistent look across the metis products.
+metis.map.R is the metis charting software used in metis.mapsProcess.R and boundaries. It allows users to map outputs to shapefile polygons and raster. The default settings maintain a conistent look across the metis products.
 
 
 <details><summary>Click here to expand for further details, code and example figures.</summary>
@@ -915,7 +907,7 @@ metis.grid2poly can also be used to create maps showing where the sub-region lie
 
 <!-- ------------------------>
 <!-- ------------------------>
-## <a name="metis.mapProcess"></a> metis.mapProcess
+## <a name="metis.mapsProcess"></a> metis.mapsProcess
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
 <!-- ------------------------>
 <!-- ------------------------>
@@ -938,9 +930,9 @@ metis.grid2poly can also be used to create maps showing where the sub-region lie
 - scenRef: The reference scenario name. All other scenarios will use this as the base for diff maps.
 
 
-After running metis.mapProcess additional folders are created in the ./metis/outputs/Maps/ folder for each region and sub-region indicated. Within each of these there are plots for each scenario as well as diff plots showing the absolute and percentage difference between the selected reference scenario and all other scenarios. Each map is produced with three kinds of legends Freescale, Kmeans and pretty (or equal breaks) which allow the user to analyze different kinds of data. THe colors schemes for the plots are determined in metis.colors and can be adjusted by advanced users. Animations showing changes through the years are also created for each type of map and legend type. Example of the folder structure and ouputs from metis.mapProcess are shown below.
+After running metis.mapsProcess additional folders are created in the ./metis/outputs/Maps/ folder for each region and sub-region indicated. Within each of these there are plots for each scenario as well as diff plots showing the absolute and percentage difference between the selected reference scenario and all other scenarios. Each map is produced with three kinds of legends Freescale, Kmeans and pretty (or equal breaks) which allow the user to analyze different kinds of data. THe colors schemes for the plots are determined in metis.colors and can be adjusted by advanced users. Animations showing changes through the years are also created for each type of map and legend type. Example of the folder structure and ouputs from metis.mapsProcess are shown below.
 
-<p align="center"> <b> metis.mapProcess Example Outputs Spatial Scales </b> </p>
+<p align="center"> <b> metis.mapsProcess Example Outputs Spatial Scales </b> </p>
 
 Grid |  State
 :-------------------------:|:-------------------------:
@@ -957,7 +949,7 @@ Grid |  Basin
 
 ```r
 #------------------------------
-# Mapping (metis.mapProcess.R)
+# Mapping (metis.mapsProcess.R)
 #------------------------------
 
 # Simple Example. See example csv tables provided for ideal column names needed.
@@ -976,7 +968,7 @@ Grid |  Basin
 
     countryName= "Peru"
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                  gridDataTables=exampleGridTable_i,
                  xRange=c(2005,2010,2015,2020,2025,2030),
                  folderName="metisExample",
@@ -998,7 +990,7 @@ Grid |  Basin
 
 
 #--------------------------------------------------
-# Mapping (metis.mapProcess.R) - Extensive Example
+# Mapping (metis.mapsProcess.R) - Extensive Example
 #--------------------------------------------------
     # Steps
     # Read in the boundary Shapefile to crop underlying data to.
@@ -1006,7 +998,7 @@ Grid |  Basin
     # Read in sub-region shape file (Example the GCAM Basins shapefile)
     # Run metis.boundaries.R to crop the sub-region shapefile to the boudnary region selected.
     # Read in polygon data table with data per sub-regions of interest
-    # Runs metis.mapProcess.R
+    # Runs metis.mapsProcess.R
 
 # Read in Boundary Region
     # Read in the GCAM 32 regions shapefile which comes with metis.
@@ -1087,7 +1079,7 @@ Grid |  Basin
     # Make sure shapefile subRegions and PolygonTable subregions match
     unique(polyTable$subRegion); unique(subRegShp_i_Crop@data[[subRegCol_i]])
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2030,2040,2050),
                      folderName="metisExample_extended",
@@ -1125,7 +1117,7 @@ Grid |  Basin
     metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
     boundaryRegionsSelect_i = c("China")
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2030,2040,2050),
                      folderName="metisExample_extendedRefined",
@@ -1148,9 +1140,90 @@ Grid |  Basin
 
 ```
 
-<p align="center"> <b> metis.mapProcess Example Output Data Scales </b> </p>
+<p align="center"> <b> metis.mapsProcess Example Output Data Scales </b> </p>
 <p align="center"> <img src="READMEfigs/metis_moduleMapsProcess1.png"></p>
 
+
+</p>
+</details>
+
+<!-- ------------------------>
+<!-- ------------------------>
+# <a name="Testing"></a> Testing
+<p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
+<!-- ------------------------>
+<!-- ------------------------>
+
+[Back to Contents](#Contents)
+
+metis.master.R allows users to test all the keys functionality of metis.
+At the end of metis.master.R a section on testing checks if the expected output was produced for each of the sections presented.
+A final line at the ned of the script gives a summary of these test results.
+
+<details><summary>Click here to expand for further details, code and example figures.</summary>
+<p>
+
+
+```r
+#------------------------------
+# Metis Tests (Check if outputs from metis.master.R are working as expected)
+#------------------------------
+
+    # Test: Install Packages Check
+    if(all(c("devtools","rgcam","metis","rgdal","magick") %in% rownames(installed.packages()))==T){
+      testInstallPackages = "Test Install Packages: Passed"
+    } else { testInstallPackages = "Test Install Packages: Failed"}; print(testInstallPackages)
+
+    # Test: IO Check
+    if(nrow(io$A)>1 & nrow(io_sub$A)>1){
+      testIO = "Test IO: Passed"
+    } else { testIO = "Test IO: Failed"}; print(testIO)
+
+    # Test: readgcam Check
+    if(nrow(dataGCAM$data)>1){
+      testReadGCAM = "Test readGCAM: Passed"
+    } else { testReadGCAM = "Test readGCAM: Failed"}; print(testReadGCAM)
+
+    # Test: charts Check
+    if(file.exists(paste(getwd(),"/outputs/charts/metisExample/chart_eg_line_multi_Set1.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/charts/metisExample/chart_eg_sankey_multi.png",sep=""))){
+      testChart = "Test chart: Passed"
+    } else { testChart = "Test chart: Failed"}; print(testChart)
+
+    # Test: chartsProcess Check
+    if(file.exists(paste(getwd(),"/outputs/charts/metisExample/compareRegions/ArgentinaColombiaEg1/aggLandAlloc_figBar_Eg1_compareRegions.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/charts/metisExample/Colombia/compareScen/agProdByCrop_figLineDiff_Colombia_compareScen.png",sep=""))){
+      testChartsProcess = "Test chartsProcess: Passed"
+    } else { testChartsProcess = "Test chartsProcess: Failed"}; print(testChartsProcess)
+
+    # Test: map Check
+    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/map.png",sep=""))){
+      testMap = "Test map: Passed"
+    } else { testMap = "Test map: Failed"}; print(testMap)
+
+    # Test: boundary Check
+    if(exampleBoundaries$subRegShape$admin[1]=="United States of America"){
+      testBoundary = "Test boundary: Passed"
+    } else { testBoundary = "Test boundary: Failed"}; print(testBoundary)
+
+    # Test: grid2Poly Check
+    if(nrow(exampleGrid2poly)>1){
+      testGrid2Poly = "Test grid2Poly: Passed"
+    } else { testGrid2Poly = "Test grid2Poly: Failed"}; print(testGrid2Poly)
+
+    # Test: mapsProcess Check
+    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/Eg1/byYear/map_metisExample_subRegType_tethysWatWithdraw_indv_2030_Eg1_exampleSubRegionMap_FREESCALE.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/Eg1/anim_metisExample_subRegType_tethysWatWithdraw_indv_Eg1_exampleSubRegionMap_FREESCALE.gif",sep=""))){
+      testMapsProcess = "Test mapsProcess: Passed"
+    } else { testMapsProcess = "Test mapsProcess: Failed"}; print(testMapsProcess)
+
+    metisTests = data.frame(Test=c(testInstallPackages,testIO,testReadGCAM,
+                                   testChart,testChartsProcess,testMap,testBoundary,
+                                   testGrid2Poly,testMapsProcess))
+    print(metisTests)
+    if(any(grepl("Failed",metisTests$Test))){"Some metis tests failed. Please check the relevant section."} else {"All metis tests passed without issues."}
+
+```
 
 </p>
 </details>
@@ -1167,5 +1240,6 @@ Grid |  Basin
 
 This section describes functions currently under development. Comments and suggestions are welcome. Functions under development include:
 
-- metis.irio.R: Regional Input Output analysis
+- metis.networkOrder.R: Determines the order in which to route water flows through the network of sub-regions, given a user-specified network connectivity matrix.
+- metis.waterBalance.R: Determines the natural flows from upstream sub-regions to downstream sub-regions via routing.
 
