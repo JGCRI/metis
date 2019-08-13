@@ -92,7 +92,7 @@ boundaryRegionsSelect_i=countryName
 
 # xRange=xRange_i,
 
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
+metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  #gridDataTables=gridDataTables_i,
                  # boundaryRegShape=boundaryRegShape_i,
                  # boundaryRegShpFolder=boundaryRegShpFolder_i,

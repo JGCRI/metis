@@ -553,7 +553,7 @@ catPalette <- numeric2Cat_list$numeric2Cat_palette[[list_index]]; catPalette
 catLegendTextSize <- numeric2Cat_list$numeric2Cat_legendTextSize[[list_index]];catLegendTextSize
 
 
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
+metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  gridDataTables=gridDataTables_i,
                  #xRange=c(2010,2020,2100),
                  folderName="Peru",
@@ -596,7 +596,7 @@ legendOutsideSingle = T
 scaleRange = scaleRange_i
 
 
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
+metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  gridDataTables=gridDataTables_i,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,
@@ -686,7 +686,7 @@ subRegCol_i = localBasinsShapeFileColName  #
 subRegType_i = "subBasin"
 nameAppend_i = "_local"
 
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
+metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  #gridDataTables=gridDataTables_i,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,
