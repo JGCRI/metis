@@ -1,4 +1,4 @@
-#' metis.mapProcess
+#' metis.mapsProcess
 #'
 #' This function produce different kinds of maps for the metis package.
 #' Each figure is accompanied with a csv table.
@@ -71,7 +71,7 @@
 #' @export
 
 
-metis.mapProcess<-function(polygonDataTables=NULL,
+metis.mapsProcess<-function(polygonDataTables=NULL,
                            gridDataTables=NULL,
                            dirOutputs=paste(getwd(),"/outputs",sep=""),
                            folderName="folderNameDefault",

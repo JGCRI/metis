@@ -92,27 +92,6 @@ io_sub$ioTbl
   dataGCAM$data # To view the data read that was read.
 
 
-  # Test: Install Packages Check
-  if(all(c("devtools","rgcam","metis","rgdal","magick") %in% rownames(installed.packages()))==T){
-    testInstallPackages = "Test Install Packages: Passed"
-  } else { testInstallPackages = "Test Install Packages: Failed"}; print(testInstallPackages)
-
-
-  # Test: IO Check
-  if(nrow(io$A)>1 & nrow(io_sub$A)>1){
-    testIO = "Test IO: Passed"
-  } else { testIO = "Test IO: Failed"}; print(testIO)
-
-
-# Test: readgcam Check
-  if(nrow(dataGCAM$data)>1){
-    testReadGCAM = "Test readGCAM: Passed"
-  } else { testReadGCAM = "Test readGCAM: Failed"}; print(testReadGCAM)
-
-  metisTests = data.frame(Test=c(testInstallPackages,testIO,testReadGCAM))
-  print(metisTests)
-
-
 #----------------------------
 # Charts Basic (metis.chart.R)
 #---------------------------
@@ -194,7 +173,6 @@ io_sub$ioTbl
                sankeyAxis1="supplySector",sankeyAxis2="demandSector",sankeyAxis1Label ="From",sankeyAxis2Label="To",
                facet_columns="region", fileName="chart_eg_sankey_multi",folderName = "metisExample")
 
-
 #------------------------------------------------------------------------------------------
 # Charts Process (metis.chartsProcess.R)
 #------------------------------------------------------------------------------------------
@@ -268,17 +246,6 @@ io_sub$ioTbl
                           regionCompareOnly=0, # Default 0. If set to 1, will only run comparison plots and not individual
                           scenarioCompareOnly=1,
                           folderName = "metisExample") # Default 0. If set to 1, will only run comparison plots and not individual
-
-  # rTable=rTable_i # Default is NULL
-  # dataTables=dataTables_i # Default is NULL.
-  # paramsSelect=paramsSelect_i # Default is "All"
-  # regionsSelect=regionsSelect_i # Default is "All"
-  # xCompare=c("2015","2030","2050","2100") # Default is c("2015","2030","2050","2100")
-  # scenRef="Eg1" # Default is NULL
-  # dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
-  # regionCompareOnly=0 # Default 0. If set to 1, will only run comparison plots and not individual
-  # scenarioCompareOnly=1
-  # folderName = "metisExample"
 
 #-------------------
 # Maps (metis.map.R)
@@ -418,7 +385,6 @@ io_sub$ioTbl
                                       paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
                             folderName="metisExample")
 
-
 #-----------
 # Grid to Poly
 #-------------
@@ -447,7 +413,7 @@ io_sub$ioTbl
 
 
 #------------------------------
-# Mapping (metis.mapProcess.R)
+# Mapping (metis.mapsProcess.R)
 #------------------------------
 
 # Simple Example. See example csv tables provided for ideal column names needed.
@@ -466,7 +432,7 @@ io_sub$ioTbl
 
     countryName= "Peru"
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                  gridDataTables=exampleGridTable_i,
                  xRange=c(2005,2010,2015,2020,2025,2030),
                  folderName="metisExample",
@@ -488,7 +454,7 @@ io_sub$ioTbl
 
 
 #--------------------------------------------------
-# Mapping (metis.mapProcess.R) - Extensive Example
+# Mapping (metis.mapsProcess.R) - Extensive Example
 #--------------------------------------------------
     # Steps
     # Read in the boundary Shapefile to crop underlying data to.
@@ -496,7 +462,7 @@ io_sub$ioTbl
     # Read in sub-region shape file (Example the GCAM Basins shapefile)
     # Run metis.boundaries.R to crop the sub-region shapefile to the boudnary region selected.
     # Read in polygon data table with data per sub-regions of interest
-    # Runs metis.mapProcess.R
+    # Runs metis.mapsProcess.R
 
 # Read in Boundary Region
     # Read in the GCAM 32 regions shapefile which comes with metis.
@@ -577,7 +543,7 @@ io_sub$ioTbl
     # Make sure shapefile subRegions and PolygonTable subregions match
     unique(polyTable$subRegion); unique(subRegShp_i_Crop@data[[subRegCol_i]])
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2030,2040,2050),
                      folderName="metisExample_extended",
@@ -615,7 +581,7 @@ io_sub$ioTbl
     metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
     boundaryRegionsSelect_i = c("China")
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2030,2040,2050),
                      folderName="metisExample_extendedRefined",
@@ -634,3 +600,61 @@ io_sub$ioTbl
                      legendOutsideSingle = T,
                      scaleRange = scaleRange_i)
 
+
+#------------------------------
+# Metis Tests (Check if outputs from metis.master.R are working as expected)
+#------------------------------
+
+    # Test: Install Packages Check
+    if(all(c("devtools","rgcam","metis","rgdal","magick") %in% rownames(installed.packages()))==T){
+      testInstallPackages = "Test Install Packages: Passed"
+    } else { testInstallPackages = "Test Install Packages: Failed"}; print(testInstallPackages)
+
+    # Test: IO Check
+    if(nrow(io$A)>1 & nrow(io_sub$A)>1){
+      testIO = "Test IO: Passed"
+    } else { testIO = "Test IO: Failed"}; print(testIO)
+
+    # Test: readgcam Check
+    if(nrow(dataGCAM$data)>1){
+      testReadGCAM = "Test readGCAM: Passed"
+    } else { testReadGCAM = "Test readGCAM: Failed"}; print(testReadGCAM)
+
+    # Test: charts Check
+    if(file.exists(paste(getwd(),"/outputs/charts/metisExample/chart_eg_line_multi_Set1.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/charts/metisExample/chart_eg_sankey_multi.png",sep=""))){
+      testChart = "Test chart: Passed"
+    } else { testChart = "Test chart: Failed"}; print(testChart)
+
+    # Test: chartsProcess Check
+    if(file.exists(paste(getwd(),"/outputs/charts/metisExample/compareRegions/ArgentinaColombiaEg1/aggLandAlloc_figBar_Eg1_compareRegions.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/charts/metisExample/Colombia/compareScen/agProdByCrop_figLineDiff_Colombia_compareScen.png",sep=""))){
+      testChartsProcess = "Test chartsProcess: Passed"
+    } else { testChartsProcess = "Test chartsProcess: Failed"}; print(testChartsProcess)
+
+    # Test: map Check
+    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/map.png",sep=""))){
+      testMap = "Test map: Passed"
+    } else { testMap = "Test map: Failed"}; print(testMap)
+
+    # Test: boundary Check
+    if(exampleBoundaries$subRegShape$admin[1]=="United States of America"){
+      testBoundary = "Test boundary: Passed"
+    } else { testBoundary = "Test boundary: Failed"}; print(testBoundary)
+
+    # Test: grid2Poly Check
+    if(nrow(exampleGrid2poly)>1){
+      testGrid2Poly = "Test grid2Poly: Passed"
+    } else { testGrid2Poly = "Test grid2Poly: Failed"}; print(testGrid2Poly)
+
+    # Test: mapsProcess Check
+    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/Eg1/byYear/map_metisExample_subRegType_tethysWatWithdraw_indv_2030_Eg1_exampleSubRegionMap_FREESCALE.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/Eg1/anim_metisExample_subRegType_tethysWatWithdraw_indv_Eg1_exampleSubRegionMap_FREESCALE.gif",sep=""))){
+      testMapsProcess = "Test mapsProcess: Passed"
+    } else { testMapsProcess = "Test mapsProcess: Failed"}; print(testMapsProcess)
+
+    metisTests = data.frame(Test=c(testInstallPackages,testIO,testReadGCAM,
+                                   testChart,testChartsProcess,testMap,testBoundary,
+                                   testGrid2Poly,testMapsProcess))
+    print(metisTests)
+    if(any(grepl("Failed",metisTests$Test))){"Some metis tests failed. Please check the relevant section."} else {"All metis tests passed without issues."}
