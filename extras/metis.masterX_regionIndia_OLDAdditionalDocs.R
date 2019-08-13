@@ -219,7 +219,7 @@ polyIndiaBasins<-metis.grid2poly(grid=gridSelect,
 
 
 #-----------------
-# metis.mapsProcess
+# metis.mapProcess
 #------------------
 
 IndiaExtended<-readOGR(dsn=paste(getwd(),"/outputs/Maps/Boundaries/India",sep=""),

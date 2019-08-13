@@ -1169,8 +1169,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
               animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
               animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep=""),
                                       pattern = "*PRETTY.png", full.names=T,ignore.case = T, include.dirs = T);
-              animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-              image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
+              animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+              magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                                         animName,sep = ""))
               print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                                                        animName,sep = ""))
@@ -1178,8 +1178,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
               animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
               animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep=""),
                                       pattern = "*KMEANS.png", full.names=T,ignore.case = T, include.dirs = T);
-              animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-              image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
+              animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+              magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                                           animName,sep = ""))
               print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                           animName,sep = ""))
@@ -1188,8 +1188,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
               animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
               animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep=""),
                                       pattern = "*FREESCALE.png", full.names=T,ignore.case = T, include.dirs = T);
-              animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-              image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
+              animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+              magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                                           animName,sep = ""))
               print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                           animName,sep = ""))
@@ -1864,8 +1864,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_PRETTY.gif",sep="")
                       animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",sep=""),
                                               pattern = "*PRETTY.png", full.names=T,ignore.case = T, include.dirs = T);
-                      animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-                      image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                      animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+                      magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                   animName,sep = ""))
                       print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                   animName,sep = ""))
@@ -1874,8 +1874,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_KMEANS.gif",sep="")
                       animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",sep=""),
                                               pattern = "*KMEANS.png", full.names=T,ignore.case = T, include.dirs = T);
-                      animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-                      image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                      animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+                      magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                   animName,sep = ""))
                       print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                   animName,sep = ""))
@@ -1883,8 +1883,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                       animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_FREESCALE.gif",sep="")
                       animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",sep=""),
                                               pattern = "*FREESCALE.png", full.names=T,ignore.case = T, include.dirs = T);
-                      animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-                      image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                      animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+                      magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                   animName,sep = ""))
                       print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                   animName,sep = ""))
@@ -2075,8 +2075,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_PRETTY.gif",sep="")
                     animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep=""),
                                             pattern = paste(".*",param_i,".*",class_i,".*PRETTY.png",sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
-                    animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-                    image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                    animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+                    magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                 animName,sep = ""))
                     print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                 animName,sep = ""))
@@ -2086,8 +2086,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_KMEANS.gif",sep="")
                     animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep=""),
                                             pattern = paste(".*",param_i,".*",class_i,".*KMEANS.png",sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
-                    animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-                    image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                    animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+                    magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                 animName,sep = ""))
                     print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                 animName,sep = ""))
@@ -2095,8 +2095,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_FREESCALE.gif",sep="")
                     animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep=""),
                                             pattern = paste(".*",param_i,".*",class_i,".*FREESCALE.png",sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
-                    animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-                    image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                    animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+                    magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                                 animName,sep = ""))
                     print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                 animName,sep = ""))
@@ -2372,17 +2372,11 @@ metis.mapProcess<-function(polygonDataTables=NULL,
 
               if(animateOn==T){
 
-                checkIM <- system("cmd.exe",input="magick -version")
-                if (checkIM!=0) stop("Could not find ImageMagick. Make sure it is installed and included in the systems PATH")
-
-
-
-
                 animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
                 animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep=""),
                                         pattern = paste(".*",param_i,".*PRETTY.png",sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
-                animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-                image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
+                animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+                magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                                             animName,sep = ""))
                 print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                             animName,sep = ""))
@@ -2392,8 +2386,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
                 animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep=""),
                                         pattern = paste(".*",param_i,".*KMEANS.png",sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
-                animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-                image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
+                animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+                magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                                             animName,sep = ""))
                 print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                             animName,sep = ""))
@@ -2402,8 +2396,8 @@ metis.mapProcess<-function(polygonDataTables=NULL,
                 animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
                 animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep=""),
                                         pattern = paste(".*",param_i,".*FREESCALE.png",sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
-                animation <- image_animate(image_join(lapply(animFiles, image_read)),fps=1)
-                image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
+                animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=1)
+                magick::image_write(animation,paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                                             animName,sep = ""))
                 print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                             animName,sep = ""))

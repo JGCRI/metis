@@ -67,7 +67,7 @@ date: January 2019
     + [metis.map.R](#metis.map.R)
     + [metis.boundaries.R](#metis.boundaries.R)
     + [metis.grid2poly.R](#metis.grid2poly.R)
-    + [metis.mapsProcess.R](#metis.mapsProcess.R)
+    + [metis.mapProcess.R](#metis.mapProcess.R)
     + [metis.io.R](#metis.io.R)
 - [Under development](#underDevelopment) 
     + [metis.infra.R](#metis.infra.R)
@@ -122,7 +122,7 @@ Metis is designed to be accesible to a range of stakeholders with varying expert
 
 - Charts: Various functions to produce charts to compare outputs across regions and scenarios (functions: metis.chart.R, metis.chartsProcess.R)
 - Maps: Various functions to vizualize spatial boundaries and data as rasters and polygon
-(functions: metis.boundaries.R, metis.map.R, metis.mapsProcess.R)
+(functions: metis.boundaries.R, metis.map.R, metis.mapProcess.R)
 - Spatial Aggregation: Functions to aggregate gridded data to different spatial boundaries.
 (functions: metis.grid2poly.R)
 - Data preparation: Functions to prepare data from other modules into the appropriate format.
@@ -247,8 +247,8 @@ This section walks through the different features of the metis package using the
 | metis.map.R  | metis mapping function to plot raster and polygon data. The function uses the tmap package and returns a tmap object. Several maps can be combined by overlaying and underlaying using this function. Options allow for different colors palettes, labels, text-size as well as legend breaks which are freescale, kmeans or equally divided to highlight different kinds of data.  |
 | metis.boundaries.R  | metis mapping function to plot shape file boundaries and surrounding regions for quick visualization of region of interest.  |
 | metis.grid2poly.R  | Function used to crop and aggregate gridded data by a given polygon shape file. If no grid is provided the function can still be used to produce regional and subregional maps  |
-| metis.mapsProcess.R  | metis mapping function used to compare across scenarios. The function produces diff maps with percentage and absolute differences from a given reference scenario.  |
-| metis.prepGrid.R  | This function is designed to be used with specific open-source downscaling models Xanthos, Demeter and Tethys which downscale GCAM data to the grid level. The function takes outputs from these various models and processes them into the metis format which is then used as an input to the metis.mapsProcess.R function.  |
+| metis.mapProcess.R  | metis mapping function used to compare across scenarios. The function produces diff maps with percentage and absolute differences from a given reference scenario.  |
+| metis.prepGrid.R  | This function is designed to be used with specific open-source downscaling models Xanthos, Demeter and Tethys which downscale GCAM data to the grid level. The function takes outputs from these various models and processes them into the metis format which is then used as an input to the metis.mapProcess.R function.  |
 | metis.assumptions.R  | Contains all conversions and assumptions used in the model  |
 | metis.colors.R  | Collection of metis color palettes. A list of palettes can be viewed in the function help file (?metis.colors). To view a particular palette metis.colors("pal_hot")  |
 
@@ -649,7 +649,7 @@ Tables with the data used for each figure will also be provided in ./metis/outpu
 
 [Back to Contents](#Contents)
 
-metis.map.R is the metis charting software used in metis.mapsProcess.R and boundaries. It allows users to map outputs to shapefile polygons and raster. The default settings maintain a conistent look across the metis products.
+metis.map.R is the metis charting software used in metis.mapProcess.R and boundaries. It allows users to map outputs to shapefile polygons and raster. The default settings maintain a conistent look across the metis products.
 
 
 <details><summary>Click here to expand for further details, code and example figures.</summary>
@@ -915,7 +915,7 @@ metis.grid2poly can also be used to create maps showing where the sub-region lie
 
 <!-- ------------------------>
 <!-- ------------------------>
-## <a name="metis.mapsProcess"></a> metis.mapsProcess
+## <a name="metis.mapProcess"></a> metis.mapProcess
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>
 <!-- ------------------------>
 <!-- ------------------------>
@@ -938,9 +938,9 @@ metis.grid2poly can also be used to create maps showing where the sub-region lie
 - scenRef: The reference scenario name. All other scenarios will use this as the base for diff maps.
 
 
-After running metis.mapsProcess additional folders are created in the ./metis/outputs/Maps/ folder for each region and sub-region indicated. Within each of these there are plots for each scenario as well as diff plots showing the absolute and percentage difference between the selected reference scenario and all other scenarios. Each map is produced with three kinds of legends Freescale, Kmeans and pretty (or equal breaks) which allow the user to analyze different kinds of data. THe colors schemes for the plots are determined in metis.colors and can be adjusted by advanced users. Animations showing changes through the years are also created for each type of map and legend type. Example of the folder structure and ouputs from metis.mapsProcess are shown below.
+After running metis.mapProcess additional folders are created in the ./metis/outputs/Maps/ folder for each region and sub-region indicated. Within each of these there are plots for each scenario as well as diff plots showing the absolute and percentage difference between the selected reference scenario and all other scenarios. Each map is produced with three kinds of legends Freescale, Kmeans and pretty (or equal breaks) which allow the user to analyze different kinds of data. THe colors schemes for the plots are determined in metis.colors and can be adjusted by advanced users. Animations showing changes through the years are also created for each type of map and legend type. Example of the folder structure and ouputs from metis.mapProcess are shown below.
 
-<p align="center"> <b> metis.mapsProcess Example Outputs Spatial Scales </b> </p>
+<p align="center"> <b> metis.mapProcess Example Outputs Spatial Scales </b> </p>
 
 Grid |  State
 :-------------------------:|:-------------------------:
@@ -957,7 +957,7 @@ Grid |  Basin
 
 ```r
 #------------------------------
-# Mapping (metis.mapsProcess.R)
+# Mapping (metis.mapProcess.R)
 #------------------------------
 
 # Simple Example. See example csv tables provided for ideal column names needed.
@@ -998,7 +998,7 @@ Grid |  Basin
 
 
 #--------------------------------------------------
-# Mapping (metis.mapsProcess.R) - Extensive Example
+# Mapping (metis.mapProcess.R) - Extensive Example
 #--------------------------------------------------
     # Steps
     # Read in the boundary Shapefile to crop underlying data to.
@@ -1006,7 +1006,7 @@ Grid |  Basin
     # Read in sub-region shape file (Example the GCAM Basins shapefile)
     # Run metis.boundaries.R to crop the sub-region shapefile to the boudnary region selected.
     # Read in polygon data table with data per sub-regions of interest
-    # Runs metis.mapsProcess.R
+    # Runs metis.mapProcess.R
 
 # Read in Boundary Region
     # Read in the GCAM 32 regions shapefile which comes with metis.
@@ -1148,7 +1148,7 @@ Grid |  Basin
 
 ```
 
-<p align="center"> <b> metis.mapsProcess Example Output Data Scales </b> </p>
+<p align="center"> <b> metis.mapProcess Example Output Data Scales </b> </p>
 <p align="center"> <img src="READMEfigs/metis_moduleMapsProcess1.png"></p>
 
 

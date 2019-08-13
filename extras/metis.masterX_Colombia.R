@@ -177,7 +177,7 @@ library(ggalluvial)
 
 
 #------------------------------
-# Mapping (metis.mapsProcess.R)
+# Mapping (metis.mapProcess.R)
 #------------------------------
 
 # Simple Example. See example csv tables provided for ideal column names needed.
@@ -245,7 +245,7 @@ library(ggalluvial)
 
 
 #--------------------------------------------------
-# Mapping (metis.mapsProcess.R) - Extensive Example
+# Mapping (metis.mapProcess.R) - Extensive Example
 #--------------------------------------------------
     # Steps
     # Read in the boundary Shapefile to crop underlying data to.
@@ -253,7 +253,7 @@ library(ggalluvial)
     # Read in sub-region shape file (Example the GCAM Basins shapefile)
     # Run metis.boundaries.R to crop the sub-region shapefile to the boudnary region selected.
     # Read in polygon data table with data per sub-regions of interest
-    # Runs metis.mapsProcess.R
+    # Runs metis.mapProcess.R
 
 # Read in Boundary Region
     # Read in the GCAM 32 regions shapefile which comes with metis.

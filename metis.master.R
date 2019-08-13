@@ -11,6 +11,7 @@ if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/
 if("metis" %in% rownames(installed.packages()) == F){devtools::install()}; library(metis)
 library(ggalluvial);library(tibble);library(dplyr);library(rgdal)
 
+
 #----------------------------
 # Input/Output (metis.io.R)
 #---------------------------
@@ -52,7 +53,6 @@ io_sub$A
 io_sub$L
 io_sub$ioTbl
 
-
 #----------------------------
 # Read GCAM Data (metis.readgcam.R)
 #---------------------------
@@ -90,6 +90,27 @@ io_sub$ioTbl
                        )
 
   dataGCAM$data # To view the data read that was read.
+
+
+  # Test: Install Packages Check
+  if(all(c("devtools","rgcam","metis","rgdal","magick") %in% rownames(installed.packages()))==T){
+    testInstallPackages = "Test Install Packages: Passed"
+  } else { testInstallPackages = "Test Install Packages: Failed"}; print(testInstallPackages)
+
+
+  # Test: IO Check
+  if(nrow(io$A)>1 & nrow(io_sub$A)>1){
+    testIO = "Test IO: Passed"
+  } else { testIO = "Test IO: Failed"}; print(testIO)
+
+
+# Test: readgcam Check
+  if(nrow(dataGCAM$data)>1){
+    testReadGCAM = "Test readGCAM: Passed"
+  } else { testReadGCAM = "Test readGCAM: Failed"}; print(testReadGCAM)
+
+  metisTests = data.frame(Test=c(testInstallPackages,testIO,testReadGCAM))
+  print(metisTests)
 
 
 #----------------------------
@@ -426,7 +447,7 @@ io_sub$ioTbl
 
 
 #------------------------------
-# Mapping (metis.mapsProcess.R)
+# Mapping (metis.mapProcess.R)
 #------------------------------
 
 # Simple Example. See example csv tables provided for ideal column names needed.
@@ -467,7 +488,7 @@ io_sub$ioTbl
 
 
 #--------------------------------------------------
-# Mapping (metis.mapsProcess.R) - Extensive Example
+# Mapping (metis.mapProcess.R) - Extensive Example
 #--------------------------------------------------
     # Steps
     # Read in the boundary Shapefile to crop underlying data to.
@@ -475,7 +496,7 @@ io_sub$ioTbl
     # Read in sub-region shape file (Example the GCAM Basins shapefile)
     # Run metis.boundaries.R to crop the sub-region shapefile to the boudnary region selected.
     # Read in polygon data table with data per sub-regions of interest
-    # Runs metis.mapsProcess.R
+    # Runs metis.mapProcess.R
 
 # Read in Boundary Region
     # Read in the GCAM 32 regions shapefile which comes with metis.
