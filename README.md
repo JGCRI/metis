@@ -1158,7 +1158,7 @@ Grid |  Basin
 
 metis.master.R allows users to test all the keys functionality of metis.
 At the end of metis.master.R a section on testing checks if the expected output was produced for each of the sections presented.
-A final line at the ned of the script gives a summary of these test results.
+A final line at the end of the script gives a summary of these test results.
 
 <details><summary>Click here to expand for further details, code and example figures.</summary>
 <p>
