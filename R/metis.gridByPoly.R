@@ -53,7 +53,7 @@ metis.gridByPoly <- function(grid = NULL,
 
 
 # Prepare grid
-gridx<-data.table::fread(grid)
+gridx<-data.table::fread(grid,encoding="Latin-1")
 gridxspdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
 sp::gridded(gridxspdf)<-TRUE
 r<-raster::stack(gridxspdf)

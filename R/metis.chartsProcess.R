@@ -248,12 +248,12 @@ if(!is.null(dataTables)){
 
 for(i in dataTables){
   if(file.exists(i)){
-  tblNew<-utils::read.csv(paste(i), stringsAsFactors = F)%>%tibble::as_tibble()
+  tblNew<-utils::read.csv(paste(i), stringsAsFactors = F, encoding="Latin-1")%>%tibble::as_tibble()
   if("class"%in%names(tblNew) & !"class1"%in%names(tblNew)){tblNew<-tblNew%>%dplyr::mutate(class1=class)}
 
   # Join relevant colors and classes using the mapping file if it exists
   if(file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
-    map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""), stringsAsFactors = F)%>%tibble::as_tibble()
+    map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""), stringsAsFactors = F, encoding="Latin-1")%>%tibble::as_tibble()
     for(missing_i in c( "classLabel1","classPalette1","classLabel2","classPalette2")){
       if(!missing_i %in% names(tblNew))
     tblNew<-tblNew%>%dplyr::left_join(map%>%dplyr::select(param,missing_i)%>%dplyr::distinct(),by=c("param"))}}

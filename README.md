@@ -158,9 +158,9 @@ git clone https://github.com/JGCRI/metis.git
 ```  
 
 2. Download and install:
-  - R (https://www.r-project.org/)
-  - R studio (https://www.rstudio.com/) 
-  - (For Windows) Rtools (https://cran.rstudio.com/bin/windows/Rtools/)
+    + R (https://www.r-project.org/)
+    + R studio (https://www.rstudio.com/) 
+    + (For Windows) Rtools (https://cran.rstudio.com/bin/windows/Rtools/)
 
 3. Download and install Image Magick (https://imagemagick.org/script/download.php) (Used to create animations)
 
@@ -173,11 +173,41 @@ git clone https://github.com/JGCRI/metis.git
 #----------------------------
 # Install necessary packages
 #----------------------------
+
+# Devtools
+# ---------
+# For updated instructions and additional operating systems see: 
+# https://www.rstudio.com/products/rpackages/devtools/
+# https://johnmuschelli.com/neuroc/installing_devtools/index.html
+# Windows: no additional steps
+# UBUNTU: sudo apt-get install build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev
+
+# GDAL
+# --------
+# For updated instructions and additional operating systems see: 
+# https://github.com/r-spatial/sf/
+# https://gdal.org/download.html
+# Windows: no additional steps
+# UBUNTU: 
+# sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+# sudo apt-get update
+# sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev
+# MacOS (Using homebrew):
+# brew install pkg-config
+# brew install gdal
+
+# Image Magick
+# -------------
+# For updated instructions and additional operating systems see: 
+# https://cran.r-project.org/web/packages/magick/vignettes/intro.html
+# Windows: no additional steps
+# UBUNTU: sudo apt-get install libmagick++-dev
+# MacOS (Using Homebrew): brew install imagemagick@6
+
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}; library(devtools)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}; library(rgcam)
 if("metis" %in% rownames(installed.packages()) == F){devtools::install()}; library(metis)
-Packages <- c("ggalluvial","tibble","dplyr")
-lapply(Packages, library, character.only = TRUE)
+library(ggalluvial);library(tibble);library(dplyr);library(rgdal)
 
 ```  
 

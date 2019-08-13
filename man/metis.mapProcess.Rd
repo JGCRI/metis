@@ -13,7 +13,7 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
   legendOutsidePosition = NULL, legendPosition = NULL,
   legendFixedBreaks = 5, legendTitleSizeO = 2, legendTextSizeO = 1,
   legendTitleSizeI = 1.5, legendTextSizeI = 1, animateOn = T,
-  delay = 100, scenRef = NULL, extension = F,
+  fps = 100, scenRef = NULL, extension = F,
   boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   boundaryRegShpFile = NULL, boundaryRegCol = NULL,
   boundaryRegionsSelect = NULL, fillcolorNA = NULL,
@@ -77,7 +77,7 @@ metis.mapProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{animateOn}{Default = T,}
 
-\item{delay}{Default = 100,}
+\item{fps}{Default = 100,}
 
 \item{scenRef}{Default = NULL}
 

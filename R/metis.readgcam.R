@@ -647,7 +647,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     }}
 
   if(file.exists(paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""))){
-    capfactors <- data.table::fread(file=paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""),skip=3)
+    capfactors <- data.table::fread(file=paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""),skip=3,encoding="Latin-1")
     paramx <- "elecCapBySubsector"
     if(paramx %in% paramsSelectx){
       # Electricity Capacity by Subsector
@@ -1905,7 +1905,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     dir.create(paste(getwd(),"/dataFiles/mapping", sep = ""))}  # mapping directory
 
   if (file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
-    fullTemplateMapExisting <- data.table::fread(file=paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))
+    fullTemplateMapExisting <- data.table::fread(file=paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""),encoding="Latin-1")
     fullTemplateMap <- fullTemplateMap %>% dplyr::bind_rows(fullTemplateMapExisting) %>% unique()
   }
 

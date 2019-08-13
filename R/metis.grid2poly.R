@@ -113,7 +113,7 @@ metis.grid2poly<- function(grid=NULL,
         if(any(grepl(".csv",paste(grid)))){
           print(paste("Attempting to read grid csv file ",grid,sep=""))
           if(file.exists(grid)){
-            grid<-data.table::fread(grid)
+            grid<-data.table::fread(grid,encoding="Latin-1")
             grid<-grid%>%unique()
             }else{
               stop(paste("Grid file ",grid," does not exist",sep=""))
@@ -477,7 +477,7 @@ metis.grid2poly<- function(grid=NULL,
 
 
     if (file.exists(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))){
-      template_subRegional_mapping_existing <- data.table::fread(file=paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))
+      template_subRegional_mapping_existing <- data.table::fread(file=paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""),encoding="Latin-1")
       template_subRegional_mapping <- poly %>%
         dplyr::select(c("param","units","class","classPalette")[c("param","units","class","classPalette") %in% names(poly)]) %>%
         dplyr::bind_rows(template_subRegional_mapping_existing) %>% unique()
@@ -513,7 +513,7 @@ metis.grid2poly<- function(grid=NULL,
     gridTempX <- tibble::tibble()
     for (file_i in list.files(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))){
       print(paste("Compiling grid file",file_i,"...",sep=""))
-      gridTemp <- data.table::fread(paste(dirOutputs, "/Grid2Poly/temp/",file_i, sep = ""))
+      gridTemp <- data.table::fread(paste(dirOutputs, "/Grid2Poly/temp/",file_i, sep = ""),encoding="Latin-1")
       gridTempX <- gridTempX %>%
         dplyr::bind_rows(gridTemp)
     }
