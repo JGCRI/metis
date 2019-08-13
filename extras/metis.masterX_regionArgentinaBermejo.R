@@ -195,7 +195,7 @@ legendPosition_i=c("RIGHT","top")
 animateOn_i=T
 delay_i=100
 
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
+metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  gridDataTables=gridDataTables_i,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,

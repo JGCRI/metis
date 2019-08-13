@@ -94,7 +94,7 @@ unique(polyTable$x); # check available number of years.
 # Make sure shapefile subRegions and PolygonTable subregions match
 unique(polyTable$subRegion); unique(subRegShp_i_Crop@data[[subRegCol_i]])
 
-# metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+# metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
 #                  #gridDataTables=exampleGridTable_i,
 #                  xRange=c(2010,2030,2050,2100),
 #                  mapsOutFolderName=boundaryRegionsSelect_i,
@@ -123,7 +123,7 @@ scaleRange_i = tibble::tribble(
   ~param,~minScale, ~maxScale,
   "waterWithdraw", 0, 10)
 
-metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                  #gridDataTables=exampleGridTable_i,
                  xRange=c(2010,2030,2050,2100),
                  mapsOutFolderName=paste(boundaryRegionsSelect_i,"_Edited",sep=""),

@@ -177,7 +177,7 @@ library(ggalluvial)
 
 
 #------------------------------
-# Mapping (metis.mapProcess.R)
+# Mapping (metis.mapsProcess.R)
 #------------------------------
 
 # Simple Example. See example csv tables provided for ideal column names needed.
@@ -193,7 +193,7 @@ library(ggalluvial)
     subRegCol_i = "SUB_NAME"
     metis.map(dataPolygon=subRegShp_i,fillColumn = subRegCol_i,labels=F ,printFig=F,facetsON=F)
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                  gridDataTables=exampleGridTable_i,
                  xRange=c(2005,2010,2020),
                  mapsOutFolderName="BermejoExample",
@@ -222,7 +222,7 @@ library(ggalluvial)
     unique(boundaryRegShp_i@data[[boundaryRegCol_i]])
     boundaryRegionsSelect_i = c("Argentina") # Must be a region in the boundaryRegShp
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      gridDataTables=exampleGridTable_i,
                      xRange=c(2005,2010,2020),
                      mapsOutFolderName="BermejoExampleExtended",
@@ -245,7 +245,7 @@ library(ggalluvial)
 
 
 #--------------------------------------------------
-# Mapping (metis.mapProcess.R) - Extensive Example
+# Mapping (metis.mapsProcess.R) - Extensive Example
 #--------------------------------------------------
     # Steps
     # Read in the boundary Shapefile to crop underlying data to.
@@ -253,7 +253,7 @@ library(ggalluvial)
     # Read in sub-region shape file (Example the GCAM Basins shapefile)
     # Run metis.boundaries.R to crop the sub-region shapefile to the boudnary region selected.
     # Read in polygon data table with data per sub-regions of interest
-    # Runs metis.mapProcess.R
+    # Runs metis.mapsProcess.R
 
 # Read in Boundary Region
     # Read in the GCAM 32 regions shapefile which comes with metis.
@@ -332,7 +332,7 @@ library(ggalluvial)
     # Make sure shapefile subRegions and PolygonTable subregions match
     unique(polyTable$subRegion); unique(subRegShp_i_Crop@data[[subRegCol_i]])
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2100),
                      mapsOutFolderName=boundaryRegionsSelect_i,
@@ -362,7 +362,7 @@ library(ggalluvial)
       ~param,~minScale, ~maxScale,
       "waterConsumption", 0, 10)
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2100),
                      mapsOutFolderName=paste(boundaryRegionsSelect_i,"_Edited",sep=""),

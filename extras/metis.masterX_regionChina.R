@@ -159,7 +159,7 @@ catLegendTextSize <- numeric2Cat_list$numeric2Cat_legendTextSize[[list_index]];c
 
 
 
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
+metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  #gridDataTables=gridDataTables_i,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,

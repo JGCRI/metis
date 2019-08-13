@@ -219,7 +219,7 @@ polyIndiaBasins<-metis.grid2poly(grid=gridSelect,
 
 
 #-----------------
-# metis.mapProcess
+# metis.mapsProcess
 #------------------
 
 IndiaExtended<-readOGR(dsn=paste(getwd(),"/outputs/Maps/Boundaries/India",sep=""),
@@ -238,7 +238,7 @@ gridDataTables=paste(getwd(),"/outputs/Grids/gridCropped_India_State_local_gridS
 
 
 head(subRegShape@data)
-metis.mapProcess(polygonDataTables=polygonDataTables,
+metis.mapsProcess(polygonDataTables=polygonDataTables,
                  gridDataTables=gridDataTables,
                  subRegShape=subRegShape,
                  xRange=c(2010,2020,2030,2040,2050),
@@ -280,7 +280,7 @@ gridDataTables=paste(getwd(),"/outputs/Grids/gridCropped_India_Basin_local_gridS
 
 
 head(subRegShape@data)
-metis.mapProcess(polygonDataTables=polygonDataTables,
+metis.mapsProcess(polygonDataTables=polygonDataTables,
                  #gridDataTables=gridDataTables,
                  subRegShape=subRegShape,
                  xRange=c(2010,2020,2030,2040,2050),
