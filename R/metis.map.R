@@ -476,8 +476,26 @@ if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
     map<-map+tmap::tm_layout(asp=NA)
   }
 
-if(!is.null(legendDigits)){map<- map + tmap::tm_layout(legend.format = list(digits = legendDigits))}
-  if(!is.null(mapTitle)){map<- map + tmap::tm_layout(main.title = mapTitle, main.title.size = mapTitleSize)}
+
+if(legendStyle!="cat"){
+if(!is.null(dataGrid)){
+  if(all(fillColumn %in% names(raster@data))){
+  if(length(unique(raster@data%>%dplyr::select(fillColumn)))>1){
+    if(is.null(catPalette)){
+    if(!is.null(legendDigits)){map<- map + tmap::tm_layout(legend.format = list(digits = legendDigits))}
+  }}
+}} else {
+  if(!is.null(shape)){
+    if(all(fillColumn %in% names(shape@data))){
+    if(length(unique(shape@data%>%dplyr::select(fillColumn)))>1){
+      if(is.null(catPalette)){
+      if(!is.null(legendDigits)){map<- map + tmap::tm_layout(legend.format = list(digits = legendDigits))}
+     }}
+    }
+  }
+}
+}
+if(!is.null(mapTitle)){map<- map + tmap::tm_layout(main.title = mapTitle, main.title.size = mapTitleSize)}
 
 
 if(!is.null(overLayer)){
@@ -491,7 +509,7 @@ fname<-paste(fileName,sep="")
 if(nchar(paste(dirOutputs,"/",fname,sep=""))>250){
   print("Save path for figure larger than 250 characters. Clipping name.")
   print(paste("Orig name: ",dirOutputs,"/",fname,sep=""))
-  print(paste("New name: ", dirOutputs,"/",strtrim(fname, (250-nchar(paste(dirOutputs,"/",sep="")))),sep=""))
+  print(paste("New name: ", dirOutputs,"/",strtrim(fname, (250-min(249,nchar(paste(dirOutputs,"/",sep=""))))),sep=""))
   fname<-strtrim(fname, (250-nchar(paste(dirOutputs,"/",sep=""))))
 }
 

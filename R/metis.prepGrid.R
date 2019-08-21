@@ -382,9 +382,14 @@ if(!dir.exists(xanthosFolder)){
         xanthosScenario<-sub("\\_[0-9].*", "", xanthosScenario);xanthosScenario
         xanthosGCM<-sub("_.*","",xanthosScenario); xanthosGCM
         xanthosRCP<-sub(".*_","",xanthosScenario); xanthosRCP}else{
+          if(grepl("q_km3peryear_",xanthosFile_i)){
+            xanthosScenario<-sub(".*q_km3peryear_", "", xanthosFile_i);xanthosScenario
+            xanthosScenario<-sub("\\_[0-9].*", "", xanthosScenario);xanthosScenario
+            xanthosGCM<-sub("_.*","",xanthosScenario); xanthosGCM
+            xanthosRCP<-sub(".*_","",xanthosScenario); xanthosRCP}else{
           xanthosScenario<-xanthosScenarioAssign
           xanthosGCM=NA;xanthosRCP=NA
-        }
+        }}
 
 
         if(grepl("mm",xanthosUnits)){aggType="depth"}else{aggType="vol"}
