@@ -444,7 +444,25 @@ xanthosFolder=paste("D:/Projects/003a_IDBLAC_Uruguay/CorrespondenceData/UruguayD
 #xanthosUnits="Runoff (mm)"
 xanthosFiles=c(
   "clim_impacts_GFDL-ESM2M_rcp2p6/q_km3peryear_GFDL-ESM2M_rcp2p6_1950_2099.csv",
-  "clim_impacts_GFDL-ESM2M_rcp4p5/q_km3peryear_GFDL-ESM2M_rcp4p5_1950_2099.csv"
+  "clim_impacts_GFDL-ESM2M_rcp4p5/q_km3peryear_GFDL-ESM2M_rcp4p5_1950_2099.csv",
+  "clim_impacts_GFDL-ESM2M_rcp6p0/q_km3peryear_GFDL-ESM2M_rcp6p0_1950_2099.csv",
+  "clim_impacts_GFDL-ESM2M_rcp8p5/q_km3peryear_GFDL-ESM2M_rcp8p5_1950_2099.csv",
+  "clim_impacts_HadGEM2-ES_rcp2p6/q_km3peryear_HadGEM2-ES_rcp2p6_1950_2099.csv",
+  "clim_impacts_HadGEM2-ES_rcp4p5/q_km3peryear_HadGEM2-ES_rcp4p5_1950_2099.csv",
+  "clim_impacts_HadGEM2-ES_rcp6p0/q_km3peryear_HadGEM2-ES_rcp6p0_1950_2099.csv",
+  "clim_impacts_HadGEM2-ES_rcp8p5/q_km3peryear_HadGEM2-ES_rcp8p5_1950_2099.csv",
+  "clim_impacts_IPSL-CM5A-LR_rcp2p6/q_km3peryear_IPSL-CM5A-LR_rcp2p6_1950_2099.csv",
+  "clim_impacts_IPSL-CM5A-LR_rcp4p5/q_km3peryear_IPSL-CM5A-LR_rcp4p5_1950_2099.csv",
+  "clim_impacts_IPSL-CM5A-LR_rcp6p0/q_km3peryear_IPSL-CM5A-LR_rcp6p0_1950_2099.csv",
+  "clim_impacts_IPSL-CM5A-LR_rcp8p5/q_km3peryear_IPSL-CM5A-LR_rcp8p5_1950_2099.csv",
+  "clim_impacts_MIROC-ESM-CHEM_rcp2p6/q_km3peryear_MIROC-ESM-CHEM_rcp2p6_1950_2099.csv",
+  "clim_impacts_MIROC-ESM-CHEM_rcp4p5/q_km3peryear_MIROC-ESM-CHEM_rcp4p5_1950_2099.csv",
+  "clim_impacts_MIROC-ESM-CHEM_rcp6p0/q_km3peryear_MIROC-ESM-CHEM_rcp6p0_1950_2099.csv",
+  "clim_impacts_MIROC-ESM-CHEM_rcp8p5/q_km3peryear_MIROC-ESM-CHEM_rcp8p5_1950_2099.csv",
+  "clim_impacts_NorESM1-M_rcp2p6/q_km3peryear_NorESM1-M_rcp2p6_1950_2099.csv",
+  "clim_impacts_NorESM1-M_rcp4p5/q_km3peryear_NorESM1-M_rcp4p5_1950_2099.csv",
+  "clim_impacts_NorESM1-M_rcp6p0/q_km3peryear_NorESM1-M_rcp6p0_1950_2099.csv",
+  "clim_impacts_NorESM1-M_rcp8p5/q_km3peryear_NorESM1-M_rcp8p5_1950_2099.csv"
 )
 xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosReference/coordinates.csv",sep="")
 xanthosGridAreaHecsPath=paste(getwd(),"/dataFiles/grids/xanthosReference/Grid_Areas_ID.csv",sep="")
@@ -517,7 +535,7 @@ nameAppend_i = "_NE"
 aggType_i = NULL
 paramsSelect_i= "All" #"demeterLandUse"
 sqliteUSE_i = T
-sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis_Uruguay.sqlite", sep = "")
+sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis_uruguay.sqlite", sep = "")
 
 grid2polyX<-metis.grid2poly(#grid=grid_i,
   subRegShpFolder=subRegShpFolder_i,
@@ -554,7 +572,7 @@ nameAppend_i = "_local"
 aggType_i = NULL
 paramsSelect_i= "All" #"demeterLandUse"
 sqliteUSE_i = T
-sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis_Uruguay.sqlite", sep = "")
+sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis_uruguay.sqlite", sep = "")
 
 grid2polyX<-metis.grid2poly(#grid=grid_i,
   subRegShpFolder=subRegShpFolder_i,

@@ -100,7 +100,7 @@ NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
     country->name->GCMRCP->datax->
     region->regionsSelect->rowid->scenarioTethys->scenarioXanthos->
     year->origValue->gridlat->gridlon->class1->valueDistrib->origValueDistrib->gridCellPercentage->
-    region_32_code->ctry_name->ctry_code->aggregate->gridID
+    region_32_code->ctry_name->ctry_code->aggregate->gridID->diagnosticFig
 
 
 #------------------
@@ -437,12 +437,14 @@ if(!dir.exists(xanthosFolder)){
         fname=paste(unique(gridC$scenario),"_",unique(gridC$param),
                     "_lat",unique(gridC$lat),"_lon", unique(gridC$lon),
                     "_lowessSpan",spanLowess,sep="")
-        metis.printPdfPng(figure=graphics::plot(gridC$x,gridC$value,type="l",
-                             main=paste(unique(gridC$scenario),
-                                       "\nlat = ",unique(gridC$lat),", lon = ", unique(gridC$lon),
-                                       ", Lowess Span =  ",spanLowess,sep=""),
-                             ylab=unique(gridC$units),xlab="Year")+
-                             graphics::lines(gridC$x,gridC$lowess,type="l",col="red"),
+        graphics::plot(gridC$x,gridC$value,type="l",
+                                        main=paste(unique(gridC$scenario),
+                                                   "\nlat = ",unique(gridC$lat),", lon = ", unique(gridC$lon),
+                                                   ", Lowess Span =  ",spanLowess,sep=""),
+                                        ylab=unique(gridC$units),xlab="Year") +
+        graphics::lines(gridC$x,gridC$lowess,type="l",col="red")
+        diagnosticFig <- recordPlot()
+        metis.printPdfPng(figure=diagnosticFig,
                           dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
             }
 
