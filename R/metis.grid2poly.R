@@ -38,6 +38,7 @@ metis.grid2poly<- function(grid=NULL,
                            sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")) {
 
   # grid=NULL
+  # regionName ="region"
   # subRegShape=NULL
   # subRegShpFolder=NULL
   # subRegShpFile=NULL
@@ -45,8 +46,10 @@ metis.grid2poly<- function(grid=NULL,
   # subRegType="subRegType"
   # aggType=NULL
   # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # folderName = NULL
   # nameAppend=""
   # labelsSize=1.2
+  # paramsSelect="All"
   # sqliteUSE = F
   # sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
@@ -492,8 +495,53 @@ metis.grid2poly<- function(grid=NULL,
                              c("scenario","param","units","class","value","subRegion","subRegType","region") %in% names(poly)])%>%
                            dplyr::mutate(value=0,x=2015, region=regionName)%>%unique,
                          file = paste(dir, "/subReg_grid2poly_template_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
-      data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","x","value","subRegion","subRegType","region","classPalette")[
-                             c("scenario","param","units","class","x","value","subRegion","subRegType","region","classPalette") %in% names(poly)]) %>%
+
+     # Calculate Polygon Scarcity for Tethys and Xanthos Scenarios
+     if(any(grepl("tethysWatWithdraw_total",unique(poly$param))) & any(grepl("xanthos",unique(poly$param)))){
+       polyTethys <- poly %>% dplyr::filter(grepl("tethysWatWithdraw_total",param)); polyTethys
+       polyXanthos <- poly %>% dplyr::filter(grepl("xanthos",param)); polyXanthos
+       polyScarcity <- data.frame()
+       for(i in unique(polyTethys$scenario)){
+         for(j in unique(polyXanthos$scenario)){
+
+
+           polyTethysGCM <- unique((polyTethys %>% dplyr::filter(scenario==i))$scenarioGCM)
+           polyTethysRCP <- unique((polyTethys %>% dplyr::filter(scenario==i))$scenarioRCP)
+           polyXanthosGCM <- unique((polyXanthos %>% dplyr::filter(scenario==j))$scenarioGCM)
+           polyXanthosRCP <- unique((polyXanthos %>% dplyr::filter(scenario==j))$scenarioRCP)
+           rangeScarcity = unique(polyTethys$x)[unique(polyTethys$x) %in% unique(polyXanthos$x)]; rangeScarcity
+
+           # If Tethys has been run for a GCM RCP combo then only run for matching Xanthos Tethys scenarios
+           # Else run everyOther Tethys with every Xanthos
+           if((is.na(polyTethysGCM) | is.null(polyTethysGCM) | polyTethysGCM=="scenarioGCM" | polyTethysGCM=="NA" |
+                (polyTethysGCM==polyXanthosGCM & polyTethysRCP==polyXanthosRCP))){
+
+           polyScarcityT <- polyTethys %>% dplyr::filter(scenario==i) %>%
+             dplyr::mutate(valueTethys=value) %>%
+             dplyr::select(-scenarioGCM,-scenarioRCP,-scenario,-value,-param,-units,-class,-class2)
+           polyScarcityX <- polyXanthos %>% dplyr::filter(scenario==j) %>%
+             dplyr::mutate(valueXanthos=value) %>%
+             dplyr::select(-scenarioSSP,-scenarioPolicy,-scenario,-value,-param,-units,-class,-class2) %>%
+             dplyr::filter(x %in% unique(polyScarcityT$x))
+           polyScarcity <- polyScarcityT %>% dplyr::left_join(polyScarcityX) %>%
+             dplyr::mutate(scenario=paste("T",i,"X",j,sep=""),
+                           value=valueTethys/valueXanthos,
+                           param="polyScarcity",
+                           units="ratio",
+                           class="total",
+                           class2="class2") %>%
+             dplyr::filter(x %in% rangeScarcity)%>%
+             dplyr::select(-valueTethys,-valueXanthos); polyScarcity
+           poly<-dplyr::bind_rows(poly,polyScarcity)
+           }
+         }
+       }
+     }
+
+      data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","x","value","subRegion","subRegType","region","classPalette",
+                                                  "scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy")[
+                             c("scenario","param","units","class","x","value","subRegion","subRegType","region","classPalette",
+                               "scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy") %in% names(poly)]) %>%
                            dplyr::mutate( region=regionName),
                               file = paste(dir, "/subReg_grid2poly_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
 

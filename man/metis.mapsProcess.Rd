@@ -13,14 +13,14 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
   legendOutsidePosition = NULL, legendPosition = NULL,
   legendFixedBreaks = 5, legendTitleSizeO = 2, legendTextSizeO = 1,
   legendTitleSizeI = 1.5, legendTextSizeI = 1, animateOn = T,
-  fps = 100, scenRef = NULL, extension = F,
-  boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
-  boundaryRegShpFile = NULL, boundaryRegCol = NULL,
-  boundaryRegionsSelect = NULL, fillcolorNA = NULL,
-  extendedLabels = T, extendedFillColor = "grey75",
-  extendedBGColor = "lightblue1", extendedHighLightColor = "cornsilk1",
-  extendedLabelsColor = "grey30", extdendedLabelSize = 0.7,
-  extendedShape = NULL, extendedShapeCol = NULL, expandPercent = 3,
+  fps = 1, scenRef = NULL, extension = F, boundaryRegShape = NULL,
+  boundaryRegShpFolder = NULL, boundaryRegShpFile = NULL,
+  boundaryRegCol = NULL, boundaryRegionsSelect = NULL,
+  fillcolorNA = NULL, extendedLabels = T,
+  extendedFillColor = "grey75", extendedBGColor = "lightblue1",
+  extendedHighLightColor = "cornsilk1", extendedLabelsColor = "grey30",
+  extdendedLabelSize = 0.7, extendedShape = NULL,
+  extendedShapeCol = NULL, expandPercent = 3,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 6, figHeight = 7, scaleRange = NULL,
   paramsSelect = "All", indvScenarios = "All", scensSelect = "All",
@@ -77,7 +77,7 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{animateOn}{Default = T,}
 
-\item{fps}{Default = 100,}
+\item{fps}{Default = 1,}
 
 \item{scenRef}{Default = NULL}
 

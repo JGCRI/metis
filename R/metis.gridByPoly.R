@@ -84,8 +84,9 @@ gridByPoly<-x@data %>%
 if(saveFile){
 fname<-gsub(".csv","",fname)
 fname<- paste(dir,"/",fname,".csv",sep="")
-data.table::fwrite(gridByPoly, file = fname,row.names = F)}
+data.table::fwrite(gridByPoly, file = fname,row.names = F)
+print(paste("File saved as ",fname,sep=""))}
 
-return(gridByPoly)
+invisible(gridByPoly)
 
 }
