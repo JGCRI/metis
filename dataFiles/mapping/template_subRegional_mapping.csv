@@ -1,11 +1,13 @@
 param,units,class,classPalette
-population,millions,class,pal_hot
 tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,pal_wet
 tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,pal_wet
 tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,pal_wet
 tethysWatWithdraw_indv,WaterWithdrawals(mm),Livestock,pal_wet
 tethysWatWithdraw_indv,WaterWithdrawals(mm),Manufacturing,pal_wet
 tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,pal_wet
+griddedScarcity,GriddedScarcity(Fraction),Scarcity,pal_hot
+tethysWatWithdraw_total,WaterWithdrawals(mm),Total,pal_wet
+xanthosRunoff,Runoff(mm),Runoff,pal_wet
 demeterLandUse,Landuse(Fraction),crops,pal_green
 demeterLandUse,Landuse(Fraction),forest,pal_green
 demeterLandUse,Landuse(Fraction),grass,pal_green
@@ -15,10 +17,8 @@ demeterLandUse,Landuse(Fraction),sparse,pal_green
 demeterLandUse,Landuse(Fraction),urban,pal_green
 demeterLandUse,Landuse(Fraction),water,pal_green
 tethysWatWithdraw_nonAg,WaterWithdrawals(mm),NonAgriculture,pal_wet
-tethysWatWithdraw_total,WaterWithdrawals(mm),Total,pal_wet
-xanthosRunoff,Runoff(mm),Runoff,pal_wet
-griddedScarcity,GriddedScarcity(Fraction),Scarcity,pal_hot
 population,person,class,pal_hot
+population,millions,class,pal_hot
 example_param,units,crops,pal_green
 example_param,units,forest,pal_green
 example_param,units,grass,pal_green

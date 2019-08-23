@@ -17,6 +17,7 @@
 #' @param nameAppend  Default="",
 #' @param labelsSize Default =1.2. Label size for the region names for the gridoverlay plot.
 #' @param paramsSelect Default ="All"
+#' @param scenariosSelect Default ="All"
 #' @param sqliteUSE Default = T,
 #' @param sqliteDBNamePath Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 #' @export
@@ -34,6 +35,7 @@ metis.grid2poly<- function(grid=NULL,
                            nameAppend="",
                            labelsSize=1.2,
                            paramsSelect="All",
+                           scenariosSelect="All",
                            sqliteUSE = F,
                            sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")) {
 
@@ -100,8 +102,11 @@ metis.grid2poly<- function(grid=NULL,
       print(paste("Finding unique scenarios in sql database for param: ",param_i,"...",sep=""))
       scenarios<-sqlGrid%>%dplyr::filter(param==param_i)%>%dplyr::distinct(scenario)%>%dplyr::collect();
       scenarios=scenarios$scenario
-      paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
       print(paste("Unique scenarios found : ", paste(scenarios,collapse=", "),sep=""))
+      print(paste("Selected Scenarios : ", paste(scenariosSelect,collapse=", "),sep=""))
+      if(!grepl("all",scenariosSelect,ignore.case = T)){scenarios=scenarios[scenarios %in% scenariosSelect]}
+      paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
+
     }
     paramScenarios<-paramScenarios%>%unique()
     print("paramScenarios found: ")
@@ -155,8 +160,11 @@ metis.grid2poly<- function(grid=NULL,
         print(paste("Finding unique scenarios in grid for param: ",param_i,"...",sep=""))
         scenarios<-grid%>%dplyr::filter(param==param_i)%>%dplyr::distinct(scenario);
         scenarios=scenarios$scenario
-        paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
         print(paste("Unique scenarios found : ", paste(scenarios,collapse=", "),sep=""))
+        print(paste("Selected Scenarios : ", paste(scenariosSelect,collapse=", "),sep=""))
+        if(!grepl("all",scenariosSelect,ignore.case = T)){scenarios=scenarios[scenarios %in% scenariosSelect]}
+        paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
+
       }
       paramScenarios<-paramScenarios%>%unique()
       print("paramScenarios found: ")
@@ -287,35 +295,21 @@ metis.grid2poly<- function(grid=NULL,
 
           gridx<-gridx%>%tidyr::spread(key=key,value=value)
 
-          # Convert to Spatial Point Data Frames
-          spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
-          sp::gridded(spdf)<-TRUE
-
-          r<-raster::stack(spdf)
-          raster::projection(r)<-sp::proj4string(shape)
-
-          shapeExpandExtent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
-          expandPercent<-3; shapeExpandExtent$min;shapeExpandExtent$max
-          rangeX<-abs(range(shapeExpandExtent$min[1],shapeExpandExtent$max[1])[2]-range(shapeExpandExtent$min[1],shapeExpandExtent$max[1])[1])
-          rangeY<-abs(range(shapeExpandExtent$min[2],shapeExpandExtent$max[2])[2]-range(shapeExpandExtent$min[2],shapeExpandExtent$max[2])[1])
-          shapeExpandExtent$min[1]<-(-rangeX*expandPercent/100)+shapeExpandExtent$min[1];
-          shapeExpandExtent$min[2]<-(-rangeY*expandPercent/100)+shapeExpandExtent$min[2];
-          shapeExpandExtent$max[1]<-(rangeX*expandPercent/100)+shapeExpandExtent$max[1];
-          shapeExpandExtent$max[2]<-(rangeY*expandPercent/100)+shapeExpandExtent$max[2];
-          shapeExpandExtent<-methods::as(raster::extent(as.vector(t(shapeExpandExtent))), "SpatialPolygons")
-          sp::proj4string(shapeExpandExtent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
 
           print(paste("Cropping grid to shape file for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
 
-         if(!is.null(raster::intersect(raster::extent(r), raster::extent(shapeExpandExtent)))){
+         if(!is.null(raster::intersect(raster::extent(r), raster::extent(shape)))){
 
-          rcrop<-raster::crop(r,shapeExpandExtent)
-          rcropP<-raster::rasterToPolygons(rcrop)
+           # Convert to Spatial Point Data Frames
+           spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
+           sp::gridded(spdf)<-TRUE
 
-          sp::proj4string(rcropP)<-sp::proj4string(shape)
-          rcropPx<-raster::intersect(shape,rcropP)
+           rGrid<-raster::stack(spdf)
+           raster::projection(rGrid)<-sp::proj4string(shape)
+           rcropP<-raster::rasterToPolygons(rGrid)
+           rcropPx<-raster::intersect(shape,rcropP)
 
-          gridCropped<-dplyr::bind_rows(gridCropped,tibble::as_tibble(rcropP@data))
+          gridCropped<-dplyr::bind_rows(gridCropped,tibble::as_tibble(metis.gridByPoly(gridDataTables=gridx,shape=shape,colName=subRegCol)))
 
           # Save gridCropped to csv
 
@@ -527,7 +521,7 @@ metis.grid2poly<- function(grid=NULL,
              dplyr::mutate(scenario=paste("T",i,"X",j,sep=""),
                            value=valueTethys/valueXanthos,
                            param="polyScarcity",
-                           units="ratio",
+                           units="Polygon Scarcity (Fraction)",
                            class="total",
                            class2="class2") %>%
              dplyr::filter(x %in% rangeScarcity)%>%
