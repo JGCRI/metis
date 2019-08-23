@@ -526,14 +526,88 @@ gridMetis<-metis.prepGrid(
 # Grid to Poly
 #-------------
 
+
+# Find unique params in SQL or Grid Data Base
+
+if(sqliteUSE==T){
+  paste("Using SQLite database...",sep="")
+  if(!file.exists(sqliteDBNamePath)){stop("SQLite file path provided does not exist: ", sqliteDBNamePath, sep="")}
+  dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)
+  #src_dbi(dbConn)
+  sqlGrid<-tbl(dbConn,"gridMetis"); utils::head(sqlGrid)
+  dbHead<-utils::head(sqlGrid,1)%>%dplyr::collect();dbHead
+  names(dbHead)
+  if(!all(c("param","scenario","lon","lat","value") %in% names(dbHead))){
+    stop("SQLite database must have columns for lon, lat, value, param and scenario. Sql Database cols are : ",
+         paste(names(dbHead),collapse=", "), sep="")}
+  print(paste("Finding unique params in sql database...",sep=""))
+  params<-sqlGrid%>%dplyr::distinct(param)%>%dplyr::collect();
+  params=params$param
+  print(paste("Unique params found : ", paste(params,collapse=", "),sep=""))
+paramScenarios<-tibble::tibble()
+for(param_i in params){
+  print(paste("Finding unique scenarios in sql database for param: ",param_i,"...",sep=""))
+  scenarios<-sqlGrid%>%dplyr::filter(param==param_i)%>%dplyr::distinct(scenario)%>%dplyr::collect();
+  scenarios=scenarios$scenario
+  print(paste("Unique scenarios found : ", paste(scenarios,collapse=", "),sep=""))
+  paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
+}
+paramScenarios<-paramScenarios%>%unique()
+print("paramScenarios found: ")
+print(paramScenarios)
+scenarios<-unique(paramScenarios$scenario)
+on.exit(DBI::dbDisconnect(dbConn), add=T)
+}
+
+paramScenarios %>% as.data.frame()
+
+# Run in batches
+# Batch 1 - demeterLanduse, population, tethysWaterWithdraw_nonAg,tethysWaterWithdraw_indv
+# Batch 2 - tethysWatWithdraw_total, xanthosRunoff(scenarios rcp2p6,rcp4p5)
+# Batch 3 - tethysWatWithdraw_total, xanthosRunoff(scenarios rcp6p0,rcp8p5)
+# Batch 4 - griddedScarcity (scenarios rcp2p6,rcp4p5)
+# Batch 5 - griddedScarcity (scenarios rcp6p0,rcp8p5)
+
+scenarios<-unique(paramScenarios$scenario)
+
+#Batch1
+paramsSelect_1 <- c("demeterLandUse","tethysWatWithdraw_indv","tethysWatWithdraw_nonAg","population")
+scenariosSelect_1 <- c("Eg1","Eg1_NA_NA","popGWP")
+#Batch2
+paramsSelect_2 <- c("tethysWatWithdraw_total","xanthosRunoff")
+scenariosSelect_2 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp2p6|rcp4p5",scenarios)])
+#Batch3
+paramsSelect_3 <- c("tethysWatWithdraw_total","xanthosRunoff")
+scenariosSelect_3 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp2p6|rcp4p5",scenarios)])
+#Batch4
+#Batch2
+paramsSelect_4 <- c("griddedScarcity")
+scenariosSelect_4 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp2p6|rcp4p5",scenarios)])
+#Batch3
+paramsSelect_5 <- c("griddedScarcity")
+scenariosSelect_5 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp2p6|rcp4p5",scenarios)])
+
+batches <- list(batch1=list(params=paramsSelect_1,scenarios=scenariosSelect_1),
+                batch2=list(params=paramsSelect_2,scenarios=scenariosSelect_2),
+                batch3=list(params=paramsSelect_3,scenarios=scenariosSelect_3),
+                batch4=list(params=paramsSelect_4,scenarios=scenariosSelect_4),
+                batch5=list(params=paramsSelect_5,scenarios=scenariosSelect_5))
+
+for(i in 1:length(batches)){
+
+  paramScenarios_i <- paramScenarios %>% dplyr::filter(param %in% batches[[i]]$params, scenario %in% batches[[i]]$scenarios); paramScenarios_i
+  paramsSelect_i = unique(paramScenarios_i$param); paramsSelect_i
+  scenariosSelect_i = unique(paramScenarios_i$scenario); scenariosSelect_i
+
+  #paramsSelect_i="tethysWatWithdraw_indv"; scenariosSelect_i="Eg1_NA_NA"
+
 # Natural Earth admin1 boundaries
 subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep = "")
 subRegShpFile_i = paste(countryName,"NE1",sep= "")
 subRegCol_i = "name"
 subRegType_i = "state"
-nameAppend_i = "_NE"
+nameAppend_i = paste("_NE_batch",i,sep="")
 aggType_i = NULL
-paramsSelect_i= "All" #"demeterLandUse"
 sqliteUSE_i = T
 sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis_uruguay.sqlite", sep = "")
 
@@ -545,22 +619,11 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
   aggType=aggType_i,
   nameAppend=nameAppend_i,
   paramsSelect = paramsSelect_i,
+  scenariosSelect = scenariosSelect_i,
   sqliteUSE = sqliteUSE_i,
   sqliteDBNamePath = sqliteDBNamePath_i,
   folderName = countryName,
   regionName = countryName)
-
-# subRegShpFolder=subRegShpFolder_i
-# subRegShpFile=subRegShpFile_i
-# subRegCol=subRegCol_i
-# subRegType = subRegType_i
-# aggType=aggType_i
-# nameAppend=nameAppend_i
-# paramsSelect = paramsSelect_i
-# sqliteUSE = sqliteUSE_i
-# sqliteDBNamePath = sqliteDBNamePath_i
-# folderName = countryName
-# regionName = countryName
 
 #grid_i=gridMetis
 #grid_i=paste(getwd(),"/outputs/Grids/gridMetisXanthos.RData",sep = "")
@@ -568,9 +631,8 @@ subRegShpFolder_i = localBasinShapeFileFolder # paste(getwd(),"/dataFiles/gis/sh
 subRegShpFile_i = localBasinShapeFile # paste("colombiaLocalBasin",sep= "")
 subRegCol_i = localBasinsShapeFileColName  #
 subRegType_i = "subBasin"
-nameAppend_i = "_local"
+nameAppend_i = paste("_local_batch",i,sep="")
 aggType_i = NULL
-paramsSelect_i= "All" #"demeterLandUse"
 sqliteUSE_i = T
 sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis_uruguay.sqlite", sep = "")
 
@@ -582,11 +644,13 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
   aggType=aggType_i,
   nameAppend=nameAppend_i,
   paramsSelect = paramsSelect_i,
+  scenariosSelect = scenariosSelect_i,
   sqliteUSE = sqliteUSE_i,
   sqliteDBNamePath = sqliteDBNamePath_i,
   folderName = countryName,
   regionName = countryName)
 
+}
 
 #-----------
 # Mapping
@@ -600,6 +664,25 @@ for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(p
 gridDataTables_i=paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE.csv",sep="")
 b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
 for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x));print(unique((b%>%dplyr::filter(param==param_i))$scenario))}
+
+p_batch1 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch1.csv",sep=""))
+p_batch2 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch2.csv",sep=""))
+p_batch3 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch3.csv",sep=""))
+p_batch4 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch4.csv",sep=""))
+p_batch5 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch5.csv",sep=""))
+a <- bind_rows(p_batch1,p_batch2,p_batch3,p_batch4,p_batch5)
+a <- a %>% unique(); a
+for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
+
+g_batch1 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE_batch1.csv",sep=""))
+g_batch2 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE_batch2.csv",sep=""))
+g_batch3 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE_batch3.csv",sep=""))
+g_batch4 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE_batch4.csv",sep=""))
+g_batch5 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE_batch5.csv",sep=""))
+b <- bind_rows(g_batch1,g_batch2,g_batch3,g_batch4,g_batch5)
+b <- b %>% unique(); b
+for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x));print(unique((b%>%dplyr::filter(param==param_i))$scenario))}
+
 xRange_i= seq(from=2000,to=2050,by=5)
 legendPosition_i=c("LEFT","bottom")
 legendOutsideSingle_i=T
@@ -609,7 +692,6 @@ scenRef_i="GFDL-ESM2M_rcp2p6_NA_NA"
 paramsSelect_i = c("All")
 indvScenarios_i = "All"
 GCMRCPSSPPol_i=T
-
 
 boundaryRegShape_i = NULL
 boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
@@ -649,9 +731,8 @@ catPalette <- numeric2Cat_list$numeric2Cat_palette[[list_index]]; catPalette
 catLegendTextSize <- numeric2Cat_list$numeric2Cat_legendTextSize[[list_index]];catLegendTextSize
 
 
-
-metis.mapsProcess(polygonDataTables=polygonDataTables_i,
-                 gridDataTables=gridDataTables_i,
+metis.mapsProcess(polygonDataTables=a,
+                 gridDataTables=b,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,
                  boundaryRegShpFolder=boundaryRegShpFolder_i,
@@ -689,8 +770,8 @@ metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  folderName = "Uruguay_state")
 
 
-# polygonDataTables=polygonDataTables_i
-# gridDataTables=gridDataTables_i
+# polygonDataTables=a
+# gridDataTables=b
 # xRange=xRange_i
 # boundaryRegShape=boundaryRegShape_i
 # boundaryRegShpFolder=boundaryRegShpFolder_i
@@ -710,7 +791,7 @@ metis.mapsProcess(polygonDataTables=polygonDataTables_i,
 # expandPercent = 3
 # figWidth=6
 # figHeight=7
-# paramsSelect = c("griddedScarcity") # paramsSelect_i
+# paramsSelect = paramsSelect_i
 # scaleRange = scaleRange_i
 # indvScenarios=indvScenarios_i
 # GCMRCPSSPPol=GCMRCPSSPPol_i
@@ -728,8 +809,13 @@ metis.mapsProcess(polygonDataTables=polygonDataTables_i,
 # folderName = "Uruguay_state"
 
 
-polygonDataTables_i=paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local.csv",sep="")
-a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+p_batch1 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_NE_batch1.csv",sep=""))
+p_batch2 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_NE_batch2.csv",sep=""))
+p_batch3 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_NE_batch3.csv",sep=""))
+p_batch4 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_NE_batch4.csv",sep=""))
+p_batch5 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_NE_batch5.csv",sep=""))
+a <- bind_rows(p_batch1,p_batch2,p_batch3,p_batch4,p_batch5)
+a <- a %>% unique(); a
 for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
 
 subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep = "")
@@ -738,7 +824,7 @@ subRegCol_i = localBasinsShapeFileColName  #
 subRegType_i = "subBasin"
 nameAppend_i = "_local"
 
-metis.mapsProcess(polygonDataTables=polygonDataTables_i,
+metis.mapsProcess(polygonDataTables=a,
                   #gridDataTables=gridDataTables_i,
                   xRange=xRange_i,
                   boundaryRegShape=boundaryRegShape_i,

@@ -2,9 +2,10 @@
 #'
 #' This function finds the grids located within a given shapefiles regions
 #'
-#' @param grid Default = NULL. Full path to grid file.
-#' @param boundaryRegShpFolder Default = NULL,
-#' @param boundaryRegShpFile Default = NULL,
+#' @param gridDataTables Default = NULL. Full path to grid file.
+#' @param shape Default = NULL,
+#' @param shapeFolder Default = NULL,
+#' @param shapeFile Default = NULL,
 #' @param colName Default = NULL,
 #' @param dirOutputs Default = paste(getwd(),"/outputs",sep=""),
 #' @param fname Default = "gridByPoly"
@@ -17,13 +18,23 @@
 # Print to PDF or PNG
 #-------------
 
-metis.gridByPoly <- function(grid = NULL,
-                              boundaryRegShpFolder = NULL,
-                              boundaryRegShpFile = NULL,
+metis.gridByPoly <- function(gridDataTables = NULL,
+                              shape = NULL,
+                              shapeFolder = NULL,
+                              shapeFile = NULL,
                               colName = NULL,
                               dirOutputs = paste(getwd(),"/outputs",sep=""),
                               fname = "gridByPoly",
                               saveFile = F){
+
+  # gridDataTables = NULL
+  # shape = NULL
+  # shapeFolder = NULL
+  # shapeFile = NULL
+  # colName = NULL
+  # dirOutputs = paste(getwd(),"/outputs",sep="")
+  # fname = "gridByPoly"
+  # saveFile = F
 
   NULL->lat->lon
 
@@ -38,47 +49,59 @@ metis.gridByPoly <- function(grid = NULL,
 
 
 # Check inputs provided
-  if(is.null(colName)){stop("Must provide correct colName from shapeFile data.")}
-  if(is.null(grid)){stop("Must provide gridfile csv with lat and lon.")}
 
-  if(!is.null(boundaryRegShpFolder) & !is.null(boundaryRegShpFile)){
-      if(!dir.exists(boundaryRegShpFolder)){
-        stop("Shapefile folder: ", boundaryRegShpFolder ," is incorrect or doesn't exist.",sep="")}
-      if(!file.exists(paste(boundaryRegShpFolder,"/",boundaryRegShpFile,".shp",sep=""))){
-        stop("Shape file: ", paste(boundaryRegShpFolder,"/",boundaryRegShpFile,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
-      boundaryRegShape=rgdal::readOGR(dsn=boundaryRegShpFolder,layer=boundaryRegShpFile,use_iconv=T,encoding='UTF-8')
-      print(paste("Boundary Shape : ",boundaryRegShpFolder,"/",boundaryRegShpFile,".shp",sep=""))
-      print(raster::head(boundaryRegShape))
-    } else {"Must provided boundaryRegShpFolder and boundaryRegShpFile"} # close if(!is.null(boundaryRegShpFolder) & !is.null(boundaryRegShpFile))
-
+  if(is.null(shape)){
+    if(!is.null(shapeFolder) & !is.null(shapeFile)){
+      if(!dir.exists(shapeFolder)){
+        stop("Shapefile folder: ", shapeFolder ," is incorrect or doesn't exist.",sep="")}
+      if(!file.exists(paste(shapeFolder,"/",shapeFile,".shp",sep=""))){
+        stop("Shape file: ", paste(shapeFolder,"/",shapeFile,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
+      shape=rgdal::readOGR(dsn=shapeFolder,layer=shapeFile,use_iconv=T,encoding='UTF-8')
+      print(paste("Boundary Shape : ",shapeFolder,"/",shapeFile,".shp",sep=""))
+      print(raster::head(shape))
+    } # close if(!is.null(shapeFolder) & !is.null(shapeFile))
+  }else{shape=shape}
 
 # Prepare grid
-gridx<-data.table::fread(grid,encoding="Latin-1")
-gridxspdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
-sp::gridded(gridxspdf)<-TRUE
-r<-raster::stack(gridxspdf)
 
-#prepare Shape
-shape<-rgdal::readOGR(dsn=boundaryRegShpFolder,layer=boundaryRegShpFile,use_iconv=T,encoding='UTF-8')
+  if(!is.null(gridDataTables)){
 
-# Get 1% extended boundaries around shape
-shapeExpandEtxent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
-expandbboxPercent<-1; shapeExpandEtxent$min;shapeExpandEtxent$max
-shapeExpandEtxent$min[1]<-if(shapeExpandEtxent$min[1]<0){(1+expandbboxPercent/100)*shapeExpandEtxent$min[1]}else{(1-expandbboxPercent/100)*shapeExpandEtxent$min[1]};
-shapeExpandEtxent$min[2]<-if(shapeExpandEtxent$min[2]<0){(1+expandbboxPercent/100)*shapeExpandEtxent$min[2]}else{(1-expandbboxPercent/100)*shapeExpandEtxent$min[2]};
-shapeExpandEtxent$max[1]<-if(shapeExpandEtxent$max[1]<0){(1-expandbboxPercent/100)*shapeExpandEtxent$max[1]}else{(1+expandbboxPercent/100)*shapeExpandEtxent$max[1]};
-shapeExpandEtxent$max[2]<-if(shapeExpandEtxent$max[2]<0){(1-expandbboxPercent/100)*shapeExpandEtxent$max[2]}else{(1+expandbboxPercent/100)*shapeExpandEtxent$max[2]};
-shapeExpandEtxent$min;shapeExpandEtxent$max;
-shapeExpandEtxent<-methods::as(raster::extent(as.vector(t(shapeExpandEtxent))), "SpatialPolygons")
-sp::proj4string(shapeExpandEtxent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
-rcrop<-raster::crop(r,shapeExpandEtxent)
-rcropP<-raster::rasterToPolygons(rcrop)
-sp::proj4string(rcropP)<-sp::proj4string(shape)
+    if(all(!class(gridDataTables) %in% c("tbl_df","tbl","data.frame"))){
 
-# Intersect grid polygons with shape to get IDs
-x<-raster::intersect(shape,rcropP)
-gridByPoly<-x@data %>%
-  dplyr::select(colName,lat,lon)
+      for(grid_i in gridDataTables){
+        if(file.exists(grid_i)){
+          gridxNew<-data.table::fread(paste(grid_i),encoding="Latin-1")%>%tibble::as_tibble()
+          gridx<-dplyr::bind_rows(gridx,gridxNew)
+          rm(gridxNew)
+        } else {stop(paste(grid_i," does not exist"))}
+      }
+    }else{gridx<-gridDataTables}
+
+  }else{gridx=gridDataTables}
+
+  if(is.null(colName)){stop("Must provide correct colName from shapeFile data.")} else{
+    if(!colName %in% names(shape@data)){stop("Must provide correct colName from shapeFile data.")}}
+  if(is.null(gridDataTables)){stop("Must provide gridfile csv with lat and lon.")}else {
+    if(!any(c("lat","lon") %in% names(gridDataTables))){stop("Must provide gridfile csv with lat and lon.")}
+  }
+
+
+  # Convert to Spatial Point Data Frames
+  spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
+  sp::gridded(spdf)<-TRUE
+
+  r<-raster::stack(spdf)
+  raster::projection(r)<-sp::proj4string(shape)
+  shape_ras <- raster::rasterize(shape, r[[1]], getCover=TRUE)
+  shape_ras[shape_ras==0] <- NA
+  r<-raster::mask(r,shape_ras)
+  r<-methods::as(r, "SpatialPixelsDataFrame")
+  r@data<-Filter(function(x)!all(is.na(x)), r@data)
+
+  rCrop <- r@data%>%dplyr::select(lat,lon)%>%unique()
+
+# Subset gridded data
+gridByPoly<-dplyr::left_join(rCrop,gridx, by=c("lat","lon")); tail(gridByPoly); nrow(rCrop);nrow(gridx);nrow(gridByPoly)
 
 # Save Data
 if(saveFile){

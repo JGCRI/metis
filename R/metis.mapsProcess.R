@@ -221,52 +221,52 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   addMissing<-function(data){
     if(!any(grepl("\\<scenario\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenario="scenario")}else{
       data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenario\\>",names(data),ignore.case = T)])[1])
-      data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
+      data<-data%>%dplyr::mutate(scenario=as.character(scenario),scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
     if(!any(grepl("\\<scenarios\\>",names(data),ignore.case = T))){}else{
       data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenarios\\>",names(data),ignore.case = T)])[1])
-      data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
+      data<-data%>%dplyr::mutate(scenario=as.character(scenario),scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
     if(!"x"%in%names(data)){if("year"%in%names(data)){
       data<-data%>%dplyr::mutate(x=year)}else{data<-data%>%dplyr::mutate(x="x")}}
     if(!any(grepl("\\<subregtype\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(subRegType="subRegType")}else{
       data <- data %>% dplyr::rename(!!"subRegType" := (names(data)[grepl("\\<subregtype\\>",names(data),ignore.case = T)])[1])
-      data<-data%>%dplyr::mutate(subRegType=dplyr::case_when(is.na(subRegType)~"subRegType",TRUE~subRegType))}
+      data<-data%>%dplyr::mutate(subRegType=as.character(subRegType),subRegType=dplyr::case_when(is.na(subRegType)~"subRegType",TRUE~subRegType))}
     if(!any(grepl("\\<unit\\>",names(data),ignore.case = T))){}else{
       data <- data %>% dplyr::rename(!!"units" := (names(data)[grepl("\\<unit\\>",names(data),ignore.case = T)])[1])
-      data<-data%>%dplyr::mutate(units=dplyr::case_when(is.na(units)~"units",TRUE~units))}
+      data<-data%>%dplyr::mutate(units=as.character(units),units=dplyr::case_when(is.na(units)~"units",TRUE~units))}
     if(!any(grepl("\\<units\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(units="units")}else{
       data <- data %>% dplyr::rename(!!"units" := (names(data)[grepl("\\<units\\>",names(data),ignore.case = T)])[1])
-      data<-data%>%dplyr::mutate(units=dplyr::case_when(is.na(units)~"units",TRUE~units))}
+      data<-data%>%dplyr::mutate(units=as.character(units),units=dplyr::case_when(is.na(units)~"units",TRUE~units))}
     if(!any(grepl("\\<region\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(region="region")}else{
       data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<region\\>",names(data),ignore.case = T)])[1])
-      data<-data%>%dplyr::mutate(region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
+      data<-data%>%dplyr::mutate(region=as.character(region),region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
     if(!any(grepl("\\<regions\\>",names(data),ignore.case = T))){}else{
       data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<regions\\>",names(data),ignore.case = T)])[1])
-      data<-data%>%dplyr::mutate(region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
+      data<-data%>%dplyr::mutate(region=as.character(region),region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
     if(!any(grepl("\\<classpalette\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(classPalette="pal_hot")}else{
       data <- data %>% dplyr::rename(!!"classPalette" := (names(data)[grepl("\\<classpalette\\>",names(data),ignore.case = T)])[1])
-      data<-data%>%dplyr::mutate(classPalette=dplyr::case_when(is.na(classPalette)~"pal_hot",TRUE~classPalette))}
+      data<-data%>%dplyr::mutate(classPalette=as.character(classPalette),classPalette=dplyr::case_when(is.na(classPalette)~"pal_hot",TRUE~classPalette))}
     if(!any(grepl("\\<param\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(param="param")}else{
       data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<param\\>",names(data),ignore.case = T)])[1])
-      data<-data%>%dplyr::mutate(param=dplyr::case_when(is.na(param)~"param",TRUE~param))}
+      data<-data%>%dplyr::mutate(param=as.character(param),param=dplyr::case_when(is.na(param)~"param",TRUE~param))}
     if(!any(grepl("\\<params\\>",names(data),ignore.case = T))){}else{
       data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<param\\>",names(data),ignore.case = T)])[1])
-      data<-data%>%dplyr::mutate(param=dplyr::case_when(is.na(param)~"params",TRUE~param))}
+      data<-data%>%dplyr::mutate(param=as.character(param),param=dplyr::case_when(is.na(param)~"params",TRUE~param))}
     if(!any(grepl("\\<scenariogcm\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenarioGCM="scenarioGCM")}else{
       data <- data %>% dplyr::rename(!!"scenarioGCM" := (names(data)[grepl("\\<scenariogcm\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(scenarioGCM=as.character(scenarioGCM))%>%
-        dplyr::mutate(scenarioGCM=dplyr::case_when(is.na(scenarioGCM)~"scenarioGCM",TRUE~scenarioGCM))}
+        dplyr::mutate(scenarioGCM=as.character(scenarioGCM),scenarioGCM=dplyr::case_when(is.na(scenarioGCM)~"scenarioGCM",TRUE~scenarioGCM))}
     if(!any(grepl("\\<scenariorcp\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenarioRCP="scenarioRCP")}else{
       data <- data %>% dplyr::rename(!!"scenarioRCP" := (names(data)[grepl("\\<scenariorcp\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(scenarioRCP=as.character(scenarioRCP))%>%
-        dplyr::mutate(scenarioRCP=dplyr::case_when(is.na(scenarioRCP)~"scenarioRCP",TRUE~scenarioRCP))}
+        dplyr::mutate(scenarioRCP=as.character(scenarioRCP),scenarioRCP=dplyr::case_when(is.na(scenarioRCP)~"scenarioRCP",TRUE~scenarioRCP))}
     if(!any(grepl("\\<scenariossp\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenarioSSP="scenarioSSP")}else{
       data <- data %>% dplyr::rename(!!"scenarioSSP" := (names(data)[grepl("\\<scenariossp\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(scenarioSSP=as.character(scenarioSSP))%>%
-        dplyr::mutate(scenarioSSP=dplyr::case_when(is.na(scenarioSSP)~"scenarioSSP",TRUE~scenarioSSP))}
+        dplyr::mutate(scenarioSSP=as.character(scenarioSSP),scenarioSSP=dplyr::case_when(is.na(scenarioSSP)~"scenarioSSP",TRUE~scenarioSSP))}
     if(!any(grepl("\\<scenariopolicy\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenarioPolicy="scenarioPolicy")}else{
       data <- data %>% dplyr::rename(!!"scenarioPolicy" := (names(data)[grepl("\\<scenariopolicy\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(scenarioPolicy=as.character(scenarioPolicy))%>%
-        dplyr::mutate(scenarioPolicy=dplyr::case_when(is.na(scenarioPolicy)~"scenarioPolicy",TRUE~scenarioPolicy))}
+        dplyr::mutate(scenarioPolicy=as.character(scenarioPolicy),scenarioPolicy=dplyr::case_when(is.na(scenarioPolicy)~"scenarioPolicy",TRUE~scenarioPolicy))}
     return(data)
   }
 
@@ -772,6 +772,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     }
   }
 
+  # Crop gridTbl data to shape
+  if(!is.null(gridTbl) & !is.null(shape)){
+    if(nrow(gridTbl)>0){
+
+      gridTbl <- metis.gridByPoly(gridDataTables = gridTbl,shape=shape,colName=subRegCol)
+
+    }}
+
   #------------------
   # Create Folders if needed
   #------------------
@@ -798,10 +806,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
         dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP",sep = ""))}
 
       if(!is.null(gridTbl)){
-        for(ssp_i in unique(gridTbl$scenarioSSP)){
+        for(ssp_i in unique(gridTbl$scenarioSSP)[!unique(gridTbl$scenarioSSP) %in% ""]){
           if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,sep = ""))){
             dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,sep = ""))}
-          for(policy_i in unique(gridTbl$scenarioPolicy)){
+          for(policy_i in unique(gridTbl$scenarioPolicy)[!unique(gridTbl$scenarioPolicy) %in% ""]){
             if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))){
               dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))}
             if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/byYear",sep = ""))){
@@ -859,10 +867,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
         dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP",sep = ""))}
 
       if(!is.null(shapeTbl) & nrow(shapeTbl)>0){
-        for(ssp_i in unique(shapeTbl$scenarioSSP)){
+        for(ssp_i in unique(shapeTbl$scenarioSSP)[!unique(shapeTbl$scenarioSSP) %in% ""]){
           if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,sep = ""))){
             dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,sep = ""))}
-          for(policy_i in unique(shapeTbl$scenarioPolicy)){
+          for(policy_i in unique(shapeTbl$scenarioPolicy)[!unique(shapeTbl$scenarioPolicy) %in% ""]){
             if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))){
               dir.create(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,sep = ""))}
             if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/",ssp_i,"/",policy_i,"/byYear",sep = ""))){
@@ -956,13 +964,13 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 }
               }
             }
-            animPrettyBreaksGrid<-scales::pretty_breaks(n=legendFixedBreaks)(animScaleGrid)
+            animPrettyBreaksGrid<-scales::pretty_breaks(n=legendFixedBreaks)(animScaleGrid); animPrettyBreaksGrid
             animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,
-                                                               centers=max(2,min(length(unique(animScaleGrid))-1,(legendFixedBreaks-1)))))$centers[,1]))
+                                                               centers=max(2,min(length(unique(animScaleGrid))-1,(legendFixedBreaks-1)))))$centers[,1]));animKmeanBreaksGrid
             if(!min(animScaleGrid) %in% animKmeanBreaksGrid){
               animKmeanBreaksGrid <- sort(c(min(animScaleGrid),animKmeanBreaksGrid))}
             if(!max(animScaleGrid) %in% animKmeanBreaksGrid){
-              animKmeanBreaksGrid <- sort(c(animKmeanBreaksGrid,max(animScaleGrid)))}
+              animKmeanBreaksGrid <- sort(c(animKmeanBreaksGrid,max(animScaleGrid)))};animKmeanBreaksGrid
 
 
             if((max(range(animScaleGrid))-min(range(animScaleGrid)))<1E-10 &
