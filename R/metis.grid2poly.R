@@ -298,14 +298,15 @@ metis.grid2poly<- function(grid=NULL,
 
           print(paste("Cropping grid to shape file for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
 
-         if(!is.null(raster::intersect(raster::extent(r), raster::extent(shape)))){
+          # Convert to Spatial Point Data Frames
+          spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
+          sp::gridded(spdf)<-TRUE
 
-           # Convert to Spatial Point Data Frames
-           spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
-           sp::gridded(spdf)<-TRUE
+          rGrid<-raster::stack(spdf)
+          raster::projection(rGrid)<-sp::proj4string(shape)
 
-           rGrid<-raster::stack(spdf)
-           raster::projection(rGrid)<-sp::proj4string(shape)
+         if(!is.null(raster::intersect(raster::extent(rGrid), raster::extent(shape)))){
+
            rcropP<-raster::rasterToPolygons(rGrid)
            rcropPx<-raster::intersect(shape,rcropP)
 
