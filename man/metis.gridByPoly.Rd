@@ -4,17 +4,19 @@
 \alias{metis.gridByPoly}
 \title{metis.gridByPoly}
 \usage{
-metis.gridByPoly(grid = NULL, boundaryRegShpFolder = NULL,
-  boundaryRegShpFile = NULL, colName = NULL,
+metis.gridByPoly(gridDataTables = NULL, shape = NULL,
+  shapeFolder = NULL, shapeFile = NULL, colName = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
   fname = "gridByPoly", saveFile = F)
 }
 \arguments{
-\item{grid}{Default = NULL. Full path to grid file.}
+\item{gridDataTables}{Default = NULL. Full path to grid file.}
 
-\item{boundaryRegShpFolder}{Default = NULL,}
+\item{shape}{Default = NULL,}
 
-\item{boundaryRegShpFile}{Default = NULL,}
+\item{shapeFolder}{Default = NULL,}
+
+\item{shapeFile}{Default = NULL,}
 
 \item{colName}{Default = NULL,}
 

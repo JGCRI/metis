@@ -1,4 +1,5 @@
 param,units,class,classPalette
+population,millions,class,pal_hot
 tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,pal_wet
 tethysWatWithdraw_indv,WaterWithdrawals(mm),Electric,pal_wet
 tethysWatWithdraw_indv,WaterWithdrawals(mm),Irrigation,pal_wet
@@ -18,7 +19,6 @@ demeterLandUse,Landuse(Fraction),urban,pal_green
 demeterLandUse,Landuse(Fraction),water,pal_green
 tethysWatWithdraw_nonAg,WaterWithdrawals(mm),NonAgriculture,pal_wet
 population,person,class,pal_hot
-population,millions,class,pal_hot
 example_param,units,crops,pal_green
 example_param,units,forest,pal_green
 example_param,units,grass,pal_green
