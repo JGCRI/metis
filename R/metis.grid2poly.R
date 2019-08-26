@@ -379,12 +379,12 @@ metis.grid2poly<- function(grid=NULL,
                                      names(shape),"lat","lon","area","subRegAreaSum","areaPrcnt")]),
                                  rcropPx@data%>%dplyr::select(areaPrcnt),SIMPLIFY=FALSE))%>%
               dplyr::bind_cols(rcropPx@data%>%dplyr::select( subRegCol))%>%tibble::as_tibble();
-            polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(mean(.,na.rm=T)))
+            polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(list(~mean(.,na.rm=T)))
           }
 
           if(aggType_i=="vol"){
             print(paste("Aggregating volume for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
-            w <- raster::extract(r,shape, method="simple",weights=T, normalizeWeights=F);
+            w <- raster::extract(rGrid,shape, method="simple",weights=T, normalizeWeights=F);
             dfx<-data.frame()
 
             for (i in seq(w)){
@@ -394,7 +394,7 @@ metis.grid2poly<- function(grid=NULL,
 
 
               x1<-data.frame(mapply(`*`,x%>%
-                                      dplyr::select(names(r)[!names(r) %in% c("lat","lon")]),x%>%
+                                      dplyr::select(names(rGrid)[!names(rGrid) %in% c("lat","lon")]),x%>%
                                       dplyr::select(weight),SIMPLIFY=FALSE))%>%
                 dplyr::bind_cols(x%>%dplyr::select(ID));
               #assign(paste0("df", i), x)
@@ -402,7 +402,7 @@ metis.grid2poly<- function(grid=NULL,
               }
             }
             names(dfx)[names(dfx)=="ID"]<- subRegCol;
-            polyDatax<-dfx%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(sum(.,na.rm=T)))%>%tibble::as_tibble()
+            polyDatax<-dfx%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(list(~sum(.,na.rm=T)))%>%tibble::as_tibble()
           }
 
           polyData<-tidyr::gather(polyDatax,key=key,value=value,-(subRegCol))%>%
