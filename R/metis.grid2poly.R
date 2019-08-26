@@ -61,7 +61,8 @@ metis.grid2poly<- function(grid=NULL,
 
   NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
     param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon->overlapShape->
-    gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis -> template_subRegional_mapping
+    gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis -> template_subRegional_mapping -> scenarioGCM ->
+    scenarioRCP -> class2 -> scenarioPolicy -> valueTethys -> valueXanthos -> scenarioSSP
 
   #------------------
   # Function for adding any missing columns if needed

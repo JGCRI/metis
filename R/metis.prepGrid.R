@@ -443,7 +443,7 @@ if(!dir.exists(xanthosFolder)){
                                                    ", Lowess Span =  ",spanLowess,sep=""),
                                         ylab=unique(gridC$units),xlab="Year") +
         graphics::lines(gridC$x,gridC$lowess,type="l",col="red")
-        diagnosticFig <- recordPlot()
+        diagnosticFig <- grDevices::recordPlot()
         metis.printPdfPng(figure=diagnosticFig,
                           dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
             }

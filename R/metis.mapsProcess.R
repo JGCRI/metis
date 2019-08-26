@@ -203,7 +203,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
   NULL->lat->lon->param->region->scenario->subRegion->subRegType -> value ->
     x->year->gridID->underLayer->maxScale->minScale->scenarioGCM->scenarioRCP->scenarioSSP->
-    scenarioPolicy->valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX
+    scenarioPolicy->valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX->classPalette
 
   if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect="region"}
 

@@ -101,7 +101,7 @@ metis.gridByPoly <- function(gridDataTables = NULL,
   rCrop <- r@data%>%dplyr::select(lat,lon)%>%unique()
 
 # Subset gridded data
-gridByPoly<-dplyr::left_join(rCrop,gridx, by=c("lat","lon")); tail(gridByPoly); nrow(rCrop);nrow(gridx);nrow(gridByPoly)
+gridByPoly<-dplyr::left_join(rCrop,gridx, by=c("lat","lon"))
 
 # Save Data
 if(saveFile){
