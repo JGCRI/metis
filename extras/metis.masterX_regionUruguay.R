@@ -625,6 +625,19 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
   folderName = countryName,
   regionName = countryName)
 
+# subRegShpFolder=subRegShpFolder_i
+# subRegShpFile=subRegShpFile_i
+# subRegCol=subRegCol_i
+# subRegType = subRegType_i
+# aggType=aggType_i
+# nameAppend=nameAppend_i
+# paramsSelect = "population"
+# scenariosSelect = "popGWP"
+# sqliteUSE = sqliteUSE_i
+# sqliteDBNamePath = sqliteDBNamePath_i
+# folderName = countryName
+# regionName = countryName
+
 #grid_i=gridMetis
 #grid_i=paste(getwd(),"/outputs/Grids/gridMetisXanthos.RData",sep = "")
 subRegShpFolder_i = localBasinShapeFileFolder # paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
@@ -809,11 +822,11 @@ metis.mapsProcess(polygonDataTables=a,
 # folderName = "Uruguay_state"
 
 
-p_batch1 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_NE_batch1.csv",sep=""))
-p_batch2 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_NE_batch2.csv",sep=""))
-p_batch3 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_NE_batch3.csv",sep=""))
-p_batch4 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_NE_batch4.csv",sep=""))
-p_batch5 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_NE_batch5.csv",sep=""))
+p_batch1 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_batch1.csv",sep=""))
+p_batch2 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_batch2.csv",sep=""))
+p_batch3 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_batch3.csv",sep=""))
+p_batch4 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_batch4.csv",sep=""))
+p_batch5 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_batch5.csv",sep=""))
 a <- bind_rows(p_batch1,p_batch2,p_batch3,p_batch4,p_batch5)
 a <- a %>% unique(); a
 for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
