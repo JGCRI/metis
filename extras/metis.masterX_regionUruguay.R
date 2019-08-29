@@ -589,10 +589,10 @@ scenariosSelect_4 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp2p6|rcp4p5",scen
 paramsSelect_5 <- c("griddedScarcity")
 scenariosSelect_5 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp6p0|rcp8p5",scenarios)])
 
-batches <- list(#batch1=list(params=paramsSelect_1,scenarios=scenariosSelect_1),
-                #batch2=list(params=paramsSelect_2,scenarios=scenariosSelect_2),
+batches <- list(batch1=list(params=paramsSelect_1,scenarios=scenariosSelect_1),
+                batch2=list(params=paramsSelect_2,scenarios=scenariosSelect_2),
                 batch3=list(params=paramsSelect_3,scenarios=scenariosSelect_3),
-                #batch4=list(params=paramsSelect_4,scenarios=scenariosSelect_4),
+                batch4=list(params=paramsSelect_4,scenarios=scenariosSelect_4),
                 batch5=list(params=paramsSelect_5,scenarios=scenariosSelect_5))
 
 for(i in 1:length(batches)){
@@ -633,8 +633,8 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
 # subRegType = subRegType_i
 # aggType=aggType_i
 # nameAppend=nameAppend_i
-# paramsSelect = "population"
-# scenariosSelect = "popGWP"
+# paramsSelect = "tethysWatWithdraw_total"
+# scenariosSelect = "Eg1_NA_NA"
 # sqliteUSE = sqliteUSE_i
 # sqliteDBNamePath = sqliteDBNamePath_i
 # folderName = countryName
