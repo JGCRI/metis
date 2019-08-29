@@ -526,11 +526,11 @@ gridMetis<-metis.prepGrid(
 # Grid to Poly
 #-------------
 
+sqliteUSE = T
+sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis_uruguay.sqlite", sep = "")
 
 # Find unique params in SQL or Grid Data Base
-
-if(sqliteUSE==T){
-  paste("Using SQLite database...",sep="")
+paste("Using SQLite database...",sep="")
   if(!file.exists(sqliteDBNamePath)){stop("SQLite file path provided does not exist: ", sqliteDBNamePath, sep="")}
   dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)
   #src_dbi(dbConn)
@@ -556,10 +556,12 @@ paramScenarios<-paramScenarios%>%unique()
 print("paramScenarios found: ")
 print(paramScenarios)
 scenarios<-unique(paramScenarios$scenario)
-on.exit(DBI::dbDisconnect(dbConn), add=T)
-}
+DBI::dbDisconnect(dbConn)
 
 paramScenarios %>% as.data.frame()
+save(paramScenarios,file=paste(getwd(),"/outputs/Grids/uruguay_tempParamScenarios.Rdata", sep = ""))
+load(paste(getwd(),"/outputs/Grids/uruguay_tempParamScenarios.Rdata", sep = ""))
+paramScenarios
 
 # Run in batches
 # Batch 1 - demeterLanduse, population, tethysWaterWithdraw_nonAg,tethysWaterWithdraw_indv
@@ -578,19 +580,19 @@ paramsSelect_2 <- c("tethysWatWithdraw_total","xanthosRunoff")
 scenariosSelect_2 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp2p6|rcp4p5",scenarios)])
 #Batch3
 paramsSelect_3 <- c("tethysWatWithdraw_total","xanthosRunoff")
-scenariosSelect_3 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp2p6|rcp4p5",scenarios)])
+scenariosSelect_3 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp6p0|rcp8p5",scenarios)])
 #Batch4
 #Batch2
 paramsSelect_4 <- c("griddedScarcity")
 scenariosSelect_4 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp2p6|rcp4p5",scenarios)])
 #Batch3
 paramsSelect_5 <- c("griddedScarcity")
-scenariosSelect_5 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp2p6|rcp4p5",scenarios)])
+scenariosSelect_5 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp6p0|rcp8p5",scenarios)])
 
-batches <- list(batch1=list(params=paramsSelect_1,scenarios=scenariosSelect_1),
-                batch2=list(params=paramsSelect_2,scenarios=scenariosSelect_2),
+batches <- list(#batch1=list(params=paramsSelect_1,scenarios=scenariosSelect_1),
+                #batch2=list(params=paramsSelect_2,scenarios=scenariosSelect_2),
                 batch3=list(params=paramsSelect_3,scenarios=scenariosSelect_3),
-                batch4=list(params=paramsSelect_4,scenarios=scenariosSelect_4),
+                #batch4=list(params=paramsSelect_4,scenarios=scenariosSelect_4),
                 batch5=list(params=paramsSelect_5,scenarios=scenariosSelect_5))
 
 for(i in 1:length(batches)){
@@ -671,12 +673,12 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
 
 #examplePolygonTable<-paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_subRegType_origDownscaled_hydrobidBermeo3.csv",sep="")
 
-polygonDataTables_i=paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE.csv",sep="")
-a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
-for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
-gridDataTables_i=paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE.csv",sep="")
-b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
-for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x));print(unique((b%>%dplyr::filter(param==param_i))$scenario))}
+# polygonDataTables_i=paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE.csv",sep="")
+# a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+# for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
+# gridDataTables_i=paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE.csv",sep="")
+# b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
+# for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x));print(unique((b%>%dplyr::filter(param==param_i))$scenario))}
 
 p_batch1 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch1.csv",sep=""))
 p_batch2 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch2.csv",sep=""))
@@ -769,8 +771,8 @@ metis.mapsProcess(polygonDataTables=a,
                  scaleRange = scaleRange_i,
                  indvScenarios=indvScenarios_i,
                  GCMRCPSSPPol=GCMRCPSSPPol_i,
-                 multiFacetCols="scenarioRCP",
-                 multiFacetRows="scenarioGCM",
+                 multiFacetCols="scenarioGCM",
+                 multiFacetRows="scenarioRCP",
                  legendOutsideMulti=T,
                  legendPositionMulti=NULL,
                  legendTitleSizeMulti=NULL,
@@ -778,7 +780,7 @@ metis.mapsProcess(polygonDataTables=a,
                  legendTextSizeMulti=NULL,
                  refGCM="gfdl-esm2m",
                  refRCP="rcp2p6",
-                 chosenRefMeanYears=c(2000:2050),
+                 chosenRefMeanYears=c(2000:2010),
                  numeric2Cat_list=numeric2Cat_list,
                  folderName = "Uruguay_state")
 
@@ -862,8 +864,8 @@ metis.mapsProcess(polygonDataTables=a,
                   scaleRange = scaleRange_i,
                   indvScenarios=indvScenarios_i,
                   GCMRCPSSPPol=GCMRCPSSPPol_i,
-                  multiFacetCols="scenarioRCP",
-                  multiFacetRows="scenarioGCM",
+                  multiFacetCols="scenarioGCM",
+                  multiFacetRows="scenarioRCP",
                   legendOutsideMulti=T,
                   legendPositionMulti=NULL,
                   legendTitleSizeMulti=NULL,
@@ -871,7 +873,7 @@ metis.mapsProcess(polygonDataTables=a,
                   legendTextSizeMulti=NULL,
                   refGCM="gfdl-esm2m",
                   refRCP="rcp2p6",
-                  chosenRefMeanYears=c(2000:2050),
+                  chosenRefMeanYears=c(2000:2010),
                   numeric2Cat_list=numeric2Cat_list,
                   folderName = "Uruguay_localBasin")
 
