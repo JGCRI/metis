@@ -24,13 +24,14 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 6, figHeight = 7, scaleRange = NULL,
   paramsSelect = "All", indvScenarios = "All", scensSelect = "All",
-  GCMRCPSSPPol = F, multiFacetCols = "scenarioRCP",
-  multiFacetRows = "scenarioGCM", legendOutsideMulti = T,
+  GCMRCPSSPPol = F, multiFacetCols = "scenarioGCM",
+  multiFacetRows = "scenarioRCP", legendOutsideMulti = T,
   legendPositionMulti = NULL, legendTitleSizeMulti = NULL,
   legendTextSizeAnim = NULL, legendTextSizeMulti = NULL,
   refGCM = NULL, refRCP = NULL, chosenRefMeanYears = NULL,
   mapTitleSize = 0.5, facetLabelSizeMulti = 3,
-  numeric2Cat_list = NULL, diffOn = F, frameShow = T)
+  facetLabelSizeGCMRCP = 1.5, numeric2Cat_list = NULL, diffOn = F,
+  frameShow = T)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -152,6 +153,8 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{mapTitleSize}{Default=0.5}
 
 \item{facetLabelSizeMulti}{Default =3}
+
+\item{facetLabelSizeGCMRCP}{Default =1.5}
 
 \item{numeric2Cat_list}{Default=NULL,}
 
