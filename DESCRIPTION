@@ -1,7 +1,7 @@
 Package: metis
 Title: Sub-Regional Nexus Modeling Tool
-Version: 0.0.1
-Authors@R: person("Zarrar", "Khan", email = "zarrar85@gmail.com", role = c("aut", "cre"))
+Version: 1.0.0
+Authors@R: person("Zarrar", "Khan", email = "zarrar.khan@pnnl.gov", role = c("aut", "cre"))
 Description: Package to process water-energy-land nexus data to different sub-regional levels.
 Depends:
 License: MIT + file LICENSE

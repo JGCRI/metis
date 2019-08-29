@@ -233,9 +233,9 @@ process_facet_layout <- function(gm) {
   gasp <- fW/fH
   if (gasp>dasp2) {
     xs <- 0
-    ys <- convertHeight(unit(dh2-(dw2 / gasp), "inch"), "npc", valueOnly=TRUE)
+    ys <- grid::convertHeight(unit(dh2-(dw2 / gasp), "inch"), "npc", valueOnly=TRUE)
   } else {
-    xs <- convertWidth(unit(dw2-(gasp * dh2), "inch"), "npc", valueOnly=TRUE)
+    xs <- grid::convertWidth(unit(dw2-(gasp * dh2), "inch"), "npc", valueOnly=TRUE)
     ys <- 0
   }
 
@@ -244,16 +244,16 @@ process_facet_layout <- function(gm) {
   spc <- 1e-5
 
   gm <- within(gm, {
-    between.margin.y <- convertHeight(unit(fpi$between.margin.in, "inch"), "npc", valueOnly=TRUE)
-    between.margin.x <- convertWidth(unit(fpi$between.margin.in, "inch"), "npc", valueOnly=TRUE)
-    panelh <- convertHeight(unit(fpi$pSH, "inch"), "npc", valueOnly=TRUE)
-    panelw <- convertWidth(unit(fpi$pSW, "inch"), "npc", valueOnly=TRUE)
+    between.margin.y <- grid::convertHeight(unit(fpi$between.margin.in, "inch"), "npc", valueOnly=TRUE)
+    between.margin.x <- grid::convertWidth(unit(fpi$between.margin.in, "inch"), "npc", valueOnly=TRUE)
+    panelh <- grid::convertHeight(unit(fpi$pSH, "inch"), "npc", valueOnly=TRUE)
+    panelw <- grid::convertWidth(unit(fpi$pSW, "inch"), "npc", valueOnly=TRUE)
 
-    ylabWnpc <- convertWidth(unit(fpi$ylabWin, "inch"), "npc", valueOnly=TRUE)
-    xlabHnpc <- convertHeight(unit(fpi$xlabHin, "inch"), "npc", valueOnly=TRUE)
+    ylabWnpc <- grid::convertWidth(unit(fpi$ylabWin, "inch"), "npc", valueOnly=TRUE)
+    xlabHnpc <- grid::convertHeight(unit(fpi$xlabHin, "inch"), "npc", valueOnly=TRUE)
 
-    ygridWnpc <- convertWidth(unit(fpi$ygridWin, "inch"), "npc", valueOnly=TRUE)
-    xgridHnpc <- convertHeight(unit(fpi$xgridHin, "inch"), "npc", valueOnly=TRUE)
+    ygridWnpc <- grid::convertWidth(unit(fpi$ygridWin, "inch"), "npc", valueOnly=TRUE)
+    xgridHnpc <- grid::convertHeight(unit(fpi$xgridHin, "inch"), "npc", valueOnly=TRUE)
 
     attr.between.legend.and.map <- attr.outside.position %in% c("top", "bottom")
 
