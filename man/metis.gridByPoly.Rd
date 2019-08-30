@@ -7,7 +7,8 @@
 metis.gridByPoly(gridDataTables = NULL, shape = NULL,
   shapeFolder = NULL, shapeFile = NULL, colName = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  fname = "gridByPoly", saveFile = F)
+  fname = "gridByPoly", folderName = "folderNameDefault",
+  saveFile = F)
 }
 \arguments{
 \item{gridDataTables}{Default = NULL. Full path to grid file.}
@@ -23,6 +24,8 @@ metis.gridByPoly(gridDataTables = NULL, shape = NULL,
 \item{dirOutputs}{Default = paste(getwd(),"/outputs",sep=""),}
 
 \item{fname}{Default = "gridByPoly"}
+
+\item{folderName}{Default ="folderNameDefault",}
 
 \item{saveFile}{Default = F. If want csv output then change to T}
 }

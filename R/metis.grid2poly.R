@@ -52,6 +52,7 @@ metis.grid2poly<- function(grid=NULL,
   # nameAppend=""
   # labelsSize=1.2
   # paramsSelect="All"
+  # scenariosSelect="All"
   # sqliteUSE = F
   # sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
@@ -238,8 +239,8 @@ metis.grid2poly<- function(grid=NULL,
 
     for(row_i in 1:nrow(paramScenarios)){
 
-      param_i <- paramScenarios[row_i,]$param
-      scenario_i <- paramScenarios[row_i,]$scenario
+      param_i <- paramScenarios[row_i,]$param; param_i
+      scenario_i <- paramScenarios[row_i,]$scenario; scenario_i
 
       if(!is.null(sqlGrid)){
         print(paste("Reading data for param: ",param_i," and scenario: ",scenario_i," from sqlGrid...",sep=""))
@@ -255,6 +256,9 @@ metis.grid2poly<- function(grid=NULL,
 
         print(paste("Starting aggregation for param: ",param_i," and scenario: ",scenario_i,"...",sep=""))
 
+        # Subset to keep only required columns
+        cols2Remove <-names(gridx)[names(gridx) %in% c("subRegion",subRegCol,"gridCellArea","subRegAreaSum","gridCellAreaRatio")]
+        gridx <- gridx %>% dplyr::select(-cols2Remove)
 
         if(!"aggType" %in% names(gridx)){
           if(is.null(aggType)){
@@ -294,30 +298,28 @@ metis.grid2poly<- function(grid=NULL,
             tidyr::unite(col="key",names(gridx)[!names(gridx) %in% c("lat","lon","value")],sep="_",remove=T)
           print("Columns united.")
 
-          gridx<-gridx%>%tidyr::spread(key=key,value=value)
+          gridx<-gridx%>%unique()%>%tidyr::spread(key=key,value=value)
 
 
           print(paste("Cropping grid to shape file for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
 
-          # Convert to Spatial Point Data Frames
-          spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
-          sp::gridded(spdf)<-TRUE
 
-          rGrid<-raster::stack(spdf)
-          raster::projection(rGrid)<-sp::proj4string(shape)
+         gridCropped<-dplyr::bind_rows(gridCropped,tibble::as_tibble(metis.gridByPoly(gridDataTables=gridx,shape=shape,colName=subRegCol)))
 
-         if(!is.null(raster::intersect(raster::extent(rGrid), raster::extent(shape)))){
+         print(paste("Grid cropped.",sep=""))
 
-           rcropP<-raster::rasterToPolygons(rGrid)
-           rcropPx<-raster::intersect(shape,rcropP)
-
-          gridCropped<-dplyr::bind_rows(gridCropped,tibble::as_tibble(metis.gridByPoly(gridDataTables=gridx,shape=shape,colName=subRegCol)))
+          # gridDataTables=gridx
+          # shape=shape
+          # colName=subRegCol
+          # saveFile=T
+          # folderName= folderName
+          # fname=gridBypoly_fname
 
           # Save gridCropped to csv
 
           if(nrow(gridCropped)>0){
 
-            gridCroppedX<-tidyr::gather(gridCropped,key=key,value=value,-c(lat,lon))%>%
+            gridCroppedX<-tidyr::gather(gridCropped,key=key,value=value,-c(name,gridCellArea,subRegAreaSum,gridCellAreaRatio,lat,lon))%>%
               tidyr::separate(col="key",into=namesGrid[!namesGrid %in% c("lat","lon","value")],sep="_")%>%
               unique()%>%
               dplyr::filter(!is.na(value))
@@ -352,6 +354,19 @@ metis.grid2poly<- function(grid=NULL,
 
           if(is.null(gridPolyLoop)){
             print("Printing Grid overlay...")
+
+            spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
+            sp::gridded(spdf)<-TRUE
+            r<-raster::stack(spdf)
+            raster::projection(r)<-sp::proj4string(shape)
+            shape_ras <- raster::rasterize(shape, r[[1]], getCover=TRUE)
+            shape_ras[shape_ras==0] <- NA
+            r<-raster::mask(r,shape_ras)
+            rCrop <- r
+            rCropP<-raster::rasterToPolygons(rCrop)
+            sp::proj4string(rCropP)<-sp::proj4string(shape)
+            rcropPx<-raster::intersect(shape,rCropP)
+
             metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(subRegType,"_map_GridSize_Labels",nameAppend,sep=""),
                       dirOutputs = dir,
                       overLayer = metis.map(labelsSize=labelsSize, dataPolygon=shape,fillColumn = subRegCol,
@@ -369,29 +384,29 @@ metis.grid2poly<- function(grid=NULL,
 
           if(aggType_i=="depth"){
             print(paste("Aggregating depth for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
-            rcropPx@data$area<-raster::area(rcropPx)
-            s1<-shape
-            s1$subRegAreaSum<-raster::area(shape);
-            s1<-s1@data%>%dplyr::select( subRegCol,subRegAreaSum);
-            rcropPx@data<-dplyr::left_join(rcropPx@data,s1,by= subRegCol)
-            rcropPx@data$areaPrcnt<-rcropPx@data$area/rcropPx@data$subRegAreaSum;
+            x<-data.frame(mapply(`*`,gridCropped%>%
+                                   dplyr::select(names(gridCropped)[!names(gridCropped) %in% c(
+                                     names(shape),"lat","lon","gridCellArea","subRegAreaSum","gridCellAreaRatio")]),
+                                  gridCropped%>%dplyr::select(gridCellAreaRatio),SIMPLIFY=FALSE))%>%
+              dplyr::bind_cols(gridCropped%>%dplyr::select( subRegCol))%>%tibble::as_tibble();
 
-            x<-data.frame(mapply(`*`,rcropPx@data%>%
-                                   dplyr::select(names(rcropPx@data)[!names(rcropPx@data) %in% c(
-                                     names(shape),"lat","lon","area","subRegAreaSum","areaPrcnt")]),
-                                 rcropPx@data%>%dplyr::select(areaPrcnt),SIMPLIFY=FALSE))%>%
-              dplyr::bind_cols(rcropPx@data%>%dplyr::select( subRegCol))%>%tibble::as_tibble();
-            polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(list(~mean(.,na.rm=T)))
+           polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(list(~mean(.,na.rm=T)))
           }
 
           if(aggType_i=="vol"){
             print(paste("Aggregating volume for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
+            # Convert to Spatial Point Data Frames
+            spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
+            sp::gridded(spdf)<-TRUE
+            rGrid<-raster::stack(spdf)
+            raster::projection(rGrid)<-sp::proj4string(shape)
+
             w <- raster::extract(rGrid,shape, method="simple",weights=T, normalizeWeights=F);
             dfx<-data.frame()
 
             for (i in seq(w)){
               if(!is.null(w[[i]])) {
-                x<-as.data.frame(w[[i]]) %>% dplyr::mutate(weight=weight*100)
+              x<-as.data.frame(w[[i]]) %>% dplyr::mutate(weight=weight*1)
               x$ID<-shape@data[[ subRegCol]][[i]]
 
 
@@ -444,9 +459,6 @@ metis.grid2poly<- function(grid=NULL,
 
           #rm(r,spdf,gridx,rcropPx,rcropP,polyx,rcrop,polyDatax)
 
-         } else { # Close loop for if extents overlap
-           print(paste("Gridded data provided for param: ",param_i," and scenario: ",scenario_i," did not overlap with shape boundary.",sep=""))
-         }
         } # Close loop for aggType
       } else {print(paste("No data for param: ",param_i," and scenario: ",scenario_i,".",sep=""))}# Close loop for nrow>0
 
