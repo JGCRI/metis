@@ -319,7 +319,7 @@ metis.grid2poly<- function(grid=NULL,
 
           if(nrow(gridCropped)>0){
 
-            gridCroppedX<-tidyr::gather(gridCropped,key=key,value=value,-c(name,gridCellArea,subRegAreaSum,gridCellAreaRatio,lat,lon))%>%
+            gridCroppedX<-tidyr::gather(gridCropped,key=key,value=value,-c(subRegCol,gridCellArea,subRegAreaSum,gridCellAreaRatio,lat,lon))%>%
               tidyr::separate(col="key",into=namesGrid[!namesGrid %in% c("lat","lon","value")],sep="_")%>%
               unique()%>%
               dplyr::filter(!is.na(value))
