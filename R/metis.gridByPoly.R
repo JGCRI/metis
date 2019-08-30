@@ -9,6 +9,7 @@
 #' @param colName Default = NULL,
 #' @param dirOutputs Default = paste(getwd(),"/outputs",sep=""),
 #' @param fname Default = "gridByPoly"
+#' @param folderName Default ="folderNameDefault",
 #' @param saveFile Default = F. If want csv output then change to T
 #' @keywords grid, shape, polygon
 #' @return Prints out graphic
@@ -25,18 +26,22 @@ metis.gridByPoly <- function(gridDataTables = NULL,
                               colName = NULL,
                               dirOutputs = paste(getwd(),"/outputs",sep=""),
                               fname = "gridByPoly",
+                              folderName="folderNameDefault",
                               saveFile = F){
 
   # gridDataTables = NULL
   # shape = NULL
+  # colName = NULL
   # shapeFolder = NULL
   # shapeFile = NULL
-  # colName = NULL
   # dirOutputs = paste(getwd(),"/outputs",sep="")
   # fname = "gridByPoly"
+  # folderName="folderNameDefault"
   # saveFile = F
 
-  NULL->lat->lon
+  print(paste("Starting metis.gridByPoly.R...",sep=""))
+
+  NULL->lat->lon->gridx
 
 
 #----------------
@@ -44,8 +49,11 @@ metis.gridByPoly <- function(gridDataTables = NULL,
 #---------------
 
   if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
+
+  if(saveFile){
   if (!dir.exists(paste(dirOutputs, "/GridByPoly", sep = ""))){dir.create(paste(dirOutputs, "/GridByPoly", sep = ""))}
-  dir = paste(dirOutputs, "/GridByPoly", sep = "")
+  if (!dir.exists(paste(dirOutputs, "/GridByPoly/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/GridByPoly/",folderName, sep = ""))}
+  dir = paste(dirOutputs, "/GridByPoly/",folderName, sep = "")}
 
 
 # Check inputs provided
@@ -79,6 +87,12 @@ metis.gridByPoly <- function(gridDataTables = NULL,
 
   }else{gridx=gridDataTables}
 
+  if(!is.null(gridx)){
+    names2Remove <- c(colName,"gridCellArea","subRegAreaSum","gridCellAreaRatio")[
+      c(colName,"gridCellArea","subRegAreaSum","gridCellAreaRatio") %in% names(gridx)]; names2Remove
+    gridx<-gridx%>%dplyr::select(-names2Remove)}
+
+
   if(is.null(colName)){stop("Must provide correct colName from shapeFile data.")} else{
     if(!colName %in% names(shape@data)){stop("Must provide correct colName from shapeFile data.")}}
   if(is.null(gridDataTables)){stop("Must provide gridfile csv with lat and lon.")}else {
@@ -95,13 +109,24 @@ metis.gridByPoly <- function(gridDataTables = NULL,
   shape_ras <- raster::rasterize(shape, r[[1]], getCover=TRUE)
   shape_ras[shape_ras==0] <- NA
   r<-raster::mask(r,shape_ras)
-  r<-methods::as(r, "SpatialPixelsDataFrame")
-  r@data<-Filter(function(x)!all(is.na(x)), r@data)
 
-  rCrop <- r@data%>%dplyr::select(lat,lon)%>%unique()
+  rCrop <- r
+  rCropP<-raster::rasterToPolygons(rCrop)
+  sp::proj4string(rCropP)<-sp::proj4string(shape)
+  rcropPx<-raster::intersect(shape,rCropP)
+
+  rcropPx@data$area<-raster::area(rcropPx)
+  s1<-shape
+  s1$subRegAreaSum<-raster::area(shape);
+  s1<-s1@data%>%dplyr::select( colName,subRegAreaSum);
+  if(c("subRegAreaSum") %in% names(rcropPx@data)){rcropPx@data<-rcropPx@data%>%dplyr::select(-subRegAreaSum)}
+  rcropPx@data<-dplyr::left_join(rcropPx@data,s1,by= colName)
+  rcropPx@data$areaPrcnt<-rcropPx@data$area/rcropPx@data$subRegAreaSum;
 
 # Subset gridded data
-gridByPoly<-dplyr::left_join(rCrop,gridx, by=c("lat","lon"))
+gridByPoly<-rcropPx@data%>%dplyr::select(lat,lon,colName,gridCellArea=area,subRegAreaSum,gridCellAreaRatio=areaPrcnt)%>%
+  dplyr::left_join(gridx, by=c("lat","lon"))%>%
+  unique()
 
 # Save Data
 if(saveFile){
@@ -109,6 +134,8 @@ fname<-gsub(".csv","",fname)
 fname<- paste(dir,"/",fname,".csv",sep="")
 data.table::fwrite(gridByPoly, file = fname,row.names = F)
 print(paste("File saved as ",fname,sep=""))}
+
+print(paste("metis.gridByPoly.R run complete.",sep=""))
 
 invisible(gridByPoly)
 

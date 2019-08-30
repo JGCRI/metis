@@ -361,7 +361,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
           shapeTbl<-dplyr::bind_rows(shapeTbl,shapeTblNew)
 
-          if(!"subRegion" %in% names(shapeTbl)){stop(paste("SubRegCol: ",subRegCol," not present in polygonDataTables ",i,sep=""))}
+          if(!"subRegion" %in% names(shapeTbl)){stop(paste("SubRegCol: subRegion not present in polygonDataTables ",i,sep=""))}
 
         } else {stop(paste(i," does not exist"))}
       }
@@ -589,7 +589,6 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
           print(paste("None of the scensSelect: ",paste(scensSelect,collapse=", ")," are present in gridTbl params. Skipping subset.",sep=""))
         }
     }
-
 
     gridTbl<-droplevels(gridTbl)
   }
