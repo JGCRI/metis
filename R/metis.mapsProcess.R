@@ -197,6 +197,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # numeric2Cat_list=NULL
   # diffOn=F
   # frameShow = T
+  # facetLabelSizeGCMRCP=1.5
 
 
   #------------------
@@ -205,7 +206,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
   NULL->lat->lon->param->region->scenario->subRegion->subRegType -> value ->
     x->year->gridID->underLayer->maxScale->minScale->scenarioGCM->scenarioRCP->scenarioSSP->
-    scenarioPolicy->valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX->classPalette
+    scenarioPolicy->valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX->classPalette->shapeTblGCMRCPRef
 
   if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect="region"}
 
@@ -332,6 +333,16 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     if(!"value" %in% names(gridTbl)){
       stop("'value' column not present in grid data provided. Need to have values. Check data.",sep="")
     }
+    # Check to see if correct columns are present in data
+    if(!"scenario" %in% names(gridTbl)){
+      print(paste("'scenario' column not present in polygon data provided. Creating scenario 'scenario'",sep=""))
+      gridTbl<-gridTbl%>%dplyr::mutate(scenario="scenario")
+    }
+    if(!"subRegType" %in% names(gridTbl)){
+      print(paste("'subRegType' column not present in polygon data provided. Creating subRegType 'subRegion'",sep=""))
+      gridTbl<-gridTbl%>%dplyr::mutate(subRegType="subRegion")
+    }
+
 
     if(!"lat" %in% names(gridTbl)){stop("'lat' column not present in grid data provided. Need to have lat. Check data.",sep="")}
     if(!"lon" %in% names(gridTbl)){stop("'lon' column not present in grid data provided. Need to have lat. Check data.",sep="")}
@@ -392,6 +403,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     }
     if(!"value" %in% names(shapeTbl)){
       stop("'value' column not present in polygon data provided. Need to have values. Check data.",sep="")
+    }
+    # Check to see if correct columns are present in data
+    if(!"scenario" %in% names(shapeTbl)){
+      print(paste("'scenario' column not present in polygon data provided. Creating scenario 'scenario'",sep=""))
+      shapeTbl<-shapeTbl%>%dplyr::mutate(scenario="scenario")
+    }
+    if(!"subRegType" %in% names(shapeTbl)){
+      print(paste("'subRegType' column not present in polygon data provided. Creating subRegType 'subRegion'",sep=""))
+      shapeTbl<-shapeTbl%>%dplyr::mutate(subRegType="subRegion")
     }
   }
 
@@ -534,8 +554,6 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   #------------------
 
   if(nrow(shapeTbl)>0){
-
-
     if(boundaryRegionsSelect!="region"){
      if(any(!boundaryRegionsSelect %in% unique(shapeTbl$region))){
       print(paste("boundaryRegionsSelect: ",boundaryRegionsSelect," not in shapeTbl regions"))}}}
@@ -547,25 +565,32 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     if(boundaryRegionsSelect != "region"){
       if(any(boundaryRegionsSelect %in% unique(shapeTbl$region))){
       shapeTbl <- shapeTbl %>% dplyr::filter(region %in% boundaryRegionsSelect)
-      }
-      }
-    if(any(xRange!="All")){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange);
-    print(paste("Subset shapeTbl x to xRange: ",paste(xRange,collapse=", "),sep=""))}
+      }}
+
     if(any(paramsSelect!="All")){
       if(any(paramsSelect %in% unique(shapeTbl$param))){
         shapeTbl<-shapeTbl%>%dplyr::filter(param %in% paramsSelect);
         print(paste("Subset shapeTbl param to paramsSelect: ",paramsSelect,sep=""))}else{
           print(paste("None of the paramsSelect: ",paste(paramsSelect,collapse=", ")," are present in shapeTbl params. Skipping subset.",sep=""))
-        }
-    }
+        }}
 
       if(any(scensSelect!="All")){
         if(any(scensSelect %in% unique(shapeTbl$param))){
           shapeTbl<-shapeTbl%>%dplyr::filter(scenario %in% scensSelect);
           print(paste("Subset shapeTbl scenario to scensSelect: ",scensSelect,sep=""))}else{
             print(paste("None of the scensSelect: ",paste(scensSelect,collapse=", ")," are present in shapeTbl params. Skipping subset.",sep=""))
-          }
-      }
+          }}
+
+      if(GCMRCPSSPPol){
+      if(!is.null(chosenRefMeanYears)){
+        shapeTblGCMRCPRef <- shapeTbl %>% dplyr::filter(x %in% chosenRefMeanYears)
+        print(paste("Subset shapeTblGCMRCPRef x to chosenRefMeanYears: ",paste(chosenRefMeanYears,collapse=", "),sep=""))
+      }else{shapeTblGCMRCPRef <-  shapeTbl}
+        shapeTblGCMRCPRef <- droplevels(shapeTblGCMRCPRef)
+        }
+
+      if(any(xRange!="All")){shapeTbl<-shapeTbl%>%dplyr::filter(x %in% xRange);
+      print(paste("Subset shapeTbl x to xRange: ",paste(xRange,collapse=", "),sep=""))}
 
     shapeTbl<-droplevels(shapeTbl)
     }
@@ -669,16 +694,6 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                       levels=c(scenRef_i,
                                                unique(gridTbl$scenario)[unique(gridTbl$scenario)!=scenRef_i])))%>%unique()
 
-    # Check to see if correct columns are present in data
-    if(!"scenario" %in% names(gridTbl)){
-      print(paste("'scenario' column not present in polygon data provided. Creating scenario 'scenario'",sep=""))
-      gridTbl<-gridTbl%>%dplyr::mutate(scenario="scenario")
-    }
-    if(!"subRegType" %in% names(gridTbl)){
-      print(paste("'subRegType' column not present in polygon data provided. Creating subRegType 'subRegion'",sep=""))
-      gridTbl<-gridTbl%>%dplyr::mutate(subRegType="subRegion")
-    }
-
   }
 }
 
@@ -736,18 +751,6 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                                unique(shapeTbl$scenario)[unique(shapeTbl$scenario)!=scenRef_i])))
 
     } # Close if diffOn
-
-
-    # Check to see if correct columns are present in data
-    if(!"scenario" %in% names(shapeTbl)){
-      print(paste("'scenario' column not present in polygon data provided. Creating scenario 'scenario'",sep=""))
-      shapeTbl<-shapeTbl%>%dplyr::mutate(scenario="scenario")
-    }
-    if(!"subRegType" %in% names(shapeTbl)){
-      print(paste("'subRegType' column not present in polygon data provided. Creating subRegType 'subRegion'",sep=""))
-      shapeTbl<-shapeTbl%>%dplyr::mutate(subRegType="subRegion")
-    }
-
   }
 }
 
@@ -760,6 +763,18 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     shapeTbl$scenarioPolicy[is.na(shapeTbl$scenarioPolicy)]<-"PolicyNone"
     shapeTbl<-shapeTbl%>%dplyr::mutate(subRegion=as.character(subRegion))
     shapeTbl<-droplevels(shapeTbl)
+    }
+  }
+
+
+  if(!is.null(shapeTblGCMRCPRef)){
+    if(nrow(shapeTblGCMRCPRef)>0){
+      shapeTblGCMRCPRef$scenarioSSP[is.na(shapeTblGCMRCPRef$scenarioSSP)]<-"SSPNone"
+      shapeTblGCMRCPRef$scenarioGCM[is.na(shapeTblGCMRCPRef$scenarioGCM)]<-"GCMNone"
+      shapeTblGCMRCPRef$scenarioRCP[is.na(shapeTblGCMRCPRef$scenarioRCP)]<-"RCPNone"
+      shapeTblGCMRCPRef$scenarioPolicy[is.na(shapeTblGCMRCPRef$scenarioPolicy)]<-"PolicyNone"
+      shapeTblGCMRCPRef<-shapeTblGCMRCPRef%>%dplyr::mutate(subRegion=as.character(subRegion))
+      shapeTblGCMRCPRef<-droplevels(shapeTblGCMRCPRef)
     }
   }
 
@@ -1559,14 +1574,19 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     shapeTblMultx<-shapeTblMult%>%dplyr::filter(scenarioSSP==ssp_i,subRegType==subRegType_i,
                                                                 scenarioPolicy==policy_i,param==param_i,class==class_i)
 
+                    shapeTblMultxGCMRCPRef <- shapeTblGCMRCPRef%>%dplyr::filter(!(scenarioGCM=="GCMNone" | scenarioRCP=="RCPNone" | is.na(scenarioGCM) | is.na(scenarioRCP))) %>%
+                                                  dplyr::filter(scenarioSSP==ssp_i,subRegType==subRegType_i,
+                                                                scenarioPolicy==policy_i,param==param_i,class==class_i)
+
+
                     if(length(unique(shapeTblMultx$scenarioGCM))+length(unique(shapeTblMultx$scenarioRCP))>2){
 
 
-                    if(boundaryRegionsSelect %in% unique(shapeTblMultx$region)){
-                      shapeTblMultx <- shapeTblMultx %>% dplyr::filter(region==boundaryRegionsSelect)
+                    if(boundaryRegionsSelect %in% unique(shapeTblMultxGCMRCPRef$region)){
+                      shapeTblMultxGCMRCPRef <- shapeTblMultxGCMRCPRef %>% dplyr::filter(region==boundaryRegionsSelect)
                     }
 
-                    animScalePoly<-(shapeTblMultx)$value
+                    animScalePoly<-(shapeTblMultxGCMRCPRef)$value
 
 
                     if(!is.null(scaleRange)){
@@ -1607,9 +1627,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                     # Plot Mean values for chosen years
 
-                    if(is.null(chosenRefMeanYears)){chosenRefMeanYearsX<-unique(shapeTblMultx$x)}else{chosenRefMeanYearsX<-chosenRefMeanYears}
+                    if(is.null(chosenRefMeanYears)){chosenRefMeanYearsX<-unique(shapeTblMultxGCMRCPRef$x)}else{chosenRefMeanYearsX<-chosenRefMeanYears}
 
-                    datax <- shapeTblMultx %>% dplyr::filter(x %in% chosenRefMeanYearsX)
+                    datax <- shapeTblMultxGCMRCPRef %>% dplyr::filter(x %in% chosenRefMeanYearsX)
                     minX<-min(datax$x);maxX<-max(datax$x)
 
                     if(nrow(datax)>1){
@@ -1764,18 +1784,18 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
                       if(!is.null(refGCM)){
-                        if(!any(refGCM %in% unique(shapeTblMultx$scenarioGCM))){
-                          print(paste(refGCM," not available in available GCMs: ",paste(unique(shapeTblMultx$scenarioGCM),collapse=", "),sep=""))
-                          print(paste("Setting refGCM as : ",paste(unique(shapeTblMultx$scenarioGCM)[1],collapse=", "),sep=""))
-                          refGCM=unique(shapeTblMultx$scenarioGCM)[1]
+                        if(!any(refGCM %in% unique(shapeTblMultxGCMRCPRef$scenarioGCM))){
+                          print(paste(refGCM," not available in available GCMs: ",paste(unique(shapeTblMultxGCMRCPRef$scenarioGCM),collapse=", "),sep=""))
+                          print(paste("Setting refGCM as : ",paste(unique(shapeTblMultxGCMRCPRef$scenarioGCM)[1],collapse=", "),sep=""))
+                          refGCM=unique(shapeTblMultxGCMRCPRef$scenarioGCM)[1]
                         }
                       }
 
                       if(!is.null(refRCP)){
-                        if(!any(refRCP %in% unique(shapeTblMultx$scenarioRCP))){
-                          print(paste(refRCP," not available in available RCPs: ",paste(unique(shapeTblMultx$scenarioRCP),collapse=", "),sep=""))
-                          print(paste("Setting refRCP as : ",paste(unique(shapeTblMultx$scenarioRCP)[1],collapse=", "),sep=""))
-                          refRCP=unique(shapeTblMultx$scenarioRCP)[1]
+                        if(!any(refRCP %in% unique(shapeTblMultxGCMRCPRef$scenarioRCP))){
+                          print(paste(refRCP," not available in available RCPs: ",paste(unique(shapeTblMultxGCMRCPRef$scenarioRCP),collapse=", "),sep=""))
+                          print(paste("Setting refRCP as : ",paste(unique(shapeTblMultxGCMRCPRef$scenarioRCP)[1],collapse=", "),sep=""))
+                          refRCP=unique(shapeTblMultxGCMRCPRef$scenarioRCP)[1]
                         }
                       }
 

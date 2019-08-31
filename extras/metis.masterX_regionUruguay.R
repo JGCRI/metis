@@ -780,7 +780,7 @@ metis.mapsProcess(polygonDataTables=a,
                  legendTextSizeMulti=NULL,
                  refGCM="gfdl-esm2m",
                  refRCP="rcp2p6",
-                 chosenRefMeanYears=c(2000:2010),
+                 chosenRefMeanYears=c(1950:2010),
                  numeric2Cat_list=numeric2Cat_list,
                  folderName = "Uruguay_state")
 
@@ -873,11 +873,11 @@ metis.mapsProcess(polygonDataTables=a,
                   legendTextSizeMulti=NULL,
                   refGCM="gfdl-esm2m",
                   refRCP="rcp2p6",
-                  chosenRefMeanYears=c(2000:2010),
+                  chosenRefMeanYears=c(1950:2010),
                   numeric2Cat_list=numeric2Cat_list,
                   folderName = "Uruguay_localBasin")
 
-# polygonDataTables=polygonDataTables_i
+# polygonDataTables=p_batch3
 # #gridDataTables=gridDataTables_i
 # xRange=xRange_i
 # boundaryRegShape=boundaryRegShape_i
@@ -911,7 +911,7 @@ metis.mapsProcess(polygonDataTables=a,
 # legendTextSizeMulti=NULL
 # refGCM="gfdl-esm2m"
 # refRCP="rcp2p6"
-# chosenRefMeanYears=c(2000:2050)
+# chosenRefMeanYears=c(1950:2010)
 # numeric2Cat_list=numeric2Cat_list
-# folderName = "Uruguay_localBasin"
+# folderName = "Uruguay_localBasin_test"
 
