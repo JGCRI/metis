@@ -26,7 +26,6 @@ if("tidyverse" %in% rownames(installed.packages()) == F){install.packages("tidyv
 library(tidyverse)
 
 
-
 # This script uses MetisWatMod to build the simulation network then balance water flows in a historical year
 
 source(paste(getwd(),'/extras/MetisWatMod.R',sep=""))
