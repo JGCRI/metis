@@ -72,7 +72,8 @@ metis.assumptions <- function() {
     ~Units,~Convert,
     "Gg",0.001*1,
     "Tg",1,
-    "MTC",1
+    "MTC",1,
+    "MtC/yr",1
   )%>%as.data.frame;
 
   return(list(
