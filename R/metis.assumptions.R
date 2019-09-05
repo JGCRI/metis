@@ -41,7 +41,11 @@ metis.assumptions <- function() {
     ~ghg, ~GWPSAR, ~GWPAR4,~GWPAR5,~GTPAR5,
     "CO2",44/12,44/12,44/12,44/12,
     "CH4",21,25,28,4,
+    "CH4_AGR", 21,	25, 28, 28,
+    "CH4_AWB", 21,	25, 28, 28,
     "N2O",310,298,265,234,
+    "N2O_AGR",310,298,265,234,
+    "N2O_AWB",310,298,265,234,
     "C2F6",9200,12200,11100,NA,
     "CF4",6500,7390,6630,8040,
     "HFC125",2800,3500,3170,NA,
@@ -68,7 +72,8 @@ metis.assumptions <- function() {
     ~Units,~Convert,
     "Gg",0.001*1,
     "Tg",1,
-    "MTC",1
+    "MTC",1,
+    "MtC/yr",1
   )%>%as.data.frame;
 
   return(list(

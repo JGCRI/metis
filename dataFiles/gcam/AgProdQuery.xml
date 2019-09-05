@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queries>
+ <aQuery>
+		<all-regions/>
+ <supplyDemandQuery title="ag production by tech">
+            <axis1 name="technology">technology[@name]</axis1>
+            <axis2 name="Year">physical-output[@vintage]</axis2>
+            <xPath buildList="true" dataName="output" group="false" sumAll="false">*[@type='sector' and (local-name()='AgSupplySector')]/
+            *[@type='subsector']/*[@type='technology']/
+            output-primary/physical-output/node()</xPath>
+            <comments/>
+         </supplyDemandQuery>
+ </aQuery>
+</queries>
+   

@@ -35,17 +35,17 @@ library(ggalluvial)
 #---------------------------
 
 # Connect to gcam database or project
-  gcamdatabasePath_i <-'C:/Users/twild/all_git_repositories/idb_results/Colombia/GCAM/GCAM_runs' # Use if gcamdatabase is needed
-  gcamdatabaseName_i <-"Reference" # Use if gcamdatabse is needed
+  gcamdatabasePath_i <-'G:/rdm_gcam/SavedRuns/Aug12_AllEnergy_UY' # 'C:/Users/twild/Downloads/pic'  #  # Use if gcamdatabase is needed
+  gcamdatabaseName_i <-"DeepDecarb" # "Reference_originalSW" Use if gcamdatabse is needed
   dataProjPath_i <- paste(getwd(),"/outputs",sep="") # Path to dataProj file.
   dataProj_i <-"dataProj.proj"  # Use if gcamdata has been saved as .proj file
 
 # Get list of scenarios and rename if desired.
-  rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
-  dataProjLoaded <- loadProject(paste(dataProjPath_i, "/",dataProj_i , sep = ""))
-  listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
-  scenOrigNames_i = c("Reference")
-  scenNewNames_i = c("Reference")  # Names to replace the original names for final figures.
+#  rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
+#  dataProjLoaded <- loadProject(paste(dataProjPath_i, "/",dataProj_i , sep = ""))
+#  listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
+  scenOrigNames_i = c("2Mkt_NDC_FFI", "2Mkt_2DC_FFI", "2Mkt_B2DC_FFI") #  c(, "DeepDecarb1Mkt_2DS")
+  scenNewNames_i = c("Reference",  "2 Degrees", "Below 2 Degrees") #  c(, "DeepDecarb1Mkt_2DS"")  # Names to replace the original names for final figures.
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
   paramsSelect_i = "All"
@@ -53,16 +53,35 @@ library(ggalluvial)
 # Select regions from the 32 GCAM regions.
   regionsSelect_i <- c("Colombia")
 
-  dataGCAM<-metis.readgcam(reReadData = T,  # F
-                         gcamdatabasePath = gcamdatabasePath_i ,
-                         gcamdatabaseName = gcamdatabaseName_i,
-                         scenOrigNames = scenOrigNames_i,
-                         scenNewNames = scenNewNames_i,
-                         #dataProj = dataProj_i,
-                         #dataProjPath = dataProjPath_i,
-                         regionsSelect = regionsSelect_i ,
-                         paramsSelect=paramsSelect_i
-                       )
+  # Reading in the no bio query so it works with Rgcam
+  pol_cO2NoBio_fpath_Lst <- c(paste0(gcamdatabasePath_i, '/', gcamdatabaseName_i, '/', 'co2EmissNoBio_2Mkt_NDC_FFI.csv'),
+                              paste0(gcamdatabasePath_i, '/', gcamdatabaseName_i, '/', 'co2EmissNoBio_2Mkt_2DC_FFI.csv'),
+                              paste0(gcamdatabasePath_i, '/', gcamdatabaseName_i, '/', 'co2EmissNoBio_2Mkt_B2DC_FFI.csv')
+                              )  # 'C:/Users/twild/all_git_repositories/idb_results/Colombia/GCAM/GCAM_runs/CO2EmissNoBio_1MktBel2DS.csv'
+
+  co2_mapping_file <- 'C:/Users/twild/all_git_repositories/metis/metis/extras/CO2_mapping_alt.csv'
+
+
+  dataGCAM<-metis.readgcam(reReadData = F,  # T
+                           gcamdatabasePath = gcamdatabasePath_i ,
+                           gcamdatabaseName = gcamdatabaseName_i,
+                           scenOrigNames = scenOrigNames_i,
+                           scenNewNames = scenNewNames_i,
+                           #dataProj = dataProj_i,
+                           #dataProjPath = dataProjPath_i,
+                           regionsSelect = regionsSelect_i,
+                           paramsSelect=paramsSelect_i,
+                           RawQueryCSV=pol_cO2NoBio_fpath_Lst)
+
+    # reReadData = T  # F
+  # gcamdatabasePath = gcamdatabasePath_i
+  # gcamdatabaseName = gcamdatabaseName_i
+  # scenOrigNames = scenOrigNames_i
+  # scenNewNames = scenNewNames_i
+  # #dataProj = dataProj_i
+  # #dataProjPath = dataProjPath_i
+  # regionsSelect = regionsSelect_i
+  # paramsSelect=paramsSelect_i
 
   dataGCAM$data # To view the data read that was read.
 
@@ -75,29 +94,54 @@ library(ggalluvial)
   # for each of the regions selected.
   # gcamDataTable_Argentina.csv, gcamDataTable_China.csv, gcamDataTable_Pakistan.csv
   # This would be added to dataTables_i as:
-  dataTables_i = c(paste(getwd(), "/outputs/readGCAMTables/Tables_local/local_Regional_Colombia.csv", sep = ""),
-                   paste(getwd(), "/outputs/readGCAMTables/Tables_gcam/gcamDataTable_Colombia.csv", sep = ""))
+  dataTables_i = c(paste(getwd(), "/outputs/readGCAMTables/Tables_local/local_Regional_Colombia.csv", sep = "")
+                   #paste(getwd(), "/outputs/readGCAMTables/Tables_gcam/gcamDataTable_Colombia.csv", sep = "")
+                   )
 
 # Read in the data from the function metis.readgcam.
   rTable_i <- dataGCAM$data;
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.chartsProcess
-  paramsSelect_i=c("All")
+
+  paramsSelect_i <- c("finalNrgbySec", "TranspFinalNrgByFuel", "BuildFinalNrgByFuel",
+                   "IndFinalNrgByFuel", "primNrgConsumByFuel", "elecByTech", "watWithdrawBySec",
+                   "aggLandAlloc", "LUCemiss", "nonco2emissionBySectorGWPAR5",
+                   "finalNrgbyFuel","finalElecbySec","finalElecbyFuel",
+                   "NonCo2EmissionsByResProdGWPAR5",
+                   "TotalFFIEmissBySec", "CO2BySector_NonCO2Gases_GWPAR5", "CO2BySector_NonCO2Gases_GWPAR5_LUC",
+                   "TotalEmissBySec", "LandAllocByCrop", "MethaneBySource", "PassengerVMTByMode", "FreightVMTByMode",
+                   "BuildFinalNrgBySector",
+                   "co2emissionBySectorNoBio", "PassengerVMTByFuel", "FreightVMTByFuel", "RefiningByLiq")
+
 
 # Select regions from the 32 GCAM regions.
-  regionsSelect_i=c("Colombia")
-
+# paramsSelect_i <- c('BuildFinalNrgBySector')
 # Charts Process
   charts<-metis.chartsProcess(
                           rTable=rTable_i, # Default is NULL
                           #dataTables=dataTables_i, # Default is NULL
                           paramsSelect=paramsSelect_i, # Default is "All"
                           regionsSelect=regionsSelect_i, # Default is "All"
-                          xCompare=c("2015","2030","2050","2100"), # Default is c("2015","2030","2050","2100")
+                          xCompare=c("2010","2030","2050"), # Default is c("2015","2030","2050","2100")
                           scenRef="Reference", # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           regionCompareOnly=0, # Default 0. If set to 1, will only run comparison plots and not individual
-                          scenarioCompareOnly=0) # Default 0. If set to 1, will only run comparison plots and not individual
+                          scenarioCompareOnly=0,
+                          useNewLabels = 0,
+                          folderName = "Colombia",
+                          xRange = c(2010, 2020, 2030, 2040, 2050),
+                          colOrder1 = c("Reference", "2 Degrees", "Below 2 Degrees"),
+                          colOrderName1 = "scenario") # Default 0. If set to 1, will only run comparison plots and not individual
+
+  # rTable=rTable_i # Default is NULL
+  # dataTables=dataTables_i # Default is NULL
+  # paramsSelect=paramsSelect_i # Default is "All"
+  # regionsSelect=regionsSelect_i # Default is "All"
+  # xCompare=c("2015","2030","2050","2100") # Default is c("2015","2030","2050","2100")
+  # scenRef="Reference" # Default is NULL
+  # dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+  # regionCompareOnly=0 # Default 0. If set to 1, will only run comparison plots and not individual
+  # scenarioCompareOnly=0
 
 
 #-------------------
