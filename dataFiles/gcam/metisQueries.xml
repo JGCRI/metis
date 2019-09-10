@@ -375,59 +375,38 @@
 
 	<aQuery>
       <all-regions/>
-      <supplyDemandQuery title="Total final energy by aggregate end-use sector">
+      <supplyDemandQuery title="total final energy by aggregate sector">
          <axis1 name="sector">sector</axis1>
          <axis2 name="Year">demand-physical[@vintage]</axis2>
-         <xPath buildList="true" dataName="input" group="false" sumAll="false">*[@type='sector' and ((@name='building' or @name='industry' or @name='transportation') or (exists(child::keyword/@final-energy)))]//*[@type='input' (: collapse :) and not(@name='trn_pass_road' or @name='limestone' or @name='process heat cement' or @name='industrial energy use' or @name='industrial feedstocks' or @name='renewable')]/demand-physical[@unit='EJ']/node()</xPath>
-         <comments/>
-         <labelRewriteList append-values="false">
-            <level name="sector">
-               <rewrite from="N fertilizer" to="industry"/>
-               <rewrite from="agriculture energy use" to="industry"/>
-               <rewrite from="boilers general" to="industry"/>
-               <rewrite from="machine drive" to="industry"/>
-               <rewrite from="process heat primary metals" to="industry"/>
-               <rewrite from="industrial energy use" to="industry"/>
-               <rewrite from="comm cooling" to="building"/>
-               <rewrite from="feedstocks construction" to="industry"/>
-               <rewrite from="comm other" to="building"/>
-               <rewrite from="resid other appliances" to="building"/>
-               <rewrite from="feedstocks chemicals" to="industry"/>
-               <rewrite from="process heat cement" to="industry"/>
-               <rewrite from="cement" to="industry"/>
-               <rewrite from="electrochemical" to="industry"/>
-               <rewrite from="feedstocks primary metals" to="industry"/>
-               <rewrite from="comm lighting" to="building"/>
-               <rewrite from="comm office" to="building"/>
-               <rewrite from="other end uses" to="industry"/>
-               <rewrite from="construction energy use" to="industry"/>
-               <rewrite from="comm cooking" to="building"/>
-               <rewrite from="resid appliances" to="building"/>
-               <rewrite from="resid hot water" to="building"/>
-               <rewrite from="resid heating" to="building"/>
-               <rewrite from="industrial feedstocks" to="industry"/>
-               <rewrite from="comm heating" to="building"/>
-               <rewrite from="boilers pulp paper and wood" to="industry"/>
-               <rewrite from="comm ventilation" to="building"/>
-               <rewrite from="process heat general" to="industry"/>
-               <rewrite from="comm hot water" to="building"/>
-               <rewrite from="mining energy use" to="industry"/>
-               <rewrite from="limestone feedstocks" to=""/>
-               <rewrite from="comm others" to="building"/>
-               <rewrite from="resid lighting" to="building"/>
-               <rewrite from="resid cooling" to="building"/>
-               <rewrite from="resid others" to="building"/>
-               <rewrite from="resid other" to="building"/>
-               <rewrite from="comm refrigeration" to="building"/>
-               <rewrite from="trn_aviation_intl" to="transportation"/>
-               <rewrite from="trn_freight" to="transportation"/>
-               <rewrite from="trn_freight_road" to="transportation"/>
-               <rewrite from="trn_pass" to="transportation"/>
-               <rewrite from="trn_pass_road" to="transportation"/>
-               <rewrite from="trn_pass_road_LDV" to="transportation"/>
-               <rewrite from="trn_pass_road_LDV_2W" to="transportation"/>
-               <rewrite from="trn_pass_road_LDV_4W" to="transportation"/>
-               <rewrite from="trn_shipping_intl" to="transportation"/>
+         <xPath buildList="true" dataName="input" group="false" sumAll="false">*[@type='sector' and ((@name='building' or @name='industry' or @name='transportation') or
+            (exists(child::keyword/@final-energy)))]//*[@type='input' (:collapse:) and
+            not(@name='limestone' or @name='process heat cement' or @name='industrial energy use' or
+                @name='industrial feedstocks' or @name='renewable' or contains(@name, 'trn') or @name='oil-credits')]/
+            demand-physical[@unit='EJ']/node()</xPath>
+            <comments/>
+            <labelRewriteList append-values="false">
+               <level name="sector">
+                  <rewrite from="trn_pass_road_bus" to="transportation"/>
+                  <rewrite from="trn_pass_road_LDV" to="transportation"/>
+                  <rewrite from="trn_freight" to="transportation"/>
+                  <rewrite from="trn_pass_road_LDV_2W" to="transportation"/>
+                  <rewrite from="N fertilizer" to="industry"/>
+                  <rewrite from="resid heating" to="building"/>
+                  <rewrite from="industrial feedstocks" to="industry"/>
+                  <rewrite from="comm heating" to="building"/>
+                  <rewrite from="trn_aviation_intl" to="transportation"/>
+                  <rewrite from="industrial energy use" to="industry"/>
+                  <rewrite from="comm cooling" to="building"/>
+                  <rewrite from="trn_shipping_intl" to="transportation"/>
+                  <rewrite from="trn_pass_road_LDV_4W" to="transportation"/>
+                  <rewrite from="trn_freight_road" to="transportation"/>
+                  <rewrite from="comm others" to="building"/>
+                  <rewrite from="trn_pass" to="transportation"/>
+                  <rewrite from="process heat cement" to="industry"/>
+                  <rewrite from="resid cooling" to="building"/>
+                  <rewrite from="cement" to="industry"/>
+                  <rewrite from="resid others" to="building"/>
+                  <rewrite from="trn_pass_road" to="transportation"/>
             </level>
          </labelRewriteList>
       </supplyDemandQuery>
@@ -937,5 +916,197 @@
             </supplyDemandQuery>
 	</aQuery>
 
+<aQuery>
+      <all-regions/>
+         <supplyDemandQuery title="CO2 emissions by sector (no bio)">
+            <axis1 name="sector">sector[@name]</axis1>
+            <axis2 name="Year">emissions[@year]</axis2>
+            <xPath buildList="true" dataName="input" group="false" sumAll="false"> <![CDATA[
+            declare function local:append-heirarchy($parent as node(), $append as node()*) as node() {
+            let $scn := $parent/ancestor::scenario,
+            $rgn := $parent (: /ancestor::region :)
+            return
+            document { element scenario {
+            $scn/@*,
+            element region {
+            $rgn/@*,
+            $append
+            }
+            }
+            }
+            (: I can get by with just the scenario and region
+            let $new_node := element {local-name($parent)} {$parent/@*, $append} 	
+            return
+            if(local-name($parent) != 'scenario')
+            then local:append-heirarchy($parent/parent::*, $new_node)
+            else document { $new_node } :)
+            }; 
+            declare function local:get-carbon-coef($good as xs:string) as xs:decimal {
+            let $carbonCoefs := (
+            <PrimaryFuelCO2Coef name="biomass">0</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="coal">27.3</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="crude oil">19.6</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="delivered biomass">23</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="delivered coal">27.3</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="delivered gas">14.2</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="gas pipeline">14.2</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="gas processing">14.2</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="limestone">0.08</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="natural gas">14.2</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="refined liquids enduse">19.6</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="refined liquids industrial">19.6</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="refining">19.6</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="regional biomass">23</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="regional biomassOil">19.6</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="regional coal">27.3</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="regional corn for ethanol">19.6</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="regional natural gas">14.2</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="regional oil">19.6</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="regional sugar for ethanol">19.6</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="traded unconventional oil">19.6</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="unconventional oil">21.1</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="unconventional oil production">19.6</PrimaryFuelCO2Coef>,
+            <PrimaryFuelCO2Coef name="wholesale gas">14.2</PrimaryFuelCO2Coef>),
+            $currCoef := $carbonCoefs[@name=$good]/text()
+            return if(exists($currCoef)) then $currCoef else 0.0
+            };
+            
+            
+            declare function local:is-carbonatious-fuel($good as xs:string) as xs:boolean {
+            not(local:get-carbon-coef($good) = 0.0)
+            };
+            declare function local:generate-sector-output-coefs($inputNameQueue as xs:string*, $currTree as node(), $coefs as node()*, $is_usa as xs:boolean) as node()* {
+            if(empty($inputNameQueue)) then $coefs
+            else if( exists($coefs[@name = $inputNameQueue[1]]) or exists(index-of(('traded unconventional oil'),
+            $inputNameQueue[1])) or not($currTree/*[@type='sector' and @name=$inputNameQueue[1]]) or not(local:is-carbonatious-fuel($inputNameQueue[1])))
+            then 
+            local:generate-sector-output-coefs(remove($inputNameQueue, 1), $currTree, $coefs, $is_usa)
+            else
+            let $inputName := $inputNameQueue[1],
+            $newInputNameQueue := remove($inputNameQueue, 1),
+            $useInputs := $currTree//*[@type='input' and @name=$inputName],
+            $useSectors := distinct-values($useInputs/ancestor::*[@type='sector']/@name),
+            $totalInputSum := for $vintage in distinct-values($useInputs/demand-physical/@vintage)
+            return element input {
+            attribute vintage { $vintage },
+            text {
+            sum($useInputs/demand-physical[@vintage=$vintage])
+            }
+            },
+            $new_coefs := if(empty($useSectors)) then
+            $coefs
+            else
+            $coefs | element sector {
+            attribute name { $inputName },
+            for $output in $useSectors
+            return element output {
+            attribute name { $output },
+            for $inputSum in $totalInputSum
+            let $currSectorInputs := $useInputs[ancestor::*[@type='sector' and @name=$output]],
+            $outputSum := sum($currSectorInputs/demand-physical[@vintage=$inputSum/@vintage]),
+            $carbonIn := sum($currSectorInputs/parent::*//carbon-content[@vintage=$inputSum/@vintage]),
+            $carbonOut := sum($currSectorInputs/parent::*/output-primary/physical-output[@vintage=$inputSum/@vintage]) *
+            local:get-carbon-coef($output)
+            return (element share {
+            attribute vintage { $inputSum/@vintage },
+            text { $outputSum div $inputSum }
+            }, element carbon_ratio {
+            attribute vintage { $inputSum/@vintage },
+            text{ if($carbonIn > 0) then $carbonOut div $carbonIn else 0 }
+            })
+            }
+            }
+            return 
+            local:generate-sector-output-coefs(distinct-values(($newInputNameQueue, $useSectors)), $currTree, $new_coefs, $is_usa)
+            };
+            declare function local:apply-coefs($outputName as xs:string, $emissions as node()*, $coefs as node()*) as node()* {
+            if(exists($coefs[@name=$outputName]) and abs(sum($emissions)) > 0.001) then
+            for $output in $coefs[@name=$outputName]/output
+            let $emiss_go := for $year in distinct-values($emissions/@year)
+            let $emissThisVintage := $emissions[@year=$year],
+            $firstEmiss := $emissThisVintage[1],
+            $emissSum := sum($emissThisVintage),
+            $shareThisVintage := $output/share[@vintage=$year],
+            $carbonRatioThisVintage := $output/carbon_ratio[@vintage=$year],
+            $coefThisVintage := $shareThisVintage * $carbonRatioThisVintage
+            where $coefThisVintage > 0
+            return element { local-name($firstEmiss) } {
+            $firstEmiss/@*,
+            text{ $emissSum * $coefThisVintage }
+            },
+            $emiss_stay := for $year in distinct-values($emissions/@year)
+            let $emissThisVintage := $emissions[@year=$year],
+            $firstEmiss := $emissThisVintage[1],
+            $emissSum := sum($emissThisVintage),
+            $shareThisVintage := $output/share[@vintage=$year],
+            $carbonRatioThisVintage := 1.0 - $output/carbon_ratio[@vintage=$year],
+            $coefThisVintage := $shareThisVintage * $carbonRatioThisVintage 
+            where $coefThisVintage > 0
+            return element { local-name($firstEmiss) } {
+            $firstEmiss/@*,
+            text{ $emissSum * $coefThisVintage }
+            }
+            return local:apply-coefs($output/@name, $emiss_go, $coefs) |
+            element sector {
+            attribute name { $output/@name},
+            attribute type { 'sector' },
+            $emiss_stay
+            }
+            else if( abs(sum($emissions)) > 0.001) then
+            element sector {
+            attribute name { $outputName },
+            attribute type { 'sector' },
+            $emissions
+            }
+            else
+            (: These are the residuals from chasing simulenaties, I've left this here
+            for debuging purposes :)
+            element sector {
+            attribute name { $outputName },
+            attribute type { 'sector' }(:,
+            $emissions:)
+            }
+            };
+            declare function local:run-emiss-by-enduse($scenarios as xs:string*, $regions as xs:string*, $collection as xs:string) as node()* { 	
+            (:unordered { :) 	
+            let $regionsG := if(not($regions[1] = 'Global'))
+            then $regions
+            else distinct-values(collection($collection)/scenario/world/*[@type='region']/@name)
+            return
+            for $scenario in $scenarios, 	    
+            $region in $regionsG 	
+            let $scenario_split := tokenize($scenario, ' '), 	    
+            $currTree := collection($collection)/scenario[@name = $scenario_split[1] and @date = $scenario_split[2]]/world/*[@type='region' and @name=$region],
+            $sector_emiss := $currTree/*[@type='sector' and not(@name='regional biomass' or @name='regional biomassOil' or @name='regional corn for ethanol' or @name='regional sugar for ethanol' or @name='regional sugarbeet for ethanol')]//CO2[@type='GHG' (:collapse:) and @name='CO2']/emissions/text(),
+            $currEmissSectors := $currTree/*[@type='sector' and (@name='regional biomass' or @name='regional biomassOil' or @name='regional corn for ethanol' or @name='regional sugar for ethanol' or @name='regional sugarbeet for ethanol')],
+            $coefs := local:generate-sector-output-coefs(distinct-values($currEmissSectors/@name), $currTree, (), false()),
+            $downstream_emiss := for $sectorName in distinct-values($currEmissSectors/@name)
+            return local:append-heirarchy($currTree, local:apply-coefs($sectorName, $currEmissSectors[@name=$sectorName]//CO2[@name='CO2']/emissions, $coefs))//text() 
+            return ($sector_emiss, $downstream_emiss )
+            (:  } :)
+            };
+            local:run-emiss-by-enduse((:scenarios:), (:regions:), (:collection:))
+            ]]>
+         </xPath>
+            <comments/>
+            <labelRewriteList append-values="false">
+               <level name="sector">
+                  <rewrite from="elec_coal (conv pul)" to="electricity"/>
+                  <rewrite from="elec_gas (CC)" to="electricity"/>
+                  <rewrite from="elec_CSP" to="electricity"/>
+                  <rewrite from="elec_Gen_II_LWR" to="electricity"/>
+                  <rewrite from="elec_refined liquids (CC)" to="electricity"/>
+                  <rewrite from="elec_refined liquids (steam/CT)" to="electricity"/>
+                  <rewrite from="elec_Gen_III" to="electricity"/>
+                  <rewrite from="elec_geothermal" to="electricity"/>
+                  <rewrite from="elec_biomass (conv)" to="electricity"/>
+                  <rewrite from="elec_gas (steam/CT)" to="electricity"/>
+                  <rewrite from="elec_biomass (IGCC)" to="electricity"/>
+                  <rewrite from="elec_coal (IGCC)" to="electricity"/>
+                  <rewrite from="elec_CSP_storage" to="electricity"/>
+               </level>
+            </labelRewriteList>
+         </supplyDemandQuery>
+	</aQuery>
 
 </queries>

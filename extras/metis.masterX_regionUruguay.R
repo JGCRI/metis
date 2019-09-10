@@ -47,23 +47,25 @@ localBasinsShapeFileColName = "code" # Will need to load the file to see which n
 
 # ?metis.readgcam # For more help
 
-gcamdatabasePath_i <-paste("D:/GCAM/gcam-core_LAC/output",sep="")
-gcamdatabaseName_i <-"database_basexdb"
+gcamdatabasePath_i <-paste("D:/GCAM/GCAMLAC_pic",sep="")
+gcamdatabaseName_i <-"database_basexdb_origRef"
+rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
 
 dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
 queryPath_i <-paste(getwd(),"/dataFiles/gcam",sep="")
 regionsSelect_i <- c("Uruguay")
-
 # Reference
 dataProj_i <-"Uruguay_dataProj_Ref.proj"
 dataProjLoaded <- loadProject(paste(dataProjPath_i, "/", dataProj_i, sep = ""))
 listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 #queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
-dataGCAMRef<-metis.readgcam(reReadData=F, # Default Value is T
+queryPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
+
+dataGCAMRef<-metis.readgcam(reReadData=T, # Default Value is T
                                  dataProj = dataProj_i, # Default Value is "dataProj.proj"
                                  dataProjPath = dataProjPath_i,
-                                 scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef_NoImpacts"),
+                                 scenOrigNames=c("IDB_Orig", "IDB_GCAMRef"),
                                  scenNewNames=c("GCAMOrig","GCAMRef"),
                                  gcamdatabasePath=gcamdatabasePath_i,
                                  gcamdatabaseName=gcamdatabaseName_i,
@@ -108,6 +110,9 @@ unique(dataGCAMImpacts$data$scenario)
 
 dataGCAM <- dplyr::bind_rows(dataGCAMRef$data,dataGCAMImpacts$data)# To view the data read that was read.
 dataGCAM
+
+dataGCAM <- dataGCAMRef$data
+
 #saveRDS(dataGCAM, file = paste(getwd(),"/dataFiles/gcam/tempUruguayGCAMData.rds",sep=""))
 #readRDS(file = paste(getwd(),"/dataFiles/gcam/tempUruguayGCAMData.rds",sep=""))
 unique(dataGCAM$param)
@@ -119,13 +124,15 @@ unique(dataGCAM$scenario)
 #---------------------------
 
 #Choose parameters for Report
-paramsSelect_i=c("finalNrgbySec", "elecByTech", "elecCapBySubsector",
-                  "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec",
-                 "watConsumBySec", "watWithdrawBySec",
-                 "gdp", "gdpGrowthRate", "pop",
-                 "agProdByCrop","aggLandAlloc",
-                "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
+# paramsSelect_i=c("finalNrgbySec", "elecByTech", "elecCapBySubsector",
+#                   "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec",
+#                  "watConsumBySec", "watWithdrawBySec",
+#                  "gdp", "gdpGrowthRate", "pop",
+#                  "agProdByCrop","aggLandAlloc",
+#                 "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
+#
 
+paramsSelect_i = "All"
 
 # Read in Tables (If exist)
 dataTables_i<-c(paste(getwd(),"/dataFiles/localData/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
@@ -139,7 +146,7 @@ rTable_i <- dataGCAM %>% dplyr::filter(value!=0)  %>%
   dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                   aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                   origScen, origQuery, origUnits, origX)%>%
-  dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%
+  dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
   dplyr::ungroup() %>% droplevels()
 
 regionsSelect_i=c("Uruguay")
@@ -154,7 +161,7 @@ rTable_iMod <- rTable_i %>%
   dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                   aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                   origScen, origQuery, origUnits, origX)%>%
-  dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%
+  dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
   dplyr::ungroup() %>% droplevels()
 
 paramsSelect_iMod=paramsSelect_i
@@ -180,12 +187,12 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                             pdfpng="png", # Default is "png"
                             regionCompareOnly=0, # Default is "0"
-                            scenarioCompareOnly=1, # Default is "0"
+                            scenarioCompareOnly=0, # Default is "0"
                             useNewLabels=1,
                             xRange=c(2010:2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
                             colOrderName1 = "scenario",
-                            folderName = "Reference",
+                            folderName = "Reference_New",
                             scaleRange=scaleRange_i)
 
 charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
@@ -203,7 +210,7 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
                             colOrderName1 = "scenario",
-                            folderName = "Reference",
+                            folderName = "Reference_New",
                             scaleRange=scaleRange_i)
 
 
