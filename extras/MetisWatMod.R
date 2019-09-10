@@ -4,7 +4,6 @@ if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dlpyr")}
 library(dplyr)
 
 network_main <- function(data_filepath){
-  # This function is the master function that calls all other functions within this script
   # Import user-defined sub-regional network
   network_data <- import_network_data(data_filepath = data_filepath)$network_data
 
@@ -31,7 +30,7 @@ import_network_data <- function(data_filepath){
 }
 
 logic_check <- function(network_data, all_subRegs){
-  # This function checks that user-specoified input data passes basic logic checks
+  # This function checks that user-specified input data passes basic logic checks
 
   # Confirm that columns and rows are both specified
   for (subReg in all_subRegs){
@@ -93,7 +92,7 @@ network_order <- function(network_data, all_subRegs, remaining_subRegs, complete
 
 subReg_water_balance <- function(supply_demand_table, completed_subRegs, network_data, from_to){
   # This function seeks to determine the natural flows from upstream subRegions to downstream subRegions, given that the
-  # model user is unlikely to specify this because the values are affected by consumption.
+  # model user is unlikely to specify this a priori because the values are affected by consumption.
 
   # Add capacity column if it's currently non-existent (not specified by user in initial table)
   if(!'cap' %in% names(supply_demand_table)){

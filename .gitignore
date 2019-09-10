@@ -6,8 +6,8 @@ doc
 .Ruserdata
 *basexdb*
 outputs
-LAC_dataProj.proj
-Uruguay_dataProj.proj
+.proj
+.PROJ
 **/gis/other
 **/grids/demeter
 **/grids/tethys
