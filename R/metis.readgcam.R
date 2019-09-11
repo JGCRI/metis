@@ -3148,11 +3148,12 @@ paramx <- "emissTotalFFIBySec"
                   param = gsub("EJ","MTOE",param))
 
   dataxEJtoTWh <- datax %>% dplyr::filter(grepl("(EJ)",units)) %>%
-    dplyr::mutate(value=value*metis.assumptions()$convEJ2MTOE,
+    dplyr::mutate(value=value*metis.assumptions()$convEJ2TWh,
                   units = gsub("\\(EJ\\)","(TWh)",units),
                   param = gsub("EJ","TWh",param))
 
-  dtax <- dplyr::bind_rows(datax,dataxEJtoMTOE,dataxEJtoTWh)
+  datax <- dplyr::bind_rows(datax,dataxEJtoMTOE,dataxEJtoTWh)
+  datax<-datax%>%unique()
 
   # metis.chart(tbl,xData="x",yData="value",useNewLabels = 0)
 
