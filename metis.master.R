@@ -294,7 +294,7 @@ io_sub$ioTbl
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.chartsProcess
   paramsSelect_i=c("gdp", "gdpGrowthRate", "pop",
-                   "energyFinalConsumBySecEJ","elecByTech",
+                   "energyFinalConsumBySecEJ","elecByTechTWh",
                    "emissCO2BySector","emissNonCO2BySectorGWPAR5",
                    "agProdByCrop","landAlloc",
                    "watConsumBySec", "watWithdrawBySec")
