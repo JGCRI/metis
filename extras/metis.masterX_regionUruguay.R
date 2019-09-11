@@ -45,6 +45,8 @@ localBasinsShapeFileColName = "code" # Will need to load the file to see which n
 # Read GCAM Data
 #---------------------------
 
+regionsSelect_i <- c("Uruguay", "Colombia")
+
 # ?metis.readgcam # For more help
 
 gcamdatabasePath_i <-paste("D:/GCAM/gcam-core_LAC/output",sep="")
@@ -53,7 +55,7 @@ rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting direct
 
 dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
 queryPath_i <-paste(getwd(),"/dataFiles/gcam",sep="")
-regionsSelect_i <- c("Uruguay")
+
 # Reference
 dataProj_i <-"Uruguay_dataProj_Ref.proj"
 dataProjLoaded <- loadProject(paste(dataProjPath_i, "/", dataProj_i, sep = ""))
@@ -147,7 +149,6 @@ rTable_i <- dataGCAM %>% dplyr::filter(value!=0)  %>%
   dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
   dplyr::ungroup() %>% droplevels()
 
-regionsSelect_i=c("Uruguay")
 
 rTable_iMod <- rTable_i %>%
   dplyr::mutate(class1=case_when(param=="elecByTechTWh" ~ gsub("a Coal","Fossil",class1),TRUE~class1),
@@ -188,7 +189,7 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             xRange=c(2010:2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
                             colOrderName1 = "scenario",
-                            folderName = "Reference_New",
+                            folderName = "Reference",
                             scaleRange=scaleRange_i)
 
 charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
@@ -206,7 +207,7 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
                             colOrderName1 = "scenario",
-                            folderName = "Reference_New",
+                            folderName = "Reference",
                             scaleRange=scaleRange_i)
 
 

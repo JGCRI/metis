@@ -365,39 +365,80 @@ The model comes with an example gcamdatabase ".proj" file called "Example_dataPr
 # Read GCAM Data (metis.readgcam.R)
 #---------------------------
 
-# Connect directly to a gcam database and produce a .proj file for future uses.
-  # gcamdatabasePath_i <-paste(getwd(),"/dataFiles/gcam",sep="") # Use if gcamdatabase is needed
-  # gcamdatabaseName_i <-"example_database_basexdb" # Use if gcamdatabse is needed
-  # rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
 
-# Connect to gcam database or project
-  dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="") # Path to dataProj file.
-  dataProj_i <-"Example_dataProj.proj"  # Use if gcamdata has been saved as .proj file
+# There are two ways to read GCAM data
+    # i. gcamdatabase:        Directly connecting to a gcam database and extracting data using queries
+    #                         which are then saved to a .proj file
+    # ii. .proj or .dat file: If a proj file has alreayd been created or saved from a previous run of rgcam
+    #                         then metis can take connect directly to this data.
 
-# Get list of scenarios and rename if desired.
-  dataProjLoaded <- loadProject(paste(dataProjPath_i, "/",dataProj_i , sep = ""))
-  listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
-  scenOrigNames_i = c("ExampleScen1","ExampleScen2")
-  scenNewNames_i = c("Eg1","Eg2")  # Names to replace the original names for final figures.
+# Connect to gcam database .proj or .dat file
+    # This is data that has already been extracted from a gcamdatabse using queries and rgcam
+    # and is thus much faster to process than connecting directly to the gcamdatabase.
+    # The data must have been extracted using queries that are available in metisQueries.xml
+      dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="") # Path to dataProj file.
+      dataProj_i <-"Example_dataProj.proj"  # Use if gcamdata has been saved as .proj file
+    
+    # Get list of scenarios and rename if desired.
+      dataProjLoaded <- loadProject(paste(dataProjPath_i, "/",dataProj_i , sep = ""))
+      listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
+    
+    # Scenario names
+      scenOrigNames_i = c("ExampleScen1","ExampleScen2")
+      scenNewNames_i = c("Eg1","Eg2")  # Names to replace the original names for final figures.
+    
+    # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
+      paramsSelect_i = "All"
+    
+    # Select regions from the 32 GCAM regions.
+      regionsSelect_i <- c("Argentina","Colombia")
+    
+      dataGCAM<-metis.readgcam(reReadData = F,
+                             #gcamdatabasePath = gcamdatabasePath_i,
+                             #gcamdatabaseName = gcamdatabaseName_i,
+                             scenOrigNames = scenOrigNames_i,
+                             scenNewNames = scenNewNames_i,
+                             dataProj = dataProj_i,
+                             dataProjPath = dataProjPath_i,
+                             regionsSelect = regionsSelect_i ,
+                             paramsSelect=paramsSelect_i
+                           )
+    
+      dataGCAM$data # To view the data read that was read.
 
-# Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-  paramsSelect_i = "All"
-
-# Select regions from the 32 GCAM regions.
-  regionsSelect_i <- c("Argentina","Colombia")
-
-  dataGCAM<-metis.readgcam(reReadData = F,
-                         #gcamdatabasePath = gcamdatabasePath_i,
-                         #gcamdatabaseName = gcamdatabaseName_i,
-                         scenOrigNames = scenOrigNames_i,
-                         scenNewNames = scenNewNames_i,
-                         dataProj = dataProj_i,
-                         dataProjPath = dataProjPath_i,
-                         regionsSelect = regionsSelect_i ,
-                         paramsSelect=paramsSelect_i
-                       )
-
-  dataGCAM$data # To view the data read that was read.
+# If connecting directly to a gcamdatabase then can use the following method.
+# Uncomment the following lines of code (use ctrl+C to uncomment multiple lines together)
+    # # Connect directly to a gcam database and produce a .proj file for future uses.
+    # gcamdatabasePath_i <-paste(getwd(),"/dataFiles/gcam",sep="") # Use if gcamdatabase is needed
+    # gcamdatabaseName_i <-"example_database_basexdb" # Replace with your database
+    # rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # Note names of scenarios
+    #
+    # # The data must have been extracted using queries that are available in metisQueries.xml
+    # dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="") # Path to dataProj file.
+    # dataProj_i <-"Example_dataProjGCAM.proj"  # Use if gcamdata has been saved as .proj file
+    #
+    # # Scenario names
+    # scenOrigNames_i = c("ExampleScen1","ExampleScen2") # make sure these exist (See outputs of the rgcam::localDBConn)
+    # scenNewNames_i = c("Eg1","Eg2")  # Names to replace the original names for final figures.
+    #
+    # # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
+    # paramsSelect_i = "All"
+    #
+    # # Select regions from the 32 GCAM regions.
+    # regionsSelect_i <- c("Argentina","Colombia")
+    #
+    # dataGCAM<-metis.readgcam(reReadData = T,
+    #                          gcamdatabasePath = gcamdatabasePath_i,
+    #                          gcamdatabaseName = gcamdatabaseName_i,
+    #                          scenOrigNames = scenOrigNames_i,
+    #                          scenNewNames = scenNewNames_i,
+    #                          dataProj = dataProj_i,
+    #                          dataProjPath = dataProjPath_i,
+    #                          regionsSelect = regionsSelect_i ,
+    #                          paramsSelect=paramsSelect_i
+    # )
+    #
+    # dataGCAM$data # To view the data read that was read.
 
                        
 ```  
