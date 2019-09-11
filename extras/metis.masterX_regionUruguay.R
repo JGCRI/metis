@@ -47,7 +47,7 @@ localBasinsShapeFileColName = "code" # Will need to load the file to see which n
 
 # ?metis.readgcam # For more help
 
-gcamdatabasePath_i <-paste("D:/GCAM/GCAMLAC_pic",sep="")
+gcamdatabasePath_i <-paste("D:/GCAM/gcam-core_LAC/output",sep="")
 gcamdatabaseName_i <-"database_basexdb_origRef"
 rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
 
@@ -140,9 +140,7 @@ a<-read.csv(dataTables_i); head(a); unique(a$scenario); unique(a$param); unique(
 
 # Read in the data from the function metis.readgcam
 rTable_i <- dataGCAM %>% dplyr::filter(value!=0)  %>%
-  dplyr::mutate(class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1),
-                class1=case_when(param=="finalNrgbyFuelbySec" ~ gsub("hydrogen","Other",class1),TRUE~class1),
-                class1=case_when(param=="co2emissionBySector" ~ gsub("electricity","energy",class1),TRUE~class1)) %>%
+  dplyr::mutate(class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1)) %>%
   dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                   aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                   origScen, origQuery, origUnits, origX)%>%
@@ -152,12 +150,10 @@ rTable_i <- dataGCAM %>% dplyr::filter(value!=0)  %>%
 regionsSelect_i=c("Uruguay")
 
 rTable_iMod <- rTable_i %>%
-  dplyr::mutate(class1=case_when(param=="elecByTech" ~ gsub("a Coal","Fossil",class1),TRUE~class1),
-                class1=case_when(param=="elecByTech" ~ gsub("c Gas","Fossil",class1),TRUE~class1),
-                class1=case_when(param=="elecByTech" ~ gsub("e Oil","Fossil",class1),TRUE~class1),
-                class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1),
-                class1=case_when(param=="finalNrgbyFuelbySec" ~ gsub("hydrogen","Other",class1),TRUE~class1),
-                class1=case_when(param=="co2emissionBySector" ~ gsub("electricity","energy",class1),TRUE~class1)) %>%
+  dplyr::mutate(class1=case_when(param=="elecByTechTWh" ~ gsub("a Coal","Fossil",class1),TRUE~class1),
+                class1=case_when(param=="elecByTechTWh" ~ gsub("c Gas","Fossil",class1),TRUE~class1),
+                class1=case_when(param=="elecByTechTWh" ~ gsub("e Oil","Fossil",class1),TRUE~class1),
+                class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1)) %>%
   dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                   aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                   origScen, origQuery, origUnits, origX)%>%
