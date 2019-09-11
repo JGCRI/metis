@@ -52,13 +52,13 @@
 #' \item "Land Use Change Emission". Parameters generated: emissLUCFut
 #' \item "GHG emissions by subsector". Parameters generated: ghgEmissByGHGGROUPS, ghgEmissionByGHG
 #' \item "CO2 emissions by sector". Parameters generated:emissCO2BySector
-#' \item "nonCO2 emissions by sector". Parameters generated: emissNonCO2BySectorGWPAR5, emissNonCO2BySectorGTPAR5,emissNonCO2BySectorOrigUnits
+#' \item "nonCO2 emissions by sector". Parameters generated: emissCO2NonCO2BySectorGWPAR5, emissCO2NonCO2BySectorGTPAR5,emissNonCO2BySectorOrigUnits
 #' }
 #'
 #' @param paramsSelect Default = "All". If desired select a subset of paramaters to analyze from the full list of parameters:
 #' c(# Energy
 #' "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
-#' "energyFinalConsumBySecEJ","energyFinalbyFuelEJ","energyFinalSubsecByFuelTranspEJ",
+#' "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
 #' "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
 #' "energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
 #' "energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
@@ -79,7 +79,7 @@
 #' # Land use
 #' "landIrrRfd", "landAlloc","landAllocByCrop",
 #' # Emissions
-#' "emissLUC", "emissCO2BySector","emissNonCO2BySectorGWPAR5","emissNonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
+#' "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
 #' "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
 #' "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")
 #' @param RawQueryCSV Optional.
@@ -208,7 +208,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
     paramsSelectx=c(# Energy
                     "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
-                    "energyFinalConsumBySecEJ","energyFinalbyFuelEJ","energyFinalSubsecByFuelTranspEJ",
+                    "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
                     "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
                     "energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
                     "energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
@@ -229,7 +229,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                     # Land use
                     "landIrrRfd", "landAlloc","landAllocByCrop",
                     # Emissions
-                    "emissLUC", "emissCO2BySector","emissNonCO2BySectorGWPAR5","emissNonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
+                    "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
                     "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
                     "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")
   }else{paramsSelectx=paramsSelect}
@@ -326,7 +326,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
 
-  paramx<-"energyFinalbyFuelEJ"
+  paramx<-"energyFinalByFuelBySectorEJ"
   # Total final energy by aggregate end-use sector
   if(paramx %in% paramsSelectx){
     queryx <- "Final energy by detailed end-use sector and fuel"
@@ -362,7 +362,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       input=gsub("traditional biomass","biomass",input),
                       input=gsub("delivered gas","gas",input),
                       input=gsub("district heat","Other",input),
-                      param = "energyFinalbyFuelEJ",
+                      param = "energyFinalByFuelBySectorEJ",
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
@@ -1498,7 +1498,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       tbl <- tbl %>%
         dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
         dplyr::mutate(origValue=value,value=value*Convert*44/12,
-                      origUnits=Units,units="MegaTonnes of CO2 eq. (MTCO2eq)")%>%
+                      origUnits=Units,units="Emissions LUC - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "emissLUC",
                       sources = "Sources",
@@ -1830,7 +1830,7 @@ paramx <- "emissCO2BySectorNoBio"
   }
 
 
-  paramx <- "emissNonCO2BySectorGWPAR5"
+  paramx <- "emissCO2NonCO2BySectorGWPAR5"
   if(paramx %in% paramsSelectx){
     # GHG emissions (non CO2) by subsector, using AR5 GWP values
     queryx <- "nonCO2 emissions by sector"
@@ -1963,13 +1963,13 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("csp\\_backup","Electricity",class2))%>%
         dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class1=ghg),by="class1")%>%
         dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
-        dplyr::filter(!class1=='CO2') %>%
+        #dplyr::filter(!class1=='CO2') %>%
         dplyr::mutate(origValue=value,
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
                       origUnits = case_when(class1=="Other"~"Units",TRUE~origUnits),
-                      units="Non-CO2 Emissions (Mt CO2-Eq)")%>%
-        dplyr::mutate(param = "emissNonCO2BySectorGWPAR5",
+                      units="Emissions GWP - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
+        dplyr::mutate(param = "emissCO2NonCO2BySectorGWPAR5",
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
@@ -2119,7 +2119,7 @@ paramx <- "emissCO2BySectorNoBio"
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
                       origUnits = case_when(class2=="Other"~"Units",TRUE~origUnits),
-                      units="Methane Emissions (Mt CO2-Eq)")%>%
+                      units="Methane Emissions - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
         dplyr::mutate(param = "emissMethaneBySource",
                       sources = "Sources",
                       origScen = scenario,
@@ -2284,7 +2284,7 @@ paramx <- "emissCO2BySectorNoBio"
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
                       origUnits = case_when(class1=="Other"~"Units",TRUE~origUnits),
-                      units="Non-CO2 Emissions (Mt CO2-Eq)")%>%
+                      units="Non-CO2 Emissions by Resource GWP - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
         dplyr::mutate(param = "emissNonCO2ByResProdGWPAR5",
                       sources = "Sources",
                       origScen = scenario,
@@ -2314,7 +2314,8 @@ paramx <- "emissCO2BySectorNoBio"
 paramx <- "emissTotalFFIBySec"
   if(paramx %in% paramsSelectx){
     # GHG emissions by resource production, using AR5 GWP values
-    totalFFINonCO2 <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissNonCO2BySectorGWPAR5"))
+    totalFFINonCO2 <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5")) %>%
+      dplyr::filter(!class1=='CO2')
     # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
     totalFFINonCO2 <- totalFFINonCO2 %>%
       mutate(class_temp = class2) %>%
@@ -2327,7 +2328,7 @@ paramx <- "emissTotalFFIBySec"
     totalFFICO2Eq <- totalFFICO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
-                    units="MegaTonnes of CO2 eq. (MTCO2eq)",
+                    units="Emissions Total FFI by Sector - MegaTonnes of CO2 eq. (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_nrg')%>%
@@ -2345,7 +2346,8 @@ paramx <- "emissTotalFFIBySec"
   paramx <- "emissTotalBySec"
   if(paramx %in% paramsSelectx){
     # Same as FFI Emiss by Sec, except we are now adding LUC. So really it is the whole emissions picture (or close to it)
-    totalFFINonCO2 <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissNonCO2BySectorGWPAR5"))
+    totalFFINonCO2 <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5")) %>%
+      dplyr::filter(!class1=='CO2')
     # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
     totalFFINonCO2 <- totalFFINonCO2 %>%
       mutate(class_temp = class2) %>%
@@ -2359,7 +2361,7 @@ paramx <- "emissTotalFFIBySec"
     totalFFICO2Eq <- totalFFICO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
-                    units="MegaTonnes of CO2 eq. (MTCO2eq)",
+                    units="Emissions by Sector - MegaTonnes of CO2 eq. (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_nrg')%>%
@@ -2377,7 +2379,8 @@ paramx <- "emissTotalFFIBySec"
   paramx <- "emissCO2BySectorNonCO2GWPAR5"
   if(paramx %in% paramsSelectx){
     # GHG emissions by resource production, using AR5 GWP values
-    totalFFINonCO2 <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissNonCO2BySectorGWPAR5"))
+    totalFFINonCO2 <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5")) %>%
+      dplyr::filter(!class1=='CO2')
     # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
     totalFFICO2 <- datax %>% filter(param %in% c("emissCO2BySectorNoBio")) %>% mutate(
       class1=if_else(class1=="Buildings", "CO2 Buildings", class1),
@@ -2425,8 +2428,9 @@ paramx <- "emissTotalFFIBySec"
       class1=if_else(class1=="LUC", "CO2 LUC", class1)
     )
     # GHG emissions by resource production, using AR5 GWP values
-    NonCo2_LUC <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissNonCO2BySectorGWPAR5",
-                                                "emissLUC"))
+    NonCo2_LUC <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5",
+                                                "emissLUC")) %>%
+      dplyr::filter(!class1=='CO2')
     totalCO2Eq <- rbind(totalFFICO2, NonCo2_LUC)
 
     # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
@@ -2449,7 +2453,7 @@ paramx <- "emissTotalFFIBySec"
     datax <- rbind(datax, totalCO2Eq)
   }
 
-  paramx <- "emissNonCO2BySectorGTPAR5"
+  paramx <- "emissCO2NonCO2BySectorGTPAR5"
   if(paramx %in% paramsSelectx){
     # GHG emissions by subsector
     queryx <- "nonCO2 emissions by sector"
@@ -2583,8 +2587,8 @@ paramx <- "emissTotalFFIBySec"
                                              TRUE ~  value*GWPAR5*Convert),
                       origUnits=Units,
                       origUnits = case_when(class1=="Other"~"Units",TRUE~origUnits),
-                      units="100 yr GTP AR5")%>%
-        dplyr::mutate(param = "emissNonCO2BySectorGTPAR5",
+                      units="Emissions GTP - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
+        dplyr::mutate(param = "emissCO2NonCO2BySectorGTPAR5",
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
