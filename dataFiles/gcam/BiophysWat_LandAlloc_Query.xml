@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queries>
+ <aQuery>
+		<all-regions/>
+            <supplyDemandQuery title="biophysical water demand by crop type and land region">
+               <axis1 name="sector">sector</axis1>
+               <axis2 name="Year">demand-physical[@vintage]</axis2>
+               <xPath buildList="true" dataName="input" group="false" sumAll="false">AgSupplySector/*[@type='subsector']//*[@type='input' and (@name='biophysical water consumption')]/
+               demand-physical/node()</xPath>
+               <comments/>
+            </supplyDemandQuery>
+ </aQuery>
+
+ <aQuery>
+		<all-regions/>
+         <query title="detailed land allocation">
+            <axis1 name="LandLeaf">LandLeaf[@name]</axis1>
+            <axis2 name="Year">land-allocation[@year]</axis2>
+            <xPath buildList="true" dataName="LandLeaf" group="false" sumAll="false">/LandNode[@name='root' or @type='LandNode' (:collapse:)]//land-allocation/text()</xPath>
+            <comments/>
+         </query>
+ </aQuery>
+
+</queries>
