@@ -227,10 +227,8 @@ data_NOGW_policy <- data_NOGW_policy %>%
 write.csv(data_NOGW_policy, file=paste0(save_dir, '/', 'colorado', '_', 'Policy', '_NEW', '.csv'), row.names=FALSE)
 
 
-#}
-
 data_NOGW_policy$scenario <- 'Policy'
-data_NOGW$scenario <- 'Reference'
+#data_NOGW$scenario <- 'Reference'
 plot_DF <- rbind(data_NOGW_policy, data_NOGW) %>%
   select(region, subRegion, supplySector, supplySubSector, localData, units, demandClass, scenario)
 plot_DF <- plot_DF %>%
