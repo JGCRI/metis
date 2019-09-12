@@ -1,128 +1,128 @@
-"region","subRegion","param","units","year","demandClass","supplySector","supplySubSector","dataSource","localData"
-"Argentina","Mendoza_alta_barrancas","watWithdrawBySec","km3",2010,"Ag_fruittrees","Water","W_SW_Runoff","COIRCO_2013_report",0.001
-"Argentina","Neuquen_alta_barrancas","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Runoff","COIRCO_2013_report",0.0087
-"Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.0614711461823097
-"Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Ag_cereals","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.00362810703064473
-"Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Ag_fruittrees","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.000375560090284209
-"Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Ag_vegetables","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.000125186696761403
-"Argentina","RioNegro_media","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.160833276033615
-"Argentina","RioNegro_media","watWithdrawBySec","km3",2010,"Ag_cereals","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.0079609759473887
-"Argentina","RioNegro_media","watWithdrawBySec","km3",2010,"Ag_specialty","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.00283847347725365
-"Argentina","RioNegro_media","watWithdrawBySec","km3",2010,"Ag_fruittrees","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.00686727454174271
-"Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"Ag_fruittrees","Water","W_SW_Reservoir","assumed evenly divided water demand across crops",0.0518560103249489
-"Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"Ag_specialty","Water","W_SW_Reservoir","assumed evenly divided water demand across crops",0.00867045831799788
-"Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"Ag_cereals","Water","W_SW_Reservoir","assumed evenly divided water demand across crops",0.137722685165593
-"Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Reservoir","assumed evenly divided water demand across crops",0.0347508461914602
-"Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.00400938048131148
-"Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"Ag_specialty","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.000531247174581712
-"Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"Ag_vegetables","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.000499372344106809
-"Argentina","RioNegro_baja","watWithdrawBySec","km3",2010,"Ag_fruittrees","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.0510770143706888
-"Argentina","RioNegro_baja","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.046722982779506
-"Argentina","RioNegro_baja","watWithdrawBySec","km3",2010,"Ag_vegetables","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.0164851739503281
-"Argentina","RioNegro_baja","watWithdrawBySec","km3",2010,"Ag_cereals","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.155469828899477
-"Argentina","Corfo","watWithdrawBySec","km3",2010,"Ag_cereals","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.977680572431699
-"Argentina","Corfo","watWithdrawBySec","km3",2010,"Ag_vegetables","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.115661355223129
-"Argentina","Corfo","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.806558072345172
-"Argentina","Mendoza_alta_barrancas","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Runoff","COIRCO_2013_report",0
-"Argentina","Mendoza_alta_riogrande","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Runoff","COIRCO_2013_report",0
-"Argentina","Neuquen_alta_barrancas","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Runoff","COIRCO_2013_report",0.00026
-"Argentina","Mendoza_media","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.0012
-"Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.00298
-"Argentina","RioNegro_media","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.00277
-"Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.00166
-"Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.00083
-"Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"export","Water","W_SW_Upstream","COIRCO_2013_report",0.0021
-"Argentina","RioNegro_baja","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.0021
-"Argentina","Corfo","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.00252
-"Argentina","Mendoza_alta_riogrande","watWithdrawBySec","km3",2010,"Electricity_RefLiqDiesel","Water","W_SW_Runoff","GCAM cooling technology water withdrawal",3.14e-07
-"Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Electricity_Gas","Water","W_SW_Upstream","GCAM cooling technology water withdrawal",7.17e-05
-"Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Electricity_RefLiqDiesel","Water","W_SW_Upstream","GCAM cooling technology water withdrawal",3.44e-05
-"Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"Electricity_RefLiqDiesel","Water","W_SW_Upstream","GCAM cooling technology water withdrawal",1.49e-07
-"Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"Electricity_Hydro","Water","W_SW_Upstream","GCAM cooling technology water withdrawal",0
-"Argentina","Corfo","watWithdrawBySec","km3",2010,"Livestock_vacas","Water","W_SW_Upstream","COIRCO_2013_report",0.002967
-"Argentina","Corfo","watWithdrawBySec","km3",2010,"Livestock_vaquillonas","Water","W_SW_Upstream","COIRCO_2013_report",0.0008677
-"Argentina","Corfo","watWithdrawBySec","km3",2010,"Livestock_novillos","Water","W_SW_Upstream","COIRCO_2013_report",0.000590863
-"Argentina","Corfo","watWithdrawBySec","km3",2010,"Livestock_terneros","Water","W_SW_Upstream","COIRCO_2013_report",0.000571634
-"Argentina","Corfo","watWithdrawBySec","km3",2010,"Livestock_toros","Water","W_SW_Upstream","COIRCO_2013_report",6.733e-05
-"Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"residential","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.756570742
-"Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",23.07206826
-"Argentina","Neuquen_alta_barrancas","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",7.46025
-"Argentina","Neuquen_media","elecDemand","GWh",2010,"residential","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",18.39044896
-"Argentina","Neuquen_media","elecDemand","GWh",2010,"residential","Electricity","Electricity_Gas","COIRCO_2013_report",39.07970404
-"Argentina","RioNegro_media","elecDemand","GWh",2010,"residential","Electricity","Electricity_Hydro","COIRCO_2013_report",40.98290205
-"Argentina","RioNegro_media","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",229.8456243
-"Argentina","RioNegro_baja","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",36.956574
-"Argentina","LaPampa_media","elecDemand","GWh",2010,"residential","Electricity","Electricity_Hydro","COIRCO_2013_report",9.236426
-"Argentina","LaPampa_baja","elecDemand","GWh",2010,"residential","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.379168795
-"Argentina","LaPampa_baja","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",3.685744205
-"Argentina","Corfo","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",41.523715
-"Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"commercial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.216176069
-"Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","",6.592415931
-"Argentina","Neuquen_alta_barrancas","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","COIRCO_2013_report",0
-"Argentina","Neuquen_media","elecDemand","GWh",2010,"commercial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0
-"Argentina","Neuquen_media","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Gas","",0
-"Argentina","RioNegro_media","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Hydro","COIRCO_2013_report",20.86054075
-"Argentina","RioNegro_media","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","COIRCO_2013_report",116.992789
-"Argentina","RioNegro_baja","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","COIRCO_2013_report",20.835906
-"Argentina","LaPampa_media","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Hydro","COIRCO_2013_report",3.19665
-"Argentina","LaPampa_baja","elecDemand","GWh",2010,"commercial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.148070309
-"Argentina","LaPampa_baja","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","",1.439330691
-"Argentina","Corfo","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","COIRCO_2013_report",20.123545
-"Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"industrial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.730407044
-"Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","",22.27419096
-"Argentina","Neuquen_alta_barrancas","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","COIRCO_2013_report",0
-"Argentina","Neuquen_media","elecDemand","GWh",2010,"industrial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",170.796864
-"Argentina","Neuquen_media","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Gas","COIRCO_2013_report",362.943336
-"Argentina","RioNegro_media","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Hydro","COIRCO_2013_report",75.72226607
-"Argentina","RioNegro_media","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","COIRCO_2013_report",424.6754292
-"Argentina","RioNegro_baja","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","COIRCO_2013_report",24.013419
-"Argentina","LaPampa_media","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Hydro","COIRCO_2013_report",6.567185
-"Argentina","LaPampa_baja","elecDemand","GWh",2010,"industrial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.0110826
-"Argentina","LaPampa_baja","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","",0.1077294
-"Argentina","Corfo","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","COIRCO_2013_report",8.886225
-"Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"other","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.372634944
-"Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","",11.36372106
-"Argentina","Neuquen_alta_barrancas","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","COIRCO_2013_report",5.477967
-"Argentina","Neuquen_media","elecDemand","GWh",2010,"other","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",33.62627584
-"Argentina","Neuquen_media","elecDemand","GWh",2010,"other","Electricity","Electricity_Gas","",71.45583616
-"Argentina","RioNegro_media","elecDemand","GWh",2010,"other","Electricity","Electricity_Hydro","COIRCO_2013_report",20.22229113
-"Argentina","RioNegro_media","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","COIRCO_2013_report",113.4132747
-"Argentina","RioNegro_baja","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","COIRCO_2013_report",24.52153
-"Argentina","LaPampa_media","elecDemand","GWh",2010,"other","Electricity","Electricity_Hydro","COIRCO_2013_report",4.568789
-"Argentina","LaPampa_baja","elecDemand","GWh",2010,"other","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.443470296
-"Argentina","LaPampa_baja","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","",4.310792704
-"Argentina","Corfo","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","COIRCO_2013_report",25.390125
-"Argentina","Neuquen_media","elecDemand","GWh",2010,"export","Electricity","Electricity_RefLiqDiesel","",1.34916064
-"Argentina","Neuquen_media","elecDemand","GWh",2010,"export","Electricity","Electricity_Gas","",2.86696636
-"Argentina","LaPampa_media","elecDemand","GWh",2010,"export","Electricity","Electricity_Hydro","",134.218
-"Argentina","Corfo","agDemand","km2",2010,"export","Agriculture","Ag_cereals","no data, just assumed export",490
-"Argentina","Corfo","agDemand","km2",2010,"export","Agriculture","Ag_vegetables","no data, just assumed export",168
-"Argentina","Corfo","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",742
-"Argentina","LaPampa_baja","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",2.39
-"Argentina","LaPampa_baja","agDemand","km2",2010,"export","Agriculture","Ag_specialty","no data, just assumed export",0.5
-"Argentina","LaPampa_baja","agDemand","km2",2010,"export","Agriculture","Ag_vegetables","no data, just assumed export",0.47
-"Argentina","RioNegro_baja","agDemand","km2",2010,"export","Agriculture","Ag_fruittrees","no data, just assumed export",18.9
-"Argentina","RioNegro_baja","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",10.95
-"Argentina","RioNegro_baja","agDemand","km2",2010,"export","Agriculture","Ag_vegetables","no data, just assumed export",6.1
-"Argentina","RioNegro_baja","agDemand","km2",2010,"export","Agriculture","Ag_cereals","no data, just assumed export",19.85
-"Argentina","RioNegro_media","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",22.25
-"Argentina","RioNegro_media","agDemand","km2",2010,"export","Agriculture","Ag_cereals","no data, just assumed export",0.6
-"Argentina","RioNegro_media","agDemand","km2",2010,"export","Agriculture","Ag_specialty","no data, just assumed export",0.62
-"Argentina","RioNegro_media","agDemand","km2",2010,"export","Agriculture","Ag_fruittrees","no data, just assumed export",1.5
-"Argentina","RioNegro_media","agDemand","km2",2010,"export","Agriculture","Ag_forest","no data, just assumed export",0.63
-"Argentina","LaPampa_media","agDemand","km2",2010,"export","Agriculture","Ag_fruittrees","no data, just assumed export",31.1
-"Argentina","LaPampa_media","agDemand","km2",2010,"export","Agriculture","Ag_specialty","no data, just assumed export",5.2
-"Argentina","LaPampa_media","agDemand","km2",2010,"export","Agriculture","Ag_cereals","no data, just assumed export",28.5
-"Argentina","LaPampa_media","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",13.2
-"Argentina","Neuquen_media","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",6.22
-"Argentina","Neuquen_media","agDemand","km2",2010,"export","Agriculture","Ag_cereals","no data, just assumed export",0.2
-"Argentina","Neuquen_media","agDemand","km2",2010,"export","Agriculture","Ag_fruittrees","no data, just assumed export",0.06
-"Argentina","Neuquen_media","agDemand","km2",2010,"export","Agriculture","Ag_vegetables","no data, just assumed export",0.02
-"Argentina","Neuquen_alta_barrancas","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",0.53
-"Argentina","Neuquen_alta_barrancas","agDemand","km2",2010,"export","Agriculture","Ag_forest","no data, just assumed export",0.15
-"Argentina","Mendoza_alta_barrancas","agDemand","km2",2010,"export","Agriculture","Ag_fruittrees","no data, just assumed export",0.02
-"Argentina","Corfo","meatDemand","head",2010,"export","Livestock","Livestock_vacas","COIRCO land sheet",127040
-"Argentina","Corfo","meatDemand","head",2010,"export","Livestock","Livestock_vaquillonas","COIRCO land sheet",37136
-"Argentina","Corfo","meatDemand","head",2010,"export","Livestock","Livestock_novillos","COIRCO land sheet",47471
-"Argentina","Corfo","meatDemand","head",2010,"export","Livestock","Livestock_terneros","COIRCO land sheet",45924
-"Argentina","Corfo","meatDemand","head",2010,"export","Livestock","Livestock_toros","COIRCO land sheet",5408
+"scenario","region","subRegion","param","units","year","demandClass","supplySector","supplySubSector","dataSource","localData"
+"Reference","Argentina","Mendoza_alta_barrancas","watWithdrawBySec","km3",2010,"Ag_fruittrees","Water","W_SW_Runoff","COIRCO_2013_report",0.001
+"Reference","Argentina","Neuquen_alta_barrancas","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Runoff","COIRCO_2013_report",0.0087
+"Reference","Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.0614711461823097
+"Reference","Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Ag_cereals","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.00362810703064473
+"Reference","Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Ag_fruittrees","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.000375560090284209
+"Reference","Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Ag_vegetables","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.000125186696761403
+"Reference","Argentina","RioNegro_media","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.160833276033615
+"Reference","Argentina","RioNegro_media","watWithdrawBySec","km3",2010,"Ag_cereals","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.0079609759473887
+"Reference","Argentina","RioNegro_media","watWithdrawBySec","km3",2010,"Ag_specialty","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.00283847347725365
+"Reference","Argentina","RioNegro_media","watWithdrawBySec","km3",2010,"Ag_fruittrees","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.00686727454174271
+"Reference","Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"Ag_fruittrees","Water","W_SW_Reservoir","assumed evenly divided water demand across crops",0.0518560103249489
+"Reference","Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"Ag_specialty","Water","W_SW_Reservoir","assumed evenly divided water demand across crops",0.00867045831799788
+"Reference","Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"Ag_cereals","Water","W_SW_Reservoir","assumed evenly divided water demand across crops",0.137722685165593
+"Reference","Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Reservoir","assumed evenly divided water demand across crops",0.0347508461914602
+"Reference","Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.00400938048131148
+"Reference","Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"Ag_specialty","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.000531247174581712
+"Reference","Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"Ag_vegetables","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.000499372344106809
+"Reference","Argentina","RioNegro_baja","watWithdrawBySec","km3",2010,"Ag_fruittrees","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.0510770143706888
+"Reference","Argentina","RioNegro_baja","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.046722982779506
+"Reference","Argentina","RioNegro_baja","watWithdrawBySec","km3",2010,"Ag_vegetables","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.0164851739503281
+"Reference","Argentina","RioNegro_baja","watWithdrawBySec","km3",2010,"Ag_cereals","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.155469828899477
+"Reference","Argentina","Corfo","watWithdrawBySec","km3",2010,"Ag_cereals","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.977680572431699
+"Reference","Argentina","Corfo","watWithdrawBySec","km3",2010,"Ag_vegetables","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.115661355223129
+"Reference","Argentina","Corfo","watWithdrawBySec","km3",2010,"Ag_pasture","Water","W_SW_Upstream","assumed evenly divided water demand across crops",0.806558072345172
+"Reference","Argentina","Mendoza_alta_barrancas","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Runoff","COIRCO_2013_report",0
+"Reference","Argentina","Mendoza_alta_riogrande","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Runoff","COIRCO_2013_report",0
+"Reference","Argentina","Neuquen_alta_barrancas","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Runoff","COIRCO_2013_report",0.00026
+"Reference","Argentina","Mendoza_media","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.0012
+"Reference","Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.00298
+"Reference","Argentina","RioNegro_media","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.00277
+"Reference","Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.00166
+"Reference","Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.00083
+"Reference","Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"export","Water","W_SW_Upstream","COIRCO_2013_report",0.0021
+"Reference","Argentina","RioNegro_baja","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.0021
+"Reference","Argentina","Corfo","watWithdrawBySec","km3",2010,"municipal","Water","W_SW_Upstream","COIRCO_2013_report",0.00252
+"Reference","Argentina","Mendoza_alta_riogrande","watWithdrawBySec","km3",2010,"Electricity_RefLiqDiesel","Water","W_SW_Runoff","GCAM cooling technology water withdrawal",3.14e-07
+"Reference","Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Electricity_Gas","Water","W_SW_Upstream","GCAM cooling technology water withdrawal",7.17e-05
+"Reference","Argentina","Neuquen_media","watWithdrawBySec","km3",2010,"Electricity_RefLiqDiesel","Water","W_SW_Upstream","GCAM cooling technology water withdrawal",3.44e-05
+"Reference","Argentina","LaPampa_baja","watWithdrawBySec","km3",2010,"Electricity_RefLiqDiesel","Water","W_SW_Upstream","GCAM cooling technology water withdrawal",1.49e-07
+"Reference","Argentina","LaPampa_media","watWithdrawBySec","km3",2010,"Electricity_Hydro","Water","W_SW_Upstream","GCAM cooling technology water withdrawal",0
+"Reference","Argentina","Corfo","watWithdrawBySec","km3",2010,"Livestock_vacas","Water","W_SW_Upstream","COIRCO_2013_report",0.002967
+"Reference","Argentina","Corfo","watWithdrawBySec","km3",2010,"Livestock_vaquillonas","Water","W_SW_Upstream","COIRCO_2013_report",0.0008677
+"Reference","Argentina","Corfo","watWithdrawBySec","km3",2010,"Livestock_novillos","Water","W_SW_Upstream","COIRCO_2013_report",0.000590863
+"Reference","Argentina","Corfo","watWithdrawBySec","km3",2010,"Livestock_terneros","Water","W_SW_Upstream","COIRCO_2013_report",0.000571634
+"Reference","Argentina","Corfo","watWithdrawBySec","km3",2010,"Livestock_toros","Water","W_SW_Upstream","COIRCO_2013_report",6.733e-05
+"Reference","Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"residential","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.756570742
+"Reference","Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",23.07206826
+"Reference","Argentina","Neuquen_alta_barrancas","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",7.46025
+"Reference","Argentina","Neuquen_media","elecDemand","GWh",2010,"residential","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",18.39044896
+"Reference","Argentina","Neuquen_media","elecDemand","GWh",2010,"residential","Electricity","Electricity_Gas","COIRCO_2013_report",39.07970404
+"Reference","Argentina","RioNegro_media","elecDemand","GWh",2010,"residential","Electricity","Electricity_Hydro","COIRCO_2013_report",40.98290205
+"Reference","Argentina","RioNegro_media","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",229.8456243
+"Reference","Argentina","RioNegro_baja","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",36.956574
+"Reference","Argentina","LaPampa_media","elecDemand","GWh",2010,"residential","Electricity","Electricity_Hydro","COIRCO_2013_report",9.236426
+"Reference","Argentina","LaPampa_baja","elecDemand","GWh",2010,"residential","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.379168795
+"Reference","Argentina","LaPampa_baja","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",3.685744205
+"Reference","Argentina","Corfo","elecDemand","GWh",2010,"residential","Electricity","Electricity_Import","COIRCO_2013_report",41.523715
+"Reference","Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"commercial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.216176069
+"Reference","Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","",6.592415931
+"Reference","Argentina","Neuquen_alta_barrancas","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","COIRCO_2013_report",0
+"Reference","Argentina","Neuquen_media","elecDemand","GWh",2010,"commercial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0
+"Reference","Argentina","Neuquen_media","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Gas","",0
+"Reference","Argentina","RioNegro_media","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Hydro","COIRCO_2013_report",20.86054075
+"Reference","Argentina","RioNegro_media","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","COIRCO_2013_report",116.992789
+"Reference","Argentina","RioNegro_baja","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","COIRCO_2013_report",20.835906
+"Reference","Argentina","LaPampa_media","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Hydro","COIRCO_2013_report",3.19665
+"Reference","Argentina","LaPampa_baja","elecDemand","GWh",2010,"commercial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.148070309
+"Reference","Argentina","LaPampa_baja","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","",1.439330691
+"Reference","Argentina","Corfo","elecDemand","GWh",2010,"commercial","Electricity","Electricity_Import","COIRCO_2013_report",20.123545
+"Reference","Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"industrial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.730407044
+"Reference","Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","",22.27419096
+"Reference","Argentina","Neuquen_alta_barrancas","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","COIRCO_2013_report",0
+"Reference","Argentina","Neuquen_media","elecDemand","GWh",2010,"industrial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",170.796864
+"Reference","Argentina","Neuquen_media","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Gas","COIRCO_2013_report",362.943336
+"Reference","Argentina","RioNegro_media","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Hydro","COIRCO_2013_report",75.72226607
+"Reference","Argentina","RioNegro_media","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","COIRCO_2013_report",424.6754292
+"Reference","Argentina","RioNegro_baja","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","COIRCO_2013_report",24.013419
+"Reference","Argentina","LaPampa_media","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Hydro","COIRCO_2013_report",6.567185
+"Reference","Argentina","LaPampa_baja","elecDemand","GWh",2010,"industrial","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.0110826
+"Reference","Argentina","LaPampa_baja","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","",0.1077294
+"Reference","Argentina","Corfo","elecDemand","GWh",2010,"industrial","Electricity","Electricity_Import","COIRCO_2013_report",8.886225
+"Reference","Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"other","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.372634944
+"Reference","Argentina","Mendoza_alta_riogrande","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","",11.36372106
+"Reference","Argentina","Neuquen_alta_barrancas","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","COIRCO_2013_report",5.477967
+"Reference","Argentina","Neuquen_media","elecDemand","GWh",2010,"other","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",33.62627584
+"Reference","Argentina","Neuquen_media","elecDemand","GWh",2010,"other","Electricity","Electricity_Gas","",71.45583616
+"Reference","Argentina","RioNegro_media","elecDemand","GWh",2010,"other","Electricity","Electricity_Hydro","COIRCO_2013_report",20.22229113
+"Reference","Argentina","RioNegro_media","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","COIRCO_2013_report",113.4132747
+"Reference","Argentina","RioNegro_baja","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","COIRCO_2013_report",24.52153
+"Reference","Argentina","LaPampa_media","elecDemand","GWh",2010,"other","Electricity","Electricity_Hydro","COIRCO_2013_report",4.568789
+"Reference","Argentina","LaPampa_baja","elecDemand","GWh",2010,"other","Electricity","Electricity_RefLiqDiesel","COIRCO_2013_report",0.443470296
+"Reference","Argentina","LaPampa_baja","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","",4.310792704
+"Reference","Argentina","Corfo","elecDemand","GWh",2010,"other","Electricity","Electricity_Import","COIRCO_2013_report",25.390125
+"Reference","Argentina","Neuquen_media","elecDemand","GWh",2010,"export","Electricity","Electricity_RefLiqDiesel","",1.34916064
+"Reference","Argentina","Neuquen_media","elecDemand","GWh",2010,"export","Electricity","Electricity_Gas","",2.86696636
+"Reference","Argentina","LaPampa_media","elecDemand","GWh",2010,"export","Electricity","Electricity_Hydro","",134.218
+"Reference","Argentina","Corfo","agDemand","km2",2010,"export","Agriculture","Ag_cereals","no data, just assumed export",490
+"Reference","Argentina","Corfo","agDemand","km2",2010,"export","Agriculture","Ag_vegetables","no data, just assumed export",168
+"Reference","Argentina","Corfo","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",742
+"Reference","Argentina","LaPampa_baja","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",2.39
+"Reference","Argentina","LaPampa_baja","agDemand","km2",2010,"export","Agriculture","Ag_specialty","no data, just assumed export",0.5
+"Reference","Argentina","LaPampa_baja","agDemand","km2",2010,"export","Agriculture","Ag_vegetables","no data, just assumed export",0.47
+"Reference","Argentina","RioNegro_baja","agDemand","km2",2010,"export","Agriculture","Ag_fruittrees","no data, just assumed export",18.9
+"Reference","Argentina","RioNegro_baja","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",10.95
+"Reference","Argentina","RioNegro_baja","agDemand","km2",2010,"export","Agriculture","Ag_vegetables","no data, just assumed export",6.1
+"Reference","Argentina","RioNegro_baja","agDemand","km2",2010,"export","Agriculture","Ag_cereals","no data, just assumed export",19.85
+"Reference","Argentina","RioNegro_media","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",22.25
+"Reference","Argentina","RioNegro_media","agDemand","km2",2010,"export","Agriculture","Ag_cereals","no data, just assumed export",0.6
+"Reference","Argentina","RioNegro_media","agDemand","km2",2010,"export","Agriculture","Ag_specialty","no data, just assumed export",0.62
+"Reference","Argentina","RioNegro_media","agDemand","km2",2010,"export","Agriculture","Ag_fruittrees","no data, just assumed export",1.5
+"Reference","Argentina","RioNegro_media","agDemand","km2",2010,"export","Agriculture","Ag_forest","no data, just assumed export",0.63
+"Reference","Argentina","LaPampa_media","agDemand","km2",2010,"export","Agriculture","Ag_fruittrees","no data, just assumed export",31.1
+"Reference","Argentina","LaPampa_media","agDemand","km2",2010,"export","Agriculture","Ag_specialty","no data, just assumed export",5.2
+"Reference","Argentina","LaPampa_media","agDemand","km2",2010,"export","Agriculture","Ag_cereals","no data, just assumed export",28.5
+"Reference","Argentina","LaPampa_media","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",13.2
+"Reference","Argentina","Neuquen_media","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",6.22
+"Reference","Argentina","Neuquen_media","agDemand","km2",2010,"export","Agriculture","Ag_cereals","no data, just assumed export",0.2
+"Reference","Argentina","Neuquen_media","agDemand","km2",2010,"export","Agriculture","Ag_fruittrees","no data, just assumed export",0.06
+"Reference","Argentina","Neuquen_media","agDemand","km2",2010,"export","Agriculture","Ag_vegetables","no data, just assumed export",0.02
+"Reference","Argentina","Neuquen_alta_barrancas","agDemand","km2",2010,"export","Agriculture","Ag_pasture","no data, just assumed export",0.53
+"Reference","Argentina","Neuquen_alta_barrancas","agDemand","km2",2010,"export","Agriculture","Ag_forest","no data, just assumed export",0.15
+"Reference","Argentina","Mendoza_alta_barrancas","agDemand","km2",2010,"export","Agriculture","Ag_fruittrees","no data, just assumed export",0.02
+"Reference","Argentina","Corfo","meatDemand","head",2010,"export","Livestock","Livestock_vacas","COIRCO land sheet",127040
+"Reference","Argentina","Corfo","meatDemand","head",2010,"export","Livestock","Livestock_vaquillonas","COIRCO land sheet",37136
+"Reference","Argentina","Corfo","meatDemand","head",2010,"export","Livestock","Livestock_novillos","COIRCO land sheet",47471
+"Reference","Argentina","Corfo","meatDemand","head",2010,"export","Livestock","Livestock_terneros","COIRCO land sheet",45924
+"Reference","Argentina","Corfo","meatDemand","head",2010,"export","Livestock","Livestock_toros","COIRCO land sheet",5408
