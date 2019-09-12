@@ -12,6 +12,7 @@
 #' @param combSubRegionPlots Default = 1
 #' @param folderName Default ="folderNameDefault"
 #' @param plotSankeys Default = T
+#' @param pdfpng Save IO figures as pdf or png. Type=String. Options: 'pdf' or 'png'. Default = 'png'
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @export
@@ -27,7 +28,8 @@ metis.io<-function(ioTable0 = NULL,
                    sankeyLabelAbsPlots=1,
                    combSubRegionPlots=1,
                    folderName="folderNameDefault",
-                   plotSankeys=T
+                   plotSankeys=T,
+                   pdfpng='png'
                         ){
 
   # ioTable0 = NULL
@@ -1044,13 +1046,13 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
               xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png")
+              figHeight=figHeight_ix,pdfpng=pdfpng)
 
   # data=A_matx; chartType="bubble"; xData="sectorTo"; yData="sectorFrom"; classLabel="classLabel1";
   # xLabel="sector To"; yLabel="sector From"; labelTextSize=5; sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
   # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
   # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
-  # figHeight=figHeight_ix;pdfpng="png"
+  # figHeight=figHeight_ix;pdfpng=pdfpng
 
   data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
   print(paste("A_matx saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1082,7 +1084,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                 xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                 removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                figHeight=figHeight_ix,pdfpng="png")
+                figHeight=figHeight_ix,pdfpng=pdfpng)
 
     data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
     print(paste("A_matxAgg saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1135,7 +1137,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
               xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png")
+              figHeight=figHeight_ix,pdfpng=pdfpng)
 
   # ioTable absolute bubbles
   if(nrow(solx)>0){
@@ -1147,7 +1149,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
               xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png")
+              figHeight=figHeight_ix,pdfpng=pdfpng)
 
   data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
   print(paste("solx saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1192,7 +1194,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                 xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                 removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                figHeight=figHeight_ix,pdfpng="png")
+                figHeight=figHeight_ix,pdfpng=pdfpng)
 
     # ioTable absolute bubbles
     if(nrow(solx_AggDem)>0){
@@ -1204,7 +1206,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("solx_AggDem saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1238,7 +1240,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                 xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                 removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                figHeight=figHeight_ix,pdfpng="png")
+                figHeight=figHeight_ix,pdfpng=pdfpng)
 
     # ioTable absolute bubbles
     if(nrow(solx_AggDemAggSup)>0){
@@ -1250,7 +1252,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
     }}
 
 
@@ -1316,7 +1318,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
+              figHeight=figHeight_ix,pdfpng=pdfpng, sankeyLabelsOn=sankeyLabelAbsPlots)
 
   data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
   print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1327,7 +1329,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
   # labelTextSize=5; sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
   # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
   # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
-  # figHeight=figHeight_ix;pdfpng="png"; sankeyLabelsOn=sankeyLabelAbsPlots
+  # figHeight=figHeight_ix;pdfpng=pdfpng; sankeyLabelsOn=sankeyLabelAbsPlots
 
   dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
     dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
@@ -1368,7 +1370,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png")
+              figHeight=figHeight_ix,pdfpng=pdfpng)
 
   data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
   print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1413,7 +1415,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png",sankeyLabelsOn=sankeyLabelAbsPlots)
+              figHeight=figHeight_ix,pdfpng=pdfpng,sankeyLabelsOn=sankeyLabelAbsPlots)
 
   data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
   print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1457,7 +1459,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png")
+              figHeight=figHeight_ix,pdfpng=pdfpng)
 
   data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
   print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1517,7 +1519,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                 sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                 removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
+                figHeight=figHeight_ix,pdfpng=pdfpng, sankeyLabelsOn=sankeyLabelAbsPlots)
 
     data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
     print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1559,7 +1561,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                 sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                 removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                figHeight=figHeight_ix,pdfpng="png")
+                figHeight=figHeight_ix,pdfpng=pdfpng)
 
     data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
     print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1603,7 +1605,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
+              figHeight=figHeight_ix,pdfpng=pdfpng, sankeyLabelsOn=sankeyLabelAbsPlots)
 
   data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
   print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1643,7 +1645,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png")
+              figHeight=figHeight_ix,pdfpng=pdfpng)
 
   data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
   print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1684,7 +1686,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png")
+              figHeight=figHeight_ix,pdfpng=pdfpng)
 
   data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
   print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1725,7 +1727,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-              figHeight=figHeight_ix,pdfpng="png")
+              figHeight=figHeight_ix,pdfpng=pdfpng)
 
   data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
   print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1778,13 +1780,13 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       # data=A_matx; chartType="bubble"; xData="sectorTo"; yData="sectorFrom"; classLabel="classLabel1";
       # xLabel="sector To"; yLabel="sector From"; labelTextSize=5; sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
       # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
       # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
-      # figHeight=figHeight_ix;pdfpng="png"
+      # figHeight=figHeight_ix;pdfpng=pdfpng
 
       data.table::fwrite(A_matx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("A_matx saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1818,7 +1820,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 20, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       data.table::fwrite(A_matxAgg,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("A_matxAgg saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1871,7 +1873,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       # ioTable absolute bubbles
       if(nrow(solx)>0){
@@ -1883,7 +1885,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                     xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                     removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                     fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                    figHeight=figHeight_ix,pdfpng="png")
+                    figHeight=figHeight_ix,pdfpng=pdfpng)
 
         data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
         print(paste("solx saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1914,7 +1916,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       # ioTable absolute bubbles
       if(nrow(solx_AggDem)>0){
@@ -1926,7 +1928,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                     xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                     removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                     fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                    figHeight=figHeight_ix,pdfpng="png")
+                    figHeight=figHeight_ix,pdfpng=pdfpng)
 
         data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
         print(paste("solx_AggDem saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -1973,7 +1975,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       # ioTable absolute bubbles
       if(nrow(solx_AggDemAggSup)>0){
@@ -1985,7 +1987,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                     xLabel="sector To", yLabel="sector From", sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                     removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                     fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                    figHeight=figHeight_ix,pdfpng="png")
+                    figHeight=figHeight_ix,pdfpng=pdfpng)
 
         data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
         print(paste("solx_AggDemAggSup saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -2055,7 +2057,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
+                  figHeight=figHeight_ix,pdfpng=pdfpng, sankeyLabelsOn=sankeyLabelAbsPlots)
 
       data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -2067,7 +2069,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       # sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
       # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
       # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
-      # figHeight=figHeight_ix;pdfpng="png"; sankeyLabelsOn=sankeyLabelAbsPlots
+      # figHeight=figHeight_ix;pdfpng=pdfpng; sankeyLabelsOn=sankeyLabelAbsPlots
 
       dfx_sankey <- dfx%>%dplyr::filter(value!=0, !grepl("_all",sectorFrom)) %>%
         dplyr::mutate(sectorToAgg = sub("_[^_]*$", "", sectorTo)) %>%
@@ -2108,7 +2110,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -2154,7 +2156,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png",sankeyLabelsOn=sankeyLabelAbsPlots)
+                  figHeight=figHeight_ix,pdfpng=pdfpng,sankeyLabelsOn=sankeyLabelAbsPlots)
 
       data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -2198,7 +2200,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -2258,7 +2260,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
+                  figHeight=figHeight_ix,pdfpng=pdfpng, sankeyLabelsOn=sankeyLabelAbsPlots)
 
       data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -2300,7 +2302,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -2343,7 +2345,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png", sankeyLabelsOn=sankeyLabelAbsPlots)
+                  figHeight=figHeight_ix,pdfpng=pdfpng, sankeyLabelsOn=sankeyLabelAbsPlots)
 
       data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -2383,7 +2385,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -2424,7 +2426,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
@@ -2465,7 +2467,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
-                  figHeight=figHeight_ix,pdfpng="png")
+                  figHeight=figHeight_ix,pdfpng=pdfpng)
 
       data.table::fwrite(plotx,file=paste(dir,"/",fname,".csv",sep=""))
       print(paste("dfx_sankey saved as ", paste(dir,"/",fname,".csv",sep=""),sep=""))
