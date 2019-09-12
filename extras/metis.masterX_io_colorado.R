@@ -71,7 +71,7 @@ colnames(mapping_df) <- colnames
 params <- 'griddedScarcity'
 mapping_df['region'] <- 'Argentina'
 mapping_df['subRegion'] <- subregions
-mapping_df['scenario'] <- 'reference'
+mapping_df['scenario'] <- 'Reference'
 mapping_df['sources'] <- 'localData'
 mapping_df['param'] <- params
 mapping_df['units'] <- 'unitless'
@@ -86,7 +86,7 @@ mapping_df['classLabel'] <- 'Scarcity'
 # Process supplies/demands to create scarcity value for each of the 10 sub-regions
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg, supplySector %in% c('Water'))
-  df2 <- df %>% select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+  df2 <- df %>% select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   demand <- sum((df2)$rowsum, na.rm=TRUE)
   df3 <- ioTable0 %>% filter(subRegion==subReg, supplySubSector %in% c('W_SW_Runoff', 'W_SW_Upstream'))
@@ -120,7 +120,7 @@ new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'Runoff'
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg, supplySubSector %in% c('W_SW_Runoff')) %>%
-    select(-subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
+    select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   runoff_value <- sum((df)$rowsum, na.rm=TRUE)
   new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, runoff_value, value))
@@ -141,7 +141,7 @@ new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'IrrigationDemand'
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
-    select(-subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
+    select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
     select(contains("Ag_")) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   irrig_wat_dem_val <- sum((df)$rowsum, na.rm=TRUE)
@@ -163,7 +163,7 @@ new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'MunicipalDemand'
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
-    select(-subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
+    select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
     select(contains("municipal")) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   municipal_water_demand <- sum((df)$rowsum, na.rm=TRUE)
@@ -185,7 +185,7 @@ new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'ElectricityDemand'
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
-    select(-subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
+    select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
     select(contains("Electricity_")) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   electricity_water_demand <- sum((df)$rowsum, na.rm=TRUE)
@@ -207,7 +207,7 @@ new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'ElectricityDemand'
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
-    select(-subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
+    select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
     select(contains("Livestock_")) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   livestock_water_demand <- sum((df)$rowsum, na.rm=TRUE)
@@ -249,7 +249,7 @@ new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'WaterDemand'
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("W_", supplySubSector)) %>%
-    select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+    select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   total_demand <- sum((df)$rowsum, na.rm=TRUE)
   new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_demand, value))
@@ -271,7 +271,7 @@ new_df_append['classLabel'] <- 'ElecSupply'
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("Electricity_", supplySubSector)) %>%
     filter(!grepl("Electricity_Import", supplySubSector)) %>%
-    select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+    select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   total_elec_supply <- sum((df)$rowsum, na.rm=TRUE)
   new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_elec_supply, value))
@@ -293,7 +293,7 @@ new_df_append['classPalette'] <- 'Greens'
 new_df_append['classLabel'] <- 'AgSupply'
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("Ag_", supplySubSector)) %>%
-    select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+    select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   total_ag_supply <- sum((df)$rowsum, na.rm=TRUE)
   new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_ag_supply, value))
@@ -314,7 +314,7 @@ new_df_append['classPalette'] <- 'Greens'
 new_df_append['classLabel'] <- 'AgSupply'
 for (subReg in subregions){
   df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("Ag_", supplySubSector)) %>%
-    select(-subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+    select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   total_ag_supply <- sum((df)$rowsum, na.rm=TRUE)
   new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_ag_supply, value))
@@ -326,7 +326,13 @@ write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE
 #-----------------------------------------------------------------------------------------------------------------------
 
 # Run Metis IO model
-io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario", combSubRegionPlots = 0)  # ioTable0=ioTable0
+# Make sure region and subregion are character types
+ioTable0$region <- as.character(ioTable0$region)
+ioTable0$subRegion <- as.character(ioTable0$subRegion)
+ioTable0$scenario <- as.character(ioTable0$scenario)
+
+io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario", combSubRegionPlots = 0,
+                folderName="ColoradoSubRegFinal", pdfpng='pdf')  # ioTable0=ioTable0
 io1$ioTbl_Output %>% as.data.frame()
 io1$A_Output %>% as.data.frame()
 
@@ -457,7 +463,7 @@ for(reg in unique(ioTable0$region)){
   }
   # Run Metis IO model
   ioTable0 <- t2
-  io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario")  # ioTable0=ioTable0
+  io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario", folderName="ColoradoFinal", pdfpng='pdf')  # ioTable0=ioTable0
   io1$ioTbl_Output %>% as.data.frame()
   io1$A_Output %>% as.data.frame()
 }
