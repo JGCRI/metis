@@ -100,7 +100,7 @@ NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
     country->name->GCMRCP->datax->
     region->regionsSelect->rowid->scenarioTethys->scenarioXanthos->
     year->origValue->gridlat->gridlon->class1->valueDistrib->origValueDistrib->gridCellPercentage->
-    region_32_code->ctry_name->ctry_code->aggregate->gridID
+    region_32_code->ctry_name->ctry_code->aggregate->gridID->diagnosticFig
 
 
 #------------------
@@ -178,7 +178,7 @@ if(!file.exists(paste(demeterFolder,"/landcover_",timestepx,"_timestep.csv",sep=
   print(paste("Skipping file: ",demeterFolder,"/landcover_",timestepx,"_timestep.csv",sep=""))
 }else{
   print(paste("Reading demeter data file: ",demeterFolder,"/landcover_",timestepx,"_timestep.csv...",sep=""))
-gridx<-data.table::fread(paste(demeterFolder,"/landcover_",timestepx,"_timestep.csv",sep=""))%>%
+gridx<-data.table::fread(paste(demeterFolder,"/landcover_",timestepx,"_timestep.csv",sep=""),encoding="Latin-1")%>%
   tibble::as_tibble()%>%
   dplyr::mutate(lat=latitude,lon=longitude,
                 scenarioGCM=NA,
@@ -243,7 +243,7 @@ if(!dir.exists(tethysFolder)){
         print(paste("Skipping file: ",tethysFolder,"/",tethysFile_i,sep=""))
       }else{
         print(paste("Reading tethys data file: ",tethysFile_i,"...",sep=""))
-        gridx<-data.table::fread(paste(tethysFolder,"/",tethysFile_i,sep=""),fill=T)%>%
+        gridx<-data.table::fread(paste(tethysFolder,"/",tethysFile_i,sep=""),fill=T,encoding="Latin-1")%>%
           tibble::as_tibble()%>%dplyr::select(-'# ID',-ilon,-ilat)
         print("File read.")
         names(gridx)<-gsub("X","",names(gridx))
@@ -342,14 +342,14 @@ if(!dir.exists(xanthosFolder)){
         print(paste("Skipping file: ",xanthosFolder,"/",xanthosFile_i,sep=""))
       }else{
 
-        xanthosCoords<-data.table::fread(xanthosCoordinatesPath, header=F);
+        xanthosCoords<-data.table::fread(xanthosCoordinatesPath, header=F,encoding="Latin-1");
         xanthosCoords<-xanthosCoords%>%dplyr::rename(lon=V2,lat=V3)%>%dplyr::select(lon,lat)
-        xanthosGridArea<-data.table::fread(xanthosGridAreaHecsPath, header=F);
+        xanthosGridArea<-data.table::fread(xanthosGridAreaHecsPath, header=F,encoding="Latin-1");
         xanthosGridArea<-xanthosGridArea%>%dplyr::rename(Area_hec=V1)%>%dplyr::mutate(Area_km2=0.01*Area_hec)%>%
           dplyr::select(Area_hec,Area_km2)
 
         print(paste("Reading xanthos data file: ",xanthosFile_i,"...",sep=""))
-        gridx<-data.table::fread(paste(xanthosFolder,"/",xanthosFile_i,sep=""), header=T,stringsAsFactors = F)%>%
+        gridx<-data.table::fread(paste(xanthosFolder,"/",xanthosFile_i,sep=""), header=T,stringsAsFactors = F,encoding="Latin-1")%>%
           tibble::as_tibble()%>%dplyr::select(-id)
         print(paste("Xanthos data file: ",xanthosFile_i," read.",sep=""))
 
@@ -382,9 +382,14 @@ if(!dir.exists(xanthosFolder)){
         xanthosScenario<-sub("\\_[0-9].*", "", xanthosScenario);xanthosScenario
         xanthosGCM<-sub("_.*","",xanthosScenario); xanthosGCM
         xanthosRCP<-sub(".*_","",xanthosScenario); xanthosRCP}else{
+          if(grepl("q_km3peryear_",xanthosFile_i)){
+            xanthosScenario<-sub(".*q_km3peryear_", "", xanthosFile_i);xanthosScenario
+            xanthosScenario<-sub("\\_[0-9].*", "", xanthosScenario);xanthosScenario
+            xanthosGCM<-sub("_.*","",xanthosScenario); xanthosGCM
+            xanthosRCP<-sub(".*_","",xanthosScenario); xanthosRCP}else{
           xanthosScenario<-xanthosScenarioAssign
           xanthosGCM=NA;xanthosRCP=NA
-        }
+        }}
 
 
         if(grepl("mm",xanthosUnits)){aggType="depth"}else{aggType="vol"}
@@ -432,12 +437,14 @@ if(!dir.exists(xanthosFolder)){
         fname=paste(unique(gridC$scenario),"_",unique(gridC$param),
                     "_lat",unique(gridC$lat),"_lon", unique(gridC$lon),
                     "_lowessSpan",spanLowess,sep="")
-        metis.printPdfPng(figure=graphics::plot(gridC$x,gridC$value,type="l",
-                             main=paste(unique(gridC$scenario),
-                                       "\nlat = ",unique(gridC$lat),", lon = ", unique(gridC$lon),
-                                       ", Lowess Span =  ",spanLowess,sep=""),
-                             ylab=unique(gridC$units),xlab="Year")+
-                             graphics::lines(gridC$x,gridC$lowess,type="l",col="red"),
+        graphics::plot(gridC$x,gridC$value,type="l",
+                                        main=paste(unique(gridC$scenario),
+                                                   "\nlat = ",unique(gridC$lat),", lon = ", unique(gridC$lon),
+                                                   ", Lowess Span =  ",spanLowess,sep=""),
+                                        ylab=unique(gridC$units),xlab="Year") +
+        graphics::lines(gridC$x,gridC$lowess,type="l",col="red")
+        diagnosticFig <- grDevices::recordPlot()
+        metis.printPdfPng(figure=diagnosticFig,
                           dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
             }
 
@@ -658,7 +665,7 @@ if(!dir.exists(popFolder)){
       }else{
         print(paste("Reading population data file: ",popFile_i,"...",sep=""))
 
-        gridx<-data.table::fread(paste(popFolder,"/",popFile_i,sep=""))%>%
+        gridx<-data.table::fread(paste(popFolder,"/",popFile_i,sep=""),encoding="Latin-1")%>%
           tibble::as_tibble()%>%dplyr::select(lon,lat,dplyr::contains("popGWP"))%>%
           tidyr::gather(key="key",value="value",-c("lat","lon"))%>%
           tidyr::separate(col="key",into=c("scenario","x"),sep="_")%>%
@@ -717,7 +724,7 @@ if(!dir.exists(biaFolder)){
       }else{
         print(paste("Reading bia data file: ",biaFile_i,"...",sep=""))
 
-        gridx<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""))%>%
+        gridx<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""),encoding="Latin-1")%>%
           tibble::as_tibble()%>%
           dplyr::select(-value, -origValue)%>%
           dplyr::mutate(aggType = "vol")%>%

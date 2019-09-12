@@ -237,7 +237,7 @@ library(ggalluvial)
     subRegCol_i = "SUB_NAME"
     metis.map(dataPolygon=subRegShp_i,fillColumn = subRegCol_i,labels=F ,printFig=F,facetsON=F)
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                  gridDataTables=exampleGridTable_i,
                  xRange=c(2005,2010,2020),
                  mapsOutFolderName="BermejoExample",
@@ -266,7 +266,7 @@ library(ggalluvial)
     unique(boundaryRegShp_i@data[[boundaryRegCol_i]])
     boundaryRegionsSelect_i = c("Argentina") # Must be a region in the boundaryRegShp
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      gridDataTables=exampleGridTable_i,
                      xRange=c(2005,2010,2020),
                      mapsOutFolderName="BermejoExampleExtended",
@@ -376,7 +376,7 @@ library(ggalluvial)
     # Make sure shapefile subRegions and PolygonTable subregions match
     unique(polyTable$subRegion); unique(subRegShp_i_Crop@data[[subRegCol_i]])
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2100),
                      mapsOutFolderName=boundaryRegionsSelect_i,
@@ -406,7 +406,7 @@ library(ggalluvial)
       ~param,~minScale, ~maxScale,
       "waterConsumption", 0, 10)
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2100),
                      mapsOutFolderName=paste(boundaryRegionsSelect_i,"_Edited",sep=""),

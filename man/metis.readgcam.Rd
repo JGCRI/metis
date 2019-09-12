@@ -11,8 +11,7 @@ metis.readgcam(gcamdatabasePath = NULL, gcamdatabaseName = NULL,
   dataProjPath = paste(getwd(), "/outputs", sep = ""),
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
   regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All",
-  RawQueryCSV = NULL, RawQueryCSV_param = NULL,
-  CO2mappingFile = NULL)
+  RawQueryCSV = NULL)
 }
 \arguments{
 \item{gcamdatabasePath}{Path to gcam database folder}
@@ -79,17 +78,9 @@ Parameters generated: agProdbyIrrRfd
 }}
 
 \item{paramsSelect}{Default = "All". If desired select a subset of paramaters to analyze from the full list of parameters:
-c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
-"watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
-"gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
-"agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-"LUCemiss", "co2emissionBySector","nonco2emissionBySectorGWPAR5,nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")}
+c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech","elecCapBySubsector",}
 
-\item{RawQueryCSV}{Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.}
-
-\item{RawQueryCSV_param}{Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.}
-
-\item{CO2mappingFile}{Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.}
+\item{RawQueryCSV}{Optional.}
 }
 \value{
 A list with the scenarios in the gcam database, queries in the queryxml file and a

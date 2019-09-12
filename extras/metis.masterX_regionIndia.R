@@ -398,7 +398,7 @@ paramsSelect_i = c("griddedScarcity")
 #                         newCat=c("None","Low","Moderate","Severe"),
 #                         newPal=c("blue","green","orange","red"))
 
-metis.mapProcess(polygonDataTables=a,
+metis.mapsProcess(polygonDataTables=a,
                  gridDataTables=b,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,
@@ -436,7 +436,7 @@ scaleRange_i=data.frame(param=c("griddedScarcity"),
                         minScale=c(0))
 paramsSelect_i = c("griddedScarcity")
 
-metis.mapProcess(polygonDataTables=a,
+metis.mapsProcess(polygonDataTables=a,
                  #gridDataTables=b,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,

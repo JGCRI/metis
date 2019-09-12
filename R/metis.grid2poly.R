@@ -13,14 +13,17 @@
 #' @param aggType  Default=NULL. Aggregation method to be used. Either "vol" or "depth" dependening on the type of data provided.
 #' @param dirOutputs  Default=paste(getwd(),"/outputs",sep  Default=""),
 #' @param folderName Default = NULL
+#' @param regionName Default = "region"
 #' @param nameAppend  Default="",
 #' @param labelsSize Default =1.2. Label size for the region names for the gridoverlay plot.
 #' @param paramsSelect Default ="All"
+#' @param scenariosSelect Default ="All"
 #' @param sqliteUSE Default = T,
 #' @param sqliteDBNamePath Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 #' @export
 
 metis.grid2poly<- function(grid=NULL,
+                           regionName ="region",
                            subRegShape=NULL,
                            subRegShpFolder=NULL,
                            subRegShpFile=NULL,
@@ -32,10 +35,12 @@ metis.grid2poly<- function(grid=NULL,
                            nameAppend="",
                            labelsSize=1.2,
                            paramsSelect="All",
+                           scenariosSelect="All",
                            sqliteUSE = F,
                            sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")) {
 
   # grid=NULL
+  # regionName ="region"
   # subRegShape=NULL
   # subRegShpFolder=NULL
   # subRegShpFile=NULL
@@ -43,8 +48,11 @@ metis.grid2poly<- function(grid=NULL,
   # subRegType="subRegType"
   # aggType=NULL
   # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # folderName = NULL
   # nameAppend=""
   # labelsSize=1.2
+  # paramsSelect="All"
+  # scenariosSelect="All"
   # sqliteUSE = F
   # sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
 
@@ -54,7 +62,8 @@ metis.grid2poly<- function(grid=NULL,
 
   NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
     param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon->overlapShape->
-    gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis -> template_subRegional_mapping
+    gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis -> template_subRegional_mapping -> scenarioGCM ->
+    scenarioRCP -> class2 -> scenarioPolicy -> valueTethys -> valueXanthos -> scenarioSSP
 
   #------------------
   # Function for adding any missing columns if needed
@@ -95,8 +104,11 @@ metis.grid2poly<- function(grid=NULL,
       print(paste("Finding unique scenarios in sql database for param: ",param_i,"...",sep=""))
       scenarios<-sqlGrid%>%dplyr::filter(param==param_i)%>%dplyr::distinct(scenario)%>%dplyr::collect();
       scenarios=scenarios$scenario
-      paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
       print(paste("Unique scenarios found : ", paste(scenarios,collapse=", "),sep=""))
+      print(paste("Selected Scenarios : ", paste(scenariosSelect,collapse=", "),sep=""))
+      if(!grepl("all",scenariosSelect,ignore.case = T)){scenarios=scenarios[scenarios %in% scenariosSelect]}
+      paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
+
     }
     paramScenarios<-paramScenarios%>%unique()
     print("paramScenarios found: ")
@@ -111,7 +123,7 @@ metis.grid2poly<- function(grid=NULL,
         if(any(grepl(".csv",paste(grid)))){
           print(paste("Attempting to read grid csv file ",grid,sep=""))
           if(file.exists(grid)){
-            grid<-data.table::fread(grid)
+            grid<-data.table::fread(grid,encoding="Latin-1")
             grid<-grid%>%unique()
             }else{
               stop(paste("Grid file ",grid," does not exist",sep=""))
@@ -150,8 +162,11 @@ metis.grid2poly<- function(grid=NULL,
         print(paste("Finding unique scenarios in grid for param: ",param_i,"...",sep=""))
         scenarios<-grid%>%dplyr::filter(param==param_i)%>%dplyr::distinct(scenario);
         scenarios=scenarios$scenario
-        paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
         print(paste("Unique scenarios found : ", paste(scenarios,collapse=", "),sep=""))
+        print(paste("Selected Scenarios : ", paste(scenariosSelect,collapse=", "),sep=""))
+        if(!grepl("all",scenariosSelect,ignore.case = T)){scenarios=scenarios[scenarios %in% scenariosSelect]}
+        paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
+
       }
       paramScenarios<-paramScenarios%>%unique()
       print("paramScenarios found: ")
@@ -224,8 +239,8 @@ metis.grid2poly<- function(grid=NULL,
 
     for(row_i in 1:nrow(paramScenarios)){
 
-      param_i <- paramScenarios[row_i,]$param
-      scenario_i <- paramScenarios[row_i,]$scenario
+      param_i <- paramScenarios[row_i,]$param; param_i
+      scenario_i <- paramScenarios[row_i,]$scenario; scenario_i
 
       if(!is.null(sqlGrid)){
         print(paste("Reading data for param: ",param_i," and scenario: ",scenario_i," from sqlGrid...",sep=""))
@@ -241,6 +256,9 @@ metis.grid2poly<- function(grid=NULL,
 
         print(paste("Starting aggregation for param: ",param_i," and scenario: ",scenario_i,"...",sep=""))
 
+        # Subset to keep only required columns
+        cols2Remove <-names(gridx)[names(gridx) %in% c("subRegion",subRegCol,"gridCellArea","subRegAreaSum","gridCellAreaRatio")]
+        gridx <- gridx %>% dplyr::select(-cols2Remove)
 
         if(!"aggType" %in% names(gridx)){
           if(is.null(aggType)){
@@ -280,43 +298,28 @@ metis.grid2poly<- function(grid=NULL,
             tidyr::unite(col="key",names(gridx)[!names(gridx) %in% c("lat","lon","value")],sep="_",remove=T)
           print("Columns united.")
 
-          gridx<-gridx%>%tidyr::spread(key=key,value=value)
+          gridx<-gridx%>%unique()%>%tidyr::spread(key=key,value=value)
 
-          # Convert to Spatial Point Data Frames
-          spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
-          sp::gridded(spdf)<-TRUE
-
-          r<-raster::stack(spdf)
-          raster::projection(r)<-sp::proj4string(shape)
-
-          shapeExpandExtent<-as.data.frame(sp::bbox(shape))   # Get Bounding box
-          expandPercent<-3; shapeExpandExtent$min;shapeExpandExtent$max
-          rangeX<-abs(range(shapeExpandExtent$min[1],shapeExpandExtent$max[1])[2]-range(shapeExpandExtent$min[1],shapeExpandExtent$max[1])[1])
-          rangeY<-abs(range(shapeExpandExtent$min[2],shapeExpandExtent$max[2])[2]-range(shapeExpandExtent$min[2],shapeExpandExtent$max[2])[1])
-          shapeExpandExtent$min[1]<-(-rangeX*expandPercent/100)+shapeExpandExtent$min[1];
-          shapeExpandExtent$min[2]<-(-rangeY*expandPercent/100)+shapeExpandExtent$min[2];
-          shapeExpandExtent$max[1]<-(rangeX*expandPercent/100)+shapeExpandExtent$max[1];
-          shapeExpandExtent$max[2]<-(rangeY*expandPercent/100)+shapeExpandExtent$max[2];
-          shapeExpandExtent<-methods::as(raster::extent(as.vector(t(shapeExpandExtent))), "SpatialPolygons")
-          sp::proj4string(shapeExpandExtent)<-sp::CRS(sp::proj4string(shape)) # ASSIGN COORDINATE SYSTEM
 
           print(paste("Cropping grid to shape file for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
 
-         if(!is.null(raster::intersect(raster::extent(r), raster::extent(shapeExpandExtent)))){
 
-          rcrop<-raster::crop(r,shapeExpandExtent)
-          rcropP<-raster::rasterToPolygons(rcrop)
+         gridCropped<-dplyr::bind_rows(gridCropped,tibble::as_tibble(metis.gridByPoly(gridDataTables=gridx,shape=shape,colName=subRegCol)))
 
-          sp::proj4string(rcropP)<-sp::proj4string(shape)
-          rcropPx<-raster::intersect(shape,rcropP)
+         print(paste("Grid cropped.",sep=""))
 
-          gridCropped<-dplyr::bind_rows(gridCropped,tibble::as_tibble(rcropP@data))
+          # gridDataTables=gridx
+          # shape=shape
+          # colName=subRegCol
+          # saveFile=T
+          # folderName= folderName
+          # fname=gridBypoly_fname
 
           # Save gridCropped to csv
 
           if(nrow(gridCropped)>0){
 
-            gridCroppedX<-tidyr::gather(gridCropped,key=key,value=value,-c(lat,lon))%>%
+            gridCroppedX<-tidyr::gather(gridCropped,key=key,value=value,-c(subRegCol,gridCellArea,subRegAreaSum,gridCellAreaRatio,lat,lon))%>%
               tidyr::separate(col="key",into=namesGrid[!namesGrid %in% c("lat","lon","value")],sep="_")%>%
               unique()%>%
               dplyr::filter(!is.na(value))
@@ -341,7 +344,7 @@ metis.grid2poly<- function(grid=NULL,
             if (!dir.exists(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))}
 
             grid_fname<-paste(dirOutputs, "/Grid2Poly/temp/gridCropped_",polyType,"_",param_i,"_",scenario_i,nameAppend,".csv", sep = "")
-            data.table::fwrite(gridCroppedX%>%dplyr::mutate(polyType=polyType),
+            data.table::fwrite(gridCroppedX%>%dplyr::mutate(polyType=polyType, region=regionName),
                                file = grid_fname,row.names = F)
             print(paste("Subregional grid data files written to: ",grid_fname, sep = ""))
 
@@ -351,6 +354,19 @@ metis.grid2poly<- function(grid=NULL,
 
           if(is.null(gridPolyLoop)){
             print("Printing Grid overlay...")
+
+            spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
+            sp::gridded(spdf)<-TRUE
+            r<-raster::stack(spdf)
+            raster::projection(r)<-sp::proj4string(shape)
+            shape_ras <- raster::rasterize(shape, r[[1]], getCover=TRUE)
+            shape_ras[shape_ras==0] <- NA
+            r<-raster::mask(r,shape_ras)
+            rCrop <- r
+            rCropP<-raster::rasterToPolygons(rCrop)
+            sp::proj4string(rCropP)<-sp::proj4string(shape)
+            rcropPx<-raster::intersect(shape,rCropP)
+
             metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(subRegType,"_map_GridSize_Labels",nameAppend,sep=""),
                       dirOutputs = dir,
                       overLayer = metis.map(labelsSize=labelsSize, dataPolygon=shape,fillColumn = subRegCol,
@@ -368,34 +384,34 @@ metis.grid2poly<- function(grid=NULL,
 
           if(aggType_i=="depth"){
             print(paste("Aggregating depth for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
-            rcropPx@data$area<-raster::area(rcropPx)
-            s1<-shape
-            s1$subRegAreaSum<-raster::area(shape);
-            s1<-s1@data%>%dplyr::select( subRegCol,subRegAreaSum);
-            rcropPx@data<-dplyr::left_join(rcropPx@data,s1,by= subRegCol)
-            rcropPx@data$areaPrcnt<-rcropPx@data$area/rcropPx@data$subRegAreaSum;
+            x<-data.frame(mapply(`*`,gridCropped%>%
+                                   dplyr::select(names(gridCropped)[!names(gridCropped) %in% c(
+                                     names(shape),"lat","lon","gridCellArea","subRegAreaSum","gridCellAreaRatio")]),
+                                  gridCropped%>%dplyr::select(gridCellAreaRatio),SIMPLIFY=FALSE))%>%
+              dplyr::bind_cols(gridCropped%>%dplyr::select( subRegCol))%>%tibble::as_tibble();
 
-            x<-data.frame(mapply(`*`,rcropPx@data%>%
-                                   dplyr::select(names(rcropPx@data)[!names(rcropPx@data) %in% c(
-                                     names(shape),"lat","lon","area","subRegAreaSum","areaPrcnt")]),
-                                 rcropPx@data%>%dplyr::select(areaPrcnt),SIMPLIFY=FALSE))%>%
-              dplyr::bind_cols(rcropPx@data%>%dplyr::select( subRegCol))%>%tibble::as_tibble();
-            polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(mean(.,na.rm=T)))
+           polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(list(~mean(.,na.rm=T)))
           }
 
           if(aggType_i=="vol"){
             print(paste("Aggregating volume for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
-            w <- raster::extract(r,shape, method="simple",weights=T, normalizeWeights=F);
+            # Convert to Spatial Point Data Frames
+            spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
+            sp::gridded(spdf)<-TRUE
+            rGrid<-raster::stack(spdf)
+            raster::projection(rGrid)<-sp::proj4string(shape)
+
+            w <- raster::extract(rGrid,shape, method="simple",weights=T, normalizeWeights=F);
             dfx<-data.frame()
 
             for (i in seq(w)){
               if(!is.null(w[[i]])) {
-                x<-as.data.frame(w[[i]]) %>% dplyr::mutate(weight=weight*100)
+              x<-as.data.frame(w[[i]]) %>% dplyr::mutate(weight=weight*1)
               x$ID<-shape@data[[ subRegCol]][[i]]
 
 
               x1<-data.frame(mapply(`*`,x%>%
-                                      dplyr::select(names(r)[!names(r) %in% c("lat","lon")]),x%>%
+                                      dplyr::select(names(rGrid)[!names(rGrid) %in% c("lat","lon")]),x%>%
                                       dplyr::select(weight),SIMPLIFY=FALSE))%>%
                 dplyr::bind_cols(x%>%dplyr::select(ID));
               #assign(paste0("df", i), x)
@@ -403,7 +419,7 @@ metis.grid2poly<- function(grid=NULL,
               }
             }
             names(dfx)[names(dfx)=="ID"]<- subRegCol;
-            polyDatax<-dfx%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(dplyr::funs(sum(.,na.rm=T)))%>%tibble::as_tibble()
+            polyDatax<-dfx%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(list(~sum(.,na.rm=T)))%>%tibble::as_tibble()
           }
 
           polyData<-tidyr::gather(polyDatax,key=key,value=value,-(subRegCol))%>%
@@ -426,9 +442,13 @@ metis.grid2poly<- function(grid=NULL,
           polyData<-polyData%>%dplyr::mutate(subRegType=subRegType)
 
           polyx<-shape
-          polyx@data<-dplyr::left_join(polyx@data,polyData)
           polyx@data<-polyx@data%>%
+            dplyr::rename(subRegion:= !!paste(subRegCol))%>%
+            dplyr::select(subRegion)
+          polyData <- polyData%>%
             dplyr::rename(subRegion:= !!paste(subRegCol))
+          polyx@data<-dplyr::left_join(polyx@data,polyData)
+
 
           if("x" %in% names(polyx@data)){
             polyx@data <- polyx@data%>%
@@ -439,9 +459,6 @@ metis.grid2poly<- function(grid=NULL,
 
           #rm(r,spdf,gridx,rcropPx,rcropP,polyx,rcrop,polyDatax)
 
-         } else { # Close loop for if extents overlap
-           print(paste("Gridded data provided for param: ",param_i," and scenario: ",scenario_i," did not overlap with shape boundary.",sep=""))
-         }
         } # Close loop for aggType
       } else {print(paste("No data for param: ",param_i," and scenario: ",scenario_i,".",sep=""))}# Close loop for nrow>0
 
@@ -471,7 +488,7 @@ metis.grid2poly<- function(grid=NULL,
 
 
     if (file.exists(paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))){
-      template_subRegional_mapping_existing <- data.table::fread(file=paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""))
+      template_subRegional_mapping_existing <- data.table::fread(file=paste(getwd(),"/dataFiles/mapping/template_subRegional_mapping.csv", sep = ""),encoding="Latin-1")
       template_subRegional_mapping <- poly %>%
         dplyr::select(c("param","units","class","classPalette")[c("param","units","class","classPalette") %in% names(poly)]) %>%
         dplyr::bind_rows(template_subRegional_mapping_existing) %>% unique()
@@ -484,10 +501,56 @@ metis.grid2poly<- function(grid=NULL,
 
      data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","value","subRegion","subRegType","region")[
                              c("scenario","param","units","class","value","subRegion","subRegType","region") %in% names(poly)])%>%
-                           dplyr::mutate(value=0,x=2015)%>%unique,
+                           dplyr::mutate(value=0,x=2015, region=regionName)%>%unique,
                          file = paste(dir, "/subReg_grid2poly_template_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
-      data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","value","subRegion","subRegType","region","classPalette")[
-                             c("scenario","param","units","class","value","subRegion","subRegType","region","classPalette") %in% names(poly)]),
+
+     # Calculate Polygon Scarcity for Tethys and Xanthos Scenarios
+     if(any(grepl("tethysWatWithdraw_total",unique(poly$param))) & any(grepl("xanthos",unique(poly$param)))){
+       polyTethys <- poly %>% dplyr::filter(grepl("tethysWatWithdraw_total",param)); polyTethys
+       polyXanthos <- poly %>% dplyr::filter(grepl("xanthos",param)); polyXanthos
+       polyScarcity <- data.frame()
+       for(i in unique(polyTethys$scenario)){
+         for(j in unique(polyXanthos$scenario)){
+
+
+           polyTethysGCM <- unique((polyTethys %>% dplyr::filter(scenario==i))$scenarioGCM)
+           polyTethysRCP <- unique((polyTethys %>% dplyr::filter(scenario==i))$scenarioRCP)
+           polyXanthosGCM <- unique((polyXanthos %>% dplyr::filter(scenario==j))$scenarioGCM)
+           polyXanthosRCP <- unique((polyXanthos %>% dplyr::filter(scenario==j))$scenarioRCP)
+           rangeScarcity = unique(polyTethys$x)[unique(polyTethys$x) %in% unique(polyXanthos$x)]; rangeScarcity
+
+           # If Tethys has been run for a GCM RCP combo then only run for matching Xanthos Tethys scenarios
+           # Else run everyOther Tethys with every Xanthos
+           if((is.na(polyTethysGCM) | is.null(polyTethysGCM) | polyTethysGCM=="scenarioGCM" | polyTethysGCM=="NA" |
+                (polyTethysGCM==polyXanthosGCM & polyTethysRCP==polyXanthosRCP))){
+
+           polyScarcityT <- polyTethys %>% dplyr::filter(scenario==i) %>%
+             dplyr::mutate(valueTethys=value) %>%
+             dplyr::select(-scenarioGCM,-scenarioRCP,-scenario,-value,-param,-units,-class,-class2)
+           polyScarcityX <- polyXanthos %>% dplyr::filter(scenario==j) %>%
+             dplyr::mutate(valueXanthos=value) %>%
+             dplyr::select(-scenarioSSP,-scenarioPolicy,-scenario,-value,-param,-units,-class,-class2) %>%
+             dplyr::filter(x %in% unique(polyScarcityT$x))
+           polyScarcity <- polyScarcityT %>% dplyr::left_join(polyScarcityX) %>%
+             dplyr::mutate(scenario=paste("T",i,"X",j,sep=""),
+                           value=valueTethys/valueXanthos,
+                           param="polyScarcity",
+                           units="Polygon Scarcity (Fraction)",
+                           class="total",
+                           class2="class2") %>%
+             dplyr::filter(x %in% rangeScarcity)%>%
+             dplyr::select(-valueTethys,-valueXanthos); polyScarcity
+           poly<-dplyr::bind_rows(poly,polyScarcity)
+           }
+         }
+       }
+     }
+
+      data.table::fwrite(poly %>% dplyr::select(c("scenario","param","units","class","x","value","subRegion","subRegType","region","classPalette",
+                                                  "scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy")[
+                             c("scenario","param","units","class","x","value","subRegion","subRegType","region","classPalette",
+                               "scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy") %in% names(poly)]) %>%
+                           dplyr::mutate( region=regionName),
                               file = paste(dir, "/subReg_grid2poly_",subRegType,nameAppend,".csv", sep = ""),row.names = F)
 
     print(paste("Subregional Polygon template .csv files written to: ",dir, "/subReg_grid2poly_template",nameAppend,".csv", sep = ""))
@@ -506,7 +569,7 @@ metis.grid2poly<- function(grid=NULL,
     gridTempX <- tibble::tibble()
     for (file_i in list.files(paste(dirOutputs, "/Grid2Poly/temp", sep = ""))){
       print(paste("Compiling grid file",file_i,"...",sep=""))
-      gridTemp <- data.table::fread(paste(dirOutputs, "/Grid2Poly/temp/",file_i, sep = ""))
+      gridTemp <- data.table::fread(paste(dirOutputs, "/Grid2Poly/temp/",file_i, sep = ""),encoding="Latin-1")
       gridTempX <- gridTempX %>%
         dplyr::bind_rows(gridTemp)
     }

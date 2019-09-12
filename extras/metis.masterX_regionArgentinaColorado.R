@@ -691,7 +691,7 @@ subRegCol_i = localBasinsShapeFileColName  #
 subRegType_i = "subBasin"
 nameAppend_i = "_local"
 
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
+metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  #gridDataTables=gridDataTables_i,
                  xRange=xRange_i,
                  # boundaryRegShape=boundaryRegShape_i,

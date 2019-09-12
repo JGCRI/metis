@@ -5,18 +5,46 @@
 #----------------------------
 # Install necessary packages
 #----------------------------
+
+#----------------------------
+# Install necessary packages
+#----------------------------
+
+# Devtools
+# ---------
+# For updated instructions and additional operating systems see:
+# https://www.rstudio.com/products/rpackages/devtools/
+# https://johnmuschelli.com/neuroc/installing_devtools/index.html
+# Windows: no additional steps
+# UBUNTU: sudo apt-get install build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev
+
+# GDAL
+# --------
+# For updated instructions and additional operating systems see:
+# https://github.com/r-spatial/sf/
+# https://gdal.org/download.html
+# Windows: no additional steps
+# UBUNTU:
+# sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+# sudo apt-get update
+# sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev
+# MacOS (Using homebrew):
+# brew install pkg-config
+# brew install gdal
+
+# Image Magick
+# -------------
+# For updated instructions and additional operating systems see:
+# https://cran.r-project.org/web/packages/magick/vignettes/intro.html
+# Windows: no additional steps
+# UBUNTU: sudo apt-get install libmagick++-dev
+# MacOS (Using Homebrew): brew install imagemagick@6
+
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}; library(devtools)
-if("metis" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/metis")}; library(metis)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}; library(rgcam)
-if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}; library(tibble)
-if("rgdal" %in% rownames(installed.packages()) == F){install.packages("rgdal")}; library(rgdal)
-if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}; library(tmap)
-if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dplyr")}; library(dplyr)
-if("zoo" %in% rownames(installed.packages()) == F){install.packages("zoo")}; library(zoo)
-if("dbplyr" %in% rownames(installed.packages()) == F){install.packages("dbplyr")}; library(dbplyr)
-if("RSQLite" %in% rownames(installed.packages()) == F){install.packages("RSQLite")}; library(RSQLite)
-if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("ggplot2")}; library(ggplot2)
-if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggalluvial")}; library(ggalluvial)
+if("metis" %in% rownames(installed.packages()) == F){devtools::install()}; library(metis)
+library(ggalluvial);library(tibble);library(dplyr);library(rgdal)
+
 
 #----------------------------
 # Input/Output (metis.io.R)
@@ -59,23 +87,28 @@ io_sub$A
 io_sub$L
 io_sub$ioTbl
 
-
 #----------------------------
 # Read GCAM Data (metis.readgcam.R)
 #---------------------------
 
-# Connect directly to a gcam database and produce a .proj file for future uses.
-  # gcamdatabasePath_i <-paste(getwd(),"/dataFiles/gcam",sep="") # Use if gcamdatabase is needed
-  # gcamdatabaseName_i <-"example_database_basexdb" # Use if gcamdatabse is needed
-  # rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
+# There are two ways to read GCAM data
+    # i. gcamdatabase:        Directly connecting to a gcam database and extracting data using queries
+    #                         which are then saved to a .proj file
+    # ii. .proj or .dat file: If a proj file has alreayd been created or saved from a previous run of rgcam
+    #                         then metis can take connect directly to this data.
 
-# Connect to gcam database or project
+# Connect to gcam database .proj or .dat file
+# This is data that has already been extracted from a gcamdatabse using queries and rgcam
+# and is thus much faster to process than connecting directly to the gcamdatabase.
+# The data must have been extracted using queries that are available in metisQueries.xml
   dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="") # Path to dataProj file.
   dataProj_i <-"Example_dataProj.proj"  # Use if gcamdata has been saved as .proj file
 
 # Get list of scenarios and rename if desired.
   dataProjLoaded <- loadProject(paste(dataProjPath_i, "/",dataProj_i , sep = ""))
   listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
+
+# Scenario names
   scenOrigNames_i = c("ExampleScen1","ExampleScen2")
   scenNewNames_i = c("Eg1","Eg2")  # Names to replace the original names for final figures.
 
@@ -83,7 +116,7 @@ io_sub$ioTbl
   paramsSelect_i = "All"
 
 # Select regions from the 32 GCAM regions.
-  regionsSelect_i <- c("China","Argentina")
+  regionsSelect_i <- c("Argentina","Colombia")
 
   dataGCAM<-metis.readgcam(reReadData = F,
                          #gcamdatabasePath = gcamdatabasePath_i,
@@ -98,13 +131,46 @@ io_sub$ioTbl
 
   dataGCAM$data # To view the data read that was read.
 
+# If connecting directly to a gcamdatabase then can use the following method.
+# Uncomment the following lines of code (use ctrl+C to uncomment multiple lines together)
+  # # Connect directly to a gcam database and produce a .proj file for future uses.
+  # gcamdatabasePath_i <-paste(getwd(),"/dataFiles/gcam",sep="") # Use if gcamdatabase is needed
+  # gcamdatabaseName_i <-"example_database_basexdb" # Replace with your database
+  # rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # Note names of scenarios
+  #
+  # # The data must have been extracted using queries that are available in metisQueries.xml
+  # dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="") # Path to dataProj file.
+  # dataProj_i <-"Example_dataProjGCAM.proj"  # Use if gcamdata has been saved as .proj file
+  #
+  # # Scenario names
+  # scenOrigNames_i = c("ExampleScen1","ExampleScen2") # make sure these exist (See outputs of the rgcam::localDBConn)
+  # scenNewNames_i = c("Eg1","Eg2")  # Names to replace the original names for final figures.
+  #
+  # # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
+  # paramsSelect_i = "All"
+  #
+  # # Select regions from the 32 GCAM regions.
+  # regionsSelect_i <- c("Argentina","Colombia")
+  #
+  # dataGCAM<-metis.readgcam(reReadData = T,
+  #                          gcamdatabasePath = gcamdatabasePath_i,
+  #                          gcamdatabaseName = gcamdatabaseName_i,
+  #                          scenOrigNames = scenOrigNames_i,
+  #                          scenNewNames = scenNewNames_i,
+  #                          dataProj = dataProj_i,
+  #                          dataProjPath = dataProjPath_i,
+  #                          regionsSelect = regionsSelect_i ,
+  #                          paramsSelect=paramsSelect_i
+  # )
+  #
+  # dataGCAM$data # To view the data read that was read.
 
 #----------------------------
 # Charts Basic (metis.chart.R)
 #---------------------------
 
 # Simple example with progressively more features
-   tbl <- tribble (
+   tbl <- tibble::tribble (
    ~x,     ~value,
    2010,   15,
    2020,   20,
@@ -118,7 +184,7 @@ io_sub$ioTbl
 
 # More detailed data with facets
    # Simple example with progressively more features
-   tbl_multi <- tribble (
+   tbl_multi <- tibble::tribble (
      ~x,     ~value, ~region,     ~scen,   ~fuel,
      2010,   25,     "region1",   "scenA",  "Oil",
      2020,   30,     "region1",   "scenA",  "Oil",
@@ -180,7 +246,6 @@ io_sub$ioTbl
                sankeyAxis1="supplySector",sankeyAxis2="demandSector",sankeyAxis1Label ="From",sankeyAxis2Label="To",
                facet_columns="region", fileName="chart_eg_sankey_multi",folderName = "metisExample")
 
-
 #------------------------------------------------------------------------------------------
 # Charts Process (metis.chartsProcess.R)
 #------------------------------------------------------------------------------------------
@@ -228,20 +293,14 @@ io_sub$ioTbl
 
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.chartsProcess
-  # paramsSelect_i=c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech", "elecCapBySubsector",
-  #                  "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
-  #                  "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
-  #                  "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-  #                  "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec",
-  #                 "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
   paramsSelect_i=c("gdp", "gdpGrowthRate", "pop",
-                   "finalNrgbySec","elecByTech",
-                   "co2emissionBySector","nonco2emissionBySectorGWPAR5",
-                   "agProdByCrop","aggLandAlloc",
+                   "energyFinalConsumBySecEJ","elecByTechTWh",
+                   "emissCO2BySector","emissNonCO2BySectorGWPAR5",
+                   "agProdByCrop","landAlloc",
                    "watConsumBySec", "watWithdrawBySec")
 
 # Select regions from the 32 GCAM regions.
-  regionsSelect_i=c("Argentina","China")
+  regionsSelect_i=c("Argentina","Colombia")
 
 # Charts Process
   charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
@@ -252,36 +311,33 @@ io_sub$ioTbl
                           scenRef="Eg1", # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           regionCompareOnly=0, # Default 0. If set to 1, will only run comparison plots and not individual
-                          scenarioCompareOnly=1,
-                          folderName = "metisExample") # Default 0. If set to 1, will only run comparison plots and not individual
-
+                          scenarioCompareOnly=1, # Default 0. If set to 1, will only run comparison plots and not individual
+                          folderName = "metisExample")
 
 #-------------------
 # Maps (metis.map.R)
 #-------------------
 
-# Example 1. Using a custom example Shapefile is Provided with metis in ./metis/dataFiles/examples.
-  examplePolyFolder<-paste(getwd(),"/dataFiles/examples",sep="")
-  examplePolyFile<-paste("bermejo3Cropped",sep="")
-  # Read in the shape file and not the column name to use for fills and labels.
-  bermejo3Cropped=readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
-  head(bermejo3Cropped@data) # Choose the appropriate column name
-  colName_i = "SUB_NAME"
+# Example 1. Using example Shapefile for US States Provided with metis in ./metis/dataFiles/examples.
+  examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
+  examplePolyFile<-paste("US_states_mainland_ne1",sep="")
+  exampleUSmainland=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  head(exampleUSmainland@data) # Choose the appropriate column name
+  colName_i = "postal"
   # Categorical Shapefile
-  metis.map(dataPolygon=bermejo3Cropped,fillColumn = "SUB_NAME",labels=T ,printFig=F,facetsON=F, folderName="metisExample")
+  metis.map(dataPolygon=exampleUSmainland,fillColumn = colName_i,labels=T ,labelsAutoPlace = F, printFig=F,facetsON=F, folderName="metisExample")
   # Shapefile with values
-  metis.map(dataPolygon=bermejo3Cropped,fillColumn = "SUB_AREA",labels=T ,printFig=F,facetsON=T,
-            legendShow = T, legendOutside = T, fillPalette = "Reds", labelsAutoPlace = F, folderName="metisExample")
+  metis.map(dataPolygon=exampleUSmainland,fillColumn = "latitude",labels=T ,printFig=F,facetsON=T,
+            legendShow = T, legendOutside = T, fillPalette = "Spectral", labelsAutoPlace = F, folderName="metisExample")
 
 # Example 2. using the natural earth Shapefiles provided with metis in ./metis/dataFiles/gis/metis/naturalEarth
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
   examplePolyFile<-paste("ne_10m_admin_1_states_provinces",sep="")
-  # Read in the shape file and not the column name to use for fills and labels.
-  exampleNE1=readOGR(dsn=examplePolyFolder, layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  exampleNE1=rgdal::readOGR(dsn=examplePolyFolder, layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
   head(exampleNE1@data) # Choose the column name
   colName_i = "name"
   # Crop the shapefile to desired boundary by subsetting
-  exampleNE1Cropped = exampleNE1[exampleNE1$admin=="Argentina",]
+  exampleNE1Cropped = exampleNE1[exampleNE1$admin=="Peru",]
   exampleNE1Cropped@data = droplevels(exampleNE1Cropped@data)
   plot(exampleNE1Cropped)
   metis.map(dataPolygon=exampleNE1Cropped,fillColumn = colName_i,labels=T ,printFig=T,facetsON=F,
@@ -293,7 +349,7 @@ io_sub$ioTbl
   if (!dir.exists(paste(getwd(),"/outputs/Maps",sep=""))){dir.create(paste(getwd(),"/outputs/Maps",sep=""))}
   if (!dir.exists(paste(getwd(),"/outputs/Maps/metisExample",sep=""))){dir.create(paste(getwd(),"/outputs/Maps/metisExample",sep=""))}
   if (!dir.exists(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""))){
-    dir.create(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""))}
+  dir.create(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""))}
   rgdal::writeOGR(obj=exampleNE1Cropped,
                   dsn=paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""),
                   layer=paste("Argentina_states_example",sep=""),
@@ -303,27 +359,92 @@ io_sub$ioTbl
 # Boundaries
 #------------
 
-# Example Shape File. Provided with metis in ./metis/dataFiles/examples
-  examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
-  examplePolyFile_i<-paste("bermejo3Cropped",sep="")
-  bermejo3Cropped=readOGR(dsn=examplePolyFolder_i,
+# Example 1: Peru
+  countryName = "Peru"
+  examplePolyFolder_i<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
+  examplePolyFile_i<-paste("ne_10m_admin_1_states_provinces",sep="")
+  exampleSubRegion=rgdal::readOGR(dsn=examplePolyFolder_i,
                         layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
-  head(bermejo3Cropped@data)
-  subRegCol_i = "SUB_NAME"
-  metis.map(dataPolygon=bermejo3Cropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
+  head(exampleSubRegion@data)
+  subRegCol_i = "name"
+  # Crop the shapefile to the desired subRegion
+  exampleSubRegionCropped<-exampleSubRegion[(exampleSubRegion$admin==countryName),]
+  head(exampleSubRegionCropped@data)
+  metis.map(dataPolygon=exampleSubRegionCropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
 
+  # Can Further subset the shapefile if desired
+  chosenSubRegions = c("Cusco","Madre de Dios", "Pasco")
+  exampleSubRegion_chooseState<-exampleSubRegionCropped[(exampleSubRegionCropped[[subRegCol_i]] %in% chosenSubRegions),]
+  exampleSubRegion_chooseState@data <- droplevels(exampleSubRegion_chooseState@data)
+    head(exampleSubRegion_chooseState@data)
+  metis.map(dataPolygon=exampleSubRegion_chooseState,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
 
-  bermejoBoundaries<- metis.boundaries(
+  exampleBoundaries<- metis.boundaries(
                             boundaryRegShape=NULL,
                             boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
                             boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),
-                            boundaryRegCol="NAME",
-                            boundaryRegionsSelect="Argentina",
-                            subRegShape=bermejo3Cropped,
+                            boundaryRegCol="ADMIN",
+                            boundaryRegionsSelect=countryName,
+                            subRegShape=exampleSubRegionCropped,
                             subRegCol=subRegCol_i,
-                            subRegType="subRegType",
-                            nameAppend="_test",
+                            subRegType="state",
+                            nameAppend="_example",
                             expandPercent=2,
+                            overlapShpFile="Global235_CLM_final_5arcmin_multipart",
+                            overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
+                            extension = T,
+                            grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+                                      paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+                            folderName="metisExample")
+
+# Example 2: USA
+  countryName = "United States of America"
+  examplePolyFolder_i<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
+  examplePolyFile_i<-paste("US_states_mainland_ne1_states",sep="")
+  exampleSubRegion=rgdal::readOGR(dsn=examplePolyFolder_i,layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
+  head(exampleSubRegion@data)
+  subRegCol_i = "postal"
+  # Crop the shapefile to the desired subRegion
+  exampleSubRegionCropped<-exampleSubRegion[(exampleSubRegion$admin==countryName),]
+  head(exampleSubRegionCropped@data)
+  metis.map(dataPolygon=exampleSubRegionCropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
+
+  # Can Further subset the shapefile if desired
+  chosenSubRegions = c("CA","NV","UT","CO","AZ","TX","OK","WY","TX")
+  exampleSubRegion_chooseState<-exampleSubRegionCropped[(exampleSubRegionCropped[[subRegCol_i]] %in% chosenSubRegions),]
+  exampleSubRegion_chooseState@data <- droplevels(exampleSubRegion_chooseState@data)
+  head(exampleSubRegion_chooseState@data)
+  metis.map(dataPolygon=exampleSubRegion_chooseState,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
+
+  exampleBoundaries<- metis.boundaries(
+                          boundaryRegShape=NULL,
+                          boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
+                          boundaryRegShpFile=paste("ne0_USMainLand_cropped",sep=""),
+                          boundaryRegCol="ADMIN",
+                          boundaryRegionsSelect=countryName,
+                          subRegShape=exampleSubRegionCropped,
+                          subRegCol=subRegCol_i,
+                          subRegType="state",
+                          nameAppend="_example",
+                          expandPercent=10,
+                          overlapShpFile="Global235_CLM_final_5arcmin_multipart",
+                          overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
+                          extension = T,
+                          #grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+                          #          paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+                          folderName="metisExample")
+
+  exampleBoundaries<- metis.boundaries(
+                            boundaryRegShape=NULL,
+                            boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
+                            boundaryRegShpFile=paste("ne0_USMainLand_cropped",sep=""),
+                            boundaryRegCol="ADMIN",
+                            boundaryRegionsSelect=countryName,
+                            subRegShape=exampleSubRegion_chooseState,
+                            subRegCol=subRegCol_i,
+                            subRegType="state",
+                            nameAppend="_exampleSubset",
+                            expandPercent=10,
                             overlapShpFile="Global235_CLM_final_5arcmin_multipart",
                             overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
                             extension = T,
@@ -336,91 +457,96 @@ io_sub$ioTbl
 #-------------
 
 # Example Grid File (csv with lats and lons that overlap the shapefile)
-    gridExample<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
+    gridExample<-paste(getwd(),"/dataFiles/examples/example_grid_Peru.csv",sep="")
 
 # Polygons. An example Shapefile is Provided with metis in ./metis/dataFiles/examples.
+    # This is the same file as produced in the boundaries example above.
     examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
-    examplePolyFile_i<-paste("bermejo3Cropped",sep="")
-    bermejo3Cropped=readOGR(dsn=examplePolyFolder_i,
+    examplePolyFile_i<-paste("Peru_subRegion_example",sep="")
+    exampleSubRegionCropped=rgdal::readOGR(dsn=examplePolyFolder_i,
                             layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
-    head(bermejo3Cropped@data) # TO choose subRegCol name
-    subRegCol_i = "SUB_NAME"
+    head(exampleSubRegionCropped@data) # TO choose subRegCol name
+    subRegCol_i = "name"
 
 # Run metis.grid2poly
-    polyBermeo3Cropped<-metis.grid2poly(grid=gridExample,
+    exampleGrid2poly<-metis.grid2poly(grid=gridExample,
                                     subRegShpFolder=examplePolyFolder_i,
                                     subRegShpFile=examplePolyFile_i,
                                     subRegCol=subRegCol_i,
-                                    aggType="depth", # Aggregation type. Depth or volume. See docuemntation for further details.
-                                    nameAppend="_Bermeo3",
-                                    folderName="metisExample")
+                                    #aggType="depth", # Aggregation type. Depth or volume. See docuemntation for further details.
+                                    nameAppend="_examplePeru",
+                                    folderName="metisExample",
+                                    regionName = "Peru")
 
+
+    # grid=gridExample
+    # subRegShpFolder=examplePolyFolder_i
+    # subRegShpFile=examplePolyFile_i
+    # subRegCol=subRegCol_i
+    # #aggType="depth", # Aggregation type. Depth or volume. See docuemntation for further details.
+    # nameAppend="_examplePeru"
+    # folderName="metisExample"
+    # regionName = "Peru"
 
 #------------------------------
 # Mapping (metis.mapsProcess.R)
 #------------------------------
 
 # Simple Example. See example csv tables provided for ideal column names needed.
-    exampleGridTable_i<-paste(getwd(),"/dataFiles/examples/example_grid_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
-    examplePolygonTable_i<-paste(getwd(),"/dataFiles/examples/example_poly_ArgentinaBermejo3_Eg1Eg2.csv",sep="")
-    gridTable=read.csv(exampleGridTable_i);head(gridTable)
-    polyTable=read.csv(examplePolygonTable_i);head(polyTable)
+    exampleGridTable_i<-paste(getwd(),"/dataFiles/examples/example_grid_Peru.csv",sep="")
+    examplePolygonTable_i<-paste(getwd(),"/dataFiles/examples/example_poly_Peru.csv",sep="")
+    gridTable=read.csv(exampleGridTable_i,encoding="Latin-1");head(gridTable)
+    polyTable=read.csv(examplePolygonTable_i,encoding="Latin-1");head(polyTable)
 
-    subRegShpFolder_i <- paste(getwd(),"/dataFiles/examples",sep="")
-    subRegShpFile_i <- paste("bermejo3Cropped",sep="")
-    subRegShp_i = readOGR(dsn=subRegShpFolder_i,layer=subRegShpFile_i,use_iconv=T,encoding='UTF-8')
-    head(subRegShp_i@data)
-    subRegCol_i = "SUB_NAME"
-    metis.map(dataPolygon=subRegShp_i,fillColumn = subRegCol_i,labels=F ,printFig=F,facetsON=F)
+    examplePolyFolder_i<-paste(getwd(),"/dataFiles/examples",sep="")
+    examplePolyFile_i<-paste("Peru_subRegion_example",sep="")
+    exampleSubRegionCropped=rgdal::readOGR(dsn=examplePolyFolder_i,
+                                    layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
+    head(exampleSubRegionCropped@data) # TO choose subRegCol name
+    subRegCol_i = "name"
+    metis.map(dataPolygon=exampleSubRegionCropped,fillColumn = subRegCol_i,labels=F ,printFig=F,facetsON=F)
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    countryName= "Peru"
+
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                  gridDataTables=exampleGridTable_i,
-                 xRange=c(2005,2010,2020),
+                 xRange=c(2005,2010,2015,2020,2025,2030),
                  folderName="metisExample",
+                 boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
+                 boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),
+                 boundaryRegCol="NAME",
+                 boundaryRegionsSelect=countryName,
                  subRegShape=NULL,
                  subRegShpFolder=examplePolyFolder_i,
                  subRegShpFile=examplePolyFile_i,
                  subRegCol=subRegCol_i,
                  nameAppend="_exampleSubRegionMap",
-                 legendPosition=c("RIGHT","top"),
+                 legendPosition=c("LEFT","bottom"),
                  animateOn=T,
-                 delay=100,
+                 fps=1,
                  scenRef="Eg1",
-                 #expandPercent = 2,
-                 extension=F)
+                 expandPercent = 2,
+                 extension=T)
 
-
-# Extended Map showing the subregion within a wider boudnary region
-
-    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
-    boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
-    boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
-    head(boundaryRegShp_i@data)
-    boundaryRegCol_i = "NAME"
-    metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
-    # Pick country names from the list of countries in the natural earth shapefile.
-    unique(boundaryRegShp_i@data[[boundaryRegCol_i]])
-    boundaryRegionsSelect_i = c("Argentina") # Must be a region in the boundaryRegShp
-
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
-                     gridDataTables=exampleGridTable_i,
-                     xRange=c(2005,2010,2020),
-                     folderName="metisExample_extendedBoundary",
-                     boundaryRegionsSelect=boundaryRegionsSelect_i,
-                     boundaryRegShpFolder = boundaryRegShpFolder_i,
-                     boundaryRegShpFile = boundaryRegShpFile_i,
-                     boundaryRegCol = boundaryRegCol_i,
-                     subRegShape=NULL,
-                     subRegShpFolder=examplePolyFolder_i,
-                     subRegShpFile=examplePolyFile_i,
-                     subRegCol=subRegCol_i,
-                     nameAppend="_exampleSubRegionMapExtended",
-                     legendPosition=c("RIGHT","top"),
-                     animateOn=T,
-                     delay=100,
-                     scenRef="Eg1",
-                     expandPercent = 10,
-                     extension=T)
+    # polygonDataTables=examplePolygonTable_i
+    # gridDataTables=exampleGridTable_i
+    # xRange=c(2005,2010,2015,2020,2025,2030)
+    # folderName="metisExample"
+    # boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
+    # boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep="")
+    # boundaryRegCol="NAME"
+    # boundaryRegionsSelect=countryName
+    # subRegShape=NULL
+    # subRegShpFolder=examplePolyFolder_i
+    # subRegShpFile=examplePolyFile_i
+    # subRegCol=subRegCol_i
+    # nameAppend="_exampleSubRegionMap"
+    # legendPosition=c("LEFT","bottom")
+    # animateOn=T
+    # fps=1
+    # scenRef="Eg1"
+    # expandPercent = 2
+    # extension=T
 
 
 #--------------------------------------------------
@@ -438,7 +564,7 @@ io_sub$ioTbl
     # Read in the GCAM 32 regions shapefile which comes with metis.
     boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
     boundaryRegShpFile_i <- paste("region32_0p5deg_regions",sep="")
-    boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    boundaryRegShp_i = rgdal::readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
     head(boundaryRegShp_i@data)
     boundaryRegCol_i = "region"
     metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
@@ -454,7 +580,7 @@ io_sub$ioTbl
     # Uncomment the following lines of code and choose and appropriate region to crop to.
     # boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
     # boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
-    # boundaryRegShp_i = readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    # boundaryRegShp_i = rgdal::readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
     # head(boundaryRegShp_i@data)
     # boundaryRegCol_i = "NAME"
     # metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
@@ -468,7 +594,7 @@ io_sub$ioTbl
     # Read in the  SubBasin GCAM Basins shapefile which comes with metis.
     subRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
     subRegShpFile_i <- paste("Global235_CLM_final_5arcmin_multipart",sep="")
-    subRegShp_i = readOGR(dsn=subRegShpFolder_i,layer=subRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    subRegShp_i = rgdal::readOGR(dsn=subRegShpFolder_i,layer=subRegShpFile_i,use_iconv=T,encoding='UTF-8')
     head(subRegShp_i@data)
     subRegCol_i = "basin_name"
     metis.map(dataPolygon=subRegShp_i,fillColumn = subRegCol_i,labels=F ,printFig=F,facetsON=F)
@@ -507,26 +633,27 @@ io_sub$ioTbl
 
 # Read in the datatable with values by subRegion
     examplePolygonTable_i<-paste(getwd(),"/dataFiles/examples/example_GCAMBasins_analysis.csv",sep="")
-    polyTable=read.csv(examplePolygonTable_i);head(polyTable)
+    polyTable=read.csv(examplePolygonTable_i,encoding="Latin-1");head(polyTable)
     unique(polyTable$x); # check available number of years.
 
     # Make sure shapefile subRegions and PolygonTable subregions match
     unique(polyTable$subRegion); unique(subRegShp_i_Crop@data[[subRegCol_i]])
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
-                     xRange=c(2010,2020,2100),
+                     xRange=c(2010,2020,2030,2040,2050),
                      folderName="metisExample_extended",
                      boundaryRegionsSelect=boundaryRegionsSelect_i,
                      boundaryRegShape=boundaryRegShp_i,
                      subRegShape=subRegShp_i_Crop,
+                     boundaryRegCol = boundaryRegCol_i,
                      subRegCol=subRegCol_i,
                      nameAppend="",
                      animateOn=T,
-                     delay=100,
+                     fps=1,
                      scenRef="SSP2_Ref",
                      extension=F,
-                     diffOn = F)
+                     diffOn = T)
 
 # Improved map using available parameters.
     # Shift legend outside and change the scale_range to get conistent scale across scenarios.
@@ -541,21 +668,89 @@ io_sub$ioTbl
       ~param,~minScale, ~maxScale,
       "waterConsumption", 0, 60)
 
-    metis.mapProcess(polygonDataTables=examplePolygonTable_i,
+    # Select natural Earth country Map
+    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
+    boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
+    boundaryRegShp_i = rgdal::readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    head(boundaryRegShp_i@data)
+    boundaryRegCol_i = "NAME"
+    metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
+    boundaryRegionsSelect_i = c("China")
+
+    metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
-                     xRange=c(2010,2020,2100),
+                     xRange=c(2010,2020,2030,2040,2050),
                      folderName="metisExample_extendedRefined",
                      boundaryRegionsSelect=boundaryRegionsSelect_i,
                      boundaryRegShape=boundaryRegShp_i,
+                     boundaryRegCol = boundaryRegCol_i,
                      subRegShape=subRegShp_i_Crop,
                      subRegCol=subRegCol_i,
                      nameAppend="_improvedFig",
                      legendPosition=c("LEFT","bottom"),
                      animateOn=T,
-                     delay=100,
+                     fps=1,
                      scenRef="SSP2_Ref",
-                     extension=F,
-                     diffOn = F,
+                     extension=T,
+                     diffOn = T,
                      legendOutsideSingle = T,
                      scaleRange = scaleRange_i)
 
+
+#------------------------------
+# Metis Tests (Check if outputs from metis.master.R are working as expected)
+#------------------------------
+
+    # Test: Install Packages Check
+    if(all(c("devtools","rgcam","metis","rgdal","magick") %in% rownames(installed.packages()))==T){
+      testInstallPackages = "Test Install Packages: Passed"
+    } else { testInstallPackages = "Test Install Packages: Failed"}; print(testInstallPackages)
+
+    # Test: IO Check
+    if(nrow(io$A)>1 & nrow(io_sub$A)>1){
+      testIO = "Test IO: Passed"
+    } else { testIO = "Test IO: Failed"}; print(testIO)
+
+    # Test: readgcam Check
+    if(nrow(dataGCAM$data)>1){
+      testReadGCAM = "Test readGCAM: Passed"
+    } else { testReadGCAM = "Test readGCAM: Failed"}; print(testReadGCAM)
+
+    # Test: charts Check
+    if(file.exists(paste(getwd(),"/outputs/charts/metisExample/chart_eg_line_multi_Set1.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/charts/metisExample/chart_eg_sankey_multi.png",sep=""))){
+      testChart = "Test chart: Passed"
+    } else { testChart = "Test chart: Failed"}; print(testChart)
+
+    # Test: chartsProcess Check
+    if(file.exists(paste(getwd(),"/outputs/charts/metisExample/compareRegions/ArgentinaColombiaEg1/aggLandAlloc_figBar_Eg1_compareRegions.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/charts/metisExample/Colombia/compareScen/agProdByCrop_figLineDiff_Colombia_compareScen.png",sep=""))){
+      testChartsProcess = "Test chartsProcess: Passed"
+    } else { testChartsProcess = "Test chartsProcess: Failed"}; print(testChartsProcess)
+
+    # Test: map Check
+    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/map.png",sep=""))){
+      testMap = "Test map: Passed"
+    } else { testMap = "Test map: Failed"}; print(testMap)
+
+    # Test: boundary Check
+    if(exampleBoundaries$subRegShape$admin[1]=="United States of America"){
+      testBoundary = "Test boundary: Passed"
+    } else { testBoundary = "Test boundary: Failed"}; print(testBoundary)
+
+    # Test: grid2Poly Check
+    if(nrow(exampleGrid2poly)>1){
+      testGrid2Poly = "Test grid2Poly: Passed"
+    } else { testGrid2Poly = "Test grid2Poly: Failed"}; print(testGrid2Poly)
+
+    # Test: mapsProcess Check
+    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/Eg1/byYear/map_metisExample_subRegType_tethysWatWithdraw_indv_2030_Eg1_exampleSubRegionMap_FREESCALE.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/Eg1/anim_metisExample_subRegType_tethysWatWithdraw_indv_Eg1_exampleSubRegionMap_FREESCALE.gif",sep=""))){
+      testMapsProcess = "Test mapsProcess: Passed"
+    } else { testMapsProcess = "Test mapsProcess: Failed"}; print(testMapsProcess)
+
+    metisTests = data.frame(Test=c(testInstallPackages,testIO,testReadGCAM,
+                                   testChart,testChartsProcess,testMap,testBoundary,
+                                   testGrid2Poly,testMapsProcess))
+    print(metisTests)
+    if(any(grepl("Failed",metisTests$Test))){"Some metis tests failed. Please check the relevant section."} else {"All metis tests passed without issues."}

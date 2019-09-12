@@ -34,20 +34,27 @@ library(rgeos)
 if("tools" %in% rownames(installed.packages()) == F){install.packages("tools")}
 library(tools)
 
+countryName= "Uruguay"
+countryName <- tools::toTitleCase(countryName); countryName
+localBasinShapeFileFolder = paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep="")
+localBasinShapeFile = "uruguay_8cuencas"
+localBasinsShapeFileColName = "code" # Will need to load the file to see which name this would be
 
 
 #----------------------------
 # Read GCAM Data
 #---------------------------
 
+regionsSelect_i <- c("Uruguay", "Colombia")
+
 # ?metis.readgcam # For more help
 
 gcamdatabasePath_i <-paste("D:/GCAM/gcam-core_LAC/output",sep="")
-gcamdatabaseName_i <-"database_basexdb"
+gcamdatabaseName_i <-"database_basexdb_origRef"
+rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
 
 dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
 queryPath_i <-paste(getwd(),"/dataFiles/gcam",sep="")
-regionsSelect_i <- c("Uruguay")
 
 # Reference
 dataProj_i <-"Uruguay_dataProj_Ref.proj"
@@ -55,10 +62,12 @@ dataProjLoaded <- loadProject(paste(dataProjPath_i, "/", dataProj_i, sep = ""))
 listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 #queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
-dataGCAMRef<-metis.readgcam(reReadData=F, # Default Value is T
+queryPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
+
+dataGCAMRef<-metis.readgcam(reReadData=T, # Default Value is T
                                  dataProj = dataProj_i, # Default Value is "dataProj.proj"
                                  dataProjPath = dataProjPath_i,
-                                 scenOrigNames=c("IDBUruguay_GCAMOrig", "IDBUruguay_GCAMRef_NoImpacts"),
+                                 scenOrigNames=c("IDB_Orig", "IDB_GCAMRef"),
                                  scenNewNames=c("GCAMOrig","GCAMRef"),
                                  gcamdatabasePath=gcamdatabasePath_i,
                                  gcamdatabaseName=gcamdatabaseName_i,
@@ -103,6 +112,9 @@ unique(dataGCAMImpacts$data$scenario)
 
 dataGCAM <- dplyr::bind_rows(dataGCAMRef$data,dataGCAMImpacts$data)# To view the data read that was read.
 dataGCAM
+
+dataGCAM <- dataGCAMRef$data
+
 #saveRDS(dataGCAM, file = paste(getwd(),"/dataFiles/gcam/tempUruguayGCAMData.rds",sep=""))
 #readRDS(file = paste(getwd(),"/dataFiles/gcam/tempUruguayGCAMData.rds",sep=""))
 unique(dataGCAM$param)
@@ -114,13 +126,15 @@ unique(dataGCAM$scenario)
 #---------------------------
 
 #Choose parameters for Report
-paramsSelect_i=c("finalNrgbySec", "elecByTech", "elecCapBySubsector",
-                  "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec",
-                 "watConsumBySec", "watWithdrawBySec",
-                 "gdp", "gdpGrowthRate", "pop",
-                 "agProdByCrop","aggLandAlloc",
-                "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
+# paramsSelect_i=c("finalNrgbySec", "elecByTech", "elecCapBySubsector",
+#                   "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec",
+#                  "watConsumBySec", "watWithdrawBySec",
+#                  "gdp", "gdpGrowthRate", "pop",
+#                  "agProdByCrop","aggLandAlloc",
+#                 "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
+#
 
+paramsSelect_i = "All"
 
 # Read in Tables (If exist)
 dataTables_i<-c(paste(getwd(),"/dataFiles/localData/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
@@ -128,28 +142,23 @@ a<-read.csv(dataTables_i); head(a); unique(a$scenario); unique(a$param); unique(
 
 # Read in the data from the function metis.readgcam
 rTable_i <- dataGCAM %>% dplyr::filter(value!=0)  %>%
-  dplyr::mutate(class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1),
-                class1=case_when(param=="finalNrgbyFuelbySec" ~ gsub("hydrogen","Other",class1),TRUE~class1),
-                class1=case_when(param=="co2emissionBySector" ~ gsub("electricity","energy",class1),TRUE~class1)) %>%
+  dplyr::mutate(class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1)) %>%
   dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                   aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                   origScen, origQuery, origUnits, origX)%>%
-  dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%
+  dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
   dplyr::ungroup() %>% droplevels()
 
-regionsSelect_i=c("Uruguay")
 
 rTable_iMod <- rTable_i %>%
-  dplyr::mutate(class1=case_when(param=="elecByTech" ~ gsub("a Coal","Fossil",class1),TRUE~class1),
-                class1=case_when(param=="elecByTech" ~ gsub("c Gas","Fossil",class1),TRUE~class1),
-                class1=case_when(param=="elecByTech" ~ gsub("e Oil","Fossil",class1),TRUE~class1),
-                class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1),
-                class1=case_when(param=="finalNrgbyFuelbySec" ~ gsub("hydrogen","Other",class1),TRUE~class1),
-                class1=case_when(param=="co2emissionBySector" ~ gsub("electricity","energy",class1),TRUE~class1)) %>%
+  dplyr::mutate(class1=case_when(param=="elecByTechTWh" ~ gsub("a Coal","Fossil",class1),TRUE~class1),
+                class1=case_when(param=="elecByTechTWh" ~ gsub("c Gas","Fossil",class1),TRUE~class1),
+                class1=case_when(param=="elecByTechTWh" ~ gsub("e Oil","Fossil",class1),TRUE~class1),
+                class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1)) %>%
   dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                   aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                   origScen, origQuery, origUnits, origX)%>%
-  dplyr::summarize_at(dplyr::vars("value","origValue"),dplyr::funs(sum(.,na.rm = T)))%>%
+  dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
   dplyr::ungroup() %>% droplevels()
 
 paramsSelect_iMod=paramsSelect_i
@@ -159,6 +168,11 @@ paramsSelect_iMod=paramsSelect_i
 #----------------------------
 
 scensSelect_i = c("GCAMOrig","GCAMRef","Local Data")
+
+scaleRange_i = tibble::tribble(
+  ~param,~minScale, ~maxScale,
+  "watConsumBySec", 0, 10,
+  "watWithdrawBySec", 0, 10)
 
 charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             dataTables=dataTables_i, # Default is NULL
@@ -175,7 +189,8 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             xRange=c(2010:2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
                             colOrderName1 = "scenario",
-                            folderName = "Reference")
+                            folderName = "Reference",
+                            scaleRange=scaleRange_i)
 
 charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             dataTables=dataTables_i, # Default is NULL
@@ -192,7 +207,8 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
                             colOrderName1 = "scenario",
-                            folderName = "Reference")
+                            folderName = "Reference",
+                            scaleRange=scaleRange_i)
 
 
 #----------------------------
@@ -216,7 +232,8 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             xRange=c(2010:2050),
                             colOrder1 = c("GCAMRef","GFDL_RCP2p6","GFDL_RCP8p5"),
                             colOrderName1 = "scenario",
-                            folderName = "Impacts")
+                            folderName = "Impacts",
+                            scaleRange=scaleRange_i)
 
 charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             #dataTables=dataTables_i, # Default is NULL
@@ -233,7 +250,8 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
                             colOrder1 = c("GCAMRef","GFDL_RCP2p6","GFDL_RCP8p5"),
                             colOrderName1 = "scenario",
-                            folderName = "Impacts")
+                            folderName = "Impacts",
+                            scaleRange=scaleRange_i)
 
 
 
@@ -241,25 +259,18 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
 # Prepare Polygons
 #----------------
 
-countryName= "Uruguay"
-localBasinShapeFileFolder = paste(getwd(),"/dataFiles/gis/shapefiles_Uruguay",sep="")
-localBasinShapeFile = "c097Polygon"
-localBasinsShapeFileColName = "codcuenca" # Will need to load the file to see which name this would be
-countryName <- tools::toTitleCase(countryName); countryName
-
-
 # Create directory for country
-if (!dir.exists(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""))){
-  dir.create(paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""))}
+if (!dir.exists(paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep=""))){
+  dir.create(paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep=""))}
 
 
 # View default metis country shapefile (Natural Earth maps)
-NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+NE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
              layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
 
 if(!countryName %in% unique(NE0@data$NAME)){stop(print(paste(countryName, " not in NE0 countries. Please check data.", sep="")))}
 
-countryNE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+countryNE0<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
                      layer="ne_10m_admin_0_countries",use_iconv=T,encoding='UTF-8')
 countryNE0<-countryNE0[(countryNE0$NAME==countryName),]
 head(countryNE0@data)
@@ -267,7 +278,7 @@ plot(countryNE0)
 projX<-proj4string(countryNE0)
 
 # Natural earth level 1 admin boundaries
-NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/naturalEarth",sep=""),
+NE1<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
              layer="ne_10m_admin_1_states_provinces",use_iconv=T,encoding='UTF-8')
 if(!countryName %in% unique(NE1@data$admin)){stop(print(paste(countryName, " not in NE1 countries. Please check data.", sep="")))}
 countryNE1<-NE1[(NE1$admin==countryName),]
@@ -276,19 +287,19 @@ countryNE1<-countryNE1[(!countryNE1$name %in% "San Andrés y Providencia") & !is
 head(countryNE1@data)
 plot(countryNE1)
 countryNE1<-spTransform(countryNE1,CRS(projX))
-writeOGR(obj=countryNE1, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"NE1",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+writeOGR(obj=countryNE1, dsn=paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep=""), layer=paste(countryName,"NE1",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 metis.map(dataPolygon=countryNE1,fillColumn = "name",printFig=F, facetsON = F, labels=T, legendStyle = "cat")
 
 
 # GCAM Basins
-GCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/basin_GCAM",sep=""),
+GCAMBasin<-readOGR(dsn=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
                    layer="Global235_CLM_final_5arcmin_multipart",use_iconv=T,encoding='UTF-8')
 GCAMBasin<-spTransform(GCAMBasin,CRS(projX))
 countryGCAMBasin<-raster::crop(GCAMBasin,countryNE1)
-countryLocalBasin@data <- droplevels(countryLocalBasin@data)
+countryGCAMBasin@data <- droplevels(countryGCAMBasin@data)
 head(countryGCAMBasin@data)
 plot(countryGCAMBasin)
-writeOGR(obj=countryGCAMBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"GCAMBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+writeOGR(obj=countryGCAMBasin, dsn=paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep=""), layer=paste(countryName,"GCAMBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 metis.map(dataPolygon=countryGCAMBasin,fillColumn = "basin_name",printFig=F,facetsON = F, labels=T, legendStyle = "cat")
 
 
@@ -300,7 +311,7 @@ countryLocalBasin<-raster::crop(countryLocalBasin,countryNE1)
 countryLocalBasin@data <- droplevels(countryLocalBasin@data)
 head(countryLocalBasin@data)
 plot(countryLocalBasin)
-writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
+writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
 metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
 
 # dataPolygon=countryLocalBasin
@@ -310,6 +321,20 @@ metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName
 # labels=T
 # legendStyle = "cat"
 # fillPalette = eval(parse(text=paste(b[1,2])))
+
+metis.gridByPoly(grid = paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
+                 boundaryRegShpFile = localBasinShapeFile,
+                 boundaryRegShpFolder = localBasinShapeFileFolder,
+                 colName = localBasinsShapeFileColName,
+                 saveFile = T,
+                 fname = "gridByPoly_Uruguay8cuencas_0.25")
+
+metis.gridByPoly(grid = paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""),
+                 boundaryRegShpFile = localBasinShapeFile,
+                 boundaryRegShpFolder = localBasinShapeFileFolder,
+                 colName = localBasinsShapeFileColName,
+                 saveFile = T,
+                 fname = "gridByPoly_Uruguay8cuencas_0.50")
 
 #-----------
 # Boundaries
@@ -418,30 +443,30 @@ tethysScenario="Eg1"
 copySingleTethysScenbyXanthos="Eg1"
 tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
 tethysUnits="Water Withdrawals (mm)"
-xanthosFolder=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/",sep="")
+xanthosFolder=paste("D:/Projects/003a_IDBLAC_Uruguay/CorrespondenceData/UruguayData33_XanthosRaw_5Aug2019/Xanthos_Raw",sep="")
 #xanthosScenario="Eg1"
 #xanthosUnits="Runoff (mm)"
 xanthosFiles=c(
-  #"pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp2p6_1950_2099.csv",
-  # "pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp4p5_1950_2099.csv",
-  # "pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp6p0_1950_2099.csv",
-  # "pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_gfdl-esm2m_rcp8p5_1950_2099.csv",
-  # "pm_abcd_mrtm_hadgem2-es_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp2p6_1950_2099.csv",
-  #  "pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp4p5_1950_2099.csv",
-  # "pm_abcd_mrtm_hadgem2-es_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp6p0_1950_2099.csv",
-  # "pm_abcd_mrtm_hadgem2-es_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_hadgem2-es_rcp8p5_1950_2099.csv",
-  # "pm_abcd_mrtm_ipsl-cm5a-lr_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp2p6_1950_2099.csv",
-  # "pm_abcd_mrtm_ipsl-cm5a-lr_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp4p5_1950_2099.csv",
-  # "pm_abcd_mrtm_ipsl-cm5a-lr_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp6p0_1950_2099.csv",
-  # "pm_abcd_mrtm_ipsl-cm5a-lr_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_ipsl-cm5a-lr_rcp8p5_1950_2099.csv",
-  # "pm_abcd_mrtm_miroc-esm-chem_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp2p6_1950_2099.csv",
-  # "pm_abcd_mrtm_miroc-esm-chem_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp4p5_1950_2099.csv",
-  # "pm_abcd_mrtm_miroc-esm-chem_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp6p0_1950_2099.csv",
-  "pm_abcd_mrtm_miroc-esm-chem_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_miroc-esm-chem_rcp8p5_1950_2099.csv",
-  #"pm_abcd_mrtm_noresm1-m_rcp2p6_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp2p6_1950_2099.csv",
-  # "pm_abcd_mrtm_noresm1-m_rcp4p5_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp4p5_1950_2099.csv",
-  # "pm_abcd_mrtm_noresm1-m_rcp6p0_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp6p0_1950_2099.csv",
-  "pm_abcd_mrtm_noresm1-m_rcp8p5_1950_2099/q_km3peryear_pm_abcd_mrtm_noresm1-m_rcp8p5_1950_2099.csv"
+  "clim_impacts_GFDL-ESM2M_rcp2p6/q_km3peryear_GFDL-ESM2M_rcp2p6_1950_2099.csv",
+  "clim_impacts_GFDL-ESM2M_rcp4p5/q_km3peryear_GFDL-ESM2M_rcp4p5_1950_2099.csv",
+  "clim_impacts_GFDL-ESM2M_rcp6p0/q_km3peryear_GFDL-ESM2M_rcp6p0_1950_2099.csv",
+  "clim_impacts_GFDL-ESM2M_rcp8p5/q_km3peryear_GFDL-ESM2M_rcp8p5_1950_2099.csv",
+  "clim_impacts_HadGEM2-ES_rcp2p6/q_km3peryear_HadGEM2-ES_rcp2p6_1950_2099.csv",
+  "clim_impacts_HadGEM2-ES_rcp4p5/q_km3peryear_HadGEM2-ES_rcp4p5_1950_2099.csv",
+  "clim_impacts_HadGEM2-ES_rcp6p0/q_km3peryear_HadGEM2-ES_rcp6p0_1950_2099.csv",
+  "clim_impacts_HadGEM2-ES_rcp8p5/q_km3peryear_HadGEM2-ES_rcp8p5_1950_2099.csv",
+  "clim_impacts_IPSL-CM5A-LR_rcp2p6/q_km3peryear_IPSL-CM5A-LR_rcp2p6_1950_2099.csv",
+  "clim_impacts_IPSL-CM5A-LR_rcp4p5/q_km3peryear_IPSL-CM5A-LR_rcp4p5_1950_2099.csv",
+  "clim_impacts_IPSL-CM5A-LR_rcp6p0/q_km3peryear_IPSL-CM5A-LR_rcp6p0_1950_2099.csv",
+  "clim_impacts_IPSL-CM5A-LR_rcp8p5/q_km3peryear_IPSL-CM5A-LR_rcp8p5_1950_2099.csv",
+  "clim_impacts_MIROC-ESM-CHEM_rcp2p6/q_km3peryear_MIROC-ESM-CHEM_rcp2p6_1950_2099.csv",
+  "clim_impacts_MIROC-ESM-CHEM_rcp4p5/q_km3peryear_MIROC-ESM-CHEM_rcp4p5_1950_2099.csv",
+  "clim_impacts_MIROC-ESM-CHEM_rcp6p0/q_km3peryear_MIROC-ESM-CHEM_rcp6p0_1950_2099.csv",
+  "clim_impacts_MIROC-ESM-CHEM_rcp8p5/q_km3peryear_MIROC-ESM-CHEM_rcp8p5_1950_2099.csv",
+  "clim_impacts_NorESM1-M_rcp2p6/q_km3peryear_NorESM1-M_rcp2p6_1950_2099.csv",
+  "clim_impacts_NorESM1-M_rcp4p5/q_km3peryear_NorESM1-M_rcp4p5_1950_2099.csv",
+  "clim_impacts_NorESM1-M_rcp6p0/q_km3peryear_NorESM1-M_rcp6p0_1950_2099.csv",
+  "clim_impacts_NorESM1-M_rcp8p5/q_km3peryear_NorESM1-M_rcp8p5_1950_2099.csv"
 )
 xanthosCoordinatesPath=paste(getwd(),"/dataFiles/grids/xanthosReference/coordinates.csv",sep="")
 xanthosGridAreaHecsPath=paste(getwd(),"/dataFiles/grids/xanthosReference/Grid_Areas_ID.csv",sep="")
@@ -450,9 +475,9 @@ spanLowess=0.25
 popFolder<-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 popFiles<-"grid_pop_map"
 popUnits<-"person"
-gridMetisData=paste(dirOutputs, "/Grids/gridMetisXanthos.RData", sep = "")
+gridMetisData=paste(dirOutputs, "/Grids/gridMetis_uruguay.RData", sep = "")
 sqliteUSE = T
-sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis_uruguay.sqlite", sep = "")
 
 gridMetis<-metis.prepGrid(
   reReadData=reReadData,
@@ -479,10 +504,10 @@ gridMetis<-metis.prepGrid(
   sqliteDBNamePath =sqliteDBNamePath)
 
 # reReadData=reReadData
-# demeterFolder=demeterFolder
-# demeterScenario=demeterScenario
-# demeterTimesteps=demeterTimesteps
-# demeterUnits=demeterUnits
+# # demeterFolder=demeterFolder
+# # demeterScenario=demeterScenario
+# # demeterTimesteps=demeterTimesteps
+# # demeterUnits=demeterUnits
 # tethysFolder=tethysFolder
 # tethysScenario=tethysScenario
 # copySingleTethysScenbyXanthos=copySingleTethysScenbyXanthos
@@ -495,9 +520,9 @@ gridMetis<-metis.prepGrid(
 # spanLowess=spanLowess
 # dirOutputs=paste(getwd(),"/outputs",sep="")
 # gridMetisData=gridMetisData
-# popFolder=popFolder
-# popFiles=popFiles
-# popUnits=popUnits
+# # popFolder=popFolder
+# # popFiles=popFiles
+# # popUnits=popUnits
 # sqliteUSE = sqliteUSE
 # sqliteDBNamePath =sqliteDBNamePath
 
@@ -505,20 +530,94 @@ gridMetis<-metis.prepGrid(
 # Grid to Poly
 #-------------
 
+sqliteUSE = T
+sqliteDBNamePath =paste(getwd(),"/outputs/Grids/gridMetis_uruguay.sqlite", sep = "")
+
+# Find unique params in SQL or Grid Data Base
+paste("Using SQLite database...",sep="")
+  if(!file.exists(sqliteDBNamePath)){stop("SQLite file path provided does not exist: ", sqliteDBNamePath, sep="")}
+  dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)
+  #src_dbi(dbConn)
+  sqlGrid<-tbl(dbConn,"gridMetis"); utils::head(sqlGrid)
+  dbHead<-utils::head(sqlGrid,1)%>%dplyr::collect();dbHead
+  names(dbHead)
+  if(!all(c("param","scenario","lon","lat","value") %in% names(dbHead))){
+    stop("SQLite database must have columns for lon, lat, value, param and scenario. Sql Database cols are : ",
+         paste(names(dbHead),collapse=", "), sep="")}
+  print(paste("Finding unique params in sql database...",sep=""))
+  params<-sqlGrid%>%dplyr::distinct(param)%>%dplyr::collect();
+  params=params$param
+  print(paste("Unique params found : ", paste(params,collapse=", "),sep=""))
+paramScenarios<-tibble::tibble()
+for(param_i in params){
+  print(paste("Finding unique scenarios in sql database for param: ",param_i,"...",sep=""))
+  scenarios<-sqlGrid%>%dplyr::filter(param==param_i)%>%dplyr::distinct(scenario)%>%dplyr::collect();
+  scenarios=scenarios$scenario
+  print(paste("Unique scenarios found : ", paste(scenarios,collapse=", "),sep=""))
+  paramScenarios<-dplyr::bind_rows(paramScenarios,data.frame(param=rep(param_i,length(scenarios)),scenario=scenarios))
+}
+paramScenarios<-paramScenarios%>%unique()
+print("paramScenarios found: ")
+print(paramScenarios)
+scenarios<-unique(paramScenarios$scenario)
+DBI::dbDisconnect(dbConn)
+
+paramScenarios %>% as.data.frame()
+save(paramScenarios,file=paste(getwd(),"/outputs/Grids/uruguay_tempParamScenarios.Rdata", sep = ""))
+load(paste(getwd(),"/outputs/Grids/uruguay_tempParamScenarios.Rdata", sep = ""))
+paramScenarios
+
+# Run in batches
+# Batch 1 - demeterLanduse, population, tethysWaterWithdraw_nonAg,tethysWaterWithdraw_indv
+# Batch 2 - tethysWatWithdraw_total, xanthosRunoff(scenarios rcp2p6,rcp4p5)
+# Batch 3 - tethysWatWithdraw_total, xanthosRunoff(scenarios rcp6p0,rcp8p5)
+# Batch 4 - griddedScarcity (scenarios rcp2p6,rcp4p5)
+# Batch 5 - griddedScarcity (scenarios rcp6p0,rcp8p5)
+
+scenarios<-unique(paramScenarios$scenario)
+
+#Batch1
+paramsSelect_1 <- c("demeterLandUse","tethysWatWithdraw_indv","tethysWatWithdraw_nonAg","population")
+scenariosSelect_1 <- c("Eg1","Eg1_NA_NA","popGWP")
+#Batch2
+paramsSelect_2 <- c("tethysWatWithdraw_total","xanthosRunoff")
+scenariosSelect_2 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp2p6|rcp4p5",scenarios)])
+#Batch3
+paramsSelect_3 <- c("tethysWatWithdraw_total","xanthosRunoff")
+scenariosSelect_3 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp6p0|rcp8p5",scenarios)])
+#Batch4
+#Batch2
+paramsSelect_4 <- c("griddedScarcity")
+scenariosSelect_4 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp2p6|rcp4p5",scenarios)])
+#Batch3
+paramsSelect_5 <- c("griddedScarcity")
+scenariosSelect_5 <- c("Eg1_NA_NA","popGWP",scenarios[grepl("rcp6p0|rcp8p5",scenarios)])
+
+batches <- list(batch1=list(params=paramsSelect_1,scenarios=scenariosSelect_1),
+                batch2=list(params=paramsSelect_2,scenarios=scenariosSelect_2),
+                batch3=list(params=paramsSelect_3,scenarios=scenariosSelect_3),
+                batch4=list(params=paramsSelect_4,scenarios=scenariosSelect_4),
+                batch5=list(params=paramsSelect_5,scenarios=scenariosSelect_5))
+
+for(i in 1:length(batches)){
+
+  paramScenarios_i <- paramScenarios %>% dplyr::filter(param %in% batches[[i]]$params, scenario %in% batches[[i]]$scenarios); paramScenarios_i
+  paramsSelect_i = unique(paramScenarios_i$param); paramsSelect_i
+  scenariosSelect_i = unique(paramScenarios_i$scenario); scenariosSelect_i
+
+  #paramsSelect_i="tethysWatWithdraw_indv"; scenariosSelect_i="Eg1_NA_NA"
+
 # Natural Earth admin1 boundaries
-boundaryRegionsSelect_i=countryName
-subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep = "")
 subRegShpFile_i = paste(countryName,"NE1",sep= "")
 subRegCol_i = "name"
 subRegType_i = "state"
-nameAppend_i = "_NE"
+nameAppend_i = paste("_NE_batch",i,sep="")
 aggType_i = NULL
-paramsSelect_i= "All" #"demeterLandUse"
 sqliteUSE_i = T
-sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis_uruguay.sqlite", sep = "")
 
 grid2polyX<-metis.grid2poly(#grid=grid_i,
-  boundaryRegionsSelect=boundaryRegionsSelect_i,
   subRegShpFolder=subRegShpFolder_i,
   subRegShpFile=subRegShpFile_i,
   subRegCol=subRegCol_i,
@@ -526,35 +625,37 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
   aggType=aggType_i,
   nameAppend=nameAppend_i,
   paramsSelect = paramsSelect_i,
+  scenariosSelect = scenariosSelect_i,
   sqliteUSE = sqliteUSE_i,
-  sqliteDBNamePath = sqliteDBNamePath_i)
+  sqliteDBNamePath = sqliteDBNamePath_i,
+  folderName = countryName,
+  regionName = countryName)
 
-# boundaryRegionsSelect=boundaryRegionsSelect_i
 # subRegShpFolder=subRegShpFolder_i
 # subRegShpFile=subRegShpFile_i
 # subRegCol=subRegCol_i
 # subRegType = subRegType_i
 # aggType=aggType_i
 # nameAppend=nameAppend_i
-# paramsSelect = paramsSelect_i
+# paramsSelect = "tethysWatWithdraw_total"
+# scenariosSelect = "Eg1_NA_NA"
 # sqliteUSE = sqliteUSE_i
 # sqliteDBNamePath = sqliteDBNamePath_i
+# folderName = countryName
+# regionName = countryName
 
 #grid_i=gridMetis
 #grid_i=paste(getwd(),"/outputs/Grids/gridMetisXanthos.RData",sep = "")
-boundaryRegionsSelect_i=countryName
 subRegShpFolder_i = localBasinShapeFileFolder # paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
 subRegShpFile_i = localBasinShapeFile # paste("colombiaLocalBasin",sep= "")
 subRegCol_i = localBasinsShapeFileColName  #
 subRegType_i = "subBasin"
-nameAppend_i = "_local"
+nameAppend_i = paste("_local_batch",i,sep="")
 aggType_i = NULL
-paramsSelect_i= "All" #"demeterLandUse"
 sqliteUSE_i = T
-sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+sqliteDBNamePath_i = paste(getwd(),"/outputs/Grids/gridMetis_uruguay.sqlite", sep = "")
 
 grid2polyX<-metis.grid2poly(#grid=grid_i,
-  boundaryRegionsSelect=boundaryRegionsSelect_i,
   subRegShpFolder=subRegShpFolder_i,
   subRegShpFile=subRegShpFile_i,
   subRegCol=subRegCol_i,
@@ -562,10 +663,13 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
   aggType=aggType_i,
   nameAppend=nameAppend_i,
   paramsSelect = paramsSelect_i,
+  scenariosSelect = scenariosSelect_i,
   sqliteUSE = sqliteUSE_i,
-  sqliteDBNamePath = sqliteDBNamePath_i)
+  sqliteDBNamePath = sqliteDBNamePath_i,
+  folderName = countryName,
+  regionName = countryName)
 
-
+}
 
 #-----------
 # Mapping
@@ -573,30 +677,48 @@ grid2polyX<-metis.grid2poly(#grid=grid_i,
 
 #examplePolygonTable<-paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Argentina_subRegType_origDownscaled_hydrobidBermeo3.csv",sep="")
 
-polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Uruguay_state_origDownscaled_NE.csv",sep="")
-a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+# polygonDataTables_i=paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE.csv",sep="")
+# a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+# for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
+# gridDataTables_i=paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE.csv",sep="")
+# b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
+# for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x));print(unique((b%>%dplyr::filter(param==param_i))$scenario))}
+
+p_batch1 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch1.csv",sep=""))
+p_batch2 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch2.csv",sep=""))
+p_batch3 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch3.csv",sep=""))
+p_batch4 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch4.csv",sep=""))
+p_batch5 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_state_NE_batch5.csv",sep=""))
+a <- bind_rows(p_batch1,p_batch2,p_batch3,p_batch4,p_batch5)
+a <- a %>% unique(); a
 for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
-gridDataTables_i=paste(getwd(),"/outputs/Grids/gridCropped_Uruguay_state_NE.csv",sep="")
-b<-read.csv(gridDataTables_i); head(b); unique(b$scenario); unique(b$param); unique(b$x)
+
+g_batch1 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE_batch1.csv",sep=""))
+g_batch2 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE_batch2.csv",sep=""))
+g_batch3 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE_batch3.csv",sep=""))
+g_batch4 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE_batch4.csv",sep=""))
+g_batch5 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/gridCropped_state_NE_batch5.csv",sep=""))
+b <- bind_rows(g_batch1,g_batch2,g_batch3,g_batch4,g_batch5)
+b <- b %>% unique(); b
 for(param_i in unique(b$param)){print(param_i);print(unique((b%>%dplyr::filter(param==param_i))$x));print(unique((b%>%dplyr::filter(param==param_i))$scenario))}
+
 xRange_i= seq(from=2000,to=2050,by=5)
 legendPosition_i=c("LEFT","bottom")
 legendOutsideSingle_i=T
 animateOn_i=T
 delay_i=100
-scenRef_i="gfdl-esm2m_rcp2p6_NA_NA"
+scenRef_i="GFDL-ESM2M_rcp2p6_NA_NA"
 paramsSelect_i = c("All")
 indvScenarios_i = "All"
 GCMRCPSSPPol_i=T
 
-
 boundaryRegShape_i = NULL
-boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/naturalEarth",sep="")
+boundaryRegShpFolder_i=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
 boundaryRegShpFile_i=paste("ne_10m_admin_0_countries",sep="")
 boundaryRegCol_i="NAME"
 boundaryRegionsSelect_i="Uruguay"
 subRegShape_i = NULL
-subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep = "")
 subRegShpFile_i = paste(countryName,"NE1",sep= "")
 subRegCol_i = "name"
 subRegType_i = "state"
@@ -607,14 +729,14 @@ scaleRange_i=data.frame(param=c("griddedScarcity"),
                         minScale=c(0))
 
 
-numeric2Cat_param <- list("griddedScarcity","param2")
-numeric2Cat_breaks <- list(c(-Inf, 0.1, 0.2, 0.4,Inf),c(0,1,2))
+numeric2Cat_param <- list("griddedScarcity","polyScarcity")
+numeric2Cat_breaks <- list(c(-Inf, 0.1, 0.2, 0.4,Inf),c(-Inf, 0.1, 0.2, 0.4,Inf))
 numeric2Cat_labels <- list(c("None (0<WSI<0.1)","Low (0.1<WSI<0.2)","Moderate (0.2<WSI<0.4)","Severe (WSI>0.4)"),
-                           c("a","b","c","d"))
+                           c("None (0<WSI<0.1)","Low (0.1<WSI<0.2)","Moderate (0.2<WSI<0.4)","Severe (WSI>0.4)"))
 numeric2Cat_palette <- list(c("pal_ScarcityCat"),
                             #c("c('None (0<WSI<0.1)'='black','Low (0.1<WSI<0.2)'='blue','Moderate (0.2<WSI<0.4)'='purple','Severe (WSI>0.4)'='yellow')"),
-                            c("Spectral")) # Can be a custom scale or an R brewer paletter or a metis.pal
-numeric2Cat_legendTextSize <- list(c(0.7),c(NULL))
+                            c("pal_ScarcityCat")) # Can be a custom scale or an R brewer paletter or a metis.pal
+numeric2Cat_legendTextSize <- list(c(0.7),c(0.7))
 numeric2Cat_list <-list(numeric2Cat_param=numeric2Cat_param,
                         numeric2Cat_breaks=numeric2Cat_breaks,
                         numeric2Cat_labels=numeric2Cat_labels,
@@ -628,9 +750,8 @@ catPalette <- numeric2Cat_list$numeric2Cat_palette[[list_index]]; catPalette
 catLegendTextSize <- numeric2Cat_list$numeric2Cat_legendTextSize[[list_index]];catLegendTextSize
 
 
-
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
-                 gridDataTables=gridDataTables_i,
+metis.mapsProcess(polygonDataTables=a,
+                 gridDataTables=b,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,
                  boundaryRegShpFolder=boundaryRegShpFolder_i,
@@ -641,12 +762,10 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  subRegShpFolder=subRegShpFolder_i,
                  subRegShpFile=subRegShpFile_i,
                  subRegCol=subRegCol_i,
-                 subRegType=subRegType_i,
                  nameAppend=nameAppend_i,
                  legendOutsideSingle=legendOutsideSingle_i,
                  legendPosition=legendPosition_i,
                  animateOn=animateOn_i,
-                 delay=delay_i,
                  scenRef=scenRef_i,
                  extension=T,
                  expandPercent = 3,
@@ -656,8 +775,8 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  scaleRange = scaleRange_i,
                  indvScenarios=indvScenarios_i,
                  GCMRCPSSPPol=GCMRCPSSPPol_i,
-                 multiFacetCols="scenarioRCP",
-                 multiFacetRows="scenarioGCM",
+                 multiFacetCols="scenarioGCM",
+                 multiFacetRows="scenarioRCP",
                  legendOutsideMulti=T,
                  legendPositionMulti=NULL,
                  legendTitleSizeMulti=NULL,
@@ -665,12 +784,13 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
                  legendTextSizeMulti=NULL,
                  refGCM="gfdl-esm2m",
                  refRCP="rcp2p6",
-                 chosenRefMeanYears=c(2000:2050),
-                 numeric2Cat_list=numeric2Cat_list)
+                 chosenRefMeanYears=c(1950:2010),
+                 numeric2Cat_list=numeric2Cat_list,
+                 folderName = "Uruguay_state")
 
 
-# polygonDataTables=polygonDataTables_i
-# gridDataTables=gridDataTables_i
+# polygonDataTables=a
+# gridDataTables=b
 # xRange=xRange_i
 # boundaryRegShape=boundaryRegShape_i
 # boundaryRegShpFolder=boundaryRegShpFolder_i
@@ -681,12 +801,10 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
 # subRegShpFolder=subRegShpFolder_i
 # subRegShpFile=subRegShpFile_i
 # subRegCol=subRegCol_i
-# subRegType=subRegType_i
 # nameAppend=nameAppend_i
 # legendOutsideSingle=legendOutsideSingle_i
 # legendPosition=legendPosition_i
 # animateOn=animateOn_i
-# delay=delay_i
 # scenRef=scenRef_i
 # extension=T
 # expandPercent = 3
@@ -695,7 +813,7 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
 # paramsSelect = paramsSelect_i
 # scaleRange = scaleRange_i
 # indvScenarios=indvScenarios_i
-# GCMRCPSSPPol=T
+# GCMRCPSSPPol=GCMRCPSSPPol_i
 # multiFacetCols="scenarioRCP"
 # multiFacetRows="scenarioGCM"
 # legendOutsideMulti=T
@@ -707,54 +825,97 @@ metis.mapProcess(polygonDataTables=polygonDataTables_i,
 # refRCP="rcp2p6"
 # chosenRefMeanYears=c(2000:2050)
 # numeric2Cat_list=numeric2Cat_list
+# folderName = "Uruguay_state"
 
 
-polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/subReg_origData_byClass_Uruguay_subBasin_origDownscaled_local.csv",sep="")
-a<-read.csv(polygonDataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+p_batch1 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_batch1.csv",sep=""))
+p_batch2 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_batch2.csv",sep=""))
+p_batch3 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_batch3.csv",sep=""))
+p_batch4 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_batch4.csv",sep=""))
+p_batch5 <- read.csv(paste(getwd(),"/outputs/Grid2Poly/Uruguay/subReg_grid2poly_subBasin_local_batch5.csv",sep=""))
+a <- bind_rows(p_batch1,p_batch2,p_batch3,p_batch4,p_batch5)
+a <- a %>% unique(); a
 for(param_i in unique(a$param)){print(param_i);print(unique((a%>%dplyr::filter(param==param_i))$x));print(unique((a%>%dplyr::filter(param==param_i))$scenario))}
 
-subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep = "")
+subRegShpFolder_i = paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep = "")
 subRegShpFile_i = localBasinShapeFile # paste("colombiaLocalBasin",sep= "")
 subRegCol_i = localBasinsShapeFileColName  #
 subRegType_i = "subBasin"
 nameAppend_i = "_local"
 
-metis.mapProcess(polygonDataTables=polygonDataTables_i,
-                 #gridDataTables=gridDataTables_i,
-                 xRange=xRange_i,
-                 boundaryRegShape=boundaryRegShape_i,
-                 boundaryRegShpFolder=boundaryRegShpFolder_i,
-                 boundaryRegShpFile=boundaryRegShpFile_i,
-                 boundaryRegCol=boundaryRegCol_i,
-                 boundaryRegionsSelect=boundaryRegionsSelect_i,
-                 subRegShape=subRegShape_i,
-                 subRegShpFolder=subRegShpFolder_i,
-                 subRegShpFile=subRegShpFile_i,
-                 subRegCol=subRegCol_i,
-                 subRegType=subRegType_i,
-                 nameAppend=nameAppend_i,
-                 legendOutsideSingle=legendOutsideSingle_i,
-                 legendPosition=legendPosition_i,
-                 animateOn=animateOn_i,
-                 delay=delay_i,
-                 scenRef=scenRef_i,
-                 extension=T,
-                 expandPercent = 3,
-                 figWidth=6,
-                 figHeight=7,
-                 paramsSelect = paramsSelect_i,
-                 scaleRange = scaleRange_i,
-                 indvScenarios=indvScenarios_i,
-                 GCMRCPSSPPol=GCMRCPSSPPol_i,
-                 multiFacetCols="scenarioRCP",
-                 multiFacetRows="scenarioGCM",
-                 legendOutsideMulti=T,
-                 legendPositionMulti=NULL,
-                 legendTitleSizeMulti=NULL,
-                 legendTextSizeAnim=NULL,
-                 legendTextSizeMulti=NULL,
-                 refGCM="gfdl-esm2m",
-                 refRCP="rcp2p6",
-                 chosenRefMeanYears=c(2000:2050),
-                 numeric2Cat_list=numeric2Cat_list)
+metis.mapsProcess(polygonDataTables=a,
+                  #gridDataTables=gridDataTables_i,
+                  xRange=xRange_i,
+                  boundaryRegShape=boundaryRegShape_i,
+                  boundaryRegShpFolder=boundaryRegShpFolder_i,
+                  boundaryRegShpFile=boundaryRegShpFile_i,
+                  boundaryRegCol=boundaryRegCol_i,
+                  boundaryRegionsSelect=boundaryRegionsSelect_i,
+                  subRegShape=subRegShape_i,
+                  subRegShpFolder=subRegShpFolder_i,
+                  subRegShpFile=subRegShpFile_i,
+                  subRegCol=subRegCol_i,
+                  nameAppend=nameAppend_i,
+                  legendOutsideSingle=legendOutsideSingle_i,
+                  legendPosition=legendPosition_i,
+                  animateOn=animateOn_i,
+                  scenRef=scenRef_i,
+                  extension=T,
+                  expandPercent = 3,
+                  figWidth=6,
+                  figHeight=7,
+                  paramsSelect = paramsSelect_i,
+                  scaleRange = scaleRange_i,
+                  indvScenarios=indvScenarios_i,
+                  GCMRCPSSPPol=GCMRCPSSPPol_i,
+                  multiFacetCols="scenarioGCM",
+                  multiFacetRows="scenarioRCP",
+                  legendOutsideMulti=T,
+                  legendPositionMulti=NULL,
+                  legendTitleSizeMulti=NULL,
+                  legendTextSizeAnim=NULL,
+                  legendTextSizeMulti=NULL,
+                  refGCM="gfdl-esm2m",
+                  refRCP="rcp2p6",
+                  chosenRefMeanYears=c(1950:2010),
+                  numeric2Cat_list=numeric2Cat_list,
+                  folderName = "Uruguay_localBasin")
+
+# polygonDataTables=p_batch3
+# #gridDataTables=gridDataTables_i
+# xRange=xRange_i
+# boundaryRegShape=boundaryRegShape_i
+# boundaryRegShpFolder=boundaryRegShpFolder_i
+# boundaryRegShpFile=boundaryRegShpFile_i
+# boundaryRegCol=boundaryRegCol_i
+# boundaryRegionsSelect=boundaryRegionsSelect_i
+# subRegShape=subRegShape_i
+# subRegShpFolder=subRegShpFolder_i
+# subRegShpFile=subRegShpFile_i
+# subRegCol=subRegCol_i
+# nameAppend=nameAppend_i
+# legendOutsideSingle=legendOutsideSingle_i
+# legendPosition=legendPosition_i
+# animateOn=animateOn_i
+# scenRef=scenRef_i
+# extension=T
+# expandPercent = 3
+# figWidth=6
+# figHeight=7
+# paramsSelect = paramsSelect_i
+# scaleRange = scaleRange_i
+# indvScenarios=indvScenarios_i
+# GCMRCPSSPPol=GCMRCPSSPPol_i
+# multiFacetCols="scenarioRCP"
+# multiFacetRows="scenarioGCM"
+# legendOutsideMulti=T
+# legendPositionMulti=NULL
+# legendTitleSizeMulti=NULL
+# legendTextSizeAnim=NULL
+# legendTextSizeMulti=NULL
+# refGCM="gfdl-esm2m"
+# refRCP="rcp2p6"
+# chosenRefMeanYears=c(1950:2010)
+# numeric2Cat_list=numeric2Cat_list
+# folderName = "Uruguay_localBasin_test"
 

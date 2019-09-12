@@ -25,6 +25,7 @@ metis.assumptions <- function() {
   # Conversions
   #------------------
 
+  convEJ2MTOE<-23.8845897  #https://www.iea.org/statistics/resources/unitconverter/
   convEJ2TWh<-277.77777777778
   convEJ2GW<-convEJ2TWh*1000/8760
   conv1975USDperGJ22017USDperMWh<-3.62/0.2777778    # Deflators 1975 to 2017 from World Bank https://data.worldbank.org/indicator/NY.GDP.DEFL.ZS?locations=US&view=chart
@@ -77,6 +78,7 @@ metis.assumptions <- function() {
   )%>%as.data.frame;
 
   return(list(
+         convEJ2MTOE=convEJ2MTOE,
          convEJ2TWh=convEJ2TWh,
          convEJ2GW=convEJ2GW,
          conv1975USDperGJ22017USDperMWh=conv1975USDperGJ22017USDperMWh,

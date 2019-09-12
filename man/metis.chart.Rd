@@ -11,19 +11,19 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
   color = NULL, xLabel = "xLabel", yLabel = "yLabel",
   facet_rows = NULL, facet_columns = NULL, ncolrow = 4,
   facetBGColor = "grey30", facetLabelColor = "white",
-  facetLabelSize = 1.5, scales = "fixed", useNewLabels = 0,
+  facetLabelSize = 24, scales = "fixed", useNewLabels = 0,
   units = "units", xBreaksMaj = 10, xBreaksMin = 5,
   yBreaksMajn = 5, yBreaksMinn = 10, sizeBarLines = 0.5,
-  sizeLines = 1.5, sectorToOrder = NULL, sectorFromOrder = NULL,
-  removeCols = NULL, bubbleSize = 10, sankeyAxis1 = NULL,
-  sankeyAxis2 = NULL, sankeyAxis1Label = "axis1Label",
-  sankeyAxis2Label = "axis2Label", sankeyGroupColor = NULL,
-  printFig = T, fileName = "chart", title = NULL,
-  dirOutputs = paste(getwd(), "/outputs/Charts", sep = ""),
-  folderName = NULL, figWidth = 13, figHeight = 9, pdfpng = "png",
-  sankeyLabelsOn = 1, colOrder1 = NULL, colOrderName1 = NULL,
-  colOrder2 = NULL, colOrderName2 = NULL, pointsOn = 1,
-  pointsSize = 4)
+  sizeLines = 1.5, yMax = NULL, yMin = NULL, sectorToOrder = NULL,
+  sectorFromOrder = NULL, removeCols = NULL, bubbleSize = 10,
+  sankeyAxis1 = NULL, sankeyAxis2 = NULL,
+  sankeyAxis1Label = "axis1Label", sankeyAxis2Label = "axis2Label",
+  sankeyGroupColor = NULL, printFig = T, fileName = "chart",
+  title = NULL, dirOutputs = paste(getwd(), "/outputs/Charts", sep =
+  ""), folderName = NULL, figWidth = 13, figHeight = 9,
+  pdfpng = "png", sankeyLabelsOn = 1, colOrder1 = NULL,
+  colOrderName1 = NULL, colOrder2 = NULL, colOrderName2 = NULL,
+  pointsOn = 1, pointsSize = 4)
 }
 \arguments{
 \item{data}{Data table for charting}
@@ -81,6 +81,10 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
 \item{sizeBarLines}{Bar plot line size. Default 0.5}
 
 \item{sizeLines}{Line plot line size. Default 1.5}
+
+\item{yMax}{Y axis max value}
+
+\item{yMin}{Y axis min value}
 
 \item{sectorToOrder}{Order of "to" column variables in bubble plots. Default = NULL,}
 

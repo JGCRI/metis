@@ -146,3 +146,6 @@ profvis(metis.grid2poly(
   paramsSelect=c("All")))
 
 
+# -------------
+# install.packges("diffobj")
+# diffObj(a,b) to see diff

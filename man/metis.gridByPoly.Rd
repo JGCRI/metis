@@ -4,23 +4,28 @@
 \alias{metis.gridByPoly}
 \title{metis.gridByPoly}
 \usage{
-metis.gridByPoly(grid = NULL, boundaryRegShpFolder = NULL,
-  boundaryRegShpFile = NULL, colName = NULL,
-  outputDir = paste(getwd(), "/outputs", sep = ""),
-  fname = "gridByPoly", saveFile = F)
+metis.gridByPoly(gridDataTables = NULL, shape = NULL,
+  shapeFolder = NULL, shapeFile = NULL, colName = NULL,
+  dirOutputs = paste(getwd(), "/outputs", sep = ""),
+  fname = "gridByPoly", folderName = "folderNameDefault",
+  saveFile = F)
 }
 \arguments{
-\item{grid}{Default = NULL. Full path to grid file.}
+\item{gridDataTables}{Default = NULL. Full path to grid file.}
 
-\item{boundaryRegShpFolder}{Default = NULL,}
+\item{shape}{Default = NULL,}
 
-\item{boundaryRegShpFile}{Default = NULL,}
+\item{shapeFolder}{Default = NULL,}
+
+\item{shapeFile}{Default = NULL,}
 
 \item{colName}{Default = NULL,}
 
-\item{outputDir}{Default = paste(getwd(),"/outputs",sep=""),}
+\item{dirOutputs}{Default = paste(getwd(),"/outputs",sep=""),}
 
 \item{fname}{Default = "gridByPoly"}
+
+\item{folderName}{Default ="folderNameDefault",}
 
 \item{saveFile}{Default = F. If want csv output then change to T}
 }
