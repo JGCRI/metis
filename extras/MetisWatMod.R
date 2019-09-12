@@ -125,7 +125,7 @@ subReg_water_balance <- function(supply_demand_table, completed_subRegs, network
     df_user_wat_dem_tot <- supply_demand_table %>%
       filter(subRegion==e, supplySubSector %in% c('W_SW_Upstream', 'W_SW_Runoff', 'W_SW_Import')) %>%
       select(-one_of("downstream", "cap", "upstream_inflow", "units", "region"))
-    df_user_wat_dem_tot <- df_user_wat_dem_tot %>% mutate(rowsum=rowSums(.[4:ncol(df_user_wat_dem_tot)], na.rm=TRUE))
+    df_user_wat_dem_tot <- df_user_wat_dem_tot %>% mutate(rowsum=rowSums(.[5:ncol(df_user_wat_dem_tot)], na.rm=TRUE))
     user_wat_dem_tot <- sum(df_user_wat_dem_tot$rowsum, na.rm=TRUE)
     current_water <- supply_demand_table %>%
       filter(subRegion == e, supplySubSector %in% c('W_SW_Upstream', 'W_SW_Runoff', 'W_SW_Import')) %>%
