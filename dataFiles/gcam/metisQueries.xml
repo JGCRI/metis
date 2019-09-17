@@ -635,12 +635,12 @@
 			   <rewrite from="SheepGoat" to="livestock"/>
 			   <rewrite from="Pork" to="livestock"/>
 			   <rewrite from="unconventional oil production" to="mining"/>
-			   <rewrite from="nuclearFuelGenIII" to="mining"/>
-			   <rewrite from="nuclearFuelGenII" to="mining"/>
+			   <rewrite from="nuclearFuelGenIII" to="electricity"/>
+			   <rewrite from="nuclearFuelGenII" to="electricity"/>
 			   <rewrite from="regional oil" to="mining"/>
 			   <rewrite from="regional coal" to="mining"/>
 			   <rewrite from="regional natural gas" to="mining"/>
-			   <rewrite from="biomass" to="agriculture"/>
+			   <rewrite from="biomass" to="biomass"/>
 			   <rewrite from="FiberCrop" to="agriculture"/>
 			   <rewrite from="PalmFruit" to="agriculture"/>
 			   <rewrite from="SugarCrop" to="agriculture"/>
@@ -730,12 +730,12 @@
 			   <rewrite from="SheepGoat" to="livestock"/>
 			   <rewrite from="Pork" to="livestock"/>
 			   <rewrite from="unconventional oil production" to="mining"/>
-			   <rewrite from="nuclearFuelGenIII" to="mining"/>
-			   <rewrite from="nuclearFuelGenII" to="mining"/>
+			   <rewrite from="nuclearFuelGenIII" to="electricity"/>
+			   <rewrite from="nuclearFuelGenII" to="electricity"/>
 			   <rewrite from="regional oil" to="mining"/>
 			   <rewrite from="regional coal" to="mining"/>
 			   <rewrite from="regional natural gas" to="mining"/>
-			   <rewrite from="biomass" to="agriculture"/>
+			   <rewrite from="biomass" to="biomass"/>
 			   <rewrite from="FiberCrop" to="agriculture"/>
 			   <rewrite from="PalmFruit" to="agriculture"/>
 			   <rewrite from="SugarCrop" to="agriculture"/>
@@ -1108,5 +1108,16 @@
             </labelRewriteList>
          </supplyDemandQuery>
 	</aQuery>
+
+ <aQuery>
+		<all-regions/>
+      <emissionsQueryBuilder title="nonCO2 emissions by resource production">
+         <axis1 name="GHG">GHG</axis1>
+         <axis2 name="Year">emissions</axis2>
+         <xPath buildList="true" dataName="emissions" group="false" sumAll="false">*[@type = 'resource']//*[@type = 'GHG']/emissions/node()</xPath>
+         <comments/>
+      </emissionsQueryBuilder>
+    </aQuery>
+
 
 </queries>
