@@ -19,10 +19,10 @@ LaPampa_media,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),2.27310
 LaPampa_baja,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),2.088111925
 RioNegro_baja,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),2.088111925
 Corfo,Water,W_SW_Upstream,2010,Local natural supply limit (km^3),3.952107149
-Mendoza_alta_riogrande,Electricity,Electricity_RefLiq_Diesel,2010,Installed Capacity (MW),0.296
+Mendoza_alta_riogrande,Electricity,Electricity_RefLiqDiesel,2010,Installed Capacity (MW),0.296
 Neuquen_media,Electricity,Electricity_Gas,2010,Installed Capacity (MW),67.5
-Neuquen_media,Electricity,Electricity_RefLiq_Diesel,2010,Installed Capacity (MW),32.39
-LaPampa_baja,Electricity,Electricity_RefLiq_Diesel,2010,Installed Capacity (MW),0.14
+Neuquen_media,Electricity,Electricity_RefLiqDiesel,2010,Installed Capacity (MW),32.39
+LaPampa_baja,Electricity,Electricity_RefLiqDiesel,2010,Installed Capacity (MW),0.14
 LaPampa_media,Electricity,Electricity_Hydro,2010,Installed Capacity (MW),60
 Mendoza_alta_barrancas,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),5
 Mendoza_alta_riogrande,Water,W_GW_Reservoir,2010,Local natural supply limit (km^3),5
