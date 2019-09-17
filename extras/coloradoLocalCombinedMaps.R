@@ -37,7 +37,7 @@ countryLocalBasin@data <- droplevels(countryLocalBasin@data)
 head(countryLocalBasin@data)
 plot(countryLocalBasin)
 writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
-metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=F, folderName = NULL)
+metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=T, facetsON = T, labels=T)
 
 
 
@@ -49,7 +49,7 @@ subRegType_i = "subBasin"
 nameAppend_i = "_local"
 
 scenario_name <- 'Reference'
-polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/total_ag_supply", '_', scenario_name, ".csv",sep="")
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/", paramSelect, '_', scenario_name, ".csv",sep="")
 a1<-read.csv(polygonDataTables_i); head(a1); unique(a1$scenario); unique(a1$param); unique(a1$x)
 
 
@@ -63,10 +63,10 @@ paramsSelect_i = c("All")
 indvScenarios_i = "All"
 GCMRCPSSPPol_i=F
 
-scaleRange_i=data.frame(param=c("total_ag_supply"),
+scaleRange_i=data.frame(param=paramSelect,
                         maxScale=c(5),
                         minScale=c(0))
-numeric2Cat_param <- list("total_ag_supply","param2")
+numeric2Cat_param <- list(paramSelect,"param2")
 numeric2Cat_palette <- list(c("xx")) # Can be a custom scale or an R brewer paletter or a metis.pal
 numeric2Cat_legendTextSize <- list(c(0.7),c(NULL))
 numeric2Cat_breaks <- list(c(0, 0.25, 1, 3, 5),c(0,1,2,3,4,5))
@@ -77,7 +77,7 @@ numeric2Cat_list <-list(numeric2Cat_param=numeric2Cat_param,
                         numeric2Cat_palette=numeric2Cat_palette,
                         numeric2Cat_legendTextSize=numeric2Cat_legendTextSize)
 
-list_index <- which(numeric2Cat_list$numeric2Cat_param=="total_ag_supply")
+list_index <- which(numeric2Cat_list$numeric2Cat_param==paramSelect)
 catBreaks <- numeric2Cat_list$numeric2Cat_breaks[[list_index]]; catBreaks
 #catLabels <- numeric2Cat_list$numeric2Cat_labels[[list_index]]; catLabels
 catPalette <- numeric2Cat_list$numeric2Cat_palette[[list_index]]; catPalette
@@ -107,7 +107,7 @@ metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  legendOutsideSingle=legendOutsideSingle_i,
                  legendPosition=legendPosition_i,
                  animateOn=animateOn_i,
-                 #delay=delay_i,
+                 delay=delay_i,
                  scenRef=scenRef_i,
                  extension=T,
                  expandPercent = 3,
@@ -127,4 +127,4 @@ metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  refGCM="gfdl-esm2m",
                  refRCP="rcp2p6",
                  chosenRefMeanYears=c(2000:2050),
-                 numeric2Cat_list=numeric2Cat_list, frameShow = F)
+                 numeric2Cat_list=numeric2Cat_list)

@@ -38,7 +38,7 @@ countryLocalBasin@data <- droplevels(countryLocalBasin@data)
 head(countryLocalBasin@data)
 plot(countryLocalBasin)
 writeOGR(obj=countryLocalBasin, dsn=paste(getwd(),"/dataFiles/gis/shapefiles_",countryName,sep=""), layer=paste(countryName,"LocalBasin",sep=""), driver="ESRI Shapefile", overwrite_layer=TRUE)
-metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=F, facetsON = F, labels=F)
+metis.map(dataPolygon=countryLocalBasin,fillColumn = localBasinsShapeFileColName,printFig=T, facetsON = F, labels=F)
 
 
 
@@ -50,7 +50,7 @@ subRegType_i = "subBasin"
 nameAppend_i = "_local"
 
 
-polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/livestock_water_demand.csv",sep="")
+polygonDataTables_i=paste(getwd(),"/outputs/Maps/Tables/livestock_water_demand_Reference.csv",sep="")
 
 a1<-read.csv(polygonDataTables_i); head(a1); unique(a1$scenario); unique(a1$param); unique(a1$x)
 
@@ -109,7 +109,7 @@ metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  legendOutsideSingle=legendOutsideSingle_i,
                  legendPosition=legendPosition_i,
                  animateOn=animateOn_i,
-                 delay=delay_i,
+                 #delay=delay_i,
                  scenRef=scenRef_i,
                  extension=T,
                  expandPercent = 3,

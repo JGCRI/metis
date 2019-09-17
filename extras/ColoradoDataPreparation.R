@@ -124,9 +124,9 @@ for (sR in subRegions){
   for(dC in DemCls){
     SupDem_GW_DemCls <- SupDem_GW %>%
       filter(demandClass==dC) # filter GW data for subregion just by demand classes
-    SupDem_GW_DemCls_Value <- SupDem_GW_DemCls$localDataSubdivided[1]  # Get GW value for this demand class and subregion
+    SupDem_GW_DemCls_Value <- SupDem_GW_DemCls$localData[1]  # Get GW value for this demand class and subregion
     data_NOGW <- data_NOGW %>%
-      mutate(localDataSubdivided=if_else(subRegion==sR & demandClass==dC & supplySubSector=='W_SW_Upstream', localDataSubdivided+SupDem_GW_DemCls_Value, localDataSubdivided)) %>%
+      mutate(localData=if_else(subRegion==sR & demandClass==dC & supplySubSector=='W_SW_Upstream', localData+SupDem_GW_DemCls_Value, localData)) %>%
       filter(!supplySubSector=='W_GW_Reservoir')
   }
 }
@@ -142,10 +142,9 @@ data_NOGW$units <- as.character(data_NOGW$units)
 data_NOGW <- data_NOGW %>%
   left_join(profitLanduseMapping, by=c('subRegion', 'supplySubSector')) %>%
   mutate(New_crop.area..km2.=if_else(is.na(crop.area..km2.), 0, crop.area..km2.)) %>%
-  mutate(localDataSubdivided=if_else(New_crop.area..km2. > 0, New_crop.area..km2., localDataSubdivided)) %>%
+  mutate(localData=if_else(New_crop.area..km2. > 0, New_crop.area..km2., localData)) %>%
   mutate(units=if_else(New_crop.area..km2. > 0, 'km2', units)) %>%
-  select(-crop.area..km2., -New_crop.area..km2., -localData) %>%
-  rename(localData = localDataSubdivided)
+  select(-crop.area..km2., -New_crop.area..km2.)
 
 misc_crop_coeff <- (ColoradoWaterLand_Summary %>% filter(AggCrop=='MiscCrop'))$mean[1]
 data_NOGW <- data_NOGW %>%

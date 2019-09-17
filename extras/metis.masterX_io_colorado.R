@@ -25,7 +25,6 @@ library(ggalluvial)
 if("tidyverse" %in% rownames(installed.packages()) == F){install.packages("tidyverse")}
 library(tidyverse)
 
-
 # This script uses MetisWatMod to build the simulation network then balance water flows in a historical year
 
 source(paste(getwd(),'/extras/MetisWatMod.R',sep=""))
@@ -42,14 +41,16 @@ from_to <- output$from_to
 # Import user-defined supply/demand/capacity files
 # Import demands across sectors, with corresponding supplies specified
 # Import base data
-demand_data_file = paste(getwd(),'/datafiles/io/colorado_demand_data.csv',sep="")  # _AgPolicy
+scenario_name <- 'Policy'  # 'Reference'
+demand_data_file = paste(getwd(),'/datafiles/io/colorado_', scenario_name, '_', 'NEW.csv',sep="")  # _AgPolicy
 capacity_data_file = paste(getwd(),'/datafiles/io/colorado_capacity_data.csv',sep="")
 demand_data <- read.csv(demand_data_file)
 demand_data <- demand_data %>% as_tibble()
 capacity_data <- read.csv(capacity_data_file)
 # Manipulate/rearrange demand/supply data frame to wide format
-ioTable0 <- demand_data %>% select(-localData, -dataSource, -year, -param) %>%
-  spread(demandClass, localDataSubdivided)
+ioTable0 <- demand_data %>%
+  select(-dataSource, -year, -param) %>%
+  spread(demandClass, localData)
 ioTable0[,c(which(colnames(ioTable0)=="supplySector"),which(colnames(ioTable0)!="supplySector"))]  # Shift supply to first column
 # Manipulate/rearrange supply capacity data frame to wide format, and integrate it with existing ioTable0 dataframe
 capTable <- capacity_data %>% select(-year, -units) %>% rename(cap=data)
@@ -71,7 +72,7 @@ colnames(mapping_df) <- colnames
 params <- 'griddedScarcity'
 mapping_df['region'] <- 'Argentina'
 mapping_df['subRegion'] <- subregions
-mapping_df['scenario'] <- 'Reference'
+mapping_df['scenario'] <- scenario_name
 mapping_df['sources'] <- 'localData'
 mapping_df['param'] <- params
 mapping_df['units'] <- 'unitless'
@@ -85,19 +86,27 @@ mapping_df['classLabel'] <- 'Scarcity'
 # Calculate scarcity
 # Process supplies/demands to create scarcity value for each of the 10 sub-regions
 for (subReg in subregions){
-  df <- ioTable0 %>% filter(subRegion==subReg, supplySector %in% c('Water'))
-  df2 <- df %>% select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+  df <- ioTable0 %>%
+    filter(subRegion==subReg, supplySector %in% c('Water')) %>%
+    filter(scenario==scenario_name)
+  df2 <- df %>%
+    select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   demand <- sum((df2)$rowsum, na.rm=TRUE)
-  df3 <- ioTable0 %>% filter(subRegion==subReg, supplySubSector %in% c('W_SW_Runoff', 'W_SW_Upstream'))
-  df4 <- df3 %>% select(cap) %>%  mutate(rowsum=rowSums(., na.rm=TRUE))
+  df3 <- ioTable0 %>%
+    filter(subRegion==subReg, supplySubSector %in% c('W_SW_Runoff', 'W_SW_Upstream'))
+  df4 <- df3 %>%
+    select(cap) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
   surfaceSupply <- sum((df4)$rowsum, na.rm=TRUE)
   sr <- c(subReg)
   mapping_df <- mapping_df %>% mutate(value = if_else(subRegion==sr, demand/surfaceSupply, value))
 }
 save_dir <- 'C:/Users/twild/all_git_repositories/metis/metis/outputs/Maps/Tables'
-export_df <- mapping_df %>% filter(param %in% params) %>% select(-classPalette1)  # Deal with Palette separately in map
-write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+export_df <- mapping_df %>%
+  filter(param %in% params) %>%
+  select(-classPalette1)  # Deal with Palette separately in map
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
 #-----------------------------------------------------------------------------------------------------------------------
 
 # Store/export data related to runoff
@@ -107,7 +116,7 @@ new_df_append <- data.frame(matrix(ncol = 12, nrow = num_subreg))
 colnames(new_df_append) <- colnames
 new_df_append['region'] <- 'Argentina'
 new_df_append['subRegion'] <- subregions
-new_df_append['scenario'] <- 'reference'
+new_df_append['scenario'] <- scenario_name
 new_df_append['sources'] <- 'localData'
 params <- c('runoff')
 new_df_append['param'] <- params
@@ -119,15 +128,19 @@ new_df_append['value'] <- 0
 new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'Runoff'
 for (subReg in subregions){
-  df <- ioTable0 %>% filter(subRegion==subReg, supplySubSector %in% c('W_SW_Runoff')) %>%
+  df <- ioTable0 %>%
+    filter(subRegion==subReg, supplySubSector %in% c('W_SW_Runoff')) %>%
+    filter(scenario==scenario_name) %>%
     select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   runoff_value <- sum((df)$rowsum, na.rm=TRUE)
-  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, runoff_value, value))
+  new_df_append <- new_df_append %>%
+    mutate(value = if_else(subRegion==subReg, runoff_value, value))
 }
-mapping_df <- rbind(mapping_df, new_df_append)
-export_df <- mapping_df %>% filter(param %in% params)
-write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
+export_df <- mapping_df %>%
+  filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
 
 # Store/export data related to irrigation water demand
 params <- c('irrigation_demand')
@@ -140,16 +153,19 @@ new_df_append['value'] <- 0
 new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'IrrigationDemand'
 for (subReg in subregions){
-  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
+  df <- ioTable0 %>%
+    filter(subRegion==subReg) %>%
+    filter(scenario==scenario_name) %>%
+    filter(grepl('W_', supplySubSector)) %>%
     select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
     select(contains("Ag_")) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   irrig_wat_dem_val <- sum((df)$rowsum, na.rm=TRUE)
   new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, irrig_wat_dem_val, value))
 }
-mapping_df <- rbind(mapping_df, new_df_append)
+mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
 export_df <- mapping_df %>% filter(param %in% params)
-write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
 
 # Store/export data related to municipal water demand
 params <- c('municipal_water_demand')
@@ -162,16 +178,20 @@ new_df_append['value'] <- 0
 new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'MunicipalDemand'
 for (subReg in subregions){
-  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
+  df <- ioTable0 %>%
+    filter(subRegion==subReg) %>%
+    filter(scenario==scenario_name) %>%
+    filter(grepl('W_', supplySubSector)) %>%
     select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
     select(contains("municipal")) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   municipal_water_demand <- sum((df)$rowsum, na.rm=TRUE)
-  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, municipal_water_demand, value))
+  new_df_append <- new_df_append %>%
+    mutate(value = if_else(subRegion==subReg, municipal_water_demand, value))
 }
-mapping_df <- rbind(mapping_df, new_df_append)
+mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
 export_df <- mapping_df %>% filter(param %in% params)
-write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
 
 # Store/export data related to electricity water demand
 params <- c('electricity_water_demand')
@@ -184,16 +204,20 @@ new_df_append['value'] <- 0
 new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'ElectricityDemand'
 for (subReg in subregions){
-  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
+  df <- ioTable0 %>%
+    filter(subRegion==subReg) %>%
+    filter(scenario==scenario_name) %>%
+    filter(grepl('W_', supplySubSector)) %>%
     select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
     select(contains("Electricity_")) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   electricity_water_demand <- sum((df)$rowsum, na.rm=TRUE)
-  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, electricity_water_demand, value))
+  new_df_append <- new_df_append %>%
+    mutate(value = if_else(subRegion==subReg, electricity_water_demand, value))
 }
-mapping_df <- rbind(mapping_df, new_df_append)
+mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
 export_df <- mapping_df %>% filter(param %in% params)
-write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
 
 # Store/export data related to livestock water demand
 params <- c('livestock_water_demand')
@@ -206,16 +230,19 @@ new_df_append['value'] <- 0
 new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'ElectricityDemand'
 for (subReg in subregions){
-  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl('W_', supplySubSector)) %>%
+  df <- ioTable0 %>%
+    filter(subRegion==subReg) %>%
+    filter(scenario==scenario_name) %>%
+    filter(grepl('W_', supplySubSector)) %>%
     select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -region, -units) %>%
     select(contains("Livestock_")) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   livestock_water_demand <- sum((df)$rowsum, na.rm=TRUE)
   new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, livestock_water_demand, value))
 }
-mapping_df <- rbind(mapping_df, new_df_append)
+mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
 export_df <- mapping_df %>% filter(param %in% params)
-write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
 
 # Store/export data related to available water (routed/consumption taken into account)
 params <- c('available_water')
@@ -228,14 +255,19 @@ new_df_append['value'] <- 0
 new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'AvailableWater'
 for (subReg in subregions){
-  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(supplySubSector %in% c('W_SW_Upstream', 'W_SW_Runoff')) %>%
+  df <- ioTable0 %>%
+    filter(subRegion==subReg) %>%
+    filter(scenario==scenario_name) %>%
+    filter(supplySubSector %in% c('W_SW_Upstream', 'W_SW_Runoff')) %>%
     select(cap) %>% mutate(rowsum=rowSums(., na.rm=TRUE))
   available_water <- sum((df)$rowsum, na.rm=TRUE)
-  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, available_water, value))
+  new_df_append <- new_df_append %>%
+    mutate(value = if_else(subRegion==subReg, available_water, value))
 }
-mapping_df <- rbind(mapping_df, new_df_append)
-export_df <- mapping_df %>% filter(param %in% params)
-write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
+export_df <- mapping_df %>%
+  filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
 
 # Store/export data related to total water demand
 params <- c('total_water_demand')
@@ -248,15 +280,19 @@ new_df_append['value'] <- 0
 new_df_append['classPalette'] <- 'Blues'
 new_df_append['classLabel'] <- 'WaterDemand'
 for (subReg in subregions){
-  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("W_", supplySubSector)) %>%
+  df <- ioTable0 %>%
+    filter(subRegion==subReg) %>%
+    filter(scenario==scenario_name) %>%
+    filter(grepl("W_", supplySubSector)) %>%
     select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   total_demand <- sum((df)$rowsum, na.rm=TRUE)
-  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_demand, value))
+  new_df_append <- new_df_append %>%
+    mutate(value = if_else(subRegion==subReg, total_demand, value))
 }
-mapping_df <- rbind(mapping_df, new_df_append)
+mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
 export_df <- mapping_df %>% filter(param %in% params)
-write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
 
 # Store/export data related to total electricity supply
 params <- c('total_elec_supply')
@@ -269,16 +305,20 @@ new_df_append['value'] <- 0
 new_df_append['classPalette'] <- 'YlOrRd'
 new_df_append['classLabel'] <- 'ElecSupply'
 for (subReg in subregions){
-  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("Electricity_", supplySubSector)) %>%
+  df <- ioTable0 %>%
+    filter(subRegion==subReg) %>%
+    filter(scenario==scenario_name) %>%
+    filter(grepl("Electricity_", supplySubSector)) %>%
     filter(!grepl("Electricity_Import", supplySubSector)) %>%
     select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   total_elec_supply <- sum((df)$rowsum, na.rm=TRUE)
-  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_elec_supply, value))
+  new_df_append <- new_df_append %>%
+    mutate(value = if_else(subRegion==subReg, total_elec_supply, value))
 }
-mapping_df <- rbind(mapping_df, new_df_append)
+mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
 export_df <- mapping_df %>% filter(param %in% params)
-write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
 
 
 # Store/export data related to total agricultural production/value
@@ -292,20 +332,24 @@ new_df_append['value'] <- 0
 new_df_append['classPalette'] <- 'Greens'
 new_df_append['classLabel'] <- 'AgSupply'
 for (subReg in subregions){
-  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("Ag_", supplySubSector)) %>%
+  df <- ioTable0 %>%
+    filter(subRegion==subReg) %>%
+    filter(scenario==scenario_name) %>%
+    filter(grepl("Ag_", supplySubSector)) %>%
     select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   total_ag_supply <- sum((df)$rowsum, na.rm=TRUE)
-  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_ag_supply, value))
+  new_df_append <- new_df_append %>%
+    mutate(value = if_else(subRegion==subReg, total_ag_supply, value))
 }
-mapping_df <- rbind(mapping_df, new_df_append)
+mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
 export_df <- mapping_df %>% filter(param %in% params)
-write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
 
-# Store/export data related to population
+# Store/export data related to Land allocation
 params <- c('total_ag_supply')
 new_df_append['param'] <- params
-new_df_append['units'] <- 'million pesos'
+new_df_append['units'] <- 'km^2'
 new_df_append['class'] <- 'AgSupply'
 new_df_append['subRegType'] <- 'localBasin'
 new_df_append['x'] <- 2010
@@ -313,15 +357,20 @@ new_df_append['value'] <- 0
 new_df_append['classPalette'] <- 'Greens'
 new_df_append['classLabel'] <- 'AgSupply'
 for (subReg in subregions){
-  df <- ioTable0 %>% filter(subRegion==subReg) %>% filter(grepl("Ag_", supplySubSector)) %>%
+  df <- ioTable0 %>%
+    filter(subRegion==subReg) %>%
+    filter(scenario==scenario_name) %>%
+    filter(grepl("Ag_", supplySubSector)) %>%
     select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   total_ag_supply <- sum((df)$rowsum, na.rm=TRUE)
-  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_ag_supply, value))
+  new_df_append <- new_df_append %>%
+    mutate(value = if_else(subRegion==subReg, total_ag_supply, value))
 }
-mapping_df <- rbind(mapping_df, new_df_append)
-export_df <- mapping_df %>% filter(param %in% params)
-write.csv(export_df, file=paste0(save_dir, '/', params, '.csv'), row.names=FALSE)
+mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
+export_df <- mapping_df %>%
+  filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
 
 #-----------------------------------------------------------------------------------------------------------------------
 
@@ -384,10 +433,10 @@ for(reg in unique(ioTable0$region)){
   for (sup_sub_sec in unique(t1$supplySubSector)){
     # First loop through all subsectors, and sum up demands across all subregions
     non_numer <- t1 %>% filter(supplySubSector==sup_sub_sec) %>%
-      select(region, subRegion, units, supplySector, supplySubSector)  #select LHS non-numeric columns
+      select(scenario, region, subRegion, units, supplySector, supplySubSector)  #select LHS non-numeric columns
     lhs <- non_numer[1,] # select only the first row, so you can keep values of non-numeric columns
     numer <- t1 %>% filter(supplySubSector==sup_sub_sec) %>%
-      select(-region, -subRegion, -units, -supplySector, -supplySubSector)
+      select(-scenario, -region, -subRegion, -units, -supplySector, -supplySubSector)
     rhs <- data.frame(colname=names(numer), colSums_d=colSums(numer, na.rm=TRUE)) %>% spread(colname, colSums_d)  # sum up and spread numeric columns
     new_row_subsector_single_reg <- cbind(lhs,rhs)  # combine lhs and rhs
     new_row_subsector_single_reg['subRegion'] <- singleSubRegName  # rename to new single subregion
@@ -401,13 +450,16 @@ for(reg in unique(ioTable0$region)){
   # First, get rid of W_SW_Upstream; reflects incorrect accounting. Already reassigned some to runoff.
   t2 <- t2 %>% filter(!supplySubSector=='W_SW_Upstream')
 
+  # Also get rid of W_SW_Reservoir, as in a single basin analysis a reservoir cannot "produce" supply. It just redistributes.
+  t2 <- t2 %>% filter(!supplySubSector=='W_SW_Reservoir')
+
   # Handle upstream flows
   # Only for headwater subregion, add up any flows coming from upstream
   non_numer <- t1 %>% filter(!subRegion %in% names(from_to), supplySector=='Water', supplySubSector=='W_SW_Upstream') %>%
-    select(region, subRegion, units, supplySector, supplySubSector)  #select LHS non-numeric columns
+    select(scenario, region, subRegion, units, supplySector, supplySubSector)  #select LHS non-numeric columns
   lhs <- non_numer[1,] # select only the first row, so you can keep values of non-numeric columns
   numer <- t1 %>% filter(!subRegion %in% names(from_to), supplySector=='Water', supplySubSector=='W_SW_Upstream') %>%
-    select(-region, -subRegion, -units, -supplySector, -supplySubSector)
+    select(-scenario, -region, -subRegion, -units, -supplySector, -supplySubSector)
   rhs <- data.frame(colname=names(numer), colSums_d=colSums(numer, na.rm=TRUE)) %>% spread(colname, colSums_d)  # sum up and spread numeric columns
   new_row_subsector_single_reg <- cbind(lhs,rhs)  # combine lhs and rhs
   new_row_subsector_single_reg['subRegion'] <- singleSubRegName  # rename to new single subregion
@@ -422,7 +474,7 @@ for(reg in unique(ioTable0$region)){
     mutate(downstream=if_else(supplySubSector=='W_SW_Runoff', downstream_flow, downstream))
 
   # Deal with electricity now
-  imp <- t2 %>% filter(supplySubSector == 'Electricity_Import') %>% select(-cap, -region, -subRegion, -units, -supplySector, -supplySubSector) %>%
+  imp <- t2 %>% filter(supplySubSector == 'Electricity_Import') %>% select(-cap, -scenario, -region, -subRegion, -units, -supplySector, -supplySubSector) %>%
     mutate(rowsum=rowSums(., na.rm=TRUE))
   imp <- imp$rowsum[1]
 
@@ -444,7 +496,7 @@ for(reg in unique(ioTable0$region)){
     # Follow same approach as below.
     # Need to reset imports to zero in t2.
 
-    protected_list <- c('region', 'subRegion', 'units', 'supplySector', 'supplySubSector', 'cap', 'downstream', 'export')
+    protected_list <- c('scenario', 'region', 'subRegion', 'units', 'supplySector', 'supplySubSector', 'cap', 'downstream', 'export')
     for (colname in names(t2)){
       if(!colname %in% protected_list){
         index <- t2$supplySubSector=='Electricity_Import'  # index of electricity imports row
@@ -467,3 +519,30 @@ for(reg in unique(ioTable0$region)){
   io1$ioTbl_Output %>% as.data.frame()
   io1$A_Output %>% as.data.frame()
 }
+
+#----------------------------------------------------------------------------------------------------------------------#
+# Not used any more because we are using land allocation instead of profits.
+
+# Store/export data related to total agricultural production/value
+params <- c('total_ag_supply')
+new_df_append['param'] <- params
+new_df_append['units'] <- 'million pesos'
+new_df_append['class'] <- 'AgSupply'
+new_df_append['subRegType'] <- 'localBasin'
+new_df_append['x'] <- 2010
+new_df_append['value'] <- 0
+new_df_append['classPalette'] <- 'Greens'
+new_df_append['classLabel'] <- 'AgSupply'
+for (subReg in subregions){
+  df <- ioTable0 %>%
+    filter(subRegion==subReg) %>%
+    filter(scenario==scenario_name) %>%
+    filter(grepl("Ag_", supplySubSector)) %>%
+    select(-scenario, -subRegion, -supplySector, -supplySubSector, -cap, -downstream, -region, -units) %>%
+    mutate(rowsum=rowSums(., na.rm=TRUE))
+  total_ag_supply <- sum((df)$rowsum, na.rm=TRUE)
+  new_df_append <- new_df_append %>% mutate(value = if_else(subRegion==subReg, total_ag_supply, value))
+}
+mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
+export_df <- mapping_df %>% filter(param %in% params)
+write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
