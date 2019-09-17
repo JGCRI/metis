@@ -982,7 +982,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
             }
             animPrettyBreaksGrid<-scales::pretty_breaks(n=legendFixedBreaks)(animScaleGrid); animPrettyBreaksGrid
             animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,
-                                                               centers=max(2,min(length(unique(animScaleGrid))-1,(legendFixedBreaks-1)))))$centers[,1]));animKmeanBreaksGrid
+                                                               centers=max(1,min(length(unique(animScaleGrid))-1,(legendFixedBreaks-1)))))$centers[,1]));animKmeanBreaksGrid
             if(!min(animScaleGrid) %in% animKmeanBreaksGrid){
               animKmeanBreaksGrid <- sort(c(min(animScaleGrid),animKmeanBreaksGrid))}
             if(!max(animScaleGrid) %in% animKmeanBreaksGrid){
@@ -1266,7 +1266,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 }
                 animPrettyBreaksGrid<-scales::pretty_breaks(n=legendFixedBreaks)(animScaleGrid)
                 animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,
-                                                                   centers=max(2,min(length(unique(animScaleGrid))-1,(legendFixedBreaks-1)))))$centers[,1]))
+                                                                   centers=max(1,min(length(unique(animScaleGrid))-1,(legendFixedBreaks-1)))))$centers[,1]))
                 if(!min(animScaleGrid) %in% animKmeanBreaksGrid){
                   animKmeanBreaksGrid <- sort(c(min(animScaleGrid),animKmeanBreaksGrid))}
                 if(!max(animScaleGrid) %in% animKmeanBreaksGrid){
@@ -1435,7 +1435,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   }
                   animPrettyBreaksGrid<-scales::pretty_breaks(n=legendFixedBreaks)(animScaleGrid)
                   animKmeanBreaksGrid<-sort(as.vector((stats::kmeans(animScaleGrid,
-                                                                     centers=max(2,min(length(unique(animScaleGrid))-1,(legendFixedBreaks-1)))))$centers[,1]))
+                                                                     centers=max(1,min(length(unique(animScaleGrid))-1,(legendFixedBreaks-1)))))$centers[,1]))
                   if(!min(animScaleGrid) %in% animKmeanBreaksGrid){
                     animKmeanBreaksGrid <- sort(c(min(animScaleGrid),animKmeanBreaksGrid))}
                   if(!max(animScaleGrid) %in% animKmeanBreaksGrid){
@@ -1605,7 +1605,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       }
                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
                     animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
-                                                                       centers=max(2,min(length(unique(animScalePoly))-1,(legendFixedBreaks-1)))))$centers[,1]))
+                                                                       centers=max(1,min(length(unique(animScalePoly))-1,(legendFixedBreaks-1)))))$centers[,1]))
 
 
                     if(!min(animScalePoly) %in% animKmeanBreaksPoly){
@@ -2024,7 +2024,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     }}
                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
                     animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
-                                                                       centers=max(2,min(length(unique(animScalePoly))-1,(legendFixedBreaks-1)))))$centers[,1]))
+                                                                       centers=max(1,min(length(unique(animScalePoly))-1,(legendFixedBreaks-1)))))$centers[,1]))
 
                     if(!min(animScalePoly) %in% animKmeanBreaksPoly){
                       animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly))}
@@ -2275,7 +2275,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
               }}
               animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
               animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
-                                                                 centers=max(2,min(length(unique(animScalePoly))-1,(legendFixedBreaks-1)))))$centers[,1]))
+                                                                 centers=max(1,min(length(unique(animScalePoly))-1,(legendFixedBreaks-1)))))$centers[,1]))
               if(!min(animScalePoly) %in% animKmeanBreaksPoly){
                 animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly))}
               if(!max(animScalePoly) %in% animKmeanBreaksPoly){
@@ -2572,7 +2572,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     }}
                   animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
                   animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
-                                                                     centers=max(2,min(length(unique(animScalePoly))-1,(legendFixedBreaks-1)))))$centers[,1]))
+                                                                     centers=max(1,min(length(unique(animScalePoly))-1,(legendFixedBreaks-1)))))$centers[,1]))
                   if(!min(animScalePoly) %in% animKmeanBreaksPoly){
                   animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly))}
                   if(!max(animScalePoly) %in% animKmeanBreaksPoly){
@@ -2740,7 +2740,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       }}
                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
                     animKmeanBreaksPoly<-sort(as.vector((stats::kmeans(animScalePoly,
-                                                                       centers=max(2,min(length(unique(animScalePoly))-1,(legendFixedBreaks-1)))))$centers[,1]))
+                                                                       centers=max(1,min(length(unique(animScalePoly))-1,(legendFixedBreaks-1)))))$centers[,1]))
                     if(!min(animScalePoly) %in% animKmeanBreaksPoly){
                       animKmeanBreaksPoly <- sort(c(min(animScalePoly),animKmeanBreaksPoly))}
                     if(!max(animScalePoly) %in% animKmeanBreaksPoly){
