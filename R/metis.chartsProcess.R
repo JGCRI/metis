@@ -75,7 +75,8 @@
 #' @importFrom "rlang" ":="
 
 metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
-                       dirOutputs=paste(getwd(),"/outputs",sep=""),pdfpng="png",
+                       dirOutputs=paste(getwd(),"/outputs",sep=""),
+                       pdfpng="png",
                        xRange="All",
                        xCompare=c("2015","2030","2050","2100"),
                        paramsSelect="All",

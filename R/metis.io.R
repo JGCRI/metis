@@ -12,6 +12,9 @@
 #' @param combSubRegionPlots Default = 1
 #' @param folderName Default ="folderNameDefault"
 #' @param plotSankeys Default = T
+#' @param pdfpng Save IO figures as pdf or png. Type=String. Options: 'pdf' or 'png'. Default = 'png'.
+#' @param sankeyAxis1Label Set left-hand side label of sankey diagram. Type=String. Default = 'From'.
+#' @param sankeyAxis2Label Set right-hand side label of sankey diagram. Type=String. Default = 'To'.
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @export
@@ -28,6 +31,9 @@ metis.io<-function(ioTable0 = NULL,
                    combSubRegionPlots=1,
                    folderName="folderNameDefault",
                    plotSankeys=T
+                   pdfpng='png',
+                   sankeyAxis1Label = 'From',
+                   sankeyAxis2Label = 'To'
                         ){
 
   # ioTable0 = NULL
@@ -1312,7 +1318,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
   figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
   metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -1323,7 +1329,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
 
   # data=dfx_sankey; chartType="sankey"; xData="sectorTo"; yData="normValue"; sankeyGroupColor="supplySector";
   # classLabel="From"; class = "supplySector"; classPalette = "pal_sankey";
-  # sankeyAxis1="fromLabel";sankeyAxis2="sectorTo";sankeyAxis1Label ="From";sankeyAxis2Label="To";
+  # sankeyAxis1="fromLabel";sankeyAxis2="sectorTo";sankeyAxis1Label =sankeyAxis1Label ;sankeyAxis2Label=sankeyAxis2Label;
   # labelTextSize=5; sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
   # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
   # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
@@ -1364,7 +1370,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
   figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
   metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label=sankeyAxis1Label,sankeyAxis2Label=sankeyAxis2Label,
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -1409,7 +1415,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
   figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
   metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -1453,7 +1459,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
   figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
   metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -1513,7 +1519,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
     figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
     metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                 classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                 sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                 removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -1555,7 +1561,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
     figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
     metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                 classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                 sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                 removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                 fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -1599,7 +1605,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
   figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
   metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -1639,7 +1645,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
   figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
   metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -1680,7 +1686,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
   figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
   metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -1721,7 +1727,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
   figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
   metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
               classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+              sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
               sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
               removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
               fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -2051,7 +2057,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -2063,7 +2069,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
 
       # data=plotx; chartType="sankey";  xData="sectorTo"; yData="normValue"; sankeyGroupColor="supplySector";
       # classLabel="From"; class = "supplySector"; classPalette = "pal_sankey";
-      # sankeyAxis1="fromLabel";sankeyAxis2="sectorTo";sankeyAxis1Label ="From";sankeyAxis2Label="To";
+      # sankeyAxis1="fromLabel";sankeyAxis2="sectorTo";sankeyAxis1Label =sankeyAxis1Label ;sankeyAxis2Label=sankeyAxis2Label;
       # sectorToOrder=sectorToOrder; sectorFromOrder=sectorFromOrder;
       # removeCols=nonFlowCols; bubbleSize = 10; facet_rows="x"; facet_columns="subRegion";ncolrow=4; printFig = T;
       # fileName =  fname; dirOutputs=dir; figWidth= figWidth_ix;
@@ -2104,7 +2110,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -2150,7 +2156,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -2194,7 +2200,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -2254,7 +2260,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -2296,7 +2302,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -2339,7 +2345,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -2379,7 +2385,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -2420,7 +2426,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
@@ -2461,7 +2467,7 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
       figHeight_ix <- 1*figHeight_i*min(3,max(length(unique(plotx$subRegion)),length(unique(plotx$x))));  figHeight_ix
       metis.chart(data=plotx, chartType="sankey",  xData="sectorTo", yData="normValue", sankeyGroupColor="supplySector",
                   classLabel="From", class = "supplySector", classPalette = "pal_sankey",
-                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label ="From",sankeyAxis2Label="To",
+                  sankeyAxis1="fromLabel",sankeyAxis2="sectorTo",sankeyAxis1Label =sankeyAxis1Label ,sankeyAxis2Label=sankeyAxis2Label,
                   sectorToOrder=sectorToOrder, sectorFromOrder=sectorFromOrder,
                   removeCols=nonFlowCols, bubbleSize = 10, facet_rows="x", facet_columns="subRegion",ncolrow=4, printFig = T,
                   fileName =  fname, dirOutputs=dir, figWidth= figWidth_ix,
