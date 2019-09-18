@@ -34,8 +34,6 @@ SupDem_data <- read.csv(paste(getwd(),'/datafiles/io/colorado_demand_data.csv', 
 SupDem_data_NOGW <- SupDem_data  # Creating a copy we can modify later
 subRegions <- as.character(unique(SupDem_data$subRegion))
 # Import policy case files
-SupDem_data_policy <-read.csv(paste(getwd(),'/datafiles/io/colorado_demand_data_AgPolicy.csv', sep=""))
-SupDem_data_NOGW_policy <- SupDem_data_policy  # Creating a copy we can modify later
 profit_landuse_mapping_file <- c('C:/Users/twild/all_git_repositories/metis/metis/dataFiles/io/Tables_subregional_Colorado.xlsx')
 
 # Read in biophysical water demand data, for use in estimating crop water demands for ET (blue and green consumption)
@@ -222,12 +220,12 @@ data_NOGW_policy <- data_NOGW_policy %>%
   mutate(localData = ifelse(delete1==TRUE & delete2==TRUE & subRegion==sR, localData*(1 + policy_land_multiplier[[sR]]), localData)) %>%
   select(-delete1, -delete2)
 }
+
+data_NOGW_policy$scenario <- 'Policy'
+
 # Save policy file
 write.csv(data_NOGW_policy, file=paste0(save_dir, '/', 'colorado', '_', 'Policy', '_NEW', '.csv'), row.names=FALSE)
 
-
-data_NOGW_policy$scenario <- 'Policy'
-#data_NOGW$scenario <- 'Reference'
 plot_DF <- rbind(data_NOGW_policy, data_NOGW) %>%
   select(region, subRegion, supplySector, supplySubSector, localData, units, demandClass, scenario)
 plot_DF <- plot_DF %>%

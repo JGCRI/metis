@@ -381,7 +381,8 @@ ioTable0$subRegion <- as.character(ioTable0$subRegion)
 ioTable0$scenario <- as.character(ioTable0$scenario)
 
 io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario", combSubRegionPlots = 0,
-                folderName="ColoradoSubRegFinal", pdfpng='pdf')  # ioTable0=ioTable0
+                folderName="ColoradoSubRegFinal", pdfpng='pdf', sankeyAxis1Label = 'Supply',
+                sankeyAxis2Label = 'Demand')  # ioTable0=ioTable0
 io1$ioTbl_Output %>% as.data.frame()
 io1$A_Output %>% as.data.frame()
 
@@ -515,7 +516,8 @@ for(reg in unique(ioTable0$region)){
   }
   # Run Metis IO model
   ioTable0 <- t2
-  io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario", folderName="ColoradoFinal", pdfpng='pdf')  # ioTable0=ioTable0
+  io1 <- metis.io(ioTable0=ioTable0, nameAppend = "_MultiScenario", folderName="ColoradoFinal", pdfpng='pdf',
+                  sankeyAxis1Label = 'Supply', sankeyAxis2Label = 'Demand')  # ioTable0=ioTable0
   io1$ioTbl_Output %>% as.data.frame()
   io1$A_Output %>% as.data.frame()
 }

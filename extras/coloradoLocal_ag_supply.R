@@ -56,7 +56,7 @@ a1<-read.csv(polygonDataTables_i); head(a1); unique(a1$scenario); unique(a1$para
 xRange_i= seq(from=2000,to=2050,by=5)
 legendPosition_i=c("LEFT","bottom")
 legendOutsideSingle_i=T
-animateOn_i=T
+animateOn_i=F
 delay_i=100
 scenRef_i="gfdl-esm2m_rcp2p6_NA_NA"
 paramsSelect_i = c("All")
@@ -127,4 +127,7 @@ metis.mapsProcess(polygonDataTables=polygonDataTables_i,
                  refGCM="gfdl-esm2m",
                  refRCP="rcp2p6",
                  chosenRefMeanYears=c(2000:2050),
-                 numeric2Cat_list=numeric2Cat_list, frameShow = F)
+                 numeric2Cat_list=numeric2Cat_list,
+                 frameShow = F,
+                 folderName="ColoradoFinalMaps",
+                 pdfpng = 'pdf')
