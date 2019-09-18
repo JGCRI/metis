@@ -336,7 +336,10 @@ process_facet_layout <- function(gm) {
   gm$gasp <- unname(gasp)
   gm
 }
-assignInNamespace(x="process_facet_layout", value=process_facet_layout, ns="tmap")
+
+x="process_facet_layout";
+value=process_facet_layout;
+ns="tmap"
 
 
 #------------------------------------------

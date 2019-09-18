@@ -46,6 +46,11 @@ affiliations:
    index: 7
 date: 10 August 2019
 ---
+
+<!-- badges: start -->
+  [![Travis build status](https://travis-ci.org/JGCRI/metis.svg?branch=master)](https://travis-ci.org/JGCRI/metis)
+  <!-- badges: end -->
+
 <p align="center"> <img src="READMEfigs/metisHeaderThin.PNG"></p>
 <p align="center"> <img src="READMEfigs/pnnlUMDLogos.PNG"></p>
 <p align="center"> <img src="READMEfigs/metisHeaderThick.PNG"></p>

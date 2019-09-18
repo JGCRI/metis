@@ -32,8 +32,8 @@ metis.io<-function(ioTable0 = NULL,
                    folderName="folderNameDefault",
                    pdfpng='png',
                    sankeyAxis1Label = 'From',
-                   sankeyAxis2Label = 'To'
-                   plotSankeys=T,
+                   sankeyAxis2Label = 'To',
+                   plotSankeys=T
                         ){
 
   # ioTable0 = NULL
