@@ -10,3 +10,4 @@ addons:
       - sourceline: 'ppa:ubuntugis/ppa'
     packages:
       - libgdal-dev
+      - libmagick++-dev
