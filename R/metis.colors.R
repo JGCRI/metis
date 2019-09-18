@@ -194,6 +194,7 @@ metis.colors <- function(palx=NULL) {
                  `refined liquids (CC CCS)` = "#f7988f", `f Oil w/CCS` = "#f7988f", `a oil CCS` = "#f7988f", `Oil w/CCS` = "#f7988f",
                  `g Biomass` = "#00931d", `g Bioenergy` = "#00931d", `d biomass` = "#00931d",  biomass = "#00931d",  Biomass = "#00931d",
                   bioenergy = "#00931d", `d bioenergy` = "#00931d", Bioenergy = "#00931d", `h Bioenergy w/CCS` = '#7efd97',
+                 `j traditional bioenergy` = "chartreuse3",`traditional bioenergy` = "chartreuse3",`Traditional Bioenergy` = "chartreuse3",
                  `biomass (IGCC CCS)` = "#00a31d", `4 biomass` = "#00a31d",
                  `biomass (IGCC)` = "#00c31d",
                  `biomass (conv CCS)` = "#00e31d",
