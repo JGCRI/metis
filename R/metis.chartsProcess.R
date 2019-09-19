@@ -146,10 +146,10 @@ addMissing<-function(data){
     data<-data%>%dplyr::mutate(origScen=dplyr::case_when(is.na(origScen)~"scenario",TRUE~origScen))}
   if(!any(grepl("\\<scenario\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenario=origScen)}else{
     data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenario\\>",names(data),ignore.case = T)])[1])
-    data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~origScen,TRUE~origScen))}
+    data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~origScen,TRUE~scenario))}
   if(!any(grepl("\\<scenarios\\>",names(data),ignore.case = T))){}else{
     data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenarios\\>",names(data),ignore.case = T)])[1])
-    data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~origScen,TRUE~origScen))}
+    data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~origScen,TRUE~scenario))}
   if(!any(grepl("\\<region\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(region="region")}else{
     data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<region\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(region=dplyr::case_when(is.na(region)~"region",TRUE~region))}

@@ -25,35 +25,55 @@
 #' European Free Trade Association, India, Indonesia, Japan, Mexico, Middle East, Pakistan, Russia,
 #' South Africa, South America_Northern, South America_Southern, South Asia, South Korea, Southeast Asia,
 # Taiwan, Argentina, Colombia, Uruguay)
-#' @param queriesSelect Default = "All". Vector of queries to read from the queryxml for example
-#' c("Total final energy by aggregate end-use sector", "Population by region"). The queries must be
-#' availble in the queryxml file. Current list of queries and generated paramaters are:
+#' @param queriesSelect Default = "All". Predetermined subsets or a vector of queries to read from the queryxml for example
+#' predetermined subsets would be c('water','energy') or
+#' selection of queries would be c("Total final energy by aggregate end-use sector", "Population by region").
+#' The queries must be availble in the queryxml file.
+#' Queryset names include: c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
+#' Current list of queries for each set include:
+#' water
 #' \itemize{
-#' \item "Total final energy by aggregate end-use sector". Parameters generated: energyFinalConsumBySecEJ.
-#' \item "primary energy consumption by region (direct equivalent)".
-#' Parameters generated: energyPrimaryByFuelEJ
-#' \item "Electricity generation by aggregate technology". Parameters generated: elecByTechTWh
-#' \item "water withdrawals by sector". Parameters generated: watWithdrawBySec
-#' \item "water consumption by sector". Parameters generated: watConsumBySec
-#' \item "water withdrawals by crop". Parameters generated: watWithdrawByCrop
-#' \item "biophysical water demand by crop type and land region". Parameters generated: watBioPhysCons
-#' \item "water withdrawals by water mapping source". Parameters generated: watIrrWithdrawBasin
-#' \item "water consumption by water mapping source". Parameters generated: watIrrConsBasin
-#' \item "GDP per capita MER by region". Where MER is "Market Exchange Rate".
-#' Parameters generated: gdpPerCapita.
-#' \item "GDP MER by region". Where MER is "Market Exchange Rate".
-#' Parameters generated: gdp, gdpGrowthRate
-#' \item "Population by region". Parameters generated: pop.
-#' \item "ag production by tech". Where technologies signify irrigated or rainfed.
-#' Parameters generated: agProdbyIrrRfd
-#' \item "Ag Production by Crop Type". Parameters generated: agProdBiomass, agProdForest, agProdByCrop
-#' \item "land allocation by crop and water source". Parameters generated: landIrrRfd
-#' \item "aggregated land allocation". Parameters generated: landAlloc
-#' \item "Land Use Change Emission". Parameters generated: emissLUCFut
-#' \item "GHG emissions by subsector". Parameters generated: ghgEmissByGHGGROUPS, ghgEmissionByGHG
-#' \item "CO2 emissions by sector". Parameters generated:emissCO2BySector
-#' \item "nonCO2 emissions by sector". Parameters generated: emissCO2NonCO2BySectorGWPAR5, emissCO2NonCO2BySectorGTPAR5,emissNonCO2BySectorOrigUnits
-#' }
+#' \item "water withdrawals by crop"
+#' \item "water withdrawals by water mapping source"
+#' \item "water consumption by water mapping source"
+#' \item "water withdrawals by sector"
+#' \item "water consumption by sector"
+#' \item "biophysical water demand by crop type and land region"}
+#' energy
+#' \itemize{
+#' \item "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS"
+#' \item "Electricity generation by aggregate technology ORDERED SUBSECTORS"
+#' \item "Final energy by detailed end-use sector and fuel"
+#' \item "total final energy by aggregate sector"
+#' \item "refined liquids production by subsector"
+#' \item "building final energy by fuel"
+#' \item "industry final energy by fuel"
+#' \item "building final energy by subsector"
+#' \item "transport final energy by fuel"}
+#' land
+#' \itemize{
+#' \item "land allocation by crop and water source",
+#' \item "aggregated land allocation",
+#' \item "land allocation by crop"}
+#' emissions
+#' \itemize{"nonCO2 emissions by resource production",
+#' \item "nonCO2 emissions by sector"
+#' \item "Land Use Change Emission (future)"
+#' \item "CO2 emissions by sector (no bio)"
+#' \item "CO2 emissions by sector"}
+#' ag
+#' \itemize{
+#' \item "Ag Production by Crop Type"
+#' \item "ag production by tech"}
+#' socioecon
+#' \itemize{
+#' \item "GDP MER by region"
+#' \item "GDP per capita MER by region"
+#' \item "Population by region"}
+#' transport
+#' \itemize{
+#' \item "transport service output by mode"
+#' \item "transport service output by tech (new)"}
 #'
 #' @param paramsSelect Default = "All". If desired dplyr::select a subset of paramaters to analyze from the full list of parameters:
 #' c(# Energy
@@ -133,7 +153,65 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     totalFFINonCO2 -> FracBioFuel -> FracFossilFuel -> TotalLiquids ->
     class_temp -> resource -> subRegAreaSum -> subsector
 
-  # Create necessary directories if they dont exist.
+
+#---------------------
+# Query sets and query select
+#---------------------
+  querySets <- list('water'=c("water withdrawals by crop",
+                              "water withdrawals by water mapping source",
+                              "water consumption by water mapping source",
+                              "water withdrawals by sector",
+                              "water consumption by sector",
+                              "biophysical water demand by crop type and land region"),
+                    'energy'=c("primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS",
+                               "Electricity generation by aggregate technology ORDERED SUBSECTORS",
+                               "Final energy by detailed end-use sector and fuel",
+                               "total final energy by aggregate sector",
+                               "refined liquids production by subsector",
+                               "building final energy by fuel",
+                               "industry final energy by fuel",
+                               "building final energy by subsector",
+                               "transport final energy by fuel"),
+                    'land'=c("land allocation by crop and water source",
+                             "aggregated land allocation",
+                             "land allocation by crop"),
+                    'emissions'=c("nonCO2 emissions by resource production",
+                                  "nonCO2 emissions by sector",
+                                  "Land Use Change Emission (future)",
+                                  "CO2 emissions by sector (no bio)",
+                                  "CO2 emissions by sector"),
+                    'ag'=c("Ag Production by Crop Type",
+                           "ag production by tech"),
+                    'socioecon'=c("GDP MER by region",
+                                  "GDP per capita MER by region",
+                                  "Population by region"),
+                    'transport'=c("transport service output by mode",
+                                  "transport service output by tech (new)"))
+
+  # Check if queriesSelect is a querySet or one of the queries
+  if(!any(c("All","all") %in% queriesSelect)){
+  if(any(queriesSelect %in% names(querySets))){
+    queriesSelectx <- as.vector(unlist(querySets[names(querySets) %in% queriesSelect]))
+    print(paste("queriesSelect chosen include the following querySets: ",paste(queriesSelect,collapse=", "),".",sep=""))
+    print(paste("Which include the following queries: ",paste(queriesSelectx,collapse=", "),".",sep=""))
+    #print(paste("Other queries not run include: ",paste(as.vector(unlist(querySets))[!as.vector(unlist(querySets)) %in% queriesSelectx],collapse=", "),".",sep=""))
+  }else{
+    if(any(queriesSelect %in% as.vector(unlist(querySets)))){
+      queriesSelectx <- queriesSelect[queriesSelect %in% as.vector(unlist(querySets))]
+      print(paste("queriesSelect chosen include the following queries: ",paste(queriesSelectx,collapse=", "),".",sep=""))
+     # print(paste("Other queries not run include: ",paste(as.vector(unlist(querySets))[!as.vector(unlist(querySets)) %in% queriesSelectx],collapse=", "),".",sep=""))
+    }else {
+      queriesSelectx <-  queriesSelect
+      print(paste("None of the queries in queriesSelect are available in metisQueries.xml: ",paste(queriesSelectx,collapse=", "),".",sep=""))
+      print(paste("Queries in metisQueries.xml include: ",paste(as.vector(unlist(querySets))[!as.vector(unlist(querySets)) %in% queriesSelectx],collapse=", "),".",sep=""))
+    }
+  }}else{
+    queriesSelectx <- as.vector(unlist(querySets))
+  }
+
+#-----------------------------
+# Create necessary directories if they dont exist.
+#----------------------------
   if (!dir.exists(dirOutputs)){
     dir.create(dirOutputs)}  # Output Directory
   if (!dir.exists(paste(dirOutputs,"/readGCAMTables",sep=""))){
@@ -148,10 +226,12 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
   # Check for new scenario names
   if (is.null(scenNewNames)) {
     scenNewNames <- scenOrigNames}
-  # Read gcam database or existing dataProj.proj
-  if (!reReadData) {
 
-    # Check for proj file path and folder if incorrect give error
+#---------------------------------------------
+# Read gcam database or existing dataProj.proj
+#--------------------------------------------
+  if (!reReadData) {
+ # Check for proj file path and folder if incorrect give error
     if(!file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){stop(paste("dataProj file: ", dataProjPath,"/",dataProj," is incorrect or doesn't exist.",sep=""))}
 
     if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))) {
@@ -160,8 +240,34 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       stop(paste("No ", dataProj, " file exists. Please set reReadData=T to create dataProj.proj"))
     }
   } else {
-    # Check for query file and folder if incorrect give error
+
+  # Check for query file and folder if incorrect give error
     if(!file.exists(paste(queryPath, "/", queryxml, sep = ""))){stop(paste("query file: ", queryPath,"/",queryxml," is incorrect or doesn't exist.",sep=""))}
+    if(file.exists(paste(queryPath, "/subSetQueries.xml", sep = ""))){unlist(paste(queryPath, "/subSetQueries.xml", sep = ""))}
+
+    # Subset the query file if queriwsSelect is not "All"
+    if(!any(c("All","all") %in% queriesSelect)){
+
+    xmlFilePath = paste(queryPath, "/", queryxml, sep = "")
+    xmlfile <- XML::xmlTreeParse(xmlFilePath)
+    xmltop <- XML::xmlRoot(xmlfile)
+    top <- XML::xmlNode(XML::xmlName(xmltop))
+
+    for(i in 1:length(xmltop)){
+      for(j in 1:length(queriesSelectx)){
+        if(any(grepl(queriesSelectx[j], as.character(xmltop[[i]]))))
+          top <- XML::addChildren(top, xmltop[[i]])
+      }
+    }
+    XML::saveXML(top, file=paste(queryPath, "/subSetQueries.xml", sep = ""))
+    } else {
+      print(paste("queriesSelect includes 'All' so running all available queries: ",paste(queriesSelectx,collapse=", "),".",sep=""))
+      file.copy(from=paste(queryPath, "/", queryxml, sep = ""), to=paste(queryPath, "/subSetQueries.xml", sep = ""))
+    }
+
+    if(!file.exists(paste(queryPath, "/subSetQueries.xml", sep = ""))){stop(paste("query file: ", queryPath,"/subSetQueries.xml is incorrect or doesn't exist.",sep=""))}else{
+      print(paste("Reading queries from queryFile created: ", queryPath,"/subSetQueries.xml.",sep=""))
+    }
 
     # Check for gcamdatbasePath and gcamdatabasename
     if(is.null(gcamdatabasePath) | is.null(gcamdatabaseName)){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
@@ -173,7 +279,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
     for (scenario_i in scenOrigNames) {
       dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = dataProj,
-                                          scenario = scenario_i, queryFile = paste(queryPath, "/", queryxml, sep = ""))  # Check your queries file
+                                          scenario = scenario_i, queryFile = paste(queryPath, "/subSetQueries.xml", sep = ""))  # Check your queries file
     }
     file.copy(from = paste(getwd(), "/", dataProj, sep = ""), to = dataProjPath, overwrite = T,
               copy.mode = TRUE)
@@ -197,12 +303,12 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
   datax <- tibble::tibble()
 
   if(any(queriesSelect=="All")){queriesx <- queries} else{
-    if(!all(queriesSelect %in% queries)){stop("No queries are available in queryxml.
-                                              Please check your queriesSelect entries or your queryxml")} else {
-                                                if(length(queriesSelect[!(queriesSelect %in% queries)])>0){
-                                                  print(paste("Queries not available in queryxml: ", paste(queriesSelect[!(queriesSelect %in% queries)],collapse=", "), sep=""))
-                                                  print(paste("Running remaining queriesSelect: ",  paste(queriesSelect[(queriesSelect %in% queries)],collapse=", "), sep=""))}
-                                                queriesx <- queriesSelect}
+    if(!all(queriesSelectx %in% queries)){stop("None of the selected queries are available in the data that has been read.
+Please check your data if reRead was set to F. Otherwise check the queriesSelect entries and the queryxml file.")} else {
+                                                if(length(queriesSelectx[!(queriesSelectx %in% queries)])>0){
+                                                  print(paste("Queries not available in queryxml: ", paste(queriesSelectx[!(queriesSelectx %in% queries)],collapse=", "), sep=""))
+                                                  print(paste("Running remaining queriesSelect: ",  paste(queriesSelectx[(queriesSelectx %in% queries)],collapse=", "), sep=""))}
+                                                queriesx <- queriesSelectx}
   }
 
 
@@ -276,7 +382,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyFinalSubsecBySectorBuildEJ"
@@ -325,7 +431,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyFinalByFuelBySectorEJ"
@@ -392,7 +498,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyFinalSubsecByFuelBuildEJ"
@@ -440,7 +546,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyFinalSubsecByFuelIndusEJ"
@@ -489,7 +595,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"elecFinalBySecTWh"
@@ -546,7 +652,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"elecFinalByFuelTWh"
@@ -602,7 +708,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyPrimaryByFuelEJ"
@@ -646,7 +752,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "elecByTechTWh"
@@ -694,7 +800,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       datax <- dplyr::bind_rows(datax, tbl)
       tblelecByTechTWh<-tbl
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   if(!is.null(tblelecByTechTWh)){
@@ -703,7 +809,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     paramx <- "elecCapByFuel"
     if(paramx %in% paramsSelectx){
       # Electricity Capacity by Subsector
-      queryx <- "Electricity generation by aggregate technology"
+      queryx <- "Electricity generation by aggregate technology ORDERED SUBSECTORS"
       if (queryx %in% queriesx) {
         tbl <- tblelecByTechTWh  # Tibble
         rm(tblelecByTechTWh)
@@ -725,10 +831,13 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
         datax <- dplyr::bind_rows(datax, tbl)
       } else {
-        print(paste("Query '", queryx, "' not found in database", sep = ""))
+        if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
       }}
   } else {print(paste("Electricity capacity factor file capacity_factor_by_elec_gen_subsector.csv not found. Skipping param elecCapByFuel."))}
-} else {print(paste("elecByTechTWh not avaialble so skipping param elecCapByFuel."))}
+  } else {
+  if("Electricity generation by aggregate technology ORDERED SUBSECTORS" %in% queriesSelectx){
+    print(paste("elecByTechTWh did not run so skipping param elecCapByFuel."))}
+    }
 
   # metis.chart(tbl,xData="x",yData="value",useNewLabels = 0)
 
@@ -772,7 +881,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<- "watWithdrawBySec"
@@ -815,7 +924,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "watWithdrawByCrop"
@@ -860,7 +969,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "watBioPhysCons"
@@ -903,7 +1012,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "watIrrWithdrawBasin"
@@ -949,7 +1058,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
 
@@ -996,7 +1105,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "gdpPerCapita"
@@ -1039,7 +1148,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "gdp"
@@ -1083,7 +1192,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "gdpGrowthRate"
@@ -1161,7 +1270,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "agProdbyIrrRfd"
@@ -1208,7 +1317,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "agProdBiomass"
@@ -1247,7 +1356,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       class2, classLabel2, classPalette2)%>%dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "agProdForest"
@@ -1287,7 +1396,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       class2, classLabel2, classPalette2)%>%dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "agProdByCrop"
@@ -1327,7 +1436,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       class2, classLabel2, classPalette2)%>%dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "landIrrRfd"
@@ -1371,7 +1480,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "landAlloc"
@@ -1425,7 +1534,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "landAllocByCrop"
@@ -1486,7 +1595,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "emissLUC"
@@ -1534,7 +1643,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       tblLUEmiss<-tbl
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "emissCO2BySector"
@@ -1681,7 +1790,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
 
@@ -1997,7 +2106,7 @@ paramx <- "emissCO2BySectorNoBio"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
  paramx <- "emissMethaneBySource"
@@ -2149,7 +2258,7 @@ paramx <- "emissCO2BySectorNoBio"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "emissNonCO2ByResProdGWPAR5"
@@ -2314,10 +2423,10 @@ paramx <- "emissCO2BySectorNoBio"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
-  if(!is.null(totalFFINonCO2)){
+  if(any(c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5") %in% unique(datax$param))){
 paramx <- "emissTotalFFIBySec"
   if(paramx %in% paramsSelectx){
     # GHG emissions by resource production, using AR5 GWP values
@@ -2348,9 +2457,12 @@ paramx <- "emissTotalFFIBySec"
       dplyr::filter(!is.na(value))
     # Take this new parameter and put it in datax (main dataframe for ready-to-plot results)
     datax <- rbind(datax, totalFFICO2Eq)
-  }} else {print(paste("totalFFINonCO2 did not run so skipping param emissTotalFFIBySec",sep=""))}
+  }} else {
+    if(any(c("nonCO2 emissions by resource production","nonCO2 emissions by sector") %in% queriesSelectx)){
+      print(paste("totalFFINonCO2 did not run so skipping param emissTotalBySec",sep=""))}
+  }
 
-  if(!is.null(totalFFINonCO2)){
+  if(any(c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5") %in% unique(datax$param))){
   paramx <- "emissTotalBySec"
   if(paramx %in% paramsSelectx){
     # Same as FFI Emiss by Sec, except we are now adding LUC. So really it is the whole emissions picture (or close to it)
@@ -2382,9 +2494,12 @@ paramx <- "emissTotalFFIBySec"
       dplyr::filter(!is.na(value))
     # Take this new parameter and put it in datax (main dataframe for ready-to-plot results)
     datax <- rbind(datax, totalFFICO2Eq)
-  }} else {print(paste("totalFFINonCO2 did not run so skipping param emissTotalBySec",sep=""))}
+  }} else {
+    if(any(c("nonCO2 emissions by resource production","nonCO2 emissions by sector") %in% queriesSelectx)){
+    print(paste("totalFFINonCO2 did not run so skipping param emissTotalBySec",sep=""))}
+    }
 
-  if(!is.null(totalFFINonCO2)){
+  if(any(c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5") %in% unique(datax$param))){
     paramx <- "emissCO2BySectorNonCO2GWPAR5"
   if(paramx %in% paramsSelectx){
     # GHG emissions by resource production, using AR5 GWP values
@@ -2420,10 +2535,14 @@ paramx <- "emissTotalFFIBySec"
       dplyr::filter(!is.na(value))
     # Take this new parameter and put it in datax (main dataframe for ready-to-plot results)
     datax <- rbind(datax, totalFFICO2Eq)
-  }} else {print(paste("totalFFINonCO2 did not run so skipping param emissCO2BySectorNonCO2GWPAR5",sep=""))}
+  }} else {
+    if(any(c("nonCO2 emissions by resource production","nonCO2 emissions by sector") %in% queriesSelectx)){
+    print(paste("totalFFINonCO2 did not run so skipping param emissTotalBySec",sep=""))}
+    }
 
-  if(!is.null(totalFFINonCO2)){
- paramx <- "emissCO2BySectorNonCO2GWPAR5LUC"
+  if(any(c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5",
+           "emissLUC","emissCO2BySectorNoBio") %in% unique(datax$param))){
+    paramx <- "emissCO2BySectorNonCO2GWPAR5LUC"
   if(paramx %in% paramsSelectx){
 
     totalFFICO2 <- datax %>% dplyr::filter(param %in% c("emissCO2BySectorNoBio")) %>% dplyr::mutate(
@@ -2463,7 +2582,10 @@ paramx <- "emissTotalFFIBySec"
     datax <- rbind(datax, totalCO2Eq)
   }
 
- } else {print(paste("totalFFINonCO2 did not run so skipping param emissCO2BySectorNonCO2GWPAR5LUC",sep=""))}
+  } else {
+    if(any(c("nonCO2 emissions by resource production","nonCO2 emissions by sector") %in% queriesSelectx)){
+      print(paste("totalFFINonCO2 did not run so skipping param emissTotalBySec",sep=""))}
+  }
 
   paramx <- "emissCO2NonCO2BySectorGTPAR5"
   if(paramx %in% paramsSelectx){
@@ -2623,7 +2745,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "emissNonCO2BySectorOrigUnits"
@@ -2782,7 +2904,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"transportPassengerVMTByMode"
@@ -2839,7 +2961,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"transportFreightVMTByMode"
@@ -2889,7 +3011,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyPrimaryRefLiqProdEJ"
@@ -2952,7 +3074,7 @@ paramx <- "emissTotalFFIBySec"
 
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"transportPassengerVMTByFuel"
@@ -3020,7 +3142,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"transportFreightVMTByFuel"
@@ -3084,7 +3206,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyFinalSubsecByFuelTranspEJ"
@@ -3148,7 +3270,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
 
