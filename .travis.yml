@@ -11,3 +11,4 @@ addons:
     packages:
       - libgdal-dev
       - libmagick++-dev
+      - libudunits2-dev
