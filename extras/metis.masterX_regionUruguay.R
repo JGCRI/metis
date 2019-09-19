@@ -45,12 +45,12 @@ localBasinsShapeFileColName = "code" # Will need to load the file to see which n
 # Read GCAM Data
 #---------------------------
 
-regionsSelect_i <- c("Uruguay", "Colombia")
+regionsSelect_i <- c("Uruguay")
 
 # ?metis.readgcam # For more help
 
-gcamdatabasePath_i <-paste("D:/GCAM/gcam-core_LAC/output",sep="")
-gcamdatabaseName_i <-"database_basexdb_origRef"
+gcamdatabasePath_i <-paste("D:/GCAM/gcam-core_LAC/output/FinalRuns",sep="")
+gcamdatabaseName_i <-"IDBNexus_RefOrig"
 rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
 
 dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
@@ -64,10 +64,14 @@ listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 
 queryPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
 
+# Choose Query sets, individual queries or set to "All". For complete list see ?metis.readgcam
+queriesSelect_i = c("energy", "water") # Query sets are c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
+
+
 dataGCAMRef<-metis.readgcam(reReadData=T, # Default Value is T
                                  dataProj = dataProj_i, # Default Value is "dataProj.proj"
                                  dataProjPath = dataProjPath_i,
-                                 scenOrigNames=c("IDB_Orig", "IDB_GCAMRef"),
+                                 scenOrigNames=c("IDB_Orig", "Reference"),
                                  scenNewNames=c("GCAMOrig","GCAMRef"),
                                  gcamdatabasePath=gcamdatabasePath_i,
                                  gcamdatabaseName=gcamdatabaseName_i,
@@ -75,8 +79,7 @@ dataGCAMRef<-metis.readgcam(reReadData=T, # Default Value is T
                                  queryPath = queryPath_i,
                                  dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
                                  regionsSelect=regionsSelect_i, # Default Value is NULL
-                                 paramsSelect="All" # Default value is "All"
-)
+                                 queriesSelect=queriesSelect_i)
 
 dataGCAMRef$data
 unique(dataGCAMRef$data$param)
@@ -99,7 +102,7 @@ dataGCAMImpacts<-metis.readgcam(reReadData=F, # Default Value is T
                             queryPath = queryPath_i,
                             dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
                             regionsSelect=regionsSelect_i, # Default Value is NULL
-                            paramsSelect="All" # Default value is "All"
+                            queriesSelect=queriesSelect_i
 )
 
 dataGCAMImpacts$data
@@ -126,15 +129,35 @@ unique(dataGCAM$scenario)
 #---------------------------
 
 #Choose parameters for Report
-# paramsSelect_i=c("finalNrgbySec", "elecByTech", "elecCapBySubsector",
-#                   "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec",
-#                  "watConsumBySec", "watWithdrawBySec",
-#                  "gdp", "gdpGrowthRate", "pop",
-#                  "agProdByCrop","aggLandAlloc",
-#                 "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
-#
-
+# paramsSelect_i = c(# energy
+#         "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
+#         "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
+#         "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
+#         "energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
+#         "energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
+#         "energyFinalSubsecByFuelBuildMTOE", "energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecBySectorBuildMTOE",
+#         "energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
+#         "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
+#         "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
+#         # electricity
+#         "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
+#         # transport
+#         "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
+#         # water
+#         "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
+#         # socioecon
+#         "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
+#         # ag
+#         "agProdbyIrrRfd","agProdBiomass", "agProdForest", "agProdByCrop",
+#         # land
+#         "landIrrRfd", "landAlloc","landAllocByCrop",
+#         # emissions
+#         "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
+#         "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
+#         "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")
 paramsSelect_i = "All"
+
+paramsSelect_i = c("watWithdrawBySec")
 
 # Read in Tables (If exist)
 dataTables_i<-c(paste(getwd(),"/dataFiles/localData/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
@@ -192,6 +215,7 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             folderName = "Reference",
                             scaleRange=scaleRange_i)
 
+
 charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             dataTables=dataTables_i, # Default is NULL
                             paramsSelect=paramsSelect_iMod, # Default is "All"
@@ -207,7 +231,7 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
                             colOrderName1 = "scenario",
-                            folderName = "Reference",
+                            folderName = "Reference_Mod",
                             scaleRange=scaleRange_i)
 
 

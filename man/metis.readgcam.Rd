@@ -124,8 +124,6 @@ c(# Energy
 "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
 "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
 "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")}
-
-\item{RawQueryCSV}{Optional.}
 }
 \value{
 A list with the scenarios in the gcam database, queries in the queryxml file and a

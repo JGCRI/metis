@@ -102,8 +102,6 @@
 #' "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
 #' "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
 #' "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")
-#' @param RawQueryCSV Optional.
-#'
 #' @return A list with the scenarios in the gcam database, queries in the queryxml file and a
 #' tibble with gcam data formatted for metis charts.
 #' @keywords gcam, gcam database, query
@@ -255,7 +253,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
     for(i in 1:length(xmltop)){
       for(j in 1:length(queriesSelectx)){
-        if(any(grepl(queriesSelectx[j], as.character(xmltop[[i]]))))
+        if(any(grepl(gsub("\\(","\\\\(",gsub("\\)","\\\\)",queriesSelectx[j])), as.character(xmltop[[i]]))))
           top <- XML::addChildren(top, xmltop[[i]])
       }
     }
@@ -303,7 +301,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
   datax <- tibble::tibble()
 
   if(any(queriesSelect=="All")){queriesx <- queries} else{
-    if(!all(queriesSelectx %in% queries)){stop("None of the selected queries are available in the data that has been read.
+    if(!any(queriesSelectx %in% queries)){stop("None of the selected queries are available in the data that has been read.
 Please check your data if reRead was set to F. Otherwise check the queriesSelect entries and the queryxml file.")} else {
                                                 if(length(queriesSelectx[!(queriesSelectx %in% queries)])>0){
                                                   print(paste("Queries not available in queryxml: ", paste(queriesSelectx[!(queriesSelectx %in% queries)],collapse=", "), sep=""))
@@ -368,7 +366,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Sector",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -417,7 +415,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Sector",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = subsector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -485,7 +483,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = input,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -533,7 +531,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -582,7 +580,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -639,7 +637,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Sector",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = input,
                       classLabel2 = "input",
                       classPalette2 = "classPalette2")%>%
@@ -695,7 +693,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = input,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "Sector",
                       classPalette2 = "classPalette2")%>%
@@ -739,7 +737,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = fuel,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -786,7 +784,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = technology,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -868,7 +866,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Sector",
-                      classPalette1 = "pal_wat_dem",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -911,7 +909,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Sector",
-                      classPalette1 = "pal_wat_dem",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -956,7 +954,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Crop",
-                      classPalette1 = "pal_16",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -1347,7 +1345,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Crop",
-                      classPalette1 = "pal_ag_type",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -1387,7 +1385,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Forest",
-                      classPalette1 = "pal_ag_type",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -1427,7 +1425,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Crop",
-                      classPalette1 = "pal_ag_type",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -1467,7 +1465,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = water,
                       classLabel1 = "Water Source",
-                      classPalette1 = "pal_16",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
@@ -1522,7 +1520,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = landleaf,
                       classLabel1 = "Land Type",
-                      classPalette1 = "pal_lu_type",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
@@ -1583,7 +1581,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = landleaf,
                       classLabel1 = "Land Type",
-                      classPalette1 = "pal_ag_type",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
@@ -1628,7 +1626,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       aggregate = "sum",
                       class1 = "class1",
                       classLabel1 = "Land Type",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
@@ -1778,9 +1776,9 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "sector",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "sectorDetail",
-                      classPalette2 = "pal_nrg") %>%
+                      classPalette2 = "pal_metis") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -1930,9 +1928,9 @@ paramx <- "emissCO2BySectorNoBio"
                     xLabel = "Year",
                     aggregate = "sum",
                     classLabel1 = "sector",
-                    classPalette1 = "pal_nrg",
+                    classPalette1 = "pal_metis",
                     classLabel2 = "sectorDetail",
-                    classPalette2 = "pal_nrg") %>%
+                    classPalette2 = "pal_metis") %>%
       dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2094,9 +2092,9 @@ paramx <- "emissCO2BySectorNoBio"
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "GHG",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "sector",
-                      classPalette2 = "pal_nrg") %>%
+                      classPalette2 = "pal_metis") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2246,9 +2244,9 @@ paramx <- "emissCO2BySectorNoBio"
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "sector",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "GHG",
-                      classPalette2 = "pal_nrg") %>%
+                      classPalette2 = "pal_metis") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2411,9 +2409,9 @@ paramx <- "emissCO2BySectorNoBio"
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "GHG",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "sector",
-                      classPalette2 = "pal_nrg") %>%
+                      classPalette2 = "pal_metis") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2447,7 +2445,7 @@ paramx <- "emissTotalFFIBySec"
                     units="Emissions Total FFI by Sector - MegaTonnes of CO2 eq. (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
-                    classPalette1 = 'pal_nrg')%>%
+                    classPalette1 = 'pal_metis')%>%
       dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2477,14 +2475,14 @@ paramx <- "emissTotalFFIBySec"
     totalFFICO2 <- datax %>% dplyr::filter(param %in% c("emissCO2BySectorNoBio", "emissLUC"))
     totalFFICO2Eq <- rbind(totalFFICO2, totalFFINonCO2)
     totalFFICO2Eq$param <- 'emissTotalBySec'
-    totalFFICO2Eq$Class1Palette <- 'pal_nrg'
+    totalFFICO2Eq$Class1Palette <- 'pal_metis'
     totalFFICO2Eq <- totalFFICO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
                     units="Emissions by Sector - MegaTonnes of CO2 eq. (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
-                    classPalette1 = 'pal_nrg')%>%
+                    classPalette1 = 'pal_metis')%>%
       dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2525,7 +2523,7 @@ paramx <- "emissTotalFFIBySec"
                     units="MegaTonnes of CO2 eq. (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
-                    classPalette1 = 'pal_nrg')%>%
+                    classPalette1 = 'pal_metis')%>%
       dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2570,7 +2568,7 @@ paramx <- "emissTotalFFIBySec"
                     units="MegaTonnes of CO2 eq. (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
-                    classPalette1 = 'pal_nrg')%>%
+                    classPalette1 = 'pal_metis')%>%
       dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2733,9 +2731,9 @@ paramx <- "emissTotalFFIBySec"
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "GHG",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "sector",
-                      classPalette2 = "pal_nrg") %>%
+                      classPalette2 = "pal_metis") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2891,9 +2889,9 @@ paramx <- "emissTotalFFIBySec"
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "GHG",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "sector",
-                      classPalette2 = "pal_nrg",
+                      classPalette2 = "pal_metis",
                       origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits)) %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
@@ -2948,7 +2946,7 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = mode,
                       classLabel1 = "Mode",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -2998,7 +2996,7 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = mode,
                       classLabel1 = "Mode",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -3044,7 +3042,7 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = subsector,
                       classLabel1 = "Liquid",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "Refining",
                       classPalette2 = "classPalette2")%>%
@@ -3113,7 +3111,7 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = technology,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = subsector,
                       classLabel2 = "subsector",
                       classPalette2 = "classPalette2")
@@ -3177,7 +3175,7 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = technology,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = subsector,
                       classLabel2 = "subsector",
                       classPalette2 = "classPalette2")
@@ -3241,7 +3239,7 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")
