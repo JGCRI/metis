@@ -31,7 +31,7 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
   refGCM = NULL, refRCP = NULL, chosenRefMeanYears = NULL,
   mapTitleSize = 0.5, facetLabelSizeMulti = 3,
   facetLabelSizeGCMRCP = 1.5, numeric2Cat_list = NULL, diffOn = F,
-  frameShow = T)
+  frameShow = T, pdfpng = "png")
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -161,6 +161,8 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{diffOn}{Default = F. Whether to calculate diff values between scenarios.}
 
 \item{frameShow}{Default = T. Whether to plot frame around maps and facets.}
+
+\item{pdfpng}{Save IO figures as pdf or png. Type=String. Options: 'pdf' or 'png'. Default = 'png'}
 }
 \value{
 Returns the formatted data used to produce chart

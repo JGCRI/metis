@@ -55,7 +55,7 @@
 #' \item "nonCO2 emissions by sector". Parameters generated: emissCO2NonCO2BySectorGWPAR5, emissCO2NonCO2BySectorGTPAR5,emissNonCO2BySectorOrigUnits
 #' }
 #'
-#' @param paramsSelect Default = "All". If desired select a subset of paramaters to analyze from the full list of parameters:
+#' @param paramsSelect Default = "All". If desired dplyr::select a subset of paramaters to analyze from the full list of parameters:
 #' c(# Energy
 #' "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
 #' "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
@@ -129,7 +129,9 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
   NULL -> vintage -> year -> xLabel -> x -> value -> sector -> scenario -> region -> param -> origX -> origValue ->
     origUnits -> origScen -> origQuery -> classPalette2 -> classPalette1 -> classLabel2 -> classLabel1 -> class2 ->
     class1 -> connx -> aggregate -> Units -> sources -> paramx -> fuel -> technology -> input -> output -> water ->
-    landleaf -> ghg -> Convert -> regionsSelectAll->cf1971to2100->gcamCapacityFactor -> . -> GWPAR5
+    landleaf -> ghg -> Convert -> regionsSelectAll->cf1971to2100->gcamCapacityFactor -> . -> GWPAR5 -> tblelecByTechTWh ->
+    totalFFINonCO2 -> FracBioFuel -> FracFossilFuel -> TotalLiquids ->
+    class_temp -> resource -> subRegAreaSum -> subsector
 
   # Create necessary directories if they dont exist.
   if (!dir.exists(dirOutputs)){
@@ -337,7 +339,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       }
       tbl <- tbl %>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-        dplyr::mutate(input=if_else(input=="biomass","bioenergy",input),
+        dplyr::mutate(input=dplyr::if_else(input=="biomass","bioenergy",input),
                       sector=gsub("process heat cement","industry",sector),
                       sector=gsub("cement","industry",sector),
                       sector=gsub("industrial energy use","industry",sector),
@@ -695,6 +697,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
 
+  if(!is.null(tblelecByTechTWh)){
   if(file.exists(paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""))){
     capfactors <- data.table::fread(file=paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""),skip=3,encoding="Latin-1")
     paramx <- "elecCapByFuel"
@@ -725,7 +728,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         print(paste("Query '", queryx, "' not found in database", sep = ""))
       }}
   } else {print(paste("Electricity capacity factor file capacity_factor_by_elec_gen_subsector.csv not found. Skipping param elecCapByFuel."))}
-
+} else {print(paste("elecByTechTWh not avaialble so skipping param elecCapByFuel."))}
 
   # metis.chart(tbl,xData="x",yData="value",useNewLabels = 0)
 
@@ -1571,7 +1574,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
           class1=gsub("elec\\_refined\\sliquids\\s\\(CC\\)","Electricity",class1),
           class1=gsub("elec\\_refined\\sliquids\\s\\(steam/CT\\)","Electricity",class1),
           class1=gsub("elec\\_refined\\sliquids\\s\\(CC\\sCCS\\)","Electricity",class1),
-          class1=if_else(class1=="electricity","Electricity",class1),
+          class1=dplyr::if_else(class1=="electricity","Electricity",class1),
           class1=gsub("electricity_net_ownuse","Electricity",class1),
           class1=gsub("base\\s\\load\\sgeneration","Electricity",class1),
           class1=gsub("subpeak\\sgeneration","Electricity",class1),
@@ -1591,7 +1594,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
           class1=gsub("N\\sfertilizer","Industry",class1),
           class1=gsub("process\\sheat\\scement","Industry",class1),
           class1=gsub("cement","Industry",class1),
-          class1=if_else(class1=="refining","Refining and Hydrogen Production",class1),
+          class1=dplyr::if_else(class1=="refining","Refining and Hydrogen Production",class1),
           class1=gsub("regional\\sbiomassOil","Refining and Hydrogen Production",class1),
           class1=gsub("regional\\ssugar\\sfor\\sethanol","Refining and Hydrogen Production",class1),
           class1=gsub("regional\\sbiomass","Refining and Hydrogen Production",class1),
@@ -1606,16 +1609,16 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
           class1=gsub("district\\sheat","Buildings",class1),
           class1=gsub("trn\\_aviation\\_intl","Transport",class1),
           class1=gsub("trn\\_shipping\\_intl","Transport",class1),
-          class1=if_else(class1=="trn_freight_road","Transport",class1),
-          class1=if_else(class1=="trn_freight","Transport",class1),
-          class1=if_else(class1=="trn_pass","Transport",class1),
+          class1=dplyr::if_else(class1=="trn_freight_road","Transport",class1),
+          class1=dplyr::if_else(class1=="trn_freight","Transport",class1),
+          class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class1),
-          class1=if_else(class1=="trn_pass_road","Transport",class1),
+          class1=dplyr::if_else(class1=="trn_pass_road","Transport",class1),
           # class1=gsub("trn\\_shipping\\_intl","Transport",class1),
           class1=gsub("transport\\_LDV","Transport",class1),
           class1=gsub("transport\\_bus","Transport",class1),
-          class1=if_else(class1=="trn_pass","Transport",class1),
+          class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
           class1=gsub("unconventional\\soil\\sproduction","Refining and Hydrogen Production",class1),
           class1=gsub("conventional\\sgas","Refining and Hydrogen Production",class1),
           class1=gsub("unconventional\\sgas\\sother","Refining and Hydrogen Production",class1),
@@ -1629,7 +1632,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
           class1=gsub("biomass\\sliquids","Refining and Hydrogen Production",class1),
           class1=gsub("coalbed\\smethane","Refining and Hydrogen Production",class1),
           class1=gsub("shale\\sgas","Refining and Hydrogen Production",class1),
-          class1=if_else(class1=="coal","Refining and Hydrogen Production",class1),
+          class1=dplyr::if_else(class1=="coal","Refining and Hydrogen Production",class1),
           class1=gsub("crude oil","Refining and Hydrogen Production",class1),
           class1=gsub("electricity\\sdomestic\\ssupply","Refining and Hydrogen Production",class1),
           class1=gsub("Beef","Livestock",class1),
@@ -1651,7 +1654,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
           class1=gsub("biomass","Crops",class1),
           class1=gsub("FodderGrass","Crops",class1),
           class1=gsub("FodderHerb","Crops",class1),
-          class1=if_else(class1=="biomass","Crops",class1),
+          class1=dplyr::if_else(class1=="biomass","Crops",class1),
           class1=gsub("backup\\_electricity","Electricity",class1),
           class1=gsub("csp\\_backup","Electricity",class1))%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
@@ -1723,7 +1726,7 @@ paramx <- "emissCO2BySectorNoBio"
         class1=gsub("elec\\_refined\\sliquids\\s\\(CC\\)","Electricity",class1),
         class1=gsub("elec\\_refined\\sliquids\\s\\(steam/CT\\)","Electricity",class1),
         class1=gsub("elec\\_refined\\sliquids\\s\\(CC\\sCCS\\)","Electricity",class1),
-        class1=if_else(class1=="electricity","Electricity",class1),
+        class1=dplyr::if_else(class1=="electricity","Electricity",class1),
         class1=gsub("electricity_net_ownuse","Electricity",class1),
         class1=gsub("base\\s\\load\\sgeneration","Electricity",class1),
         class1=gsub("subpeak\\sgeneration","Electricity",class1),
@@ -1743,7 +1746,7 @@ paramx <- "emissCO2BySectorNoBio"
         class1=gsub("N\\sfertilizer","Industry",class1),
         class1=gsub("process\\sheat\\scement","Industry",class1),
         class1=gsub("cement","Industry",class1),
-        class1=if_else(class1=="refining","Refining and Hydrogen Production",class1),
+        class1=dplyr::if_else(class1=="refining","Refining and Hydrogen Production",class1),
         class1=gsub("regional\\sbiomassOil","Refining and Hydrogen Production",class1),
         class1=gsub("regional\\ssugar\\sfor\\sethanol","Refining and Hydrogen Production",class1),
         class1=gsub("regional\\sbiomass","Refining and Hydrogen Production",class1),
@@ -1758,16 +1761,16 @@ paramx <- "emissCO2BySectorNoBio"
         class1=gsub("district\\sheat","Buildings",class1),
         class1=gsub("trn\\_aviation\\_intl","Transport",class1),
         class1=gsub("trn\\_shipping\\_intl","Transport",class1),
-        class1=if_else(class1=="trn_freight_road","Transport",class1),
-        class1=if_else(class1=="trn_freight","Transport",class1),
-        class1=if_else(class1=="trn_pass","Transport",class1),
+        class1=dplyr::if_else(class1=="trn_freight_road","Transport",class1),
+        class1=dplyr::if_else(class1=="trn_freight","Transport",class1),
+        class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
         class1=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class1),
         class1=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class1),
-        class1=if_else(class1=="trn_pass_road","Transport",class1),
+        class1=dplyr::if_else(class1=="trn_pass_road","Transport",class1),
         #class1=gsub("trn\\_shipping\\_intl","Transport",class1),
         class1=gsub("transport\\_LDV","Transport",class1),
         class1=gsub("transport\\_bus","Transport",class1),
-        class1=if_else(class1=="trn_pass","Transport",class1),
+        class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
         class1=gsub("unconventional\\soil\\sproduction","Refining and Hydrogen Production",class1),
         class1=gsub("conventional\\sgas","Refining and Hydrogen Production",class1),
         class1=gsub("unconventional\\sgas\\sother","Refining and Hydrogen Production",class1),
@@ -1781,7 +1784,7 @@ paramx <- "emissCO2BySectorNoBio"
         class1=gsub("biomass\\sliquids","Refining and Hydrogen Production",class1),
         class1=gsub("coalbed\\smethane","Refining and Hydrogen Production",class1),
         class1=gsub("shale\\sgas","Refining and Hydrogen Production",class1),
-        class1=if_else(class1=="coal","Refining and Hydrogen Production",class1),
+        class1=dplyr::if_else(class1=="coal","Refining and Hydrogen Production",class1),
         class1=gsub("crude oil","Refining and Hydrogen Production",class1),
         class1=gsub("electricity\\sdomestic\\ssupply","Refining and Hydrogen Production",class1),
         class1=gsub("Beef","Livestock",class1),
@@ -1803,7 +1806,7 @@ paramx <- "emissCO2BySectorNoBio"
         class1=gsub("biomass","Crops",class1),
         class1=gsub("FodderGrass","Crops",class1),
         class1=gsub("FodderHerb","Crops",class1),
-        class1=if_else(class1=="biomass","Crops",class1),
+        class1=dplyr::if_else(class1=="biomass","Crops",class1),
         class1=gsub("backup\\_electricity","Electricity",class1),
         class1=gsub("csp\\_backup","Electricity",class1))%>%
       dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
@@ -1881,7 +1884,7 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("elec\\_refined\\sliquids\\s\\(CC\\)","Electricity",class2),
           class2=gsub("elec\\_refined\\sliquids\\s\\(steam/CT\\)","Electricity",class2),
           class2=gsub("elec\\_refined\\sliquids\\s\\(CC\\sCCS\\)","Electricity",class2),
-          class2=if_else(class2=="electricity","Electricity",class2),
+          class2=dplyr::if_else(class2=="electricity","Electricity",class2),
           class2=gsub("electricity_net_ownuse","Electricity",class2),
           class2=gsub("base\\s\\load\\sgeneration","Electricity",class2),
           class2=gsub("subpeak\\sgeneration","Electricity",class2),
@@ -1901,7 +1904,7 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("N\\sfertilizer","Industry",class2),
           class2=gsub("process\\sheat\\scement","Industry",class2),
           class2=gsub("cement","Industry",class2),
-          class2=if_else(class2=="refining","Refining and Hydrogen Production",class2),
+          class2=dplyr::if_else(class2=="refining","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\sbiomassOil","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\ssugar\\sfor\\sethanol","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\sbiomass","Refining and Hydrogen Production",class2),
@@ -1915,16 +1918,16 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
           class2=gsub("trn\\_aviation\\_intl","Transport",class2),
-          class2=if_else(class2=="trn_freight_road","Transport",class2),
-          class2=if_else(class2=="trn_freight","Transport",class2),
-          class2=if_else(class2=="trn_pass","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
-          class2=if_else(class2=="trn_pass_road","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
           #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
-          class2=if_else(class2=="trn_pass","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("unconventional\\soil\\sproduction","Refining and Hydrogen Production",class2),
           class2=gsub("conventional\\sgas","Refining and Hydrogen Production",class2),
           class2=gsub("unconventional\\sgas\\sother","Refining and Hydrogen Production",class2),
@@ -1938,7 +1941,7 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("biomass\\sliquids","Refining and Hydrogen Production",class2),
           class2=gsub("coalbed\\smethane","Refining and Hydrogen Production",class2),
           class2=gsub("shale\\sgas","Refining and Hydrogen Production",class2),
-          class2=if_else(class2=="coal","Refining and Hydrogen Production",class2),
+          class2=dplyr::if_else(class2=="coal","Refining and Hydrogen Production",class2),
           class2=gsub("crude oil","Refining and Hydrogen Production",class2),
           class2=gsub("electricity\\sdomestic\\ssupply","Refining and Hydrogen Production",class2),
           class2=gsub("Beef","Livestock",class2),
@@ -1960,7 +1963,7 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("biomass","Crops",class2),
           class2=gsub("FodderGrass","Crops",class2),
           class2=gsub("FodderHerb","Crops",class2),
-          class2=if_else(class2=="biomass","Crops",class2),
+          class2=dplyr::if_else(class2=="biomass","Crops",class2),
           class2=gsub("backup\\_electricity","Electricity",class2),
           class2=gsub("csp\\_backup","Electricity",class2))%>%
         dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class1=ghg),by="class1")%>%
@@ -1969,7 +1972,7 @@ paramx <- "emissCO2BySectorNoBio"
         dplyr::mutate(origValue=value,
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
-                      origUnits = case_when(class1=="Other"~"Units",TRUE~origUnits),
+                      origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits),
                       units="Emissions GWP - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
         dplyr::mutate(param = "emissCO2NonCO2BySectorGWPAR5",
                       sources = "Sources",
@@ -2033,7 +2036,7 @@ paramx <- "emissCO2BySectorNoBio"
           class1=gsub("elec\\_refined\\sliquids\\s\\(CC\\)","Electricity",class1),
           class1=gsub("elec\\_refined\\sliquids\\s\\(steam/CT\\)","Electricity",class1),
           class1=gsub("elec\\_refined\\sliquids\\s\\(CC\\sCCS\\)","Electricity",class1),
-          class1=if_else(class1=="electricity","Electricity",class1),
+          class1=dplyr::if_else(class1=="electricity","Electricity",class1),
           class1=gsub("electricity_net_ownuse","Electricity",class1),
           class1=gsub("base\\s\\load\\sgeneration","Electricity",class1),
           class1=gsub("subpeak\\sgeneration","Electricity",class1),
@@ -2053,7 +2056,7 @@ paramx <- "emissCO2BySectorNoBio"
           class1=gsub("N\\sfertilizer","Industry",class1),
           class1=gsub("process\\sheat\\scement","Industry",class1),
           class1=gsub("cement","Industry",class1),
-          class1=if_else(class1=="refining","Refining and Hydrogen Production",class1),
+          class1=dplyr::if_else(class1=="refining","Refining and Hydrogen Production",class1),
           class1=gsub("regional\\sbiomassOil","Refining and Hydrogen Production",class1),
           class1=gsub("regional\\ssugar\\sfor\\sethanol","Refining and Hydrogen Production",class1),
           class1=gsub("regional\\sbiomass","Refining and Hydrogen Production",class1),
@@ -2068,16 +2071,16 @@ paramx <- "emissCO2BySectorNoBio"
           class1=gsub("district\\sheat","Buildings",class1),
           class1=gsub("trn\\_aviation\\_intl","Transport",class1),
           class1=gsub("trn\\_shipping\\_intl","Transport",class1),
-          class1=if_else(class1=="trn_freight_road","Transport",class1),
-          class1=if_else(class1=="trn_freight","Transport",class1),
-          class1=if_else(class1=="trn_pass","Transport",class1),
+          class1=dplyr::if_else(class1=="trn_freight_road","Transport",class1),
+          class1=dplyr::if_else(class1=="trn_freight","Transport",class1),
+          class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class1),
-          class1=if_else(class1=="trn_pass_road","Transport",class1),
+          class1=dplyr::if_else(class1=="trn_pass_road","Transport",class1),
           #class1=gsub("trn\\_shipping\\_intl","Transport",class1),
           class1=gsub("transport\\_LDV","Transport",class1),
           class1=gsub("transport\\_bus","Transport",class1),
-          class1=if_else(class1=="trn_pass","Transport",class1),
+          class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
           class1=gsub("unconventional\\soil\\sproduction","Refining and Hydrogen Production",class1),
           class1=gsub("conventional\\sgas","Refining and Hydrogen Production",class1),
           class1=gsub("unconventional\\sgas\\sother","Refining and Hydrogen Production",class1),
@@ -2091,7 +2094,7 @@ paramx <- "emissCO2BySectorNoBio"
           class1=gsub("biomass\\sliquids","Refining and Hydrogen Production",class1),
           class1=gsub("coalbed\\smethane","Refining and Hydrogen Production",class1),
           class1=gsub("shale\\sgas","Refining and Hydrogen Production",class1),
-          class1=if_else(class1=="coal","Refining and Hydrogen Production",class1),
+          class1=dplyr::if_else(class1=="coal","Refining and Hydrogen Production",class1),
           class1=gsub("crude oil","Refining and Hydrogen Production",class1),
           class1=gsub("electricity\\sdomestic\\ssupply","Refining and Hydrogen Production",class1),
           class1=gsub("Beef","Livestock",class1),
@@ -2113,7 +2116,7 @@ paramx <- "emissCO2BySectorNoBio"
           class1=gsub("biomass","Crops",class1),
           class1=gsub("FodderGrass","Crops",class1),
           class1=gsub("FodderHerb","Crops",class1),
-          class1=if_else(class1=="biomass","Crops",class1),
+          class1=dplyr::if_else(class1=="biomass","Crops",class1),
           class1=gsub("backup\\_electricity","Electricity",class1),
           class1=gsub("csp\\_backup","Electricity",class1))%>%
         dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class2=ghg),by="class2")%>%
@@ -2121,7 +2124,7 @@ paramx <- "emissCO2BySectorNoBio"
         dplyr::mutate(origValue=value,
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
-                      origUnits = case_when(class2=="Other"~"Units",TRUE~origUnits),
+                      origUnits = dplyr::case_when(class2=="Other"~"Units",TRUE~origUnits),
                       units="Methane Emissions - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
         dplyr::mutate(param = "emissMethaneBySource",
                       sources = "Sources",
@@ -2198,7 +2201,7 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("elec\\_refined\\sliquids\\s\\(CC\\)","Electricity",class2),
           class2=gsub("elec\\_refined\\sliquids\\s\\(steam/CT\\)","Electricity",class2),
           class2=gsub("elec\\_refined\\sliquids\\s\\(CC\\sCCS\\)","Electricity",class2),
-          class2=if_else(class2=="electricity","Electricity",class2),
+          class2=dplyr::if_else(class2=="electricity","Electricity",class2),
           class2=gsub("electricity_net_ownuse","Electricity",class2),
           class2=gsub("base\\s\\load\\sgeneration","Electricity",class2),
           class2=gsub("subpeak\\sgeneration","Electricity",class2),
@@ -2218,7 +2221,7 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("N\\sfertilizer","Industry",class2),
           class2=gsub("process\\sheat\\scement","Industry",class2),
           class2=gsub("cement","Industry",class2),
-          class2=if_else(class2=="refining","Refining and Hydrogen Production",class2),
+          class2=dplyr::if_else(class2=="refining","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\sbiomassOil","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\ssugar\\sfor\\sethanol","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\sbiomass","Refining and Hydrogen Production",class2),
@@ -2232,16 +2235,16 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
           class2=gsub("trn\\_aviation\\_intl","Transport",class2),
-          class2=if_else(class2=="trn_freight_road","Transport",class2),
-          class2=if_else(class2=="trn_freight","Transport",class2),
-          class2=if_else(class2=="trn_pass","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
-          class2=if_else(class2=="trn_pass_road","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
           #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
-          class2=if_else(class2=="trn_pass","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("unconventional\\soil\\sproduction","Refining and Hydrogen Production",class2),
           class2=gsub("conventional\\sgas","Refining and Hydrogen Production",class2),
           class2=gsub("unconventional\\sgas\\sother","Refining and Hydrogen Production",class2),
@@ -2255,7 +2258,7 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("biomass\\sliquids","Refining and Hydrogen Production",class2),
           class2=gsub("coalbed\\smethane","Refining and Hydrogen Production",class2),
           class2=gsub("shale\\sgas","Refining and Hydrogen Production",class2),
-          class2=if_else(class2=="coal","Refining and Hydrogen Production",class2),
+          class2=dplyr::if_else(class2=="coal","Refining and Hydrogen Production",class2),
           class2=gsub("crude oil","Refining and Hydrogen Production",class2),
           class2=gsub("electricity\\sdomestic\\ssupply","Refining and Hydrogen Production",class2),
           class2=gsub("Beef","Livestock",class2),
@@ -2277,7 +2280,7 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("biomass","Crops",class2),
           class2=gsub("FodderGrass","Crops",class2),
           class2=gsub("FodderHerb","Crops",class2),
-          class2=if_else(class2=="biomass","Crops",class2),
+          class2=dplyr::if_else(class2=="biomass","Crops",class2),
           class2=gsub("backup\\_electricity","Electricity",class2),
           class2=gsub("csp\\_backup","Electricity",class2))%>%
         dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class1=ghg),by="class1")%>%
@@ -2286,7 +2289,7 @@ paramx <- "emissCO2BySectorNoBio"
         dplyr::mutate(origValue=value,
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
-                      origUnits = case_when(class1=="Other"~"Units",TRUE~origUnits),
+                      origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits),
                       units="Non-CO2 Emissions by Resource GWP - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
         dplyr::mutate(param = "emissNonCO2ByResProdGWPAR5",
                       sources = "Sources",
@@ -2314,18 +2317,19 @@ paramx <- "emissCO2BySectorNoBio"
       print(paste("Query '", queryx, "' not found in database", sep = ""))
     }}
 
+  if(!is.null(totalFFINonCO2)){
 paramx <- "emissTotalFFIBySec"
   if(paramx %in% paramsSelectx){
     # GHG emissions by resource production, using AR5 GWP values
-    totalFFINonCO2 <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5")) %>%
+    totalFFINonCO2 <- datax %>% dplyr::filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5")) %>%
       dplyr::filter(!class1=='CO2')
     # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
     totalFFINonCO2 <- totalFFINonCO2 %>%
-      mutate(class_temp = class2) %>%
-      mutate(class2 = class1) %>%
-      mutate(class1=class_temp) %>%
-      select(-class_temp)
-    totalFFICO2 <- datax %>% filter(param %in% c("emissCO2BySectorNoBio"))
+      dplyr::mutate(class_temp = class2) %>%
+      dplyr::mutate(class2 = class1) %>%
+      dplyr::mutate(class1=class_temp) %>%
+      dplyr::select(-class_temp)
+    totalFFICO2 <- datax %>% dplyr::filter(param %in% c("emissCO2BySectorNoBio"))
     totalFFICO2Eq <- rbind(totalFFICO2, totalFFINonCO2)
     totalFFICO2Eq$param <- 'emissTotalFFIBySec'
     totalFFICO2Eq <- totalFFICO2Eq %>%
@@ -2344,20 +2348,21 @@ paramx <- "emissTotalFFIBySec"
       dplyr::filter(!is.na(value))
     # Take this new parameter and put it in datax (main dataframe for ready-to-plot results)
     datax <- rbind(datax, totalFFICO2Eq)
-  }
+  }} else {print(paste("totalFFINonCO2 did not run so skipping param emissTotalFFIBySec",sep=""))}
 
+  if(!is.null(totalFFINonCO2)){
   paramx <- "emissTotalBySec"
   if(paramx %in% paramsSelectx){
     # Same as FFI Emiss by Sec, except we are now adding LUC. So really it is the whole emissions picture (or close to it)
-    totalFFINonCO2 <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5")) %>%
+    totalFFINonCO2 <- datax %>% dplyr::filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5")) %>%
       dplyr::filter(!class1=='CO2')
     # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
     totalFFINonCO2 <- totalFFINonCO2 %>%
-      mutate(class_temp = class2) %>%
-      mutate(class2 = class1) %>%
-      mutate(class1=class_temp) %>%
-      select(-class_temp)
-    totalFFICO2 <- datax %>% filter(param %in% c("emissCO2BySectorNoBio", "emissLUC"))
+      dplyr::mutate(class_temp = class2) %>%
+      dplyr::mutate(class2 = class1) %>%
+      dplyr::mutate(class1=class_temp) %>%
+      dplyr::select(-class_temp)
+    totalFFICO2 <- datax %>% dplyr::filter(param %in% c("emissCO2BySectorNoBio", "emissLUC"))
     totalFFICO2Eq <- rbind(totalFFICO2, totalFFINonCO2)
     totalFFICO2Eq$param <- 'emissTotalBySec'
     totalFFICO2Eq$Class1Palette <- 'pal_nrg'
@@ -2377,24 +2382,25 @@ paramx <- "emissTotalFFIBySec"
       dplyr::filter(!is.na(value))
     # Take this new parameter and put it in datax (main dataframe for ready-to-plot results)
     datax <- rbind(datax, totalFFICO2Eq)
-  }
+  }} else {print(paste("totalFFINonCO2 did not run so skipping param emissTotalBySec",sep=""))}
 
-  paramx <- "emissCO2BySectorNonCO2GWPAR5"
+  if(!is.null(totalFFINonCO2)){
+    paramx <- "emissCO2BySectorNonCO2GWPAR5"
   if(paramx %in% paramsSelectx){
     # GHG emissions by resource production, using AR5 GWP values
-    totalFFINonCO2 <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5")) %>%
+    totalFFINonCO2 <- datax %>% dplyr::filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5")) %>%
       dplyr::filter(!class1=='CO2')
     # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
-    totalFFICO2 <- datax %>% filter(param %in% c("emissCO2BySectorNoBio")) %>% mutate(
-      class1=if_else(class1=="Buildings", "CO2 Buildings", class1),
-      class1=if_else(class1=="Refining and Hydrogen Production", "CO2 Refining and Hydrogen Production", class1),
-      class1=if_else(class1=="Industry", "CO2 Industry", class1),
-      class1=if_else(class1=="Transport", "CO2 Transport", class1),
-      class1=if_else(class1=="Trn_shipping_intl", "CO2 Transport", class1),
-      class1=if_else(class1=="Electricity", "CO2 Electricity", class1),
-      class1=if_else(class1=="Other", "CO2 Other", class1),
-      class1=if_else(class1=="Waste", "CO2 Waste", class1),
-      class1=if_else(class1=="LUC", "CO2 LUC", class1)
+    totalFFICO2 <- datax %>% dplyr::filter(param %in% c("emissCO2BySectorNoBio")) %>% dplyr::mutate(
+      class1=dplyr::if_else(class1=="Buildings", "CO2 Buildings", class1),
+      class1=dplyr::if_else(class1=="Refining and Hydrogen Production", "CO2 Refining and Hydrogen Production", class1),
+      class1=dplyr::if_else(class1=="Industry", "CO2 Industry", class1),
+      class1=dplyr::if_else(class1=="Transport", "CO2 Transport", class1),
+      class1=dplyr::if_else(class1=="Trn_shipping_intl", "CO2 Transport", class1),
+      class1=dplyr::if_else(class1=="Electricity", "CO2 Electricity", class1),
+      class1=dplyr::if_else(class1=="Other", "CO2 Other", class1),
+      class1=dplyr::if_else(class1=="Waste", "CO2 Waste", class1),
+      class1=dplyr::if_else(class1=="LUC", "CO2 LUC", class1)
     )
     totalFFICO2Eq <- rbind(totalFFICO2, totalFFINonCO2)
     totalFFICO2Eq$param <- 'emissCO2BySectorNonCO2GWPAR5'
@@ -2414,24 +2420,25 @@ paramx <- "emissTotalFFIBySec"
       dplyr::filter(!is.na(value))
     # Take this new parameter and put it in datax (main dataframe for ready-to-plot results)
     datax <- rbind(datax, totalFFICO2Eq)
-  }
+  }} else {print(paste("totalFFINonCO2 did not run so skipping param emissCO2BySectorNonCO2GWPAR5",sep=""))}
 
-  paramx <- "emissCO2BySectorNonCO2GWPAR5LUC"
+  if(!is.null(totalFFINonCO2)){
+ paramx <- "emissCO2BySectorNonCO2GWPAR5LUC"
   if(paramx %in% paramsSelectx){
 
-    totalFFICO2 <- datax %>% filter(param %in% c("emissCO2BySectorNoBio")) %>% mutate(
-      class1=if_else(class1=="Buildings", "CO2 Buildings", class1),
-      class1=if_else(class1=="Refining and Hydrogen Production", "CO2 Refining and Hydrogen Production", class1),
-      class1=if_else(class1=="Industry", "CO2 Industry", class1),
-      class1=if_else(class1=="Transport", "CO2 Transport", class1),
-      class1=if_else(class1=="Trn_shipping_intl", "CO2 Transport", class1),
-      class1=if_else(class1=="Electricity", "CO2 Electricity", class1),
-      class1=if_else(class1=="Other", "CO2 Other", class1),
-      class1=if_else(class1=="Waste", "CO2 Waste", class1),
-      class1=if_else(class1=="LUC", "CO2 LUC", class1)
+    totalFFICO2 <- datax %>% dplyr::filter(param %in% c("emissCO2BySectorNoBio")) %>% dplyr::mutate(
+      class1=dplyr::if_else(class1=="Buildings", "CO2 Buildings", class1),
+      class1=dplyr::if_else(class1=="Refining and Hydrogen Production", "CO2 Refining and Hydrogen Production", class1),
+      class1=dplyr::if_else(class1=="Industry", "CO2 Industry", class1),
+      class1=dplyr::if_else(class1=="Transport", "CO2 Transport", class1),
+      class1=dplyr::if_else(class1=="Trn_shipping_intl", "CO2 Transport", class1),
+      class1=dplyr::if_else(class1=="Electricity", "CO2 Electricity", class1),
+      class1=dplyr::if_else(class1=="Other", "CO2 Other", class1),
+      class1=dplyr::if_else(class1=="Waste", "CO2 Waste", class1),
+      class1=dplyr::if_else(class1=="LUC", "CO2 LUC", class1)
     )
     # GHG emissions by resource production, using AR5 GWP values
-    NonCo2_LUC <- datax %>% filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5",
+    NonCo2_LUC <- datax %>% dplyr::filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5",
                                                 "emissLUC")) %>%
       dplyr::filter(!class1=='CO2')
     totalCO2Eq <- rbind(totalFFICO2, NonCo2_LUC)
@@ -2455,6 +2462,8 @@ paramx <- "emissTotalFFIBySec"
     # Take this new parameter and put it in datax (main dataframe for ready-to-plot results)
     datax <- rbind(datax, totalCO2Eq)
   }
+
+ } else {print(paste("totalFFINonCO2 did not run so skipping param emissCO2BySectorNonCO2GWPAR5LUC",sep=""))}
 
   paramx <- "emissCO2NonCO2BySectorGTPAR5"
   if(paramx %in% paramsSelectx){
@@ -2501,7 +2510,7 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("elec\\_refined\\sliquids\\s\\(CC\\)","Electricity",class2),
           class2=gsub("elec\\_refined\\sliquids\\s\\(steam/CT\\)","Electricity",class2),
           class2=gsub("elec\\_refined\\sliquids\\s\\(CC\\sCCS\\)","Electricity",class2),
-          class2=if_else(class2=="electricity","Electricity",class2),
+          class2=dplyr::if_else(class2=="electricity","Electricity",class2),
           class2=gsub("electricity_net_ownuse","Electricity",class2),
           class2=gsub("base\\s\\load\\sgeneration","Electricity",class2),
           class2=gsub("subpeak\\sgeneration","Electricity",class2),
@@ -2521,7 +2530,7 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("N\\sfertilizer","Industry",class2),
           class2=gsub("process\\sheat\\scement","Industry",class2),
           class2=gsub("cement","Industry",class2),
-          class2=if_else(class2=="refining","Refining and Hydrogen Production",class2),
+          class2=dplyr::if_else(class2=="refining","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\sbiomassOil","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\ssugar\\sfor\\sethanol","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\sbiomass","Refining and Hydrogen Production",class2),
@@ -2535,16 +2544,16 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
           class2=gsub("trn\\_aviation\\_intl","Transport",class2),
-          class2=if_else(class2=="trn_freight_road","Transport",class2),
-          class2=if_else(class2=="trn_freight","Transport",class2),
-          class2=if_else(class2=="trn_pass","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
-          class2=if_else(class2=="trn_pass_road","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
           #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
-          class2=if_else(class2=="trn_pass","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("unconventional\\soil\\sproduction","Refining and Hydrogen Production",class2),
           class2=gsub("conventional\\sgas","Refining and Hydrogen Production",class2),
           class2=gsub("unconventional\\sgas\\sother","Refining and Hydrogen Production",class2),
@@ -2558,7 +2567,7 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("biomass\\sliquids","Refining and Hydrogen Production",class2),
           class2=gsub("coalbed\\smethane","Refining and Hydrogen Production",class2),
           class2=gsub("shale\\sgas","Refining and Hydrogen Production",class2),
-          class2=if_else(class2=="coal","Refining and Hydrogen Production",class2),
+          class2=dplyr::if_else(class2=="coal","Refining and Hydrogen Production",class2),
           class2=gsub("crude oil","Refining and Hydrogen Production",class2),
           class2=gsub("electricity\\sdomestic\\ssupply","Refining and Hydrogen Production",class2),
           class2=gsub("Beef","Livestock",class2),
@@ -2580,7 +2589,7 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("biomass","Crops",class2),
           class2=gsub("FodderGrass","Crops",class2),
           class2=gsub("FodderHerb","Crops",class2),
-          class2=if_else(class2=="biomass","Crops",class2),
+          class2=dplyr::if_else(class2=="biomass","Crops",class2),
           class2=gsub("backup\\_electricity","Electricity",class2),
           class2=gsub("csp\\_backup","Electricity",class2))%>%
         dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class1=ghg),by="class1")%>%
@@ -2589,7 +2598,7 @@ paramx <- "emissTotalFFIBySec"
                       value=dplyr::case_when(!is.na(GTPAR5) ~ value*GTPAR5*Convert,
                                              TRUE ~  value*GWPAR5*Convert),
                       origUnits=Units,
-                      origUnits = case_when(class1=="Other"~"Units",TRUE~origUnits),
+                      origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits),
                       units="Emissions GTP - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
         dplyr::mutate(param = "emissCO2NonCO2BySectorGTPAR5",
                       sources = "Sources",
@@ -2667,7 +2676,7 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("elec\\_refined\\sliquids\\s\\(CC\\)","Electricity",class2),
           class2=gsub("elec\\_refined\\sliquids\\s\\(steam/CT\\)","Electricity",class2),
           class2=gsub("elec\\_refined\\sliquids\\s\\(CC\\sCCS\\)","Electricity",class2),
-          class2=if_else(class2=="electricity","Electricity",class2),
+          class2=dplyr::if_else(class2=="electricity","Electricity",class2),
           class2=gsub("electricity_net_ownuse","Electricity",class2),
           class2=gsub("base\\s\\load\\sgeneration","Electricity",class2),
           class2=gsub("subpeak\\sgeneration","Electricity",class2),
@@ -2687,7 +2696,7 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("N\\sfertilizer","Industry",class2),
           class2=gsub("process\\sheat\\scement","Industry",class2),
           class2=gsub("cement","Industry",class2),
-          class2=if_else(class2=="refining","Refining and Hydrogen Production",class2),
+          class2=dplyr::if_else(class2=="refining","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\sbiomassOil","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\ssugar\\sfor\\sethanol","Refining and Hydrogen Production",class2),
           class2=gsub("regional\\sbiomass","Refining and Hydrogen Production",class2),
@@ -2701,16 +2710,16 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
           class2=gsub("trn\\_aviation\\_intl","Transport",class2),
-          class2=if_else(class2=="trn_freight_road","Transport",class2),
-          class2=if_else(class2=="trn_freight","Transport",class2),
-          class2=if_else(class2=="trn_pass","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
-          class2=if_else(class2=="trn_pass_road","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
           #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
-          class2=if_else(class2=="trn_pass","Transport",class2),
+          class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("unconventional\\soil\\sproduction","Refining and Hydrogen Production",class2),
           class2=gsub("conventional\\sgas","Refining and Hydrogen Production",class2),
           class2=gsub("unconventional\\sgas\\sother","Refining and Hydrogen Production",class2),
@@ -2724,7 +2733,7 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("biomass\\sliquids","Refining and Hydrogen Production",class2),
           class2=gsub("coalbed\\smethane","Refining and Hydrogen Production",class2),
           class2=gsub("shale\\sgas","Refining and Hydrogen Production",class2),
-          class2=if_else(class2=="coal","Refining and Hydrogen Production",class2),
+          class2=dplyr::if_else(class2=="coal","Refining and Hydrogen Production",class2),
           class2=gsub("crude oil","Refining and Hydrogen Production",class2),
           class2=gsub("electricity\\sdomestic\\ssupply","Refining and Hydrogen Production",class2),
           class2=gsub("Beef","Livestock",class2),
@@ -2746,7 +2755,7 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("biomass","Crops",class2),
           class2=gsub("FodderGrass","Crops",class2),
           class2=gsub("FodderHerb","Crops",class2),
-          class2=if_else(class2=="biomass","Crops",class2),
+          class2=dplyr::if_else(class2=="biomass","Crops",class2),
           class2=gsub("backup\\_electricity","Electricity",class2),
           class2=gsub("csp\\_backup","Electricity",class2))%>%
         dplyr::mutate(param = "emissNonCO2BySectorOrigUnits",
@@ -2763,7 +2772,7 @@ paramx <- "emissTotalFFIBySec"
                       classPalette1 = "pal_nrg",
                       classLabel2 = "sector",
                       classPalette2 = "pal_nrg",
-                      origUnits = case_when(class1=="Other"~"Units",TRUE~origUnits)) %>%
+                      origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits)) %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2846,12 +2855,12 @@ paramx <- "emissTotalFFIBySec"
       tbl <- tbl %>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::filter(sector %in% vmt_array, !mode %in% c('road')) %>%
-        dplyr::mutate(mode=if_else(mode=="Domestic Ship","Ship",mode),
-                      mode=if_else(mode=="Freight Rail","Rail",mode),
-                      #mode=if_else(mode=="International Ship","Ship",mode),
-                      mode=if_else(mode=="Truck (6-15t)","Truck",mode),
-                      mode=if_else(mode=="Truck (0-1t)","Truck",mode),
-                      mode=if_else(mode=="Truck (>15t)","Truck",mode),
+        dplyr::mutate(mode=dplyr::if_else(mode=="Domestic Ship","Ship",mode),
+                      mode=dplyr::if_else(mode=="Freight Rail","Rail",mode),
+                      #mode=dplyr::if_else(mode=="International Ship","Ship",mode),
+                      mode=dplyr::if_else(mode=="Truck (6-15t)","Truck",mode),
+                      mode=dplyr::if_else(mode=="Truck (0-1t)","Truck",mode),
+                      mode=dplyr::if_else(mode=="Truck (>15t)","Truck",mode),
                       param = "transportFreightVMTByMode",
                       sources = "Sources",
                       origScen = scenario,
@@ -2894,10 +2903,10 @@ paramx <- "emissTotalFFIBySec"
       }
       tbl <- tbl %>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-        dplyr::mutate(subsector=if_else(subsector=="biomass liquids","biomass liquids", subsector),
-                      subsector=if_else(subsector=="coal to liquids","coal to liquids", subsector),
-                      subsector=if_else(subsector=="gas to liquids","gas to liquids", subsector),
-                      subsector=if_else(subsector=="oil refining","oil refining", subsector),
+        dplyr::mutate(subsector=dplyr::if_else(subsector=="biomass liquids","biomass liquids", subsector),
+                      subsector=dplyr::if_else(subsector=="coal to liquids","coal to liquids", subsector),
+                      subsector=dplyr::if_else(subsector=="gas to liquids","gas to liquids", subsector),
+                      subsector=dplyr::if_else(subsector=="oil refining","oil refining", subsector),
                       param = "energyPrimaryRefLiqProdEJ",
                       sources = "Sources",
                       origScen = scenario,
@@ -2928,18 +2937,18 @@ paramx <- "emissTotalFFIBySec"
       # Create table that stores total liquids production in refining
       QueryTbl <- tbl
       TotalLiquidsProdTbl <- QueryTbl %>%
-        group_by(scenario, region, x) %>%
-        summarise(TotalLiquids=sum(value))
+        dplyr::group_by(scenario, region, x) %>%
+        dplyr::summarise(TotalLiquids=sum(value))
       # Return to original table, and calculate fraction of total liquids production that is biofuels. QueryTbl can now
       # be applied to VMT by fuel categories (passenger and freight) below.
       FracBioFuel_tbl <- QueryTbl %>%
-        select(scenario, region, class1, x, value) %>%
-        left_join(TotalLiquidsProdTbl, by=c('x', 'scenario', 'region')) %>%
-        filter(class1=='biomass liquids') %>%
-        mutate(FracBioFuel=value/TotalLiquids) %>%
-        mutate(FracFossilFuel=1-FracBioFuel) %>%
-        select(-value, -TotalLiquids) %>%
-        mutate(class1 = 'liquids')  #only apply fraction to liquids
+        dplyr::select(scenario, region, class1, x, value) %>%
+        dplyr::left_join(TotalLiquidsProdTbl, by=c('x', 'scenario', 'region')) %>%
+        dplyr::filter(class1=='biomass liquids') %>%
+        dplyr::mutate(FracBioFuel=value/TotalLiquids) %>%
+        dplyr::mutate(FracFossilFuel=1-FracBioFuel) %>%
+        dplyr::select(-value, -TotalLiquids) %>%
+        dplyr::mutate(class1 = 'liquids')  #only apply fraction to liquids
 
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
@@ -2989,16 +2998,16 @@ paramx <- "emissTotalFFIBySec"
       if("energyPrimaryRefLiqProdEJ" %in% paramsSelectx){
         # Break out biofuels
         tbl <- tbl %>%
-          left_join(FracBioFuel_tbl, by=c('scenario', 'region', 'x', 'class1')) %>%
-          mutate(value = if_else(class1=='liquids', value*FracBioFuel, value)) %>%
-          select(-FracBioFuel, -FracFossilFuel) %>%
-          mutate(class1=if_else(class1=='liquids', 'biofuel', class1))
+          dplyr::left_join(FracBioFuel_tbl, by=c('scenario', 'region', 'x', 'class1')) %>%
+          dplyr::mutate(value = dplyr::if_else(class1=='liquids', value*FracBioFuel, value)) %>%
+          dplyr::select(-FracBioFuel, -FracFossilFuel) %>%
+          dplyr::mutate(class1=dplyr::if_else(class1=='liquids', 'biofuel', class1))
         tbl2 <- tbl %>%
-          left_join(FracBioFuel_tbl %>% mutate(class1='biofuel'), by=c('scenario', 'region', 'x', 'class1')) %>%
-          filter(class1=='biofuel') %>%
-          mutate(class1='fossil fuel') %>%
-          mutate(value=if_else(class1=='fossil fuel', (value/FracBioFuel)*(1-FracBioFuel), value)) %>%
-          select(-FracBioFuel, -FracFossilFuel)
+          dplyr::left_join(FracBioFuel_tbl %>% dplyr::mutate(class1='biofuel'), by=c('scenario', 'region', 'x', 'class1')) %>%
+          dplyr::filter(class1=='biofuel') %>%
+          dplyr::mutate(class1='fossil fuel') %>%
+          dplyr::mutate(value=dplyr::if_else(class1=='fossil fuel', (value/FracBioFuel)*(1-FracBioFuel), value)) %>%
+          dplyr::select(-FracBioFuel, -FracFossilFuel)
         tbl <- rbind(tbl, tbl2)
       }
       tbl <- tbl %>%
@@ -3053,16 +3062,16 @@ paramx <- "emissTotalFFIBySec"
       if("energyPrimaryRefLiqProdEJ" %in% paramsSelectx){
         # Break out biofuels
         tbl <- tbl %>%
-          left_join(FracBioFuel_tbl, by=c('scenario', 'region', 'x', 'class1')) %>%
-          mutate(value = if_else(class1=='liquids', value*FracBioFuel, value)) %>%
-          select(-FracBioFuel, -FracFossilFuel) %>%
-          mutate(class1=if_else(class1=='liquids', 'biofuel', class1))
+          dplyr::left_join(FracBioFuel_tbl, by=c('scenario', 'region', 'x', 'class1')) %>%
+          dplyr::mutate(value = dplyr::if_else(class1=='liquids', value*FracBioFuel, value)) %>%
+          dplyr::select(-FracBioFuel, -FracFossilFuel) %>%
+          dplyr::mutate(class1=dplyr::if_else(class1=='liquids', 'biofuel', class1))
         tbl2 <- tbl %>%
-          left_join(FracBioFuel_tbl %>% mutate(class1='biofuel'), by=c('scenario', 'region', 'x', 'class1')) %>%
-          filter(class1=='biofuel') %>%
-          mutate(class1='fossil fuel') %>%
-          mutate(value=if_else(class1=='fossil fuel', (value/FracBioFuel)*(1-FracBioFuel), value)) %>%
-          select(-FracBioFuel, -FracFossilFuel)
+          dplyr::left_join(FracBioFuel_tbl %>% dplyr::mutate(class1='biofuel'), by=c('scenario', 'region', 'x', 'class1')) %>%
+          dplyr::filter(class1=='biofuel') %>%
+          dplyr::mutate(class1='fossil fuel') %>%
+          dplyr::mutate(value=dplyr::if_else(class1=='fossil fuel', (value/FracBioFuel)*(1-FracBioFuel), value)) %>%
+          dplyr::select(-FracBioFuel, -FracFossilFuel)
         tbl <- rbind(tbl, tbl2)
       }
       tbl <- tbl %>%
@@ -3117,16 +3126,16 @@ paramx <- "emissTotalFFIBySec"
       if("energyPrimaryRefLiqProdEJ" %in% paramsSelectx){
         # Break out biofuels
         tbl <- tbl %>%
-          left_join(FracBioFuel_tbl, by=c('scenario', 'region', 'x', 'class1')) %>%
-          mutate(value = if_else(class1=='liquids', value*FracBioFuel, value)) %>%
-          select(-FracBioFuel, -FracFossilFuel) %>%
-          mutate(class1=if_else(class1=='liquids', 'biofuel', class1))
+          dplyr::left_join(FracBioFuel_tbl, by=c('scenario', 'region', 'x', 'class1')) %>%
+          dplyr::mutate(value = dplyr::if_else(class1=='liquids', value*FracBioFuel, value)) %>%
+          dplyr::select(-FracBioFuel, -FracFossilFuel) %>%
+          dplyr::mutate(class1=dplyr::if_else(class1=='liquids', 'biofuel', class1))
         tbl2 <- tbl %>%
-          left_join(FracBioFuel_tbl %>% mutate(class1='biofuel'), by=c('scenario', 'region', 'x', 'class1')) %>%
-          filter(class1=='biofuel') %>%
-          mutate(class1='fossil fuel') %>%
-          mutate(value=if_else(class1=='fossil fuel', (value/FracBioFuel)*(1-FracBioFuel), value)) %>%
-          select(-FracBioFuel, -FracFossilFuel)
+          dplyr::left_join(FracBioFuel_tbl %>% dplyr::mutate(class1='biofuel'), by=c('scenario', 'region', 'x', 'class1')) %>%
+          dplyr::filter(class1=='biofuel') %>%
+          dplyr::mutate(class1='fossil fuel') %>%
+          dplyr::mutate(value=dplyr::if_else(class1=='fossil fuel', (value/FracBioFuel)*(1-FracBioFuel), value)) %>%
+          dplyr::select(-FracBioFuel, -FracFossilFuel)
         tbl <- rbind(tbl, tbl2)
       }
       tbl <- tbl %>%

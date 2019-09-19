@@ -51,16 +51,16 @@ South Africa, South America_Northern, South America_Southern, South Asia, South 
 c("Total final energy by aggregate end-use sector", "Population by region"). The queries must be
 availble in the queryxml file. Current list of queries and generated paramaters are:
 \itemize{
-\item "Total final energy by aggregate end-use sector". Parameters generated: finalNrgbySec.
+\item "Total final energy by aggregate end-use sector". Parameters generated: energyFinalConsumBySecEJ.
 \item "primary energy consumption by region (direct equivalent)".
-Parameters generated: primNrgConsumByFuel
-\item "Electricity generation by aggregate technology". Parameters generated: elecByTech
+Parameters generated: energyPrimaryByFuelEJ
+\item "Electricity generation by aggregate technology". Parameters generated: elecByTechTWh
 \item "water withdrawals by sector". Parameters generated: watWithdrawBySec
 \item "water consumption by sector". Parameters generated: watConsumBySec
 \item "water withdrawals by crop". Parameters generated: watWithdrawByCrop
 \item "biophysical water demand by crop type and land region". Parameters generated: watBioPhysCons
-\item "water withdrawals by water mapping source". Parameters generated: irrWatWithBasin
-\item "water consumption by water mapping source". Parameters generated: irrWatConsBasin
+\item "water withdrawals by water mapping source". Parameters generated: watIrrWithdrawBasin
+\item "water consumption by water mapping source". Parameters generated: watIrrConsBasin
 \item "GDP per capita MER by region". Where MER is "Market Exchange Rate".
 Parameters generated: gdpPerCapita.
 \item "GDP MER by region". Where MER is "Market Exchange Rate".
@@ -70,15 +70,40 @@ Parameters generated: gdp, gdpGrowthRate
 Parameters generated: agProdbyIrrRfd
 \item "Ag Production by Crop Type". Parameters generated: agProdBiomass, agProdForest, agProdByCrop
 \item "land allocation by crop and water source". Parameters generated: landIrrRfd
-\item "aggregated land allocation". Parameters generated: aggLandAlloc
-\item "Land Use Change Emission". Parameters generated: LUCemissFut
+\item "aggregated land allocation". Parameters generated: landAlloc
+\item "Land Use Change Emission". Parameters generated: emissLUCFut
 \item "GHG emissions by subsector". Parameters generated: ghgEmissByGHGGROUPS, ghgEmissionByGHG
-\item "CO2 emissions by sector". Parameters generated:co2emissionBySector
-\item "nonCO2 emissions by sector". Parameters generated: nonco2emissionBySectorGWPAR5, nonco2emissionBySectorGTPAR5,nonco2emissionBySectorOrigUnits
+\item "CO2 emissions by sector". Parameters generated:emissCO2BySector
+\item "nonCO2 emissions by sector". Parameters generated: emissCO2NonCO2BySectorGWPAR5, emissCO2NonCO2BySectorGTPAR5,emissNonCO2BySectorOrigUnits
 }}
 
-\item{paramsSelect}{Default = "All". If desired select a subset of paramaters to analyze from the full list of parameters:
-c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech","elecCapBySubsector",}
+\item{paramsSelect}{Default = "All". If desired dplyr::select a subset of paramaters to analyze from the full list of parameters:
+c(# Energy
+"energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
+"energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
+"energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
+"energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
+"energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
+"energyFinalSubsecByFuelBuildMTOE", "energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecBySectorBuildMTOE",
+"energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
+"energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
+"energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
+# Electricity
+"elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
+# Transport
+"transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
+# Water
+"watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
+# Socio-economics
+"gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
+# Agriculture
+"agProdbyIrrRfd","agProdBiomass", "agProdForest", "agProdByCrop",
+# Land use
+"landIrrRfd", "landAlloc","landAllocByCrop",
+# Emissions
+"emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
+"emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
+"emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")}
 
 \item{RawQueryCSV}{Optional.}
 }

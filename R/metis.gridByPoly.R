@@ -41,7 +41,7 @@ metis.gridByPoly <- function(gridDataTables = NULL,
 
   print(paste("Starting metis.gridByPoly.R...",sep=""))
 
-  NULL->lat->lon->gridx
+  NULL->lat->lon->gridx->area -> areaPrcnt -> subRegAreaSum
 
 
 #----------------

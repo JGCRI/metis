@@ -8,6 +8,7 @@ metis.io(ioTable0 = NULL, useIntensity = 0, A0 = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
   figWidth = 9, figHeight = 7, sankeyLabelAbsPlots = 1,
   combSubRegionPlots = 1, folderName = "folderNameDefault",
+  pdfpng = "png", sankeyAxis1Label = "From", sankeyAxis2Label = "To",
   plotSankeys = T)
 }
 \arguments{
@@ -30,6 +31,12 @@ metis.io(ioTable0 = NULL, useIntensity = 0, A0 = NULL,
 \item{combSubRegionPlots}{Default = 1}
 
 \item{folderName}{Default ="folderNameDefault"}
+
+\item{pdfpng}{Save IO figures as pdf or png. Type=String. Options: 'pdf' or 'png'. Default = 'png'.}
+
+\item{sankeyAxis1Label}{Set left-hand side label of sankey diagram. Type=String. Default = 'From'.}
+
+\item{sankeyAxis2Label}{Set right-hand side label of sankey diagram. Type=String. Default = 'To'.}
 
 \item{plotSankeys}{Default = T}
 }

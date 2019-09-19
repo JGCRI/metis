@@ -101,7 +101,7 @@ io_sub$ioTbl
 # This is data that has already been extracted from a gcamdatabse using queries and rgcam
 # and is thus much faster to process than connecting directly to the gcamdatabase.
 # The data must have been extracted using queries that are available in metisQueries.xml
-  dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="") # Path to dataProj file.
+  dataProjPath_i <- paste(getwd(),"/dataFiles/examples",sep="") # Path to dataProj file.
   dataProj_i <-"Example_dataProj.proj"  # Use if gcamdata has been saved as .proj file
 
 # Get list of scenarios and rename if desired.
@@ -130,6 +130,7 @@ io_sub$ioTbl
                        )
 
   dataGCAM$data # To view the data read that was read.
+
 
 # If connecting directly to a gcamdatabase then can use the following method.
 # Uncomment the following lines of code (use ctrl+C to uncomment multiple lines together)
@@ -700,6 +701,16 @@ io_sub$ioTbl
 #------------------------------
 # Metis Tests (Check if outputs from metis.master.R are working as expected)
 #------------------------------
+
+    testInstallPackages<- "Test Install Packages: Passed"
+    testIO<-"Test IO: Failed"
+    testReadGCAM<-"Test readGCAM: Failed"
+    testChart<-"Test chart: Failed"
+    testChartsProcess<-"Test chartsProcess: Failed"
+    testMap<-"Test map: Failed"
+    testBoundary<-"Test boundary: Failed"
+    testGrid2Poly<-"Test grid2Poly: Failed"
+    testMapsProcess<-"Test mapsProcess: Failed"
 
     # Test: Install Packages Check
     if(all(c("devtools","rgcam","metis","rgdal","magick") %in% rownames(installed.packages()))==T){

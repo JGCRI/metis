@@ -33,7 +33,7 @@ metis.io<-function(ioTable0 = NULL,
                    plotSankeys=T,
                    pdfpng='png',
                    sankeyAxis1Label = 'From',
-                   sankeyAxis2Label = 'To'
+                   sankeyAxis2Label = 'To',
                         ){
 
   # ioTable0 = NULL
