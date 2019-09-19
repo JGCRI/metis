@@ -10,8 +10,7 @@ metis.readgcam(gcamdatabasePath = NULL, gcamdatabaseName = NULL,
   scenNewNames = NULL, reReadData = T, dataProj = "dataProj.proj",
   dataProjPath = paste(getwd(), "/outputs", sep = ""),
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All",
-  RawQueryCSV = NULL)
+  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All")
 }
 \arguments{
 \item{gcamdatabasePath}{Path to gcam database folder}

@@ -120,8 +120,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                            dirOutputs = paste(getwd(), "/outputs", sep = ""),
                            regionsSelect = NULL,
                            queriesSelect="All",
-                           paramsSelect="All",
-                           RawQueryCSV=NULL
+                           paramsSelect="All"
 ){
 
 
