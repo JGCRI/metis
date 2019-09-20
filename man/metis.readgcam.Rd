@@ -77,7 +77,8 @@ land
 \item "aggregated land allocation",
 \item "land allocation by crop"}
 emissions
-\itemize{"nonCO2 emissions by resource production",
+\itemize{
+\item "nonCO2 emissions by resource production",
 \item "nonCO2 emissions by sector"
 \item "Land Use Change Emission (future)"
 \item "CO2 emissions by sector (no bio)"
