@@ -36,7 +36,7 @@ library(ggalluvial)
 
 # Connect to gcam database or project
   gcamdatabasePath_i <-'G:/IDBNexus/Final' # 'C:/Users/twild/Downloads/pic'  #  # Use if gcamdatabase is needed
-  gcamdatabaseName_i <-"Sep152019" # "Reference_originalSW" Use if gcamdatabse is needed
+  gcamdatabaseName_i <-"Sep272019" # "Reference_originalSW" Use if gcamdatabse is needed
   dataProjPath_i <- paste(getwd(),"/outputs",sep="") # Path to dataProj file.
   dataProj_i <-"IDBNexusFinal.proj"  # Use if gcamdata has been saved as .proj file
 
