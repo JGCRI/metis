@@ -150,7 +150,9 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     class1 -> connx -> aggregate -> Units -> sources -> paramx -> fuel -> technology -> input -> output -> water ->
     landleaf -> ghg -> Convert -> regionsSelectAll->cf1971to2100->gcamCapacityFactor -> . -> GWPAR5 -> tblelecByTechTWh ->
     totalFFINonCO2 -> FracBioFuel -> FracFossilFuel -> TotalLiquids ->
-    class_temp -> resource -> subRegAreaSum -> subsector->tblFinalNrgIntlAvShipMod
+    class_temp -> resource -> subRegAreaSum -> subsector->tblFinalNrgIntlAvShipMod -> 'transportation' ->
+    'International Aviation' -> 'International Ship' -> 'International Aviation oil' -> 'a oil' ->
+    'International Ship oil' -> 'International Aviation liquids' -> liquids -> 'International Ship liquids'
 
 
 #---------------------
@@ -434,7 +436,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
 
       if(!is.null(tblFinalNrgIntlAvShip)){
       # Separat out Intl. Shipping and Aviation from Transport
-      tblTransport <- tbl%>%filter(class1=="transportation") %>%
+      tblTransport <- tbl%>%dplyr::filter(class1=="transportation") %>%
         dplyr::mutate(class2="class2",classLabel2="classLabel2",classPalette2="classPalette2") %>%
         dplyr::select(-origValue)# Subset Transport Sector
       tblFinalNrgIntlAvShipMod <- tblFinalNrgIntlAvShip %>%
@@ -464,7 +466,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       -origScen,-origQuery,-origUnits,-origX)%>%
         dplyr::mutate(origValue=value); tblSepTransportIntlAvShip%>%as.data.frame()
       # Rbind Transport, Intl. Shipping and Aviation back to all other Final Energy types
-      tblMod<-tbl%>%filter(class1!="transportation") %>%
+      tblMod<-tbl%>%dplyr::filter(class1!="transportation") %>%
         dplyr::bind_rows(tblSepTransportIntlAvShip) # Remove Transport sector from Original tbl
 
       } else {
@@ -860,7 +862,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
 
       if(!is.null(tblFinalNrgIntlAvShip)){
         # Separat out Intl. Shipping and Aviation refined liquids from Primary Energy Oil
-        tblPrimaryOil <- tbl%>%filter(class1=="a oil") %>%
+        tblPrimaryOil <- tbl%>%dplyr::filter(class1=="a oil") %>%
           dplyr::mutate(class2="class2",classLabel2="classLabel2",classPalette2="classPalette2") %>%
           dplyr::select(-origValue)# Subset Transport Sector
         tblFinalNrgIntlAvShipMod <- tblFinalNrgIntlAvShip %>%
@@ -891,7 +893,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         -origScen,-origQuery,-origUnits,-origX)%>%
           dplyr::mutate(origValue=value); tblSepPrimaryIntlAvShip%>%as.data.frame()
         # Rbind Transport, Intl. Shipping and Aviation back to all other Final Energy types
-        tblMod<-tbl%>%filter(class1!="a oil") %>%
+        tblMod<-tbl%>%dplyr::filter(class1!="a oil") %>%
           dplyr::bind_rows(tblSepPrimaryIntlAvShip) # Remove Transport sector from Original tbl
 
       } else {
@@ -3429,7 +3431,7 @@ paramx <- "emissTotalFFIBySec"
 
       if(!is.null(tblFinalNrgIntlAvShip)){
         # Separat out Intl. Shipping and Aviation refined liquids from Primary Energy Oil
-        tblTransportFinalOil <- tbl%>%filter(class1=="liquids") %>%
+        tblTransportFinalOil <- tbl%>%dplyr::filter(class1=="liquids") %>%
           dplyr::mutate(class2="class2",classLabel2="classLabel2",classPalette2="classPalette2") %>%
           dplyr::select(-origValue)# Subset Transport Sector
         tblFinalNrgIntlAvShipMod <- tblFinalNrgIntlAvShip %>%
@@ -3460,7 +3462,7 @@ paramx <- "emissTotalFFIBySec"
                         -origScen,-origQuery,-origUnits,-origX)%>%
           dplyr::mutate(origValue=value); tblSepTransportFinalIntlAvShip%>%as.data.frame()
         # Rbind Transport, Intl. Shipping and Aviation back to all other Final Energy types
-        tblMod<-tbl%>%filter(class1!="liquids") %>%
+        tblMod<-tbl%>%dplyr::filter(class1!="liquids") %>%
           dplyr::bind_rows(tblSepTransportFinalIntlAvShip) # Remove Transport sector from Original tbl
 
       } else {
