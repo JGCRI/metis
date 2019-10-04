@@ -49,7 +49,8 @@
 #' \item "building final energy by fuel"
 #' \item "industry final energy by fuel"
 #' \item "building final energy by subsector"
-#' \item "transport final energy by fuel"}
+#' \item "transport final energy by fuel"
+#' \item "transport final energy by mode and fuel"}
 #' land
 #' \itemize{
 #' \item "land allocation by crop and water source",
@@ -149,7 +150,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     class1 -> connx -> aggregate -> Units -> sources -> paramx -> fuel -> technology -> input -> output -> water ->
     landleaf -> ghg -> Convert -> regionsSelectAll->cf1971to2100->gcamCapacityFactor -> . -> GWPAR5 -> tblelecByTechTWh ->
     totalFFINonCO2 -> FracBioFuel -> FracFossilFuel -> TotalLiquids ->
-    class_temp -> resource -> subRegAreaSum -> subsector
+    class_temp -> resource -> subRegAreaSum -> subsector->tblFinalNrgIntlAvShipMod
 
 
 #---------------------
@@ -169,7 +170,8 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                                "building final energy by fuel",
                                "industry final energy by fuel",
                                "building final energy by subsector",
-                               "transport final energy by fuel"),
+                               "transport final energy by fuel",
+                               "transport final energy by mode and fuel"),
                     'land'=c("land allocation by crop and water source",
                              "aggregated land allocation",
                              "land allocation by crop"),
@@ -241,7 +243,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
   # Check for query file and folder if incorrect give error
     if(!file.exists(paste(queryPath, "/", queryxml, sep = ""))){stop(paste("query file: ", queryPath,"/",queryxml," is incorrect or doesn't exist.",sep=""))}
-    if(file.exists(paste(queryPath, "/subSetQueries.xml", sep = ""))){unlist(paste(queryPath, "/subSetQueries.xml", sep = ""))}
+    if(file.exists(paste(queryPath, "/subSetQueries.xml", sep = ""))){unlink(paste(queryPath, "/subSetQueries.xml", sep = ""))}
 
     # Subset the query file if queriwsSelect is not "All"
     if(!any(c("All","all") %in% queriesSelect)){
@@ -298,7 +300,6 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
   }
 
   # Read in paramaters from query file to create formatted table
-  datax <- tibble::tibble()
 
   if(any(queriesSelect=="All")){queriesx <- queries} else{
     if(!any(queriesSelectx %in% queries)){stop("None of the selected queries are available in the data that has been read.
@@ -316,12 +317,15 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                     "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
                     "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
                     "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
+                    "energyFinalConsumByIntlShpAvEJ",
                     "energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
                     "energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
                     "energyFinalSubsecByFuelBuildMTOE", "energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecBySectorBuildMTOE",
+                    "energyFinalConsumByIntlShpAvMTOE",
                     "energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
                     "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
                     "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
+                    "energyFinalConsumByIntlShpAvTWh","energyFinalConsumBySecNOIntlShpAvTWh",
                     # Electricity
                     "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
                     # Transport
@@ -339,6 +343,55 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                     "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
                     "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")
   }else{paramsSelectx=paramsSelect}
+
+
+  datax <- tibble::tibble()
+
+  paramx<-"energyFinalConsumByIntlShpAvEJ"
+  # Total final energy by aggregate end-use sector
+  if(paramx %in% paramsSelectx){
+    queryx <- "transport final energy by mode and fuel"
+    if (queryx %in% queriesx) {
+      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if (!is.null(regionsSelect)) {
+        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+      }
+      tbl <- tbl %>%
+        dplyr::filter(mode %in% c("International Aviation", "International Ship"))%>%
+        dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::mutate(param = "energyFinalConsumByIntlShpAvEJ",
+                      sources = "Sources",
+                      origScen = scenario,
+                      origQuery = queryx,
+                      origValue = value,
+                      origUnits = Units,
+                      origX = year,
+                      scenario = scenNewNames,
+                      units = "Final Energy Intl. Aviation and Shipping (EJ)",
+                      vintage = paste("Vint_", year, sep = ""),
+                      x = year,
+                      xLabel = "Year",
+                      aggregate = "sum",
+                      class1 = mode,
+                      classLabel1 = "Sector",
+                      classPalette1 = "pal_metis",
+                      class2 = gsub(" enduse","",input),
+                      classLabel2 = "Fuel",
+                      classPalette2 = "pal_metis")%>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
+        dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+      tblFinalNrgIntlAvShip <- tbl
+      datax <- dplyr::bind_rows(datax, tbl)
+    } else {
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }}
+
 
   paramx<-"energyFinalConsumBySecEJ"
   # Total final energy by aggregate end-use sector
@@ -378,7 +431,57 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
         dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
-      datax <- dplyr::bind_rows(datax, tbl)
+
+      if(!is.null(tblFinalNrgIntlAvShip)){
+      # Separat out Intl. Shipping and Aviation from Transport
+      tblTransport <- tbl%>%filter(class1=="transportation") %>%
+        dplyr::mutate(class2="class2",classLabel2="classLabel2",classPalette2="classPalette2") %>%
+        dplyr::select(-origValue)# Subset Transport Sector
+      tblFinalNrgIntlAvShipMod <- tblFinalNrgIntlAvShip %>%
+        dplyr::mutate(param=unique(tblTransport$param),
+                      sources=unique(tblTransport$sources),
+                      origQuery=unique(tblTransport$origQuery),
+                      origUnits=unique(tblTransport$origUnits),
+                      units=unique(tblTransport$units),
+                      xLabel=unique(tblTransport$xLabel),
+                      aggregate=unique(tblTransport$aggregate),
+                      class2=unique(tblTransport$class2),
+                      classLabel2=unique(tblTransport$classLabel2),
+                      classPalette2=unique(tblTransport$classPalette2),
+                      classLabel1=unique(tblTransport$classLabel1),
+                      classPalette1=unique(tblTransport$classPalette1))%>%
+        dplyr::select(-origValue)# Prepare in intl. transport in correct format
+      # Separate out Intl. Shipping and Aviation
+      tblSepTransportIntlAvShip <- tblTransport %>%
+        dplyr::bind_rows(tblFinalNrgIntlAvShipMod) %>%
+        tidyr::spread(key="class1",value="value") %>%
+        dplyr::mutate(transportation=transportation-`International Aviation`-`International Ship`)%>%
+        dplyr::rename(`transport intl av`=`International Aviation`,
+                      `transport intl shp`=`International Ship`) %>%
+        tidyr::gather(key="class1",value="value",
+                      -scenario, -region, -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
+                      -classLabel1, -classPalette1, -classLabel2, -classPalette2,
+                      -origScen,-origQuery,-origUnits,-origX)%>%
+        dplyr::mutate(origValue=value); tblSepTransportIntlAvShip%>%as.data.frame()
+      # Rbind Transport, Intl. Shipping and Aviation back to all other Final Energy types
+      tblMod<-tbl%>%filter(class1!="transportation") %>%
+        dplyr::bind_rows(tblSepTransportIntlAvShip) # Remove Transport sector from Original tbl
+
+      } else {
+        print(paste("tblFinalNrgIntlAvShip does not exist so skipping subset of final energy to remove intl. shipping and aviation."))
+        tblMod <- tbl
+        }
+
+      tblMod <- tblMod %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+
+      datax <- dplyr::bind_rows(datax, tblMod)
     } else {
       if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
@@ -449,6 +552,8 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       sector=gsub("industrial energy use","industry",sector),
                       sector=gsub("industrial feedstocks","industry",sector),
                       sector=gsub("N fertilizer","industry",sector),
+                      sector=gsub("trn_aviation_intl","trans intl av",sector),
+                      sector=gsub("trn_shipping_intl","trans intl shp",sector),
                       sector = replace(sector, stringr::str_detect(sector, "trn"), "transport"),
                       sector=gsub("comm cooling","buildings",sector),
                       sector=gsub("comm heating","buildings",sector),
@@ -487,6 +592,9 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
+        dplyr::mutate(class1=dplyr::case_when(class2=="trans intl av"~paste(class1,"av",sep=" "),
+                                             class2=="trans intl shp"~paste(class1,"shp",sep=" "),
+                                             TRUE~class1))%>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -618,8 +726,9 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       sector=gsub("trn\\_freight","transportation",sector),
                       sector=gsub("trn\\_pass\\_road\\_LDV\\_2W","transportation",sector),
                       sector=gsub("trn\\_pass\\_road\\_LDV\\_4W","transportation",sector),
-                      sector=gsub("trn\\_pass","transportation",sector)
-                      )%>%
+                      sector=gsub("trn\\_pass","transportation",sector),
+                      sector = dplyr::case_when(grepl("trn_",sector)~"transportation",
+                                                            TRUE~sector))%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "elecFinalBySecTWh",
                       sources = "Sources",
@@ -748,7 +857,59 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
-      datax <- dplyr::bind_rows(datax, tbl)
+
+      if(!is.null(tblFinalNrgIntlAvShip)){
+        # Separat out Intl. Shipping and Aviation refined liquids from Primary Energy Oil
+        tblPrimaryOil <- tbl%>%filter(class1=="a oil") %>%
+          dplyr::mutate(class2="class2",classLabel2="classLabel2",classPalette2="classPalette2") %>%
+          dplyr::select(-origValue)# Subset Transport Sector
+        tblFinalNrgIntlAvShipMod <- tblFinalNrgIntlAvShip %>%
+          dplyr::mutate(param=unique(tblPrimaryOil$param),
+                        class1=paste(class1,"oil",sep=" "),
+                        sources=unique(tblPrimaryOil$sources),
+                        origQuery=unique(tblPrimaryOil$origQuery),
+                        origUnits=unique(tblPrimaryOil$origUnits),
+                        units=unique(tblPrimaryOil$units),
+                        xLabel=unique(tblPrimaryOil$xLabel),
+                        aggregate=unique(tblPrimaryOil$aggregate),
+                        class2=unique(tblPrimaryOil$class2),
+                        classLabel2=unique(tblPrimaryOil$classLabel2),
+                        classPalette2=unique(tblPrimaryOil$classPalette2),
+                        classLabel1=unique(tblPrimaryOil$classLabel1),
+                        classPalette1=unique(tblPrimaryOil$classPalette1))%>%
+          dplyr::select(-origValue)# Prepare in intl. transport in correct format
+        # Separate out Intl. Shipping and Aviation
+        tblSepPrimaryIntlAvShip <- tblPrimaryOil %>%
+          dplyr::bind_rows(tblFinalNrgIntlAvShipMod) %>%
+          tidyr::spread(key="class1",value="value") %>%
+          dplyr::mutate(`a oil`=`a oil` -`International Aviation oil`-`International Ship oil`)%>%
+          dplyr::rename(`oil intl av`=`International Aviation oil`,
+                        `oil intl shp`=`International Ship oil`)%>%
+          tidyr::gather(key="class1",value="value",
+                        -scenario, -region, -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
+                        -classLabel1, -classPalette1, -classLabel2, -classPalette2,
+                        -origScen,-origQuery,-origUnits,-origX)%>%
+          dplyr::mutate(origValue=value); tblSepPrimaryIntlAvShip%>%as.data.frame()
+        # Rbind Transport, Intl. Shipping and Aviation back to all other Final Energy types
+        tblMod<-tbl%>%filter(class1!="a oil") %>%
+          dplyr::bind_rows(tblSepPrimaryIntlAvShip) # Remove Transport sector from Original tbl
+
+      } else {
+        print(paste("tblFinalNrgIntlAvShip does not exist so skipping subset of final energy to remove intl. shipping and aviation."))
+        tblMod <- tbl
+      }
+
+      tblMod <- tblMod %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+
+      datax <- dplyr::bind_rows(datax, tblMod)
+
     } else {
       if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
@@ -1714,15 +1875,14 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
           class1=gsub("resid\\scooking","Buildings",class1),
           class1=gsub("resid\\sclothes\\sdryer","Buildings",class1),
           class1=gsub("district\\sheat","Buildings",class1),
-          class1=gsub("trn\\_aviation\\_intl","Transport",class1),
-          class1=gsub("trn\\_shipping\\_intl","Transport",class1),
+          class1=gsub("trn\\_aviation\\_intl","Transport Intl Av",class1),
+          class1=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class1),
           class1=dplyr::if_else(class1=="trn_freight_road","Transport",class1),
           class1=dplyr::if_else(class1=="trn_freight","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass_road","Transport",class1),
-          # class1=gsub("trn\\_shipping\\_intl","Transport",class1),
           class1=gsub("transport\\_LDV","Transport",class1),
           class1=gsub("transport\\_bus","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
@@ -1866,15 +2026,14 @@ paramx <- "emissCO2BySectorNoBio"
         class1=gsub("resid\\scooking","Buildings",class1),
         class1=gsub("resid\\sclothes\\sdryer","Buildings",class1),
         class1=gsub("district\\sheat","Buildings",class1),
-        class1=gsub("trn\\_aviation\\_intl","Transport",class1),
-        class1=gsub("trn\\_shipping\\_intl","Transport",class1),
+        class1=gsub("trn\\_aviation\\_intl","Transport Intl Av",class1),
+        class1=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class1),
         class1=dplyr::if_else(class1=="trn_freight_road","Transport",class1),
         class1=dplyr::if_else(class1=="trn_freight","Transport",class1),
         class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
         class1=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class1),
         class1=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class1),
         class1=dplyr::if_else(class1=="trn_pass_road","Transport",class1),
-        #class1=gsub("trn\\_shipping\\_intl","Transport",class1),
         class1=gsub("transport\\_LDV","Transport",class1),
         class1=gsub("transport\\_bus","Transport",class1),
         class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
@@ -2024,14 +2183,14 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("resid\\scooking","Buildings",class2),
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
-          class2=gsub("trn\\_aviation\\_intl","Transport",class2),
           class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
           class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
-          #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
+          class2=gsub("trn\\_aviation\\_intl","Transport Intl Av",class2),
+          class2=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
@@ -2176,15 +2335,14 @@ paramx <- "emissCO2BySectorNoBio"
           class1=gsub("resid\\scooking","Buildings",class1),
           class1=gsub("resid\\sclothes\\sdryer","Buildings",class1),
           class1=gsub("district\\sheat","Buildings",class1),
-          class1=gsub("trn\\_aviation\\_intl","Transport",class1),
-          class1=gsub("trn\\_shipping\\_intl","Transport",class1),
+          class1=gsub("trn\\_aviation\\_intl","Transport Intl Av",class1),
+          class1=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class1),
           class1=dplyr::if_else(class1=="trn_freight_road","Transport",class1),
           class1=dplyr::if_else(class1=="trn_freight","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass_road","Transport",class1),
-          #class1=gsub("trn\\_shipping\\_intl","Transport",class1),
           class1=gsub("transport\\_LDV","Transport",class1),
           class1=gsub("transport\\_bus","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
@@ -2341,14 +2499,14 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("resid\\scooking","Buildings",class2),
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
-          class2=gsub("trn\\_aviation\\_intl","Transport",class2),
+          class2=gsub("trn\\_aviation\\_intl","Transport Intl Av",class2),
+          class2=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class2),
           class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
           class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
-          #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
@@ -2509,7 +2667,8 @@ paramx <- "emissTotalFFIBySec"
       class1=dplyr::if_else(class1=="Refining and Hydrogen Production", "CO2 Refining and Hydrogen Production", class1),
       class1=dplyr::if_else(class1=="Industry", "CO2 Industry", class1),
       class1=dplyr::if_else(class1=="Transport", "CO2 Transport", class1),
-      class1=dplyr::if_else(class1=="Trn_shipping_intl", "CO2 Transport", class1),
+      class1=dplyr::if_else(class1=="trn_aviation_intl", "CO2 Transport Intl Av", class1),
+      class1=dplyr::if_else(class1=="trn_shipping_intl", "CO2 Transport Intl Shp", class1),
       class1=dplyr::if_else(class1=="Electricity", "CO2 Electricity", class1),
       class1=dplyr::if_else(class1=="Other", "CO2 Other", class1),
       class1=dplyr::if_else(class1=="Waste", "CO2 Waste", class1),
@@ -2548,7 +2707,8 @@ paramx <- "emissTotalFFIBySec"
       class1=dplyr::if_else(class1=="Refining and Hydrogen Production", "CO2 Refining and Hydrogen Production", class1),
       class1=dplyr::if_else(class1=="Industry", "CO2 Industry", class1),
       class1=dplyr::if_else(class1=="Transport", "CO2 Transport", class1),
-      class1=dplyr::if_else(class1=="Trn_shipping_intl", "CO2 Transport", class1),
+      class1=dplyr::if_else(class1=="trn_aviation_intl", "CO2 Transport Intl Av", class1),
+      class1=dplyr::if_else(class1=="trn_shipping_intl", "CO2 Transport Intl Shp", class1),
       class1=dplyr::if_else(class1=="Electricity", "CO2 Electricity", class1),
       class1=dplyr::if_else(class1=="Other", "CO2 Other", class1),
       class1=dplyr::if_else(class1=="Waste", "CO2 Waste", class1),
@@ -2663,14 +2823,14 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("resid\\scooking","Buildings",class2),
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
-          class2=gsub("trn\\_aviation\\_intl","Transport",class2),
+          class2=gsub("trn\\_aviation\\_intl","Transport Intl Av",class2),
+          class2=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class2),
           class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
           class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
-          #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
@@ -2829,14 +2989,14 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("resid\\scooking","Buildings",class2),
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
-          class2=gsub("trn\\_aviation\\_intl","Transport",class2),
+          class2=gsub("trn\\_aviation\\_intl","Transport Intl Av",class2),
+          class2=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class2),
           class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
           class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
-          #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
@@ -3240,24 +3400,24 @@ paramx <- "emissTotalFFIBySec"
                       class1 = sector,
                       classLabel1 = "Fuel",
                       classPalette1 = "pal_metis",
-                      class2 = sector,
+                      class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")
-      if("energyPrimaryRefLiqProdEJ" %in% paramsSelectx){
-        # Break out biofuels
-        tbl <- tbl %>%
-          dplyr::left_join(FracBioFuel_tbl, by=c('scenario', 'region', 'x', 'class1')) %>%
-          dplyr::mutate(value = dplyr::if_else(class1=='liquids', value*FracBioFuel, value)) %>%
-          dplyr::select(-FracBioFuel, -FracFossilFuel) %>%
-          dplyr::mutate(class1=dplyr::if_else(class1=='liquids', 'biofuel', class1))
-        tbl2 <- tbl %>%
-          dplyr::left_join(FracBioFuel_tbl %>% dplyr::mutate(class1='biofuel'), by=c('scenario', 'region', 'x', 'class1')) %>%
-          dplyr::filter(class1=='biofuel') %>%
-          dplyr::mutate(class1='fossil fuel') %>%
-          dplyr::mutate(value=dplyr::if_else(class1=='fossil fuel', (value/FracBioFuel)*(1-FracBioFuel), value)) %>%
-          dplyr::select(-FracBioFuel, -FracFossilFuel)
-        tbl <- rbind(tbl, tbl2)
-      }
+      # if("energyPrimaryRefLiqProdEJ" %in% unique(datax$param)){
+      #   # Break out biofuels
+      #   tbl <- tbl %>%
+      #     dplyr::left_join(FracBioFuel_tbl, by=c('scenario', 'region', 'x', 'class1')) %>%
+      #     dplyr::mutate(value = dplyr::if_else(class1=='liquids', value*FracBioFuel, value)) %>%
+      #     dplyr::select(-FracBioFuel, -FracFossilFuel) %>%
+      #     dplyr::mutate(class1=dplyr::if_else(class1=='liquids', 'biofuel', class1))
+      #   tbl2 <- tbl %>%
+      #     dplyr::left_join(FracBioFuel_tbl %>% dplyr::mutate(class1='biofuel'), by=c('scenario', 'region', 'x', 'class1')) %>%
+      #     dplyr::filter(class1=='biofuel') %>%
+      #     dplyr::mutate(class1='fossil fuel liquids') %>%
+      #     dplyr::mutate(value=dplyr::if_else(class1=='fossil fuel liquids', (value/FracBioFuel)*(1-FracBioFuel), value)) %>%
+      #     dplyr::select(-FracBioFuel, -FracFossilFuel)
+      #   tbl <- rbind(tbl, tbl2)
+      # }
       tbl <- tbl %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
@@ -3266,7 +3426,58 @@ paramx <- "emissTotalFFIBySec"
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
-      datax <- dplyr::bind_rows(datax, tbl)
+
+      if(!is.null(tblFinalNrgIntlAvShip)){
+        # Separat out Intl. Shipping and Aviation refined liquids from Primary Energy Oil
+        tblTransportFinalOil <- tbl%>%filter(class1=="liquids") %>%
+          dplyr::mutate(class2="class2",classLabel2="classLabel2",classPalette2="classPalette2") %>%
+          dplyr::select(-origValue)# Subset Transport Sector
+        tblFinalNrgIntlAvShipMod <- tblFinalNrgIntlAvShip %>%
+          dplyr::mutate(param=unique(tblTransportFinalOil$param),
+                        class1=paste(class1,"liquids",sep=" "),
+                        sources=unique(tblTransportFinalOil$sources),
+                        origQuery=unique(tblTransportFinalOil$origQuery),
+                        origUnits=unique(tblTransportFinalOil$origUnits),
+                        units=unique(tblTransportFinalOil$units),
+                        xLabel=unique(tblTransportFinalOil$xLabel),
+                        aggregate=unique(tblTransportFinalOil$aggregate),
+                        class2=unique(tblTransportFinalOil$class2),
+                        classLabel2=unique(tblTransportFinalOil$classLabel2),
+                        classPalette2=unique(tblTransportFinalOil$classPalette2),
+                        classLabel1=unique(tblTransportFinalOil$classLabel1),
+                        classPalette1=unique(tblTransportFinalOil$classPalette1))%>%
+          dplyr::select(-origValue)# Prepare in intl. transport in correct format
+        # Separate out Intl. Shipping and Aviation
+        tblSepTransportFinalIntlAvShip <- tblTransportFinalOil %>%
+          dplyr::bind_rows(tblFinalNrgIntlAvShipMod) %>%
+          tidyr::spread(key="class1",value="value") %>%
+          dplyr::mutate(`liquids`=`liquids` -`International Aviation liquids`-`International Ship liquids`)%>%
+          dplyr::rename(`liquids intl av`=`International Aviation liquids`,
+                        `liquids intl shp`=`International Ship liquids`) %>%
+          tidyr::gather(key="class1",value="value",
+                        -scenario, -region, -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
+                        -classLabel1, -classPalette1, -classLabel2, -classPalette2,
+                        -origScen,-origQuery,-origUnits,-origX)%>%
+          dplyr::mutate(origValue=value); tblSepTransportFinalIntlAvShip%>%as.data.frame()
+        # Rbind Transport, Intl. Shipping and Aviation back to all other Final Energy types
+        tblMod<-tbl%>%filter(class1!="liquids") %>%
+          dplyr::bind_rows(tblSepTransportFinalIntlAvShip) # Remove Transport sector from Original tbl
+
+      } else {
+        print(paste("tblFinalNrgIntlAvShip does not exist so skipping subset of final energy to remove intl. shipping and aviation."))
+        tblMod <- tbl
+      }
+
+      tblMod <- tblMod %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+
+      datax <- dplyr::bind_rows(datax, tblMod)
     } else {
       if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}

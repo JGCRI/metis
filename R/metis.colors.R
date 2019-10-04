@@ -117,6 +117,11 @@ metis.colors <- function(palx=NULL) {
                  `refined liquids` = "firebrick4", `refined liquids (steam)` = "firebrick4", `1 liquids` = "firebrick4",
                  `refined liquids (CC)` = "firebrick4", `refined liquids (CT)` = "firebrick4",
                  `refined liquids (CC CCS)` = "#f7988f", `f Oil w/CCS` = "#f7988f", `a oil CCS` = "#f7988f", `Oil w/CCS` = "#f7988f",
+                 `fossil fuel liquid`="firebrick4",
+                 `International Aviation liquids` = "indianred",`International Aviation Oil` = "indianred", `liquids av`="indianred",
+                 `liquids intl av`="indianred", `fossil fuel liquids intl av`="indianred", `oil intl av`="indianred",
+                 `liquids intl shp`="lightcoral", `fossil fuel liquids intl shp`="lightcoral",`oil intl shp`="lightcoral",
+                 `International Ship liquids` = "lightcoral", `International Ship Oil` = "lightcoral",`liquids shp`="lightcoral",
                  `g Biomass` = "#00931d", `g Bioenergy` = "#00931d", `d biomass` = "#00931d",  biomass = "#00931d",  Biomass = "#00931d",
                   bioenergy = "#00931d", `d bioenergy` = "#00931d", Bioenergy = "#00931d", `h Bioenergy w/CCS` = '#7efd97',
                  `j traditional bioenergy` = "chartreuse3",`traditional bioenergy` = "chartreuse3",`Traditional Bioenergy` = "chartreuse3",
@@ -148,10 +153,15 @@ metis.colors <- function(palx=NULL) {
                  `Total` = "black", `total` = "black",
                  `Other` = "grey70", other = "grey70",
                  `energy` = "grey50", `Energy` = "grey50",
-                 `Fossil` = "gray20", `fossil` = "gray20", `FOSSIL` = "gray20", `fossil fuel`="firebrick4",
+                 `Fossil` = "gray20", `fossil` = "gray20", `FOSSIL` = "gray20",
+                 `fossil fuel`="gray20",
                  #---------------
                  # Sectors
                  #--------------
+                 `transport intl. aviation` = "cadetblue3",`Transport Intl Av`="cadetblue3",`trans intl av`="cadetblue3", `transport intl av`="cadetblue3",
+                 `International Aviation` = "cadetblue3",
+                 `International Ship` = "cadetblue4",
+                 `transport intl. shipping` = "cadetblue4",`Transport Intl Shp`="cadetblue4",`trans intl shp`="cadetblue4", `transport intl shp`="cadetblue4",
                  `building` = "#facda4", buildings = "#facda4", elect_td_bld = "#facda4", Building = "#facda4",
                  Buildings = "#facda4", `CO2 Buildings` = "#facda4", `comm non-building` = "#ff230e",
                  `Commercial Cooling` = '#342DFC', `Commercial Heating` = '#E11F26', `Commercial Others`='#BD8A25',
@@ -183,7 +193,7 @@ metis.colors <- function(palx=NULL) {
                  sewage_landfills = 'brown', Waste='#BC7508', `CO2 Waste` = '#BC7508', `CO2 Electricity`='lavender',
                  urban="indianred2",tundra="antiquewhite1",shrubs="lightslateblue",`rock and desert`="black",
                  pasture="goldenrod1",otherarable="darkorange4",grass="darkolivegreen1",forest="darkgreen",
-                 naturalOther="grey75",
+                 naturalOther="grey75",`CO2 Transport Intl Av`="cadetblue3",`CO2 Transport Intl Shp`="cadetblue4",
                  #---------------
                  # Agriculture
                  #--------------

@@ -841,5 +841,16 @@
       </emissionsQueryBuilder>
     </aQuery>
 
+<aQuery>
+		<all-regions/>
+<supplyDemandQuery title="transport final energy by mode and fuel">
+               <axis1 name="mode">subsector</axis1>
+               <axis2 name="Year">demand-physical[@vintage]</axis2>
+               <xPath buildList="true" dataName="input" group="false" sumAll="false">*[@type='sector' and (@name='transportation' or (exists(child::keyword[@final-energy='transportation'])))]/
+               *[@type='subsector']//*[@type='input' and not (@name='renewable')]/
+               demand-physical[@unit='EJ']/node()</xPath>
+               <comments/>
+            </supplyDemandQuery>
+    </aQuery>
 
 </queries>
