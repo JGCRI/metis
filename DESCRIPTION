@@ -40,6 +40,7 @@ Imports:
 	DBI,
 	testthat (>= 2.0.1), 
 	knitr (>= 1.20), 
-	rmarkdown (>= 1.10) 
+	rmarkdown (>= 1.10), 
+	XML (>= 3.98-1.20)
 Remotes: github::JGCRI/rgcam
 VignetteBuilder: knitr

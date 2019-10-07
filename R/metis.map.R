@@ -160,6 +160,7 @@ metis.map<-function(dataPolygon=NULL,
   # printFig=T
   # fileName="map"
   # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # folderName=NULL
   # facetFreeScale=F
   # facetRows=NA
   # facetCols=3

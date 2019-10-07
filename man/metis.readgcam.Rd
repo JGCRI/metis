@@ -10,8 +10,7 @@ metis.readgcam(gcamdatabasePath = NULL, gcamdatabaseName = NULL,
   scenNewNames = NULL, reReadData = T, dataProj = "dataProj.proj",
   dataProjPath = paste(getwd(), "/outputs", sep = ""),
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All",
-  RawQueryCSV = NULL)
+  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All")
 }
 \arguments{
 \item{gcamdatabasePath}{Path to gcam database folder}
@@ -47,35 +46,56 @@ Central America and Caribbean, Central Asia, China, EU-12, EU-15, Europe_Eastern
 European Free Trade Association, India, Indonesia, Japan, Mexico, Middle East, Pakistan, Russia,
 South Africa, South America_Northern, South America_Southern, South Asia, South Korea, Southeast Asia,}
 
-\item{queriesSelect}{Default = "All". Vector of queries to read from the queryxml for example
-c("Total final energy by aggregate end-use sector", "Population by region"). The queries must be
-availble in the queryxml file. Current list of queries and generated paramaters are:
+\item{queriesSelect}{Default = "All". Predetermined subsets or a vector of queries to read from the queryxml for example
+predetermined subsets would be c('water','energy') or
+selection of queries would be c("Total final energy by aggregate end-use sector", "Population by region").
+The queries must be availble in the queryxml file.
+Queryset names include: c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
+Current list of queries for each set include:
+water
 \itemize{
-\item "Total final energy by aggregate end-use sector". Parameters generated: energyFinalConsumBySecEJ.
-\item "primary energy consumption by region (direct equivalent)".
-Parameters generated: energyPrimaryByFuelEJ
-\item "Electricity generation by aggregate technology". Parameters generated: elecByTechTWh
-\item "water withdrawals by sector". Parameters generated: watWithdrawBySec
-\item "water consumption by sector". Parameters generated: watConsumBySec
-\item "water withdrawals by crop". Parameters generated: watWithdrawByCrop
-\item "biophysical water demand by crop type and land region". Parameters generated: watBioPhysCons
-\item "water withdrawals by water mapping source". Parameters generated: watIrrWithdrawBasin
-\item "water consumption by water mapping source". Parameters generated: watIrrConsBasin
-\item "GDP per capita MER by region". Where MER is "Market Exchange Rate".
-Parameters generated: gdpPerCapita.
-\item "GDP MER by region". Where MER is "Market Exchange Rate".
-Parameters generated: gdp, gdpGrowthRate
-\item "Population by region". Parameters generated: pop.
-\item "ag production by tech". Where technologies signify irrigated or rainfed.
-Parameters generated: agProdbyIrrRfd
-\item "Ag Production by Crop Type". Parameters generated: agProdBiomass, agProdForest, agProdByCrop
-\item "land allocation by crop and water source". Parameters generated: landIrrRfd
-\item "aggregated land allocation". Parameters generated: landAlloc
-\item "Land Use Change Emission". Parameters generated: emissLUCFut
-\item "GHG emissions by subsector". Parameters generated: ghgEmissByGHGGROUPS, ghgEmissionByGHG
-\item "CO2 emissions by sector". Parameters generated:emissCO2BySector
-\item "nonCO2 emissions by sector". Parameters generated: emissCO2NonCO2BySectorGWPAR5, emissCO2NonCO2BySectorGTPAR5,emissNonCO2BySectorOrigUnits
-}}
+\item "water withdrawals by crop"
+\item "water withdrawals by water mapping source"
+\item "water consumption by water mapping source"
+\item "water withdrawals by sector"
+\item "water consumption by sector"
+\item "biophysical water demand by crop type and land region"}
+energy
+\itemize{
+\item "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS"
+\item "Electricity generation by aggregate technology ORDERED SUBSECTORS"
+\item "Final energy by detailed end-use sector and fuel"
+\item "total final energy by aggregate sector"
+\item "refined liquids production by subsector"
+\item "building final energy by fuel"
+\item "industry final energy by fuel"
+\item "building final energy by subsector"
+\item "transport final energy by fuel"}
+land
+\itemize{
+\item "land allocation by crop and water source",
+\item "aggregated land allocation",
+\item "land allocation by crop"}
+emissions
+\itemize{
+\item "nonCO2 emissions by resource production",
+\item "nonCO2 emissions by sector"
+\item "Land Use Change Emission (future)"
+\item "CO2 emissions by sector (no bio)"
+\item "CO2 emissions by sector"}
+ag
+\itemize{
+\item "Ag Production by Crop Type"
+\item "ag production by tech"}
+socioecon
+\itemize{
+\item "GDP MER by region"
+\item "GDP per capita MER by region"
+\item "Population by region"}
+transport
+\itemize{
+\item "transport service output by mode"
+\item "transport service output by tech (new)"}}
 
 \item{paramsSelect}{Default = "All". If desired dplyr::select a subset of paramaters to analyze from the full list of parameters:
 c(# Energy
@@ -104,8 +124,6 @@ c(# Energy
 "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
 "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
 "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")}
-
-\item{RawQueryCSV}{Optional.}
 }
 \value{
 A list with the scenarios in the gcam database, queries in the queryxml file and a

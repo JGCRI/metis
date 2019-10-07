@@ -107,13 +107,15 @@ io_sub$ioTbl
 # Get list of scenarios and rename if desired.
   dataProjLoaded <- loadProject(paste(dataProjPath_i, "/",dataProj_i , sep = ""))
   listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
+  listQueries(dataProjLoaded) # List of Queries in queryxml
+
 
 # Scenario names
   scenOrigNames_i = c("ExampleScen1","ExampleScen2")
   scenNewNames_i = c("Eg1","Eg2")  # Names to replace the original names for final figures.
 
-# Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-  paramsSelect_i = "All"
+# Choose Query sets, individual queries or set to "All". For complete list see ?metis.readgcam
+  queriesSelect_i = c("All") # Query sets are c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
 
 # Select regions from the 32 GCAM regions.
   regionsSelect_i <- c("Argentina","Colombia")
@@ -126,7 +128,8 @@ io_sub$ioTbl
                          dataProj = dataProj_i,
                          dataProjPath = dataProjPath_i,
                          regionsSelect = regionsSelect_i ,
-                         paramsSelect=paramsSelect_i
+                         #paramsSelect=paramsSelect_i,
+                         queriesSelect = queriesSelect_i #
                        )
 
   dataGCAM$data # To view the data read that was read.
@@ -147,8 +150,8 @@ io_sub$ioTbl
   # scenOrigNames_i = c("ExampleScen1","ExampleScen2") # make sure these exist (See outputs of the rgcam::localDBConn)
   # scenNewNames_i = c("Eg1","Eg2")  # Names to replace the original names for final figures.
   #
-  # # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-  # paramsSelect_i = "All"
+  # # Choose Query sets, individual queries or set to "All". For complete list see ?metis.readgcam
+  # queriesSelect_i = c("All") # Query sets are c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
   #
   # # Select regions from the 32 GCAM regions.
   # regionsSelect_i <- c("Argentina","Colombia")

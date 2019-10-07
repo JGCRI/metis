@@ -25,35 +25,57 @@
 #' European Free Trade Association, India, Indonesia, Japan, Mexico, Middle East, Pakistan, Russia,
 #' South Africa, South America_Northern, South America_Southern, South Asia, South Korea, Southeast Asia,
 # Taiwan, Argentina, Colombia, Uruguay)
-#' @param queriesSelect Default = "All". Vector of queries to read from the queryxml for example
-#' c("Total final energy by aggregate end-use sector", "Population by region"). The queries must be
-#' availble in the queryxml file. Current list of queries and generated paramaters are:
+#' @param queriesSelect Default = "All". Predetermined subsets or a vector of queries to read from the queryxml for example
+#' predetermined subsets would be c('water','energy') or
+#' selection of queries would be c("Total final energy by aggregate end-use sector", "Population by region").
+#' The queries must be availble in the queryxml file.
+#' Queryset names include: c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
+#' Current list of queries for each set include:
+#' water
 #' \itemize{
-#' \item "Total final energy by aggregate end-use sector". Parameters generated: energyFinalConsumBySecEJ.
-#' \item "primary energy consumption by region (direct equivalent)".
-#' Parameters generated: energyPrimaryByFuelEJ
-#' \item "Electricity generation by aggregate technology". Parameters generated: elecByTechTWh
-#' \item "water withdrawals by sector". Parameters generated: watWithdrawBySec
-#' \item "water consumption by sector". Parameters generated: watConsumBySec
-#' \item "water withdrawals by crop". Parameters generated: watWithdrawByCrop
-#' \item "biophysical water demand by crop type and land region". Parameters generated: watBioPhysCons
-#' \item "water withdrawals by water mapping source". Parameters generated: watIrrWithdrawBasin
-#' \item "water consumption by water mapping source". Parameters generated: watIrrConsBasin
-#' \item "GDP per capita MER by region". Where MER is "Market Exchange Rate".
-#' Parameters generated: gdpPerCapita.
-#' \item "GDP MER by region". Where MER is "Market Exchange Rate".
-#' Parameters generated: gdp, gdpGrowthRate
-#' \item "Population by region". Parameters generated: pop.
-#' \item "ag production by tech". Where technologies signify irrigated or rainfed.
-#' Parameters generated: agProdbyIrrRfd
-#' \item "Ag Production by Crop Type". Parameters generated: agProdBiomass, agProdForest, agProdByCrop
-#' \item "land allocation by crop and water source". Parameters generated: landIrrRfd
-#' \item "aggregated land allocation". Parameters generated: landAlloc
-#' \item "Land Use Change Emission". Parameters generated: emissLUCFut
-#' \item "GHG emissions by subsector". Parameters generated: ghgEmissByGHGGROUPS, ghgEmissionByGHG
-#' \item "CO2 emissions by sector". Parameters generated:emissCO2BySector
-#' \item "nonCO2 emissions by sector". Parameters generated: emissCO2NonCO2BySectorGWPAR5, emissCO2NonCO2BySectorGTPAR5,emissNonCO2BySectorOrigUnits
-#' }
+#' \item "water withdrawals by crop"
+#' \item "water withdrawals by water mapping source"
+#' \item "water consumption by water mapping source"
+#' \item "water withdrawals by sector"
+#' \item "water consumption by sector"
+#' \item "biophysical water demand by crop type and land region"}
+#' energy
+#' \itemize{
+#' \item "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS"
+#' \item "Electricity generation by aggregate technology ORDERED SUBSECTORS"
+#' \item "Final energy by detailed end-use sector and fuel"
+#' \item "total final energy by aggregate sector"
+#' \item "refined liquids production by subsector"
+#' \item "building final energy by fuel"
+#' \item "industry final energy by fuel"
+#' \item "building final energy by subsector"
+#' \item "transport final energy by fuel"
+#' \item "transport final energy by mode and fuel"}
+#' land
+#' \itemize{
+#' \item "land allocation by crop and water source",
+#' \item "aggregated land allocation",
+#' \item "land allocation by crop"}
+#' emissions
+#' \itemize{
+#' \item "nonCO2 emissions by resource production",
+#' \item "nonCO2 emissions by sector"
+#' \item "Land Use Change Emission (future)"
+#' \item "CO2 emissions by sector (no bio)"
+#' \item "CO2 emissions by sector"}
+#' ag
+#' \itemize{
+#' \item "Ag Production by Crop Type"
+#' \item "ag production by tech"}
+#' socioecon
+#' \itemize{
+#' \item "GDP MER by region"
+#' \item "GDP per capita MER by region"
+#' \item "Population by region"}
+#' transport
+#' \itemize{
+#' \item "transport service output by mode"
+#' \item "transport service output by tech (new)"}
 #'
 #' @param paramsSelect Default = "All". If desired dplyr::select a subset of paramaters to analyze from the full list of parameters:
 #' c(# Energy
@@ -82,8 +104,6 @@
 #' "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
 #' "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
 #' "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")
-#' @param RawQueryCSV Optional.
-#'
 #' @return A list with the scenarios in the gcam database, queries in the queryxml file and a
 #' tibble with gcam data formatted for metis charts.
 #' @keywords gcam, gcam database, query
@@ -102,8 +122,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                            dirOutputs = paste(getwd(), "/outputs", sep = ""),
                            regionsSelect = NULL,
                            queriesSelect="All",
-                           paramsSelect="All",
-                           RawQueryCSV=NULL
+                           paramsSelect="All"
 ){
 
 
@@ -131,9 +150,70 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     class1 -> connx -> aggregate -> Units -> sources -> paramx -> fuel -> technology -> input -> output -> water ->
     landleaf -> ghg -> Convert -> regionsSelectAll->cf1971to2100->gcamCapacityFactor -> . -> GWPAR5 -> tblelecByTechTWh ->
     totalFFINonCO2 -> FracBioFuel -> FracFossilFuel -> TotalLiquids ->
-    class_temp -> resource -> subRegAreaSum -> subsector
+    class_temp -> resource -> subRegAreaSum -> subsector->tblFinalNrgIntlAvShipMod -> 'transportation' ->
+    'International Aviation' -> 'International Ship' -> 'International Aviation oil' -> 'a oil' ->
+    'International Ship oil' -> 'International Aviation liquids' -> liquids -> 'International Ship liquids'
 
-  # Create necessary directories if they dont exist.
+
+#---------------------
+# Query sets and query select
+#---------------------
+  querySets <- list('water'=c("water withdrawals by crop",
+                              "water withdrawals by water mapping source",
+                              "water consumption by water mapping source",
+                              "water withdrawals by sector",
+                              "water consumption by sector",
+                              "biophysical water demand by crop type and land region"),
+                    'energy'=c("primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS",
+                               "Electricity generation by aggregate technology ORDERED SUBSECTORS",
+                               "Final energy by detailed end-use sector and fuel",
+                               "total final energy by aggregate sector",
+                               "refined liquids production by subsector",
+                               "building final energy by fuel",
+                               "industry final energy by fuel",
+                               "building final energy by subsector",
+                               "transport final energy by fuel",
+                               "transport final energy by mode and fuel"),
+                    'land'=c("land allocation by crop and water source",
+                             "aggregated land allocation",
+                             "land allocation by crop"),
+                    'emissions'=c("nonCO2 emissions by resource production",
+                                  "nonCO2 emissions by sector",
+                                  "Land Use Change Emission (future)",
+                                  "CO2 emissions by sector (no bio)",
+                                  "CO2 emissions by sector"),
+                    'ag'=c("Ag Production by Crop Type",
+                           "ag production by tech"),
+                    'socioecon'=c("GDP MER by region",
+                                  "GDP per capita MER by region",
+                                  "Population by region"),
+                    'transport'=c("transport service output by mode",
+                                  "transport service output by tech (new)"))
+
+  # Check if queriesSelect is a querySet or one of the queries
+  if(!any(c("All","all") %in% queriesSelect)){
+  if(any(queriesSelect %in% names(querySets))){
+    queriesSelectx <- as.vector(unlist(querySets[names(querySets) %in% queriesSelect]))
+    print(paste("queriesSelect chosen include the following querySets: ",paste(queriesSelect,collapse=", "),".",sep=""))
+    print(paste("Which include the following queries: ",paste(queriesSelectx,collapse=", "),".",sep=""))
+    #print(paste("Other queries not run include: ",paste(as.vector(unlist(querySets))[!as.vector(unlist(querySets)) %in% queriesSelectx],collapse=", "),".",sep=""))
+  }else{
+    if(any(queriesSelect %in% as.vector(unlist(querySets)))){
+      queriesSelectx <- queriesSelect[queriesSelect %in% as.vector(unlist(querySets))]
+      print(paste("queriesSelect chosen include the following queries: ",paste(queriesSelectx,collapse=", "),".",sep=""))
+     # print(paste("Other queries not run include: ",paste(as.vector(unlist(querySets))[!as.vector(unlist(querySets)) %in% queriesSelectx],collapse=", "),".",sep=""))
+    }else {
+      queriesSelectx <-  queriesSelect
+      print(paste("None of the queries in queriesSelect are available in metisQueries.xml: ",paste(queriesSelectx,collapse=", "),".",sep=""))
+      print(paste("Queries in metisQueries.xml include: ",paste(as.vector(unlist(querySets))[!as.vector(unlist(querySets)) %in% queriesSelectx],collapse=", "),".",sep=""))
+    }
+  }}else{
+    queriesSelectx <- as.vector(unlist(querySets))
+  }
+
+#-----------------------------
+# Create necessary directories if they dont exist.
+#----------------------------
   if (!dir.exists(dirOutputs)){
     dir.create(dirOutputs)}  # Output Directory
   if (!dir.exists(paste(dirOutputs,"/readGCAMTables",sep=""))){
@@ -148,10 +228,12 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
   # Check for new scenario names
   if (is.null(scenNewNames)) {
     scenNewNames <- scenOrigNames}
-  # Read gcam database or existing dataProj.proj
-  if (!reReadData) {
 
-    # Check for proj file path and folder if incorrect give error
+#---------------------------------------------
+# Read gcam database or existing dataProj.proj
+#--------------------------------------------
+  if (!reReadData) {
+ # Check for proj file path and folder if incorrect give error
     if(!file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){stop(paste("dataProj file: ", dataProjPath,"/",dataProj," is incorrect or doesn't exist.",sep=""))}
 
     if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))) {
@@ -160,8 +242,34 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       stop(paste("No ", dataProj, " file exists. Please set reReadData=T to create dataProj.proj"))
     }
   } else {
-    # Check for query file and folder if incorrect give error
+
+  # Check for query file and folder if incorrect give error
     if(!file.exists(paste(queryPath, "/", queryxml, sep = ""))){stop(paste("query file: ", queryPath,"/",queryxml," is incorrect or doesn't exist.",sep=""))}
+    if(file.exists(paste(queryPath, "/subSetQueries.xml", sep = ""))){unlink(paste(queryPath, "/subSetQueries.xml", sep = ""))}
+
+    # Subset the query file if queriwsSelect is not "All"
+    if(!any(c("All","all") %in% queriesSelect)){
+
+    xmlFilePath = paste(queryPath, "/", queryxml, sep = "")
+    xmlfile <- XML::xmlTreeParse(xmlFilePath)
+    xmltop <- XML::xmlRoot(xmlfile)
+    top <- XML::xmlNode(XML::xmlName(xmltop))
+
+    for(i in 1:length(xmltop)){
+      for(j in 1:length(queriesSelectx)){
+        if(any(grepl(gsub("\\(","\\\\(",gsub("\\)","\\\\)",queriesSelectx[j])), as.character(xmltop[[i]]))))
+          top <- XML::addChildren(top, xmltop[[i]])
+      }
+    }
+    XML::saveXML(top, file=paste(queryPath, "/subSetQueries.xml", sep = ""))
+    } else {
+      print(paste("queriesSelect includes 'All' so running all available queries: ",paste(queriesSelectx,collapse=", "),".",sep=""))
+      file.copy(from=paste(queryPath, "/", queryxml, sep = ""), to=paste(queryPath, "/subSetQueries.xml", sep = ""))
+    }
+
+    if(!file.exists(paste(queryPath, "/subSetQueries.xml", sep = ""))){stop(paste("query file: ", queryPath,"/subSetQueries.xml is incorrect or doesn't exist.",sep=""))}else{
+      print(paste("Reading queries from queryFile created: ", queryPath,"/subSetQueries.xml.",sep=""))
+    }
 
     # Check for gcamdatbasePath and gcamdatabasename
     if(is.null(gcamdatabasePath) | is.null(gcamdatabaseName)){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
@@ -173,7 +281,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
     for (scenario_i in scenOrigNames) {
       dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = dataProj,
-                                          scenario = scenario_i, queryFile = paste(queryPath, "/", queryxml, sep = ""))  # Check your queries file
+                                          scenario = scenario_i, queryFile = paste(queryPath, "/subSetQueries.xml", sep = ""))  # Check your queries file
     }
     file.copy(from = paste(getwd(), "/", dataProj, sep = ""), to = dataProjPath, overwrite = T,
               copy.mode = TRUE)
@@ -194,15 +302,14 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
   }
 
   # Read in paramaters from query file to create formatted table
-  datax <- tibble::tibble()
 
   if(any(queriesSelect=="All")){queriesx <- queries} else{
-    if(!all(queriesSelect %in% queries)){stop("No queries are available in queryxml.
-                                              Please check your queriesSelect entries or your queryxml")} else {
-                                                if(length(queriesSelect[!(queriesSelect %in% queries)])>0){
-                                                  print(paste("Queries not available in queryxml: ", paste(queriesSelect[!(queriesSelect %in% queries)],collapse=", "), sep=""))
-                                                  print(paste("Running remaining queriesSelect: ",  paste(queriesSelect[(queriesSelect %in% queries)],collapse=", "), sep=""))}
-                                                queriesx <- queriesSelect}
+    if(!any(queriesSelectx %in% queries)){stop("None of the selected queries are available in the data that has been read.
+Please check your data if reRead was set to F. Otherwise check the queriesSelect entries and the queryxml file.")} else {
+                                                if(length(queriesSelectx[!(queriesSelectx %in% queries)])>0){
+                                                  print(paste("Queries not available in queryxml: ", paste(queriesSelectx[!(queriesSelectx %in% queries)],collapse=", "), sep=""))
+                                                  print(paste("Running remaining queriesSelect: ",  paste(queriesSelectx[(queriesSelectx %in% queries)],collapse=", "), sep=""))}
+                                                queriesx <- queriesSelectx}
   }
 
 
@@ -212,12 +319,15 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                     "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
                     "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
                     "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
+                    "energyFinalConsumByIntlShpAvEJ",
                     "energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
                     "energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
                     "energyFinalSubsecByFuelBuildMTOE", "energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecBySectorBuildMTOE",
+                    "energyFinalConsumByIntlShpAvMTOE",
                     "energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
                     "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
                     "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
+                    "energyFinalConsumByIntlShpAvTWh","energyFinalConsumBySecNOIntlShpAvTWh",
                     # Electricity
                     "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
                     # Transport
@@ -235,6 +345,55 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                     "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
                     "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")
   }else{paramsSelectx=paramsSelect}
+
+
+  datax <- tibble::tibble()
+
+  paramx<-"energyFinalConsumByIntlShpAvEJ"
+  # Total final energy by aggregate end-use sector
+  if(paramx %in% paramsSelectx){
+    queryx <- "transport final energy by mode and fuel"
+    if (queryx %in% queriesx) {
+      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if (!is.null(regionsSelect)) {
+        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+      }
+      tbl <- tbl %>%
+        dplyr::filter(mode %in% c("International Aviation", "International Ship"))%>%
+        dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::mutate(param = "energyFinalConsumByIntlShpAvEJ",
+                      sources = "Sources",
+                      origScen = scenario,
+                      origQuery = queryx,
+                      origValue = value,
+                      origUnits = Units,
+                      origX = year,
+                      scenario = scenNewNames,
+                      units = "Final Energy Intl. Aviation and Shipping (EJ)",
+                      vintage = paste("Vint_", year, sep = ""),
+                      x = year,
+                      xLabel = "Year",
+                      aggregate = "sum",
+                      class1 = mode,
+                      classLabel1 = "Sector",
+                      classPalette1 = "pal_metis",
+                      class2 = gsub(" enduse","",input),
+                      classLabel2 = "Fuel",
+                      classPalette2 = "pal_metis")%>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
+        dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+      tblFinalNrgIntlAvShip <- tbl
+      datax <- dplyr::bind_rows(datax, tbl)
+    } else {
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }}
+
 
   paramx<-"energyFinalConsumBySecEJ"
   # Total final energy by aggregate end-use sector
@@ -262,7 +421,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Sector",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -274,9 +433,59 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
         dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
-      datax <- dplyr::bind_rows(datax, tbl)
+
+      if(!is.null(tblFinalNrgIntlAvShip)){
+      # Separat out Intl. Shipping and Aviation from Transport
+      tblTransport <- tbl%>%dplyr::filter(class1=="transportation") %>%
+        dplyr::mutate(class2="class2",classLabel2="classLabel2",classPalette2="classPalette2") %>%
+        dplyr::select(-origValue)# Subset Transport Sector
+      tblFinalNrgIntlAvShipMod <- tblFinalNrgIntlAvShip %>%
+        dplyr::mutate(param=unique(tblTransport$param),
+                      sources=unique(tblTransport$sources),
+                      origQuery=unique(tblTransport$origQuery),
+                      origUnits=unique(tblTransport$origUnits),
+                      units=unique(tblTransport$units),
+                      xLabel=unique(tblTransport$xLabel),
+                      aggregate=unique(tblTransport$aggregate),
+                      class2=unique(tblTransport$class2),
+                      classLabel2=unique(tblTransport$classLabel2),
+                      classPalette2=unique(tblTransport$classPalette2),
+                      classLabel1=unique(tblTransport$classLabel1),
+                      classPalette1=unique(tblTransport$classPalette1))%>%
+        dplyr::select(-origValue)# Prepare in intl. transport in correct format
+      # Separate out Intl. Shipping and Aviation
+      tblSepTransportIntlAvShip <- tblTransport %>%
+        dplyr::bind_rows(tblFinalNrgIntlAvShipMod) %>%
+        tidyr::spread(key="class1",value="value") %>%
+        dplyr::mutate(transportation=transportation-`International Aviation`-`International Ship`)%>%
+        dplyr::rename(`transport intl av`=`International Aviation`,
+                      `transport intl shp`=`International Ship`) %>%
+        tidyr::gather(key="class1",value="value",
+                      -scenario, -region, -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
+                      -classLabel1, -classPalette1, -classLabel2, -classPalette2,
+                      -origScen,-origQuery,-origUnits,-origX)%>%
+        dplyr::mutate(origValue=value); tblSepTransportIntlAvShip%>%as.data.frame()
+      # Rbind Transport, Intl. Shipping and Aviation back to all other Final Energy types
+      tblMod<-tbl%>%dplyr::filter(class1!="transportation") %>%
+        dplyr::bind_rows(tblSepTransportIntlAvShip) # Remove Transport sector from Original tbl
+
+      } else {
+        print(paste("tblFinalNrgIntlAvShip does not exist so skipping subset of final energy to remove intl. shipping and aviation."))
+        tblMod <- tbl
+        }
+
+      tblMod <- tblMod %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+
+      datax <- dplyr::bind_rows(datax, tblMod)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyFinalSubsecBySectorBuildEJ"
@@ -311,7 +520,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Sector",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = subsector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -325,7 +534,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyFinalByFuelBySectorEJ"
@@ -345,6 +554,8 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       sector=gsub("industrial energy use","industry",sector),
                       sector=gsub("industrial feedstocks","industry",sector),
                       sector=gsub("N fertilizer","industry",sector),
+                      sector=gsub("trn_aviation_intl","trans intl av",sector),
+                      sector=gsub("trn_shipping_intl","trans intl shp",sector),
                       sector = replace(sector, stringr::str_detect(sector, "trn"), "transport"),
                       sector=gsub("comm cooling","buildings",sector),
                       sector=gsub("comm heating","buildings",sector),
@@ -379,10 +590,13 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = input,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
+        dplyr::mutate(class1=dplyr::case_when(class2=="trans intl av"~paste(class1,"av",sep=" "),
+                                             class2=="trans intl shp"~paste(class1,"shp",sep=" "),
+                                             TRUE~class1))%>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -392,7 +606,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyFinalSubsecByFuelBuildEJ"
@@ -427,7 +641,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -440,7 +654,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyFinalSubsecByFuelIndusEJ"
@@ -476,7 +690,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -489,7 +703,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"elecFinalBySecTWh"
@@ -514,8 +728,9 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       sector=gsub("trn\\_freight","transportation",sector),
                       sector=gsub("trn\\_pass\\_road\\_LDV\\_2W","transportation",sector),
                       sector=gsub("trn\\_pass\\_road\\_LDV\\_4W","transportation",sector),
-                      sector=gsub("trn\\_pass","transportation",sector)
-                      )%>%
+                      sector=gsub("trn\\_pass","transportation",sector),
+                      sector = dplyr::case_when(grepl("trn_",sector)~"transportation",
+                                                            TRUE~sector))%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "elecFinalBySecTWh",
                       sources = "Sources",
@@ -533,7 +748,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Sector",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = input,
                       classLabel2 = "input",
                       classPalette2 = "classPalette2")%>%
@@ -546,7 +761,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"elecFinalByFuelTWh"
@@ -589,7 +804,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = input,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "Sector",
                       classPalette2 = "classPalette2")%>%
@@ -602,7 +817,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyPrimaryByFuelEJ"
@@ -633,7 +848,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = fuel,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -644,9 +859,61 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
-      datax <- dplyr::bind_rows(datax, tbl)
+
+      if(!is.null(tblFinalNrgIntlAvShip)){
+        # Separat out Intl. Shipping and Aviation refined liquids from Primary Energy Oil
+        tblPrimaryOil <- tbl%>%dplyr::filter(class1=="a oil") %>%
+          dplyr::mutate(class2="class2",classLabel2="classLabel2",classPalette2="classPalette2") %>%
+          dplyr::select(-origValue)# Subset Transport Sector
+        tblFinalNrgIntlAvShipMod <- tblFinalNrgIntlAvShip %>%
+          dplyr::mutate(param=unique(tblPrimaryOil$param),
+                        class1=paste(class1,"oil",sep=" "),
+                        sources=unique(tblPrimaryOil$sources),
+                        origQuery=unique(tblPrimaryOil$origQuery),
+                        origUnits=unique(tblPrimaryOil$origUnits),
+                        units=unique(tblPrimaryOil$units),
+                        xLabel=unique(tblPrimaryOil$xLabel),
+                        aggregate=unique(tblPrimaryOil$aggregate),
+                        class2=unique(tblPrimaryOil$class2),
+                        classLabel2=unique(tblPrimaryOil$classLabel2),
+                        classPalette2=unique(tblPrimaryOil$classPalette2),
+                        classLabel1=unique(tblPrimaryOil$classLabel1),
+                        classPalette1=unique(tblPrimaryOil$classPalette1))%>%
+          dplyr::select(-origValue)# Prepare in intl. transport in correct format
+        # Separate out Intl. Shipping and Aviation
+        tblSepPrimaryIntlAvShip <- tblPrimaryOil %>%
+          dplyr::bind_rows(tblFinalNrgIntlAvShipMod) %>%
+          tidyr::spread(key="class1",value="value") %>%
+          dplyr::mutate(`a oil`=`a oil` -`International Aviation oil`-`International Ship oil`)%>%
+          dplyr::rename(`oil intl av`=`International Aviation oil`,
+                        `oil intl shp`=`International Ship oil`)%>%
+          tidyr::gather(key="class1",value="value",
+                        -scenario, -region, -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
+                        -classLabel1, -classPalette1, -classLabel2, -classPalette2,
+                        -origScen,-origQuery,-origUnits,-origX)%>%
+          dplyr::mutate(origValue=value); tblSepPrimaryIntlAvShip%>%as.data.frame()
+        # Rbind Transport, Intl. Shipping and Aviation back to all other Final Energy types
+        tblMod<-tbl%>%dplyr::filter(class1!="a oil") %>%
+          dplyr::bind_rows(tblSepPrimaryIntlAvShip) # Remove Transport sector from Original tbl
+
+      } else {
+        print(paste("tblFinalNrgIntlAvShip does not exist so skipping subset of final energy to remove intl. shipping and aviation."))
+        tblMod <- tbl
+      }
+
+      tblMod <- tblMod %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+
+      datax <- dplyr::bind_rows(datax, tblMod)
+
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "elecByTechTWh"
@@ -680,7 +947,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = technology,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -694,7 +961,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       datax <- dplyr::bind_rows(datax, tbl)
       tblelecByTechTWh<-tbl
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   if(!is.null(tblelecByTechTWh)){
@@ -703,7 +970,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     paramx <- "elecCapByFuel"
     if(paramx %in% paramsSelectx){
       # Electricity Capacity by Subsector
-      queryx <- "Electricity generation by aggregate technology"
+      queryx <- "Electricity generation by aggregate technology ORDERED SUBSECTORS"
       if (queryx %in% queriesx) {
         tbl <- tblelecByTechTWh  # Tibble
         rm(tblelecByTechTWh)
@@ -725,10 +992,13 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
         datax <- dplyr::bind_rows(datax, tbl)
       } else {
-        print(paste("Query '", queryx, "' not found in database", sep = ""))
+        if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
       }}
   } else {print(paste("Electricity capacity factor file capacity_factor_by_elec_gen_subsector.csv not found. Skipping param elecCapByFuel."))}
-} else {print(paste("elecByTechTWh not avaialble so skipping param elecCapByFuel."))}
+  } else {
+  if("Electricity generation by aggregate technology ORDERED SUBSECTORS" %in% queriesSelectx){
+    print(paste("elecByTechTWh did not run so skipping param elecCapByFuel."))}
+    }
 
   # metis.chart(tbl,xData="x",yData="value",useNewLabels = 0)
 
@@ -759,7 +1029,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Sector",
-                      classPalette1 = "pal_wat_dem",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -772,7 +1042,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<- "watWithdrawBySec"
@@ -802,7 +1072,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Sector",
-                      classPalette1 = "pal_wat_dem",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -815,7 +1085,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "watWithdrawByCrop"
@@ -847,7 +1117,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Crop",
-                      classPalette1 = "pal_16",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -860,7 +1130,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "watBioPhysCons"
@@ -903,7 +1173,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "watIrrWithdrawBasin"
@@ -949,7 +1219,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
 
@@ -996,7 +1266,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "gdpPerCapita"
@@ -1039,7 +1309,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "gdp"
@@ -1083,7 +1353,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       datax <- dplyr::bind_rows(datax, tbl)
       tblgdp<-tbl
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "gdpGrowthRate"
@@ -1161,7 +1431,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "agProdbyIrrRfd"
@@ -1208,7 +1478,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "agProdBiomass"
@@ -1238,7 +1508,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Crop",
-                      classPalette1 = "pal_ag_type",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -1247,7 +1517,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       class2, classLabel2, classPalette2)%>%dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "agProdForest"
@@ -1278,7 +1548,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Forest",
-                      classPalette1 = "pal_ag_type",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -1287,7 +1557,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       class2, classLabel2, classPalette2)%>%dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "agProdByCrop"
@@ -1318,7 +1588,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Crop",
-                      classPalette1 = "pal_ag_type",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -1327,7 +1597,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       class2, classLabel2, classPalette2)%>%dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "landIrrRfd"
@@ -1358,7 +1628,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = water,
                       classLabel1 = "Water Source",
-                      classPalette1 = "pal_16",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
@@ -1371,7 +1641,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "landAlloc"
@@ -1413,7 +1683,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = landleaf,
                       classLabel1 = "Land Type",
-                      classPalette1 = "pal_lu_type",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
@@ -1425,7 +1695,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "landAllocByCrop"
@@ -1474,7 +1744,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = landleaf,
                       classLabel1 = "Land Type",
-                      classPalette1 = "pal_ag_type",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
@@ -1486,7 +1756,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "emissLUC"
@@ -1519,7 +1789,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       aggregate = "sum",
                       class1 = "class1",
                       classLabel1 = "Land Type",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
@@ -1534,7 +1804,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
       tblLUEmiss<-tbl
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "emissCO2BySector"
@@ -1607,15 +1877,14 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
           class1=gsub("resid\\scooking","Buildings",class1),
           class1=gsub("resid\\sclothes\\sdryer","Buildings",class1),
           class1=gsub("district\\sheat","Buildings",class1),
-          class1=gsub("trn\\_aviation\\_intl","Transport",class1),
-          class1=gsub("trn\\_shipping\\_intl","Transport",class1),
+          class1=gsub("trn\\_aviation\\_intl","Transport Intl Av",class1),
+          class1=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class1),
           class1=dplyr::if_else(class1=="trn_freight_road","Transport",class1),
           class1=dplyr::if_else(class1=="trn_freight","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass_road","Transport",class1),
-          # class1=gsub("trn\\_shipping\\_intl","Transport",class1),
           class1=gsub("transport\\_LDV","Transport",class1),
           class1=gsub("transport\\_bus","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
@@ -1669,9 +1938,9 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "sector",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "sectorDetail",
-                      classPalette2 = "pal_nrg") %>%
+                      classPalette2 = "pal_metis") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -1681,7 +1950,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
 
@@ -1759,15 +2028,14 @@ paramx <- "emissCO2BySectorNoBio"
         class1=gsub("resid\\scooking","Buildings",class1),
         class1=gsub("resid\\sclothes\\sdryer","Buildings",class1),
         class1=gsub("district\\sheat","Buildings",class1),
-        class1=gsub("trn\\_aviation\\_intl","Transport",class1),
-        class1=gsub("trn\\_shipping\\_intl","Transport",class1),
+        class1=gsub("trn\\_aviation\\_intl","Transport Intl Av",class1),
+        class1=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class1),
         class1=dplyr::if_else(class1=="trn_freight_road","Transport",class1),
         class1=dplyr::if_else(class1=="trn_freight","Transport",class1),
         class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
         class1=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class1),
         class1=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class1),
         class1=dplyr::if_else(class1=="trn_pass_road","Transport",class1),
-        #class1=gsub("trn\\_shipping\\_intl","Transport",class1),
         class1=gsub("transport\\_LDV","Transport",class1),
         class1=gsub("transport\\_bus","Transport",class1),
         class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
@@ -1821,9 +2089,9 @@ paramx <- "emissCO2BySectorNoBio"
                     xLabel = "Year",
                     aggregate = "sum",
                     classLabel1 = "sector",
-                    classPalette1 = "pal_nrg",
+                    classPalette1 = "pal_metis",
                     classLabel2 = "sectorDetail",
-                    classPalette2 = "pal_nrg") %>%
+                    classPalette2 = "pal_metis") %>%
       dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
@@ -1917,14 +2185,14 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("resid\\scooking","Buildings",class2),
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
-          class2=gsub("trn\\_aviation\\_intl","Transport",class2),
           class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
           class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
-          #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
+          class2=gsub("trn\\_aviation\\_intl","Transport Intl Av",class2),
+          class2=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
@@ -1985,9 +2253,9 @@ paramx <- "emissCO2BySectorNoBio"
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "GHG",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "sector",
-                      classPalette2 = "pal_nrg") %>%
+                      classPalette2 = "pal_metis") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -1997,7 +2265,7 @@ paramx <- "emissCO2BySectorNoBio"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
  paramx <- "emissMethaneBySource"
@@ -2069,15 +2337,14 @@ paramx <- "emissCO2BySectorNoBio"
           class1=gsub("resid\\scooking","Buildings",class1),
           class1=gsub("resid\\sclothes\\sdryer","Buildings",class1),
           class1=gsub("district\\sheat","Buildings",class1),
-          class1=gsub("trn\\_aviation\\_intl","Transport",class1),
-          class1=gsub("trn\\_shipping\\_intl","Transport",class1),
+          class1=gsub("trn\\_aviation\\_intl","Transport Intl Av",class1),
+          class1=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class1),
           class1=dplyr::if_else(class1=="trn_freight_road","Transport",class1),
           class1=dplyr::if_else(class1=="trn_freight","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class1),
           class1=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass_road","Transport",class1),
-          #class1=gsub("trn\\_shipping\\_intl","Transport",class1),
           class1=gsub("transport\\_LDV","Transport",class1),
           class1=gsub("transport\\_bus","Transport",class1),
           class1=dplyr::if_else(class1=="trn_pass","Transport",class1),
@@ -2137,9 +2404,9 @@ paramx <- "emissCO2BySectorNoBio"
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "sector",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "GHG",
-                      classPalette2 = "pal_nrg") %>%
+                      classPalette2 = "pal_metis") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2149,7 +2416,7 @@ paramx <- "emissCO2BySectorNoBio"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "emissNonCO2ByResProdGWPAR5"
@@ -2234,14 +2501,14 @@ paramx <- "emissCO2BySectorNoBio"
           class2=gsub("resid\\scooking","Buildings",class2),
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
-          class2=gsub("trn\\_aviation\\_intl","Transport",class2),
+          class2=gsub("trn\\_aviation\\_intl","Transport Intl Av",class2),
+          class2=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class2),
           class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
           class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
-          #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
@@ -2302,9 +2569,9 @@ paramx <- "emissCO2BySectorNoBio"
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "GHG",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "sector",
-                      classPalette2 = "pal_nrg") %>%
+                      classPalette2 = "pal_metis") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2314,10 +2581,10 @@ paramx <- "emissCO2BySectorNoBio"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
-  if(!is.null(totalFFINonCO2)){
+  if(any(c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5") %in% unique(datax$param))){
 paramx <- "emissTotalFFIBySec"
   if(paramx %in% paramsSelectx){
     # GHG emissions by resource production, using AR5 GWP values
@@ -2338,7 +2605,7 @@ paramx <- "emissTotalFFIBySec"
                     units="Emissions Total FFI by Sector - MegaTonnes of CO2 eq. (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
-                    classPalette1 = 'pal_nrg')%>%
+                    classPalette1 = 'pal_metis')%>%
       dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2348,9 +2615,12 @@ paramx <- "emissTotalFFIBySec"
       dplyr::filter(!is.na(value))
     # Take this new parameter and put it in datax (main dataframe for ready-to-plot results)
     datax <- rbind(datax, totalFFICO2Eq)
-  }} else {print(paste("totalFFINonCO2 did not run so skipping param emissTotalFFIBySec",sep=""))}
+  }} else {
+    if(any(c("nonCO2 emissions by resource production","nonCO2 emissions by sector") %in% queriesSelectx)){
+      print(paste("totalFFINonCO2 did not run so skipping param emissTotalBySec",sep=""))}
+  }
 
-  if(!is.null(totalFFINonCO2)){
+  if(any(c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5") %in% unique(datax$param))){
   paramx <- "emissTotalBySec"
   if(paramx %in% paramsSelectx){
     # Same as FFI Emiss by Sec, except we are now adding LUC. So really it is the whole emissions picture (or close to it)
@@ -2365,14 +2635,14 @@ paramx <- "emissTotalFFIBySec"
     totalFFICO2 <- datax %>% dplyr::filter(param %in% c("emissCO2BySectorNoBio", "emissLUC"))
     totalFFICO2Eq <- rbind(totalFFICO2, totalFFINonCO2)
     totalFFICO2Eq$param <- 'emissTotalBySec'
-    totalFFICO2Eq$Class1Palette <- 'pal_nrg'
+    totalFFICO2Eq$Class1Palette <- 'pal_metis'
     totalFFICO2Eq <- totalFFICO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
                     units="Emissions by Sector - MegaTonnes of CO2 eq. (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
-                    classPalette1 = 'pal_nrg')%>%
+                    classPalette1 = 'pal_metis')%>%
       dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2382,9 +2652,12 @@ paramx <- "emissTotalFFIBySec"
       dplyr::filter(!is.na(value))
     # Take this new parameter and put it in datax (main dataframe for ready-to-plot results)
     datax <- rbind(datax, totalFFICO2Eq)
-  }} else {print(paste("totalFFINonCO2 did not run so skipping param emissTotalBySec",sep=""))}
+  }} else {
+    if(any(c("nonCO2 emissions by resource production","nonCO2 emissions by sector") %in% queriesSelectx)){
+    print(paste("totalFFINonCO2 did not run so skipping param emissTotalBySec",sep=""))}
+    }
 
-  if(!is.null(totalFFINonCO2)){
+  if(any(c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5") %in% unique(datax$param))){
     paramx <- "emissCO2BySectorNonCO2GWPAR5"
   if(paramx %in% paramsSelectx){
     # GHG emissions by resource production, using AR5 GWP values
@@ -2396,7 +2669,8 @@ paramx <- "emissTotalFFIBySec"
       class1=dplyr::if_else(class1=="Refining and Hydrogen Production", "CO2 Refining and Hydrogen Production", class1),
       class1=dplyr::if_else(class1=="Industry", "CO2 Industry", class1),
       class1=dplyr::if_else(class1=="Transport", "CO2 Transport", class1),
-      class1=dplyr::if_else(class1=="Trn_shipping_intl", "CO2 Transport", class1),
+      class1=dplyr::if_else(class1=="trn_aviation_intl", "CO2 Transport Intl Av", class1),
+      class1=dplyr::if_else(class1=="trn_shipping_intl", "CO2 Transport Intl Shp", class1),
       class1=dplyr::if_else(class1=="Electricity", "CO2 Electricity", class1),
       class1=dplyr::if_else(class1=="Other", "CO2 Other", class1),
       class1=dplyr::if_else(class1=="Waste", "CO2 Waste", class1),
@@ -2410,7 +2684,7 @@ paramx <- "emissTotalFFIBySec"
                     units="MegaTonnes of CO2 eq. (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
-                    classPalette1 = 'pal_nrg')%>%
+                    classPalette1 = 'pal_metis')%>%
       dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2420,10 +2694,14 @@ paramx <- "emissTotalFFIBySec"
       dplyr::filter(!is.na(value))
     # Take this new parameter and put it in datax (main dataframe for ready-to-plot results)
     datax <- rbind(datax, totalFFICO2Eq)
-  }} else {print(paste("totalFFINonCO2 did not run so skipping param emissCO2BySectorNonCO2GWPAR5",sep=""))}
+  }} else {
+    if(any(c("nonCO2 emissions by resource production","nonCO2 emissions by sector") %in% queriesSelectx)){
+    print(paste("totalFFINonCO2 did not run so skipping param emissTotalBySec",sep=""))}
+    }
 
-  if(!is.null(totalFFINonCO2)){
- paramx <- "emissCO2BySectorNonCO2GWPAR5LUC"
+  if(any(c("emissNonCO2ByResProdGWPAR5", "emissCO2NonCO2BySectorGWPAR5",
+           "emissLUC","emissCO2BySectorNoBio") %in% unique(datax$param))){
+    paramx <- "emissCO2BySectorNonCO2GWPAR5LUC"
   if(paramx %in% paramsSelectx){
 
     totalFFICO2 <- datax %>% dplyr::filter(param %in% c("emissCO2BySectorNoBio")) %>% dplyr::mutate(
@@ -2431,7 +2709,8 @@ paramx <- "emissTotalFFIBySec"
       class1=dplyr::if_else(class1=="Refining and Hydrogen Production", "CO2 Refining and Hydrogen Production", class1),
       class1=dplyr::if_else(class1=="Industry", "CO2 Industry", class1),
       class1=dplyr::if_else(class1=="Transport", "CO2 Transport", class1),
-      class1=dplyr::if_else(class1=="Trn_shipping_intl", "CO2 Transport", class1),
+      class1=dplyr::if_else(class1=="trn_aviation_intl", "CO2 Transport Intl Av", class1),
+      class1=dplyr::if_else(class1=="trn_shipping_intl", "CO2 Transport Intl Shp", class1),
       class1=dplyr::if_else(class1=="Electricity", "CO2 Electricity", class1),
       class1=dplyr::if_else(class1=="Other", "CO2 Other", class1),
       class1=dplyr::if_else(class1=="Waste", "CO2 Waste", class1),
@@ -2451,7 +2730,7 @@ paramx <- "emissTotalFFIBySec"
                     units="MegaTonnes of CO2 eq. (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
-                    classPalette1 = 'pal_nrg')%>%
+                    classPalette1 = 'pal_metis')%>%
       dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2463,7 +2742,10 @@ paramx <- "emissTotalFFIBySec"
     datax <- rbind(datax, totalCO2Eq)
   }
 
- } else {print(paste("totalFFINonCO2 did not run so skipping param emissCO2BySectorNonCO2GWPAR5LUC",sep=""))}
+  } else {
+    if(any(c("nonCO2 emissions by resource production","nonCO2 emissions by sector") %in% queriesSelectx)){
+      print(paste("totalFFINonCO2 did not run so skipping param emissTotalBySec",sep=""))}
+  }
 
   paramx <- "emissCO2NonCO2BySectorGTPAR5"
   if(paramx %in% paramsSelectx){
@@ -2543,14 +2825,14 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("resid\\scooking","Buildings",class2),
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
-          class2=gsub("trn\\_aviation\\_intl","Transport",class2),
+          class2=gsub("trn\\_aviation\\_intl","Transport Intl Av",class2),
+          class2=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class2),
           class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
           class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
-          #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
@@ -2611,9 +2893,9 @@ paramx <- "emissTotalFFIBySec"
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "GHG",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "sector",
-                      classPalette2 = "pal_nrg") %>%
+                      classPalette2 = "pal_metis") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -2623,7 +2905,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx <- "emissNonCO2BySectorOrigUnits"
@@ -2709,14 +2991,14 @@ paramx <- "emissTotalFFIBySec"
           class2=gsub("resid\\scooking","Buildings",class2),
           class2=gsub("resid\\sclothes\\sdryer","Buildings",class2),
           class2=gsub("district\\sheat","Buildings",class2),
-          class2=gsub("trn\\_aviation\\_intl","Transport",class2),
+          class2=gsub("trn\\_aviation\\_intl","Transport Intl Av",class2),
+          class2=gsub("trn\\_shipping\\_intl","Transport Intl Shp",class2),
           class2=dplyr::if_else(class2=="trn_freight_road","Transport",class2),
           class2=dplyr::if_else(class2=="trn_freight","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_2W","Transport",class2),
           class2=gsub("trn\\_pass\\_road\\_LDV\\_4W","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass_road","Transport",class2),
-          #class2=gsub("trn\\_shipping\\_intl","Transport",class2),
           class2=gsub("transport\\_LDV","Transport",class2),
           class2=gsub("transport\\_bus","Transport",class2),
           class2=dplyr::if_else(class2=="trn_pass","Transport",class2),
@@ -2769,9 +3051,9 @@ paramx <- "emissTotalFFIBySec"
                       xLabel = "Year",
                       aggregate = "sum",
                       classLabel1 = "GHG",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       classLabel2 = "sector",
-                      classPalette2 = "pal_nrg",
+                      classPalette2 = "pal_metis",
                       origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits)) %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
@@ -2782,7 +3064,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"transportPassengerVMTByMode"
@@ -2826,7 +3108,7 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = mode,
                       classLabel1 = "Mode",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -2839,7 +3121,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"transportFreightVMTByMode"
@@ -2876,7 +3158,7 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = mode,
                       classLabel1 = "Mode",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
@@ -2889,7 +3171,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyPrimaryRefLiqProdEJ"
@@ -2922,7 +3204,7 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = subsector,
                       classLabel1 = "Liquid",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = sector,
                       classLabel2 = "Refining",
                       classPalette2 = "classPalette2")%>%
@@ -2952,7 +3234,7 @@ paramx <- "emissTotalFFIBySec"
 
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"transportPassengerVMTByFuel"
@@ -2991,7 +3273,7 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = technology,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = subsector,
                       classLabel2 = "subsector",
                       classPalette2 = "classPalette2")
@@ -3020,7 +3302,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"transportFreightVMTByFuel"
@@ -3055,7 +3337,7 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = technology,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
+                      classPalette1 = "pal_metis",
                       class2 = subsector,
                       classLabel2 = "subsector",
                       classPalette2 = "classPalette2")
@@ -3084,7 +3366,7 @@ paramx <- "emissTotalFFIBySec"
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
   paramx<-"energyFinalSubsecByFuelTranspEJ"
@@ -3119,25 +3401,25 @@ paramx <- "emissTotalFFIBySec"
                       aggregate = "sum",
                       class1 = sector,
                       classLabel1 = "Fuel",
-                      classPalette1 = "pal_nrg",
-                      class2 = sector,
+                      classPalette1 = "pal_metis",
+                      class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")
-      if("energyPrimaryRefLiqProdEJ" %in% paramsSelectx){
-        # Break out biofuels
-        tbl <- tbl %>%
-          dplyr::left_join(FracBioFuel_tbl, by=c('scenario', 'region', 'x', 'class1')) %>%
-          dplyr::mutate(value = dplyr::if_else(class1=='liquids', value*FracBioFuel, value)) %>%
-          dplyr::select(-FracBioFuel, -FracFossilFuel) %>%
-          dplyr::mutate(class1=dplyr::if_else(class1=='liquids', 'biofuel', class1))
-        tbl2 <- tbl %>%
-          dplyr::left_join(FracBioFuel_tbl %>% dplyr::mutate(class1='biofuel'), by=c('scenario', 'region', 'x', 'class1')) %>%
-          dplyr::filter(class1=='biofuel') %>%
-          dplyr::mutate(class1='fossil fuel') %>%
-          dplyr::mutate(value=dplyr::if_else(class1=='fossil fuel', (value/FracBioFuel)*(1-FracBioFuel), value)) %>%
-          dplyr::select(-FracBioFuel, -FracFossilFuel)
-        tbl <- rbind(tbl, tbl2)
-      }
+      # if("energyPrimaryRefLiqProdEJ" %in% unique(datax$param)){
+      #   # Break out biofuels
+      #   tbl <- tbl %>%
+      #     dplyr::left_join(FracBioFuel_tbl, by=c('scenario', 'region', 'x', 'class1')) %>%
+      #     dplyr::mutate(value = dplyr::if_else(class1=='liquids', value*FracBioFuel, value)) %>%
+      #     dplyr::select(-FracBioFuel, -FracFossilFuel) %>%
+      #     dplyr::mutate(class1=dplyr::if_else(class1=='liquids', 'biofuel', class1))
+      #   tbl2 <- tbl %>%
+      #     dplyr::left_join(FracBioFuel_tbl %>% dplyr::mutate(class1='biofuel'), by=c('scenario', 'region', 'x', 'class1')) %>%
+      #     dplyr::filter(class1=='biofuel') %>%
+      #     dplyr::mutate(class1='fossil fuel liquids') %>%
+      #     dplyr::mutate(value=dplyr::if_else(class1=='fossil fuel liquids', (value/FracBioFuel)*(1-FracBioFuel), value)) %>%
+      #     dplyr::select(-FracBioFuel, -FracFossilFuel)
+      #   tbl <- rbind(tbl, tbl2)
+      # }
       tbl <- tbl %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
@@ -3146,9 +3428,60 @@ paramx <- "emissTotalFFIBySec"
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
-      datax <- dplyr::bind_rows(datax, tbl)
+
+      if(!is.null(tblFinalNrgIntlAvShip)){
+        # Separat out Intl. Shipping and Aviation refined liquids from Primary Energy Oil
+        tblTransportFinalOil <- tbl%>%dplyr::filter(class1=="liquids") %>%
+          dplyr::mutate(class2="class2",classLabel2="classLabel2",classPalette2="classPalette2") %>%
+          dplyr::select(-origValue)# Subset Transport Sector
+        tblFinalNrgIntlAvShipMod <- tblFinalNrgIntlAvShip %>%
+          dplyr::mutate(param=unique(tblTransportFinalOil$param),
+                        class1=paste(class1,"liquids",sep=" "),
+                        sources=unique(tblTransportFinalOil$sources),
+                        origQuery=unique(tblTransportFinalOil$origQuery),
+                        origUnits=unique(tblTransportFinalOil$origUnits),
+                        units=unique(tblTransportFinalOil$units),
+                        xLabel=unique(tblTransportFinalOil$xLabel),
+                        aggregate=unique(tblTransportFinalOil$aggregate),
+                        class2=unique(tblTransportFinalOil$class2),
+                        classLabel2=unique(tblTransportFinalOil$classLabel2),
+                        classPalette2=unique(tblTransportFinalOil$classPalette2),
+                        classLabel1=unique(tblTransportFinalOil$classLabel1),
+                        classPalette1=unique(tblTransportFinalOil$classPalette1))%>%
+          dplyr::select(-origValue)# Prepare in intl. transport in correct format
+        # Separate out Intl. Shipping and Aviation
+        tblSepTransportFinalIntlAvShip <- tblTransportFinalOil %>%
+          dplyr::bind_rows(tblFinalNrgIntlAvShipMod) %>%
+          tidyr::spread(key="class1",value="value") %>%
+          dplyr::mutate(`liquids`=`liquids` -`International Aviation liquids`-`International Ship liquids`)%>%
+          dplyr::rename(`liquids intl av`=`International Aviation liquids`,
+                        `liquids intl shp`=`International Ship liquids`) %>%
+          tidyr::gather(key="class1",value="value",
+                        -scenario, -region, -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
+                        -classLabel1, -classPalette1, -classLabel2, -classPalette2,
+                        -origScen,-origQuery,-origUnits,-origX)%>%
+          dplyr::mutate(origValue=value); tblSepTransportFinalIntlAvShip%>%as.data.frame()
+        # Rbind Transport, Intl. Shipping and Aviation back to all other Final Energy types
+        tblMod<-tbl%>%dplyr::filter(class1!="liquids") %>%
+          dplyr::bind_rows(tblSepTransportFinalIntlAvShip) # Remove Transport sector from Original tbl
+
+      } else {
+        print(paste("tblFinalNrgIntlAvShip does not exist so skipping subset of final energy to remove intl. shipping and aviation."))
+        tblMod <- tbl
+      }
+
+      tblMod <- tblMod %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+
+      datax <- dplyr::bind_rows(datax, tblMod)
     } else {
-      print(paste("Query '", queryx, "' not found in database", sep = ""))
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
 

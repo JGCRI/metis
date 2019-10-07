@@ -45,12 +45,12 @@ localBasinsShapeFileColName = "code" # Will need to load the file to see which n
 # Read GCAM Data
 #---------------------------
 
-regionsSelect_i <- c("Uruguay", "Colombia")
+regionsSelect_i <- c("Uruguay")
 
 # ?metis.readgcam # For more help
 
-gcamdatabasePath_i <-paste("D:/GCAM/gcam-core_LAC/output",sep="")
-gcamdatabaseName_i <-"database_basexdb_origRef"
+gcamdatabasePath_i <-paste("D:/GCAM/gcam-core_LAC/output/FinalRuns",sep="")
+gcamdatabaseName_i <-"IDBNexus_RefOrig"
 rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
 
 dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
@@ -64,10 +64,14 @@ listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 
 queryPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
 
+# Choose Query sets, individual queries or set to "All". For complete list see ?metis.readgcam
+queriesSelect_i = c("All") # Query sets are c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
+#queriesSelect_i = c("energy")
+
 dataGCAMRef<-metis.readgcam(reReadData=T, # Default Value is T
                                  dataProj = dataProj_i, # Default Value is "dataProj.proj"
                                  dataProjPath = dataProjPath_i,
-                                 scenOrigNames=c("IDB_Orig", "IDB_GCAMRef"),
+                                 scenOrigNames=c("GCAMOriginal", "AgShrWghtRef"),
                                  scenNewNames=c("GCAMOrig","GCAMRef"),
                                  gcamdatabasePath=gcamdatabasePath_i,
                                  gcamdatabaseName=gcamdatabaseName_i,
@@ -75,12 +79,26 @@ dataGCAMRef<-metis.readgcam(reReadData=T, # Default Value is T
                                  queryPath = queryPath_i,
                                  dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
                                  regionsSelect=regionsSelect_i, # Default Value is NULL
-                                 paramsSelect="All" # Default value is "All"
-)
+                                 queriesSelect=queriesSelect_i)
+
+# reReadData=T # Default Value is T
+# dataProj = dataProj_i # Default Value is "dataProj.proj"
+# dataProjPath = dataProjPath_i
+# scenOrigNames=c("IDB_Orig")
+# scenNewNames=c("GCAMOrig")
+# gcamdatabasePath=gcamdatabasePath_i
+# gcamdatabaseName=gcamdatabaseName_i
+# queryxml="metisQueries.xml"  # Default Value is "metisQueries.xml"
+# queryPath = queryPath_i
+# dirOutputs= paste(getwd(),"/outputs",sep="") # Default Value is paste(getwd(),"/outputs",sep="")
+# regionsSelect=regionsSelect_i # Default Value is NULL
+# queriesSelect=c("All")
 
 dataGCAMRef$data
 unique(dataGCAMRef$data$param)
 unique(dataGCAMRef$data$scenario)
+
+rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
 
 # Impacts
 dataProj_i <-"Uruguay_dataProj_Impacts.proj"
@@ -88,10 +106,10 @@ dataProjLoaded <- loadProject(paste(dataProjPath_i, "/", dataProj_i, sep = ""))
 listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 #queries <- listQueries(dataProjLoaded)  # List of Queries in queryxml
 
-dataGCAMImpacts<-metis.readgcam(reReadData=F, # Default Value is T
+dataGCAMImpacts<-metis.readgcam(reReadData=T, # Default Value is T
                             dataProj = dataProj_i, # Default Value is "dataProj.proj"
                             dataProjPath = dataProjPath_i,
-                            scenOrigNames=c("IDBUruguay_GCAMRef_ImpactsGFDLrcp8p5","IDBUruguay_GCAMRef_ImpactsGFDLrcp2p6"),
+                            scenOrigNames=c("Ref_ImpactsGFDLrcp8p5","Ref_ImpactsGFDLrcp2p6"),
                             scenNewNames=c("GFDL_RCP8p5","GFDL_RCP2p6"),
                             gcamdatabasePath=gcamdatabasePath_i,
                             gcamdatabaseName=gcamdatabaseName_i,
@@ -99,7 +117,7 @@ dataGCAMImpacts<-metis.readgcam(reReadData=F, # Default Value is T
                             queryPath = queryPath_i,
                             dirOutputs= paste(getwd(),"/outputs",sep=""), # Default Value is paste(getwd(),"/outputs",sep="")
                             regionsSelect=regionsSelect_i, # Default Value is NULL
-                            paramsSelect="All" # Default value is "All"
+                            queriesSelect=queriesSelect_i
 )
 
 dataGCAMImpacts$data
@@ -126,19 +144,40 @@ unique(dataGCAM$scenario)
 #---------------------------
 
 #Choose parameters for Report
-# paramsSelect_i=c("finalNrgbySec", "elecByTech", "elecCapBySubsector",
-#                   "finalNrgbySecDetbyFuel","finalElecbySecDet","finalElecbyServiceDet","finalNrgbySecbyFuel","finalNrgbyFuelbySec",
-#                  "watConsumBySec", "watWithdrawBySec",
-#                  "gdp", "gdpGrowthRate", "pop",
-#                  "agProdByCrop","aggLandAlloc",
-#                 "co2emissionBySector","nonco2emissionBySectorGWPAR5","nonco2emissionBySectorGTPAR5","nonco2emissionBySectorOrigUnits")
-#
-
+# paramsSelect_i = c(# energy
+#         "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
+#         "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
+#         "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
+#         "energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
+#         "energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
+#         "energyFinalSubsecByFuelBuildMTOE", "energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecBySectorBuildMTOE",
+#         "energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
+#         "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
+#         "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
+#         # electricity
+#         "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
+#         # transport
+#         "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
+#         # water
+#         "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
+#         # socioecon
+#         "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
+#         # ag
+#         "agProdbyIrrRfd","agProdBiomass", "agProdForest", "agProdByCrop",
+#         # land
+#         "landIrrRfd", "landAlloc","landAllocByCrop",
+#         # emissions
+#         "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
+#         "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
+#         "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")
 paramsSelect_i = "All"
+
+#paramsSelect_i = c("watWithdrawBySec")
 
 # Read in Tables (If exist)
 dataTables_i<-c(paste(getwd(),"/dataFiles/localData/local_Regional_Uruguay.csv",sep=""))  # Need to create this before loading
 a<-read.csv(dataTables_i); head(a); unique(a$scenario); unique(a$param); unique(a$x)
+
 
 # Read in the data from the function metis.readgcam
 rTable_i <- dataGCAM %>% dplyr::filter(value!=0)  %>%
@@ -151,6 +190,10 @@ rTable_i <- dataGCAM %>% dplyr::filter(value!=0)  %>%
 
 
 rTable_iMod <- rTable_i %>%
+  dplyr::filter(!grepl("intl|International",class1))%>%
+  dplyr::filter(!grepl("intl|International",class2))%>%
+  dplyr::filter(!grepl("CHP",class1))%>%
+  dplyr::filter(!grepl("CHP",class2))%>%
   dplyr::mutate(class1=case_when(param=="elecByTechTWh" ~ gsub("a Coal","Fossil",class1),TRUE~class1),
                 class1=case_when(param=="elecByTechTWh" ~ gsub("c Gas","Fossil",class1),TRUE~class1),
                 class1=case_when(param=="elecByTechTWh" ~ gsub("e Oil","Fossil",class1),TRUE~class1),
@@ -161,7 +204,7 @@ rTable_iMod <- rTable_i %>%
   dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
   dplyr::ungroup() %>% droplevels()
 
-paramsSelect_iMod=paramsSelect_i
+paramsSelect_iMod=unique(a$param)
 
 #----------------------------
 # REFERENCE
@@ -192,6 +235,7 @@ charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
                             folderName = "Reference",
                             scaleRange=scaleRange_i)
 
+
 charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             dataTables=dataTables_i, # Default is NULL
                             paramsSelect=paramsSelect_iMod, # Default is "All"
@@ -202,12 +246,12 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                             pdfpng="png", # Default is "png"
                             regionCompareOnly=0, # Default is "0"
-                            scenarioCompareOnly=1, # Default is "0"
+                            scenarioCompareOnly=0, # Default is "0"
                             useNewLabels=1,
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
-                            colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
+                            colOrder1 =scensSelect_i,
                             colOrderName1 = "scenario",
-                            folderName = "Reference",
+                            folderName = "Reference_Mod",
                             scaleRange=scaleRange_i)
 
 
@@ -250,7 +294,7 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
                             colOrder1 = c("GCAMRef","GFDL_RCP2p6","GFDL_RCP8p5"),
                             colOrderName1 = "scenario",
-                            folderName = "Impacts",
+                            folderName = "Impacts_Mod",
                             scaleRange=scaleRange_i)
 
 
@@ -742,6 +786,7 @@ numeric2Cat_list <-list(numeric2Cat_param=numeric2Cat_param,
                         numeric2Cat_labels=numeric2Cat_labels,
                         numeric2Cat_palette=numeric2Cat_palette,
                         numeric2Cat_legendTextSize=numeric2Cat_legendTextSize)
+
 
 list_index <- which(numeric2Cat_list$numeric2Cat_param=="griddedScarcity")
 catBreaks <- numeric2Cat_list$numeric2Cat_breaks[[list_index]]; catBreaks

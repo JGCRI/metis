@@ -51,13 +51,33 @@
 #' @param sizeLines Default 1.5
 #' @param xCompare Choose the years to compare scenarios for xScenSelectYears plot. Default is
 #' c("2015","2030","2050","2100")
-#' @param paramsSelect Default = "All". Select the paramaters to analyze from the the tables provided.
-#' Full list of parameters:
-#' c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
-#' "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
-#' "gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
-#' "agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-#' "LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")
+#' @param paramsSelect Default = "All". If desired dplyr::select a subset of paramaters to analyze from the full list of parameters:
+#' c(# energy
+#' "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
+#' "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
+#' "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
+#' "energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
+#' "energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
+#' "energyFinalSubsecByFuelBuildMTOE", "energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecBySectorBuildMTOE",
+#' "energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
+#' "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
+#' "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
+#' # electricity
+#' "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
+#' # transport
+#' "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
+#' # water
+#' "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
+#' # socioecon
+#' "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
+#' # ag
+#' "agProdbyIrrRfd","agProdBiomass", "agProdForest", "agProdByCrop",
+#' # land
+#' "landIrrRfd", "landAlloc","landAllocByCrop",
+#' # emissions
+#' "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
+#' "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
+#' "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")
 #' @param regionsSelect Default = "All". Select regions to create charts for.
 #' @param scensSelect Default = "All". Select regions to create charts for.
 #' @param xRange Default "All". Range of x values eg. c(2001:2005)
@@ -146,10 +166,10 @@ addMissing<-function(data){
     data<-data%>%dplyr::mutate(origScen=dplyr::case_when(is.na(origScen)~"scenario",TRUE~origScen))}
   if(!any(grepl("\\<scenario\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenario=origScen)}else{
     data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenario\\>",names(data),ignore.case = T)])[1])
-    data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~origScen,TRUE~origScen))}
+    data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~origScen,TRUE~scenario))}
   if(!any(grepl("\\<scenarios\\>",names(data),ignore.case = T))){}else{
     data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenarios\\>",names(data),ignore.case = T)])[1])
-    data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~origScen,TRUE~origScen))}
+    data<-data%>%dplyr::mutate(scenario=dplyr::case_when(is.na(scenario)~origScen,TRUE~scenario))}
   if(!any(grepl("\\<region\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(region="region")}else{
     data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<region\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(region=dplyr::case_when(is.na(region)~"region",TRUE~region))}

@@ -38,13 +38,33 @@ list f all scenarios}
 \item{xCompare}{Choose the years to compare scenarios for xScenSelectYears plot. Default is
 c("2015","2030","2050","2100")}
 
-\item{paramsSelect}{Default = "All". Select the paramaters to analyze from the the tables provided.
-Full list of parameters:
-c("finalNrgbySec", "primNrgConsumByFuel", "elecByTech",
-"watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "irrWatWithBasin","irrWatConsBasin",
-"gdpPerCapita", "gdp", "gdpGrowthRate", "pop", "agProdbyIrrRfd",
-"agProdBiomass", "agProdForest", "agProdByCrop", "landIrrRfd", "aggLandAlloc",
-"LUCemiss", "co2emission", "co2emissionByEndUse", "ghgEmissionByGHG", "ghgEmissByGHGGROUPS")}
+\item{paramsSelect}{Default = "All". If desired dplyr::select a subset of paramaters to analyze from the full list of parameters:
+c(# energy
+"energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
+"energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
+"energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
+"energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
+"energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
+"energyFinalSubsecByFuelBuildMTOE", "energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecBySectorBuildMTOE",
+"energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
+"energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
+"energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
+# electricity
+"elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
+# transport
+"transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
+# water
+"watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
+# socioecon
+"gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
+# ag
+"agProdbyIrrRfd","agProdBiomass", "agProdForest", "agProdByCrop",
+# land
+"landIrrRfd", "landAlloc","landAllocByCrop",
+# emissions
+"emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
+"emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
+"emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")}
 
 \item{regionsSelect}{Default = "All". Select regions to create charts for.}
 
