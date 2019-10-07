@@ -6,7 +6,7 @@
 #' List of Color Palettes
 #' \itemize{
 #' \item pal_HDDCDD
-#' \item pal_16
+#' \item pal_16f
 #' \item elec_tech_colors
 #' \item elec_renew_colors
 #' \item building_colors
@@ -39,7 +39,9 @@
 #' \item pal_div_BlRd
 #' \item pal_sankey
 #' \item pal_spectral
-#' \item pal_ScarcityCat}
+#' \item pal_ScarcityCat
+#' \item pal_ColoradoLandAlloc
+#' \item pal_ColoradoElecDemand}
 #' @param palx Palette name to view the palette colors. Eg. metis.colors("pal_Basic")
 #' @keywords colors, palette
 #' @return A list of color palettes.
@@ -71,8 +73,8 @@ metis.colors <- function(palx=NULL) {
     # Color scheme for electricity generation by aggregate fuel
     elec_tech_colors <- c(`a Coal` = "#a0237c", `b Coal w/CCS` = "#dab4c7", `c Gas` = "#25a9e0", `d Gas w/CCS` = "#84e7f9",
         `e Oil` = "#d01c2a", `f Oil w/CCS` = "#f7988f", `g Biomass` = "#00931d", `h Biomass w/CCS` = "#88c892",
-        `i Nuclear` = "#ef8e27", `j Geothermal` = "#ad440c", `k Hydro` = "#fdfa28", `l Wind` = "#3d86f9",
-        `m Solar` = "#fdd67b", `n CHP` = "#507fab", `o Battery` = "#92a75d", `energy reduction` = "grey")
+        `i Nuclear` = "#ef8e27", `j Geothermal` = "darkmagenta", `k Hydro` = "#3d86f9", `l Wind` = "#fdd67b",
+        `m Solar` = "#fdfa28", `n CHP` = "#507fab", `o Battery` = "#92a75d", `energy reduction` = "grey")
 
     elec_renew_colors <- c(liquids = "#d01c2a", gas = "#25a9e0", coal = "#a0237c", biomass = "#00931d",
         nuclear = "#ef8e27", hydro = "#fdfa28", `wind w/ backup` = "#3e85fd", `wind w/ storage` = "#9ec1fd",
@@ -290,6 +292,22 @@ metis.colors <- function(palx=NULL) {
                          "Moderate (0.2<WSI<0.4)" = "#FDAE61",
                          "Severe (WSI>0.4)" = "#9E0142"); pal_ScarcityCat
 
+    pal_ColoradoLandAlloc <- c("0-5" = "#f7fcf5","5-10" = "#e5f5e0","10-25" = "#c7e9c0", "25-50" = "#a1d99b",
+                               "50-100" = "#74c476","100-300" = "#41ab5d", "300-500" = "#238b45",
+                               "500-1000" = "#005a32"); pal_ColoradoLandAlloc
+
+    pal_ColoradoElecDemand <- c("0-5" = "#ffffcc","5-15" = "#ffeda0","15-25" = "#fed976", "25-50" = "#feb24c",
+                               "50-100" = "#fd8d3c","100-200" = "#fc4e2a", "200-400" = "#e31a1c",
+                               "400-600" = "#b10026"); pal_ColoradoElecDemand
+
+    pal_ColoradoTotalElecDemand <- c("0-0.5"='#ffffb2', "0.5-1.5"='#fed976', "1.5-79.9"='#feb24c',
+                                     '79.9-429.1'='#fd8d3c', '429.1-700.51'='#fc4e2a', '700.51-1000'='#e31a1c',
+                                     '1000-1200'='#b10026')
+
+    pal_ColoradoWater <- c("0-0.004"='#f7fbff', "0.004-0.07"='#deebf7', "0.07-0.25"='#c6dbef',
+                           '0.25-1'='#9ecae1', '1-2'='#6baed6', '2-3'='#4292c6',
+                           '3-4'='#2171b5','3-4.61'='#084594')
+
     if(!is.null(palx)){
     if(length(get(palx))>1){
       a<-get(palx)
@@ -298,9 +316,8 @@ metis.colors <- function(palx=NULL) {
       print(a)
     }}
 
-
-
-    invisible(list(pal_lu_type=pal_lu_type,pal_ag_type=pal_ag_type,pal_wat_dem=pal_wat_dem,pal_HDDCDD=pal_HDDCDD, pal_16 = pal_16, elec_tech_colors = elec_tech_colors, elec_renew_colors = elec_renew_colors,
+    invisible(list(pal_lu_type=pal_lu_type,pal_ag_type=pal_ag_type,pal_wat_dem=pal_wat_dem,pal_HDDCDD=pal_HDDCDD,
+                   pal_16 = pal_16, elec_tech_colors = elec_tech_colors, elec_renew_colors = elec_renew_colors,
         building_colors = building_colors, trn_fuel_colors = trn_fuel_colors, enduse_fuel_numbered = enduse_fuel_numbered,
         enduse_colors = enduse_colors, pal_pri_ene = pal_pri_ene, pal_pri_fuelcost = pal_pri_fuelcost,
         pal_emiss_sector = pal_emiss_sector, pal_landuse = pal_landuse, pal_hydrogen = pal_hydrogen,
@@ -308,5 +325,8 @@ metis.colors <- function(palx=NULL) {
         pal_Basic = pal_Basic, pal_Gas = pal_Gas, pal_nrg = pal_nrg,
         pal_pri_ene = pal_pri_ene,
         pal_hot = pal_hot,pal_wet=pal_wet, pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,pal_green=pal_green,
-        pal_div_BrGn=pal_div_BrGn,pal_div_BlRd=pal_div_BlRd,pal_sankey=pal_sankey, pal_spectral=pal_spectral, pal_ScarcityCat=pal_ScarcityCat))
+        pal_div_BrGn=pal_div_BrGn,pal_div_BlRd=pal_div_BlRd,pal_sankey=pal_sankey, pal_spectral=pal_spectral,
+        pal_ScarcityCat=pal_ScarcityCat, pal_ColoradoLandAlloc=pal_ColoradoLandAlloc,
+        pal_ColoradoElecDemand=pal_ColoradoElecDemand, pal_ColoradoTotalElecDemand=pal_ColoradoTotalElecDemand,
+        pal_ColoradoWater=pal_ColoradoWater))
 }
