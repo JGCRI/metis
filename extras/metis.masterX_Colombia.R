@@ -36,7 +36,7 @@ library(ggalluvial)
 
 # Connect to gcam database or project
   gcamdatabasePath_i <-'G:/IDBNexus/Final' # 'C:/Users/twild/Downloads/pic'  #  # Use if gcamdatabase is needed
-  gcamdatabaseName_i <-"Sep272019" # "Reference_originalSW" Use if gcamdatabse is needed
+  gcamdatabaseName_i <-"Oct042019" # "Reference_originalSW" Use if gcamdatabse is needed
   dataProjPath_i <- paste(getwd(),"/outputs",sep="") # Path to dataProj file.
   dataProj_i <-"IDBNexusFinal.proj"  # Use if gcamdata has been saved as .proj file
 
@@ -44,8 +44,8 @@ library(ggalluvial)
 #  rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
 #  dataProjLoaded <- loadProject(paste(dataProjPath_i, "/",dataProj_i , sep = ""))
 #  listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
-  scenOrigNames_i = c('GCAMOriginal', "Reference", "Impacts", "Policy") #  c(, "DeepDecarb1Mkt_2DS")
-  scenNewNames_i = c("Original",  "Reference", "Climate Impacts", "Climate Policy") #  c(, "DeepDecarb1Mkt_2DS"")  # Names to replace the original names for final figures.
+  scenOrigNames_i = c("Reference", "Impacts", "Policy") #  c(, "DeepDecarb1Mkt_2DS")  #'GCAMOriginal',
+  scenNewNames_i = c("Reference", "Climate Impacts", "Climate Policy") # "Original",   c(, "DeepDecarb1Mkt_2DS"")  # Names to replace the original names for final figures.
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
   paramsSelect_i = "All"
@@ -55,7 +55,7 @@ library(ggalluvial)
 
   # Reading in the no bio query so it works with Rgcam
 
-  dataGCAM<-metis.readgcam(reReadData = T,  # F
+  dataGCAM<-metis.readgcam(reReadData = F,  # F
                            gcamdatabasePath = gcamdatabasePath_i ,
                            gcamdatabaseName = gcamdatabaseName_i,
                            scenOrigNames = scenOrigNames_i,
@@ -109,6 +109,8 @@ library(ggalluvial)
 # Select regions from the 32 GCAM regions.
 # paramsSelect_i <- c('BuildFinalNrgBySector')
 # Charts Process
+  #regionsSelect_i <- c('Colombia')
+  #paramsSelect_i <- c("elecByTech", "watWithdrawBySec")
   charts<-metis.chartsProcess(
                           rTable=rTable_i, # Default is NULL
                           #dataTables=dataTables_i, # Default is NULL
@@ -122,5 +124,6 @@ library(ggalluvial)
                           useNewLabels = 0,
                           folderName = "IDBNexusFinal",
                           xRange = c(2020, 2030, 2040, 2050),
-                          colOrder1 = c("Original",  "Reference", "Climate Impacts", "Climate Policy"),
-                          colOrderName1 = "scenario") # Default 0. If set to 1, will only run comparison plots and not individual
+                          colOrder1 = c("Reference", "Climate Impacts", "Climate Policy"), #"Original",
+                          colOrderName1 = "scenario",
+                          pdfpng='pdf') # Default 0. If set to 1, will only run comparison plots and not individual

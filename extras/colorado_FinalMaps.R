@@ -52,8 +52,8 @@ paramNames <- c('total_ag_supply', 'livestock_water_demand', 'available_water', 
                 'electricity_water_demand', 'irrigation_water_demand', 'municipal_water_demand',
                 'population', 'runoff', 'total_water_demand', 'griddedScarcity', 'total_livestock_supply',
                 'Ag_cereals_supply', 'Ag_fruittrees_supply', 'Ag_pasture_supply', 'Ag_specialty_supply',
-                'Ag_vegetables_supply', 'population')
-paramNames <- c('population')
+                'Ag_vegetables_supply', 'population', 'ElecDemand_commercial', 'ElecDemand_export',
+                'ElecDemand_industrial', 'ElecDemand_other', 'ElecDemand_residential', 'ElecDemand_Total')
 
 for(scen in ScenarioNames){
   for(param in paramNames){
@@ -86,8 +86,40 @@ for(scen in ScenarioNames){
       numeric2Cat_list[['numeric2Cat_palette']] <- numeric2Cat_palette
     }else if(param %in% c('Ag_cereals_supply', 'Ag_fruittrees_supply', 'Ag_pasture_supply', 'Ag_specialty_supply',
                           'Ag_vegetables_supply')){
-      numeric2Cat_breaks <- list(c(0, 25, 50, 100, 300, 500, 1000))
+        numeric2Cat_breaks <- list(c(-Inf, 5, 10, 25, 50, 100, 300, 500, 1000))
+        numeric2Cat_labels <- list(c("0-5", "5-10", "10-25","25-50","50-100","100-300", "300-500", "500-1000"))
+        numeric2Cat_palette <- list(c("pal_ColoradoLandAlloc")) # Can be a custom scale or an R brewer paletter or a metis.pal
+        numeric2Cat_list[['numeric2Cat_labels']] <- numeric2Cat_labels
+        numeric2Cat_list[['numeric2Cat_breaks']] <- numeric2Cat_breaks
+        numeric2Cat_list[['numeric2Cat_palette']] <- numeric2Cat_palette
+
+       #scaleRange_i=data.frame(param=param,
+       #                       maxScale=c(1000),
+       #                       minScale=c(0))
+      #numeric2Cat_list[['numeric2Cat_breaks']] <- numeric2Cat_breaks
+    }else if(param %in% c('ElecDemand_commercial', 'ElecDemand_export', 'ElecDemand_industrial', 'ElecDemand_other',
+                          'ElecDemand_residential')){
+      numeric2Cat_breaks <- list(c(-Inf, 5, 15, 25, 50, 100, 200, 400, 600))
+      numeric2Cat_labels <- list(c("0-5", "5-15", "15-25","25-50","50-100","100-200", "200-400", "400-600"))
+      numeric2Cat_palette <- list(c("pal_ColoradoElecDemand")) # Can be a custom scale or an R brewer paletter or a metis.pal
+      numeric2Cat_list[['numeric2Cat_labels']] <- numeric2Cat_labels
       numeric2Cat_list[['numeric2Cat_breaks']] <- numeric2Cat_breaks
+      numeric2Cat_list[['numeric2Cat_palette']] <- numeric2Cat_palette
+    }else if(param %in% c('ElecDemand_Total', 'total_elec_supply')){
+      numeric2Cat_breaks <- list(c(-Inf, 0.5, 1.5, 79.9, 429.1, 700.51, 1000, 1200))
+      numeric2Cat_labels <- list(c("0-0.5", "0.5-1.5", "1.5-79.9",'79.9-429.1','429.1-700.51', '700.51-1000', '1000-1200'))
+      numeric2Cat_palette <- list(c("pal_ColoradoTotalElecDemand")) # Can be a custom scale or an R brewer paletter or a metis.pal
+      numeric2Cat_list[['numeric2Cat_labels']] <- numeric2Cat_labels
+      numeric2Cat_list[['numeric2Cat_breaks']] <- numeric2Cat_breaks
+      numeric2Cat_list[['numeric2Cat_palette']] <- numeric2Cat_palette
+    }else if(param %in% c('livestock_water_demand', 'available_water', 'electricity_water_demand',
+                          'irrigation_water_demand', 'municipal_water_demand', 'runoff', 'total_water_demand')){
+      numeric2Cat_breaks <- list(c(-Inf, 0.004, 0.07, 0.25, 1, 2, 3, 4, 4.61))
+      numeric2Cat_labels <- list(c("0-0.004", "0.004-0.07", "0.07-0.25",'0.25-1','1-2', '2-3', '3-4', '3-4.61'))
+      numeric2Cat_palette <- list(c("pal_ColoradoWater")) # Can be a custom scale or an R brewer paletter or a metis.pal
+      numeric2Cat_list[['numeric2Cat_labels']] <- numeric2Cat_labels
+      numeric2Cat_list[['numeric2Cat_breaks']] <- numeric2Cat_breaks
+      numeric2Cat_list[['numeric2Cat_palette']] <- numeric2Cat_palette
     }
 
     list_index <- which(numeric2Cat_list$numeric2Cat_param==param)

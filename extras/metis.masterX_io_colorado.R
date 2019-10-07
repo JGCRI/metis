@@ -127,7 +127,7 @@ for(scen in scenarios){
   new_df_append['subRegType'] <- 'localBasin'
   new_df_append['x'] <- 2010
   new_df_append['value'] <- 0
-  new_df_append['classPalette'] <- 'Blues'
+  new_df_append['classPalette'] <- 'pal_ColoradoWater'
   new_df_append['classLabel'] <- 'Runoff'
   for (subReg in subregions){
     df <- ioTable0 %>%
@@ -152,7 +152,7 @@ for(scen in scenarios){
   new_df_append['subRegType'] <- 'localBasin'
   new_df_append['x'] <- 2010
   new_df_append['value'] <- 0
-  new_df_append['classPalette'] <- 'Blues'
+  new_df_append['classPalette'] <- 'pal_ColoradoWater'
   new_df_append['classLabel'] <- 'IrrigationDemand'
   for (subReg in subregions){
     df <- ioTable0 %>%
@@ -177,8 +177,8 @@ for(scen in scenarios){
   new_df_append['subRegType'] <- 'localBasin'
   new_df_append['x'] <- 2010
   new_df_append['value'] <- 0
-  new_df_append['classPalette'] <- 'Blues'
-  new_df_append['classLabel'] <- 'MunicipalDemand'
+  new_df_append['classPalette'] <- 'pal_ColoradoWater'
+  new_df_append['classLabel'] <- 'MunicipalWatDemand'
   for (subReg in subregions){
     df <- ioTable0 %>%
       filter(subRegion==subReg) %>%
@@ -203,8 +203,8 @@ for(scen in scenarios){
   new_df_append['subRegType'] <- 'localBasin'
   new_df_append['x'] <- 2010
   new_df_append['value'] <- 0
-  new_df_append['classPalette'] <- 'Blues'
-  new_df_append['classLabel'] <- 'ElectricityDemand'
+  new_df_append['classPalette'] <- 'pal_ColoradoWater'
+  new_df_append['classLabel'] <- 'ElectricityWatDemand'
   for (subReg in subregions){
     df <- ioTable0 %>%
       filter(subRegion==subReg) %>%
@@ -229,8 +229,8 @@ for(scen in scenarios){
   new_df_append['subRegType'] <- 'localBasin'
   new_df_append['x'] <- 2010
   new_df_append['value'] <- 0
-  new_df_append['classPalette'] <- 'Blues'
-  new_df_append['classLabel'] <- 'ElectricityDemand'
+  new_df_append['classPalette'] <- 'pal_ColoradoWater'
+  new_df_append['classLabel'] <- 'LivestockWatDemand'
   for (subReg in subregions){
     df <- ioTable0 %>%
       filter(subRegion==subReg) %>%
@@ -254,7 +254,7 @@ for(scen in scenarios){
   new_df_append['subRegType'] <- 'localBasin'
   new_df_append['x'] <- 2010
   new_df_append['value'] <- 0
-  new_df_append['classPalette'] <- 'Blues'
+  new_df_append['classPalette'] <- 'pal_ColoradoWater'
   new_df_append['classLabel'] <- 'AvailableWater'
   for (subReg in subregions){
     df <- ioTable0 %>%
@@ -279,7 +279,7 @@ for(scen in scenarios){
   new_df_append['subRegType'] <- 'localBasin'
   new_df_append['x'] <- 2010
   new_df_append['value'] <- 0
-  new_df_append['classPalette'] <- 'Blues'
+  new_df_append['classPalette'] <- 'pal_ColoradoWater'
   new_df_append['classLabel'] <- 'WaterDemand'
   for (subReg in subregions){
     df <- ioTable0 %>%
@@ -304,7 +304,7 @@ for(scen in scenarios){
   new_df_append['subRegType'] <- 'localBasin'
   new_df_append['x'] <- 2010
   new_df_append['value'] <- 0
-  new_df_append['classPalette'] <- 'YlOrRd'
+  new_df_append['classPalette'] <- 'pal_ColoradoTotalElecDemand'
   new_df_append['classLabel'] <- 'ElecSupply'
   for (subReg in subregions){
     df <- ioTable0 %>%
@@ -317,6 +317,75 @@ for(scen in scenarios){
     total_elec_supply <- sum((df)$rowsum, na.rm=TRUE)
     new_df_append <- new_df_append %>%
       mutate(value = if_else(subRegion==subReg, total_elec_supply, value))
+  }
+  mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
+  export_df <- mapping_df %>% filter(param %in% params)
+  write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
+
+  # Store/export data related to electricity demand by subsector
+  # Get a list of electricity demand sectors included in data set
+  demData <- demand_data
+  demData$demandClass <- as.character(demData$demandClass)
+  demandSubSec_List <- unique((demData %>%
+                                 filter(scenario==scenario_name) %>%
+                                 filter(grepl("Electricity_", supplySubSector)))$demandClass)
+  for (demSec in demandSubSec_List){
+    params <- c(paste0('ElecDemand_', demSec))
+    new_df_append['param'] <- params
+    new_df_append['units'] <- 'GWh'
+    new_df_append['class'] <- params
+    new_df_append['subRegType'] <- 'localBasin'
+    new_df_append['x'] <- 2010
+    new_df_append['value'] <- 0
+    new_df_append['classPalette'] <- 'pal_ColoradoElecDemand'
+    new_df_append['classLabel'] <- params
+    for (subReg in subregions){
+      df <- demData %>%
+        filter(subRegion==subReg) %>%
+        filter(scenario==scenario_name) %>%
+        filter(grepl(demSec, demandClass)) %>%
+        filter(grepl("Electricity_", supplySubSector)) %>%
+        select(-scenario, -subRegion, -supplySector, -supplySubSector, -dataSource, -region, -units, -param, -year)
+      if (dim(df)[1] > 0){
+        total_elec_demand_tbl <- df %>%
+          group_by(demandClass) %>%
+          summarize(total=sum(localData, na.rm=TRUE)) %>%
+          ungroup()
+        total_elec_demand <- total_elec_demand_tbl$total
+        new_df_append <- new_df_append %>%
+          mutate(value = if_else(subRegion==subReg, total_elec_demand, value))
+      }
+    }
+    mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
+    export_df <- mapping_df %>% filter(param %in% params)
+    write.csv(export_df, file=paste0(save_dir, '/', params, '_', scenario_name, '.csv'), row.names=FALSE)
+  }
+
+  # Store/export data related to total electricity demand
+  params <- c('ElecDemand_Total')
+  new_df_append['param'] <- params
+  new_df_append['units'] <- 'GWh'
+  new_df_append['class'] <- params
+  new_df_append['subRegType'] <- 'localBasin'
+  new_df_append['x'] <- 2010
+  new_df_append['value'] <- 0
+  new_df_append['classPalette'] <- 'pal_ColoradoTotalElecDemand'
+  new_df_append['classLabel'] <- params
+  for (subReg in subregions){
+    df <- demData %>%
+      filter(subRegion==subReg) %>%
+      filter(scenario==scenario_name) %>%
+      filter(grepl("Electricity_", supplySubSector)) %>%
+      select(-scenario, -subRegion, -supplySector, -supplySubSector, -dataSource, -region, -units, -param, -year)
+    if (dim(df)[1] > 0){
+      total_elec_demand_tbl <- df %>%
+        group_by(demandClass) %>%
+        summarize(total=sum(localData, na.rm=TRUE)) %>%
+        ungroup()
+      total_elec_demand <- sum(total_elec_demand_tbl$total)
+      new_df_append <- new_df_append %>%
+        mutate(value = if_else(subRegion==subReg, total_elec_demand, value))
+    }
   }
   mapping_df <- rbind(mapping_df %>% filter(!param==params), new_df_append)
   export_df <- mapping_df %>% filter(param %in% params)
@@ -392,7 +461,7 @@ for(scen in scenarios){
     new_df_append['subRegType'] <- 'localBasin'
     new_df_append['x'] <- 2010
     new_df_append['value'] <- 0
-    new_df_append['classPalette'] <- 'Greens'
+    new_df_append['classPalette'] <- 'pal_ColoradoLandAlloc'
     new_df_append['classLabel'] <- params
     for (subReg in subregions){
       df <- ioTable0 %>%
