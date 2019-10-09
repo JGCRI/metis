@@ -367,8 +367,8 @@
 			   <rewrite from="SheepGoat" to="livestock"/>
 			   <rewrite from="Pork" to="livestock"/>
 			   <rewrite from="unconventional oil production" to="mining"/>
-			   <rewrite from="nuclearFuelGenIII" to="electricity"/>
-			   <rewrite from="nuclearFuelGenII" to="electricity"/>
+			   <rewrite from="nuclearFuelGenIII" to="mining"/>
+			   <rewrite from="nuclearFuelGenII" to="mining"/>
 			   <rewrite from="regional oil" to="mining"/>
 			   <rewrite from="regional coal" to="mining"/>
 			   <rewrite from="regional natural gas" to="mining"/>
@@ -427,8 +427,8 @@
 			   <rewrite from="SheepGoat" to="livestock"/>
 			   <rewrite from="Pork" to="livestock"/>
 			   <rewrite from="unconventional oil production" to="mining"/>
-			   <rewrite from="nuclearFuelGenIII" to="electricity"/>
-			   <rewrite from="nuclearFuelGenII" to="electricity"/>
+			   <rewrite from="nuclearFuelGenIII" to="mining"/>
+			   <rewrite from="nuclearFuelGenII" to="mining"/>
 			   <rewrite from="regional oil" to="mining"/>
 			   <rewrite from="regional coal" to="mining"/>
 			   <rewrite from="regional natural gas" to="mining"/>
