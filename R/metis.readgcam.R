@@ -885,8 +885,8 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
           dplyr::bind_rows(tblFinalNrgIntlAvShipMod) %>%
           tidyr::spread(key="class1",value="value") %>%
           dplyr::mutate(`a oil`=`a oil` -`International Aviation oil`-`International Ship oil`)%>%
-          dplyr::rename(`oil intl av`=`International Aviation oil`,
-                        `oil intl shp`=`International Ship oil`)%>%
+          dplyr::rename(`p oil intl aviation`=`International Aviation oil`,
+                        `q oil intl shipping`=`International Ship oil`)%>%
           tidyr::gather(key="class1",value="value",
                         -scenario, -region, -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
                         -classLabel1, -classPalette1, -classLabel2, -classPalette2,
