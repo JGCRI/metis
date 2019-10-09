@@ -48,16 +48,21 @@ library(ggalluvial)
   scenNewNames_i = c("Reference", "Climate Impacts", "Climate Policy") # "Original",   c(, "DeepDecarb1Mkt_2DS"")  # Names to replace the original names for final figures.
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.readgcam
-  paramsSelect_i <- c("watWithdrawByCrop")  # "All"
+ # paramsSelect_i <- c('aggLandAlloc')
 
-  queriesSelect_i <- c("water withdrawals by crop", "water withdrawals by sector")
+  paramsSelect_i <- c('All')
+
+#  queriesSelect_i <- c("land allocation by crop and water source",
+#                       "aggregated land allocation",
+#                       "land allocation by crop")
+  queriesSelect_i <- c("All")
 
 # Select regions from the 32 GCAM regions.
   regionsSelect_i <- c("Colombia", "Argentina", "Uruguay")
 
   # Reading in the no bio query so it works with Rgcam
 
-  dataGCAM<-metis.readgcam(reReadData = T,  # F
+  dataGCAM<-metis.readgcam(reReadData = F,  # F
                            gcamdatabasePath = gcamdatabasePath_i ,
                            gcamdatabaseName = gcamdatabaseName_i,
                            scenOrigNames = scenOrigNames_i,
@@ -108,7 +113,7 @@ library(ggalluvial)
                    "BuildFinalNrgBySector",
                    "co2emissionBySectorNoBio", "PassengerVMTByFuel", "FreightVMTByFuel", "RefiningByLiq")
   paramsSelect_i <- "All"
-  paramsSelect_i <- c('watWithdrawByCrop')
+  #paramsSelect_i <- c('watWithdrawByCrop', 'aggLandAlloc')
 
 # Select regions from the 32 GCAM regions.
 # paramsSelect_i <- c('BuildFinalNrgBySector')
