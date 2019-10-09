@@ -367,8 +367,8 @@
 			   <rewrite from="SheepGoat" to="livestock"/>
 			   <rewrite from="Pork" to="livestock"/>
 			   <rewrite from="unconventional oil production" to="mining"/>
-			   <rewrite from="nuclearFuelGenIII" to="electricity"/>
-			   <rewrite from="nuclearFuelGenII" to="electricity"/>
+			   <rewrite from="nuclearFuelGenIII" to="mining"/>
+			   <rewrite from="nuclearFuelGenII" to="mining"/>
 			   <rewrite from="regional oil" to="mining"/>
 			   <rewrite from="regional coal" to="mining"/>
 			   <rewrite from="regional natural gas" to="mining"/>
@@ -403,17 +403,23 @@
          <labelRewriteList append-values="false">
             <level name="sector">
                <rewrite from="elec_coal (conv pul)" to="electricity"/>
+               <rewrite from="elec_coal (conv pul CCS)" to="electricity"/>
                <rewrite from="elec_gas (CC)" to="electricity"/>
+               <rewrite from="elec_gas (CC CCS)" to="electricity"/>
                <rewrite from="elec_CSP" to="electricity"/>
                <rewrite from="elec_Gen_II_LWR" to="electricity"/>
                <rewrite from="elec_refined liquids (CC)" to="electricity"/>
+               <rewrite from="elec_refined liquids (CC CCS)" to="electricity"/>
                <rewrite from="elec_refined liquids (steam/CT)" to="electricity"/>
                <rewrite from="elec_Gen_III" to="electricity"/>
                <rewrite from="elec_geothermal" to="electricity"/>
                <rewrite from="elec_biomass (conv)" to="electricity"/>
+               <rewrite from="elec_biomass (conv CCS)" to="electricity"/>
                <rewrite from="elec_gas (steam/CT)" to="electricity"/>
                <rewrite from="elec_biomass (IGCC)" to="electricity"/>
+               <rewrite from="elec_biomass (IGCC CCS)" to="electricity"/>
                <rewrite from="elec_coal (IGCC)" to="electricity"/>
+               <rewrite from="elec_coal (IGCC CCS)" to="electricity"/>
                <rewrite from="elec_CSP_storage" to="electricity"/>
 			   <rewrite from="Beef" to="livestock"/>
 			   <rewrite from="Dairy" to="livestock"/>
@@ -421,11 +427,12 @@
 			   <rewrite from="SheepGoat" to="livestock"/>
 			   <rewrite from="Pork" to="livestock"/>
 			   <rewrite from="unconventional oil production" to="mining"/>
-			   <rewrite from="nuclearFuelGenIII" to="mining"/>
-			   <rewrite from="nuclearFuelGenII" to="mining"/>
+			   <rewrite from="nuclearFuelGenIII" to="electricity"/>
+			   <rewrite from="nuclearFuelGenII" to="electricity"/>
 			   <rewrite from="regional oil" to="mining"/>
 			   <rewrite from="regional coal" to="mining"/>
 			   <rewrite from="regional natural gas" to="mining"/>
+			   <rewrite from="biomass" to="biomass"/>
 			   <rewrite from="municipal water" to="municipal"/>
 			   <rewrite from="industry" to="industry"/>
             </level>
