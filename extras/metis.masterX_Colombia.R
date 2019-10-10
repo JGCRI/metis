@@ -36,7 +36,7 @@ library(ggalluvial)
 
 # Connect to gcam database or project
   gcamdatabasePath_i <-'G:/IDBNexus/Final' # 'C:/Users/twild/Downloads/pic'  #  # Use if gcamdatabase is needed
-  gcamdatabaseName_i <-"Oct042019" # "Reference_originalSW" Use if gcamdatabse is needed
+  gcamdatabaseName_i <-"Oct072019" # "Reference_originalSW" Use if gcamdatabse is needed
   dataProjPath_i <- paste(getwd(),"/outputs",sep="") # Path to dataProj file.
   dataProj_i <-"IDBNexusFinal.proj"  # Use if gcamdata has been saved as .proj file
 
@@ -62,7 +62,7 @@ library(ggalluvial)
 
   # Reading in the no bio query so it works with Rgcam
 
-  dataGCAM<-metis.readgcam(reReadData = F,  # F
+  dataGCAM<-metis.readgcam(reReadData = T,  # F
                            gcamdatabasePath = gcamdatabasePath_i ,
                            gcamdatabaseName = gcamdatabaseName_i,
                            scenOrigNames = scenOrigNames_i,
