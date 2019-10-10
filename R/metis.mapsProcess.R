@@ -145,7 +145,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            fillcolorNA="gray",
                            fillshowNA=NA,
                            fillcolorNULL="gray",
-                           legendSingleColorOn=F,
+                           legendSingleColorOn=T,
                            legendSingleValue=0,
                            legendSingleColor="white"){
 
@@ -213,6 +213,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # fillcolorNA="gray"
   # fillshowNA=NA
   # fillcolorNULL="gray"
+  # legendSingleColorOn=T
+  # legendSingleValue=0
+  # legendSingleColor="white"
+  # pdfpng = 'png'
 
 
   #------------------
@@ -685,7 +689,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       for (scenario_i in unique(gridTbl$scenario)[unique(gridTbl$scenario)!=scenRef_i]){
         tbl_temp1 <-gridTblDiff%>%
           dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBlu")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(gridTbl$scenario))))
         tbl_temp1<-tbl_temp1%>%
           tidyr::gather(key=scenario,value=value,
@@ -694,7 +698,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
         tbl_temp2 <-gridTblDiff%>%
           dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBlu")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(gridTbl$scenario))))
         tbl_temp2<-tbl_temp2%>%
           tidyr::gather(key=scenario,value=value,
@@ -741,7 +745,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       for (scenario_i in unique(shapeTbl$scenario)[unique(shapeTbl$scenario)!=scenRef_i]){
         tbl_temp1 <-shapeTblDiff%>%
           dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBlu")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(shapeTbl$scenario))))
         tbl_temp1<-tbl_temp1%>%
           tidyr::gather(key=scenario,value=value,
@@ -750,7 +754,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
         tbl_temp2 <-shapeTblDiff%>%
           dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBlu")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(shapeTbl$scenario))))
         tbl_temp2<-tbl_temp2%>%
           tidyr::gather(key=scenario,value=value,
@@ -2115,7 +2119,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                       if(any(unique(datax$classPalette) %in% c("pal_wet","pal_hot","pal_green"))){
                         datax <- datax %>% dplyr::mutate(classPalette = dplyr::case_when(classPalette=="pal_wet"~"pal_div_wet",
-                                                                                          classPalette=="pal_hot"~"pal_div_BlRd",
+                                                                                          classPalette=="pal_hot"~"pal_div_RdBlu",
                                                                                           classPalette=="pal_green"~"pal_div_BrGn",
                                                                                           TRUE~classPalette))
                       }
