@@ -23,7 +23,7 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
   ""), folderName = NULL, figWidth = 13, figHeight = 9,
   pdfpng = "png", sankeyLabelsOn = 1, colOrder1 = NULL,
   colOrderName1 = NULL, colOrder2 = NULL, colOrderName2 = NULL,
-  pointsOn = 1, pointsSize = 4)
+  pointsOn = 1, pointsSize = 4, paletteRev = T, forceFacets = F)
 }
 \arguments{
 \item{data}{Data table for charting}
@@ -133,6 +133,10 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
 \item{pointsOn}{Include points on lines. Default = 1}
 
 \item{pointsSize}{ISize of points on line. Default = 4}
+
+\item{paletteRev}{Default =T}
+
+\item{forceFacets}{Default =F. When you have one facet only and want to show that.}
 }
 \value{
 Returns the formatted data used to produce chart

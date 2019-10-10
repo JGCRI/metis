@@ -57,6 +57,8 @@
 #' @param title Figure title. Default = NULL
 #' @param pointsOn Include points on lines. Default = 1
 #' @param pointsSize ISize of points on line. Default = 4
+#' @param paletteRev Default =T
+#' @param forceFacets Default =F. When you have one facet only and want to show that.
 #' @keywords charts, diffplots, bubble, sankey.
 #' @return Returns the formatted data used to produce chart
 #' @import ggplot2
@@ -164,7 +166,9 @@ metis.chart<-function(data,
                          colOrder2 = NULL,
                          colOrderName2 = NULL,
                          pointsOn = 1,
-                         pointsSize = 4)
+                         pointsSize = 4,
+                         paletteRev=T,
+                         forceFacets=F)
                         {
 
   # dataNorm=NULL
@@ -178,6 +182,8 @@ metis.chart<-function(data,
   # classLabel="classLabel1"
   # xLabel="xLabel"
   # yLabel="yLabel"
+  # yMax=NULL
+  # yMin=NULL
   # facet_rows="NULL"
   # facet_columns="NULL"
   # facetBGColor="grey30"
@@ -220,20 +226,27 @@ metis.chart<-function(data,
 # Initialize variables to remove binding errors if needed
 # -----------------
 
-NULL -> value -> tempName -> sankeyHjustCheck -> value1
+NULL -> value -> tempName -> sankeyHjustCheck -> value1 -> levelsOn
 StatStratum <- ggalluvial::StatStratum # This is done so that ggplot2 recognizes stat stratum
 
 
 #------------------
 # Create Directories
 # -----------------
+if(!is.null(dirOutputs)){
+  if (!dir.exists(paste(dirOutputs,sep=""))){dir.create(paste(dirOutputs,sep=""))}
+  if(!is.null(folderName)){
+    if (!dir.exists(paste(dirOutputs,"/",folderName,sep=""))){dir.create(paste(dirOutputs,"/",folderName,sep=""))}
+    if(dirOutputs==paste(dirOutputs,sep="")){dirOutputs=paste(dirOutputs,"/",folderName,sep="")}
+  }
+}else{
 if (!dir.exists(paste(getwd(),"/outputs",sep=""))){dir.create(paste(getwd(),"/outputs",sep=""))}
 if (!dir.exists(paste(getwd(),"/outputs/Charts",sep=""))){dir.create(paste(getwd(),"/outputs/Charts",sep=""))}
 if(!is.null(folderName)){
   if (!dir.exists(paste(getwd(),"/outputs/Charts/",folderName,sep=""))){dir.create(paste(getwd(),"/outputs/Charts/",folderName,sep=""))}
   if(dirOutputs==paste(getwd(),"/outputs/Charts",sep="")){dirOutputs=paste(getwd(),"/outputs/Charts/",folderName,sep="")}
   }
-
+}
 
 #------------------------------------------
 # Format data to include any missing columns
@@ -245,6 +258,7 @@ if(length(names(data))<2){stop("Need to provide a data object with at least x an
 
 if(!"units"%in%names(data)){data<-data%>%dplyr::mutate(units="units")}
 if(!"classPalette1"%in%names(data)){data<-data%>%dplyr::mutate(classPalette1="pal_16")}
+if("class"%in%names(data)){data<-data%>%dplyr::mutate(class="class1")}
 if(!"class1"%in%names(data)){data<-data%>%dplyr::mutate(class1="class1")}
 if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
@@ -282,7 +296,8 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
   }
   }
 
-  l1[[class]]<-factor(l1[[class]],levels=unique(l1[[class]]))
+  if(class(l1[[class]])=="factor"){l1[[class]]<-factor(l1[[class]],levels=levels(l1[[class]])); levelsOn=T}else{
+  l1[[class]]<-factor(l1[[class]],levels=unique(l1[[class]])); levelsOn=F}
 
   if(!is.null(names(paletteX))){
     if(!all(levels(l1[[class]]) %in% names(paletteX))){
@@ -290,12 +305,17 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
   names(add_colors)<-levels(l1[[class]])[!levels(l1[[class]]) %in% names(paletteX)]
   paletteX<-c(paletteX,add_colors)}}
 
+  if(class(l1[[class]])=="factor"){
+    if(all(levels(l1[[class]]) %in% names(paletteX))){
+  paletteX<-paletteX[levels(l1[[class]])]}}
+
   if(useNewLabels==1){
     if(!is.null(names(paletteX))){
       names(paletteX)<-tools::toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",names(paletteX)))
-      paletteX <- paletteX[rev(order(names(paletteX)))]}
+      if(paletteRev==T){paletteX <- paletteX[rev(order(names(paletteX)))]}}
     l1[[class]]<-tools::toTitleCase(sub("\\b[a-zA-Z0-9]{1} \\b", "",l1[[class]]))
     l1<-l1%>%dplyr::arrange(!! rlang::sym(class))
+    if(levelsOn){l1[[class]]<-factor(l1[[class]],levels=names(paletteX))}
   }
 
   # Set column order
@@ -392,12 +412,16 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
 
     if(!grepl("class",class)){
-      p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
+      if(paletteRev==T){p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
+        p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = F))
+      }}else{
         if(length(unique(l1[[class]]))<2){
           if(!is.null(color)){value1=color}else{value1="firebrick"}
           p = p + theme(legend.position="none") + scale_fill_manual(values=value1)
         }else{
-          p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))
+          if(paletteRev==T){p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))}else{
+            p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = F))
+          }
         }
       }
 
@@ -425,12 +449,16 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
             ifelse(length(unique(l1[[yData]]))/length(unique(l1[[xData]])) < 0.05, 0.05, length(unique(l1[[yData]]))/length(unique(l1[[xData]])))))
 
     if(!grepl("class",class)){
-      p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
+      if(paletteRev==T){p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
+        p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = F))
+      }}else{
         if(length(unique(l1[[class]]))<2){
           if(!is.null(color)){value1=color}else{value1="firebrick"}
           p = p + theme(legend.position="none") + scale_fill_manual(values=value1)
         }else{
-          p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))
+          if(paletteRev==T){p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))}else{
+            p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = F))
+          }
         }
       }
 
@@ -442,12 +470,17 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
   p <- p + geom_bar(aes(fill=get(class)),size=sizeBarLines,color="black", stat="identity",position=position) +
            scale_fill_manual(values=paletteX) + guides(color=F)
   if(!grepl("class",class)){
-    p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
+    if(paletteRev==T){p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
+      p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = F))
+    }}
+  else{
       if(length(unique(l1[[class]]))<2){
         if(!is.null(color)){value1=color}else{value1="firebrick"}
         p = p + theme(legend.position="none") + scale_fill_manual(values=value1)
       }else{
-        p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))
+        if(paletteRev==T){p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))}else{
+          p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = F))
+        }
       }
     }
 
@@ -510,17 +543,30 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
 
   if(!is.null(facet_rows) & !is.null(facet_columns)){
 
+    if(forceFacets==T){p <- p + facet_grid(get(facet_rows)~get(facet_columns),scales=scales)}else{
+
     if(length(unique(l1[[facet_rows]]))>1 & length(unique(l1[[facet_columns]]))>1){
     p <- p + facet_grid(get(facet_rows)~get(facet_columns),scales=scales)} else {
 
       if(length(unique(l1[[facet_rows]]))>1 & !length(unique(l1[[facet_columns]]))>1){
-        p <- p + facet_wrap(facet_rows,nrow=ncolrow,scales = scales) + ggtitle(paste(unique(l1[[facet_columns]])," ",fileName,sep=""))} else {
+        p <- p + facet_wrap(facet_rows,nrow=ncolrow,scales = scales)
+        if(is.null(title)){p <- p + ggtitle(paste(unique(l1[[facet_columns]])," ",fileName,sep=""))}else{
+          if(title=="Off"|title=="off"|title=="OFF"){p<-p+ggtitle(NULL)}else{
+          p <- p + ggtitle(paste(unique(l1[[facet_columns]])," ",fileName,sep=""))
+        }}} else {
 
     if(!length(unique(l1[[facet_rows]]))>1 & length(unique(l1[[facet_columns]]))>1){
-      p <- p + facet_wrap(facet_columns,ncol=ncolrow,scales = scales) + ggtitle(paste(unique(l1[[facet_rows]])," ",fileName,sep=""))} else {
-      p <- p + ggtitle(paste(unique(l1[[facet_columns]])," ",unique(l1[[facet_rows]])," ",fileName,sep=""))}
+      p <- p + facet_wrap(facet_columns,ncol=ncolrow,scales = scales)
+      if(is.null(title)){p <- p + ggtitle(paste(unique(l1[[facet_rows]])," ",fileName,sep=""))}else{
+        if(title=="Off"|title=="off"|title=="OFF"){p<-p+ggtitle(NULL)}else{
+        p <- p + ggtitle(paste(unique(l1[[facet_rows]])," ",fileName,sep=""))}}
+      } else {
+        if(is.null(title)){p <- p + ggtitle(paste(unique(l1[[facet_columns]])," ",unique(l1[[facet_rows]])," ",fileName,sep=""))}else{
+          if(title=="Off"|title=="off"|title=="OFF"){p<-p+ggtitle(NULL)}else{
+          p <- p + ggtitle(paste(unique(l1[[facet_columns]])," ",unique(l1[[facet_rows]])," ",fileName,sep=""))}}
+          }
 
-          }}} else {
+          }}}} else {
 
     if(is.null(facet_rows) & !is.null(facet_columns)){
       p <- p + facet_wrap(facet_columns,ncol=ncolrow,scales = scales)}

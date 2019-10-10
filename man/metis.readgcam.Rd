@@ -70,7 +70,8 @@ energy
 \item "building final energy by fuel"
 \item "industry final energy by fuel"
 \item "building final energy by subsector"
-\item "transport final energy by fuel"}
+\item "transport final energy by fuel"
+\item "transport final energy by mode and fuel"}
 land
 \itemize{
 \item "land allocation by crop and water source",

@@ -98,6 +98,9 @@ metis.colors <- function(palx=NULL) {
     pal_div_BlRd <- rev(c('#67001f','#b2182b','#d6604d','#f4a582','#fddbc7','white','#e0e0e0','#bababa','#878787','#4d4d4d','#1a1a1a'))
     pal_div_RdBl <- c('#67001f','#b2182b','#d6604d','#f4a582','#fddbc7','white','#e0e0e0','#bababa','#878787','#4d4d4d','#1a1a1a')
     pal_div_BrGn <- c('#543005','#8c510a','#bf812d','#dfc27d','#f6e8c3','white','#c7eae5','#80cdc1','#35978f','#01665e','#003c30')
+    pal_div_GrBr <- rev(pal_div_BrGn)
+    pal_div_BluRd <- c("#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#f7f7f7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061")
+    pal_div_RdBlu <- rev(pal_div_BluRd)
 
     pal_seq <- c('lemonchiffon1','burlywood1','orange1','red1','purple4','black')
 
@@ -122,8 +125,8 @@ metis.colors <- function(palx=NULL) {
                  `liquids intl av`="indianred", `fossil fuel liquids intl av`="indianred", `oil intl av`="indianred",
                  `liquids intl shp`="lightcoral", `fossil fuel liquids intl shp`="lightcoral",`oil intl shp`="lightcoral",
                  `International Ship liquids` = "lightcoral", `International Ship Oil` = "lightcoral",`liquids shp`="lightcoral",
-                 `g Biomass` = "#00931d", `g Bioenergy` = "#00931d", `d biomass` = "#00931d",  biomass = "#00931d",  Biomass = "#00931d",
-                  bioenergy = "#00931d", `d bioenergy` = "#00931d", Bioenergy = "#00931d", `h Bioenergy w/CCS` = '#7efd97',
+                 `g Biomass` = "darkolivegreen2", `g Bioenergy` = "darkolivegreen2", `d biomass` = "darkolivegreen2",  biomass = "darkolivegreen2",  Biomass = "darkolivegreen2",
+                  bioenergy = "darkolivegreen2", `d bioenergy` = "darkolivegreen2", Bioenergy = "darkolivegreen2", `h Bioenergy w/CCS` = '#7efd97',
                  `j traditional bioenergy` = "chartreuse3",`traditional bioenergy` = "chartreuse3",`Traditional Bioenergy` = "chartreuse3",
                  `biomass (IGCC CCS)` = "#00a31d", `4 biomass` = "#00a31d",
                  `biomass (IGCC)` = "#00c31d",
@@ -146,7 +149,7 @@ metis.colors <- function(palx=NULL) {
                  # Other
                  #--------------
                  `heat`="darkslategray",
-                 `6 hydrogen` = "orange", `hydrogen` = "orange",`Hydrogen Production and Refining` = "black",
+                 `6 hydrogen` = "orange", `hydrogen` = "orange",`Hydrogen Production and Refining` = "black", `Refining` = "black",
                  `Refining and Hydrogen Production` = "black", `CO2 Refining and Hydrogen Production` = "black",
                  `o Battery` = "#92a75d",
                  `energy reduction` = "grey",
@@ -164,6 +167,8 @@ metis.colors <- function(palx=NULL) {
                  `transport intl. shipping` = "cadetblue4",`Transport Intl Shp`="cadetblue4",`trans intl shp`="cadetblue4", `transport intl shp`="cadetblue4",
                  `building` = "#facda4", buildings = "#facda4", elect_td_bld = "#facda4", Building = "#facda4",
                  Buildings = "#facda4", `CO2 Buildings` = "#facda4", `comm non-building` = "#ff230e",
+                 `Cooling`= "cornflowerblue", `cooling`= "cornflowerblue", `COOLING`= "cornflowerblue",
+                 `Heating`= "coral2", `heating`= "coral2", `HEATING`= "coral2",
                  `Commercial Cooling` = '#342DFC', `Commercial Heating` = '#E11F26', `Commercial Others`='#BD8A25',
                  `Residential Cooling` = '#6865C1', `Residential Heating` = "#D8686C", `Residential Others`='#D4C592',
                  `Residential CoolingHeating` = '#6865C1', `Commercial CoolingHeating` = '#342DFC',
@@ -188,7 +193,7 @@ metis.colors <- function(palx=NULL) {
                  `LUC Emission`="grey30", LUC="grey30", LUCemiss="grey30",
                  `LUC Absorption`="darkolivegreen4",
                  delivered_gas="darkslategray1", refined_liquids_enduse="#d01c2a", H2_enduse = "#507fab",
-                 delivered_coal = "black", wholesale_gas="darkslategray1", delivered_biomass="#00931d",
+                 delivered_coal = "black", wholesale_gas="darkslategray1", delivered_biomass="darkolivegreen2",
                  refined_liquids_industrial="#d01c2a",
                  sewage_landfills = 'brown', Waste='#BC7508', `CO2 Waste` = '#BC7508', `CO2 Electricity`='lavender',
                  urban="indianred2",tundra="antiquewhite1",shrubs="lightslateblue",`rock and desert`="black",
@@ -198,7 +203,7 @@ metis.colors <- function(palx=NULL) {
                  # Agriculture
                  #--------------
                  Forest = "darkgreen" , NonFoodDemand_Forest = "darkolivegreen1",
-                 biomass_grass='#00931d', biomass_tree='#00931d', Corn = "gold3" ,
+                 biomass_grass='darkolivegreen2', biomass_tree='darkolivegreen2', Corn = "gold3" ,
                  FiberCrop = "gold4",  MiscCrop = "darkorange4", OilCrop = "gray20", SoySunflower = "gray20",
                  OtherGrain  = "indianred2",
                  PalmFruit = "firebrick3" ,  Rice = "steelblue2", Root_Tuber  = "lightslateblue", SugarCrop = "yellow2",
@@ -242,7 +247,9 @@ metis.colors <- function(palx=NULL) {
 
     invisible(list(pal_metis=pal_metis,pal_HDDCDD=pal_HDDCDD, pal_16 = pal_16,
                    pal_Basic = pal_Basic, pal_hot = pal_hot,
-                   pal_wet=pal_wet, pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,pal_green=pal_green,
+                   pal_wet=pal_wet, pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,
+                   pal_div_GrBr=pal_div_GrBr,pal_div_BluRd=pal_div_BluRd,
+                   pal_div_RdBlu=pal_div_RdBlu, pal_green=pal_green,
                    pal_div_BrGn=pal_div_BrGn,pal_div_BlRd=pal_div_BlRd,pal_sankey=pal_sankey,
                    pal_spectral=pal_spectral, pal_ScarcityCat=pal_ScarcityCat))
 }
