@@ -196,7 +196,7 @@ metis.map<-function(dataPolygon=NULL,
 # Initialize variables to remove binding errors if needed
 # -----------------
 
-NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette
+NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette->legendSinglecolorOn
 
 legendTitle=gsub(" ","\n",legendTitle)
 tmap::tmap_mode(mode = c("plot"))
@@ -497,10 +497,10 @@ if(!is.null(shape)){
 if(length(fillPalette)==1){
  if(fillPalette %in% names(metis.colors())){
             fillPalette<-metis.colors()[[fillPalette]]}else{
-              if(!is.na(brewer.pal.info[fillPalette,]$maxcolors)){
-                fillPalette <- brewer.pal(brewer.pal.info[fillPalette,]$maxcolors,fillPalette)}
+              if(!is.na(RColorBrewer::brewer.pal.info[fillPalette,]$maxcolors)){
+                fillPalette <- RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[fillPalette,]$maxcolors,fillPalette)}
 
-            }}; pie(rep(1,length(fillPalette)),label=names(fillPalette),col=fillPalette)
+            }}; graphics::pie(rep(1,length(fillPalette)),label=names(fillPalette),col=fillPalette)
 
 
 #-----------------
@@ -604,17 +604,17 @@ if(is.null(legendBreaks)){
 
   # Fill palette
   if(T){
-  pie(rep(1,length(fillPalette)),label=names(fillPalette),col=fillPalette)
+  graphics::pie(rep(1,length(fillPalette)),label=names(fillPalette),col=fillPalette)
   fillColUp<-fillPalette[(round(length(fillPalette)/2,0)+1):length(fillPalette)]
-  pie(rep(1,length(fillColUp)),label=names(fillColUp),col=fillColUp)
+  graphics::pie(rep(1,length(fillColUp)),label=names(fillColUp),col=fillColUp)
   fillColDown<-fillPalette[1:(round(length(fillPalette)/2,0)-1)]
-  pie(rep(1,length(fillColDown)),label=names(fillColDown),col=fillColDown)
+  graphics::pie(rep(1,length(fillColDown)),label=names(fillColDown),col=fillColDown)
   if(singlevalLoc==length(legendLabelsX)){fillPaletteXUp<-c()}else{
-  fillPaletteXUp <- colorRampPalette(fillColUp)(round((length(legendLabelsX)-singlevalLoc),0))};fillPaletteXUp
+  fillPaletteXUp <- grDevices::colorRampPalette(fillColUp)(round((length(legendLabelsX)-singlevalLoc),0))};fillPaletteXUp
   if(singlevalLoc==1){fillPaletteXDown<-c()}else{
-  fillPaletteXDown <- colorRampPalette(fillColDown)(singlevalLoc)};fillPaletteXDown
+  fillPaletteXDown <- grDevices::colorRampPalette(fillColDown)(singlevalLoc)};fillPaletteXDown
   fillPaletteX <-c(fillPaletteXDown,fillPaletteXUp)
-  pie(rep(1,length(fillPaletteX)),label=names(fillPaletteX),col=fillPaletteX)
+  graphics::pie(rep(1,length(fillPaletteX)),label=names(fillPaletteX),col=fillPaletteX)
    if(min(legendBreaksX)>=legendSingleValue){
      fillPaletteX<-c(paste(legendSingleColor,sep=""),
                     fillPaletteX[(singlevalLoc):length(fillPaletteX)])
@@ -626,7 +626,7 @@ if(is.null(legendBreaks)){
       fillPaletteX<-c(fillPaletteX[1:(singlevalLoc-1)],
                       paste(legendSingleColor,sep=""),
                       fillPaletteX[(singlevalLoc+1):length(fillPaletteX)])
-    }};fillPaletteX;pie(rep(1,length(fillPaletteX)),label=legendLabelsX,col=fillPaletteX)}
+    }};fillPaletteX;graphics::pie(rep(1,length(fillPaletteX)),label=legendLabelsX,col=fillPaletteX)}
 
   # New Breaks
   if(legendSingleValue %in% legendBreaksX){

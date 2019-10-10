@@ -31,7 +31,7 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
   mapTitleSize = 0.5, facetLabelSizeMulti = 3,
   facetLabelSizeGCMRCP = 1.5, numeric2Cat_list = NULL, diffOn = F,
   frameShow = T, pdfpng = "png", fillcolorNA = "gray",
-  fillshowNA = NA, fillcolorNULL = "gray", legendSinglecolorOn = F,
+  fillshowNA = NA, fillcolorNULL = "gray", legendSingleColorOn = F,
   legendSingleValue = 0, legendSingleColor = "white")
 }
 \arguments{
@@ -169,7 +169,7 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{fillcolorNULL}{Default="gray"}
 
-\item{legendSinglecolorOn}{Default=F,}
+\item{legendSingleColorOn}{Default=F,}
 
 \item{legendSingleValue}{Default =0,}
 

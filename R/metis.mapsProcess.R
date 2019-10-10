@@ -1231,7 +1231,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                    animName,sep = "")
               tempImage<-magick::image_read(fnameTempImage)
               croppedImage<-magick::image_trim(tempImage,fuzz=0);
-              image_write(croppedImage,fnameTempImage)
+              magick::image_write(croppedImage,fnameTempImage)
 
 
               animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
@@ -1246,7 +1246,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                    animName,sep = "")
               tempImage<-magick::image_read(fnameTempImage)
               croppedImage<-magick::image_trim(tempImage,fuzz=0);
-              image_write(croppedImage,fnameTempImage)
+              magick::image_write(croppedImage,fnameTempImage)
 
 
               animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
@@ -1261,7 +1261,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                    animName,sep = "")
               tempImage<-magick::image_read(fnameTempImage)
               croppedImage<-magick::image_trim(tempImage,fuzz=0);
-              image_write(croppedImage,fnameTempImage)
+              magick::image_write(croppedImage,fnameTempImage)
 
 
               #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
@@ -2036,7 +2036,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                            animName,sep = "")
                       tempImage<-magick::image_read(fnameTempImage)
                       croppedImage<-magick::image_trim(tempImage,fuzz=0);
-                      image_write(croppedImage,fnameTempImage)
+                      magick::image_write(croppedImage,fnameTempImage)
 
 
                       animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_KMEANS.gif",sep="")
@@ -2051,7 +2051,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                            animName,sep = "")
                       tempImage<-magick::image_read(fnameTempImage)
                       croppedImage<-magick::image_trim(tempImage,fuzz=0);
-                      image_write(croppedImage,fnameTempImage)
+                      magick::image_write(croppedImage,fnameTempImage)
 
                       animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_FREESCALE.gif",sep="")
                       animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",sep=""),
@@ -2065,7 +2065,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                            animName,sep = "")
                       tempImage<-magick::image_read(fnameTempImage)
                       croppedImage<-magick::image_trim(tempImage,fuzz=0);
-                      image_write(croppedImage,fnameTempImage)
+                      magick::image_write(croppedImage,fnameTempImage)
 
 
                       #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
@@ -2269,7 +2269,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                          animName,sep = "")
                     tempImage<-magick::image_read(fnameTempImage)
                     croppedImage<-magick::image_trim(tempImage,fuzz=0);
-                    image_write(croppedImage,fnameTempImage)
+                    magick::image_write(croppedImage,fnameTempImage)
 
 
                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_KMEANS.gif",sep="")
@@ -2284,7 +2284,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                          animName,sep = "")
                     tempImage<-magick::image_read(fnameTempImage)
                     croppedImage<-magick::image_trim(tempImage,fuzz=0);
-                    image_write(croppedImage,fnameTempImage)
+                    magick::image_write(croppedImage,fnameTempImage)
 
                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_FREESCALE.gif",sep="")
                     animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep=""),
@@ -2298,7 +2298,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                          animName,sep = "")
                     tempImage<-magick::image_read(fnameTempImage)
                     croppedImage<-magick::image_trim(tempImage,fuzz=0);
-                    image_write(croppedImage,fnameTempImage)
+                    magick::image_write(croppedImage,fnameTempImage)
 
                     #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
                   } # If Animate ON==t
@@ -2632,7 +2632,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                      animName,sep = "")
                 tempImage<-magick::image_read(fnameTempImage)
                 croppedImage<-magick::image_trim(tempImage,fuzz=0);
-                image_write(croppedImage,fnameTempImage)
+                magick::image_write(croppedImage,fnameTempImage)
 
 
 
@@ -2648,7 +2648,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                      animName,sep = "")
                 tempImage<-magick::image_read(fnameTempImage)
                 croppedImage<-magick::image_trim(tempImage,fuzz=0);
-                image_write(croppedImage,fnameTempImage)
+                magick::image_write(croppedImage,fnameTempImage)
 
 
                 animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
@@ -2663,7 +2663,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                      animName,sep = "")
                 tempImage<-magick::image_read(fnameTempImage)
                 croppedImage<-magick::image_trim(tempImage,fuzz=0);
-                image_write(croppedImage,fnameTempImage)
+                magick::image_write(croppedImage,fnameTempImage)
 
 
                 #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables

@@ -63,67 +63,6 @@
 #' @return Returns the formatted data used to produce chart
 #' @import ggplot2
 #' @export
-#' @examples
-#' library(tibble)
-#'
-#' # Simple example with progressively more features
-#' tbl <- tibble::tribble (
-#'   ~x,     ~value,
-#'   2010,   15,
-#'   2020,   20,
-#'   2030,   30)
-#'
-#'  metis.chart(data = tbl, xData = "x", yData = "value", chartType = "line")
-#'  metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar")
-#'  metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", color = "blue",
-#'             yLabel = "New y Label", xLabel = "New X label", printFig = TRUE,
-#'             fileName = "newFileName", title = "Title")
-#   # See ?metis.chart for more details on further customization eg. tick marks, title size ect.
-
-#'  # More detailed data with facets
-#'   tbl_multi <- tibble::tribble (
-#'   ~x,     ~value, ~region,     ~scen,   ~fuel,
-#'   2010,   25,     "region1",   "scenA",  "Oil",
-#'   2020,   30,     "region1",   "scenA",  "Oil",
-#'   2030,   40,     "region1",   "scenA",  "Oil",
-#'   2010,   25,     "region2",   "scenA",  "Oil",
-#'   2020,   10,     "region2",   "scenA",  "Oil",
-#'   2030,   60,     "region2",   "scenA",  "Oil",
-#'   2010,   75,     "region1",   "scenB",  "Oil",
-#'   2020,   30,     "region1",   "scenB",  "Oil",
-#'   2030,   20,     "region1",   "scenB",  "Oil",
-#'   2010,   25,     "region2",   "scenB",  "Oil",
-#'   2020,   10,     "region2",   "scenB",  "Oil",
-#'   2030,   90,     "region2",   "scenB",  "Oil",
-#'   2010,   55,     "region1",   "scenA",  "Gas",
-#'   2020,   40,     "region1",   "scenA",  "Gas",
-#'   2030,   30,     "region1",   "scenA",  "Gas",
-#'   2010,   35,     "region2",   "scenA",  "Gas",
-#'   2020,   30,     "region2",   "scenA",  "Gas",
-#'   2030,   32,     "region2",   "scenA",  "Gas",
-#'   2010,   16,     "region1",   "scenB",  "Gas",
-#'   2020,   28,     "region1",   "scenB",  "Gas",
-#'   2030,   39,     "region1",   "scenB",  "Gas",
-#'   2010,   12,     "region2",   "scenB",  "Gas",
-#'   2020,   26,     "region2",   "scenB",  "Gas",
-#'   2030,   37,     "region2",   "scenB",  "Gas")
-#'
-#'   my_pal <- RColorBrewer::brewer.pal(9, "Set1")
-#'
-#'   metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel",
-#'             chartType = "line",  classPalette=my_pal,
-#'             facet_rows="region",facet_columns="scen")
-#'
-#'   my_pal <- metis.colors()$pal_Basic
-#'
-#'   metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel", position="stack",
-#'             group="fuel",chartType = "bar", classPalette=my_pal,
-#'             facet_rows="region",facet_columns="scen")
-#'
-#'   metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel", position="dodge",
-#'             group="fuel",chartType = "bar", classPalette=my_pal,
-#'             facet_rows="region",facet_columns="scen")
-
 
 metis.chart<-function(data,
                       dataNorm=NULL,
@@ -618,17 +557,33 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
           # once you've made your adjustments, you can plot it again
           if(pdfpng=='pdf'){grDevices::pdf(paste(dirOutputs,"/",fname,".pdf",sep=""),width=figWidth,height=figHeight)
             grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
-            grDevices::dev.off()}
+            grDevices::dev.off()
+            fnameTempImage=paste(dirOutputs,"/",fname,".pdf",sep="")
+            tempImage<-magick::image_read(fnameTempImage)
+            croppedImage<-magick::image_trim(tempImage,fuzz=0);
+            magick::image_write(croppedImage,fnameTempImage)}
           if(pdfpng=='png'){grDevices::png(paste(dirOutputs,"/",fname,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
             grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
-            grDevices::dev.off()}
+            grDevices::dev.off()
+            fnameTempImage=paste(dirOutputs,"/",fname,".png",sep="")
+            tempImage<-magick::image_read(fnameTempImage)
+            croppedImage<-magick::image_trim(tempImage,fuzz=0);
+            magick::image_write(croppedImage,fnameTempImage)}
           if(pdfpng=='both'){
             grDevices::pdf(paste(dirOutputs,"/",fname,".pdf",sep=""),width=figWidth,height=figHeight)
             grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
             grDevices::dev.off()
+            fnameTempImage=paste(dirOutputs,"/",fname,".pdf",sep="")
+            tempImage<-magick::image_read(fnameTempImage)
+            croppedImage<-magick::image_trim(tempImage,fuzz=0);
+            magick::image_write(croppedImage,fnameTempImage)
             grDevices::png(paste(dirOutputs,"/",fname,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
             grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
             grDevices::dev.off()
+            fnameTempImage=paste(dirOutputs,"/",fname,".png",sep="")
+            tempImage<-magick::image_read(fnameTempImage)
+            croppedImage<-magick::image_trim(tempImage,fuzz=0);
+            magick::image_write(croppedImage,fnameTempImage)
           }
 
           sankeyHjustCheck <- "Adjusted"
