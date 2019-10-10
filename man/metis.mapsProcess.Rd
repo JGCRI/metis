@@ -16,11 +16,10 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
   fps = 1, scenRef = NULL, extension = F, boundaryRegShape = NULL,
   boundaryRegShpFolder = NULL, boundaryRegShpFile = NULL,
   boundaryRegCol = NULL, boundaryRegionsSelect = NULL,
-  fillcolorNA = NULL, extendedLabels = T,
-  extendedFillColor = "grey75", extendedBGColor = "lightblue1",
-  extendedHighLightColor = "cornsilk1", extendedLabelsColor = "grey30",
-  extdendedLabelSize = 0.7, extendedShape = NULL,
-  extendedShapeCol = NULL, expandPercent = 3,
+  extendedLabels = T, extendedFillColor = "grey75",
+  extendedBGColor = "lightblue1", extendedHighLightColor = "cornsilk1",
+  extendedLabelsColor = "grey30", extdendedLabelSize = 0.7,
+  extendedShape = NULL, extendedShapeCol = NULL, expandPercent = 3,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 6, figHeight = 7, scaleRange = NULL,
   paramsSelect = "All", indvScenarios = "All", scensSelect = "All",
@@ -31,7 +30,9 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
   refGCM = NULL, refRCP = NULL, chosenRefMeanYears = NULL,
   mapTitleSize = 0.5, facetLabelSizeMulti = 3,
   facetLabelSizeGCMRCP = 1.5, numeric2Cat_list = NULL, diffOn = F,
-  frameShow = T, pdfpng = "png")
+  frameShow = T, pdfpng = "png", fillcolorNA = "gray",
+  fillshowNA = NA, fillcolorNULL = "gray", legendSingleColorOn = F,
+  legendSingleValue = 0, legendSingleColor = "white")
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -93,8 +94,6 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{boundaryRegCol}{Default=NULL. Suggested "NAME_0",}
 
 \item{boundaryRegionsSelect}{Default = NULL,}
-
-\item{fillcolorNA}{Default = NULL}
 
 \item{extendedLabels}{Default = T}
 
@@ -163,6 +162,18 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{frameShow}{Default = T. Whether to plot frame around maps and facets.}
 
 \item{pdfpng}{Save IO figures as pdf or png. Type=String. Options: 'pdf' or 'png'. Default = 'png'}
+
+\item{fillcolorNA}{Default="gray",}
+
+\item{fillshowNA}{Default=NA,}
+
+\item{fillcolorNULL}{Default="gray"}
+
+\item{legendSingleColorOn}{Default=F,}
+
+\item{legendSingleValue}{Default =0,}
+
+\item{legendSingleColor}{Default="white"}
 }
 \value{
 Returns the formatted data used to produce chart

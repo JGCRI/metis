@@ -19,11 +19,13 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   "/outputs/Maps", sep = ""), folderName = NULL, facetFreeScale = F,
   facetRows = NA, facetCols = 3, facetBGColor = "grey30",
   facetLabelColor = "white", facetLabelSize = 1.5, alpha = 1,
-  fillcolorNA = "gray", fillshowNA = NA, fillcolorNULL = "gray",
+  fillcolorNA = "gray", fillshowNA = NA, fillcolorNULL = "white",
   facetsON = T, panelLabel = NULL, multiFacetRows = NULL,
   multiFacetCols = NULL, mapTitle = NULL, mapTitleSize = 1,
   numeric2Cat_list = NULL, catParam = NULL, innerMargins = c(0, 0, 0,
-  0), outerMargins = c(0.01, 0.01, 0.01, 0.01))
+  0), outerMargins = c(0.01, 0.01, 0.01, 0.01),
+  legendSingleColorOn = F, legendSingleValue = 0,
+  legendSingleColor = "white")
 }
 \arguments{
 \item{dataPolygon}{Default = NULL,}
@@ -139,6 +141,12 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
 \item{innerMargins}{Default =c(0,0,0,0), # bottom, left, top, right}
 
 \item{outerMargins}{Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right}
+
+\item{legendSingleColorOn}{Default=F}
+
+\item{legendSingleValue}{Default=0}
+
+\item{legendSingleColor}{Default="white"}
 }
 \value{
 Returns the formatted data used to produce chart

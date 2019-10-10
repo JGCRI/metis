@@ -50,7 +50,7 @@ regionsSelect_i <- c("Uruguay")
 # ?metis.readgcam # For more help
 
 gcamdatabasePath_i <-paste("D:/GCAM/gcam-core_LAC/output/FinalRuns",sep="")
-gcamdatabaseName_i <-"IDBNexus_RefOrig"
+gcamdatabaseName_i <-"IDBNexus_RefImpactsSelect"
 rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
 
 dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
@@ -71,7 +71,7 @@ queriesSelect_i = c("All") # Query sets are c("water", "energy", "land", "emissi
 dataGCAMRef<-metis.readgcam(reReadData=T, # Default Value is T
                                  dataProj = dataProj_i, # Default Value is "dataProj.proj"
                                  dataProjPath = dataProjPath_i,
-                                 scenOrigNames=c("GCAMOriginal", "AgShrWghtRef"),
+                                 scenOrigNames=c("GCAMOriginal", "Ref"),
                                  scenNewNames=c("GCAMOrig","GCAMRef"),
                                  gcamdatabasePath=gcamdatabasePath_i,
                                  gcamdatabaseName=gcamdatabaseName_i,
@@ -131,7 +131,7 @@ unique(dataGCAMImpacts$data$scenario)
 dataGCAM <- dplyr::bind_rows(dataGCAMRef$data,dataGCAMImpacts$data)# To view the data read that was read.
 dataGCAM
 
-dataGCAM <- dataGCAMRef$data
+#dataGCAM <- dataGCAMRef$data
 
 #saveRDS(dataGCAM, file = paste(getwd(),"/dataFiles/gcam/tempUruguayGCAMData.rds",sep=""))
 #readRDS(file = paste(getwd(),"/dataFiles/gcam/tempUruguayGCAMData.rds",sep=""))
@@ -197,14 +197,16 @@ rTable_iMod <- rTable_i %>%
   dplyr::mutate(class1=case_when(param=="elecByTechTWh" ~ gsub("a Coal","Fossil",class1),TRUE~class1),
                 class1=case_when(param=="elecByTechTWh" ~ gsub("c Gas","Fossil",class1),TRUE~class1),
                 class1=case_when(param=="elecByTechTWh" ~ gsub("e Oil","Fossil",class1),TRUE~class1),
-                class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1)) %>%
+                class1=case_when(param=="agProdByCrop" ~ gsub("OilCrop","SoySunflower",class1),TRUE~class1),
+                class1=gsub("Refining and Hydrogen Production","Refining",class1),
+                class2=gsub("Refining and Hydrogen Production","Refining",class2)) %>%
   dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                   aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                   origScen, origQuery, origUnits, origX)%>%
   dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
   dplyr::ungroup() %>% droplevels()
 
-paramsSelect_iMod=unique(a$param)
+paramsSelect_iMod=c(as.vector(as.character(unique(a$param))),"watConsumBySec")
 
 #----------------------------
 # REFERENCE
@@ -217,23 +219,23 @@ scaleRange_i = tibble::tribble(
   "watConsumBySec", 0, 10,
   "watWithdrawBySec", 0, 10)
 
-charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
-                            dataTables=dataTables_i, # Default is NULL
-                            paramsSelect=paramsSelect_i, # Default is "All"
-                            regionsSelect=regionsSelect_i, # Default is "All"
-                            scensSelect=scensSelect_i,
-                            xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
-                            scenRef="GCAMOrig", # Default is NULL
-                            dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
-                            pdfpng="png", # Default is "png"
-                            regionCompareOnly=0, # Default is "0"
-                            scenarioCompareOnly=0, # Default is "0"
-                            useNewLabels=1,
-                            xRange=c(2010:2050),
-                            colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
-                            colOrderName1 = "scenario",
-                            folderName = "Reference",
-                            scaleRange=scaleRange_i)
+# charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
+#                             dataTables=dataTables_i, # Default is NULL
+#                             paramsSelect=paramsSelect_i, # Default is "All"
+#                             regionsSelect=regionsSelect_i, # Default is "All"
+#                             scensSelect=scensSelect_i,
+#                             xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
+#                             scenRef="GCAMOrig", # Default is NULL
+#                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
+#                             pdfpng="png", # Default is "png"
+#                             regionCompareOnly=0, # Default is "0"
+#                             scenarioCompareOnly=0, # Default is "0"
+#                             useNewLabels=1,
+#                             xRange=c(2010:2050),
+#                             colOrder1 = c("GCAMOrig","GCAMRef","Local Data"),
+#                             colOrderName1 = "scenario",
+#                             folderName = "Reference",
+#                             scaleRange=scaleRange_i)
 
 
 charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
@@ -246,7 +248,7 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                             pdfpng="png", # Default is "png"
                             regionCompareOnly=0, # Default is "0"
-                            scenarioCompareOnly=0, # Default is "0"
+                            scenarioCompareOnly=1, # Default is "0"
                             useNewLabels=1,
                             xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
                             colOrder1 =scensSelect_i,
@@ -261,23 +263,23 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
 
 scensSelect_i = c("GCAMRef","GFDL_RCP2p6","GFDL_RCP8p5")
 
-charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
-                            #dataTables=dataTables_i, # Default is NULL
-                            paramsSelect=paramsSelect_i, # Default is "All"
-                            regionsSelect=regionsSelect_i, # Default is "All"
-                            scensSelect=scensSelect_i,
-                            xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
-                            scenRef="GCAMRef", # Default is NULL
-                            dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
-                            pdfpng="png", # Default is "png"
-                            regionCompareOnly=0, # Default is "0"
-                            scenarioCompareOnly=0, # Default is "0"
-                            useNewLabels=1,
-                            xRange=c(2010:2050),
-                            colOrder1 = c("GCAMRef","GFDL_RCP2p6","GFDL_RCP8p5"),
-                            colOrderName1 = "scenario",
-                            folderName = "Impacts",
-                            scaleRange=scaleRange_i)
+# charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
+#                             #dataTables=dataTables_i, # Default is NULL
+#                             paramsSelect=paramsSelect_i, # Default is "All"
+#                             regionsSelect=regionsSelect_i, # Default is "All"
+#                             scensSelect=scensSelect_i,
+#                             xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
+#                             scenRef="GCAMRef", # Default is NULL
+#                             dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
+#                             pdfpng="png", # Default is "png"
+#                             regionCompareOnly=0, # Default is "0"
+#                             scenarioCompareOnly=0, # Default is "0"
+#                             useNewLabels=1,
+#                             xRange=c(2010:2050),
+#                             colOrder1 = c("GCAMRef","GFDL_RCP2p6","GFDL_RCP8p5"),
+#                             colOrderName1 = "scenario",
+#                             folderName = "Impacts",
+#                             scaleRange=scaleRange_i)
 
 charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             #dataTables=dataTables_i, # Default is NULL
@@ -788,11 +790,11 @@ numeric2Cat_list <-list(numeric2Cat_param=numeric2Cat_param,
                         numeric2Cat_legendTextSize=numeric2Cat_legendTextSize)
 
 
-list_index <- which(numeric2Cat_list$numeric2Cat_param=="griddedScarcity")
-catBreaks <- numeric2Cat_list$numeric2Cat_breaks[[list_index]]; catBreaks
-catLabels <- numeric2Cat_list$numeric2Cat_labels[[list_index]]; catLabels
-catPalette <- numeric2Cat_list$numeric2Cat_palette[[list_index]]; catPalette
-catLegendTextSize <- numeric2Cat_list$numeric2Cat_legendTextSize[[list_index]];catLegendTextSize
+# list_index <- which(numeric2Cat_list$numeric2Cat_param=="griddedScarcity")
+# catBreaks <- numeric2Cat_list$numeric2Cat_breaks[[list_index]]; catBreaks
+# catLabels <- numeric2Cat_list$numeric2Cat_labels[[list_index]]; catLabels
+# catPalette <- numeric2Cat_list$numeric2Cat_palette[[list_index]]; catPalette
+# catLegendTextSize <- numeric2Cat_list$numeric2Cat_legendTextSize[[list_index]];catLegendTextSize
 
 
 metis.mapsProcess(polygonDataTables=a,

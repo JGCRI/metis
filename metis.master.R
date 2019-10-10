@@ -482,16 +482,6 @@ io_sub$ioTbl
                                     folderName="metisExample",
                                     regionName = "Peru")
 
-
-    # grid=gridExample
-    # subRegShpFolder=examplePolyFolder_i
-    # subRegShpFile=examplePolyFile_i
-    # subRegCol=subRegCol_i
-    # #aggType="depth", # Aggregation type. Depth or volume. See docuemntation for further details.
-    # nameAppend="_examplePeru"
-    # folderName="metisExample"
-    # regionName = "Peru"
-
 #------------------------------
 # Mapping (metis.mapsProcess.R)
 #------------------------------
@@ -531,26 +521,6 @@ io_sub$ioTbl
                  scenRef="Eg1",
                  expandPercent = 2,
                  extension=T)
-
-    # polygonDataTables=examplePolygonTable_i
-    # gridDataTables=exampleGridTable_i
-    # xRange=c(2005,2010,2015,2020,2025,2030)
-    # folderName="metisExample"
-    # boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
-    # boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep="")
-    # boundaryRegCol="NAME"
-    # boundaryRegionsSelect=countryName
-    # subRegShape=NULL
-    # subRegShpFolder=examplePolyFolder_i
-    # subRegShpFile=examplePolyFile_i
-    # subRegCol=subRegCol_i
-    # nameAppend="_exampleSubRegionMap"
-    # legendPosition=c("LEFT","bottom")
-    # animateOn=T
-    # fps=1
-    # scenRef="Eg1"
-    # expandPercent = 2
-    # extension=T
 
 
 #--------------------------------------------------
@@ -737,8 +707,8 @@ io_sub$ioTbl
     } else { testChart = "Test chart: Failed"}; print(testChart)
 
     # Test: chartsProcess Check
-    if(file.exists(paste(getwd(),"/outputs/charts/metisExample/compareRegions/ArgentinaColombiaEg1/aggLandAlloc_figBar_Eg1_compareRegions.png",sep="")) &
-       file.exists(paste(getwd(),"/outputs/charts/metisExample/Colombia/compareScen/agProdByCrop_figLineDiff_Colombia_compareScen.png",sep=""))){
+    if(file.exists(paste(getwd(),"/outputs/charts/metisExample/compareRegions/ArgentinaColombiaEg1/landAlloc_figBar_Eg1_compareRegions.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/charts/metisExample/compareRegions/ArgentinaColombiacompareScen/watConsumBySec_figBarDiff_compareScenRegion.png",sep=""))){
       testChartsProcess = "Test chartsProcess: Passed"
     } else { testChartsProcess = "Test chartsProcess: Failed"}; print(testChartsProcess)
 
