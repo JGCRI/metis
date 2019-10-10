@@ -113,7 +113,7 @@ metis.map<-function(dataPolygon=NULL,
                   alpha=1,
                   fillcolorNA="gray",
                   fillshowNA=NA,
-                  fillcolorNULL="white",
+                  fillcolorNULL="gray",
                   facetsON=T,
                   panelLabel=NULL,
                   multiFacetRows=NULL,
@@ -124,7 +124,7 @@ metis.map<-function(dataPolygon=NULL,
                   catParam=NULL,
                   innerMargins=c(0,0,0,0), # bottom, left, top, right
                   outerMargins=c(0.01,0.01,0.01,0.01),# bottom, left, top, right
-                  legendSingleColorOn=F,
+                  legendSingleColorOn=T,
                   legendSingleValue=0,
                   legendSingleColor="white"
                   ){
@@ -583,8 +583,12 @@ if(is.null(legendBreaks)){
   # Legend Labels
   a<-c()
   for(i in 1:(length(legendBreaksX)-1)){
-
-    a[i]=paste(round(legendBreaksX[i],legendDigits)," to ",round(legendBreaksX[i+1],legendDigits),sep="")};a
+    if(i!=1){lower<-upperLast}else{lower <- round(legendBreaksX[i],(legendDigits+countDig))};lower
+    upper <- round(legendBreaksX[i+1],legendDigits); upper
+    countDig <- 1
+    while(upper==lower & countDig<6){upper <- round(legendBreaksX[i+1],(legendDigits+countDig)); countDig=countDig+1};upper
+    upperLast <- upper; upperLast
+    a[i]=paste(lower," to ",upper,sep="")};a
 
   if(min(legendBreaksX)>=legendSingleValue){
     legendLabelsX=c(a)
@@ -771,7 +775,7 @@ if(!is.null(dataGrid)){
     if(length(unique(shape@data%>%dplyr::select(fillColumn)))>1){
       if(is.null(catPalette)){
       if(!is.null(legendDigits)){
-        if(!legendSinglecolorOn){
+        if(!legendSingleColorOn){
         map<- map + tmap::tm_layout(legend.format = list(digits = legendDigits))
         }
         }

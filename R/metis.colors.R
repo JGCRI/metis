@@ -5,41 +5,22 @@
 #'
 #' List of Color Palettes
 #' \itemize{
-#' \item pal_HDDCDD
-#' \item pal_16
-#' \item elec_tech_colors
-#' \item elec_renew_colors
-#' \item building_colors
-#' \item trn_fuel_colors
-#' \item enduse_fuel_numbered
-#' \item enduse_colors
-#' \item pal_pri_ene
-#' \item pal_pri_fuelcost
-#' \item pal_emiss_sector
-#' \item pal_landuse
-#' \item pal_hydrogen
-#' \item pal_refliq
-#' \item emiss_by_enduse_colors
-#' \item biouse_colors
-#' \item pal_Basic
-#' \item pal_Gas
-#' \item pal_Diff
-#' \item pal_Diff5
-#' \item pal_Absolute
-#' \item pal_Absolute5
-#' \item pal_Unassigned
-#' \item pal_pri_ene
-#' \item pal_nrg
-#' \item pal_hot
-#' \item pal_wet
-#' \item pal_div_wet
-#' \item pal_div_RdBl
-#' \item pal_green
-#' \item pal_div_BrGn
-#' \item pal_div_BlRd
-#' \item pal_sankey
-#' \item pal_spectral
-#' \item pal_ScarcityCat}
+#' \item "pal_metis"
+#' \item "pal_16"
+#' \item "pal_Basic"
+#' \item "pal_hot"
+#' \item "pal_wet"
+#' \item "pal_div_wet"
+#' \item "pal_div_RdBl"
+#' \item "pal_div_GrBr"
+#' \item "pal_div_BluRd"
+#' \item "pal_div_RdBlu"
+#' \item "pal_green"
+#' \item "pal_div_BrGn"
+#' \item "pal_div_BlRd"
+#' \item "pal_sankey"
+#' \item "pal_spectral"
+#' \item "pal_ScarcityCat"}
 #' @param palx Palette name to view the palette colors. Eg. metis.colors("pal_Basic")
 #' @keywords colors, palette
 #' @return A list of color palettes.
@@ -74,9 +55,6 @@ metis.colors <- function(palx=NULL) {
             grDevices::rgb(x[1], x[2], x[3], alpha=alpha))
   }
 
-    # HDDCDD Palette for Cooling and Heating
-    pal_HDDCDD<-c("CDD"="cornflowerblue","HDD"="coral2")
-
     # General purpose color scheme where sequentail colors do not clash too much
     pal_16 <- rep(c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
         "#333333", "#FFCC00", "#CC6600", "#006600", "#3333CC", "#CC0033", "#0099CC", "#999966"),100)
@@ -87,8 +65,6 @@ metis.colors <- function(palx=NULL) {
 
     # Basic Colors
     pal_Basic <- add.alpha(rep(c("firebrick3", "forestgreen", "dodgerblue3", "black", "magenta", "yellow", "cyan", "gray"),100),alpha=0.8)
-
-
 
     pal_hot <- c('#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026',"#4d0000")
     pal_wet <- c('#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b','#00004d')
@@ -166,8 +142,10 @@ metis.colors <- function(palx=NULL) {
                  `International Ship` = "cadetblue4",
                  `transport intl. shipping` = "cadetblue4",`Transport Intl Shp`="cadetblue4",`trans intl shp`="cadetblue4", `transport intl shp`="cadetblue4",
                  `building` = "#facda4", buildings = "#facda4", elect_td_bld = "#facda4", Building = "#facda4",
-                 Buildings = "#facda4", `CO2 Buildings` = "#facda4", `comm non-building` = "#ff230e",
+                  Buildings = "#facda4", `CO2 Buildings` = "#facda4", `comm non-building` = "#ff230e",
+                 `CDD`="cornflowerblue",
                  `Cooling`= "cornflowerblue", `cooling`= "cornflowerblue", `COOLING`= "cornflowerblue",
+                 `HDD`="coral2",
                  `Heating`= "coral2", `heating`= "coral2", `HEATING`= "coral2",
                  `Commercial Cooling` = '#342DFC', `Commercial Heating` = '#E11F26', `Commercial Others`='#BD8A25',
                  `Residential Cooling` = '#6865C1', `Residential Heating` = "#D8686C", `Residential Others`='#D4C592',
@@ -243,13 +221,15 @@ metis.colors <- function(palx=NULL) {
       print(a)
     }}
 
+    metisPalettes <-list(pal_metis=pal_metis,pal_16 = pal_16,
+                         pal_Basic = pal_Basic, pal_hot = pal_hot,
+                         pal_wet=pal_wet, pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,
+                         pal_div_GrBr=pal_div_GrBr,pal_div_BluRd=pal_div_BluRd,
+                         pal_div_RdBlu=pal_div_RdBlu, pal_green=pal_green,
+                         pal_div_BrGn=pal_div_BrGn,pal_div_BlRd=pal_div_BlRd,pal_sankey=pal_sankey,
+                         pal_spectral=pal_spectral, pal_ScarcityCat=pal_ScarcityCat)
 
+    if(is.null(palX)){print(names(metisPalettes))}
 
-    invisible(list(pal_metis=pal_metis,pal_HDDCDD=pal_HDDCDD, pal_16 = pal_16,
-                   pal_Basic = pal_Basic, pal_hot = pal_hot,
-                   pal_wet=pal_wet, pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,
-                   pal_div_GrBr=pal_div_GrBr,pal_div_BluRd=pal_div_BluRd,
-                   pal_div_RdBlu=pal_div_RdBlu, pal_green=pal_green,
-                   pal_div_BrGn=pal_div_BrGn,pal_div_BlRd=pal_div_BlRd,pal_sankey=pal_sankey,
-                   pal_spectral=pal_spectral, pal_ScarcityCat=pal_ScarcityCat))
+    invisible(metisPalettes)
 }

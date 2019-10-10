@@ -522,7 +522,6 @@ io_sub$ioTbl
                  expandPercent = 2,
                  extension=T)
 
-
 #--------------------------------------------------
 # Mapping (metis.mapsProcess.R) - Extensive Example
 #--------------------------------------------------
@@ -675,6 +674,7 @@ io_sub$ioTbl
 # Metis Tests (Check if outputs from metis.master.R are working as expected)
 #------------------------------
 
+    if(T){
     testInstallPackages<- "Test Install Packages: Passed"
     testIO<-"Test IO: Failed"
     testReadGCAM<-"Test readGCAM: Failed"
@@ -738,3 +738,4 @@ io_sub$ioTbl
                                    testGrid2Poly,testMapsProcess))
     print(metisTests)
     if(any(grepl("Failed",metisTests$Test))){"Some metis tests failed. Please check the relevant section."} else {"All metis tests passed without issues."}
+}
