@@ -25,6 +25,7 @@ metis.printPdfPng <- function(figure = NULL,
 
     if(is.null(figure)){print("No figure provided.")}else{
 
+
     if(pdfpng=='pdf'){
       grDevices::pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
       print(figure)

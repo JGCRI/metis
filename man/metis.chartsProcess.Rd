@@ -10,8 +10,8 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   paramsSelect = "All", regionsSelect = "All", xData = "x",
   yData = "value", xLabel = "xLabel", yLabel = "units",
   aggregate = "sum", class = "class", classPalette = "pal_metis",
-  regionCompareOnly = 0, scenarioCompareOnly = 0, useNewLabels = 0,
-  sizeBarLines = 0, sizeLines = 1.5,
+  regionCompare = 1, regionCompareOnly = 0, scenarioCompareOnly = 0,
+  useNewLabels = 0, sizeBarLines = 0, sizeLines = 1.5,
   folderName = "folderNameDefault", nameAppend = "",
   scensSelect = "All", colOrder1 = NULL, colOrderName1 = NULL,
   colOrder2 = NULL, colOrderName2 = NULL, scaleRange = NULL,
@@ -81,6 +81,8 @@ c(# energy
 \item{class}{Default "class"}
 
 \item{classPalette}{Default "pal_metis" from metis.colors()$pal_metis}
+
+\item{regionCompare}{Default =1. To turn of regional comparison make 0.}
 
 \item{regionCompareOnly}{Default 0. If set to 1, will only run comparison plots and not individual}
 

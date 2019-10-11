@@ -318,6 +318,17 @@ io_sub$ioTbl
                           scenarioCompareOnly=1, # Default 0. If set to 1, will only run comparison plots and not individual
                           folderName = "metisExample")
 
+  # rTable=rTable_i # Default is NULL
+  # dataTables=dataTables_i # Default is NULL.
+  # paramsSelect=paramsSelect_i # Default is "All"
+  # regionsSelect=regionsSelect_i # Default is "All"
+  # xCompare=c("2015","2030","2050","2100") # Default is c("2015","2030","2050","2100")
+  # scenRef="Eg1" # Default is NULL
+  # dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+  # regionCompareOnly=0 # Default 0. If set to 1, will only run comparison plots and not individual
+  # scenarioCompareOnly=1 # Default 0. If set to 1, will only run comparison plots and not individual
+  # folderName = "metisExample"
+
 #-------------------
 # Maps (metis.map.R)
 #-------------------

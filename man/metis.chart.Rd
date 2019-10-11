@@ -19,11 +19,11 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
   sankeyAxis1 = NULL, sankeyAxis2 = NULL,
   sankeyAxis1Label = "axis1Label", sankeyAxis2Label = "axis2Label",
   sankeyGroupColor = NULL, printFig = T, fileName = "chart",
-  title = NULL, dirOutputs = paste(getwd(), "/outputs/Charts", sep =
-  ""), folderName = NULL, figWidth = 13, figHeight = 9,
-  pdfpng = "png", sankeyLabelsOn = 1, colOrder1 = NULL,
-  colOrderName1 = NULL, colOrder2 = NULL, colOrderName2 = NULL,
-  pointsOn = 1, pointsSize = 4, paletteRev = T, forceFacets = F)
+  title = NULL, dirOutputs = NULL, folderName = NULL,
+  figWidth = 13, figHeight = 9, pdfpng = "png", sankeyLabelsOn = 1,
+  colOrder1 = NULL, colOrderName1 = NULL, colOrder2 = NULL,
+  colOrderName2 = NULL, pointsOn = 1, pointsSize = 4,
+  paletteRev = T, forceFacets = F)
 }
 \arguments{
 \item{data}{Data table for charting}
