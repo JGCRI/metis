@@ -62,7 +62,7 @@ library(ggalluvial)
 
   # Reading in the no bio query so it works with Rgcam
 
-  dataGCAM<-metis.readgcam(reReadData = T,  # F
+  dataGCAM<-metis.readgcam(reReadData = F,  # F
                            gcamdatabasePath = gcamdatabasePath_i ,
                            gcamdatabaseName = gcamdatabaseName_i,
                            scenOrigNames = scenOrigNames_i,
@@ -130,6 +130,7 @@ library(ggalluvial)
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           regionCompareOnly=0, # Default 0. If set to 1, will only run comparison plots and not individual
                           scenarioCompareOnly=0,
+                          regionCompare=0,
                           useNewLabels = 0,
                           folderName = "IDBNexusFinal",
                           xRange = c(2020, 2030, 2040, 2050),
