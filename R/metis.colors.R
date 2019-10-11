@@ -229,7 +229,5 @@ metis.colors <- function(palx=NULL) {
                          pal_div_BrGn=pal_div_BrGn,pal_div_BlRd=pal_div_BlRd,pal_sankey=pal_sankey,
                          pal_spectral=pal_spectral, pal_ScarcityCat=pal_ScarcityCat)
 
-    if(is.null(palX)){print(names(metisPalettes))}
-
     invisible(metisPalettes)
 }

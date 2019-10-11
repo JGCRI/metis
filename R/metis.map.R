@@ -583,7 +583,7 @@ if(is.null(legendBreaks)){
   # Legend Labels
   a<-c()
   for(i in 1:(length(legendBreaksX)-1)){
-    if(i!=1){lower<-upperLast}else{lower <- round(legendBreaksX[i],(legendDigits+countDig))};lower
+    if(i!=1){lower<-upperLast}else{lower <- round(legendBreaksX[i],(legendDigits))};lower
     upper <- round(legendBreaksX[i+1],legendDigits); upper
     countDig <- 1
     while(upper==lower & countDig<6){upper <- round(legendBreaksX[i+1],(legendDigits+countDig)); countDig=countDig+1};upper

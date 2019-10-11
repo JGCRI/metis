@@ -19,12 +19,12 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   "/outputs/Maps", sep = ""), folderName = NULL, facetFreeScale = F,
   facetRows = NA, facetCols = 3, facetBGColor = "grey30",
   facetLabelColor = "white", facetLabelSize = 1.5, alpha = 1,
-  fillcolorNA = "gray", fillshowNA = NA, fillcolorNULL = "white",
+  fillcolorNA = "gray", fillshowNA = NA, fillcolorNULL = "gray",
   facetsON = T, panelLabel = NULL, multiFacetRows = NULL,
   multiFacetCols = NULL, mapTitle = NULL, mapTitleSize = 1,
   numeric2Cat_list = NULL, catParam = NULL, innerMargins = c(0, 0, 0,
   0), outerMargins = c(0.01, 0.01, 0.01, 0.01),
-  legendSingleColorOn = F, legendSingleValue = 0,
+  legendSingleColorOn = T, legendSingleValue = 0,
   legendSingleColor = "white")
 }
 \arguments{

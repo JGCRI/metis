@@ -19,41 +19,22 @@ as well as new palettes for Metis modeling to the global environment
 \details{
 List of Color Palettes
 \itemize{
-\item pal_HDDCDD
-\item pal_16
-\item elec_tech_colors
-\item elec_renew_colors
-\item building_colors
-\item trn_fuel_colors
-\item enduse_fuel_numbered
-\item enduse_colors
-\item pal_pri_ene
-\item pal_pri_fuelcost
-\item pal_emiss_sector
-\item pal_landuse
-\item pal_hydrogen
-\item pal_refliq
-\item emiss_by_enduse_colors
-\item biouse_colors
-\item pal_Basic
-\item pal_Gas
-\item pal_Diff
-\item pal_Diff5
-\item pal_Absolute
-\item pal_Absolute5
-\item pal_Unassigned
-\item pal_pri_ene
-\item pal_nrg
-\item pal_hot
-\item pal_wet
-\item pal_div_wet
-\item pal_div_RdBl
-\item pal_green
-\item pal_div_BrGn
-\item pal_div_BlRd
-\item pal_sankey
-\item pal_spectral
-\item pal_ScarcityCat}
+\item "pal_metis"
+\item "pal_16"
+\item "pal_Basic"
+\item "pal_hot"
+\item "pal_wet"
+\item "pal_div_wet"
+\item "pal_div_RdBl"
+\item "pal_div_GrBr"
+\item "pal_div_BluRd"
+\item "pal_div_RdBlu"
+\item "pal_green"
+\item "pal_div_BrGn"
+\item "pal_div_BlRd"
+\item "pal_sankey"
+\item "pal_spectral"
+\item "pal_ScarcityCat"}
 }
 \examples{
 library(metis)
