@@ -74,7 +74,7 @@ metis.chart<-function(data,
                          facet_rows=NULL,facet_columns=NULL,ncolrow=4,
                          facetBGColor="grey30",
                          facetLabelColor = "white",
-                         facetLabelSize=24,
+                         facetLabelSize=36,
                          scales="fixed",
                          useNewLabels=0,units="units",
                          xBreaksMaj=10, xBreaksMin=5,
@@ -286,10 +286,10 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
       ggtitle(title) +
       theme_bw() +
       theme(
-        text =                element_text(family = NULL, face = "plain",colour = "black", size = 24,
+        text =                element_text(family = NULL, face = "plain",colour = "black", size = 36,
                                            hjust = 0.5, vjust = 0.5, angle = 0, lineheight = 0.9)
-        , axis.text.x =       element_text(size=24)
-        , axis.text.y =       element_text(size=24)
+        , axis.text.x =       element_text(size=36)
+        , axis.text.y =       element_text(size=36)
         ,axis.title.x =       element_text(vjust = -1, margin=margin(t=1,unit="line"))
         ,axis.title.y =       element_text(angle = 90, vjust = 2, margin=margin(r=1,unit="line"))
         ,legend.key =         element_blank()
