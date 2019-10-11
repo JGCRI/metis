@@ -251,7 +251,5 @@ metis.colors <- function(palx=NULL) {
                          pal_ColoradoElecDemand=pal_ColoradoElecDemand, pal_ColoradoTotalElecDemand=pal_ColoradoTotalElecDemand,
                          pal_ColoradoWater=pal_ColoradoWater)
 
-    if(is.null(palX)){print(names(metisPalettes))}
-
     invisible(metisPalettes)
 }
