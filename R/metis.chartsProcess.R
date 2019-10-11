@@ -44,6 +44,7 @@
 #' @param class Default "class"
 #' @param aggregate Default "sum"
 #' @param classPalette Default "pal_metis" from metis.colors()$pal_metis
+#' @param regionCompare Default =1. To turn of regional comparison make 0.
 #' @param regionCompareOnly Default 0. If set to 1, will only run comparison plots and not individual
 #' @param scenarioCompareOnly Default 0. If set to 1, will only run comparison plots and not individual
 #' @param useNewLabels Default 0
@@ -103,6 +104,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        regionsSelect="All",
                        xData="x",yData="value",xLabel="xLabel",yLabel="units",
                        aggregate="sum",class="class", classPalette="pal_metis",
+                       regionCompare=1,
                        regionCompareOnly=0,scenarioCompareOnly=0,useNewLabels=0,
                        sizeBarLines=0,sizeLines=1.5,
                        folderName="folderNameDefault",
@@ -504,6 +506,7 @@ utils::write.csv(tblAggClass2%>%
 # Create Charts for Regional Comparison
 #------------------
 
+if(regionCompare==1){
 if(length(unique(tbl$region))>1){
 
   for(j in unique(tbl$scenario)){
@@ -595,6 +598,8 @@ if(length(unique(tbl$region))>1){
 #------------------
 # Compare Scenarios for each region
 #------------------
+
+
 
 if(length(unique(tbl$scenario))>1){
 
@@ -814,7 +819,7 @@ if(length(unique(tbl$scenario))>1){
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBarDiff_compareScenRegion",nameAppend,sep=""),
-          figWidth = 10*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,
+          figWidth = 10*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
           figHeight = 9*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )
 
@@ -823,7 +828,7 @@ if(length(unique(tbl$scenario))>1){
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figLineDiff_compareScenRegion",nameAppend,sep=""),
-          figWidth = 10*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,
+          figWidth = 10*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
           figHeight = 9*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )
 
@@ -852,18 +857,18 @@ if(length(unique(tbl$scenario))>1){
           # Bar Chart Dodged
           metis.chart(tbl_pdAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge", classPalette = classPalette,
-                      facet_columns="region",facet_rows=NULL,
+                      facet_rows="region",facet_columns = "scenario",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
-                      fileName = paste(j,"_figBarDodgedDiff_compareScenRegion",nameAppend,sep=""),
+                      fileName = paste(j,"_figBarDodgedDiff_compareScenRegion",nameAppend,sep=""),forceFacets = T,
                       figWidth = 10*max((length(unique(tbl_pdAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
 
           # Line Chart Overlapped
           metis.chart(tbl_pdAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario", classPalette = classPalette,
-                      facet_columns="region",facet_rows=NULL,
+                      facet_rows="region",facet_columns = "scenario",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
-                      fileName = paste(j,"_figLineOverlapDiff_compareScenRegion",nameAppend,sep=""),
+                      fileName = paste(j,"_figLineOverlapDiff_compareScenRegion",nameAppend,sep=""),forceFacets = T,
                       figWidth = 10*max((length(unique(tbl_pdAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
         }
@@ -928,7 +933,7 @@ if(length(unique(tbl$scenario))>1){
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figBarDiffPrcnt_compareScenRegion",nameAppend,sep=""),
-                    figWidth = 10*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,
+                    figWidth = 10*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
                     figHeight = 9*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )
 
@@ -937,7 +942,7 @@ if(length(unique(tbl$scenario))>1){
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figLineDiffPrcnt_compareScenRegion",nameAppend,sep=""),
-                    figWidth = 10*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,
+                    figWidth = 10*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
                     figHeight = 9*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )
         #-------------------------
@@ -948,13 +953,13 @@ if(length(unique(tbl$scenario))>1){
         # Calculate Percentage Diff Values
         tbl_pd<-tbl_p%>%
           dplyr::filter(scenario==scenRef_i)%>%
-          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,-tidyselect::contains("class"))
+          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,-tidyselect::contains("class"),class1)
         if(!yData %in% names(tbl_p)){tbl_pd<-tbl_pd%>%dplyr::select(-dplyr::one_of(c(yData)))}
 
         for (k in unique(tbl_p$scenario)[unique(tbl_p$scenario)!=scenRef_i]){
           tbl_temp <- tbl_p%>%
             dplyr::filter(scenario %in% c(scenRef_i,k))%>%
-            dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,-tidyselect::contains("class"))
+            dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,-tidyselect::contains("class"),class1)
           if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-dplyr::one_of(c(yData)))}
           tbl_temp <- tbl_temp%>%
             tidyr::spread(scenario,yData)
@@ -1002,18 +1007,18 @@ if(length(unique(tbl$scenario))>1){
           # Bar Chart Dodged
           metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge", classPalette = classPalette,
-                      facet_columns="region",facet_rows=NULL,
+                      facet_rows="region",facet_columns="scenario",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
-                      fileName = paste(j,"_figBarDodgedDiffPrcnt_compareScenRegion",nameAppend,sep=""),
+                      fileName = paste(j,"_figBarDodgedDiffPrcnt_compareScenRegion",nameAppend,sep=""),forceFacets = T,
                       figWidth = 10*max((length(unique(tbl_pdAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
 
           # Line Chart Overlapped
           metis.chart(tbl_pdC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario", classPalette = classPalette,
-                      facet_columns="region",facet_rows=NULL,
+                      facet_rows="region",facet_columns="scenario",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
-                      fileName = paste(j,"_figLineOverlapDiffPrcnt_compareScenRegion",nameAppend,sep=""),
+                      fileName = paste(j,"_figLineOverlapDiffPrcnt_compareScenRegion",nameAppend,sep=""),forceFacets = T,
                       figWidth = 10*max((length(unique(tbl_pdAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
         }
@@ -1024,6 +1029,7 @@ if(length(unique(tbl$scenario))>1){
 } # Close if multiple scenarios available
 
 } # if length(unique(tbl$region))>1
+}
 
 if(regionCompareOnly!=1){
 
@@ -1388,7 +1394,7 @@ for(i in unique(tbl$region)){
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figBarDiff_",i,"_compareScen",nameAppend,sep=""),
-        figWidth = 10*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,
+        figWidth = 10*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
         figHeight = 9*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )
 
@@ -1397,7 +1403,7 @@ for(i in unique(tbl$region)){
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figLineDiff_",i,"_compareScen",nameAppend,sep=""),
-        figWidth = 10*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,
+        figWidth = 10*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
         figHeight = 9*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )
 
@@ -1430,8 +1436,8 @@ for(i in unique(tbl$region)){
        metis.chart(tbl_rpdAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                    class ="scenario", position ="dodge", classPalette = classPalette,
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
-                   fileName = paste(j,"_figBarDodgedDiff_",i,"_compareScen_",nameAppend,sep=""),
-                   figWidth = 10*max((length(unique(tbl_rpAgg$scenario))/2),1)*figWMult,pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   fileName = paste(j,"_figBarDodgedDiff_",i,"_compareScen_",nameAppend,sep=""), forceFacets = T,
+                   figWidth = 10*max(((length(unique(tbl_rpAgg$scenario))+1)/2),1)*figWMult,pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
        )
 
        # Line Chart Overlapped
@@ -1439,7 +1445,7 @@ for(i in unique(tbl$region)){
                    class ="scenario", classPalette = classPalette,
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiff_",i,"_compareScen",nameAppend,sep=""),
-                   figWidth = 10*figWMult,
+                   figWidth = 10*max(((length(unique(tbl_rpAgg$scenario))+1)/2),1)*figWMult,forceFacets = T,
                    pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
        )
      }
@@ -1533,7 +1539,7 @@ for(i in unique(tbl$region)){
                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figBarDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
-                 figWidth = 10*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,
+                 figWidth = 10*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
                  figHeight = 9*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
      )
 
@@ -1542,7 +1548,7 @@ for(i in unique(tbl$region)){
                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figLineDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
-                 figWidth = 10*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,
+                 figWidth = 10*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
                  figHeight = 9*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
      )
 
@@ -1637,8 +1643,8 @@ for(i in unique(tbl$region)){
        metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                    class ="scenario", position ="dodge", classPalette = classPalette,
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
-                   fileName = paste(j,"_figBarDodgedDiffPrcnt_",i,"_compareScen_",nameAppend,sep=""),
-                   figWidth = 10*max((length(unique(tbl_rpAgg$scenario))/2),1)*figWMult,pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   fileName = paste(j,"_figBarDodgedDiffPrcnt_",i,"_compareScen_",nameAppend,sep=""),forceFacets = T,
+                   figWidth = 10*max(((length(unique(tbl_rpAgg$scenario))+1)/2),1)*figWMult,pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
        )
 
        # Line Chart Overlapped
@@ -1646,7 +1652,7 @@ for(i in unique(tbl$region)){
                    class ="scenario", classPalette = classPalette,
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
-                   figWidth = 10*figWMult,
+                   figWidth = 10*max(((length(unique(tbl_rpAgg$scenario))+1)/2),1)*figWMult, forceFacets = T,
                    pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
        )
      }
