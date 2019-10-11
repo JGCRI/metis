@@ -60,6 +60,9 @@
 #' @param catParam Default=NULL
 #' @param innerMargins Default =c(0,0,0,0), # bottom, left, top, right
 #' @param outerMargins Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right
+#' @param legendSingleColorOn Default=F
+#' @param legendSingleValue Default=0
+#' @param legendSingleColor Default="white"
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
 #' @export
@@ -120,7 +123,10 @@ metis.map<-function(dataPolygon=NULL,
                   numeric2Cat_list=NULL,
                   catParam=NULL,
                   innerMargins=c(0,0,0,0), # bottom, left, top, right
-                  outerMargins=c(0.01,0.01,0.01,0.01) # bottom, left, top, right
+                  outerMargins=c(0.01,0.01,0.01,0.01),# bottom, left, top, right
+                  legendSingleColorOn=T,
+                  legendSingleValue=0,
+                  legendSingleColor="white"
                   ){
 
 
@@ -129,7 +135,7 @@ metis.map<-function(dataPolygon=NULL,
   # dataRaster=NULL
   # shpFolder=NULL
   # shpFile=NULL
-  # fillPalette="Spectral"
+  # #fillPalette="Spectral"
   # borderColor="gray20"
   # lwd=1
   # lty=1
@@ -190,7 +196,7 @@ metis.map<-function(dataPolygon=NULL,
 # Initialize variables to remove binding errors if needed
 # -----------------
 
-NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette
+NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette->legendSinglecolorOn
 
 legendTitle=gsub(" ","\n",legendTitle)
 tmap::tmap_mode(mode = c("plot"))
@@ -487,9 +493,15 @@ if(!is.null(shape)){
 }
 
 
+
 if(length(fillPalette)==1){
  if(fillPalette %in% names(metis.colors())){
-            fillPalette<-metis.colors()[[fillPalette]]}}
+            fillPalette<-metis.colors()[[fillPalette]]}else{
+              if(!is.na(RColorBrewer::brewer.pal.info[fillPalette,]$maxcolors)){
+                fillPalette <- RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[fillPalette,]$maxcolors,fillPalette)}
+
+            }}; graphics::pie(rep(1,length(fillPalette)),label=names(fillPalette),col=fillPalette)
+
 
 #-----------------
 #----------------
@@ -543,16 +555,142 @@ if(grepl("polygon",class(shape)[1],ignore.case=T) | grepl("tmap",class(shape)[1]
     map= map + tmap::tm_borders(col=borderColor,lwd=lwd, lty=lty)
   }else{
 if(is.null(raster)){
+
 if(is.null(legendBreaks)){
   if(length(scales::pretty_breaks(n=legendFixedBreaks)(shape@data%>%dplyr::select(fillColumn)%>%as.matrix()))>1){
     legendBreaks=scales::pretty_breaks(n=legendFixedBreaks)(shape@data%>%dplyr::select(fillColumn)%>%as.matrix())
   }else{legendBreaks=NULL}
 }
 
-if(length(unique(legendBreaks))==1){legendStyle="kmeans"}
+
+# Adding in a single value (eg. 0 to be set to a single color eg. white)
+  if(!is.null(legendDigits)){
+  if(legendSingleColorOn){
+
+    legendBreaksX <- legendBreaks; legendBreaksX
+
+
+  # Find location of single value provided.
+  if(min(legendBreaksX)>=legendSingleValue){
+  singlevalLoc<-match(min(legendBreaksX[legendBreaksX>=legendSingleValue]),legendBreaksX)}else{
+    if(max(legendBreaksX)<=legendSingleValue){
+      singlevalLoc<-match(max(legendBreaksX[legendBreaksX<=legendSingleValue]),legendBreaksX)
+    }else{
+      singlevalLoc<-match(max(legendBreaksX[legendBreaksX<legendSingleValue]),legendBreaksX)+1
+    }
+  };singlevalLoc
+
+  # Legend Labels
+  a<-c()
+  for(i in 1:(length(legendBreaksX)-1)){
+    if(i!=1){lower<-upperLast}else{lower <- round(legendBreaksX[i],(legendDigits+countDig))};lower
+    upper <- round(legendBreaksX[i+1],legendDigits); upper
+    countDig <- 1
+    while(upper==lower & countDig<6){upper <- round(legendBreaksX[i+1],(legendDigits+countDig)); countDig=countDig+1};upper
+    upperLast <- upper; upperLast
+    a[i]=paste(lower," to ",upper,sep="")};a
+
+  if(min(legendBreaksX)>=legendSingleValue){
+    legendLabelsX=c(a)
+    legendLabelsX<-c(paste(legendSingleValue,sep=""),
+                    legendLabelsX[(singlevalLoc):length(legendLabelsX)])
+    }else{
+      if(max(legendBreaksX)<=legendSingleValue){
+        legendLabelsX=c(a)
+        legendLabelsX<-c(legendLabelsX[1:(singlevalLoc-1)],
+                        paste(legendSingleValue,sep=""))
+      }else{
+        legendLabelsX=c(a)
+        legendLabelsX<-c(legendLabelsX[1:(singlevalLoc-1)],
+                        paste(legendSingleValue,sep=""),
+                        legendLabelsX[(singlevalLoc):length(legendLabelsX)])
+      }}; legendLabelsX
+
+  # Fill palette
+  if(T){
+  graphics::pie(rep(1,length(fillPalette)),label=names(fillPalette),col=fillPalette)
+  fillColUp<-fillPalette[(round(length(fillPalette)/2,0)+1):length(fillPalette)]
+  graphics::pie(rep(1,length(fillColUp)),label=names(fillColUp),col=fillColUp)
+  fillColDown<-fillPalette[1:(round(length(fillPalette)/2,0)-1)]
+  graphics::pie(rep(1,length(fillColDown)),label=names(fillColDown),col=fillColDown)
+  if(singlevalLoc==length(legendLabelsX)){fillPaletteXUp<-c()}else{
+  fillPaletteXUp <- grDevices::colorRampPalette(fillColUp)(round((length(legendLabelsX)-singlevalLoc),0))};fillPaletteXUp
+  if(singlevalLoc==1){fillPaletteXDown<-c()}else{
+  fillPaletteXDown <- grDevices::colorRampPalette(fillColDown)(singlevalLoc)};fillPaletteXDown
+  fillPaletteX <-c(fillPaletteXDown,fillPaletteXUp)
+  graphics::pie(rep(1,length(fillPaletteX)),label=names(fillPaletteX),col=fillPaletteX)
+   if(min(legendBreaksX)>=legendSingleValue){
+     fillPaletteX<-c(paste(legendSingleColor,sep=""),
+                    fillPaletteX[(singlevalLoc):length(fillPaletteX)])
+  }else{
+    if(max(legendBreaksX)<=legendSingleValue){
+      fillPaletteX<-c(fillPaletteX[1:(singlevalLoc-1)],
+                      paste(legendSingleColor,sep=""))
+    }else{
+      fillPaletteX<-c(fillPaletteX[1:(singlevalLoc-1)],
+                      paste(legendSingleColor,sep=""),
+                      fillPaletteX[(singlevalLoc+1):length(fillPaletteX)])
+    }};fillPaletteX;graphics::pie(rep(1,length(fillPaletteX)),label=legendLabelsX,col=fillPaletteX)}
+
+  # New Breaks
+  if(legendSingleValue %in% legendBreaksX){
+    if(max(legendBreaksX)==legendSingleValue){
+    legendAdder = (legendSingleValue+(legendBreaksX[singlevalLoc]-legendBreaksX[singlevalLoc-1])/1000)}else{
+      legendAdder = (legendSingleValue+(legendBreaksX[singlevalLoc+1]-legendBreaksX[singlevalLoc])/1000)
+    }
+
+  }else{legendAdder=NULL}
+
+  if(min(legendBreaksX)>legendSingleValue){
+    legendBreaksX<- sort(c(legendSingleValue[!legendSingleValue %in% legendBreaksX],
+                     legendBreaksX[singlevalLoc:length(legendBreaksX)]))
+  }else{
+    if(max(legendBreaksX)<legendSingleValue){
+      legendBreaksX<- sort(c(legendBreaksX[1:(singlevalLoc)],
+                       legendSingleValue[!legendSingleValue %in% legendBreaksX]))
+    }else{
+      if(min(legendBreaksX)==legendSingleValue){
+      legendBreaksX<- sort(c(legendSingleValue,
+                             legendAdder,
+                        legendBreaksX[(singlevalLoc+1):length(legendBreaksX)]))
+    }else{
+      if(max(legendBreaksX)==legendSingleValue){
+        legendBreaksX<- sort(c(legendBreaksX[1:(singlevalLoc)],
+                           legendSingleValue[!legendSingleValue %in% legendBreaksX],
+                           legendAdder))
+      }else{
+        legendBreaksX<- sort(c(legendBreaksX[1:(singlevalLoc-1)],
+                       legendSingleValue[!legendSingleValue %in% legendBreaksX],
+                       legendAdder,
+                       legendBreaksX[(singlevalLoc):length(legendBreaksX)]))
+    }}}};legendBreaksX
+
+  legendFixedBreaksX = length(legendBreaksX)
+  length(legendBreaksX);length(legendLabelsX);legendBreaksX;legendLabelsX
+
+if(length(legendBreaksX)-1!=length(legendLabelsX)){
+  print("Length of legend breaks must be length of legend labels +1. Skipping setting singleValeColor.")
+  legendFixedBreaksX=legendFixedBreaks
+  legendBreaksX=legendBreaks
+  legendLabelsX=NULL
+  fillPaletteX=fillPalette
+  }} else{
+    legendFixedBreaksX=legendFixedBreaks
+    legendBreaksX=legendBreaks
+    legendLabelsX=NULL
+    fillPaletteX=fillPalette
+  }} else {
+    legendFixedBreaksX=legendFixedBreaks
+    legendBreaksX=legendBreaks
+    legendLabelsX=NULL
+    fillPaletteX=fillPalette
+}
+
+if(is.null(legendLabelsX)){if(length(unique(legendBreaks))==1){legendStyle="kmeans"}}
 #names(shape)[names(shape) %in% fillColumn]<-gsub(" ","_",names(shape)[names(shape) %in% fillColumn])
-map<-map + tmap::tm_fill(col=fillColumn, palette = fillPalette, title=legendTitle,
-                   style=legendStyle,n=legendFixedBreaks,breaks=legendBreaks,alpha=alpha,colorNA=fillcolorNA,
+map<-map + tmap::tm_fill(col=fillColumn, palette = fillPaletteX, title=legendTitle,
+                   style=legendStyle,n=legendFixedBreaksX,breaks=legendBreaksX,labels=legendLabelsX,alpha=alpha,colorNA=fillcolorNA,
+                   colorNULL = fillcolorNULL,
                    legend.show = legendShow, showNA=fillshowNA) +
            tmap::tm_borders(col=borderColor,lwd=lwd, lty=lty)
 }else{
@@ -617,11 +755,11 @@ if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
               inner.margins = innerMargins,outer.margins=outerMargins) +
     tmap::tm_layout(panel.label.bg.color = facetBGColor,
                     panel.label.color = facetLabelColor,
-                    panel.label.size = facetLabelSize)
+                    panel.label.size = facetLabelSize);map
 
   if(!is.null(multiFacetRows) | !is.null(multiFacetCols)){map<-map+tmap::tm_layout(asp=1)}else{
     map<-map+tmap::tm_layout(asp=NA)
-  }
+  };map
 
 
 if(legendStyle!="cat"){
@@ -636,12 +774,16 @@ if(!is.null(dataGrid)){
     if(all(fillColumn %in% names(shape@data))){
     if(length(unique(shape@data%>%dplyr::select(fillColumn)))>1){
       if(is.null(catPalette)){
-      if(!is.null(legendDigits)){map<- map + tmap::tm_layout(legend.format = list(digits = legendDigits))}
+      if(!is.null(legendDigits)){
+        if(!legendSingleColorOn){
+        map<- map + tmap::tm_layout(legend.format = list(digits = legendDigits))
+        }
+        }
      }}
     }
   }
 }
-}
+}; map
 if(!is.null(mapTitle)){map<- map + tmap::tm_layout(main.title = mapTitle, main.title.size = mapTitleSize)}
 
 

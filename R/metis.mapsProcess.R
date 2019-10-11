@@ -35,7 +35,6 @@
 #' @param boundaryRegShpFolder Default= NULL . Suggested paste(getwd(),"/dataFiles/gis/naturalEarth",sep  Default="")
 #' @param boundaryRegShpFile Default=NULL . Suggested paste("ne_10m_admin_0_countries",sep  Default=""),
 #' @param boundaryRegCol Default=NULL. Suggested "NAME_0",
-#' @param fillcolorNA Default = NULL
 #' @param extendedFillColor Default ="grey75",
 #' @param extendedBGColor Default ="lightblue1",
 #' @param extendedHighLightColor Default ="cornsilk1",
@@ -70,6 +69,12 @@
 #' @param diffOn Default = F. Whether to calculate diff values between scenarios.
 #' @param frameShow Default = T. Whether to plot frame around maps and facets.
 #' @param pdfpng Save IO figures as pdf or png. Type=String. Options: 'pdf' or 'png'. Default = 'png'
+#' @param fillcolorNA Default="gray",
+#' @param fillshowNA Default=NA,
+#' @param fillcolorNULL Default="gray"
+#' @param legendSingleColorOn Default=F,
+#' @param legendSingleValue Default =0,
+#' @param legendSingleColor Default="white"
 #' @export
 
 
@@ -103,7 +108,6 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            boundaryRegShpFile=NULL,
                            boundaryRegCol=NULL,
                            boundaryRegionsSelect=NULL,
-                           fillcolorNA=NULL,
                            extendedLabels =T,
                            extendedFillColor="grey75",
                            extendedBGColor="lightblue1",
@@ -137,7 +141,13 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            numeric2Cat_list=NULL,
                            diffOn = F,
                            frameShow = T,
-                           pdfpng = 'png'){
+                           pdfpng = 'png',
+                           fillcolorNA="gray",
+                           fillshowNA=NA,
+                           fillcolorNULL="gray",
+                           legendSingleColorOn=T,
+                           legendSingleValue=0,
+                           legendSingleColor="white"){
 
   # polygonDataTables=NULL
   # gridDataTables=NULL
@@ -200,6 +210,13 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # diffOn=F
   # frameShow = T
   # facetLabelSizeGCMRCP=1.5
+  # fillcolorNA="gray"
+  # fillshowNA=NA
+  # fillcolorNULL="gray"
+  # legendSingleColorOn=T
+  # legendSingleValue=0
+  # legendSingleColor="white"
+  # pdfpng = 'png'
 
 
   #------------------
@@ -537,7 +554,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
     if(!is.null(extendedShape)){
       if(extendedShapeCol %in% names(extendedShape)){
-        underLayer<-metis.map(fillcolorNA=fillcolorNA, dataPolygon=extendedShape, printFig=F,labelsAutoPlace = F,
+        underLayer<-metis.map(fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL, dataPolygon=extendedShape, printFig=F,labelsAutoPlace = F,
                               fillColumn = extendedShapeCol,labels=extendedLabels, fillPalette = extendedFillColor,legendShow=F,
                               bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,
                               facetsON=F, figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng)
@@ -672,7 +689,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       for (scenario_i in unique(gridTbl$scenario)[unique(gridTbl$scenario)!=scenRef_i]){
         tbl_temp1 <-gridTblDiff%>%
           dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBlu")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(gridTbl$scenario))))
         tbl_temp1<-tbl_temp1%>%
           tidyr::gather(key=scenario,value=value,
@@ -681,7 +698,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
         tbl_temp2 <-gridTblDiff%>%
           dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBlu")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(gridTbl$scenario))))
         tbl_temp2<-tbl_temp2%>%
           tidyr::gather(key=scenario,value=value,
@@ -728,7 +745,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       for (scenario_i in unique(shapeTbl$scenario)[unique(shapeTbl$scenario)!=scenRef_i]){
         tbl_temp1 <-shapeTblDiff%>%
           dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBlu")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(shapeTbl$scenario))))
         tbl_temp1<-tbl_temp1%>%
           tidyr::gather(key=scenario,value=value,
@@ -737,7 +754,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
         tbl_temp2 <-shapeTblDiff%>%
           dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
-                        classPalette="pal_div_BlRd")%>%
+                        classPalette="pal_div_RdBlu")%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(shapeTbl$scenario))))
         tbl_temp2<-tbl_temp2%>%
           tidyr::gather(key=scenario,value=value,
@@ -969,7 +986,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
             animScaleGrid<-(gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i))$value
 
             if(!is.null(scaleRange)){
-              if(grepl(param_i,unique(scaleRange$param))){
+              if(any(grepl(param_i,unique(scaleRange$param)))){
               if(max(animScaleGrid) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
                 animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
                   animScaleGrid <- c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
@@ -1053,7 +1070,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           legendOutside = legendOutsideAnimated,
                           facetFreeScale = F,
                           frameShow = frameShow,
-                          labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                          labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                           labelsSize = labelsSize,
                           legendTitle =legendTitleAnimated,
                           legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
@@ -1108,14 +1126,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   }
 
                 metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
-                          underLayer=underLayer, dataPolygon=shape,
+                          underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           legendShow = T,
                           legendOutside = legendOutsideAnimated,
                           facetFreeScale = F,
                           frameShow = frameShow,
-                          labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                          labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                           labelsSize = labelsSize,
                           legendTitle =legendTitleAnimated,
                           legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
@@ -1144,14 +1163,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   }
 
                 metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
-                          underLayer=underLayer, dataPolygon=shape,
+                          underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           legendShow = T,
                           legendOutside = legendOutsideAnimated,
                           facetFreeScale = T,
                           frameShow = frameShow,
-                          labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                          labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                           labelsSize = labelsSize,
                           legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                           legendTitle = legendTitleAnimated,
@@ -1211,6 +1231,12 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                         animName,sep = ""))
               print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                                                        animName,sep = ""))
+              fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
+                                   animName,sep = "")
+              tempImage<-magick::image_read(fnameTempImage)
+              croppedImage<-magick::image_trim(tempImage,fuzz=0);
+              magick::image_write(croppedImage,fnameTempImage)
+
 
               animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
               animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear",sep=""),
@@ -1220,6 +1246,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                           animName,sep = ""))
               print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                           animName,sep = ""))
+              fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
+                                   animName,sep = "")
+              tempImage<-magick::image_read(fnameTempImage)
+              croppedImage<-magick::image_trim(tempImage,fuzz=0);
+              magick::image_write(croppedImage,fnameTempImage)
 
 
               animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
@@ -1230,6 +1261,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                           animName,sep = ""))
               print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
                           animName,sep = ""))
+              fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/",
+                                   animName,sep = "")
+              tempImage<-magick::image_read(fnameTempImage)
+              croppedImage<-magick::image_trim(tempImage,fuzz=0);
+              magick::image_write(croppedImage,fnameTempImage)
 
 
               #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
@@ -1256,7 +1292,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 animScaleGrid<-datax$value
 
                 if(!is.null(scaleRange)){
-                  if(grepl(param_i,unique(scaleRange$param))){
+                  if(any(grepl(param_i,unique(scaleRange$param)))){
                     if(max(animScaleGrid) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
                       animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
                         animScaleGrid <- c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
@@ -1300,14 +1336,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 mapx@data<-mapx@data%>%dplyr::select(-lat,-lon)
                 names(mapx@data)<-paste("X",names(mapx@data),sep="")
 
-                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=shape,
+                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           legendShow = T,
                           legendOutside = legendOutsideSingle,
                           facetFreeScale = F,
                           frameShow = frameShow,
-                          labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                          labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                           labelsSize = labelsSize,
                           legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
                           legendStyle="fixed",
@@ -1354,14 +1391,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,sep = "")
 
 
-                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=shape,
+                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           legendShow = T,
                           legendOutside = legendOutsideSingle,
                           facetFreeScale = F,
                           frameShow = frameShow,
-                          labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                          labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                           labelsSize = labelsSize,
                           legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
                           legendStyle="fixed",
@@ -1386,14 +1424,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     legendTextSizeAnim = legendTextSizeI
                   }
 
-                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=shape,
+                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           legendShow = T,
                           legendOutside = legendOutsideAnimated,
                           facetFreeScale = T,
                           frameShow = frameShow,
-                          labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                          labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                           labelsSize = labelsSize,
                           legendTitle =legendTitle,legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                           legendStyle="kmeans",
@@ -1427,7 +1466,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   animScaleGrid<-datax[[meanCol]];animScaleGrid
 
                   if(!is.null(scaleRange)){
-                    if(grepl(param_i,unique(scaleRange$param))){
+                    if(any(grepl(param_i,unique(scaleRange$param)))){
                       if(max(animScaleGrid) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
                         animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
                           animScaleGrid <- c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
@@ -1468,14 +1507,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 mapx@data<-mapx@data%>%dplyr::select(-lat,-lon)
                 names(mapx@data)<-paste("X",names(mapx@data),sep="")
 
-                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=shape,
+                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           legendShow = T,
                           legendOutside = legendOutsideSingle,
                           facetFreeScale = F,
                           frameShow = frameShow,
-                          labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                          labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                           labelsSize = labelsSize,
                           panelLabel = paste(names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
                           legendTitle =paste(legendTitle,sep=""),
@@ -1492,14 +1532,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
                           dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/", scenario_i,sep = ""))
 
-                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=shape,
+                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           legendShow = T,
                           legendOutside = legendOutsideSingle,
                           facetFreeScale = F,
                           frameShow = frameShow,
-                          labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                          labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                           labelsSize = labelsSize,
                           panelLabel = paste(names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
                           legendTitle =paste(legendTitle,sep=""),legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
@@ -1525,14 +1566,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     legendTextSizeAnim = legendTextSizeI
                   }
 
-                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=shape,
+                metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           legendShow = T,
                           legendOutside = legendOutsideAnimated,
                           facetFreeScale = T,
                           frameShow = frameShow,
-                          labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                          labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                           labelsSize = labelsSize,
                           panelLabel = paste(names(datax)[!names(datax) %in% c("lat","lon")],sep=""),
                           legendTitle =paste(legendTitle,sep=""),legendTitleSize = legendTitleSizeAnim,legendTextSize =  legendTextSizeAnim,
@@ -1597,7 +1639,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
                     if(!is.null(scaleRange)){
-                      if(grepl(param_i,unique(scaleRange$param))){
+                      if(any(grepl(param_i,unique(scaleRange$param)))){
                       if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
                         animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
                         animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
@@ -1684,7 +1726,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                 facetFreeScale = F,
                                 facetLabelSize = facetLabelSizeGCMRCP,
                                 frameShow = frameShow,
-                                labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                                labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                                 labelsSize = labelsSize,
                                 legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
                                 legendTitle =legendTitleMulti,
@@ -1742,7 +1785,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                 facetLabelSize = facetLabelSizeGCMRCP,
                                 facetFreeScale = F,
                                 frameShow = frameShow,
-                                labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                                labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                                 labelsSize = labelsSize,
                                 legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
                                 legendTitle =legendTitleMulti,
@@ -1770,7 +1814,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                 facetFreeScale = T,
                                 facetLabelSize = facetLabelSizeGCMRCP,
                                 frameShow = frameShow,
-                                labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                                labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                                 labelsSize = labelsSize,
                                 legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
                                 legendTitle =legendTitleMulti,
@@ -1865,7 +1910,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                     facetFreeScale = F,
                                     facetLabelSize = facetLabelSizeGCMRCP,
                                     frameShow = frameShow,
-                                    labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                                    labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                                     labelsSize = labelsSize,
                                     legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
                                     legendTitle =legendTitleMulti,
@@ -1925,7 +1971,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                     facetFreeScale = F,
                                     facetLabelSize = facetLabelSizeGCMRCP,
                                     frameShow = frameShow,
-                                    labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                                    labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                                     labelsSize = labelsSize,
                                     legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
                                     legendTitle =legendTitleMulti,
@@ -1953,7 +2000,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                     facetFreeScale = T,
                                     facetLabelSize = facetLabelSizeGCMRCP,
                                     frameShow = frameShow,
-                                    labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                                    labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                                     labelsSize = labelsSize,
                                     legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
                                     legendTitle =legendTitleMulti,
@@ -1988,6 +2036,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                                   animName,sep = ""))
                       print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                   animName,sep = ""))
+                      fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                           animName,sep = "")
+                      tempImage<-magick::image_read(fnameTempImage)
+                      croppedImage<-magick::image_trim(tempImage,fuzz=0);
+                      magick::image_write(croppedImage,fnameTempImage)
 
 
                       animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_KMEANS.gif",sep="")
@@ -1998,6 +2051,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                                   animName,sep = ""))
                       print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                   animName,sep = ""))
+                      fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                           animName,sep = "")
+                      tempImage<-magick::image_read(fnameTempImage)
+                      croppedImage<-magick::image_trim(tempImage,fuzz=0);
+                      magick::image_write(croppedImage,fnameTempImage)
 
                       animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_FREESCALE.gif",sep="")
                       animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/byYear",sep=""),
@@ -2007,6 +2065,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                                   animName,sep = ""))
                       print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                   animName,sep = ""))
+                      fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                           animName,sep = "")
+                      tempImage<-magick::image_read(fnameTempImage)
+                      croppedImage<-magick::image_trim(tempImage,fuzz=0);
+                      magick::image_write(croppedImage,fnameTempImage)
 
 
                       #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
@@ -2017,7 +2080,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                     animScalePoly<-shapeTblMultxDiff$valueDiff
                     if(!is.null(scaleRange)){
-                      if(grepl(param_i,unique(scaleRange$param))){
+                      if(any(grepl(param_i,unique(scaleRange$param)))){
                       if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
                         animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
                           animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
@@ -2056,7 +2119,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                       if(any(unique(datax$classPalette) %in% c("pal_wet","pal_hot","pal_green"))){
                         datax <- datax %>% dplyr::mutate(classPalette = dplyr::case_when(classPalette=="pal_wet"~"pal_div_wet",
-                                                                                          classPalette=="pal_hot"~"pal_div_BlRd",
+                                                                                          classPalette=="pal_hot"~"pal_div_RdBlu",
                                                                                           classPalette=="pal_green"~"pal_div_BrGn",
                                                                                           TRUE~classPalette))
                       }
@@ -2107,7 +2170,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                   facetFreeScale = F,
                                   facetLabelSize = facetLabelSizeGCMRCP,
                                   frameShow = frameShow,
-                                  labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                                  labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                                   labelsSize = labelsSize,
                                   legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
                                   legendTitle =legendTitleMulti,
@@ -2137,7 +2201,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                   facetFreeScale = F,
                                   facetLabelSize = facetLabelSizeGCMRCP,
                                   frameShow = frameShow,
-                                  labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                                  labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                                   labelsSize = labelsSize,
                                   legendTitleSize = legendTitleSizeMulti,legendTextSize = legendTextSizeMulti,
                                   legendTitle =legendTitleMulti,
@@ -2166,7 +2231,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                   facetFreeScale = T,
                                   facetLabelSize = facetLabelSizeGCMRCP,
                                   frameShow = frameShow,
-                                  labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                                  labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                                   labelsSize = labelsSize,
                                   legendTitleSize = legendTitleSizeI,legendTextSize = legendTextSizeI,
                                   legendTitle =legendTitleMulti,
@@ -2203,7 +2269,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                                 animName,sep = ""))
                     print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                 animName,sep = ""))
-
+                    fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                         animName,sep = "")
+                    tempImage<-magick::image_read(fnameTempImage)
+                    croppedImage<-magick::image_trim(tempImage,fuzz=0);
+                    magick::image_write(croppedImage,fnameTempImage)
 
 
                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_KMEANS.gif",sep="")
@@ -2214,6 +2284,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                                 animName,sep = ""))
                     print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                 animName,sep = ""))
+                    fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                         animName,sep = "")
+                    tempImage<-magick::image_read(fnameTempImage)
+                    croppedImage<-magick::image_trim(tempImage,fuzz=0);
+                    magick::image_write(croppedImage,fnameTempImage)
 
                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",ssp_i,"_",policy_i,"_",class_i,nameAppend,"_DIFF_FREESCALE.gif",sep="")
                     animFiles <- list.files(path = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/compareYear",sep=""),
@@ -2223,6 +2298,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                                 animName,sep = ""))
                     print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
                                 animName,sep = ""))
+                    fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/compareGCMRCPSSP/", ssp_i,"/",policy_i,"/",
+                                         animName,sep = "")
+                    tempImage<-magick::image_read(fnameTempImage)
+                    croppedImage<-magick::image_trim(tempImage,fuzz=0);
+                    magick::image_write(croppedImage,fnameTempImage)
 
                     #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
                   } # If Animate ON==t
@@ -2268,7 +2348,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
               animScalePoly<-(shapeTbl%>%dplyr::filter(subRegType==subRegType_i,scenario==scenario_i,param==param_i))$value
 
               if(!is.null(scaleRange)){
-                if(grepl(param_i,unique(scaleRange$param))){
+                if(any(grepl(param_i,unique(scaleRange$param)))){
                 if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
                   animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
                     animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
@@ -2358,13 +2438,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     }
 
                   metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
-                            underLayer=underLayer, dataPolygon=mapx,
+                            underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             legendShow = T,
                             legendOutside = legendOutsideAnimated,
                             facetFreeScale = F,
                             frameShow = frameShow,
-                            labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                            labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                             labelsSize = labelsSize,
                             legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                             legendTitle =legendTitleAnimated,
@@ -2380,44 +2461,47 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             figHeight=figHeight, pdfpng = pdfpng,
                             fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
                             dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
-
-
-                  # numeric2Cat_list=numeric2Cat_list
-                  # catParam=param_i
-                  # panelLabel=panelLabelAnimated
-                  # underLayer=underLayer
-                  # dataPolygon=mapx
-                  # fillColumn = names(mapx@data%>%dplyr::select(-subRegion))
-                  # legendShow = T
-                  # legendOutside = legendOutsideAnimated
-                  # facetFreeScale = F
-                  # frameShow = frameShow
-                  # labels=labels
-                  # labelsSize = labelsSize
-                  # legendTitleSize = legendTitleSizeAnim
-                  # legendTextSize = legendTextSizeAnim
-                  # legendTitle =legendTitleAnimated
-                  # legendStyle=legendStyleAnim
-                  # legendBreaks = animKmeanBreaksPoly
-                  # legendFixedBreaks=legendFixedBreaks
-                  # legendDigits = animLegendDigits
-                  # legendOutsidePosition = legendOutsidePosition
-                  # legendPosition = legendAnimatedPosition
-                  # fillPalette = fillPalette
-                  # bgColor = bgColorChosen
-                  # figWidth=figWidth
-                  # figHeight=figHeight
-                  # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-                  # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = "")
+#
+#                   legendSingleColorOn=legendSingleColorOn
+#                   legendSingleValue=legendSingleValue
+#                   legendSingleColor=legendSingleColor
+#                   numeric2Cat_list=numeric2Cat_list
+#                   catParam=param_i
+#                   panelLabel=panelLabelAnimated
+#                   underLayer=underLayer
+#                   dataPolygon=mapx
+#                   fillColumn = names(mapx@data%>%dplyr::select(-subRegion))
+#                   legendShow = T
+#                   legendOutside = legendOutsideAnimated
+#                   facetFreeScale = F
+#                   frameShow = frameShow
+#                   labels=labels
+#                   labelsSize = labelsSize
+#                   legendTitleSize = legendTitleSizeAnim
+#                   legendTextSize = legendTextSizeAnim
+#                   legendTitle =legendTitleAnimated
+#                   legendStyle=legendStyleAnim
+#                   legendBreaks = animKmeanBreaksPoly
+#                   legendFixedBreaks=legendFixedBreaks
+#                   legendDigits = animLegendDigits
+#                   legendOutsidePosition = legendOutsidePosition
+#                   legendPosition = legendAnimatedPosition
+#                   fillPalette = fillPalette
+#                   bgColor = bgColorChosen
+#                   figWidth=figWidth
+#                   figHeight=figHeight
+#                   fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
+#                   dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = "")
 
                   metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
-                            underLayer=underLayer, dataPolygon=mapx,
+                            underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             legendShow = T,
                             legendOutside = legendOutsideAnimated,
                             facetFreeScale = F,
                             frameShow = frameShow,
-                            labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                            labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                             labelsSize = labelsSize,
                             legendTitle =legendTitleAnimated,
                             legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
@@ -2433,7 +2517,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             figHeight=figHeight, pdfpng = pdfpng,
                             fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
                             dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
-
+#
+                  # numeric2Cat_list=numeric2Cat_list
+                  # catParam=param_i
                   # panelLabel=panelLabelAnimated
                   # underLayer=underLayer
                   # dataPolygon=mapx
@@ -2447,7 +2533,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # legendTitle =legendTitleAnimated
                   # legendTitleSize = legendTitleSizeAnim
                   # legendTextSize = legendTextSizeAnim
-                  # legendStyle=legendStyleAnim
+                  # legendStyle="fixed"
                   # legendBreaks = animPrettyBreaksPoly
                   # legendFixedBreaks=legendFixedBreaks
                   # legendDigits = animLegendDigits
@@ -2457,6 +2543,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # bgColor = bgColorChosen
                   # figWidth=figWidth
                   # figHeight=figHeight
+                  # pdfpng = pdfpng
                   # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep="")
                   # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = "")
 
@@ -2471,13 +2558,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       legendTextSizeAnim = legendTextSizeI
                     }
 
-                  metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel= panelLabelAnimated,underLayer=underLayer, dataPolygon=mapx,
+                  metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel= panelLabelAnimated,underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             legendShow = T,
                             legendOutside = legendOutsideAnimated,
                             facetFreeScale = T,
                             frameShow = frameShow,
-                            labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                            labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                             labelsSize = labelsSize,
                             legendTitle =legendTitleAnimated,
                             legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
@@ -2492,6 +2580,40 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             figHeight=figHeight, pdfpng = pdfpng,
                             fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
                             dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = ""))
+
+                  # numeric2Cat_list=numeric2Cat_list
+                  # catParam=param_i
+                  # panelLabel= panelLabelAnimated
+                  # underLayer=underLayer
+                  # dataPolygon=mapx
+                  # fillColumn = names(mapx@data%>%dplyr::select(-subRegion))
+                  # legendShow = T
+                  # legendOutside = legendOutsideAnimated
+                  # facetFreeScale = T
+                  # frameShow = frameShow
+                  # legendSingleColorOn=legendSingleColorOn
+                  # legendSingleValue=legendSingleValue
+                  # legendSingleColor=legendSingleColor
+                  # labels=labels
+                  # fillcolorNA=fillcolorNA
+                  # fillshowNA=fillshowNA
+                  # fillcolorNULL=fillcolorNULL
+                  # labelsSize = labelsSize
+                  # legendTitle =legendTitleAnimated
+                  # legendTitleSize = legendTitleSizeAnim
+                  # legendTextSize = legendTextSizeAnim
+                  # legendStyle="kmeans"
+                  # legendFixedBreaks=legendFixedBreaks
+                  # legendDigits = NULL
+                  # legendOutsidePosition = legendOutsidePosition
+                  # legendPosition = legendAnimatedPosition
+                  # fillPalette = fillPalette
+                  # bgColor = bgColorChosen
+                  # figWidth=figWidth
+                  # figHeight=figHeight
+                  # pdfpng = pdfpng
+                  # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep="")
+                  # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear",sep = "")
 
 
                 }# if(nrow(datax)>1){
@@ -2510,6 +2632,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                             animName,sep = ""))
                 print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                             animName,sep = ""))
+                fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
+                                     animName,sep = "")
+                tempImage<-magick::image_read(fnameTempImage)
+                croppedImage<-magick::image_trim(tempImage,fuzz=0);
+                magick::image_write(croppedImage,fnameTempImage)
 
 
 
@@ -2521,6 +2648,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                             animName,sep = ""))
                 print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                             animName,sep = ""))
+                fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
+                                     animName,sep = "")
+                tempImage<-magick::image_read(fnameTempImage)
+                croppedImage<-magick::image_trim(tempImage,fuzz=0);
+                magick::image_write(croppedImage,fnameTempImage)
 
 
                 animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
@@ -2531,6 +2663,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                             animName,sep = ""))
                 print(paste("animation saved in :",dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
                             animName,sep = ""))
+                fnameTempImage=paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/",
+                                     animName,sep = "")
+                tempImage<-magick::image_read(fnameTempImage)
+                croppedImage<-magick::image_trim(tempImage,fuzz=0);
+                magick::image_write(croppedImage,fnameTempImage)
 
 
                 #unlink(paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
@@ -2566,7 +2703,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   animScalePoly<-datax$value
 
                   if(!is.null(scaleRange)){
-                    if(grepl(param_i,unique(scaleRange$param))){
+                    if(any(grepl(param_i,unique(scaleRange$param)))){
                       if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
                         animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
                           animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
@@ -2614,13 +2751,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   mapx@data<-mapx@data%>%dplyr::left_join(datax)%>%
                     dplyr::select(names(datax))
 
-                  metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=mapx,
+                  metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             legendShow = T,
                             legendOutside = legendOutsideSingle,
                             facetFreeScale = F,
                             frameShow = frameShow,
-                            labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                            labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                             labelsSize = labelsSize,
                             legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
                             legendStyle="fixed",
@@ -2661,13 +2799,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
                   # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = "")
 
-                  metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=mapx,
+                  metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             legendShow = T,
                             legendOutside = legendOutsideSingle,
                             facetFreeScale = F,
                             frameShow = frameShow,
-                            labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                            labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                             labelsSize = labelsSize,
                             legendTitle =legendTitle,legendTitleSize = legendTitleSizeS,legendTextSize = legendTextSizeS,
                             legendStyle="fixed",
@@ -2691,13 +2830,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       legendTextSizeAnim = legendTextSizeI
                     }
 
-                  metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=mapx,
+                  metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             legendShow = T,
                             legendOutside = legendOutsideAnimated,
                             facetFreeScale = T,
                             frameShow = frameShow,
-                            labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                            labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                             labelsSize = labelsSize,
                             legendTitle =legendTitle,legendTitleSize = legendTitleSizeAnim,legendTextSize = legendTextSizeAnim,
                             legendStyle="kmeans",
@@ -2734,7 +2874,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     animScalePoly<-datax[[meanCol]]
 
                     if(!is.null(scaleRange)){
-                      if(grepl(param_i,unique(scaleRange$param))){
+                      if(any(grepl(param_i,unique(scaleRange$param)))){
                         if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
                           animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
                             animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
@@ -2777,13 +2917,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     mapx@data<-mapx@data%>%dplyr::left_join(datax)%>%
                       dplyr::select(names(datax))
 
-                    metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=mapx,
+                    metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                               legendShow = T,
                               legendOutside = legendOutsideSingle,
                               facetFreeScale = F,
                               frameShow = frameShow,
-                              labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                              labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                               labelsSize = labelsSize,
                               panelLabel = paste((names(datax%>%dplyr::select(-subRegion))[!names(datax%>%dplyr::select(-subRegion)) %in% c("lat","lon")]),sep=""),
                               legendTitle =paste(legendTitle,sep=""),
@@ -2799,13 +2940,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                               fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
                               dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/", scenario_i,sep = ""))
 
-                    metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=mapx,
+                    metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                               legendShow = T,
                               legendOutside = legendOutsideSingle,
                               facetFreeScale = F,
                               frameShow = frameShow,
-                              labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                              labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                               labelsSize = labelsSize,
                               panelLabel = paste((names(datax%>%dplyr::select(-subRegion))[!names(datax%>%dplyr::select(-subRegion)) %in% c("lat","lon")]),sep=""),
                               legendTitle =paste(legendTitle,sep=""),
@@ -2830,13 +2972,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                         legendTextSizeAnim = legendTextSizeI
                       }
 
-                    metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=mapx,
+                    metis.map(numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                               legendShow = T,
                               legendOutside = legendOutsideAnimated,
                               facetFreeScale = T,
                               frameShow = frameShow,
-                              labels=labels,
+                          legendSingleColorOn=legendSingleColorOn,legendSingleValue=legendSingleValue,legendSingleColor=legendSingleColor,
+                              labels=labels,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL,
                               labelsSize = labelsSize,
                               panelLabel = paste((names(datax%>%dplyr::select(-subRegion))[!names(datax%>%dplyr::select(-subRegion)) %in% c("lat","lon")]),sep=""),
                               legendTitle =paste(legendTitle,sep=""),
