@@ -94,7 +94,7 @@ metis.chart<-function(data,
                          printFig = T,
                          fileName = "chart",
                          title = NULL,
-                         dirOutputs=paste(getwd(),"/outputs/Charts",sep=""),
+                         dirOutputs=NULL,
                          folderName=NULL,
                          figWidth=13,
                          figHeight=9,
@@ -110,6 +110,7 @@ metis.chart<-function(data,
                          forceFacets=F)
                         {
 
+  # color=NULL
   # dataNorm=NULL
   # chartType="bar"
   # position="stack"
@@ -179,12 +180,14 @@ if(!is.null(dirOutputs)){
     if(dirOutputs==paste(dirOutputs,sep="")){dirOutputs=paste(dirOutputs,"/",folderName,sep="")}
   }
 }else{
+  if(!is.null(folderName)){dirOutputs=paste(getwd(),"/outputs/Charts/",folderName,sep="")}else{
+    dirOutputs=paste(getwd(),"/outputs/Charts/",sep="")
+  }
 if (!dir.exists(paste(getwd(),"/outputs",sep=""))){dir.create(paste(getwd(),"/outputs",sep=""))}
 if (!dir.exists(paste(getwd(),"/outputs/Charts",sep=""))){dir.create(paste(getwd(),"/outputs/Charts",sep=""))}
 if(!is.null(folderName)){
   if (!dir.exists(paste(getwd(),"/outputs/Charts/",folderName,sep=""))){dir.create(paste(getwd(),"/outputs/Charts/",folderName,sep=""))}
-  if(dirOutputs==paste(getwd(),"/outputs/Charts",sep="")){dirOutputs=paste(getwd(),"/outputs/Charts/",folderName,sep="")}
-  }
+ }
 }
 
 #------------------------------------------
@@ -557,11 +560,7 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
           # once you've made your adjustments, you can plot it again
           if(pdfpng=='pdf'){grDevices::pdf(paste(dirOutputs,"/",fname,".pdf",sep=""),width=figWidth,height=figHeight)
             grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
-            grDevices::dev.off()
-            fnameTempImage=paste(dirOutputs,"/",fname,".pdf",sep="")
-            tempImage<-magick::image_read(fnameTempImage)
-            croppedImage<-magick::image_trim(tempImage,fuzz=0);
-            magick::image_write(croppedImage,fnameTempImage)}
+            grDevices::dev.off()}
           if(pdfpng=='png'){grDevices::png(paste(dirOutputs,"/",fname,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
             grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
             grDevices::dev.off()
@@ -573,10 +572,6 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
             grDevices::pdf(paste(dirOutputs,"/",fname,".pdf",sep=""),width=figWidth,height=figHeight)
             grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
             grDevices::dev.off()
-            fnameTempImage=paste(dirOutputs,"/",fname,".pdf",sep="")
-            tempImage<-magick::image_read(fnameTempImage)
-            croppedImage<-magick::image_trim(tempImage,fuzz=0);
-            magick::image_write(croppedImage,fnameTempImage)
             grDevices::png(paste(dirOutputs,"/",fname,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
             grid::grid.newpage();grid::grid.draw(ggplot_gtable(gg_guts))
             grDevices::dev.off()

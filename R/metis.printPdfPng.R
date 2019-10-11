@@ -25,13 +25,10 @@ metis.printPdfPng <- function(figure = NULL,
 
     if(is.null(figure)){print("No figure provided.")}else{
 
-    if(pdfpng=='pdf'){grDevices::pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
+    if(pdfpng=='pdf'){
+      grDevices::pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
       print(figure)
       grDevices::dev.off()
-      fnameTempImage=paste(dir,"/",filename,".pdf",sep="")
-      tempImage<-magick::image_read(fnameTempImage)
-      croppedImage<-magick::image_trim(tempImage,fuzz=0)
-      magick::image_write(croppedImage,fnameTempImage)
     }
     if(pdfpng=='png'){grDevices::png(paste(dir,"/",filename,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
       print(figure)
@@ -44,10 +41,6 @@ metis.printPdfPng <- function(figure = NULL,
       grDevices::pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
       print(figure)
       grDevices::dev.off()
-      fnameTempImage=paste(dir,"/",filename,".pdf",sep="")
-      tempImage<-magick::image_read(fnameTempImage)
-      croppedImage<-magick::image_trim(tempImage,fuzz=0)
-      magick::image_write(croppedImage,fnameTempImage)
       grDevices::png(paste(dir,"/",filename,".png",sep=""),width=figWidth,height=figHeight, units="in",res=300)
       print(figure)
       grDevices::dev.off()
