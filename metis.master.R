@@ -315,7 +315,7 @@ io_sub$ioTbl
                           scenRef="Eg1", # Default is NULL
                           dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                           regionCompareOnly=0, # Default 0. If set to 1, will only run comparison plots and not individual
-                          scenarioCompareOnly=1, # Default 0. If set to 1, will only run comparison plots and not individual
+                          scenarioCompareOnly=0, # Default 0. If set to 1, will only run comparison plots and not individual
                           folderName = "metisExample")
 
   # rTable=rTable_i # Default is NULL
@@ -724,7 +724,7 @@ io_sub$ioTbl
     } else { testChartsProcess = "Test chartsProcess: Failed"}; print(testChartsProcess)
 
     # Test: map Check
-    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/map.png",sep=""))){
+    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/raster/Eg1/byYear/map_metisExample_raster_tethysWatWithdraw_indv_2005_Eg1_exampleSubRegionMap_FREESCALE.png",sep=""))){
       testMap = "Test map: Passed"
     } else { testMap = "Test map: Failed"}; print(testMap)
 
