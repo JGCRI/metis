@@ -950,17 +950,31 @@ if(length(unique(tbl$scenario))>1){
         #------------------------
 
 
+        # Aggregate across classes
+        tblAggsums<-tbl_p%>%
+          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,-tidyselect::contains("class"))%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
+          dplyr::filter(aggregate=="sum")%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),list(~sum(.)))
+        tblAggmeans<-tbl_p%>%
+          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,-tidyselect::contains("class"))%>%
+          dplyr::mutate(scenario=as.character(scenario))%>%
+          dplyr::filter(aggregate=="mean")%>%
+          dplyr::group_by_at(dplyr::vars(-value))%>%
+          dplyr::summarize_at(c("value"),list(~mean(.)))
+        tbl_pdx<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
+
+
         # Calculate Percentage Diff Values
-        tbl_pd<-tbl_p%>%
-          dplyr::filter(scenario==scenRef_i)%>%
-          dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,-tidyselect::contains("class"),class1)
-        if(!yData %in% names(tbl_p)){tbl_pd<-tbl_pd%>%dplyr::select(-dplyr::one_of(c(yData)))}
+        tbl_pd<-tbl_pdx%>%
+          dplyr::filter(scenario==scenRef_i)
+          if(!yData %in% names(tbl_p)){tbl_pd<-tbl_pd%>%dplyr::select(-dplyr::one_of(c(yData)))}
 
         for (k in unique(tbl_p$scenario)[unique(tbl_p$scenario)!=scenRef_i]){
-          tbl_temp <- tbl_p%>%
-            dplyr::filter(scenario %in% c(scenRef_i,k))%>%
-            dplyr::select(-origScen,-origQuery,-origValue,-origUnits,-origX,-sources,-tidyselect::contains("class"),class1)
-          if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-dplyr::one_of(c(yData)))}
+          tbl_temp <- tbl_pdx%>%
+            dplyr::filter(scenario %in% c(scenRef_i,k))
+            if(!yData %in% names(tbl_temp)){tbl_temp<-tbl_temp%>%dplyr::select(-dplyr::one_of(c(yData)))}
           tbl_temp <- tbl_temp%>%
             tidyr::spread(scenario,yData)
 
@@ -982,10 +996,8 @@ if(length(unique(tbl$scenario))>1){
 
         # Drop the ref scenario
         tbl_pd <- tbl_pd %>%
-          dplyr::filter(scenario!=scenRef_i)
+          dplyr::filter(scenario!=scenRef_i)%>%dplyr::ungroup()
         tbl_pd<-droplevels(tbl_pd)
-
-        if(length(unique(tbl_pd$class1))>1){figWMult=1.3}else{figWMult=1}
 
         # Aggregated Class 1
         # Aggregate across classes
