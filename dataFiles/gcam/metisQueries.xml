@@ -6,10 +6,12 @@
 <supplyDemandQuery title="Final energy by detailed end-use sector and fuel">
          <axis1 name="sector">sector</axis1>
          <axis2 name="Year">demand-physical[@vintage]</axis2>
-         <xPath buildList="true" dataName="input" group="false" sumAll="false">*[@type='sector' and ((@name='building' or @name='industry' or @name='transportation') or (exists(child::keyword/@final-energy)))]//*[@type='input' and not(@name='trn_pass_road' or @name='limestone' or @name='process heat cement' or @name='industrial energy use' or @name='industrial feedstocks' or @name='renewable' or @name='oil-credits')]/demand-physical[@unit='EJ']/node()</xPath>
+         <xPath buildList="true" dataName="input" group="false" sumAll="false">*[@type='sector' and ((@name='building' or @name='industry' or @name='transportation') or (exists(child::keyword/@final-energy)))]//*[@type='input' and not(contains(@name, 'trn') or @name='limestone' or @name='process heat cement' or @name='industrial energy use' or @name='industrial feedstocks' or @name='renewable' or @name='oil-credits')]/demand-physical[@unit='EJ']/node()</xPath>
          <comments/>
       </supplyDemandQuery>
  </aQuery>
+
+
 
 <aQuery>
 		<all-regions/>  

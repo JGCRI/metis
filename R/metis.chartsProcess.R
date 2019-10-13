@@ -443,6 +443,12 @@ tblAggClass1means<-tbl%>%
   dplyr::summarize_at(c("value"),list(~mean(.)))
 tblAggClass1<-dplyr::bind_rows(tblAggClass1sums,tblAggClass1means)%>%dplyr::ungroup()
 
+# Check
+tbl%>%as.data.frame()%>%select(scenario,class1,x,param,value)%>%
+filter(x %in% c(2010,2015),param=="energyFinalConsumBySecMTOE",scenario=="GCAMRef")%>%
+group_by(scenario,x)%>%summarize(sum=sum(value/metis.assumptions()$convEJ2MTOE))
+
+
 tblAggClass2sums<-tbl%>%
   dplyr::mutate(scenario=as.character(scenario))%>%
   dplyr::filter(aggregate=="sum")%>%
