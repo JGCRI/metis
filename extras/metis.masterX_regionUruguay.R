@@ -257,6 +257,25 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             scaleRange=scaleRange_i)
 
 
+# rTable=rTable_iMod # Default is NULL
+# dataTables=dataTables_i # Default is NULL
+# paramsSelect=paramsSelect_iMod # Default is "All"
+# regionsSelect=regionsSelect_i # Default is "All"
+# scensSelect=scensSelect_i
+# xCompare=c("2010","2015","2020","2030") # Default is c("2015","2030","2050","2100")
+# scenRef="GCAMOrig" # Default is NULL
+# dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+# pdfpng="png" # Default is "png"
+# regionCompareOnly=0 # Default is "0"
+# scenarioCompareOnly=1 # Default is "0"
+# useNewLabels=1
+# xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050)
+# colOrder1 =scensSelect_i
+# colOrderName1 = "scenario"
+# folderName = "Reference_Mod"
+# scaleRange=scaleRange_i
+
+
 #----------------------------
 # IMPACTS
 #----------------------------
