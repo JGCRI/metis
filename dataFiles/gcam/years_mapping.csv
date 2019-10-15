@@ -1,0 +1,23 @@
+# A file mapping model periods to years,
+year,vintage
+final-calibration-year,1990
+final-calibration-year,2005
+final-calibration-year,2010
+initial-future-year,2015
+initial-future-year,2020
+initial-future-year,2025
+initial-future-year,2030
+initial-future-year,2035
+initial-future-year,2040
+initial-future-year,2045
+initial-future-year,2050
+initial-future-year,2055
+initial-future-year,2060
+initial-future-year,2065
+initial-future-year,2070
+initial-future-year,2075
+initial-future-year,2080
+initial-future-year,2085
+initial-future-year,2090
+initial-future-year,2095
+initial-future-year,2100

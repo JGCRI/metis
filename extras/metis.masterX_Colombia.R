@@ -9,6 +9,11 @@ if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtoo
 library(devtools)
 if("metis" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(metis)
+
+
+
+
+
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}
 library(rgcam)
 if("tibble" %in% rownames(installed.packages()) == F){install.packages("tibble")}
@@ -17,12 +22,8 @@ if("rgdal" %in% rownames(installed.packages()) == F){install.packages("rgdal")}
 library(rgdal)
 if("tmap" %in% rownames(installed.packages()) == F){install.packages("tmap")}
 library(tmap)
-if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dplyr")}
-library(dplyr)
 if("zoo" %in% rownames(installed.packages()) == F){install.packages("zoo")}
 library(zoo)
-if("dbplyr" %in% rownames(installed.packages()) == F){install.packages("dbplyr")}
-library(dbplyr)
 if("RSQLite" %in% rownames(installed.packages()) == F){install.packages("RSQLite")}
 library(RSQLite)
 if("ggplot2" %in% rownames(installed.packages()) == F){install.packages("ggplot2")}
@@ -30,13 +31,24 @@ library(ggplot2)
 if("ggalluvial" %in% rownames(installed.packages()) == F){install.packages("ggalluvial")}
 library(ggalluvial)
 
+if("dplyr" %in% rownames(installed.packages()) == F){install.packages("dplyr")}
+library(dplyr)
+if("dbplyr" %in% rownames(installed.packages()) == F){install.packages("dbplyr")}
+library(dbplyr)
+
+
+
+if("tidyr" %in% rownames(installed.packages()) == F){install.packages("tidyr")}
+library(tidyr)
+
+
 #----------------------------
 # Read GCAM Data (metis.readgcam.R)
 #---------------------------
 
 # Connect to gcam database or project
   gcamdatabasePath_i <-'G:/IDBNexus/Final' # 'C:/Users/twild/Downloads/pic'  #  # Use if gcamdatabase is needed
-  gcamdatabaseName_i <-"Oct072019" # "Reference_originalSW" Use if gcamdatabse is needed
+  gcamdatabaseName_i <-"PricePathAppliedCO2NonCO2" # "Reference_originalSW" Use if gcamdatabse is needed
   dataProjPath_i <- paste(getwd(),"/outputs",sep="") # Path to dataProj file.
   dataProj_i <-"IDBNexusFinal.proj"  # Use if gcamdata has been saved as .proj file
 
@@ -63,7 +75,7 @@ library(ggalluvial)
   # Reading in the no bio query so it works with Rgcam
 
   dataGCAM<-metis.readgcam(reReadData = F,  # F
-                           gcamdatabasePath = gcamdatabasePath_i ,
+                           gcamdatabasePath = gcamdatabasePath_i,
                            gcamdatabaseName = gcamdatabaseName_i,
                            scenOrigNames = scenOrigNames_i,
                            scenNewNames = scenNewNames_i,
@@ -113,6 +125,8 @@ library(ggalluvial)
                    "BuildFinalNrgBySector",
                    "co2emissionBySectorNoBio", "PassengerVMTByFuel", "FreightVMTByFuel", "RefiningByLiq")
   paramsSelect_i <- "All"
+  #paramsSelect_i <- "elecInvest"
+
   #paramsSelect_i <- c('watWithdrawByCrop', 'aggLandAlloc')
 
 # Select regions from the 32 GCAM regions.

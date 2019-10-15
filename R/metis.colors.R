@@ -84,27 +84,29 @@ metis.colors <- function(palx=NULL) {
 
     pal_metis <- c(`a Coal` = "gray40",  `c coal` = "gray40", `3 coal` = "gray40", coal = "gray40", `coal (conv pul)` = "gray40",
                  Coal = "gray40",
-                 `b Coal w/CCS` = "gray20", `c coal CCS` = "gray20",
+                 `b Coal w/CCS` = "gray20", `c coal CCS` = "gray20", `Coal CCS` = "gray20",
                  `coal (IGCC CCS)` = "#c0237c",
                  `coal (IGCC)` = "#f0237c",
                  `coal (conv pul CCS)` = "#e0237c",
                  `c Gas` = "darkslategray1", `b natural gas` = "darkslategray1", `2 gas` = "darkslategray1", Gas = "darkslategray1",
                  gas = "darkslategray1", `gas (CC)` = "darkslategray1",
                  `d Gas w/CCS` = "darkslategray4", `b natural gas CCS` = "darkslategray4",
-                 `gas (CC CCS)` = "#25c9e0",
+                 `gas (CC CCS)` = "#darkslategray4", `Gas CCS` = "darkslategray4",
                  `gas (CT)` = "#25e9e0",
                  `gas (steam)` = "greenyellow",
                  `e Oil` = "firebrick4", `a oil` = "firebrick4", oil = "firebrick4", Oil = "firebrick4", liquids="firebrick4",
                  `refined liquids` = "firebrick4", `refined liquids (steam)` = "firebrick4", `1 liquids` = "firebrick4",
                  `refined liquids (CC)` = "firebrick4", `refined liquids (CT)` = "firebrick4",
                  `refined liquids (CC CCS)` = "#f7988f", `f Oil w/CCS` = "#f7988f", `a oil CCS` = "#f7988f", `Oil w/CCS` = "#f7988f",
+                 `Oil CCS` = "#f7988f",
                  `fossil fuel liquid`="firebrick4",
                  `International Aviation liquids` = "indianred",`International Aviation Oil` = "indianred", `liquids av`="indianred",
                  `liquids intl av`="indianred", `fossil fuel liquids intl av`="indianred", `p oil intl aviation`="indianred",
                  `oil intl aviation`="indianred", `oil intl shipping`="lightcoral",
                  `liquids intl shp`="lightcoral", `fossil fuel liquids intl shp`="lightcoral",`q oil intl shipping`="lightcoral",
                  `International Ship liquids` = "lightcoral", `International Ship Oil` = "lightcoral",`liquids shp`="lightcoral",
-                 `g Biomass` = "darkolivegreen2", `g Bioenergy` = "darkolivegreen2", `d biomass` = "darkolivegreen2",  biomass = "darkolivegreen2",  Biomass = "darkolivegreen2",
+                 `g Biomass` = "darkolivegreen2", `g Bioenergy` = "darkolivegreen2", `d biomass` = "darkolivegreen2",  biomass = "darkolivegreen2",
+                 Biomass = "darkolivegreen2", `Biomass CCS` = "darkolivegreen2",
                   bioenergy = "darkolivegreen2", `d bioenergy` = "darkolivegreen2", Bioenergy = "darkolivegreen2", `h Bioenergy w/CCS` = '#7efd97',
                  `j traditional bioenergy` = "chartreuse3",`traditional bioenergy` = "chartreuse3",`Traditional Bioenergy` = "chartreuse3",
                  `biomass (IGCC CCS)` = "#00a31d", `4 biomass` = "#00a31d",
@@ -116,6 +118,7 @@ metis.colors <- function(palx=NULL) {
                  `j traditional biomass` = "#11d081", `traditional biomass` = "#11d081",
                  `h Biomass w/CCS` = "#88c892", `d biomass CCS` = "#88c892",
                  `i Nuclear` = "#ef8e27", `e nuclear` = "#ef8e27", nuclear = "#ef8e27", Gen_II_LWR = "#ef8e27",
+                 Nuclear = "#ef8e27",
                  Gen_III = "#af8e27",
                  `j Geothermal` = "darkmagenta", `i geothermal` = "darkmagenta", geothermal = "darkmagenta", Geothermal = "darkmagenta",
                  `k Hydro` = "#3d86f9", `f hydro` = "#3d86f9", hydro = "#3d86f9", Hydro = "#3d86f9",
@@ -167,7 +170,6 @@ metis.colors <- function(palx=NULL) {
                  #--------------
                  LDV = "#B34545", Bus = "#CADC28", Rail = "#58A989", Plane = "#697080", MotorBike = "#5E85D2",
                  Liquids = 'firebrick4', Electric = 'lavender', Truck='#792f2f', Ship='#2f4e79',
-
                  #---------------
                  # Emissions
                  #--------------

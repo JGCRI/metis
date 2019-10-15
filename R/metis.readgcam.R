@@ -89,7 +89,7 @@
 #' "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
 #' "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
 #' # Electricity
-#' "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
+#' "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh","elecInvest",
 #' # Transport
 #' "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
 #' # Water
@@ -125,6 +125,14 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                            paramsSelect="All"
 ){
 
+  libs <- c( "stringr", "scales", "readr", "plyr", "tidyr", "dplyr", "ggplot2" )
+  for( i in libs ) {
+    if( !require( i, character.only=T ) ) {
+      cat( "Couldn't load", i, "\n" )
+      stop( "Use install.packages() to download this library" )
+    }
+    library( i, character.only=T )
+  }
 
   # gcamdatabasePath = NULL
   # gcamdatabaseName = NULL
@@ -173,7 +181,9 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                                "industry final energy by fuel",
                                "building final energy by subsector",
                                "transport final energy by fuel",
-                               "transport final energy by mode and fuel"),
+                               "transport final energy by mode and fuel",
+                               "elec gen by gen tech and cooling tech and vintage",
+                               "Electricity generation by aggregate technology"),
                     'land'=c("land allocation by crop and water source",
                              "aggregated land allocation",
                              "land allocation by crop"),
@@ -329,7 +339,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                     "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
                     "energyFinalConsumByIntlShpAvTWh","energyFinalConsumBySecNOIntlShpAvTWh",
                     # Electricity
-                    "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
+                    "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh","elecInvest",
                     # Transport
                     "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
                     # Water
@@ -963,6 +973,104 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
     } else {
       if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
+
+
+
+  paramx <- "elecInvest"
+  if(paramx %in% paramsSelectx){
+    # Electricity generation by aggregate technology
+    queryx <- "elec gen by gen tech and cooling tech and vintage"
+    queryx2 <- "Electricity generation by aggregate technology"
+    if (queryx %in% queriesx & queryx2 %in% queries) {
+      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if (!is.null(regionsSelect)) {
+        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+      }
+      tbl2 <- rgcam::getQuery(dataProjLoaded, queryx2)  # Tibble
+      if (!is.null(regionsSelect)) {
+        tbl2 <- tbl2 %>% dplyr::filter(region %in% regionsSelect)
+      }
+
+      counter <- 0
+      # NEW--must do loop throug scenarios due to current design of script
+      for (scen in scenarios){
+        elec_gen_vintage <- tbl %>%
+          filter(scenario==scen) %>%
+          tidyr::spread(year, value) %>%
+          mutate_all(funs(replace(., is.na(.), 0)))
+        temp_list <- elecInvest(elec_gen_vintage, regionsSelect, start_year=2020, end_year=2050)
+        start_yr_hydro <- 2015
+        end_year <- 2050
+        temp_df <- tbl2 %>%
+          filter(scenario==scen) %>%
+          rename(agg_tech=technology) %>%
+          filter(year>=start_yr_hydro, year<=end_year) %>%
+          tidyr::spread(year, value)
+        if(counter==0){
+          addition_costs <- temp_list
+          # Include hydropower cost/installed capacity needs, which isn't handled in the SA_elec script because it is not vintaged.
+          addition_costs[['elec_prod']] <- temp_df
+        }else{
+          addition_costs[['elec_prod']] <- rbind(addition_costs[['elec_prod']], temp_df)
+          for (key in names(addition_costs)){
+            addition_costs[[key]] <- rbind(addition_costs[[key]], temp_list[[key]])
+            # Include hydropower cost/installed capacity needs, which isn't handled in the SA_elec script because it is not vintaged.
+          }
+        }
+        counter <- counter+1
+      }
+      start_year <- 2020
+      end_year <- 2050
+      addition_costs <- hydroInvest(addition_costs, start_year, end_year)$addition_costs
+
+      df_input_default_5 <- list()
+      for (i in names(addition_costs)){
+        addition_costs[[i]] %>% gather(year, value, `2020`:`2050`) %>% filter(year>=start_year, year<=end_year) -> df_input_default_5[[i]]
+      }
+      tbl <- df_input_default_5$`add by cost` %>%
+        filter(!region %in% 'LAC')
+      tbl$year <- as.numeric(tbl$year)
+
+      tbl <- tbl %>%
+        dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        rename(technology=agg_tech) %>%
+        dplyr::mutate(param = "elecInvest",
+                      technology=gsub("biomass","bioenergy",technology),
+                      technology=gsub("Biomass","Bioenergy",technology),
+                      technology=gsub("b\\sbiomass","b bioenergy",technology),
+                      technology=gsub("g\\sBiomass","g Bioenergy",technology),
+                      technology=gsub("h\\sBiomass\\sw\\/CCS","h Bioenergy w/CCS",technology),
+                      sources = "Sources",
+                      origScen = scenario,
+                      origQuery = queryx,
+                      origValue = value,
+                      origUnits = Units,
+                      origX = year,
+                      scenario = scenNewNames,
+                      units = "Cost (billion 2010 USD)",
+                      vintage = paste("Vint_", year, sep = ""),
+                      x = year,
+                      xLabel = "Year",
+                      aggregate = "sum",
+                      class1 = technology,
+                      classLabel1 = "Fuel",
+                      classPalette1 = "pal_metis",
+                      class2 = "class2",
+                      classLabel2 = "classLabel2",
+                      classPalette2 = "classPalette2")%>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+      datax <- dplyr::bind_rows(datax, tbl)
+    } else {
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }}
+
+
 
   if(!is.null(tblelecByTechTWh)){
   if(file.exists(paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""))){

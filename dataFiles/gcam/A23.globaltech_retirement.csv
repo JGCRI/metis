@@ -1,0 +1,144 @@
+# Electricity technology retirement parameters,,,,,,,,,
+supplysector,subsector,technology,year,lifetime,shutdown.rate,half.life,steepness,median.shutdown.point,profit.shutdown.steepness
+electricity,coal,coal (conv pul),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (steam/CT),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (CC),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,refined liquids,refined liquids (steam/CT),final-calibration-year,60,,30,0.1,-0.5,6
+electricity,biomass,biomass (conv),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,nuclear,Gen_II_LWR,final-historical-year,60,,30,0.1,-0.1,6
+electricity,wind,wind,final-calibration-year,30,,,,,
+electricity,solar,PV,final-calibration-year,30,,,,,
+electricity,solar,CSP,final-calibration-year,30,,,,,
+electricity,geothermal,geothermal,final-calibration-year,30,,,,-0.1,6
+electricity,coal,coal (conv pul),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (conv pul CCS),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (IGCC),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (IGCC CCS),initial-future-year,60,,,,-0.1,6
+electricity,gas,gas (steam/CT),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (CC),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (CC CCS),initial-future-year,45,,,,-0.1,6
+electricity,refined liquids,refined liquids (steam/CT),initial-future-year,45,,,,-0.5,6
+electricity,refined liquids,refined liquids (CC),initial-future-year,45,,,,-0.1,6
+electricity,refined liquids,refined liquids (CC CCS),initial-future-year,45,,,,-0.1,6
+electricity,biomass,biomass (conv),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (conv CCS),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (IGCC),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (IGCC CCS),initial-future-year,60,,,,-0.1,6
+electricity,nuclear,Gen_III,initial-nonhistorical-year,60,,,,-0.1,6
+electricity,wind,wind,initial-future-year,30,,,,,
+electricity,wind,wind_storage,initial-future-year,30,,,,,
+electricity,solar,PV,initial-future-year,30,,,,,
+electricity,solar,PV_storage,initial-future-year,30,,,,,
+electricity,solar,CSP,initial-future-year,30,,,,,
+electricity,solar,CSP_storage,initial-future-year,30,,,,,
+electricity,geothermal,geothermal,initial-future-year,30,,,,-0.1,6
+,,,,,,,,,
+electricity,coal,coal (conv pul) (once through),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,coal,coal (conv pul) (seawater),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,coal,coal (conv pul) (recirculating),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,coal,coal (conv pul) (cooling pond),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,coal,coal (conv pul) (dry cooling),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (steam/CT) (once through),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (steam/CT) (seawater),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (steam/CT) (recirculating),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (steam/CT) (cooling pond),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (steam/CT) (dry cooling),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (CC) (once through),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (CC) (seawater),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (CC) (recirculating),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (CC) (cooling pond),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,gas,gas (CC) (dry cooling),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,refined liquids,refined liquids (steam/CT) (once through),final-calibration-year,60,,30,0.1,-0.5,6
+electricity,refined liquids,refined liquids (steam/CT) (seawater),final-calibration-year,60,,30,0.1,-0.5,6
+electricity,refined liquids,refined liquids (steam/CT) (recirculating),final-calibration-year,60,,30,0.1,-0.5,6
+electricity,refined liquids,refined liquids (steam/CT) (cooling pond),final-calibration-year,60,,30,0.1,-0.5,6
+electricity,refined liquids,refined liquids (steam/CT) (dry cooling),final-calibration-year,60,,30,0.1,-0.5,6
+electricity,biomass,biomass (conv) (once through),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,biomass,biomass (conv) (seawater),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,biomass,biomass (conv) (recirculating),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,biomass,biomass (conv) (cooling pond),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,biomass,biomass (conv) (dry cooling),final-calibration-year,60,,30,0.1,-0.1,6
+electricity,nuclear,Gen_II_LWR (once through),final-historical-year,60,,30,0.1,-0.1,6
+electricity,nuclear,Gen_II_LWR (seawater),final-historical-year,60,,30,0.1,-0.1,6
+electricity,nuclear,Gen_II_LWR (recirculating),final-historical-year,60,,30,0.1,-0.1,6
+electricity,nuclear,Gen_II_LWR (cooling pond),final-historical-year,60,,30,0.1,-0.1,6
+electricity,wind,wind,final-calibration-year,30,,,,,
+electricity,solar,PV,final-calibration-year,30,,,,,
+electricity,solar,CSP (recirculating),final-calibration-year,30,,,,,
+electricity,solar,CSP (dry_hybrid),final-calibration-year,30,,,,,
+electricity,geothermal,geothermal (recirculating),final-calibration-year,30,,,,-0.1,6
+electricity,geothermal,geothermal (dry_hybrid),final-calibration-year,30,,,,-0.1,6
+electricity,coal,coal (conv pul) (once through),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (conv pul) (seawater),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (conv pul) (recirculating),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (conv pul) (cooling pond),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (conv pul) (dry cooling),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (conv pul CCS) (once through),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (conv pul CCS) (seawater),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (conv pul CCS) (recirculating),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (conv pul CCS) (dry cooling),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (IGCC) (once through),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (IGCC) (seawater),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (IGCC) (recirculating),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (IGCC) (dry cooling),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (IGCC CCS) (once through),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (IGCC CCS) (seawater),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (IGCC CCS) (recirculating),initial-future-year,60,,,,-0.1,6
+electricity,coal,coal (IGCC CCS) (dry cooling),initial-future-year,60,,,,-0.1,6
+electricity,gas,gas (steam/CT) (once through),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (steam/CT) (seawater),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (steam/CT) (recirculating),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (steam/CT) (cooling pond),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (steam/CT) (dry cooling),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (CC) (once through),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (CC) (seawater),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (CC) (recirculating),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (CC) (cooling pond),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (CC) (dry cooling),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (CC CCS) (once through),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (CC CCS) (seawater),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (CC CCS) (recirculating),initial-future-year,45,,,,-0.1,6
+electricity,gas,gas (CC CCS) (dry cooling),initial-future-year,45,,,,-0.1,6
+electricity,refined liquids,refined liquids (steam/CT) (once through),initial-future-year,45,,,,-0.5,6
+electricity,refined liquids,refined liquids (steam/CT) (seawater),initial-future-year,45,,,,-0.5,6
+electricity,refined liquids,refined liquids (steam/CT) (recirculating),initial-future-year,45,,,,-0.5,6
+electricity,refined liquids,refined liquids (steam/CT) (cooling pond),initial-future-year,45,,,,-0.5,6
+electricity,refined liquids,refined liquids (steam/CT) (dry cooling),initial-future-year,45,,,,-0.5,6
+electricity,refined liquids,refined liquids (CC) (once through),initial-future-year,45,,,,-0.1,6
+electricity,refined liquids,refined liquids (CC) (seawater),initial-future-year,45,,,,-0.1,6
+electricity,refined liquids,refined liquids (CC) (recirculating),initial-future-year,45,,,,-0.1,6
+electricity,refined liquids,refined liquids (CC) (dry cooling),initial-future-year,45,,,,-0.1,6
+electricity,refined liquids,refined liquids (CC CCS) (once through),initial-future-year,45,,,,-0.1,6
+electricity,refined liquids,refined liquids (CC CCS) (seawater),initial-future-year,45,,,,-0.1,6
+electricity,refined liquids,refined liquids (CC CCS) (recirculating),initial-future-year,45,,,,-0.1,6
+electricity,refined liquids,refined liquids (CC CCS) (dry cooling),initial-future-year,45,,,,-0.1,6
+electricity,biomass,biomass (conv) (once through),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (conv) (seawater),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (conv) (recirculating),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (conv) (cooling pond),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (conv) (dry cooling),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (conv CCS) (once through),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (conv CCS) (seawater),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (conv CCS) (recirculating),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (conv CCS) (dry cooling),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (IGCC) (once through),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (IGCC) (seawater),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (IGCC) (recirculating),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (IGCC) (dry cooling),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (IGCC CCS) (once through),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (IGCC CCS) (seawater),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (IGCC CCS) (recirculating),initial-future-year,60,,,,-0.1,6
+electricity,biomass,biomass (IGCC CCS) (dry cooling),initial-future-year,60,,,,-0.1,6
+electricity,nuclear,Gen_III (once through),initial-nonhistorical-year,60,,,,-0.1,6
+electricity,nuclear,Gen_III (seawater),initial-nonhistorical-year,60,,,,-0.1,6
+electricity,nuclear,Gen_III (recirculating),initial-nonhistorical-year,60,,,,-0.1,6
+electricity,nuclear,Gen_III (cooling pond),initial-nonhistorical-year,60,,,,-0.1,6
+electricity,wind,wind,initial-future-year,30,,,,,
+electricity,wind,wind_storage,initial-future-year,30,,,,,
+electricity,solar,PV,initial-future-year,30,,,,,
+electricity,solar,PV_storage,initial-future-year,30,,,,,
+electricity,solar,CSP (recirculating),initial-future-year,30,,,,,
+electricity,solar,CSP (dry_hybrid),initial-future-year,30,,,,,
+electricity,solar,CSP_storage,initial-future-year,30,,,,,
+electricity,geothermal,geothermal (recirculating),initial-future-year,30,,,,-0.1,6
+electricity,geothermal,geothermal (dry_hybrid),initial-future-year,30,,,,-0.1,6
