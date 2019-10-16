@@ -108,6 +108,7 @@ metis.colors <- function(palx=NULL) {
                  `g Biomass` = "darkolivegreen2", `g Bioenergy` = "darkolivegreen2", `d biomass` = "darkolivegreen2",  biomass = "darkolivegreen2",
                  Biomass = "darkolivegreen2", `Biomass CCS` = "darkolivegreen2",
                   bioenergy = "darkolivegreen2", `d bioenergy` = "darkolivegreen2", Bioenergy = "darkolivegreen2", `h Bioenergy w/CCS` = '#7efd97',
+                 `Bioenergy w/CCS` = '#7efd97',  `Bioenergy CCS` = '#7efd97',
                  `j traditional bioenergy` = "chartreuse3",`traditional bioenergy` = "chartreuse3",`Traditional Bioenergy` = "chartreuse3",
                  `biomass (IGCC CCS)` = "#00a31d", `4 biomass` = "#00a31d",
                  `biomass (IGCC)` = "#00c31d",
