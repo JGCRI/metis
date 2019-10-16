@@ -359,6 +359,8 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
 
   datax <- tibble::tibble()
 
+  if(T){
+
   paramx<-"energyFinalConsumByIntlShpAvEJ"
   # Total final energy by aggregate end-use sector
   if(paramx %in% paramsSelectx){
@@ -558,6 +560,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::filter(!grepl("trn",input))%>%
         dplyr::mutate(input=dplyr::if_else(input=="biomass","bioenergy",input),
                       sector=gsub("process heat cement","industry",sector),
                       sector=gsub("cement","industry",sector),
@@ -727,6 +730,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::filter(grepl("elect",input))%>%
+        dplyr::filter(!grepl("trn",input))%>%
         dplyr::mutate(sector=gsub("cement","industry",sector),
                       sector=gsub("comm cooling","buildings",sector),
                       sector=gsub("comm heating","buildings",sector),
@@ -785,6 +789,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::filter(grepl("elect",input))%>%
+        dplyr::filter(!grepl("trn",input))%>%
         dplyr::mutate(input=gsub("elect\\_td\\_ind","electricity",input),
                       input=gsub("elect\\_td\\_bld","electricity",input),
                       input=gsub("elect\\_td\\_trn","electricity",input),
@@ -3613,6 +3618,13 @@ paramx <- "emissTotalFFIBySec"
   datax<-datax%>%unique()
 
   # metis.chart(tbl,xData="x",yData="value",useNewLabels = 0)
+
+  }
+
+  # Check
+  datax%>%as.data.frame()%>%select(scenario,class1,class2,x,param,value)%>%
+  filter(x %in% c(2010:2050),param=="energyFinalByFuelBySectorEJ",scenario=="Ref")%>%
+  group_by(scenario,x)%>%summarize(sum=sum(value))
 
   #---------------------
   # Create Data Template
