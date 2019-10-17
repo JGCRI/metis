@@ -444,9 +444,9 @@ tblAggClass1means<-tbl%>%
 tblAggClass1<-dplyr::bind_rows(tblAggClass1sums,tblAggClass1means)%>%dplyr::ungroup()
 
 # Check
-tbl%>%as.data.frame()%>%select(scenario,class1,x,param,value)%>%
-filter(x %in% c(2010,2015),param=="energyFinalConsumBySecMTOE",scenario=="GCAMRef")%>%
-group_by(scenario,x)%>%summarize(sum=sum(value/metis.assumptions()$convEJ2MTOE))
+# tbl%>%as.data.frame()%>%select(scenario,class1,x,param,value)%>%
+# filter(x %in% c(2010,2015),param=="energyFinalConsumBySecMTOE",scenario=="GCAMRef")%>%
+# group_by(scenario,x)%>%summarize(sum=sum(value/metis.assumptions()$convEJ2MTOE))
 
 
 tblAggClass2sums<-tbl%>%
@@ -560,7 +560,8 @@ if(length(unique(tbl$region))>1){
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows=NULL,
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figBar_",j,"_compareRegions",nameAppend,sep=""),
-          figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult,pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+          figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult,
+          figHeight = 9*max(1,ceiling(length(unique(tbl_sp$region))/4)*0.75),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )
 
         # Line Chart
@@ -568,7 +569,8 @@ if(length(unique(tbl$region))>1){
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows=NULL,
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figLines_",j,"_compareRegions",nameAppend,sep=""),
-          figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult,pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+          figWidth = 13*max((length(unique(tbl_sp$region))/2),1)*figWMult,
+          figHeight = 9*max(1,ceiling(length(unique(tbl_sp$region))/4)*0.75),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )
 
         # If class 2 available
@@ -945,7 +947,7 @@ if(length(unique(tbl$scenario))>1){
                       facet_rows="region",facet_columns = "scenario",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figBarDodgedDiff_compareScenRegion",nameAppend,sep=""),forceFacets = T,
-                      figWidth = 10*max((length(unique(tbl_pdAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
 
           # Line Chart Overlapped
@@ -954,7 +956,7 @@ if(length(unique(tbl$scenario))>1){
                       facet_rows="region",facet_columns = "scenario",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figLineOverlapDiff_compareScenRegion",nameAppend,sep=""),forceFacets = T,
-                      figWidth = 10*max((length(unique(tbl_pdAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
         }
 
@@ -1147,7 +1149,7 @@ if(length(unique(tbl$scenario))>1){
                       facet_rows="region",facet_columns="scenario",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figBarDodgedDiffPrcnt_compareScenRegionREF",nameAppend,sep=""),forceFacets = T,
-                      figWidth = 10*max((length(unique(tbl_pdAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
 
           # Line Chart Overlapped
@@ -1156,7 +1158,7 @@ if(length(unique(tbl$scenario))>1){
                       facet_rows="region",facet_columns="scenario",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figLineOverlapDiffPrcnt_compareScenRegionREF",nameAppend,sep=""),forceFacets = T,
-                      figWidth = 10*max((length(unique(tbl_pdAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
 
         # Drop the ref scenario
@@ -1187,7 +1189,7 @@ if(length(unique(tbl$scenario))>1){
                       facet_rows="region",facet_columns="scenario",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figBarDodgedDiffPrcnt_compareScenRegion",nameAppend,sep=""),forceFacets = T,
-                      figWidth = 10*max((length(unique(tbl_pdAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
 
           # Line Chart Overlapped
@@ -1196,7 +1198,7 @@ if(length(unique(tbl$scenario))>1){
                       facet_rows="region",facet_columns="scenario",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figLineOverlapDiffPrcnt_compareScenRegion",nameAppend,sep=""),forceFacets = T,
-                      figWidth = 10*max((length(unique(tbl_pdAgg$region))/2),1),pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )
         }
 
@@ -1656,7 +1658,7 @@ for(i in unique(tbl$region)){
                    class ="scenario", position ="dodge", classPalette = classPalette,
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figBarDodgedDiff_",i,"_compareScen_",nameAppend,sep=""), forceFacets = T,
-                   figWidth = 10*max(((length(unique(tbl_rpAgg$scenario))+1)/2),1)*figWMult,pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
        )
 
        # Line Chart Overlapped
@@ -1664,7 +1666,7 @@ for(i in unique(tbl$region)){
                    class ="scenario", classPalette = classPalette,
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiff_",i,"_compareScen",nameAppend,sep=""),
-                   figWidth = 10*max(((length(unique(tbl_rpAgg$scenario))+1)/2),1)*figWMult,forceFacets = T,
+                   forceFacets = T,
                    pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
        )
      }
@@ -1901,7 +1903,7 @@ for(i in unique(tbl$region)){
                    class ="scenario", position ="dodge", classPalette = classPalette,
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figBarDodgedDiffPrcnt_",i,"_compareScenREF",nameAppend,sep=""),forceFacets = T,
-                   figWidth = 10*max(((length(unique(tbl_rpAgg$scenario))+1)/2),1)*figWMult,pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
        )
 
        # Line Chart Overlapped
@@ -1909,7 +1911,7 @@ for(i in unique(tbl$region)){
                    class ="scenario", classPalette = classPalette,
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiffPrcnt_",i,"_compareScenREF",nameAppend,sep=""),
-                   figWidth = 10*max(((length(unique(tbl_rpAgg$scenario))+1)/2),1)*figWMult, forceFacets = T,
+                   forceFacets = T,
                    pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
        )}
 
@@ -1943,7 +1945,7 @@ for(i in unique(tbl$region)){
                    class ="scenario", position ="dodge", classPalette = classPalette,
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figBarDodgedDiffPrcnt_",i,"_compareScen_",nameAppend,sep=""),forceFacets = T,
-                   figWidth = 10*max(((length(unique(tbl_rpAgg$scenario))+1)/2),1)*figWMult,pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
        )
 
        # Line Chart Overlapped
@@ -1951,7 +1953,7 @@ for(i in unique(tbl$region)){
                    class ="scenario", classPalette = classPalette,
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
-                   figWidth = 10*max(((length(unique(tbl_rpAgg$scenario))+1)/2),1)*figWMult, forceFacets = T,
+                   forceFacets = T,
                    pdfpng=pdfpng, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
        )
      }
