@@ -18,6 +18,10 @@ metis.prepGrid(demeterFolders = NULL, demeterScenarios = NULL,
   saveFormat = "rds", filterYears = NULL)
 }
 \arguments{
+\item{demeterFolders}{Full path to demeter outputs}
+
+\item{demeterScenarios}{Name of demeter scenario}
+
 \item{demeterTimesteps}{Default is seq(from=2005,to=2100,by=5)}
 
 \item{demeterUnits}{No Default}
@@ -63,12 +67,6 @@ metis.prepGrid(demeterFolders = NULL, demeterScenarios = NULL,
 \item{saveFormat}{Default="rds". Choose between "rds" (Native R much faster) or "csv" or "both".}
 
 \item{filterYears}{Default=seq(1980,2100,by=5)}
-
-\item{demeterFolderss}{Full path to demeter outputs}
-
-\item{demeterScenario}{Name of demeter scenario}
-
-\item{scarcityXanthosRollMeanWindow}{Default = 10,}
 }
 \value{
 A table with data by polygon ID for each shapefile provided

@@ -389,7 +389,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   shapeTbl<-addMissing(shapeTbl)
   shapeTbl <- shapeTbl %>% dplyr::mutate(classPalette=dplyr::case_when(is.na(classPalette)~"pal_hot",
                                                                 TRUE~classPalette),
-                                         subRegion=as.character(subRegion));head(shapeTbl)
+                                         subRegion=as.character(subRegion))
 
   if(nrow(shapeTbl)>0){
     if(!"class" %in% names(shapeTbl)){
@@ -665,7 +665,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     # Compare Gridded Data
     if(!is.null(gridTbl)){
 
-      gridTblDiffx <- gridTbl %>% filter(param==param_i & (scenario %in% c(scenRef_i,scenDiff_i)))
+      gridTblDiffx <- gridTbl %>% dplyr::filter(param==param_i & (scenario %in% c(scenRef_i,scenDiff_i)))
 
       if(length(unique(gridTblDiffx$scenario))>1){
 
@@ -710,7 +710,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
   if(!is.null(shapeTbl) & nrow(shapeTbl)>0){
 
-      shapeTblDiffx <- shapeTbl %>% filter(param==param_i & (scenario %in% c(scenRef_i,scenDiff_i)));shapeTblDiffx
+      shapeTblDiffx <- shapeTbl %>% dplyr::filter(param==param_i & (scenario %in% c(scenRef_i,scenDiff_i)));shapeTblDiffx
       shapeTblDiffx%>%dplyr::select(param,scenario)%>%unique()
 
       if(length(unique(shapeTblDiffx$scenario))>1){
@@ -743,8 +743,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       }}}}}}}
 
 
-  shapeTbl <- shapeTbl %>% bind_rows(shapeTblDiff) %>% unique();
-  gridTbl <- gridTbl %>% bind_rows(gridTblDiff) %>% unique();
+  shapeTbl <- shapeTbl %>% dplyr::bind_rows(shapeTblDiff) %>% unique();
+  gridTbl <- gridTbl %>% dplyr::bind_rows(gridTblDiff) %>% unique();
 
 
   if(!is.null(shapeTbl)){
@@ -807,9 +807,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     scenDiff_i <- scenRefDiffIndv$scenDiff[[i]];scenDiff_i
     scenIndv_i <- scenRefDiffIndv$scenIndv[[i]];scenIndv_i
 
-      shapeTbl_temp <- shapeTbl %>% filter(param==param_i & (scenario %in% c(scenRef_i,scenDiff_i,scenIndv_i)))
-      shapeTbl_tempDiffs <- shapeTbl %>% filter(param==param_i & (grepl("Diff",scenario)))
-      shapeTblNew <- shapeTblNew %>% bind_rows(shapeTbl_temp, shapeTbl_tempDiffs)
+      shapeTbl_temp <- shapeTbl %>% dplyr::filter(param==param_i & (scenario %in% c(scenRef_i,scenDiff_i,scenIndv_i)))
+      shapeTbl_tempDiffs <- shapeTbl %>% dplyr::filter(param==param_i & (grepl("Diff",scenario)))
+      shapeTblNew <- shapeTblNew %>% dplyr::bind_rows(shapeTbl_temp, shapeTbl_tempDiffs)
 
   }}else{shapeTblNew <- shapeTbl}
 
@@ -826,9 +826,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       scenRef_i <- scenRefDiffIndv$scenRef[[i]];scenRef_i
       scenDiff_i <- scenRefDiffIndv$scenDiff[[i]];scenDiff_i
 
-        gridTbl_temp <- gridTbl %>% filter(param==param_i & (scenario %in% c(scenRef_i,scenDiff_i,scenIndv_i)))
-        gridTbl_tempDiffs <- gridTbl %>% filter(param==param_i & (grepl("Diff",scenario)))
-        gridTblNew <- gridTblNew %>% bind_rows(gridTbl_temp, gridTbl_tempDiffs)
+        gridTbl_temp <- gridTbl %>% dplyr::filter(param==param_i & (scenario %in% c(scenRef_i,scenDiff_i,scenIndv_i)))
+        gridTbl_tempDiffs <- gridTbl %>% dplyr::filter(param==param_i & (grepl("Diff",scenario)))
+        gridTblNew <- gridTblNew %>% dplyr::bind_rows(gridTbl_temp, gridTbl_tempDiffs)
 
       }}else{gridTblNew <- gridTbl}
 

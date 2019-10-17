@@ -66,7 +66,7 @@ metis.grid2poly<- function(gridFiles=NULL,
     param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon->overlapShape->
     gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis -> template_subRegional_mapping -> scenarioGCM ->
     scenarioRCP -> class2 -> scenarioPolicy -> valueTethys -> valueXanthos -> scenarioSSP -> gridCellArea ->
-    gridCellAreaRatio -> area -> areaPrcnt
+    gridCellAreaRatio -> area -> areaPrcnt -> scenarioMultiA -> scenarioMultiB
 
   #------------------
   # Function for adding any missing columns if needed
@@ -166,11 +166,11 @@ for(grid_i in gridFiles){
 
       param_i <- paramScenarios[row_i,]$param; param_i
       scenario_i <- paramScenarios[row_i,]$scenario; scenario_i
-      gridx<-grid%>%dplyr::filter(param==param_i,scenario==scenario_i); head(gridx)
+      gridx<-grid%>%dplyr::filter(param==param_i,scenario==scenario_i);
 
       if(nrow(gridx)>0){
 
-        gridx <- gridx%>%filter(!is.na(x))
+        gridx <- gridx%>%dplyr::filter(!is.na(x))
 
         print(paste("Starting aggregation for grid: ", grid_i," and param: ",param_i," and scenario: ",scenario_i,"...",sep=""))
 
@@ -368,7 +368,7 @@ for(grid_i in gridFiles){
           print(paste("Subregional polygon data files written to: ",poly_fname, sep = ""))
 
           template_subRegional_mapping <- template_subRegional_mapping %>%
-            bind_rows(poly %>%
+            dplyr::bind_rows(poly %>%
             dplyr::select(c("param","units","class","classPalette")[c("param","units","class","classPalette") %in% names(poly)])%>%
               dplyr::ungroup()%>%unique())%>%unique()
           poly_fname<-paste(dir, "/poly_subregionalTemplate.csv", sep = "")
@@ -414,14 +414,14 @@ for(grid_i in gridFiles){
    for(tethysFile_i in tethysFilesx){
 
      print(paste("polygonScarcity for Xanthos file: ",xanthosFile_i," and tethys file: ",tethysFile_i,sep=""))
-     x <- data.table::fread(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param));head(x)
-     t <- data.table::fread(paste(dir,"/",tethysFile_i,sep="")) %>% dplyr::filter(grepl("tethys",param));head(t)
+     x <- data.table::fread(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param));
+     t <- data.table::fread(paste(dir,"/",tethysFile_i,sep="")) %>% dplyr::filter(grepl("tethys",param));
      xGCM<-paste(unique(x$scenarioMultiA),sep="");xRCP<-paste(unique(x$scenarioMultiB),sep="")
      t1 <- t %>% tibble::as_tibble() %>%
        dplyr::mutate(scenarioMultiA=as.character(scenarioMultiA),scenarioMultiB=as.character(scenarioMultiB),
-                     scenarioMultiA=case_when(is.na(scenarioMultiA)~xGCM,
+                     scenarioMultiA=dplyr::case_when(is.na(scenarioMultiA)~xGCM,
                                               TRUE~scenarioMultiA),
-                     scenarioMultiB=case_when(is.na(scenarioMultiB)~xRCP,
+                     scenarioMultiB=dplyr::case_when(is.na(scenarioMultiB)~xRCP,
                                               TRUE~scenarioMultiB))
      for(col_i in names(x)){class(t1[[col_i]])<-class(x[[col_i]])}
      if(unique(x$scenarioMultiA)==unique(t1$scenarioMultiA) & unique(x$scenarioMultiB)==unique(t1$scenarioMultiB)){
@@ -430,7 +430,7 @@ for(grid_i in gridFiles){
        s1 <- s %>% dplyr::select(subRegion,scenario,scenarioMultiA,scenarioMultiB,param,units,aggType,classPalette,class,x,value,region,class2)%>%
          dplyr::mutate(scenario=paste(scenario,"_",param,sep=""))%>%
          dplyr::select(-param,-units,-class,-class2,-classPalette)%>%dplyr::filter(!is.na(x));s1
-       s2 <- s1 %>% tidyr::spread(key="scenario",value="value");s2 %>% as.data.frame() %>% head()
+       s2 <- s1 %>% tidyr::spread(key="scenario",value="value");s2 %>% as.data.frame() %>% utils::head()
        scarcityScen <- paste("X",
                              gsub("_xanthosRunoff","",paste(unique(s1$scenario)[grepl("xanthos",unique(s1$scenario))],sep="")),
                              "T",
@@ -448,7 +448,7 @@ for(grid_i in gridFiles){
                        class="class",
                        class2="class2",
                        classPalette="pal_ScarcityCat",
-                       subRegType=subRegType);head(s3)
+                       subRegType=subRegType);
 
        data.table::fwrite(s3,paste(dir,"/poly_Scarcity_",scarcityScen,nameAppend,".csv",sep=""),append=T)
        print(paste("Saving file as: ",dir,"/polyScarcity_",scarcityScen,".csv",sep=""))

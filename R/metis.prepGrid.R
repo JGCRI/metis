@@ -1,8 +1,8 @@
 #' metis.prepGrid
 #'
 #' This function prepares gridded data for use with other metis modules.
-#' @param demeterFolderss Full path to demeter outputs
-#' @param demeterScenario Name of demeter scenario
+#' @param demeterFolders Full path to demeter outputs
+#' @param demeterScenarios Name of demeter scenario
 #' @param demeterTimesteps Default is seq(from=2005,to=2100,by=5)
 #' @param tethysFolders Folder for tethys results
 #' @param tethysScenarios Scenario name for tethys run
@@ -14,7 +14,6 @@
 #' @param xanthosScenarioAssign Default NULL. Scenario name if testing single scenario.
 #' @param xanthosCoordinatesPath paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")
 #' @param xanthosGridAreaHecsPath =paste(getwd(),"/dataFiles/grids/xanthosRunsChris/reference/Grid_Areas_ID.csv",sep=""),
-#' @param scarcityXanthosRollMeanWindow Default = 10,
 #' @param popFolder Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 #' @param popFiles Default = <-"grid_pop_map"
 #' @param biaFolder Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")
@@ -74,7 +73,6 @@ metis.prepGrid<- function(demeterFolders=NULL,
   # xanthosScenarioAssign=NULL
   # xanthosCoordinatesPath=NULL
   # xanthosGridAreaHecsPath=NULL
-  # scarcityXanthosRollMeanWindow=10
   # spanLowess=0.25
   # popFolder=NULL
   # popFiles=NULL
@@ -99,7 +97,7 @@ NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
     country->name->GCMRCP->datax->
     region->regionsSelect->rowid->scenarioTethys->scenarioXanthos->
     year->origValue->gridlat->gridlon->class1->valueDistrib->origValueDistrib->gridCellPercentage->
-    region_32_code->ctry_name->ctry_code->aggregate->gridID->diagnosticFig
+    region_32_code->ctry_name->ctry_code->aggregate->gridID->diagnosticFig-> class2
 
 
 #------------------
@@ -195,10 +193,10 @@ print("File read.")
 
 colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
                                                 "param","units","aggType","classPalette","class","x","value")]
-gridx <- gridx %>% dplyr::select(colsSelect) %>% ungroup()
+gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
 gridx<-addMissing(gridx); gridx
 
-if(!is.null(filterYears)){gridx <- gridx %>% filter(x %in% filterYears)}
+if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
 if(saveFormat=="rds"){
   saveRDS(gridx,paste(dir,"/demeter_",demeterFolderScen$scenario[i],"_",timestepx,".rds",sep=""))
@@ -346,10 +344,10 @@ if(!dir.exists(paste(tethysFolderScen$folder[i],sep=""))){
 
         colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
                                            "param","units","aggType","classPalette","class","x","value")]
-        gridx <- gridx %>% dplyr::select(colsSelect) %>% ungroup()
-        gridx<-addMissing(gridx) %>% filter(!is.na(x)); gridx
+        gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
+        gridx<-addMissing(gridx) %>% dplyr::filter(!is.na(x)); gridx
 
-        if(!is.null(filterYears)){gridx <- gridx %>% filter(x %in% filterYears)}
+        if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
         tethysFile_i<-gsub(".csv","",tethysFile_i)
 
@@ -500,17 +498,17 @@ if(!file.exists(paste(xanthosFilesScen$file[i],sep=""))){
         xanthosGCMRCPs<-xanthosGCMRCPs[stats::complete.cases(xanthosGCMRCPs),]
         xanthosYears<-unique(gridx$x)
 
-        # Apply Lowess Filter
+        # Apply Lowess dplyr::filter
         # https://stat.ethz.ch/pipermail/bioconductor/2003-September/002337.html
         # https://www.rdocumentation.org/packages/gplots/versions/3.0.1/topics/lowess
 
 
-        print(paste("Applying lowess filter to file: ", xanthosFile_i, " using lowess span of ",spanLowess,"...", sep=""))
+        print(paste("Applying lowess dplyr::filter to file: ", xanthosFile_i, " using lowess span of ",spanLowess,"...", sep=""))
         gridx <- gridx %>%
           dplyr::group_by(lat,lon,scenario,param,units,aggType,classPalette,class) %>%
           dplyr::arrange(lat,lon) %>%
           dplyr::mutate(lowess = stats::lowess(y=value, x=x, f=spanLowess )$y)
-        print(paste("Lowess filter applied.", sep=""))
+        print(paste("Lowess dplyr::filter applied.", sep=""))
 
         for(j in c(1,5,40,100,149,180)){
         gridC<-gridx[(gridx$lat==unique(gridx$lat)[j] & gridx$lon==unique(gridx$lon)[j]),]
@@ -532,17 +530,17 @@ if(!file.exists(paste(xanthosFilesScen$file[i],sep=""))){
 
         colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
                                                         "param","units","aggType","classPalette","class","x","value")]
-        gridx <- gridx %>% dplyr::select(colsSelect) %>% ungroup()
+        gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
         gridx<-addMissing(gridx); gridx
 
-        if(!is.null(filterYears)){gridx <- gridx %>% filter(x %in% filterYears)}
+        if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
         x10Chunks <- split(unique(gridx$x), ceiling(seq_along(unique(gridx$x))/25))
 
         for(j in 1:length(x10Chunks)){
 
           x_temp <-x10Chunks[[j]]
-          gridxSub <- gridx%>%filter(x %in% x_temp)
+          gridxSub <- gridx%>%dplyr::filter(x %in% x_temp)
 
         if(saveFormat=="rds"){
           saveRDS(gridxSub,paste(dir,"/xanthos_",xanthosFilesScen$scenario[i],"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
@@ -613,17 +611,17 @@ if(T){
       if(grepl(".csv",xanthosFile_i)){
       x <- data.table::fread(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param))}
       if(grepl(".rds",xanthosFile_i)){
-        x <- readRDS(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param))};head(x)
+        x <- readRDS(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param))};
       if(grepl(".csv",tethysFile_i)){
         t <- data.table::fread(paste(dir,"/",tethysFile_i,sep="")) %>% dplyr::filter(grepl("tethys",param))}
       if(grepl(".rds",tethysFile_i)){
-        t <- readRDS(paste(dir,"/",tethysFile_i,sep="")) %>% dplyr::filter(grepl("tethys",param))};head(t)
+        t <- readRDS(paste(dir,"/",tethysFile_i,sep="")) %>% dplyr::filter(grepl("tethys",param))};
       xGCM<-paste(unique(x$scenarioMultiA),sep="");xRCP<-paste(unique(x$scenarioMultiB),sep="")
       t1 <- t %>% tibble::as_tibble() %>%
         dplyr::mutate(scenarioMultiA=as.character(scenarioMultiA),scenarioMultiB=as.character(scenarioMultiB),
-          scenarioMultiA=case_when(is.na(scenarioMultiA)~xGCM,
+          scenarioMultiA=dplyr::case_when(is.na(scenarioMultiA)~xGCM,
                                 TRUE~scenarioMultiA),
-          scenarioMultiB=case_when(is.na(scenarioMultiB)~xRCP,
+          scenarioMultiB=dplyr::case_when(is.na(scenarioMultiB)~xRCP,
                                 TRUE~scenarioMultiB))
       for(col_i in names(x)){class(t1[[col_i]])<-class(x[[col_i]])}
       if(unique(x$scenarioMultiA)==unique(t1$scenarioMultiA) & unique(x$scenarioMultiB)==unique(t1$scenarioMultiB)){
@@ -632,7 +630,7 @@ if(T){
         s1 <- s %>% dplyr::select(lon,lat,scenario,scenarioMultiA,scenarioMultiB,param,units,aggType,classPalette,class,x,value,region,class2)%>%
         dplyr::mutate(scenario=paste(scenario,"_",param,sep=""))%>%
         dplyr::select(-param,-units,-class,-class2,-classPalette)%>%dplyr::filter(!is.na(x));s1
-      s2 <- s1 %>% tidyr::spread(key="scenario",value="value");s2 %>% as.data.frame() %>% head()
+      s2 <- s1 %>% tidyr::spread(key="scenario",value="value");s2 %>% as.data.frame() %>% utils::head()
       scarcityScen <- paste("X",
                             gsub("_xanthosRunoff","",paste(unique(s1$scenario)[grepl("xanthos",unique(s1$scenario))],sep="")),
                             "T",
@@ -649,9 +647,9 @@ if(T){
                       units="Gridded Scarcity (Ratio)",
                       class="class",
                       class2="class2",
-                      classPalette="pal_ScarcityCat");head(s3)
+                      classPalette="pal_ScarcityCat");
 
-      if(!is.null(filterYears)){s3 <- s3 %>% filter(x %in% filterYears)}
+      if(!is.null(filterYears)){s3 <- s3 %>% dplyr::filter(x %in% filterYears)}
 
 
       if(saveFormat=="rds"){
@@ -718,10 +716,10 @@ if(!dir.exists(popFolder)){
 
         colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
                                                         "param","units","aggType","classPalette","class","x","value")]
-        gridx <- gridx %>% dplyr::select(colsSelect) %>% ungroup()
+        gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
         gridx<-addMissing(gridx); gridx
 
-        if(!is.null(filterYears)){gridx <- gridx %>% filter(x %in% filterYears)}
+        if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
         print("File read.")
 
@@ -783,10 +781,10 @@ if(!dir.exists(biaFolder)){
 
         colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
                                                         "param","units","aggType","classPalette","class","x","value")]
-        gridx <- gridx %>% dplyr::select(colsSelect) %>% ungroup()
+        gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
         gridx<-addMissing(gridx); gridx
 
-        if(!is.null(filterYears)){gridx <- gridx %>% filter(x %in% filterYears)}
+        if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
         print("File read.")
 

@@ -156,7 +156,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
 
 #---------------------
-# Query sets and query select
+# Query sets and query dplyr::select
 #---------------------
   querySets <- list('water'=c("water withdrawals by crop",
                               "water withdrawals by water mapping source",
@@ -3514,9 +3514,9 @@ paramx <- "emissTotalFFIBySec"
   }
 
   # Check
-  datax%>%as.data.frame()%>%select(scenario,class1,class2,x,param,value)%>%
-  filter(x %in% c(2010:2050),param=="energyFinalByFuelBySectorEJ",scenario=="Ref")%>%
-  group_by(scenario,x)%>%summarize(sum=sum(value))
+  datax%>%as.data.frame()%>%dplyr::select(scenario,class1,class2,x,param,value)%>%
+  dplyr::filter(x %in% c(2010:2050),param=="energyFinalByFuelBySectorEJ",scenario=="Ref")%>%
+  dplyr::group_by(scenario,x)%>%dplyr::summarize(sum=sum(value))
 
   #---------------------
   # Create Data Template
