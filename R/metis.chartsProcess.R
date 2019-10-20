@@ -162,6 +162,16 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   # colOrderName2 = NULL
   # scaleRange = NULL
   # xScenCompFacetLabelSize = 35
+  # legendPosition="right"
+  # figWidth=13
+  # figHeight=9
+  # multiplotOn=F
+  # mp = list(paramSet=list(c("energy"),
+  #                         c("water")),
+  #           param=list(c("elecCapByFuel","elecByTechTWh"),
+  #                      c("watWithdrawBySec","watConsumBySec")),
+  #           nColMax=list(c(3),
+  #                        c(3)))
 
 #------------------
 # Initialize variables to remove binding errors
@@ -1378,7 +1388,7 @@ if(scenarioCompareOnly!=1){
         multiplotlist_i<-list();
         plotSet_ix <- unique(plotSet_i[grepl("_Bar_",plotSet_i)])
         for(multiplot_i in 1:length(plotSet_ix)){
-          multiplotlist_i[[multiplot_i]] <-get(plotSet_ix[multiplot_i])+ylab(NULL)
+          multiplotlist_i[[multiplot_i]] <-get(plotSet_ix[multiplot_i])+ggplot2::ylab(NULL)
         };multiplotlist_i
 
         labels1 <-paste(letters[seq(from=1,to=length(multiplotlist_i),by=1)],")",sep=""); labels1
@@ -1392,7 +1402,7 @@ if(scenarioCompareOnly!=1){
                          #labels="auto",
                          labels = labels1,
                          font.label=list(size=15*ncol_i*nrow_i*1),
-                         hjust=-0.5,vjust=1.5,
+                         hjust=0,vjust=1,
                          legend="right"); figure
 
       metis.printPdfPng(figure=figure,
@@ -1420,7 +1430,7 @@ if(scenarioCompareOnly!=1){
                           #labels="auto",
                           labels = labels1,
                           font.label=list(size=15*ncol_i*nrow_i*1),
-                          hjust=-0.5,vjust=1.5,
+                          hjust=0,vjust=1,
                           legend="right"); figure
 
       metis.printPdfPng(figure=figure,
@@ -2242,25 +2252,30 @@ for(i in unique(tbl$region)){
     plotSet_i <-unique(mpParamPlots_i$plot);plotSet_i
     pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)]);pBRef
     pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)]);pBDiff1S
-    pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ylab(NULL);pBDiffMS
-    pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ylab(NULL);pLDiffPrcnt
-    pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+theme(legend.position = "right")));pBLeg
+    pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL);pBDiffMS
+    pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL);pLDiffPrcnt
+    pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+ggplot2::theme(legend.position = "right")));pBLeg
 
 
     labels1 <-paste(letters[seq(from=(countMultiLabel*2+1),to=(countMultiLabel*2+2),by=1)],")",sep=""); labels1
     labels2 <-paste(letters[seq(from=(countMultiLabel*3+1),to=(countMultiLabel*3+3),by=1)],")",sep=""); labels2
-    nScen_i=unique(mpParamPlots_i$nScen); nScen
 
-    # MultiPlots 1: Ref,diffs1scale,diffsPrcnt,leg
-    assign(paste("fig1Scale_",mpdf[row_i,]$paramSet,"_",mpdf[row_i,]$param,sep=""),
-           ggpubr::ggarrange(pBDiff1S,pLDiffPrcnt,pBLeg,
-                        ncol = 3,nrow=1,
-                        widths=c((nScen_i+nScen_i-1)/nScen_i,1,0.25),
-                        #labels="auto",
-                        labels = labels1,
-                        font.label=list(size=15*((nScen_i+nScen_i-1)/nScen_i+1.25)),
-                        hjust=-0.5,vjust=1,
-                        legend="none"))
+
+    # nScen_i=max(unique((mpParamPlots_i%>%dplyr::filter(grepl("1Scale_",plot)))$nScen)); nScen_i
+    #
+    # # MultiPlots 1: Ref,diffs1scale,diffsPrcnt,leg
+    # assign(paste("fig1Scale_",mpdf[row_i,]$paramSet,"_",mpdf[row_i,]$param,sep=""),
+    #        ggpubr::ggarrange(pBDiff1S,pLDiffPrcnt,pBLeg,
+    #                     ncol = 3,nrow=1,
+    #                     widths=c((nScen_i+nScen_i-1)/nScen_i,1,0.25),
+    #                     #labels="auto",
+    #                     labels = labels1,
+    #                     font.label=list(size=15*((nScen_i+nScen_i-1)/nScen_i+1.25)),
+    #                     hjust=-0.5,vjust=1,
+    #                     legend="none"))
+
+    nScen_i=max(max(unique((mpParamPlots_i%>%dplyr::filter(grepl("DiffAbs_",plot)))$nScen))+1,1); nScen_i
+
     # MultiPlots 2: Ref,diffs1scale,diffsPrcnt,leg
     assign(paste("figMScale_",mpdf[row_i,]$paramSet,"_",mpdf[row_i,]$param,sep=""),
            ggpubr::ggarrange(pBRef,pBDiffMS,pLDiffPrcnt,pBLeg,
@@ -2304,6 +2319,7 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
 
   # Plot diff Multi Scale
   multiPlotFigs_ix <- multiPlotFigs_i%>%dplyr::filter(grepl("figMScale",multiPlot))
+  multiplotlist_i<-NULL
   for(multiplot_i in 1:length(unique(multiPlotFigs_ix $multiPlot))){
     multiplotlist_i[[multiplot_i]] <-get(unique(multiPlotFigs_ix $multiPlot)[multiplot_i])
   };multiplotlist_i
@@ -2312,7 +2328,7 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
   metis.printPdfPng(figure=figure,
                     dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
                     filename=paste(paramSet_i,"_",i,"_mplot_diffMultiScale",sep=""),
-                    figWidth=figWidth*((nScen-1)/nScen+2.25),
+                    figWidth=figWidth*((nScen_i-1)/nScen_i+2.25),
                     figHeight=figHeight*plotRows_i,
                     pdfpng="png")
 
@@ -2366,9 +2382,9 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
       plotSet_ix <- unique(plotSet_i[grepl("_lineSum",plotSet_i)]);plotSet_ix
       for(multiplot_i in 1:length(plotSet_ix)){
         if(grepl("lineSumAbs",plotSet_ix[multiplot_i])){
-          multiplotlist_i[[multiplot_i]] <-get(plotSet_ix[multiplot_i])+ylab(NULL)
+          multiplotlist_i[[multiplot_i]] <-get(plotSet_ix[multiplot_i])+ggplot2::ylab(NULL)
         }else{
-        multiplotlist_i[[multiplot_i]] <-get(plotSet_ix[multiplot_i])+ylab(NULL)
+        multiplotlist_i[[multiplot_i]] <-get(plotSet_ix[multiplot_i])+ggplot2::ylab(NULL)
         }
       };multiplotlist_i
 
@@ -2376,16 +2392,16 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
 
       legRows = max(round(mpParamPlots_i[1,]$nScen/3),1);legRows
       mp_LineLeg <- ggpubr::as_ggplot(ggpubr::get_legend(get(plotSet_ix[1])+
-                                                   theme(legend.position = "bottom")+
-                                                   guides(colour = guide_legend(nrow = legRows,title="Scenario"),
-                                                            shape = guide_legend(nrow=legRows,title="Scenario"))));mp_LineLeg
+                                                   ggplot2::theme(legend.position = "bottom")+
+                                                   ggplot2::guides(colour = ggplot2::guide_legend(nrow = legRows,title="Scenario"),
+                                                            shape = ggplot2::guide_legend(nrow=legRows,title="Scenario"))));mp_LineLeg
       # MultiPlots 1: Ref,diffs1scale,diffsPrcnt,leg
       #ncol
       ncol_i=3;
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=round(length(plotSet_ix)/ncol_i)};nrow_i
       figure <- ggpubr::ggarrange(ggpubr::ggarrange(plotlist=multiplotlist_i,
                                     labels = labels1,
-                                    font.label=list(size=4*ncol_i*(nrow_i)*1),
+                                    font.label=list(size=5*ncol_i*(max(nrow_i,1.5)*1)),
                                     hjust=0,vjust=1,
                                     ncol = ncol_i,nrow=nrow_i,
                                     legend="none"),
@@ -2395,8 +2411,8 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
       metis.printPdfPng(figure=figure,
                         dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
                         filename=paste(paramSet_i,"_",i,"_",j,"_mplot_SumLineDiffPrcnt",sep=""),
-                        figWidth=figWidth*ncol_i*0.6,
-                        figHeight=figHeight*(nrow_i+0.3)*0.75,
+                        figWidth=figWidth*max(ncol_i,1.5)*0.6,
+                        figHeight=figHeight*(max(nrow_i,1.5)+0.3)*0.75,
                         pdfpng="png")
 
 
@@ -2408,9 +2424,9 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
       plotSet_ix <- unique(plotSet_i[grepl("_lineSumAbs_",plotSet_i)]);plotSet_ix
       for(multiplot_i in 1:length(plotSet_ix)){
         if(grepl("lineSumAbs",plotSet_ix[multiplot_i])){
-          multiplotlist_i[[multiplot_i]] <-get(plotSet_ix[multiplot_i])+ylab(NULL)
+          multiplotlist_i[[multiplot_i]] <-get(plotSet_ix[multiplot_i])+ggplot2::ylab(NULL)
         }else{
-          multiplotlist_i[[multiplot_i]] <-get(plotSet_ix[multiplot_i])+ylab(NULL)
+          multiplotlist_i[[multiplot_i]] <-get(plotSet_ix[multiplot_i])+ggplot2::ylab(NULL)
         }
       };multiplotlist_i
 
@@ -2418,16 +2434,16 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
 
       legRows = max(round(mpParamPlots_i[1,]$nScen/3),1);legRows
       mp_LineLeg <- ggpubr::as_ggplot(ggpubr::get_legend(get(plotSet_ix[1])+
-                                                   theme(legend.position = "bottom")+
-                                                   guides(colour = guide_legend(nrow = legRows,title="Scenario"),
-                                                          shape = guide_legend(nrow=legRows,title="Scenario"))));mp_LineLeg
+                                                   ggplot2::theme(legend.position = "bottom")+
+                                                   ggplot2::guides(colour = ggplot2::guide_legend(nrow = legRows,title="Scenario"),
+                                                          shape = ggplot2::guide_legend(nrow=legRows,title="Scenario"))));mp_LineLeg
       # MultiPlots 1: Ref,diffs1scale,diffsPrcnt,leg
       #ncol
       if(round(length(plotSet_ix)/4)<1){ncol_i=length(plotSet_ix)}else{ncol_i=4};ncol_i
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=round(length(plotSet_ix)/ncol_i)};nrow_i
       figure <- ggpubr::ggarrange(ggpubr::ggarrange(plotlist=multiplotlist_i,
                                     labels = labels1,
-                                    font.label=list(size=14*ncol_i*(nrow_i)*1),
+                                    font.label=list(size=10*1.5*(max(nrow_i,1.5))*1),
                                     hjust=0,vjust=1,
                                     ncol = ncol_i,nrow=nrow_i,
                                     legend="none"),
@@ -2437,8 +2453,8 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
       metis.printPdfPng(figure=figure,
                         dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
                         filename=paste(paramSet_i,"_",i,"_",j,"_mplot_SumLineAbs",sep=""),
-                        figWidth=figWidth*ncol_i*0.6,
-                        figHeight=figHeight*(nrow_i+0.3)*0.75,
+                        figWidth=figWidth*max(ncol_i,1.5)*0.6,
+                        figHeight=figHeight*(max(nrow_i,1.5)+0.3)*0.75,
                         pdfpng="png")
 
 
