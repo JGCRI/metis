@@ -94,6 +94,7 @@
 #' @param figWidth Default = 13
 #' @param figHeight Default = 9
 #' @param multiplotOn Default=F,
+#' @param mp This is a list with the paramSet and related params plus the max number of rows desired for summary plots.
 #' @keywords charts, diffplots
 #' @return Produces charts in output folder and also returns combined table in metis format.
 #' @export
@@ -169,7 +170,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   NULL->scenario->value->x->region->param->origValue->origScen->origQuery->year->
   origUnits->origX->sources->vintage->class1->classLabel1->classPalette1->yMax_i->yMin_i->
   class2->classLabel2->classPalette2->i->j->k->figWMult->classLabel1x ->classLabel2x-> classPalette1x-> classPalette2x->
-  nScen
+  nScen->paramSet->multiPlot
 
   aggregate_i <- aggregate
 

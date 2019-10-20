@@ -123,6 +123,8 @@ c(# energy
 \item{figHeight}{Default = 9}
 
 \item{multiplotOn}{Default=F,}
+
+\item{mp}{This is a list with the paramSet and related params plus the max number of rows desired for summary plots.}
 }
 \value{
 Produces charts in output folder and also returns combined table in metis format.

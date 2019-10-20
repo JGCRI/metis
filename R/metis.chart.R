@@ -207,7 +207,7 @@ if(!"class1"%in%names(data)){data<-data%>%dplyr::mutate(class1="class1")}
 if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
   l1 <- data
-  l1<-l1%>%dplyr::mutate(units=case_when(!grepl(" ",units)~paste("~",units),
+  l1<-l1%>%dplyr::mutate(units=dplyr::case_when(!grepl(" ",units)~paste("~",units),
                                          TRUE~units),
                          units=gsub(" ","~",units))
   if(length(classPalette)>1){
