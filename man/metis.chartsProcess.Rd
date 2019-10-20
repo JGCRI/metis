@@ -15,7 +15,11 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   folderName = "folderNameDefault", nameAppend = "",
   scensSelect = "All", colOrder1 = NULL, colOrderName1 = NULL,
   colOrder2 = NULL, colOrderName2 = NULL, scaleRange = NULL,
-  xScenCompFacetLabelSize = 35)
+  xScenCompFacetLabelSize = 35, legendPosition = "right",
+  figWidth = 13, figHeight = 9, multiplotOn = F, mp = list(paramSet
+  = list(c("energy"), c("water")), param = list(c("elecCapByFuel",
+  "elecByTechTWh"), c("watWithdrawBySec", "watConsumBySec")), nColMax =
+  list(c(3), c(3))))
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -111,6 +115,16 @@ c(# energy
 \item{scaleRange}{Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.}
 
 \item{xScenCompFacetLabelSize}{Default = 2}
+
+\item{legendPosition}{Default="right" ("none", "left", "right", "bottom", "top", or two-element numeric vector)}
+
+\item{figWidth}{Default = 13}
+
+\item{figHeight}{Default = 9}
+
+\item{multiplotOn}{Default=F,}
+
+\item{mp}{This is a list with the paramSet and related params plus the max number of rows desired for summary plots.}
 }
 \value{
 Produces charts in output folder and also returns combined table in metis format.

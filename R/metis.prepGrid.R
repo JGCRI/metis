@@ -1,92 +1,89 @@
 #' metis.prepGrid
 #'
 #' This function prepares gridded data for use with other metis modules.
-#' @param demeterFolder Full path to demeter outputs
-#' @param demeterScenario Name of demeter scenario
+#' @param demeterFolders Full path to demeter outputs
+#' @param demeterScenarios Name of demeter scenario
 #' @param demeterTimesteps Default is seq(from=2005,to=2100,by=5)
-#' @param tethysFolder Folder for tethys results
-#' @param tethysScenario Scenario name for tethys run
+#' @param tethysFolders Folder for tethys results
+#' @param tethysScenarios Scenario name for tethys run
 #' @param tethysFiles Default =c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal"),
 #' @param tethysUnits No Default
 #' @param demeterUnits No Default
-#' @param xanthosFolder Xanthos Folder Path
+#' @param xanthosScenarios Default=NULL,
 #' @param xanthosFiles Xanthos Files to Read
-#' @param xanthosScenarioAssign Default "NA". Scenario name if testing single scenario.
+#' @param xanthosScenarioAssign Default NULL. Scenario name if testing single scenario.
 #' @param xanthosCoordinatesPath paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")
 #' @param xanthosGridAreaHecsPath =paste(getwd(),"/dataFiles/grids/xanthosRunsChris/reference/Grid_Areas_ID.csv",sep=""),
-#' @param scarcityXanthosRollMeanWindow Default = 10,
 #' @param popFolder Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")
 #' @param popFiles Default = <-"grid_pop_map"
 #' @param biaFolder Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")
 #' @param biaFiles Default = <-"grid_bia_map"
 #' @param popUnits Default = <-"person"
 #' @param dirOutputs Default =paste(getwd(),"/outputs",sep=""),
-#' @param reReadData Default =1,
-#' @param gridMetisData Default = paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")
 #' @param spanLowess Default = 0.25
-#' @param sqliteUSE Default = T,
-#' @param sqliteDBNamePath Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
-#' @param copySingleTethysScenbyXanthos Default=NULL,
+#' @param folderName Default=NULL
+#' @param tethysFilesScarcity Default=NULL,
+#' @param xanthosFilesScarcity Default=NULL,
+#' @param saveFormat Default="rds". Choose between "rds" (Native R much faster) or "csv" or "both".
+#' @param filterYears Default=seq(1980,2100,by=5)
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @export
 
-metis.prepGrid<- function(demeterFolder="NA",
-                        demeterScenario="NA",
+metis.prepGrid<- function(demeterFolders=NULL,
+                        demeterScenarios=NULL,
                         demeterTimesteps=seq(from=2005,to=2100,by=5),
-                        demeterUnits="NA",
-                        tethysFolder="NA",
-                        tethysScenario="NA",
-                        tethysUnits="NA",
+                        demeterUnits=NULL,
+                        tethysFolders=NULL,
+                        tethysScenarios=NULL,
+                        tethysUnits=NULL,
                         tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal"),
-                        copySingleTethysScenbyXanthos=NULL,
-                        xanthosFolder="NA",
-                        xanthosFiles="NA",
-                        xanthosScenarioAssign="NA",
-                        xanthosCoordinatesPath="NA",
-                        xanthosGridAreaHecsPath="NA",
-                        scarcityXanthosRollMeanWindow=10,
+                        xanthosFiles=NULL,
+                        xanthosScenarios=NULL,
+                        xanthosScenarioAssign=NULL,
+                        xanthosCoordinatesPath=NULL,
+                        xanthosGridAreaHecsPath=NULL,
+                        tethysFilesScarcity=NULL,
+                        xanthosFilesScarcity=NULL,
                         spanLowess=0.25,
-                        popFolder="NA",
-                        popFiles="NA",
-                        biaFolder="NA",
-                        biaFiles="NA",
-                        popUnits="NA",
+                        popFolder=NULL,
+                        popFiles=NULL,
+                        biaFolder=NULL,
+                        biaFiles=NULL,
+                        popUnits=NULL,
                         dirOutputs=paste(getwd(),"/outputs",sep=""),
-                        reReadData=1,
-                        gridMetisData=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = ""),
-                        sqliteUSE = F,
-                        sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
+                        folderName=NULL,
+                        saveFormat="rds",
+                        filterYears=NULL
                         ){
 
-
-  # demeterFolder="NA"
-  # demeterScenario="NA"
+  #  saveRDatasingle=F
+  # folderName=NULL
+  # demeterFolders=NULL
+  # demeterScenarios=NULL
   # demeterTimesteps=seq(from=2005,to=2100,by=5)
-  # demeterUnits="NA"
-  # tethysFolder="NA"
-  # tethysScenario="NA"
-  # tethysUnits="NA"
+  # demeterUnits=NULL
+  # tethysFolders=NULL
+  # tethysScenarios=NULL
+  # tethysUnits=NULL
   # tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
   # copySingleTethysScenbyXanthos=NULL
-  # xanthosFolder="NA"
-  # xanthosFiles="NA"
-  # xanthosScenarioAssign="NA"
-  # xanthosCoordinatesPath="NA"
-  # xanthosGridAreaHecsPath="NA"
-  # scarcityXanthosRollMeanWindow=10
+  # xanthosFiles=NULL
+  # xanthosScenarios=NULL
+  # xanthosScenarioAssign=NULL
+  # xanthosCoordinatesPath=NULL
+  # xanthosGridAreaHecsPath=NULL
   # spanLowess=0.25
-  # popFolder="NA"
-  # popFiles="NA"
-  # popUnits="NA"
+  # popFolder=NULL
+  # popFiles=NULL
+  # biaFolder=NULL
+  # biaFiles=NULL
+  # popUnits=NULL
   # dirOutputs=paste(getwd(),"/outputs",sep="")
   # reReadData=1
-  # gridMetisData=paste(getwd(),"/outputs/Grids/gridMetis.RData", sep = "")
+  # gridMetisData=paste(getwd(),"/outputs/prepGrid/gridMetis.RData", sep = "")
   # sqliteUSE = F
-  # sqliteDBNamePath = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")
-  # biaFolder="NA"
-  # biaFiles="NA"
-
+  # sqliteDBNamePath = paste(getwd(),"/outputs/prepGrid/gridMetis.sqlite", sep = "")
 
 #----------------
 # Initialize variables by setting to NULL
@@ -94,13 +91,13 @@ metis.prepGrid<- function(demeterFolder="NA",
 
 NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
   ilon->ilat->param->V2->V3->scenario->classPalette->rollingMean->x->scarcity->value->id->
-    tethysScenarios->tethysYears->xanthosScenarios->xanthosYears->
+   tethysYears->xanthosYears->
     commonYears->commonScenarios->V1->Area_hec->Area_km2->lowess->valueXanthos->valueTethys->commonYears_i->
-    tethysGCMRCPs->xanthosGCMRCPs->scenarioSSP->scenarioPolicy->scenarioGCM->scenarioRCP->
+    tethysGCMRCPs->xanthosGCMRCPs->scenarioMultiA->scenarioMultiB->
     country->name->GCMRCP->datax->
     region->regionsSelect->rowid->scenarioTethys->scenarioXanthos->
     year->origValue->gridlat->gridlon->class1->valueDistrib->origValueDistrib->gridCellPercentage->
-    region_32_code->ctry_name->ctry_code->aggregate->gridID->diagnosticFig
+    region_32_code->ctry_name->ctry_code->aggregate->gridID->diagnosticFig-> class2
 
 
 #------------------
@@ -114,10 +111,8 @@ NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
     if(!"region"%in%names(data)){data<-data%>%dplyr::mutate(region="region")}
     if(!"classPalette"%in%names(data)){data<-data%>%dplyr::mutate(classPalette="pal_hot")}
     if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}
-    if(!"scenarioGCM"%in%names(data)){data<-data%>%dplyr::mutate(scenarioGCM="scenarioGCM")}
-    if(!"scenarioRCP"%in%names(data)){data<-data%>%dplyr::mutate(scenarioRCP="scenarioRCP")}
-    if(!"scenarioSSP"%in%names(data)){data<-data%>%dplyr::mutate(scenarioSSP="scenarioSSP")}
-    if(!"scenarioPolicy"%in%names(data)){data<-data%>%dplyr::mutate(scenarioPolicy="scenarioPolicy")}
+    if(!"scenarioMultiA"%in%names(data)){data<-data%>%dplyr::mutate(scenarioMultiA="scenarioMultiA")}
+    if(!"scenarioMultiB"%in%names(data)){data<-data%>%dplyr::mutate(scenarioMultiB="scenarioMultiB")}
     if(!"class"%in%names(data)){data<-data%>%dplyr::mutate(class="scenarioPolicy")}
     if(!"class2"%in%names(data)){data<-data%>%dplyr::mutate(class2="class2")}
     if(!"aggType"%in%names(data)){data<-data%>%dplyr::mutate(aggType="aggType")}
@@ -134,58 +129,58 @@ NULL -> lat -> lon -> latitude -> longitude -> aez_id -> region_id ->X..ID->
 #------------------
 if (!dir.exists(dirOutputs)){
     dir.create(dirOutputs)}
-if (!dir.exists(paste(dirOutputs, "/Grids", sep = ""))){
-    dir.create(paste(dirOutputs, "/Grids", sep = ""))}
-
-  if (!dir.exists(paste(dirOutputs, "/Grids/diagnostics",sep=""))){
-    dir.create(paste(dirOutputs, "/Grids/diagnostics",sep=""))}
+if (!dir.exists(paste(dirOutputs, "/prepGrid", sep = ""))){
+    dir.create(paste(dirOutputs, "/prepGrid", sep = ""))}
+  if(!is.null(folderName)){
+    if (!dir.exists(paste(dirOutputs, "/prepGrid/",folderName, sep = ""))){
+      dir.create(paste(dirOutputs, "/prepGrid/",folderName, sep = ""))}
+  if (!dir.exists(paste(dirOutputs, "/prepGrid/",folderName,"/diagnostics",sep=""))){
+    dir.create(paste(dirOutputs, "/prepGrid/",folderName,"/diagnostics",sep=""))}
+  dir=paste(dirOutputs, "/prepGrid/",folderName,sep="")
+  }else{if (!dir.exists(paste(dirOutputs, "/prepGrid/diagnostics",sep=""))){
+    dir.create(paste(dirOutputs, "/prepGrid/diagnostics",sep=""))}
+    dir=paste(dirOutputs, "/prepGrid",sep="")}
 
 
 #------------------
 # If reread data
 #------------------
 
-if(reReadData==1){
-
-gridMetis<-tibble::tibble()
-
-if(sqliteUSE==T){
-if(file.exists(sqliteDBNamePath)){file.remove(sqliteDBNamePath)}
-  dbConn<-DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)
-DBI::dbDisconnect(dbConn);dbConn
-}
-
-#library(RMySQL)
-#dbListConnections( dbDriver( drv = "MySQL"))
+paramScenarios<-tibble::tibble()
 
 #----------------
 # Prepare Demeter Files
 #---------------
 
-if(!dir.exists(demeterFolder)){
+if(!is.null(demeterFolders)){
 
-  print(paste("Demeter folder: ", demeterFolder ," is incorrect or doesn't exist.",sep=""))
+  if(!is.null(demeterScenarios)){
+    demeterFolderScen <- data.frame("folder"=c(demeterFolders),"scenario"=c(demeterScenarios))
+    print("The following folder scenarios found for Demeter.")
+    print(demeterFolderScen)
+
+
+  for(i in 1:nrow(demeterFolderScen)){
+
+if(!dir.exists(paste(demeterFolderScen$folder[i],sep=""))){
+
+  print(paste("Demeter folder: ", demeterFolderScen$folder[i] ," is incorrect or doesn't exist.",sep=""))
   print(paste("Skipping demeter runs",sep=""))
-  }else {
-
-    if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
-
+  }
 
 for(timestepx in demeterTimesteps){
 
-if(!file.exists(paste(demeterFolder,"/landcover_",timestepx,"_timestep.csv",sep=""))){
-  print(paste("Demeter file: ", demeterFolder,"/landcover_",timestepx,"_timestep.csv is incorrect or doesn't exist.",sep=""))
-  print(paste("Skipping file: ",demeterFolder,"/landcover_",timestepx,"_timestep.csv",sep=""))
+if(!file.exists(paste(demeterFolderScen$folder[i],"/landcover_",timestepx,"_timestep.csv",sep=""))){
+  print(paste("Demeter file: ", demeterFolderScen$folder[i],"/landcover_",timestepx,"_timestep.csv is incorrect or doesn't exist.",sep=""))
+  print(paste("Skipping file: ",demeterFolderScen$folder[i],"/landcover_",timestepx,"_timestep.csv",sep=""))
 }else{
-  print(paste("Reading demeter data file: ",demeterFolder,"/landcover_",timestepx,"_timestep.csv...",sep=""))
-gridx<-data.table::fread(paste(demeterFolder,"/landcover_",timestepx,"_timestep.csv",sep=""),encoding="Latin-1")%>%
+  print(paste("Reading demeter data file: ",demeterFolderScen$folder[i],"/landcover_",timestepx,"_timestep.csv...",sep=""))
+gridx<-data.table::fread(paste(demeterFolderScen$folder[i],"/landcover_",timestepx,"_timestep.csv",sep=""),encoding="Latin-1")%>%
   tibble::as_tibble()%>%
   dplyr::mutate(lat=latitude,lon=longitude,
-                scenarioGCM=NA,
-                scenarioRCP=NA,
-                scenarioSSP=NA,
-                scenarioPolicy=NA,
-         scenario=demeterScenario,
+                scenarioMultiA=NA,
+                scenarioMultiB=NA,
+         scenario=demeterFolderScen$scenario[i],
          param="demeterLandUse",
          units=demeterUnits,
          aggType="depth",
@@ -193,43 +188,81 @@ gridx<-data.table::fread(paste(demeterFolder,"/landcover_",timestepx,"_timestep.
          classPalette="pal_green",
          region="region")%>%
   dplyr::select(-aez_id,-region_id,-longitude,-latitude)%>%
-  tidyr::gather(key="class",value="value",-c("lat","lon","region","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","x","classPalette"))
+  tidyr::gather(key="class",value="value",-c("lat","lon","region","scenario","scenarioMultiA","scenarioMultiB","aggType","param","units","x","classPalette"))
 print("File read.")
 
-colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
                                                 "param","units","aggType","classPalette","class","x","value")]
-gridx <- gridx %>% dplyr::select(colsSelect)
+gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
 gridx<-addMissing(gridx); gridx
 
-if(sqliteUSE==T){
-  DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
-  print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
-}else{
-  print(paste("Using .Rdata format to save data.",sep=""))
-  gridMetis<-dplyr::bind_rows(gridMetis,gridx)
-}
+if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
+if(saveFormat=="rds"){
+  saveRDS(gridx,paste(dir,"/demeter_",demeterFolderScen$scenario[i],"_",timestepx,".rds",sep=""))
+  print(paste("Saving file as: ",dir,"/demeter_",demeterFolderScen$scenario[i],"_",timestepx,".rds",sep=""))
+
+}
+if(saveFormat=="csv"){
+  data.table::fwrite(gridx,paste(dir,"/demeter_",demeterFolderScen$scenario[i],"_",timestepx,".csv",sep=""))
+  print(paste("Saving file as: ",dir,"/demeter_",demeterFolderScen$scenario[i],"_",timestepx,".csv",sep=""))
+
+}
+if(saveFormat=="both"){
+  saveRDS(gridx,paste(dir,"/demeter_",demeterFolderScen$scenario[i],"_",timestepx,".rds",sep=""))
+  data.table::fwrite(gridx,paste(dir,"/demeter_",demeterFolderScen$scenario[i],"_",timestepx,".csv",sep=""))
+  print(paste("Saving file as: ",dir,"/demeter_",demeterFolderScen$scenario[i],"_",timestepx,".rds",sep=""))
+  print(paste("Saving file as: ",dir,"/demeter_",demeterFolderScen$scenario[i],"_",timestepx,".csv",sep=""))
+
+}
+paramScenarios <- paramScenarios%>%
+  dplyr::bind_rows(gridx[1,]%>%dplyr::select(param,scenario)%>%unique()) %>%
+  dplyr::ungroup()%>%
+  dplyr::select(param,scenario)%>%
+  unique();paramScenarios
 rm(gridx)
 
 } # Close if demeter file exists
 } # close demeter file loops
-
-if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
-
-} # Close Demeter folder
-
+} # CLose each demeter folder
+}else{print("Demeter scenarios not specified")}
+}# Close Demeter folder
 
 #----------------
 # Prepare Tethys Files
 #---------------
 
-if(!dir.exists(tethysFolder)){
-  print(paste("tethys folder: ", tethysFolder ," is incorrect or doesn't exist.",sep=""))
+if(!file.exists(xanthosGridAreaHecsPath)){
+  print(paste("xanthos grid Area path: ", xanthosGridAreaHecsPath ," is incorrect or doesn't exist.",sep=""))
+  print(paste("Skipping xanthos runs",sep=""))}else {
+
+
+    if(!file.exists(xanthosCoordinatesPath)){
+      print(paste("xanthos coordinate path: ", xanthosCoordinatesPath ," is incorrect or doesn't exist.",sep=""))
+      print(paste("Skipping xanthos runs",sep=""))}else {
+
+
+        xanthosCoords<-data.table::fread(xanthosCoordinatesPath, header=F,encoding="Latin-1");
+        xanthosCoords<-xanthosCoords%>%dplyr::rename(lon=V2,lat=V3)%>%dplyr::select(lon,lat)
+        xanthosGridArea<-data.table::fread(xanthosGridAreaHecsPath, header=F,encoding="Latin-1");
+        xanthosGridArea<-xanthosGridArea%>%dplyr::rename(Area_hec=V1)%>%dplyr::mutate(Area_km2=0.01*Area_hec)%>%
+          dplyr::select(Area_hec,Area_km2)
+
+
+if(!is.null(tethysFolders)){
+
+  if(!is.null(tethysScenarios)){
+    tethysFolderScen <- data.frame("folder"=c(tethysFolders),"scenario"=c(tethysScenarios))
+    print("The following folder scenarios found for Tethys.")
+    print(tethysFolderScen)
+
+  for(i in 1:nrow(tethysFolderScen)){
+
+if(!dir.exists(paste(tethysFolderScen$folder[i],sep=""))){
+  print(paste("tethys folder: ", tethysFolderScen$folder[i] ," is incorrect or doesn't exist.",sep=""))
   print(paste("Skipping tethys runs",sep=""))}else {
 
-    if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
-
-    tethysScenarios<-character()
+    tethysScenario_i<-tethysFolderScen$scenario[i]
     tethysGCMRCPs<-tibble::tibble()
     tethysYears<-numeric()
 
@@ -238,31 +271,53 @@ if(!dir.exists(tethysFolder)){
       class_i=gsub(".csv","",tethysFile_i)
       if(!grepl(".csv",tethysFile_i)){tethysFile_i=paste(tethysFile_i,".csv",sep="")}
 
-      if(!file.exists(paste(tethysFolder,"/",tethysFile_i,sep=""))){
-        print(paste("tethys file: ", tethysFolder,"/",tethysFile_i," is incorrect or doesn't exist.",sep=""))
-        print(paste("Skipping file: ",tethysFolder,"/",tethysFile_i,sep=""))
+      if(!file.exists(paste(tethysFolderScen$folder[i],"/",tethysFile_i,sep=""))){
+        print(paste("tethys file: ", tethysFolderScen$folder[i],"/",tethysFile_i," is incorrect or doesn't exist.",sep=""))
+        print(paste("Skipping file: ",tethysFolderScen$folder[i],"/",tethysFile_i,sep=""))
       }else{
-        print(paste("Reading tethys data file: ",tethysFile_i,"...",sep=""))
-        gridx<-data.table::fread(paste(tethysFolder,"/",tethysFile_i,sep=""),fill=T,encoding="Latin-1")%>%
-          tibble::as_tibble()%>%dplyr::select(-'# ID',-ilon,-ilat)
+        print(paste("Reading tethys data file: ",tethysFile_i," for scenario ",tethysFolderScen$scenario[i],"...",sep=""))
+        gridx<-data.table::fread(paste(tethysFolderScen$folder[i],"/",tethysFile_i,sep=""),fill=T,encoding="Latin-1")%>%
+          tibble::as_tibble()%>%dplyr::select(-'ID',-ilon,-ilat)
         print("File read.")
         names(gridx)<-gsub("X","",names(gridx))
+
+
+        if(nrow(gridx)!=nrow(xanthosCoords)){
+          stop(paste("Rows in tethys file: ", tethysFile_i,
+                     " not equal to rows in coords file: ",
+                     xanthosCoordinatesPath,sep=""))}
+
+        if(nrow(gridx)!=nrow(xanthosGridArea)){
+          stop(paste("Rows in tethys file: ", tethysFile_i,
+                     " not equal to rows in coords file: ",
+                     xanthosCoordinatesPath,sep=""))}
+
+
+        if(grepl("km3",tethysFile_i) | grepl("km3",tethysUnits)){
+          print(paste("Based on tethys file name: ", tethysFile_i, " or given tethys units: ", tethysUnits," data is in km3. Converting to mm...", sep=""))
+          gridx<-gridx/(xanthosGridArea$Area_km2/1000000)
+          gridx[gridx<0]=0
+          gridx<-dplyr::bind_cols(xanthosCoords,gridx)
+          tethysUnits="Water Withdrawals (mm)"
+          print(paste("km3 data converted to mm.", sep=""))
+        }else{
+          print(paste("Based on tethys file name: ", tethysFile_i, " or given tethys units: ", tethysUnits," data is in mm. Using mm.", sep=""))
+          gridx<-dplyr::bind_cols(xanthosCoords,gridx)}
+
         if(grepl("mm",tethysUnits)){aggType="depth"}else{aggType="vol"}
         gridx<-gridx%>%dplyr::select(-dplyr::contains("Unit"))
         gridx<-gridx%>%
               dplyr::mutate(lat=lat,lon=lon,
-                            scenarioGCM=NA,
-                            scenarioRCP=NA,
-                            scenarioSSP=NA,
-                            scenarioPolicy=NA,
-                            scenario=paste(tethysScenario,scenarioSSP,scenarioPolicy,sep="_"),
+                            scenarioMultiA=NA,
+                            scenarioMultiB=NA,
+                            scenario=paste(tethysScenario_i,sep="_"),
                             param="tethysWatWithdraw",
                             units=tethysUnits,
                             aggType=aggType,
                             classPalette="pal_wet",
                             class=class_i,
                             region="region")%>%
-               tidyr::gather(key="x",value="value",-c("lat","lon","region","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","classPalette","class"))
+               tidyr::gather(key="x",value="value",-c("lat","lon","region","scenario","scenarioMultiA","scenarioMultiB","aggType","param","units","classPalette","class"))
 
         gridx$x<-as.numeric(gridx$x)
 
@@ -280,34 +335,52 @@ if(!dir.exists(tethysFolder)){
                                                grepl("total",class,ignore.case = T)~"Total",
                                                TRUE~class))
 
-        tethysScenarios<-unique(c(tethysScenarios,unique(gridx$scenario)))
+        tethysScenariosX<-unique(c(tethysScenario_i,unique(gridx$scenario)))
         tethysGCMRCP<-gridx %>%
-          dplyr::select(scenarioGCM,scenarioRCP) %>% dplyr::distinct()
+          dplyr::select(scenarioMultiA,scenarioMultiB) %>% dplyr::distinct()
         tethysGCMRCPs<-dplyr::bind_rows(tethysGCMRCPs,tethysGCMRCP)
         tethysGCMRCPs<-tethysGCMRCPs[stats::complete.cases(tethysGCMRCPs),]
         tethysYears<-unique(gridx$x)
 
-        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
                                            "param","units","aggType","classPalette","class","x","value")]
-        gridx <- gridx %>% dplyr::select(colsSelect)
-        gridx<-addMissing(gridx); gridx
+        gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
+        gridx<-addMissing(gridx) %>% dplyr::filter(!is.na(x)); gridx
 
-        if(sqliteUSE==T){
-          DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
-          print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
-        }else{
-          print(paste("Using .Rdata format to save data.",sep=""))
-          gridMetis<-dplyr::bind_rows(gridMetis,gridx)
+        if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
+
+        tethysFile_i<-gsub(".csv","",tethysFile_i)
+
+        if(saveFormat=="rds"){
+          saveRDS(gridx,paste(dir,"/tethys_",tethysFolderScen$scenario[i],"_",tethysFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+          print(paste("Saving file as: ",dir,"/tethys_",tethysFolderScen$scenario[i],"_",tethysFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+
         }
+        if(saveFormat=="csv"){
+          data.table::fwrite(gridx,paste(dir,"/tethys_",tethysFolderScen$scenario[i],"_",tethysFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+          print(paste("Saving file as: ",dir,"/tethys_",tethysFolderScen$scenario[i],"_",tethysFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+
+        }
+        if(saveFormat=="both"){
+          saveRDS(gridx,paste(dir,"/tethys_",tethysFolderScen$scenario[i],"_",tethysFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+          data.table::fwrite(gridx,paste(dir,"/tethys_",tethysFolderScen$scenario[i],"_",tethysFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+          print(paste("Saving file as: ",dir,"/tethys_",tethysFolderScen$scenario[i],"_",tethysFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+          print(paste("Saving file as: ",dir,"/tethys_",tethysFolderScen$scenario[i],"_",tethysFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+
+        }
+        paramScenarios <- paramScenarios%>%
+          dplyr::bind_rows(gridx[1,]%>%dplyr::select(param,scenario)%>%unique()) %>%
+          dplyr::ungroup()%>%
+          dplyr::select(param,scenario)%>%
+          unique();paramScenarios
 
         rm(gridx)
 
       } # Close if tethys file exists
     } # close tethys file loops
-
-   if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
-
+  }}}else{print("Tethys scenarios not specified")}
   } # Close tethys folder
+}} # Closing grid Area files
 
 #----------------
 # Prepare Xanthos Files
@@ -323,23 +396,31 @@ if(!file.exists(xanthosCoordinatesPath)){
   print(paste("xanthos coordinate path: ", xanthosCoordinatesPath ," is incorrect or doesn't exist.",sep=""))
   print(paste("Skipping xanthos runs",sep=""))}else {
 
-if(!dir.exists(xanthosFolder)){
-  print(paste("xanthos folder: ", xanthosFolder ," is incorrect or doesn't exist.",sep=""))
+
+if(!is.null(xanthosFiles)){
+
+      if(!is.null(xanthosScenarios)){
+        xanthosFilesScen <- data.frame("file"=c(xanthosFiles),"scenario"=c(xanthosScenarios))
+        print("The following file scenarios found for Xanthos.")
+        print(xanthosFilesScen)
+
+for(i in 1:nrow(xanthosFilesScen)){
+
+if(!file.exists(paste(xanthosFilesScen$file[i],sep=""))){
+  print(paste("xanthos file: ", xanthosFilesScen$file[i] ," is incorrect or doesn't exist.",sep=""))
   print(paste("Skipping xanthos runs",sep=""))}else {
 
-    if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
-
-    xanthosScenarios<-character()
+    xanthosScenariosx<-character()
     xanthosGCMRCPs<-tibble::tibble()
     xanthosYears<-numeric()
 
-    for(xanthosFile_i in xanthosFiles){
+    xanthosFile_i <- xanthosFilesScen$file[i]
 
       if(!grepl(".csv",xanthosFile_i)){xanthosFile_i=paste(xanthosFile_i,".csv",sep="")}
 
-      if(!file.exists(paste(xanthosFolder,"/",xanthosFile_i,sep=""))){
-        print(paste("xanthos file: ", xanthosFolder,"/",xanthosFile_i," is incorrect or doesn't exist.",sep=""))
-        print(paste("Skipping file: ",xanthosFolder,"/",xanthosFile_i,sep=""))
+      if(!file.exists(paste(xanthosFile_i,sep=""))){
+        print(paste("xanthos file: ", xanthosFile_i," is incorrect or doesn't exist.",sep=""))
+        print(paste("Skipping file: ",xanthosFile_i,sep=""))
       }else{
 
         xanthosCoords<-data.table::fread(xanthosCoordinatesPath, header=F,encoding="Latin-1");
@@ -349,19 +430,19 @@ if(!dir.exists(xanthosFolder)){
           dplyr::select(Area_hec,Area_km2)
 
         print(paste("Reading xanthos data file: ",xanthosFile_i,"...",sep=""))
-        gridx<-data.table::fread(paste(xanthosFolder,"/",xanthosFile_i,sep=""), header=T,stringsAsFactors = F,encoding="Latin-1")%>%
+        gridx<-data.table::fread(paste(xanthosFile_i,sep=""), header=T,stringsAsFactors = F,encoding="Latin-1")%>%
           tibble::as_tibble()%>%dplyr::select(-id)
         print(paste("Xanthos data file: ",xanthosFile_i," read.",sep=""))
 
         names(gridx)<-gsub("X","",names(gridx))
 
         if(nrow(gridx)!=nrow(xanthosCoords)){
-          stop(paste("Rows in xanthos file: ", xanthosFolder,"/",xanthosFile_i,
+          stop(paste("Rows in xanthos file: ", xanthosFile_i,
                      " not equal to rows in xanthos coords file: ",
                      xanthosCoordinatesPath,sep=""))}
 
         if(nrow(gridx)!=nrow(xanthosGridArea)){
-          stop(paste("Rows in xanthos file: ", xanthosFolder,"/",xanthosFile_i,
+          stop(paste("Rows in xanthos file: ", xanthosFile_i,
                      " not equal to rows in xanthos coords file: ",
                      xanthosCoordinatesPath,sep=""))}
 
@@ -395,45 +476,42 @@ if(!dir.exists(xanthosFolder)){
         if(grepl("mm",xanthosUnits)){aggType="depth"}else{aggType="vol"}
         print(paste("Gathering data for xanthos filename: ", xanthosFile_i, " into year columns...", sep=""))
         gridx<-gridx%>%dplyr::mutate(
-                        scenarioGCM=xanthosGCM,
-                        scenarioRCP=xanthosRCP,
-                        scenarioSSP=NA,
-                        scenarioPolicy=NA,
-                        scenario=paste(xanthosScenario,scenarioSSP,scenarioPolicy,sep="_"),
+                        scenarioMultiA=xanthosGCM,
+                        scenarioMultiB=xanthosRCP,
+                        scenario=paste(xanthosScenario,sep="_"),
                         param="xanthosRunoff",
                         units=xanthosUnits,
                         aggType=aggType,
                         classPalette="pal_wet",
                         class="Runoff")%>%
           tidyr::gather(key="x",value="value",
-                        -c("lat","lon","scenario","scenarioPolicy","scenarioGCM","scenarioRCP","scenarioSSP","aggType","param","units","classPalette","class"))%>%
+                        -c("lat","lon","scenario","scenarioMultiA","scenarioMultiB","aggType","param","units","classPalette","class"))%>%
           tibble::as_tibble()
         print(paste("Data for xanthos file gathered into columns.", sep=""))
 
         gridx$x<-as.numeric(gridx$x)
 
-        xanthosScenarios<-unique(c(xanthosScenarios,unique(gridx$scenario)))
+        xanthosScenariosx<-unique(c(xanthosScenariosx,unique(gridx$scenario)))
         xanthosGCMRCP<-gridx %>%
-                       dplyr::select(scenarioGCM,scenarioRCP) %>% dplyr::distinct()
+                       dplyr::select(scenarioMultiA,scenarioMultiB) %>% dplyr::distinct()
         xanthosGCMRCPs<-dplyr::bind_rows(xanthosGCMRCPs,xanthosGCMRCP)
         xanthosGCMRCPs<-xanthosGCMRCPs[stats::complete.cases(xanthosGCMRCPs),]
         xanthosYears<-unique(gridx$x)
 
-        # Apply Lowess Filter
+        # Apply Lowess dplyr::filter
         # https://stat.ethz.ch/pipermail/bioconductor/2003-September/002337.html
         # https://www.rdocumentation.org/packages/gplots/versions/3.0.1/topics/lowess
 
 
-        print(paste("Applying lowess filter to file: ", xanthosFile_i, " using lowess span of ",spanLowess,"...", sep=""))
+        print(paste("Applying lowess dplyr::filter to file: ", xanthosFile_i, " using lowess span of ",spanLowess,"...", sep=""))
         gridx <- gridx %>%
           dplyr::group_by(lat,lon,scenario,param,units,aggType,classPalette,class) %>%
           dplyr::arrange(lat,lon) %>%
           dplyr::mutate(lowess = stats::lowess(y=value, x=x, f=spanLowess )$y)
-        print(paste("Lowess filter applied.", sep=""))
+        print(paste("Lowess dplyr::filter applied.", sep=""))
 
-
-        for(i in c(1,5,40,100,149,180)){
-        gridC<-gridx[(gridx$lat==unique(gridx$lat)[i] & gridx$lon==unique(gridx$lon)[i]),]
+        for(j in c(1,5,40,100,149,180)){
+        gridC<-gridx[(gridx$lat==unique(gridx$lat)[j] & gridx$lon==unique(gridx$lon)[j]),]
         fname=paste(unique(gridC$scenario),"_",unique(gridC$param),
                     "_lat",unique(gridC$lat),"_lon", unique(gridC$lon),
                     "_lowessSpan",spanLowess,sep="")
@@ -445,34 +523,51 @@ if(!dir.exists(xanthosFolder)){
         graphics::lines(gridC$x,gridC$lowess,type="l",col="red")
         diagnosticFig <- grDevices::recordPlot()
         metis.printPdfPng(figure=diagnosticFig,
-                          dir=paste(dirOutputs, "/Grids/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
-            }
+                          dir=paste(dir, "/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
+        }
 
         gridx<-gridx%>%dplyr::mutate(value=lowess,region="region")%>%dplyr::select(-lowess)
 
-        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
                                                         "param","units","aggType","classPalette","class","x","value")]
-        gridx <- gridx %>% dplyr::select(colsSelect)
+        gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
         gridx<-addMissing(gridx); gridx
 
-        if(sqliteUSE==T){
-        DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
-        print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
-        }else{
-        print(paste("Using .Rdata format to save data.",sep=""))
-        gridMetis<-dplyr::bind_rows(gridMetis,gridx)
-        }
+        if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
+        x10Chunks <- split(unique(gridx$x), ceiling(seq_along(unique(gridx$x))/25))
+
+        for(j in 1:length(x10Chunks)){
+
+          x_temp <-x10Chunks[[j]]
+          gridxSub <- gridx%>%dplyr::filter(x %in% x_temp)
+
+        if(saveFormat=="rds"){
+          saveRDS(gridxSub,paste(dir,"/xanthos_",xanthosFilesScen$scenario[i],"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+          print(paste("Saving file as: ",dir,"/xanthos_",xanthosFilesScen$scenario[i],"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+        }
+        if(saveFormat=="csv"){
+          data.table::fwrite(gridxSub,paste(dir,"/xanthos_",xanthosFilesScen$scenario[i],"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+          print(paste("Saving file as: ",dir,"/xanthos_",xanthosFilesScen$scenario[i],"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+        }
+        if(saveFormat=="both"){
+          saveRDS(gridxSub,paste(dir,"/xanthos_",xanthosFilesScen$scenario[i],"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+          data.table::fwrite(gridxSub,paste(dir,"/xanthos_",xanthosFilesScen$scenario[i],"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+          print(paste("Saving file as: ",dir,"/xanthos_",xanthosFilesScen$scenario[i],"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+          print(paste("Saving file as: ",dir,"/xanthos_",xanthosFilesScen$scenario[i],"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+        }
+        }
+        paramScenarios <- paramScenarios%>%
+          dplyr::bind_rows(gridx[1,]%>%dplyr::select(param,scenario)%>%unique()) %>%
+          dplyr::ungroup()%>%
+          dplyr::select(param,scenario)%>%
+          unique();paramScenarios
         rm(gridx)
 
-
       } # Close if xanthos file exists
-    } # close xanthos file loops
+  }
   } # Close xanthos folder
-} # close If xanthosCoords path exists
-
-    if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
-
+}}} # close If xanthosCoords path exists
 } # close If xanthosGridAreaHecsPath path exists
 
 
@@ -481,167 +576,108 @@ if(!dir.exists(xanthosFolder)){
 # Prepare Gridded Scarcity
 #---------------
 
-if(!is.null(tethysGCMRCPs) & !is.null(xanthosGCMRCPs)){
-tethysGCMRCPs<-tethysGCMRCPs%>%unique()%>%dplyr::mutate(GCMRCP=paste(scenarioGCM,scenarioRCP,sep="_"))
-xanthosGCMRCPs<-xanthosGCMRCPs%>%unique()%>%dplyr::mutate(GCMRCP=paste(scenarioGCM,scenarioRCP,sep="_"))
+if(T){
+# Read in Tethys and Xanthos Data
+  # List files in dir
+  #tethysFilesScarcity=NULL;xanthosFilesScarcity=NULL
+  if(is.null(tethysFilesScarcity)){tethysFilesx<-list.files(dir)[grepl("tethys",list.files(dir)) & grepl("total",list.files(dir))]}else{
+    tethysFilesx<-tethysFilesScarcity}; tethysFilesx
+  if(saveFormat=="rds" | saveFormat=="both"){tethysFilesx <- tethysFilesx[grepl("rds",tethysFilesx)]}
+  if(saveFormat=="csv"){tethysFilesx <- tethysFilesx[grepl("csv",tethysFilesx)]}; tethysFilesx
+  if(is.null(xanthosFilesScarcity)){xanthosFilesx<-list.files(dir)[grepl("xanthos",list.files(dir))]}else{
+    xanthosFilesx<-xanthosFilesScarcity}; xanthosFilesx
+  if(saveFormat=="rds" | saveFormat=="both"){xanthosFilesx <- xanthosFilesx[grepl("rds",xanthosFilesx)]}
+  if(saveFormat=="csv"){xanthosFilesx <- xanthosFilesx[grepl("csv",xanthosFilesx)]}; xanthosFilesx
 
-xanthosScenarios;tethysScenarios;
-xanthosGCMRCPs;tethysGCMRCPs;
-xanthosYears;tethysYears;
-commonYears<-tethysYears[tethysYears %in% xanthosYears];commonYears
-commonScenarios<-tethysScenarios[tethysScenarios %in% xanthosScenarios];commonScenarios
-commonGCMRCPs<-xanthosGCMRCPs %>% dplyr::filter(GCMRCP %in% unique(tethysGCMRCPs$GCMRCP));commonGCMRCPs
+  print(paste("Tethys files include: ",paste(tethysFilesx,collapse=", "),sep=""))
+  print(paste("Xanthos files include: ",paste(xanthosFilesx,collapse=", "),sep=""))
+  print(paste("Total combinations are: ", length(tethysFilesx)*length(xanthosFilesx)))
 
-if(!is.null(copySingleTethysScenbyXanthos)){
-  commonGCMRCPsX<-xanthosGCMRCPs}else{
-    commonGCMRCPsX<-commonGCMRCPs}
+  count=0;
 
-uniqueGCMs<-unique(commonGCMRCPsX$scenarioGCM)
-uniqueRCPs<-unique(commonGCMRCPsX$scenarioRCP)
+  for(xanthosFile_i in xanthosFilesx){
+    for(tethysFile_i in tethysFilesx){
+
+      tethysStartYear <- as.integer(stringr::str_sub(tethysFile_i,-14,-11));tethysStartYear
+      tethysEndYear <- as.integer(stringr::str_sub(tethysFile_i,-8,-5));tethysEndYear
+      xanthosStartYear <- as.integer(stringr::str_sub(xanthosFile_i,-14,-11));xanthosStartYear
+      xanthosEndYear <- as.integer(stringr::str_sub(xanthosFile_i,-8,-5));xanthosEndYear
+      if(any(c(tethysStartYear:tethysEndYear) %in% c(xanthosStartYear:xanthosEndYear))){
+
+      count=count+1;
+
+      print(paste("Calculating scarcity for combination",sep=""))
+      print(paste("Xanthos file: ",xanthosFile_i," and tethys file: ",tethysFile_i,sep=""))
+      if(grepl(".csv",xanthosFile_i)){
+      x <- data.table::fread(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param))}
+      if(grepl(".rds",xanthosFile_i)){
+        x <- readRDS(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param))};
+      if(grepl(".csv",tethysFile_i)){
+        t <- data.table::fread(paste(dir,"/",tethysFile_i,sep="")) %>% dplyr::filter(grepl("tethys",param))}
+      if(grepl(".rds",tethysFile_i)){
+        t <- readRDS(paste(dir,"/",tethysFile_i,sep="")) %>% dplyr::filter(grepl("tethys",param))};
+      xGCM<-paste(unique(x$scenarioMultiA),sep="");xRCP<-paste(unique(x$scenarioMultiB),sep="")
+      t1 <- t %>% tibble::as_tibble() %>%
+        dplyr::mutate(scenarioMultiA=as.character(scenarioMultiA),scenarioMultiB=as.character(scenarioMultiB),
+          scenarioMultiA=dplyr::case_when(is.na(scenarioMultiA)~xGCM,
+                                TRUE~scenarioMultiA),
+          scenarioMultiB=dplyr::case_when(is.na(scenarioMultiB)~xRCP,
+                                TRUE~scenarioMultiB))
+      for(col_i in names(x)){class(t1[[col_i]])<-class(x[[col_i]])}
+      if(unique(x$scenarioMultiA)==unique(t1$scenarioMultiA) & unique(x$scenarioMultiB)==unique(t1$scenarioMultiB)){
+        commonyears <- unique(x$x)[unique(x$x) %in% unique(t$x)]
+        s <- x %>% dplyr::filter(x %in% commonyears) %>% dplyr::bind_rows(t1 %>% dplyr::filter(x %in% commonyears)) %>% tibble::as_tibble();s
+        s1 <- s %>% dplyr::select(lon,lat,scenario,scenarioMultiA,scenarioMultiB,param,units,aggType,classPalette,class,x,value,region,class2)%>%
+        dplyr::mutate(scenario=paste(scenario,"_",param,sep=""))%>%
+        dplyr::select(-param,-units,-class,-class2,-classPalette)%>%dplyr::filter(!is.na(x));s1
+      s2 <- s1 %>% tidyr::spread(key="scenario",value="value");s2 %>% as.data.frame() %>% utils::head()
+      scarcityScen <- paste("X",
+                            gsub("_xanthosRunoff","",paste(unique(s1$scenario)[grepl("xanthos",unique(s1$scenario))],sep="")),
+                            "T",
+                            gsub("_tethysWatWithdraw_total","",paste(unique(s1$scenario)[grepl("tethys",unique(s1$scenario))],sep="")),
+                            sep=""); scarcityScen
+      s3 <- s2 %>%
+        dplyr::mutate(!!(rlang::sym("value")):=!!(rlang::sym(unique(s1$scenario)[grepl("tethys",unique(s1$scenario))]))/
+                        !!(rlang::sym(unique(s1$scenario)[grepl("xanthos",unique(s1$scenario))])),
+                      scenario=scarcityScen)%>%
+        dplyr::filter(!is.na(value))%>%
+        dplyr::select(-!!(rlang::sym(unique(s1$scenario)[grepl("xanthos",unique(s1$scenario))])),
+                      -!!(rlang::sym(unique(s1$scenario)[grepl("tethys",unique(s1$scenario))])))%>%
+        dplyr::mutate(param="griddedScarcity",
+                      units="Gridded Scarcity (Ratio)",
+                      class="class",
+                      class2="class2",
+                      classPalette="pal_ScarcityCat");
+
+      if(!is.null(filterYears)){s3 <- s3 %>% dplyr::filter(x %in% filterYears)}
 
 
-if(sqliteUSE==T){
-
-  if(length(commonYears)>0 & any(length(commonGCMRCPs)>0,!is.null(copySingleTethysScenbyXanthos))){
-
-  if(file.exists(sqliteDBNamePath)){
-  dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)
-  gridMetis<-dplyr::tbl(dbConn,"gridMetis")
-
-      print(paste("Extracting data from sqlite database for tethys/xanthos scenarios...",sep=""))
-      gridMetisTethys<-gridMetis%>%
-        dplyr::filter(class=="Total" & param=="tethysWatWithdraw_total" & x %in% commonYears)%>%dplyr::collect()%>%
-        dplyr::rename(valueTethys=value, scenarioTethys=scenario)
-      gridMetisXanthos<-gridMetis%>%dplyr::filter(param=="xanthosRunoff" & x %in% commonYears &
-                                                    scenarioGCM %in% uniqueGCMs &
-                                                    scenarioRCP %in% uniqueRCPs)%>%dplyr::collect()%>%
-        dplyr::rename(valueXanthos=value, scenarioXanthos=scenario)
-
-      if(!is.null(copySingleTethysScenbyXanthos)){
-        if(length(unique(gridMetisTethys$scenarioTethys))>0){
-        if(grepl(copySingleTethysScenbyXanthos,unique(gridMetisTethys$scenarioTethys))){
-
-          gridMetisTethysX<-tibble::tibble()
-
-          paste("Copying tethys results for all xanthos GCM and RCPs...")
-          for(row_i in 1:nrow(xanthosGCMRCPs)){
-            gridMetisTethysX<-dplyr::bind_rows(gridMetisTethysX,
-                                                gridMetisTethys %>%
-                                                  dplyr::filter(grepl(copySingleTethysScenbyXanthos,scenarioTethys)) %>%
-                                                  dplyr::mutate(scenarioGCM=xanthosGCMRCPs[row_i,]$scenarioGCM,
-                                                                scenarioRCP=xanthosGCMRCPs[row_i,]$scenarioRCP))
-          }
-          gridMetisTethys<-gridMetisTethysX
-          rm(gridMetisTethysX)
-          paste("Tethys results for all xanthos GCM and RCPs copied.")
-
-        }} else {paste(copySingleTethysScenbyXanthos, " not present in tethys scenarios: ",
-                      paste(unique(gridMetisTethys$scenarioTethys),collapse=", "))}
+      if(saveFormat=="rds"){
+        saveRDS(s3,paste(dir,"/griddedScarcity_",scarcityScen,"_",min(s3$x),"to",max(s3$x),".rds",sep=""))
+        print(paste("Saving file as: ",dir,"/griddedScarcity_",scarcityScen,"_",min(s3$x),"to",max(s3$x),".rds",sep=""))
+      }
+      if(saveFormat=="csv"){
+        data.table::fwrite(s3,paste(dir,"/griddedScarcity_",scarcityScen,"_",min(s3$x),"to",max(s3$x),".csv",sep=""))
+        print(paste("Saving file as: ",dir,"/griddedScarcity_",scarcityScen,"_",min(s3$x),"to",max(s3$x),".csv",sep=""))
+      }
+      if(saveFormat=="both"){
+        saveRDS(s3,paste(dir,"/griddedScarcity_",scarcityScen,"_",min(s3$x),"to",max(s3$x),".rds",sep=""))
+        data.table::fwrite(s3,paste(dir,"/griddedScarcity_",scarcityScen,"_",min(s3$x),"to",max(s3$x),".csv",sep=""))
+        print(paste("Saving file as: ",dir,"/griddedScarcity_",scarcityScen,"_",min(s3$x),"to",max(s3$x),".rds",sep=""))
+        print(paste("Saving file as: ",dir,"/griddedScarcity_",scarcityScen,"_",min(s3$x),"to",max(s3$x),".csv",sep=""))
       }
 
-      gridx<-dplyr::left_join(gridMetisTethys,gridMetisXanthos%>%dplyr::select(lat,lon,x,scenarioGCM,scenarioRCP,valueXanthos,scenarioXanthos),
-                              by=c("lat","lon","x","scenarioGCM","scenarioRCP"))%>%
-        dplyr::mutate(scarcity=valueTethys/valueXanthos,
-                      units="Gridded Scarcity (Fraction)",
-                      param="griddedScarcity",
-                      class="Scarcity",
-                      classPalette="pal_hot",
-                      region="region",
-                      scenario=paste("T",scenarioTethys,"X",scenarioXanthos,sep=""))%>%
-        dplyr::select(-valueXanthos,-valueTethys,-scenarioTethys,-scenarioXanthos)%>%
-        dplyr::rename(value=scarcity)%>%
-        dplyr::filter(!is.na(value));
+      paramScenarios <- paramScenarios%>%
+        dplyr::bind_rows(s3[1,]%>%dplyr::select(param,scenario)%>%unique()) %>%
+        dplyr::ungroup()%>%
+        dplyr::select(param,scenario)%>%
+        unique();paramScenarios
 
-      scarcityCat<-gridx %>%
-        dplyr::mutate(param = paste(param,"_cat",sep=""),
-                value = dplyr::case_when((value<=0.1) ~ "No (0<WSI<0.1)",
-                                  (value>0.1 & value<=0.2) ~ "Low (0.1<WSI<0.2)",
-                                  (value>0.2 & value<=0.3) ~ "Moderate (0.2<WSI<0.4)",
-                                  (value>0.4) ~ "Severe (WSI>0.4)",
-                                  TRUE~"NA"),
-                classPalette="pal_ScarcityCat");
-
-
-      colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
-                                                      "param","units","aggType","classPalette","class","x","value")]
-      gridx <- gridx %>% dplyr::select(colsSelect)
-      gridx<-addMissing(gridx); gridx
-
-      print(paste("Data extracted and saved.",sep=""))
-
-
-      if(sqliteUSE==T){
-        DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
-        print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
-      }
-
-      rm(gridx)
-
-
-   if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
-
-  }} else { # Closing if xanthos & tethys checks have commonYears & commonScenarios
-      print(paste("No common years or scenarios for Xanthos and Tethys. ",
-                      " Skipping gridded scarcity calculation",sep=""))
-    }}else{
-
-if(!is.null(gridMetis)){
-  if(any(grepl("xanthos",unique(gridMetis$param))) & any(grepl("tethys",unique(gridMetis$param)))){
-
-  if(length(commonYears)>0 & length(commonScenarios)>0){
-
-    gridMetisTethys<-gridMetis%>%dplyr::filter(class=="Total" & param=="tethysWatWithdraw" & x %in% commonYears)%>%
-      dplyr::rename(valueTethys=value,scenarioTethys=scenario)
-    gridMetisXanthos<-gridMetis%>%dplyr::filter(param=="xanthosRunoff" & x %in% commonYears &
-                                                  scenarioGCM %in% uniqueGCMs &
-                                                  scenarioRCP %in% uniqueRCPs)%>%
-      dplyr::rename(valueXanthos=value, scenarioXanthos=scenario)
-
-
-    if(!is.null(copySingleTethysScenbyXanthos)){
-      if(grepl(copySingleTethysScenbyXanthos,unique(gridMetisTethys$scenarioTethys))){
-
-        gridMetisTethysX<-tibble::tibble()
-
-        paste("Copying tethys results for all xanthos GCM and RCPs...")
-        for(row_i in 1:nrow(xanthosGCMRCPs)){
-          gridMetisTethysX<-dplyr::bind_rows(gridMetisTethysX,
-                                             gridMetisTethys %>%
-                                               dplyr::filter(grepl(copySingleTethysScenbyXanthos,scenarioTethys)) %>%
-                                               dplyr::mutate(scenarioGCM=xanthosGCMRCPs[row_i,]$scenarioGCM,
-                                                             scenarioRCP=xanthosGCMRCPs[row_i,]$scenarioRCP))
-        }
-        gridMetisTethys<-gridMetisTethysX
-        rm(gridMetisTethysX)
-        paste("Tethys results for all xanthos GCM and RCPs copied.")
-
-      } else {paste(copySingleTethysScenbyXanthos, " not present in tethys scenarios: ",
-                    paste(unique(gridMetisTethys$scenarioTethys),collapse=", "))}
+     }else{print("Xanthos/Tethys GCM RCP's not the same so skipping...")}
+      }else{print("No common years in xanthos and tethys files being run.")} # Close if common years
     }
-
-
-
-         gridx<-dplyr::left_join(gridMetisTethys,gridMetisXanthos%>%dplyr::select(lat,lon,x,scenarioXanthos,valueXanthos),
-                                by=c("lat","lon","x","scenario"))%>%
-          dplyr::mutate(scarcity=valueTethys/valueXanthos,
-                        units="Gridded Scarcity (Fraction)",
-                        param="griddedScarcity",
-                        class="Scarcity",
-                        classPalette="pal_hot",
-                        region="region",
-                        scenario=paste("T",scenarioTethys,"X",scenarioXanthos,sep="")) %>%
-          dplyr::select(-valueXanthos,-valueTethys, -scenarioTethys,-scenarioXanthos) %>%
-          dplyr::rename(value=scarcity)%>%
-          dplyr::filter(!is.na(value));
-
-         print(paste("Using .Rdata format to save data.",sep=""))
-         gridMetis<-dplyr::bind_rows(gridMetis,gridx)
-         rm(gridx)
-
-
-  }}}else {print(paste("gridMetis is NULL, skipping gridded scracity calculation.",sep=""))}
-    } # Close sql Loop
-} # Closing loop to check for tethys and xanthos GCMRCPs
+  }
+}
 
 #----------------
 # Prepare gridded Population
@@ -652,9 +688,10 @@ if(!dir.exists(popFolder)){
   print(paste("pop folder: ", popFolder ," is incorrect or doesn't exist.",sep=""))
   print(paste("Skipping pop runs",sep=""))}else {
 
-    if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
-
+    count=0;
     for(popFile_i in popFiles){
+
+      count=count+1;
 
       popFile_i=gsub(".csv","",popFile_i)
       if(!grepl(".csv",popFile_i)){popFile_i=paste(popFile_i,".csv",sep="")}
@@ -677,41 +714,51 @@ if(!dir.exists(popFolder)){
                         region="region")
         gridx$x<-as.numeric(gridx$x)
 
-        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
                                                         "param","units","aggType","classPalette","class","x","value")]
-        gridx <- gridx %>% dplyr::select(colsSelect)
+        gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
         gridx<-addMissing(gridx); gridx
+
+        if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
         print("File read.")
 
-        if(sqliteUSE==T){
-          DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
-          print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
-        }else{
-          print(paste("Using .Rdata format to save data.",sep=""))
-          gridMetis<-dplyr::bind_rows(gridMetis,gridx)
+        if(saveFormat=="rds"){
+          saveRDS(gridx,paste(dir,"/pop_",count,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+          print(paste("Saving file as: ",dir,"/pop_",count,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+        }
+        if(saveFormat=="csv"){
+          data.table::fwrite(gridx,paste(dir,"/pop_",count,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+          print(paste("Saving file as: ",dir,"/pop_",count,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+        }
+        if(saveFormat=="both"){
+          saveRDS(gridx,paste(dir,"/pop_",count,".rds",sep=""))
+          data.table::fwrite(gridx,paste(dir,"/pop_",count,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+          print(paste("Saving file as: ",dir,"/pop_",count,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+          print(paste("Saving file as: ",dir,"/pop_",count,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
         }
 
+        paramScenarios <- paramScenarios%>%
+          dplyr::bind_rows(gridx[1,]%>%dplyr::select(param,scenario)%>%unique()) %>%
+          dplyr::ungroup()%>%
+          dplyr::select(param,scenario)%>%
+          unique();paramScenarios
         rm(gridx)
 
       } # Close if pop file exists
     } # close pop file loops
-
-    if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
-
   } # Close pop folder
 
 #----------------
 # Prepare gridded Electricity generation and capacity from Bia
 #---------------
 
+if(!is.null(biaFolder)){
 if(!dir.exists(biaFolder)){
 
   print(paste("bia folder: ", biaFolder ," is incorrect or doesn't exist.",sep=""))
   print(paste("Skipping bia runs",sep=""))
   }else {
-
-    if(sqliteUSE==T){dbConn <- DBI::dbConnect(RSQLite::SQLite(), sqliteDBNamePath)}
 
     for(biaFile_i in biaFiles){
 
@@ -732,30 +779,42 @@ if(!dir.exists(biaFolder)){
           dplyr::select(-gridCellPercentage,-region_32_code,-ctry_name,-ctry_code, -aggregate, -dplyr::contains("orig"),-gridID)
         gridx$x<-as.numeric(gridx$x)
 
-        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioGCM","scenarioRCP","scenarioSSP","scenarioPolicy","scenario",
+        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
                                                         "param","units","aggType","classPalette","class","x","value")]
-        gridx <- gridx %>% dplyr::select(colsSelect)
+        gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
         gridx<-addMissing(gridx); gridx
 
+        if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
         print("File read.")
 
-        if(sqliteUSE==T){
-          DBI::dbWriteTable(dbConn, "gridMetis", gridx, append=T)
-          print(paste("Saving data to sqlite as sqlitUSE = ",sqliteUSE,sep=""))
-        }else{
-          print(paste("Using .Rdata format to save data.",sep=""))
-          gridMetis<-dplyr::bind_rows(gridMetis,gridx)
+
+        if(saveFormat=="rds"){
+          saveRDS(gridx,paste(dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+          print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+        }
+        if(saveFormat=="csv"){
+          data.table::fwrite(gridx,paste(dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+          print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+        }
+        if(saveFormat=="both"){
+          saveRDS(gridx,paste(dir,"/bia_",biaFile_i,".rds",sep=""))
+          data.table::fwrite(gridx,paste(dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+          print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+          print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
         }
 
+        paramScenarios <- paramScenarios%>%
+            dplyr::bind_rows(gridx[1,]%>%dplyr::select(param,scenario)%>%unique()) %>%
+            dplyr::ungroup()%>%
+            dplyr::select(param,scenario)%>%
+            unique();paramScenarios
         rm(gridx)
 
       } # Close if bia file exists
     } # close bia file loops
-
-    if(sqliteUSE==T){DBI::dbDisconnect(dbConn)}
-
   } # Close bia folder
+} # Close if biaFolder is null
 
 
 
@@ -785,29 +844,12 @@ if(!dir.exists(biaFolder)){
 # Save RData and csv.
 #----------------
 
-  if(sqliteUSE==F){
-    if(nrow(gridMetis)>0){
-      save(gridMetis,file=gridMetisData)}
-#data.table::fwrite(gridMetis,file = paste(dirOutputs, "/Grids/gridMetis.csv", sep = ""),row.names = F)
-print(paste("gridMetis params: ", paste(unique(gridMetis$param),collapse=", "),sep=""))
-#print(paste("gridMetis.csv saved in: ", paste(dirOutputs, "/Grids/gridMetis.csv", sep = ""),sep=""))
-}else{
-  if(file.exists(sqliteDBNamePath)){paste("Gridded data saved in SQLite database : ",sqliteDBNamePath, sep="")}else{
-  print("No data added to gridMetis. Check datafiles folders to see if data is available.")}
-}
+print("Saving paramScenarios to: ")
+data.table::fwrite(paramScenarios %>% dplyr::select(param,scenario) %>% unique(),paste(dir,"/paramScenarios.csv",sep=""))
+print(paramScenarios)
 
 
-}else{ # Close if reRead==1
-
-  if(sqliteUSE==T){
-    if(file.exists(sqliteDBNamePath)){paste("Re-read set to 0. Use data saved in SQLite database : ",sqliteDBNamePath, sep="")}}else{
-if(!file.exists(gridMetisData)){stop(paste("File gridMetisData not found: ",gridMetisData,sep=""))}else{
-load(gridMetisData)
-  paste("Re-read set to 0. Usig saved data from .R data : ",gridMetisData, sep="")}
-    }}
-
-
-return(gridMetis)
+return(paramScenarios)
 
 
 } # Close Function

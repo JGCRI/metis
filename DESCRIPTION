@@ -10,6 +10,7 @@ LazyData: true
 RoxygenNote: 6.1.1
 Imports: 
 	raster (>= 2.7.15),
+	ggpubr (>= 0.2.3),
 	RColorBrewer (>= 1.1.2), 
 	rgcam (>= 0.5.0), 
 	tibble (>= 1.4.2),

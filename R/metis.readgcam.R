@@ -156,7 +156,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
 
 #---------------------
-# Query sets and query select
+# Query sets and query dplyr::select
 #---------------------
   querySets <- list('water'=c("water withdrawals by crop",
                               "water withdrawals by water mapping source",
@@ -1027,7 +1027,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value,
-                      units = "Water Consumption (km^3)",
+                      units = "Water Consumption (km3)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1070,7 +1070,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value,
-                      units = "Water Withdrawals (km^3)",
+                      units = "Water Withdrawals (km3)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1115,7 +1115,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value,
-                      units = "Water Withdrawals (km^3)",
+                      units = "Water Withdrawals (km3)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1158,7 +1158,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value,
-                      units = "Biophysical Water Consumption (km^3)",
+                      units = "Biophysical Water Consumption (km3)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1204,7 +1204,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value,
-                      units = "Irrigation Water Withdrawal (km^3)",
+                      units = "Irrigation Water Withdrawal (km3)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1251,7 +1251,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value,
-                      units = "Irrigation Water Consumption (km^3)",
+                      units = "Irrigation Water Consumption (km3)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1546,7 +1546,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value,
-                      units = "Agricultural Production (billion m3)",
+                      units = "Ag Production (billion m3)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1586,7 +1586,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value,
-                      units = "Agricultural Production (Mt)",
+                      units = "Ag Production (Mt)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1626,7 +1626,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value/1000,
-                      units = "Crop Land Allocation (1000 km^2)",
+                      units = "Irr vs Rfd Land Allocation (1000 km2)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1681,7 +1681,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value,
-                      units = "Land Allocation (1000 km^2)",
+                      units = "Land Allocation (1000 km2)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1742,7 +1742,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value,
-                      units = "Land Allocation (1000 km^2)",
+                      units = "Crop Land Allocation (1000 km2)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1776,7 +1776,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       tbl <- tbl %>%
         dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
         dplyr::mutate(origValue=value,value=value*Convert*44/12,
-                      origUnits=Units,units="Emissions LUC - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
+                      origUnits=Units,units="Emissions LUC - (MTCO2eq)")%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "emissLUC",
                       sources = "Sources",
@@ -1787,7 +1787,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       scenario = scenNewNames,
                       value = value,
                       origValue = origValue,
-                      units = "LUC CO2 Emissions (MTCO2 Eq.)",
+                      units = "LUC CO2 Emissions (MTCO2eq)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1823,7 +1823,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       tbl <- tbl %>%
         dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
         dplyr::mutate(origValue=value,value=value*Convert*44/12,
-                      origUnits=Units,units="CO2 Emissions (MTCO2 eq.)")%>%
+                      origUnits=Units,units="CO2 Emissions (MTCO2eq)")%>%
         dplyr::mutate(
           class1=sector,
           class2=sector) %>%
@@ -1971,7 +1971,7 @@ paramx <- "emissCO2BySectorNoBio"
     tbl <- tbl %>%
       dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
       dplyr::mutate(origValue=value,value=value*Convert*44/12,
-                    origUnits=Units,units="MegaTonnes of CO2 eq. (MTCO2eq)")%>%
+                    origUnits=Units,units="(MTCO2eq)")%>%
       dplyr::mutate(
         class1=sector,
         class2=sector) %>%
@@ -2246,7 +2246,7 @@ paramx <- "emissCO2BySectorNoBio"
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
                       origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits),
-                      units="Emissions GWP - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
+                      units="Emissions GWP - (MTCO2eq)")%>%
         dplyr::mutate(param = "emissCO2NonCO2BySectorGWPAR5",
                       sources = "Sources",
                       origScen = scenario,
@@ -2397,7 +2397,7 @@ paramx <- "emissCO2BySectorNoBio"
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
                       origUnits = dplyr::case_when(class2=="Other"~"Units",TRUE~origUnits),
-                      units="Methane Emissions - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
+                      units="Methane Emissions - (MTCO2eq)")%>%
         dplyr::mutate(param = "emissMethaneBySource",
                       sources = "Sources",
                       origScen = scenario,
@@ -2562,7 +2562,7 @@ paramx <- "emissCO2BySectorNoBio"
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
                       origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits),
-                      units="Non-CO2 Emissions by Resource GWP - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
+                      units="Non-CO2 Emissions by Resource GWP - (MTCO2eq)")%>%
         dplyr::mutate(param = "emissNonCO2ByResProdGWPAR5",
                       sources = "Sources",
                       origScen = scenario,
@@ -2607,7 +2607,7 @@ paramx <- "emissTotalFFIBySec"
     totalFFICO2Eq <- totalFFICO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
-                    units="Emissions Total FFI by Sector - MegaTonnes of CO2 eq. (MTCO2eq)",
+                    units="Emissions Total FFI by Sector - (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
@@ -2644,7 +2644,7 @@ paramx <- "emissTotalFFIBySec"
     totalFFICO2Eq <- totalFFICO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
-                    units="Emissions by Sector - MegaTonnes of CO2 eq. (MTCO2eq)",
+                    units="Emissions by Sector - (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
@@ -2686,7 +2686,7 @@ paramx <- "emissTotalFFIBySec"
     totalFFICO2Eq <- totalFFICO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
-                    units="MegaTonnes of CO2 eq. (MTCO2eq)",
+                    units="(MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
@@ -2732,7 +2732,7 @@ paramx <- "emissTotalFFIBySec"
     totalCO2Eq <- totalCO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
-                    units="MegaTonnes of CO2 eq. (MTCO2eq)",
+                    units="(MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
@@ -2886,7 +2886,7 @@ paramx <- "emissTotalFFIBySec"
                                              TRUE ~  value*GWPAR5*Convert),
                       origUnits=Units,
                       origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits),
-                      units="Emissions GTP - MegaTonnes of CO2 eq. (MTCO2eq)")%>%
+                      units="Emissions GTP - (MTCO2eq)")%>%
         dplyr::mutate(param = "emissCO2NonCO2BySectorGTPAR5",
                       sources = "Sources",
                       origScen = scenario,
@@ -3106,7 +3106,7 @@ paramx <- "emissTotalFFIBySec"
                       origUnits = Units,
                       origX = year,
                       scenario = scenNewNames,
-                      units = "million pass-km",
+                      units = "Pasenger (million pass-km)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -3156,7 +3156,7 @@ paramx <- "emissTotalFFIBySec"
                       origUnits = Units,
                       origX = year,
                       scenario = scenNewNames,
-                      units = "million ton-km",
+                      units = "Freight (million ton-km)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -3271,7 +3271,7 @@ paramx <- "emissTotalFFIBySec"
                       origUnits = Units,
                       origX = year,
                       scenario = scenNewNames,
-                      units = "million pass-km",
+                      units = "Passenger (million pass-km)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -3335,7 +3335,7 @@ paramx <- "emissTotalFFIBySec"
                       origUnits = Units,
                       origX = year,
                       scenario = scenNewNames,
-                      units = "million ton-km",
+                      units = "Freight (million ton-km)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -3498,7 +3498,7 @@ paramx <- "emissTotalFFIBySec"
   # -----------
   dataxEJtoMTOE <- datax %>% dplyr::filter(grepl("(EJ)",units)) %>%
     dplyr::mutate(value=value*metis.assumptions()$convEJ2MTOE,
-                  units = gsub("\\(EJ\\)","- Million tons of Oil Equiv. (Mtoe)",units),
+                  units = gsub("\\(EJ\\)","(Mtoe)",units),
                   param = gsub("EJ","MTOE",param))
 
   dataxEJtoTWh <- datax %>% dplyr::filter(grepl("(EJ)",units)) %>%
@@ -3514,9 +3514,9 @@ paramx <- "emissTotalFFIBySec"
   }
 
   # Check
-  datax%>%as.data.frame()%>%select(scenario,class1,class2,x,param,value)%>%
-  filter(x %in% c(2010:2050),param=="energyFinalByFuelBySectorEJ",scenario=="Ref")%>%
-  group_by(scenario,x)%>%summarize(sum=sum(value))
+  datax%>%as.data.frame()%>%dplyr::select(scenario,class1,class2,x,param,value)%>%
+  dplyr::filter(x %in% c(2010:2050),param=="energyFinalByFuelBySectorEJ",scenario=="Ref")%>%
+  dplyr::group_by(scenario,x)%>%dplyr::summarize(sum=sum(value))
 
   #---------------------
   # Create Data Template

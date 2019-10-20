@@ -13,26 +13,27 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
   legendOutsidePosition = NULL, legendPosition = NULL,
   legendFixedBreaks = 5, legendTitleSizeO = 2, legendTextSizeO = 1,
   legendTitleSizeI = 1.5, legendTextSizeI = 1, animateOn = T,
-  fps = 1, scenRef = NULL, extension = F, boundaryRegShape = NULL,
-  boundaryRegShpFolder = NULL, boundaryRegShpFile = NULL,
-  boundaryRegCol = NULL, boundaryRegionsSelect = NULL,
-  extendedLabels = T, extendedFillColor = "grey75",
-  extendedBGColor = "lightblue1", extendedHighLightColor = "cornsilk1",
-  extendedLabelsColor = "grey30", extdendedLabelSize = 0.7,
-  extendedShape = NULL, extendedShapeCol = NULL, expandPercent = 3,
+  fps = 1, scenRefDiffIndv = NULL, extension = F,
+  boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
+  boundaryRegShpFile = NULL, boundaryRegCol = NULL,
+  boundaryRegionsSelect = NULL, extendedLabels = T,
+  extendedFillColor = "grey75", extendedBGColor = "lightblue1",
+  extendedHighLightColor = "cornsilk1", extendedLabelsColor = "grey30",
+  extdendedLabelSize = 0.7, extendedShape = NULL,
+  extendedShapeCol = NULL, expandPercent = 3,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 6, figHeight = 7, scaleRange = NULL,
-  paramsSelect = "All", indvScenarios = "All", scensSelect = "All",
-  GCMRCPSSPPol = F, multiFacetCols = "scenarioGCM",
-  multiFacetRows = "scenarioRCP", legendOutsideMulti = T,
-  legendPositionMulti = NULL, legendTitleSizeMulti = NULL,
-  legendTextSizeAnim = NULL, legendTextSizeMulti = NULL,
-  refGCM = NULL, refRCP = NULL, chosenRefMeanYears = NULL,
-  mapTitleSize = 0.5, facetLabelSizeMulti = 3,
-  facetLabelSizeGCMRCP = 1.5, numeric2Cat_list = NULL, diffOn = F,
-  frameShow = T, pdfpng = "png", fillcolorNA = "gray",
-  fillshowNA = NA, fillcolorNULL = "gray", legendSingleColorOn = T,
-  legendSingleValue = 0, legendSingleColor = "white")
+  paramsSelect = "All", multiFacetsOn = F,
+  multiFacetCols = "scenarioMultiA", multiFacetRows = "scenarioMultiB",
+  legendOutsideMulti = T, legendPositionMulti = NULL,
+  legendTitleSizeMulti = NULL, legendTextSizeAnim = NULL,
+  legendTextSizeMulti = NULL, refMultiA = NULL, refMultiB = NULL,
+  chosenRefMeanYears = NULL, mapTitleSize = 0.5,
+  facetLabelSizeMulti = 2.5, facetLabelSizeMultiAB = 1,
+  numeric2Cat_list = NULL, diffOn = F, frameShow = T,
+  pdfpng = "png", fillcolorNA = "gray", fillshowNA = NA,
+  fillcolorNULL = "gray", legendSingleColorOn = T,
+  legendSingleValue = NULL, legendSingleColor = "white")
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -81,7 +82,7 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{fps}{Default = 1,}
 
-\item{scenRef}{Default = NULL}
+\item{scenRefDiffIndv}{Default = NULL}
 
 \item{extension}{Default =F,}
 
@@ -123,15 +124,11 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{paramsSelect}{Default ="All"}
 
-\item{indvScenarios}{Default ="All", If only want to run single scenarios without comparing with others}
+\item{multiFacetsOn}{Default = F,}
 
-\item{scensSelect}{Default ="All", choose scenarios from data}
+\item{multiFacetCols}{Default ="scenarioMultiB",}
 
-\item{GCMRCPSSPPol}{Default = F,}
-
-\item{multiFacetCols}{Default ="scenarioRCP",}
-
-\item{multiFacetRows}{Default ="scenarioGCM",}
+\item{multiFacetRows}{Default ="scenarioMultiA",}
 
 \item{legendOutsideMulti}{Default = NULL,}
 
@@ -143,17 +140,17 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{legendTextSizeMulti}{Default = NULL,}
 
-\item{refGCM}{Default = NULL , eg. "gfdl-esm2m"}
+\item{refMultiA}{Default = NULL , eg. "gfdl-esm2m"}
 
-\item{refRCP}{Default = NULL , eg. "rcp2p6"}
+\item{refMultiB}{Default = NULL , eg. "rcp2p6"}
 
 \item{chosenRefMeanYears}{Default=NULL}
 
 \item{mapTitleSize}{Default=0.5}
 
-\item{facetLabelSizeMulti}{Default =3}
+\item{facetLabelSizeMulti}{Default =2.5}
 
-\item{facetLabelSizeGCMRCP}{Default =1.5}
+\item{facetLabelSizeMultiAB}{Default =1}
 
 \item{numeric2Cat_list}{Default=NULL,}
 
@@ -171,7 +168,7 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{legendSingleColorOn}{Default=F,}
 
-\item{legendSingleValue}{Default =0,}
+\item{legendSingleValue}{Default =NULL,}
 
 \item{legendSingleColor}{Default="white"}
 }
