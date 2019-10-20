@@ -59,6 +59,7 @@
 #' @param pointsSize ISize of points on line. Default = 4
 #' @param paletteRev Default =T
 #' @param forceFacets Default =F. When you have one facet only and want to show that.
+#' @param legendPosition Default ="right"
 #' @keywords charts, diffplots, bubble, sankey.
 #' @return Returns the formatted data used to produce chart
 #' @import ggplot2
@@ -71,7 +72,7 @@ metis.chart<-function(data,
                          classPalette="classPalette1",classLabel="classLabel1",
                          color = NULL,
                          xLabel="xLabel",yLabel="yLabel",
-                         facet_rows=NULL,facet_columns=NULL,ncolrow=4,
+                         facet_rows=NULL,facet_columns=NULL,ncolrow=6,
                          facetBGColor="grey30",
                          facetLabelColor = "white",
                          facetLabelSize=24,
@@ -107,7 +108,8 @@ metis.chart<-function(data,
                          pointsOn = 1,
                          pointsSize = 4,
                          paletteRev=T,
-                         forceFacets=F)
+                         forceFacets=F,
+                         legendPosition="right")
                         {
 
   # color=NULL
@@ -129,7 +131,7 @@ metis.chart<-function(data,
   # facetBGColor="grey30"
   # facetLabelColor = "white"
   # facetLabelSize=1.5
-  # ncolrow=4
+  # ncolrow=6
   # scales="fixed"
   # useNewLabels=0
   # units="units"
@@ -205,7 +207,9 @@ if(!"class1"%in%names(data)){data<-data%>%dplyr::mutate(class1="class1")}
 if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
   l1 <- data
-  l1<-l1%>%dplyr::mutate(units=gsub(" ","~",units))
+  l1<-l1%>%dplyr::mutate(units=case_when(!grepl(" ",units)~paste("~",units),
+                                         TRUE~units),
+                         units=gsub(" ","~",units))
   if(length(classPalette)>1){
     paletteX<-classPalette}else{
   if(classPalette %in% names(l1)){
@@ -355,14 +359,14 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
     if(!grepl("class",class)){
       if(paletteRev==T){p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
-        p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = F))
+        p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = F))+ theme(legend.position=legendPosition)
       }}else{
         if(length(unique(l1[[class]]))<2){
           if(!is.null(color)){value1=color}else{value1="firebrick"}
           p = p + theme(legend.position="none") + scale_fill_manual(values=value1)
         }else{
           if(paletteRev==T){p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))}else{
-            p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = F))
+            p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = F))+ theme(legend.position=legendPosition)
           }
         }
       }
@@ -392,14 +396,14 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
     if(!grepl("class",class)){
       if(paletteRev==T){p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
-        p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = F))
+        p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = F))+ theme(legend.position=legendPosition)
       }}else{
         if(length(unique(l1[[class]]))<2){
           if(!is.null(color)){value1=color}else{value1="firebrick"}
           p = p + theme(legend.position="none") + scale_fill_manual(values=value1)
         }else{
           if(paletteRev==T){p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))}else{
-            p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = F))
+            p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = F))+ theme(legend.position=legendPosition)
           }
         }
       }
@@ -410,10 +414,10 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
   if(chartType=="bar"){
   p <- p + geom_bar(aes(fill=get(class)),size=sizeBarLines,color="black", stat="identity",position=position) +
-           scale_fill_manual(values=paletteX) + guides(color=F)
+           scale_fill_manual(values=paletteX) + guides(color=F)+ theme(legend.position=legendPosition)
   if(!grepl("class",class)){
     if(paletteRev==T){p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = T))}else{
-      p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = F))
+      p = p + guides(fill = guide_legend(title=tools::toTitleCase(paste(class,sep="")),reverse = F))+ theme(legend.position=legendPosition)
     }}
   else{
       if(length(unique(l1[[class]]))<2){
@@ -421,7 +425,7 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
         p = p + theme(legend.position="none") + scale_fill_manual(values=value1)
       }else{
         if(paletteRev==T){p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = T))}else{
-          p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = F))
+          p = p + guides(fill = guide_legend(title=unique(l1[[classLabel]]),reverse = F))+ theme(legend.position=legendPosition)
         }
       }
     }
@@ -438,7 +442,7 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
   if(chartType=="line"){
   p <- p +  geom_line(aes(color=get(class),group=get(class)),size=sizeLines, stat="identity",position="identity") +
-            scale_color_manual(values=paletteX)
+            scale_color_manual(values=paletteX)+ theme(legend.position=legendPosition)
   if(pointsOn==1){ p = p + geom_point(aes(shape = get(class), color=get(class)),size = pointsSize )}
   if(!grepl("class",class)){
     p = p + guides(color = guide_legend(title=tools::toTitleCase(paste(class,sep=""))))
@@ -597,7 +601,7 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
                         pdfpng=pdfpng)
           }
 
-        print(paste("Figure saved as: ",fileName,".",pdfpng," in folder: ", paste(dirOutputs,sep=""),sep=""))
+        #print(paste("Figure saved as: ",fileName,".",pdfpng," in folder: ", paste(dirOutputs,sep=""),sep=""))
       }else{print("printFig set to F so no figure will be saved.")}
 
 

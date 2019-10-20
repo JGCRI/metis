@@ -220,7 +220,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   NULL->lat->lon->param->region->scenario->subRegion->subRegType -> value ->
     x->year->gridID->underLayer->maxScale->minScale->scenarioMultiA->scenarioMultiB->
     valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX->classPalette->shapeTblScenMultiABRef->
-    shapeTblDiff -> gridTblDiff
+    shapeTblDiff -> gridTblDiff -> shapeTblMultiOrig
 
   if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect="region"}
 
