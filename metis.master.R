@@ -484,14 +484,21 @@ io_sub$ioTbl
     subRegCol_i = "name"
 
 # Run metis.grid2poly
-    exampleGrid2poly<-metis.grid2poly(grid=gridExample,
+    exampleGrid2poly<-metis.grid2poly(gridFiles=gridExample,
                                     subRegShpFolder=examplePolyFolder_i,
                                     subRegShpFile=examplePolyFile_i,
                                     subRegCol=subRegCol_i,
-                                    #aggType="depth", # Aggregation type. Depth or volume. See docuemntation for further details.
                                     nameAppend="_examplePeru",
                                     folderName="metisExample",
                                     regionName = "Peru")
+
+    # grid=gridExample
+    # subRegShpFolder=examplePolyFolder_i
+    # subRegShpFile=examplePolyFile_i
+    # subRegCol=subRegCol_i
+    # nameAppend="_examplePeru"
+    # folderName="metisExample"
+    # regionName = "Peru"
 
 #------------------------------
 # Mapping (metis.mapsProcess.R)
@@ -529,9 +536,9 @@ io_sub$ioTbl
                  legendPosition=c("LEFT","bottom"),
                  animateOn=T,
                  fps=1,
-                 scenRef="Eg1",
                  expandPercent = 2,
                  extension=T)
+
 
 #--------------------------------------------------
 # Mapping (metis.mapsProcess.R) - Extensive Example
@@ -635,7 +642,6 @@ io_sub$ioTbl
                      nameAppend="",
                      animateOn=T,
                      fps=1,
-                     scenRef="SSP2_Ref",
                      extension=F,
                      diffOn = T)
 
@@ -674,7 +680,6 @@ io_sub$ioTbl
                      legendPosition=c("LEFT","bottom"),
                      animateOn=T,
                      fps=1,
-                     scenRef="SSP2_Ref",
                      extension=T,
                      diffOn = T,
                      legendOutsideSingle = T,
@@ -724,7 +729,7 @@ io_sub$ioTbl
     } else { testChartsProcess = "Test chartsProcess: Failed"}; print(testChartsProcess)
 
     # Test: map Check
-    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/raster/Eg1/byYear/map_metisExample_raster_tethysWatWithdraw_indv_2005_Eg1_exampleSubRegionMap_FREESCALE.png",sep=""))){
+    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile/Argentina_states_example.shp",sep=""))){
       testMap = "Test map: Passed"
     } else { testMap = "Test map: Failed"}; print(testMap)
 

@@ -57,6 +57,10 @@ metis.grid2poly<- function(gridFiles=NULL,
   # labelsSize=1.2
   # paramsSelect="All"
   # scenariosSelect="All"
+  # paramScenariosFixed=NULL
+  # tethysFilesScarcity=NULL
+  # xanthosFilesScarcity=NULL
+  # calculatePolyScarcity=F
 
   #----------------
   # Initialize variables by setting to NULL
@@ -75,7 +79,6 @@ metis.grid2poly<- function(gridFiles=NULL,
   addMissing<-function(data){
     if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
     if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}
-
     return(data)
   }
 
@@ -97,13 +100,14 @@ metis.grid2poly<- function(gridFiles=NULL,
 
 
   # Check Scenarios
+      if(!is.null(paramScenarios)){
   if(nrow(paramScenarios)>0){
     if(any(is.na(unique(paramScenarios$scenario)))){
       print("Removing NA scenarios. Remaining Scenarios:")
       paramScenarios <- paramScenarios %>% dplyr::filter(!is.na(scenario))
       print(paramScenarios)
     }
-  }
+  }}
 
   #----------------
   # Load Shapefile and save boundary maps
@@ -160,6 +164,18 @@ for(grid_i in gridFiles){
   count=count+1
 
   if(!is.null(grid)){
+
+    if(is.null(paramScenarios)){
+      if(all(c("param","scenario") %in% names(grid))){
+        paramScenarios <- tibble::tibble()
+        for(param_i in unique(grid$param)){
+          paramScenarios <- paramScenarios %>%
+            dplyr::bind_rows(grid %>% dplyr::filter(param==param_i)%>%
+                               dplyr::select(param,scenario)%>%
+                               unique())
+        }
+      }
+    }else{paramScenarios <- tibble::tibble(param="param", scenario="scenario")}; paramScenarios
 
 
     for(row_i in 1:nrow(paramScenarios)){
@@ -357,9 +373,14 @@ for(grid_i in gridFiles){
             dplyr::filter(!is.na(x))}
 
           poly<-polyData%>%dplyr::ungroup()%>%
-            dplyr::mutate(subRegion = as.character(subRegion),
-                          scenarioMultiA = as.character(scenarioMultiA),
-                          scenarioMultiB = as.character(scenarioMultiB))
+            dplyr::mutate(subRegion = as.character(subRegion))
+
+          if("scenarioMultiA" %in% names(poly)){
+            poly <- poly %>%
+            dplyr::mutate(scenarioMultiA = as.character(scenarioMultiA))}
+          if("scenarioMultiB" %in% names(poly)){
+            poly <- poly %>%
+              dplyr::mutate(scenarioMultiB = as.character(scenarioMultiB))}
 
           polyType=subRegType
           poly_fname<-paste(dir, "/poly_",scenario_i,"_",polyType,"_",param_i,nameAppend,".csv", sep = "")

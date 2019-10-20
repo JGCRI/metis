@@ -180,7 +180,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   NULL->scenario->value->x->region->param->origValue->origScen->origQuery->year->
   origUnits->origX->sources->vintage->class1->classLabel1->classPalette1->yMax_i->yMin_i->
   class2->classLabel2->classPalette2->i->j->k->figWMult->classLabel1x ->classLabel2x-> classPalette1x-> classPalette2x->
-  nScen->paramSet->multiPlot
+  nScen->paramSet->multiPlot->plot->scen->param
 
   aggregate_i <- aggregate
 

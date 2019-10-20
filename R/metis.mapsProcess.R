@@ -220,7 +220,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   NULL->lat->lon->param->region->scenario->subRegion->subRegType -> value ->
     x->year->gridID->underLayer->maxScale->minScale->scenarioMultiA->scenarioMultiB->
     valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX->classPalette->shapeTblScenMultiABRef->
-    shapeTblDiff -> gridTblDiff -> shapeTblMultiOrig
+    shapeTblDiff -> gridTblDiff -> shapeTblMultiOrig->countCheck
 
   if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect="region"}
 
@@ -797,7 +797,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   #-----------------------------------------------
 
   shapeTblNew<- tibble::tibble()
+
   if(!is.null(scenRefDiffIndv)){
+
   for(i in 1:length(unique(scenRefDiffIndv$param))){
 
     NULL -> param_i -> scenRef_i -> scenDiff_i
@@ -882,7 +884,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
             }
           }
 
-        for (scenario_i in scenarios) {
+        for (scenario_i in unique((gridTbl%>%dplyr::filter(param==param_i))$scenario)) {
           if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/",scenario_i,sep = ""))){
             dir.create(paste(dirOutputs,  "/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/",scenario_i,sep = ""))}
 
@@ -932,7 +934,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
             }
           }
 
-        for (scenario_i in scenarios) {
+        unique((shapeTbl%>%dplyr::filter(param==param_i))$scenario)
+
+        for (scenario_i in unique((shapeTbl%>%dplyr::filter(param==param_i))$scenario)) {
           if (!dir.exists(paste(dirOutputs, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))){
             dir.create(paste(dirOutputs,  "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/",  scenario_i,sep = ""))}
 
@@ -1048,7 +1052,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 mapx@data<-mapx@data%>%dplyr::select(-lat,-lon)
 
 
-                if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+                if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
+                if(length(names(mapx@data))==countCheck){
                   legendOutsideAnimated=legendOutsideSingle
                   legendTitleAnimated=legendTitle
                   panelLabelAnimated=paste(x_i)
@@ -1124,7 +1129,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 # fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
                 # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/byYear",sep = "")
 
-                if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+                if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
+                if(length(names(mapx@data))==countCheck){
                   legendBreaksAnim = animPrettyBreaksGrid
                   legendStyleAnim="fixed"}else{
                     legendStyleAnim="fixed"
@@ -1158,7 +1164,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
                           dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/byYear",sep = ""))
 
-                if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+                if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
+                if(length(names(mapx@data))==countCheck){
                   legendOutsideAnimated=legendOutsideSingle
                   legendTitleSizeAnim = legendTitleSizeS
                   legendTextSizeAnim = legendTextSizeS}else{
@@ -1421,7 +1428,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,sep = ""))
 
 
-                if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+                if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
+                if(length(names(mapx@data))==countCheck){
                   legendOutsideAnimated=legendOutsideSingle
                   legendTitleSizeAnim = legendTitleSizeS
                   legendTextSizeAnim = legendTextSizeS}else{
@@ -1563,7 +1571,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,sep = ""))
 
 
-                if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+                if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
+                if(length(names(mapx@data))==countCheck){
                   legendOutsideAnimated=legendOutsideSingle
                   legendTitleSizeAnim = legendTitleSizeS
                   legendTextSizeAnim = legendTextSizeS}else{
@@ -2435,7 +2444,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     dplyr::select(names(datax))
 
 
-                  if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+                  if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
+                  if(length(names(mapx@data))==countCheck){
                     legendOutsideAnimated=legendOutsideSingle
                     legendTitleAnimated=legendTitle
                     panelLabelAnimated=paste(x_i)
@@ -2564,7 +2574,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep="")
                   # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
 
-                  if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+                  if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
+                  if(length(names(mapx@data))==countCheck){
                     legendOutsideAnimated=legendOutsideSingle
                     legendAnimatedPosition
                     legendTitleSizeAnim = legendTitleSizeS
@@ -2838,7 +2849,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
 
 
-                  if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+                  if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
+                  if(length(names(mapx@data))==countCheck){
                     legendOutsideAnimated=legendOutsideSingle
                     legendTitleSizeAnim = legendTitleSizeS
                     legendTextSizeAnim = legendTextSizeS}else{
@@ -2980,7 +2992,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                               fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
                               dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
 
-                    if(length(names(mapx@data%>%dplyr::select(-subRegion)))==1){
+                    if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
+                    if(length(names(mapx@data))==countCheck){
                       legendOutsideAnimated=legendOutsideSingle
                       legendTitleSizeAnim = legendTitleSizeS
                       legendTextSizeAnim = legendTextSizeS}else{
