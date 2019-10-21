@@ -4,52 +4,49 @@
 \alias{metis.prepGrid}
 \title{metis.prepGrid}
 \usage{
-metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
+metis.prepGrid(demeterFolders = NULL, demeterScenarios = NULL,
   demeterTimesteps = seq(from = 2005, to = 2100, by = 5),
-  demeterUnits = "NA", tethysFolder = "NA", tethysScenario = "NA",
-  tethysUnits = "NA", tethysFiles = c("wddom", "wdelec", "wdirr",
-  "wdliv", "wdmfg", "wdmin", "wdnonag", "wdtotal"),
-  copySingleTethysScenbyXanthos = NULL, xanthosFolder = "NA",
-  xanthosFiles = "NA", xanthosScenarioAssign = "NA",
-  xanthosCoordinatesPath = "NA", xanthosGridAreaHecsPath = "NA",
-  scarcityXanthosRollMeanWindow = 10, spanLowess = 0.25,
-  popFolder = "NA", popFiles = "NA", biaFolder = "NA",
-  biaFiles = "NA", popUnits = "NA", dirOutputs = paste(getwd(),
-  "/outputs", sep = ""), reReadData = 1, gridMetisData = paste(getwd(),
-  "/outputs/Grids/gridMetis.RData", sep = ""), sqliteUSE = F,
-  sqliteDBNamePath = paste(getwd(), "/outputs/Grids/gridMetis.sqlite",
-  sep = ""))
+  demeterUnits = NULL, tethysFolders = NULL, tethysScenarios = NULL,
+  tethysUnits = NULL, tethysFiles = c("wddom", "wdelec", "wdirr",
+  "wdliv", "wdmfg", "wdmin", "wdnonag", "wdtotal"), xanthosFiles = NULL,
+  xanthosScenarios = NULL, xanthosScenarioAssign = NULL,
+  xanthosCoordinatesPath = NULL, xanthosGridAreaHecsPath = NULL,
+  tethysFilesScarcity = NULL, xanthosFilesScarcity = NULL,
+  spanLowess = 0.25, popFolder = NULL, popFiles = NULL,
+  biaFolder = NULL, biaFiles = NULL, popUnits = NULL,
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), folderName = NULL,
+  saveFormat = "rds", filterYears = NULL)
 }
 \arguments{
-\item{demeterFolder}{Full path to demeter outputs}
+\item{demeterFolders}{Full path to demeter outputs}
 
-\item{demeterScenario}{Name of demeter scenario}
+\item{demeterScenarios}{Name of demeter scenario}
 
 \item{demeterTimesteps}{Default is seq(from=2005,to=2100,by=5)}
 
 \item{demeterUnits}{No Default}
 
-\item{tethysFolder}{Folder for tethys results}
+\item{tethysFolders}{Folder for tethys results}
 
-\item{tethysScenario}{Scenario name for tethys run}
+\item{tethysScenarios}{Scenario name for tethys run}
 
 \item{tethysUnits}{No Default}
 
 \item{tethysFiles}{Default =c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal"),}
 
-\item{copySingleTethysScenbyXanthos}{Default=NULL,}
-
-\item{xanthosFolder}{Xanthos Folder Path}
-
 \item{xanthosFiles}{Xanthos Files to Read}
 
-\item{xanthosScenarioAssign}{Default "NA". Scenario name if testing single scenario.}
+\item{xanthosScenarios}{Default=NULL,}
+
+\item{xanthosScenarioAssign}{Default NULL. Scenario name if testing single scenario.}
 
 \item{xanthosCoordinatesPath}{paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")}
 
 \item{xanthosGridAreaHecsPath}{=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/reference/Grid_Areas_ID.csv",sep=""),}
 
-\item{scarcityXanthosRollMeanWindow}{Default = 10,}
+\item{tethysFilesScarcity}{Default=NULL,}
+
+\item{xanthosFilesScarcity}{Default=NULL,}
 
 \item{spanLowess}{Default = 0.25}
 
@@ -65,13 +62,11 @@ metis.prepGrid(demeterFolder = "NA", demeterScenario = "NA",
 
 \item{dirOutputs}{Default =paste(getwd(),"/outputs",sep=""),}
 
-\item{reReadData}{Default =1,}
+\item{folderName}{Default=NULL}
 
-\item{gridMetisData}{Default = paste(dirOutputs, "/Grids/gridMetis.RData", sep = "")}
+\item{saveFormat}{Default="rds". Choose between "rds" (Native R much faster) or "csv" or "both".}
 
-\item{sqliteUSE}{Default = T,}
-
-\item{sqliteDBNamePath}{Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")}
+\item{filterYears}{Default=seq(1980,2100,by=5)}
 }
 \value{
 A table with data by polygon ID for each shapefile provided

@@ -24,7 +24,7 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   multiFacetCols = NULL, mapTitle = NULL, mapTitleSize = 1,
   numeric2Cat_list = NULL, catParam = NULL, innerMargins = c(0, 0, 0,
   0), outerMargins = c(0.01, 0.01, 0.01, 0.01),
-  legendSingleColorOn = T, legendSingleValue = 0,
+  legendSingleColorOn = T, legendSingleValue = NULL,
   legendSingleColor = "white")
 }
 \arguments{
@@ -144,7 +144,7 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
 
 \item{legendSingleColorOn}{Default=F}
 
-\item{legendSingleValue}{Default=0}
+\item{legendSingleValue}{Default=NULL}
 
 \item{legendSingleColor}{Default="white"}
 }

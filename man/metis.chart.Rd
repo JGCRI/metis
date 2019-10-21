@@ -9,7 +9,7 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
   class = "class1", group = "scenario",
   classPalette = "classPalette1", classLabel = "classLabel1",
   color = NULL, xLabel = "xLabel", yLabel = "yLabel",
-  facet_rows = NULL, facet_columns = NULL, ncolrow = 4,
+  facet_rows = NULL, facet_columns = NULL, ncolrow = 6,
   facetBGColor = "grey30", facetLabelColor = "white",
   facetLabelSize = 24, scales = "fixed", useNewLabels = 0,
   units = "units", xBreaksMaj = 10, xBreaksMin = 5,
@@ -23,7 +23,7 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
   figWidth = 13, figHeight = 9, pdfpng = "png", sankeyLabelsOn = 1,
   colOrder1 = NULL, colOrderName1 = NULL, colOrder2 = NULL,
   colOrderName2 = NULL, pointsOn = 1, pointsSize = 4,
-  paletteRev = T, forceFacets = F)
+  paletteRev = T, forceFacets = F, legendPosition = "right")
 }
 \arguments{
 \item{data}{Data table for charting}
@@ -137,6 +137,8 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
 \item{paletteRev}{Default =T}
 
 \item{forceFacets}{Default =F. When you have one facet only and want to show that.}
+
+\item{legendPosition}{Default ="right"}
 }
 \value{
 Returns the formatted data used to produce chart

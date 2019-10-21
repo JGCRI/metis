@@ -4,17 +4,17 @@
 \alias{metis.grid2poly}
 \title{metis.grid2poly}
 \usage{
-metis.grid2poly(grid = NULL, regionName = "region",
+metis.grid2poly(gridFiles = NULL, regionName = "region",
   subRegShape = NULL, subRegShpFolder = NULL, subRegShpFile = NULL,
   subRegCol = NULL, subRegType = "subRegType", aggType = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""), folderName = NULL,
   nameAppend = "", labelsSize = 1.2, paramsSelect = "All",
-  scenariosSelect = "All", sqliteUSE = F,
-  sqliteDBNamePath = paste(getwd(), "/outputs/Grids/gridMetis.sqlite",
-  sep = ""))
+  scenariosSelect = "All", paramScenariosFixed = NULL,
+  tethysFilesScarcity = NULL, xanthosFilesScarcity = NULL,
+  calculatePolyScarcity = F)
 }
 \arguments{
-\item{grid}{Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",}
+\item{gridFiles}{Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",}
 
 \item{regionName}{Default = "region"}
 
@@ -42,9 +42,13 @@ metis.grid2poly(grid = NULL, regionName = "region",
 
 \item{scenariosSelect}{Default ="All"}
 
-\item{sqliteUSE}{Default = T,}
+\item{paramScenariosFixed}{Default=NULL}
 
-\item{sqliteDBNamePath}{Default = paste(getwd(),"/outputs/Grids/gridMetis.sqlite", sep = "")}
+\item{tethysFilesScarcity}{Default =NULL,}
+
+\item{xanthosFilesScarcity}{Default =NULL}
+
+\item{calculatePolyScarcity}{Default = F}
 }
 \value{
 A table with data by polygon ID for each shapefile provided

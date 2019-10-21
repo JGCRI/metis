@@ -85,7 +85,7 @@ metis.gridByPoly <- function(gridDataTables = NULL,
       }
     }else{gridx<-gridDataTables}
 
-  }else{gridx=gridDataTables}
+  }else{stop("Must provide a gridDataTable.")}
 
   if(!is.null(gridx)){
     names2Remove <- c(colName,"gridCellArea","subRegAreaSum","gridCellAreaRatio")[
@@ -95,8 +95,9 @@ metis.gridByPoly <- function(gridDataTables = NULL,
 
   if(is.null(colName)){stop("Must provide correct colName from shapeFile data.")} else{
     if(!colName %in% names(shape@data)){stop("Must provide correct colName from shapeFile data.")}}
-  if(is.null(gridDataTables)){stop("Must provide gridfile csv with lat and lon.")}else {
-    if(!any(c("lat","lon") %in% names(gridDataTables))){stop("Must provide gridfile csv with lat and lon.")}
+
+  if(is.null(gridx)){stop("Must provide gridfile csv with lat and lon.")}else {
+    if(!any(c("lat","lon") %in% names(gridx))){stop("Must provide gridfile csv with lat and lon.")}
   }
 
 
