@@ -48,7 +48,7 @@ library(tidyr)
 
 # Connect to gcam database or project
   gcamdatabasePath_i <-'G:/IDBNexus/Final' # 'C:/Users/twild/Downloads/pic'  #  # Use if gcamdatabase is needed
-  gcamdatabaseName_i <-"PricePathAppliedCO2NonCO2" # "Reference_originalSW" Use if gcamdatabse is needed
+  gcamdatabaseName_i <-"PricePathAppliedCO2NonCO2_CO_ARG" # "Reference_originalSW" Use if gcamdatabse is needed
   dataProjPath_i <- paste(getwd(),"/outputs",sep="") # Path to dataProj file.
   dataProj_i <-"IDBNexusFinal.proj"  # Use if gcamdata has been saved as .proj file
 
@@ -74,7 +74,7 @@ library(tidyr)
 
   # Reading in the no bio query so it works with Rgcam
 
-  dataGCAM<-metis.readgcam(reReadData = F,  # F
+  dataGCAM<-metis.readgcam(reReadData = T,  # F
                            gcamdatabasePath = gcamdatabasePath_i,
                            gcamdatabaseName = gcamdatabaseName_i,
                            scenOrigNames = scenOrigNames_i,
@@ -125,7 +125,7 @@ library(tidyr)
                    "BuildFinalNrgBySector",
                    "co2emissionBySectorNoBio", "PassengerVMTByFuel", "FreightVMTByFuel", "RefiningByLiq")
   paramsSelect_i <- "All"
-  #paramsSelect_i <- "elecInvest"
+  paramsSelect_i <-  "elecByTechTWh"  # "elecInvest"
 
   #paramsSelect_i <- c('watWithdrawByCrop', 'aggLandAlloc')
 
@@ -151,3 +151,53 @@ library(tidyr)
                           colOrder1 = c("Reference", "Climate Impacts", "Climate Policy"), #"Original",
                           colOrderName1 = "scenario",
                           pdfpng='pdf') # Default 0. If set to 1, will only run comparison plots and not individual
+
+  # Colombia: Plot reference case CO2 emissions and Policy Co2 emissions CO2 emissions.
+  CO2_Emissions_RefPolicy <- read.csv("//essi12.umd.edu/documents/twild/Documents/Publications/2019/Wild et al. (2019) - Climatic Change - Colombia energy-water-land/Figures/Figure_EmissionsGoalsLine/Figure_EmissionsGoalsLine.csv", skip=1)
+  CO2_Emissions_RefPolicy <- CO2_Emissions_RefPolicy %>%
+    gather(Scenario, value, Reference:Policy)
+  p <- ggplot(data = CO2_Emissions_RefPolicy %>% filter(!Scenario=='NDC'), mapping = aes(x = year, y = value, color = Scenario, fill=Scenario))
+  p <- p + scale_color_manual(values=c("#1bab55", "black"))
+  p <- p + ylim(0,200)
+  p <- p + ylab(expression(CO[2]~Emissions~(10^6~tons)))
+  p <- p + xlab('Year')
+  p <- p + geom_line(size=1)
+  p <- p + theme(text = element_text(size=12), axis.text.x = element_text(size=12))
+  p <- p + theme_bw()
+  dirOutputs <- '//essi12.umd.edu/documents/twild/Documents/Publications/2019/Wild et al. (2019) - Climatic Change - Colombia energy-water-land/Figures/Figure_EmissionsGoalsLine'
+  fname <- 'Figure_emissCO2_RefPolicyCompare'
+  pdfpng <- 'pdf'
+  figWidth <- 4
+  figHeight <- 3
+  p
+  metis.printPdfPng(figure=p,
+                    dir=dirOutputs,
+                    filename=fname,
+                    figWidth=figWidth,
+                    figHeight=figHeight,
+                    pdfpng=pdfpng)
+
+  # Argentina: Plot Reference case CO2 emissions and Policy Co2 emissions CO2 emissions.
+  CO2_Emissions_RefPolicy <- read.csv("//essi12.umd.edu/documents/twild/Documents/Publications/2019/Wild et al. (2019) - Water - Argentina/Figures/Figure_EmissionsGoalsLine/Figure_EmissionsGoalsLine.csv", skip=1)
+  CO2_Emissions_RefPolicy <- CO2_Emissions_RefPolicy %>%
+    gather(Scenario, value, Reference:Policy)
+  p <- ggplot(data = CO2_Emissions_RefPolicy %>% filter(!Scenario=='NDC'), mapping = aes(x = year, y = value, color = Scenario, fill=Scenario))
+  p <- p + scale_color_manual(values=c("#1bab55", "black"))
+  p <- p + ylim(0,300)
+  p <- p + ylab(expression(CO[2]~Emissions~(10^6~tons)))
+  p <- p + xlab('Year')
+  p <- p + geom_line(size=1)
+  p <- p + theme(text = element_text(size=12), axis.text.x = element_text(size=12))
+  p <- p + theme_bw()
+  dirOutputs <- '//essi12.umd.edu/documents/twild/Documents/Publications/2019/Wild et al. (2019) - Water - Argentina/Figures/Figure_EmissionsGoalsLine'
+  fname <- 'Figure_emissCO2_RefPolicyCompare'
+  pdfpng <- 'pdf'
+  figWidth <- 4
+  figHeight <- 3
+  p
+  metis.printPdfPng(figure=p,
+                    dir=dirOutputs,
+                    filename=fname,
+                    figWidth=figWidth,
+                    figHeight=figHeight,
+                    pdfpng=pdfpng)
