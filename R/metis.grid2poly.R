@@ -87,28 +87,6 @@ metis.grid2poly<- function(gridFiles=NULL,
   #---------------
 
 
-    paramScenarios=paramScenariosFixed
-
-      print("paramScenarios found: ")
-      print(paramScenarios)
-      scenarios<-unique(paramScenarios$scenario)
-      params <-unique(paramScenarios$param)
-
-      print("Subsetting params and scenarios...")
-      if(!any(grepl("all",paramsSelect,ignore.case = T))){params=params[params %in% paramsSelect]}
-      if(!any(grepl("all",scenariosSelect,ignore.case = T))){scenarios=scenarios[scenarios %in% scenariosSelect]}
-
-
-  # Check Scenarios
-      if(!is.null(paramScenarios)){
-  if(nrow(paramScenarios)>0){
-    if(any(is.na(unique(paramScenarios$scenario)))){
-      print("Removing NA scenarios. Remaining Scenarios:")
-      paramScenarios <- paramScenarios %>% dplyr::filter(!is.na(scenario))
-      print(paramScenarios)
-    }
-  }}
-
   #----------------
   # Load Shapefile and save boundary maps
   #---------------
@@ -156,7 +134,42 @@ for(grid_i in gridFiles){
       print(paste("Reading grid file: ", grid_i,sep=""))
       if(grepl(".csv",grid_i)){grid<-data.table::fread(grid_i,encoding="Latin-1")}
       if(grepl(".rds",grid_i)){grid<-readRDS(grid_i)}
-      grid<-grid%>%unique()
+      grid<-grid%>%addMissing()%>%tibble::as_tibble()%>%unique(); grid
+
+      paramScenarios <- grid%>%dplyr::select(param,scenario)%>%unique(); paramScenarios
+
+      if(!is.null(paramScenariosFixed)){
+        for(row_i in 1:nrow(paramScenariosFixed)){
+          paramScenarios <- paramScenarios%>%
+            dplyr::filter(param %in% unique(paramScenarios$param)[unique(paramScenarios$param) %in% unique(paramScenariosFixed[row_i,]$param)],
+                          scenario %in% unique(paramScenarios$scenario)[unique(paramScenarios$scenario) %in% unique(paramScenariosFixed[row_i,]$scenario)])
+
+        }
+        }
+
+      print("paramScenarios found: ")
+      print(paramScenarios)
+      scenarios<-unique(paramScenarios$scenario)
+      params <-unique(paramScenarios$param)
+
+      print("Subsetting params and scenarios...")
+      if(!any(grepl("all",paramsSelect,ignore.case = T))){params=params[params %in% paramsSelect]}
+      if(!any(grepl("all",scenariosSelect,ignore.case = T))){scenarios=scenarios[scenarios %in% scenariosSelect]}
+
+
+      # Check Scenarios
+      if(!is.null(paramScenarios)){
+        if(nrow(paramScenarios)>0){
+          if(any(is.na(unique(paramScenarios$scenario)))){
+            print("Removing NA scenarios. Remaining Scenarios:")
+            paramScenarios <- paramScenarios %>% dplyr::filter(!is.na(scenario))
+            print(paramScenarios)
+          }
+        }}
+
+
+
+
     }else{
       stop(paste("Grid file ",grid," does not exist",sep=""))
     }
@@ -439,13 +452,13 @@ for(grid_i in gridFiles){
    x <- data.table::fread(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param));
    xanthosTemp <- xanthosTemp %>%
      dplyr::bind_rows(x)
- };head(xanthosTemp); unique(xanthosTemp$scenario); unique(xanthosTemp$x)
+ }
 
  # Create Mean historical xanthos
  colsX<-names(xanthosTemp)[!names(xanthosTemp) %in% c("x","value")]; colsX
  xanthosHist <- xanthosTemp %>%
    dplyr::filter(scenario==unique(xanthosTemp$scenario)[1],x < 2010) %>%
-   dplyr::group_by_at(vars(one_of(colsX))) %>%
+   dplyr::group_by_at(vars(dplyr::one_of(colsX))) %>%
    dplyr::select(-x) %>%
    dplyr::summarize(value=mean(value))%>%
    dplyr::ungroup()%>%

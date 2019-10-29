@@ -2562,7 +2562,7 @@ if(T){
 
       mpParamPlots_i <- mpParamPlotsx %>%
         dplyr::filter(paramSet==paramSet_i)%>%unique();mpParamPlots_i
-      mpParamPlots_i<-mpParamPlots_i%>% arrange(match(param,unique(mpdf$param)));mpParamPlots_i
+      mpParamPlots_i<-mpParamPlots_i%>% dplyr::arrange(match(param,unique(mpdf$param)));mpParamPlots_i
       plotSet_i <-unique(mpParamPlots_i$plot);plotSet_i
 
       # Plot diff Abs and Prcnt

@@ -17,14 +17,14 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   pdfpng = "png", underLayer = NULL, overLayer = NULL,
   printFig = T, fileName = "map", dirOutputs = paste(getwd(),
   "/outputs/Maps", sep = ""), folderName = NULL, facetFreeScale = F,
-  facetRows = NA, facetCols = 3, facetBGColor = "grey30",
+  facetRows = NA, facetCols = 4, facetBGColor = "grey30",
   facetLabelColor = "white", facetLabelSize = 1.5, alpha = 1,
   fillcolorNA = "gray", fillshowNA = NA, fillcolorNULL = "gray",
   facetsON = T, panelLabel = NULL, multiFacetRows = NULL,
-  multiFacetCols = NULL, mapTitle = NULL, mapTitleSize = 1,
-  numeric2Cat_list = NULL, catParam = NULL, innerMargins = c(0, 0, 0,
-  0), outerMargins = c(0.01, 0.01, 0.01, 0.01),
-  legendSingleColorOn = T, legendSingleValue = NULL,
+  multiFacetCols = NULL, mapTitleOn = T, mapTitle = NULL,
+  mapTitleSize = 1, numeric2Cat_list = NULL, catParam = NULL,
+  innerMargins = c(0, 0, 0, 0), outerMargins = c(0.01, 0.01, 0.01,
+  0.01), legendSingleColorOn = T, legendSingleValue = NULL,
   legendSingleColor = "white")
 }
 \arguments{
@@ -129,6 +129,8 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
 \item{multiFacetRows}{Default=NULL,}
 
 \item{multiFacetCols}{Default=NULL,}
+
+\item{mapTitleOn}{Default=T}
 
 \item{mapTitle}{Default=NULL}
 
