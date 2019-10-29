@@ -1971,7 +1971,7 @@ paramx <- "emissCO2BySectorNoBio"
     tbl <- tbl %>%
       dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
       dplyr::mutate(origValue=value,value=value*Convert*44/12,
-                    origUnits=Units,units="(MTCO2eq)")%>%
+                    origUnits=Units,units="CO2 Emissions by Sector (MTCO2eq)")%>%
       dplyr::mutate(
         class1=sector,
         class2=sector) %>%
@@ -2246,7 +2246,7 @@ paramx <- "emissCO2BySectorNoBio"
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
                       origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits),
-                      units="Emissions GWP - (MTCO2eq)")%>%
+                      units="GHG Emissions GWPAR5 (MTCO2eq)")%>%
         dplyr::mutate(param = "emissCO2NonCO2BySectorGWPAR5",
                       sources = "Sources",
                       origScen = scenario,
@@ -2397,7 +2397,7 @@ paramx <- "emissCO2BySectorNoBio"
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
                       origUnits = dplyr::case_when(class2=="Other"~"Units",TRUE~origUnits),
-                      units="Methane Emissions - (MTCO2eq)")%>%
+                      units="Methane Emissions (MTCO2eq)")%>%
         dplyr::mutate(param = "emissMethaneBySource",
                       sources = "Sources",
                       origScen = scenario,
@@ -2562,7 +2562,7 @@ paramx <- "emissCO2BySectorNoBio"
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
                       origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits),
-                      units="Non-CO2 Emissions by Resource GWP - (MTCO2eq)")%>%
+                      units="Non-CO2 Emissions by Resource GWPAR5 (MTCO2eq)")%>%
         dplyr::mutate(param = "emissNonCO2ByResProdGWPAR5",
                       sources = "Sources",
                       origScen = scenario,
@@ -2607,7 +2607,7 @@ paramx <- "emissTotalFFIBySec"
     totalFFICO2Eq <- totalFFICO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
-                    units="Emissions Total FFI by Sector - (MTCO2eq)",
+                    units="Emissions Total FFI by Sector (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
@@ -2644,7 +2644,7 @@ paramx <- "emissTotalFFIBySec"
     totalFFICO2Eq <- totalFFICO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
-                    units="Emissions by Sector - (MTCO2eq)",
+                    units="GHG Emissions by Sector (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
@@ -2686,7 +2686,7 @@ paramx <- "emissTotalFFIBySec"
     totalFFICO2Eq <- totalFFICO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
-                    units="(MTCO2eq)",
+                    units="GHG Emissions GWPAR5 (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
@@ -2732,7 +2732,7 @@ paramx <- "emissTotalFFIBySec"
     totalCO2Eq <- totalCO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
                     origUnits="comb_origUnits",
-                    units="(MTCO2eq)",
+                    units="GHG Emissions GWPAR5 (MTCO2eq)",
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
@@ -2886,7 +2886,7 @@ paramx <- "emissTotalFFIBySec"
                                              TRUE ~  value*GWPAR5*Convert),
                       origUnits=Units,
                       origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits),
-                      units="Emissions GTP - (MTCO2eq)")%>%
+                      units="GHG Emissions GTPAR5 (MTCO2eq)")%>%
         dplyr::mutate(param = "emissCO2NonCO2BySectorGTPAR5",
                       sources = "Sources",
                       origScen = scenario,

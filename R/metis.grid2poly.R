@@ -165,7 +165,7 @@ for(grid_i in gridFiles){
 
   if(!is.null(grid)){
 
-    if(is.null(paramScenarios)){
+    if(!is.null(paramScenarios)){
       if(all(c("param","scenario") %in% names(grid))){
         paramScenarios <- tibble::tibble()
         for(param_i in unique(grid$param)){
@@ -311,7 +311,7 @@ for(grid_i in gridFiles){
                                   gridCropped%>%dplyr::select(gridCellAreaRatio),SIMPLIFY=FALSE))%>%
               dplyr::bind_cols(gridCropped%>%dplyr::select( subRegCol))%>%tibble::as_tibble();
 
-           polyDatax<-x%>%dplyr::group_by(.dots = list( subRegCol))%>% dplyr::summarise_all(list(~mean(.,na.rm=T)))%>%dplyr::ungroup()
+           polyDatax<-x%>%dplyr::group_by(.dots = list(subRegCol))%>% dplyr::summarise_all(list(~sum(.,na.rm=T)))%>%dplyr::ungroup()
             print("Aggregation complete.")
           }
 
@@ -417,6 +417,8 @@ for(grid_i in gridFiles){
 #---------------
 
  if(calculatePolyScarcity==T){
+
+   xanthosData<-tibble::tibble()
  # List files in dir
  if(is.null(tethysFilesScarcity)){tethysFilesx<-list.files(dir)[grepl("poly_",list.files(dir)) &
                                                                   grepl("tethys",list.files(dir)) &
@@ -431,11 +433,47 @@ for(grid_i in gridFiles){
  print(paste("Xanthos files include: ",paste(xanthosFilesx,collapse=", "),sep=""))
  print(paste("Total combinations are: ", length(tethysFilesx)*length(xanthosFilesx)))
 
+
+ xanthosTemp <- tibble::tibble()
  for(xanthosFile_i in xanthosFilesx){
+   x <- data.table::fread(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param));
+   xanthosTemp <- xanthosTemp %>%
+     dplyr::bind_rows(x)
+ };head(xanthosTemp); unique(xanthosTemp$scenario); unique(xanthosTemp$x)
+
+ # Create Mean historical xanthos
+ colsX<-names(xanthosTemp)[!names(xanthosTemp) %in% c("x","value")]; colsX
+ xanthosHist <- xanthosTemp %>%
+   dplyr::filter(scenario==unique(xanthosTemp$scenario)[1],x < 2010) %>%
+   dplyr::group_by_at(vars(one_of(colsX))) %>%
+   dplyr::select(-x) %>%
+   dplyr::summarize(value=mean(value))%>%
+   dplyr::ungroup()%>%
+   dplyr::mutate(scenario=paste("xanthosHist",min(unique(xanthosTemp$x)),"to",min(max(unique(xanthosTemp$x)),2010),sep=""));
+ xanthosHist;
+
+ xanthosHistx <- tibble::tibble()
+ for(i in unique(xanthosTemp$x)){xanthosHistx <- xanthosHistx %>% dplyr::bind_rows(xanthosHist%>%dplyr::mutate(x=i))};
+ xanthosHistx<-xanthosHistx%>%unique(); unique(xanthosHistx$scenario)
+
+ if(nrow(xanthosHistx)>0){
+ poly_fname<-paste(dir, "/poly_",unique(xanthosHistx$scenario),"_",unique(xanthosHistx$subRegType),"_",
+                   unique(xanthosHistx$param),nameAppend,".csv", sep = "")
+ data.table::fwrite(xanthosHistx,
+                    file = poly_fname,row.names = F, append=T)
+ print(paste("Subregional polygon data files written to: ",poly_fname, sep = ""))}
+
+
+ xanthosData <- xanthosTemp%>%dplyr::bind_rows(xanthosHistx);
+
+ xanthosData<-xanthosData%>%dplyr::mutate(value=signif(value,10))%>%unique();
+
+ if(nrow(xanthosData>0)){
+ for(xanthosFile_i in unique(xanthosData$scenario)){
    for(tethysFile_i in tethysFilesx){
 
      print(paste("polygonScarcity for Xanthos file: ",xanthosFile_i," and tethys file: ",tethysFile_i,sep=""))
-     x <- data.table::fread(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param));
+     x <- xanthosData%>%dplyr::filter(scenario==xanthosFile_i)
      t <- data.table::fread(paste(dir,"/",tethysFile_i,sep="")) %>% dplyr::filter(grepl("tethys",param));
      xGCM<-paste(unique(x$scenarioMultiA),sep="");xRCP<-paste(unique(x$scenarioMultiB),sep="")
      t1 <- t %>% tibble::as_tibble() %>%
@@ -469,14 +507,14 @@ for(grid_i in gridFiles){
                        class="class",
                        class2="class2",
                        classPalette="pal_ScarcityCat",
-                       subRegType=subRegType);
+                       subRegType=unique(s$subRegType));
 
        data.table::fwrite(s3,paste(dir,"/poly_Scarcity_",scarcityScen,nameAppend,".csv",sep=""),append=T)
        print(paste("Saving file as: ",dir,"/polyScarcity_",scarcityScen,".csv",sep=""))
 
      }else{print("Xanthos/Tethys GCM RCP's not the same so skipping...")}
     }
- }
+ }}
 }
 
 

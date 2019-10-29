@@ -54,6 +54,7 @@
 #' @param panelLabel Default = NULL,
 #' @param multiFacetRows Default=NULL,
 #' @param multiFacetCols Default=NULL,
+#' @param mapTitleOn Default=T
 #' @param mapTitle Default=NULL
 #' @param mapTitleSize Default=1
 #' @param numeric2Cat_list Default=NULL,
@@ -106,7 +107,7 @@ metis.map<-function(dataPolygon=NULL,
                   folderName=NULL,
                   facetFreeScale=F,
                   facetRows=NA,
-                  facetCols=3,
+                  facetCols=4,
                   facetBGColor="grey30",
                   facetLabelColor = "white",
                   facetLabelSize=1.5,
@@ -118,6 +119,7 @@ metis.map<-function(dataPolygon=NULL,
                   panelLabel=NULL,
                   multiFacetRows=NULL,
                   multiFacetCols=NULL,
+                  mapTitleOn=T,
                   mapTitle=NULL,
                   mapTitleSize=1,
                   numeric2Cat_list=NULL,
@@ -552,9 +554,11 @@ if(grepl("line",class(shape)[1],ignore.case=T)){
   map=map +  tmap::tm_lines(col=borderColor,lwd=lwd, lty=lty)}
 
 if(grepl("polygon",class(shape)[1],ignore.case=T) | grepl("tmap",class(shape)[1],ignore.case=T)){
+
   if(is.null(fillColumn)){
     map= map + tmap::tm_borders(col=borderColor,lwd=lwd, lty=lty)
   }else{
+
 if(is.null(raster)){
 
 if(is.null(legendBreaks)){
@@ -568,6 +572,14 @@ if(is.null(legendBreaks)){
   if(is.null(catPalette)){
   if(!is.null(legendDigits)){
   if(legendSingleColorOn){
+
+    # For Testing
+    # legendBreaks=seq(from=20,to=50,by=5)
+    # legendSingleValue=0
+    # legendSingleColor="white"
+    # legendSingleColorOn=T
+    # legendDigits=0
+    # fillPalette=metis.colors()$pal_div_RdBlu
 
     legendBreaksX <- legendBreaks; legendBreaksX
 
@@ -616,19 +628,33 @@ if(is.null(legendBreaks)){
 
   # Fill palette
   if(T){
-    if(max(legendBreaksX)<=0){fillPaletteX<-rev(fillPalette)}else{
-      if(min(legendBreaksX)>=0){fillPaletteX<-fillPalette}else{
-        graphics::pie(rep(1,length(fillPalette)),label=names(fillPalette),col=fillPalette);fillPalette
-        fillColUp<-fillPalette[(round(length(fillPalette)/2,0)+2):length(fillPalette)];fillColUp
-        fillColUp <- grDevices::colorRampPalette(c("white",fillColUp))(11)[-1];fillColUp
-        graphics::pie(rep(1,length(fillColUp)),label=names(fillColUp),col=fillColUp)
-        fillColDown<-rev(fillPalette[1:(round(length(fillPalette)/2,0)-1)])
-        fillColDown <- grDevices::colorRampPalette(c("white",fillColDown))(11)[-1];fillColDown
-        graphics::pie(rep(1,length(fillColDown)),label=names(fillColDown),col=fillColDown)
+
+    graphics::pie(rep(1,length(fillPalette)),label=names(fillPalette),col=fillPalette);fillPalette
+    fillColUp<-fillPalette[(round(length(fillPalette)/2,0)+2):length(fillPalette)];fillColUp
+    fillColUp <- grDevices::colorRampPalette(c("white",fillColUp))(11)[-1];fillColUp
+    graphics::pie(rep(1,length(fillColUp)),label=names(fillColUp),col=fillColUp)
+    fillColDown<-rev(fillPalette[1:(round(length(fillPalette)/2,0)-1)])
+    fillColDown <- grDevices::colorRampPalette(c("white",fillColDown))(11)[-1];fillColDown
+    graphics::pie(rep(1,length(fillColDown)),label=names(fillColDown),col=fillColDown)
+
+    if(max(legendBreaksX)<=0){
+      if(grepl("diff",fileName,ignore.case=T)){
+        fillPaletteX<-grDevices::colorRampPalette(fillColDown)(length(legendLabelsX))
+      }else{
+        fillPaletteX<-grDevices::colorRampPalette(fillPalette)(length(legendLabelsX))
+      }
+      }else{
+      if(min(legendBreaksX)>=0){
+        if(grepl("diff",fileName,ignore.case=T)){
+          fillPaletteX<-grDevices::colorRampPalette(fillColUp)(length(legendLabelsX))
+        }else{
+        fillPaletteX<-grDevices::colorRampPalette(fillPalette)(length(legendLabelsX))
+        }
+        }else{
         if(singlevalLoc==length(legendLabelsX)){fillPaletteXUp<-c()}else{
           fillPaletteXUp <- grDevices::colorRampPalette(fillColUp)(round((length(legendLabelsX)-singlevalLoc),0))};fillPaletteXUp
         if(singlevalLoc==1){fillPaletteXDown<-c()}else{
-          fillPaletteXDown <- grDevices::colorRampPalette(fillColDown)(singlevalLoc)};fillPaletteXDown
+          fillPaletteXDown <- rev(grDevices::colorRampPalette(fillColDown)(singlevalLoc))};fillPaletteXDown
         fillPaletteX <-c(fillPaletteXDown,fillPaletteXUp)
       }
     }
@@ -645,7 +671,9 @@ if(is.null(legendBreaks)){
       fillPaletteX<-c(fillPaletteX[1:(singlevalLoc-1)],
                       paste(legendSingleColor,sep=""),
                       fillPaletteX[(singlevalLoc+1):length(fillPaletteX)])
-    }};fillPaletteX;graphics::pie(rep(1,length(fillPaletteX)),label=legendLabelsX,col=fillPaletteX)}
+    }
+  };fillPaletteX;graphics::pie(rep(1,length(fillPaletteX)),label=legendLabelsX,col=fillPaletteX)
+    }
 
 
   if(legendSingleValuex %in% legendBreaksX){
@@ -689,17 +717,20 @@ if(length(legendBreaksX)-1!=length(legendLabelsX)){
   legendBreaksX=legendBreaks
   legendLabelsX=NULL
   fillPaletteX=fillPalette
-  }} else{
+  }
+  } else{
     legendFixedBreaksX=legendFixedBreaks
     legendBreaksX=legendBreaks
     legendLabelsX=NULL
     fillPaletteX=fillPalette
-  }}else {
+  }
+    }else {
     legendFixedBreaksX=legendFixedBreaks
     legendBreaksX=legendBreaks
     legendLabelsX=NULL
     fillPaletteX=fillPalette
-  }}else{
+  }
+    }else{
     legendFixedBreaksX=legendFixedBreaks
     legendBreaksX=legendBreaks
     legendLabelsX=NULL
@@ -804,7 +835,8 @@ if(!is.null(dataGrid)){
   }
 }
 }; map
-if(!is.null(mapTitle)){map<- map + tmap::tm_layout(main.title = mapTitle, main.title.size = mapTitleSize)}
+if(mapTitleOn==T){
+if(!is.null(mapTitle)){map<- map + tmap::tm_layout(main.title = mapTitle, main.title.size = mapTitleSize)}}
 
 
 if(!is.null(overLayer)){
