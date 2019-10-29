@@ -492,7 +492,7 @@ io_sub$ioTbl
                                     folderName="metisExample",
                                     regionName = "Peru")
 
-    # grid=gridExample
+    # gridFiles=gridExample
     # subRegShpFolder=examplePolyFolder_i
     # subRegShpFile=examplePolyFile_i
     # subRegCol=subRegCol_i
@@ -744,8 +744,8 @@ io_sub$ioTbl
     } else { testGrid2Poly = "Test grid2Poly: Failed"}; print(testGrid2Poly)
 
     # Test: mapsProcess Check
-    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/Eg1/byYear/map_metisExample_subRegType_tethysWatWithdraw_indv_2030_Eg1_exampleSubRegionMap_FREESCALE.png",sep="")) &
-       file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/Eg1/anim_metisExample_subRegType_tethysWatWithdraw_indv_Eg1_exampleSubRegionMap_FREESCALE.gif",sep=""))){
+    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/tethysWatWithdraw_indv/Eg1/byYear/map_metisExample_subRegType_tethysWatWithdraw_indv_2030_Eg1_exampleSubRegionMap_FREESCALE.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/tethysWatWithdraw_indv/Eg1/anim_metisExample_subRegType_tethysWatWithdraw_indv_Eg1_exampleSubRegionMap_FREESCALE.gif",sep=""))){
       testMapsProcess = "Test mapsProcess: Passed"
     } else { testMapsProcess = "Test mapsProcess: Failed"}; print(testMapsProcess)
 

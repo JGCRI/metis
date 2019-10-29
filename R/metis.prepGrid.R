@@ -683,6 +683,7 @@ if(T){
 # Prepare gridded Population
 #---------------
 
+if(!is.null(popFolder)){
 if(!dir.exists(popFolder)){
 
   print(paste("pop folder: ", popFolder ," is incorrect or doesn't exist.",sep=""))
@@ -748,6 +749,7 @@ if(!dir.exists(popFolder)){
       } # Close if pop file exists
     } # close pop file loops
   } # Close pop folder
+}
 
 #----------------
 # Prepare gridded Electricity generation and capacity from Bia

@@ -41,7 +41,7 @@ metis.gridByPoly <- function(gridDataTables = NULL,
 
   print(paste("Starting metis.gridByPoly.R...",sep=""))
 
-  NULL->lat->lon->gridx->area -> areaPrcnt -> subRegAreaSum
+  NULL->lat->lon->gridx->area -> areaRatio -> subRegAreaSum
 
 
 #----------------
@@ -122,10 +122,10 @@ metis.gridByPoly <- function(gridDataTables = NULL,
   s1<-s1@data%>%dplyr::select( colName,subRegAreaSum);
   if(c("subRegAreaSum") %in% names(rcropPx@data)){rcropPx@data<-rcropPx@data%>%dplyr::select(-subRegAreaSum)}
   rcropPx@data<-dplyr::left_join(rcropPx@data,s1,by= colName)
-  rcropPx@data$areaPrcnt<-rcropPx@data$area/rcropPx@data$subRegAreaSum;
+  rcropPx@data$areaRatio<-rcropPx@data$area/rcropPx@data$subRegAreaSum;
 
 # Subset gridded data
-gridByPoly<-rcropPx@data%>%dplyr::select(lat,lon,colName,gridCellArea=area,subRegAreaSum,gridCellAreaRatio=areaPrcnt)%>%
+gridByPoly<-rcropPx@data%>%dplyr::select(lat,lon,colName,gridCellArea=area,subRegAreaSum,gridCellAreaRatio=areaRatio)%>%
   dplyr::left_join(gridx, by=c("lat","lon"))%>%
   unique()
 

@@ -33,7 +33,8 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
   numeric2Cat_list = NULL, diffOn = F, frameShow = T,
   pdfpng = "png", fillcolorNA = "gray", fillshowNA = NA,
   fillcolorNULL = "gray", legendSingleColorOn = T,
-  legendSingleValue = NULL, legendSingleColor = "white")
+  legendSingleValue = NULL, legendSingleColor = "white",
+  facetCols = 4, mapTitleOn = T)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -171,6 +172,10 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{legendSingleValue}{Default =NULL,}
 
 \item{legendSingleColor}{Default="white"}
+
+\item{facetCols}{Default=4}
+
+\item{mapTitleOn}{Default=T}
 }
 \value{
 Returns the formatted data used to produce chart

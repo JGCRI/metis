@@ -16,3 +16,7 @@ outputs
 **/bia
 **/dataFiles/localData
 **/dataFiles/externalFigures
+**/papers/**/*.pdf
+**/papers/**/*.doc
+**/papers/**/*.docx
+**/papers/**/*.html
