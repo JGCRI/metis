@@ -64,6 +64,7 @@
 #' @param legendSingleColorOn Default=F
 #' @param legendSingleValue Default=NULL
 #' @param legendSingleColor Default="white"
+#' @param legendDigitsOverride Default=NULL
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
 #' @export
@@ -128,7 +129,8 @@ metis.map<-function(dataPolygon=NULL,
                   outerMargins=c(0.01,0.01,0.01,0.01),# bottom, left, top, right
                   legendSingleColorOn=T,
                   legendSingleValue=NULL,
-                  legendSingleColor="white"
+                  legendSingleColor="white",
+                  legendDigitsOverride=NULL
                   ){
 
 
@@ -203,6 +205,8 @@ NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette->legendS
 legendTitle=gsub(" ","\n",legendTitle)
 tmap::tmap_mode(mode = c("plot"))
 tmap::tmap_options(max.categories=10000)
+
+fillPaletteOrig <- fillPalette
 
 
 #------------------
@@ -567,6 +571,10 @@ if(is.null(legendBreaks)){
   }else{legendBreaks=NULL}
 }
 
+  if(!is.null(legendDigitsOverride)){
+  if(!is.null(legendDigits)){
+    legendDigits <- legendDigitsOverride;
+  }}
 
 # Adding in a single value (eg. 0 to be set to a single color eg. white)
   if(is.null(catPalette)){
@@ -574,12 +582,13 @@ if(is.null(legendBreaks)){
   if(legendSingleColorOn){
 
     # For Testing
-    # legendBreaks=seq(from=20,to=50,by=5)
-    # legendSingleValue=0
+    # legendBreaks=seq(from=0,to=2,by=0.5)
+    # legendSingleValue=1
     # legendSingleColor="white"
     # legendSingleColorOn=T
-    # legendDigits=0
-    # fillPalette=metis.colors()$pal_div_RdBlu
+    # legendDigits=1
+    # fillPaletteOrig="pal_div_RdBlu"
+    # fillPalette=metis.colors()[[fillPaletteOrig]]
 
     legendBreaksX <- legendBreaks; legendBreaksX
 
@@ -637,15 +646,15 @@ if(is.null(legendBreaks)){
     fillColDown <- grDevices::colorRampPalette(c("white",fillColDown))(11)[-1];fillColDown
     graphics::pie(rep(1,length(fillColDown)),label=names(fillColDown),col=fillColDown)
 
-    if(max(legendBreaksX)<=0){
-      if(grepl("diff",fileName,ignore.case=T)){
+    if(max(legendBreaksX)<=legendSingleValuex){
+      if(grepl("diff|div|ratio",fillPaletteOrig,ignore.case=T)){
         fillPaletteX<-grDevices::colorRampPalette(fillColDown)(length(legendLabelsX))
       }else{
         fillPaletteX<-grDevices::colorRampPalette(fillPalette)(length(legendLabelsX))
       }
       }else{
-      if(min(legendBreaksX)>=0){
-        if(grepl("diff",fileName,ignore.case=T)){
+      if(min(legendBreaksX)>=legendSingleValuex){
+        if(grepl("diff|div|ratio",fillPaletteOrig,ignore.case=T)){
           fillPaletteX<-grDevices::colorRampPalette(fillColUp)(length(legendLabelsX))
         }else{
         fillPaletteX<-grDevices::colorRampPalette(fillPalette)(length(legendLabelsX))
