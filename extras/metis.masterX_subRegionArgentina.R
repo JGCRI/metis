@@ -25,7 +25,7 @@ if("tools" %in% rownames(installed.packages()) == F){install.packages("tools")}
 library(tools)
 
 
-countryName= "Colombia"
+countryName= "Argentina"
 countryName <- tools::toTitleCase(countryName); countryName
 
 # Local Shape
@@ -37,13 +37,14 @@ localBasinsShapeFileColNameRaw = "HYBAS_ID" # Will need to load the file to see 
 
 localBasinShapeFileFolder = paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep="")
 localBasinShapeFile = paste(countryName,"LocalBasin",sep="")
-#readOGR(dsn=localBasinShapeFileFolder,layer=localBasinShapeFile ,use_iconv=T,encoding='UTF-8')
+readOGR(dsn=localBasinShapeFileFolder,layer=localBasinShapeFile ,use_iconv=T,encoding='UTF-8')
 localBasinsShapeFileColName = "HYBAS_ID" # Will need to load the file to see which name this would be
 
 if(file.exists(paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,"/",countryName,"LocalBasin.shp",sep=""))){
   countryLocalBasin=readOGR(dsn=paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep=""),
                             layer=paste(countryName,"LocalBasin",sep=""),use_iconv=T,encoding='UTF-8')
-  metis.map(dataPolygon=countryLocalBasin,fillColumn =localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")}
+  metis.map(dataPolygon=countryLocalBasin,fillColumn =localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
+  }
 
 
 #------------
@@ -123,7 +124,7 @@ if(redoLocalShape ==1){
   countryLocalBasin<-spTransform(countryLocalBasin,CRS(projX))
   countryLocalBasin<-raster::crop(countryLocalBasin,countryNE1)
   # Remove a very small basin from Colombia which can't really be seen and throws of scales
-  countryLocalBasin<-countryLocalBasin[(countryLocalBasin$HYBAS_ID!="6050134450"),]
+  #countryLocalBasin<-countryLocalBasin[(countryLocalBasin$HYBAS_ID!="6050134450"),]
   countryLocalBasin@data <- droplevels(countryLocalBasin@data)
   head(countryLocalBasin@data)
   plot(countryLocalBasin)
@@ -146,7 +147,7 @@ metis.gridByPoly(gridDataTables = paste(getwd(),"/dataFiles/grids/emptyGrids/gri
                  colName = localBasinsShapeFileColName,
                  saveFile = T,
                  fname = paste("gridByPoly_local0.25_",countryName,sep=""),
-                 folderName = "ColombiaHydroBasinsLev3")
+                 folderName = countryName)
 
 
 metis.gridByPoly(gridDataTables = paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""),
@@ -155,7 +156,7 @@ metis.gridByPoly(gridDataTables = paste(getwd(),"/dataFiles/grids/emptyGrids/gri
                  colName = localBasinsShapeFileColName,
                  saveFile = T,
                  fname = paste("gridByPoly_local0.50_",countryName,sep=""),
-                 folderName = "ColombiaHydroBasinsLev3")
+                 folderName = countryName)
 
 # grid = paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")
 # shapeFile = localBasinShapeFile
@@ -265,9 +266,9 @@ tethysScenarios=c("Ref", "HADGEM2Rcp8p5", "Policy")
 copySingleTethysScenbyXanthos=c("Ref", "HADGEM2Rcp8p5", "Policy")
 tethysFiles=c(
   "wddom_km3peryr","wdelec_km3peryr","wdirr_km3peryr","wdliv_km3peryr",
-              "wdmfg_km3peryr","wdmin_km3peryr","wdnonag_km3peryr",
-              "wdtotal_km3peryr"
-  )
+  "wdmfg_km3peryr","wdmin_km3peryr","wdnonag_km3peryr",
+  "wdtotal_km3peryr"
+)
 tethysUnits="Water Withdrawals (km3)"
 # Xanthos
 xanthosFiles= c(
@@ -310,23 +311,23 @@ popFiles<-"grid_pop_map"
 popUnits<-"person"
 
 gridMetis<-metis.prepGrid(
-  # demeterFolders=demeterFolders,
-  # demeterScenarios=demeterScenarios,
-  # demeterTimesteps=demeterTimesteps,
-  # demeterUnits=demeterUnits,
-  # tethysFolders=tethysFolders,
-  # tethysScenarios=tethysScenarios,
-  # tethysFiles=tethysFiles,
-  # tethysUnits=tethysUnits,
+  demeterFolders=demeterFolders,
+  demeterScenarios=demeterScenarios,
+  demeterTimesteps=demeterTimesteps,
+  demeterUnits=demeterUnits,
+  tethysFolders=tethysFolders,
+  tethysScenarios=tethysScenarios,
+  tethysFiles=tethysFiles,
+  tethysUnits=tethysUnits,
   xanthosFiles=xanthosFiles,
   xanthosScenarios=xanthosScenarios,
    xanthosCoordinatesPath=xanthosCoordinatesPath,
    xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
   spanLowess=spanLowess,
   # dirOutputs=paste(getwd(),"/outputs",sep=""),
-  # popFolder=popFolder,
-  # popFiles=popFiles,
-  # popUnits=popUnits,
+  popFolder=popFolder,
+  popFiles=popFiles,
+  popUnits=popUnits,
   folderName=paste(countryName,sep=""),
   saveFormat = "rds",
   filterYears = seq(1950,2100,by=5))
@@ -337,12 +338,14 @@ gridMetis<-metis.prepGrid(
 if(T){
 grid_i <- list.files(paste(getwd(),"/outputs/prepGrid/",countryName,sep=""),full.names = T);
 grid_i <- grid_i[grepl(".rds",grid_i)];grid_i
+grid_i <- grid_i[!grepl("griddedScarcity",grid_i)];grid_i
 #grid_i <- grid_i[grepl("xanthos",grid_i)];grid_i
 #grid_i <- grid_i[grepl("HadGEM2-ES_rcp2p6",grid_i)];grid_i
 # grid_i <- grid_i[grepl("total",grid_i)];grid_i
 # grid_i <- c(grid[grepl("tethys",grid) & grepl("total",grid)][1:2],grid[grepl("xanthos",grid)][1]);grid_i
 paramScenariosFile <- paste(getwd(),"/outputs/prepGrid/",countryName,"/paramScenarios.csv",sep="");
 paramScenarios_i <- data.table::fread(paramScenariosFile);paramScenarios_i
+paramScenarios_i <- paramScenarios_i[!grepl("griddedScarcity",paramScenarios_i)];paramScenarios_i
 paramsSelect_i = unique(paramScenarios_i$param); paramsSelect_i
 scenariosSelect_i = unique(paramScenarios_i$scenario); scenariosSelect_i
 
@@ -362,7 +365,7 @@ grid2polyX<-metis.grid2poly(gridFiles=grid_i,
   scenariosSelect = scenariosSelect_i,
   folderName = countryName,
   regionName = countryName,
-  paramScenariosFixed=paramScenarios_i,
+  #paramScenariosFixed=paramScenarios_i,
   calculatePolyScarcity=T)
 
 # gridFiles=grid_i
@@ -423,7 +426,6 @@ chosenRefMeanYears_i=c(1950:2010)
 if(F){
 gridFiles <- list.files(paste(getwd(),"/outputs/Grid2Poly/",countryName,sep=""),full.names = T);
 gridFiles <- gridFiles[grepl(".csv",gridFiles) & grepl(".grid",gridFiles)];gridFiles
-gridFiles <- gridFiles[grepl("indv|total",gridFiles)];gridFiles
 a <- tibble::tibble()
 for(gridFile_i in gridFiles){
   atemp <- data.table::fread(gridFile_i)
@@ -458,15 +460,14 @@ bx <- bx %>% mutate(value=case_when(param=="population"~value/1e+6,
 animateOn_i=F
 
 
-# Grid test
+
+# Xanthos Historical Runoff
 paramScenarios
 diffOn_i=F
-scenRefDiffIndv_i = list(param=list(c("tethysWatWithdraw_indv"),
-                                    c("tethysWatWithdraw_total")),
+scenRefDiffIndv_i = list(param=list(c("xanthosRunoff")),
                          #scenRef=list(c("GFDL-ESM2M_rcp8p5")),
                          #scenDiff=list(c("GFDL-ESM2M_rcp2p6")),
-                         scenIndv=list(c("HADGEM2Rcp8p5"),
-                                       c("HADGEM2Rcp8p5"))
+                         scenIndv=list(c("HadGEM2-ES_rcp2p6"))
 ); scenRefDiffIndv_i
 xRange_i= seq(from=1950,to=2010,by=5)
 multiFacetsOn_i=F  # Multifacets ignores all the scenarios given above and looks for a multiRef scenario in all the data provided
@@ -474,7 +475,7 @@ refMultiA_i="GFDL-ESM2M"
 refMultiB_i="rcp2p6"
 
 metis.mapsProcess(polygonDataTables=bx,
-                  gridDataTables=a,
+                  #gridDataTables=a,
                   xRange=xRange_i,
                   boundaryRegShape=boundaryRegShape_i,
                   boundaryRegCol=boundaryRegCol_i,
@@ -502,61 +503,11 @@ metis.mapsProcess(polygonDataTables=bx,
                   legendTextSizeAnim=NULL,
                   legendTextSizeMulti=NULL,
                   refMultiA = refMultiA_i,
-                  refMultiB = refMultiB_i, facetLabelSize = 1, facetCols=3,
+                  refMultiB = refMultiB_i,
                   chosenRefMeanYears=chosenRefMeanYears_i,
-                  numeric2Cat_list=numeric2Cat_list,mapTitleOn = F,
-                  folderName = paste(countryName,"gridTest",sep=""),
-                  pdfpng = "png")
-
-
-
-# Xanthos Historical Runoff
-paramScenarios
-diffOn_i=F
-scenRefDiffIndv_i = list(param=list(c("xanthosRunoff")),
-                         #scenRef=list(c("GFDL-ESM2M_rcp8p5")),
-                         #scenDiff=list(c("GFDL-ESM2M_rcp2p6")),
-                         scenIndv=list(c("HadGEM2-ES_rcp2p6"))
-                         ); scenRefDiffIndv_i
-xRange_i= seq(from=1950,to=2010,by=5)
-multiFacetsOn_i=F  # Multifacets ignores all the scenarios given above and looks for a multiRef scenario in all the data provided
-refMultiA_i="GFDL-ESM2M"
-refMultiB_i="rcp2p6"
-
-metis.mapsProcess(polygonDataTables=bx,
-                 #gridDataTables=a,
-                 xRange=xRange_i,
-                 boundaryRegShape=boundaryRegShape_i,
-                 boundaryRegCol=boundaryRegCol_i,
-                 boundaryRegionsSelect=boundaryRegionsSelect_i,
-                 subRegShape=subRegShape_i,
-                 subRegCol=subRegCol_i,
-                 nameAppend=nameAppend_i,
-                 legendOutsideSingle=legendOutsideSingle_i,
-                 legendPosition=legendPosition_i,
-                 animateOn=animateOn_i,
-                 diffOn = diffOn_i,
-                 scenRefDiffIndv=scenRefDiffIndv_i,
-                 extension=T,
-                 expandPercent = 3,
-                 figWidth=6,
-                 figHeight=7,
-                 paramsSelect = paramsSelect_i,
-                 scaleRange = scaleRange_i,
-                 multiFacetsOn = multiFacetsOn_i,
-                 multiFacetCols="scenarioMultiA",
-                 multiFacetRows="scenarioMultiB",
-                 legendOutsideMulti=T,
-                 legendPositionMulti=NULL,
-                 legendTitleSizeMulti=NULL,
-                 legendTextSizeAnim=NULL,
-                 legendTextSizeMulti=NULL,
-                 refMultiA = refMultiA_i,
-                 refMultiB = refMultiB_i,
-                 chosenRefMeanYears=chosenRefMeanYears_i,
-                 numeric2Cat_list=numeric2Cat_list,
-                 folderName = paste(countryName,"hist",sep=""),
-                 pdfpng = "both")
+                  numeric2Cat_list=numeric2Cat_list,
+                  folderName = paste(countryName,"hist",sep=""),
+                  pdfpng = "both")
 
 
 # Population
@@ -684,8 +635,10 @@ bx1 <- bx%>%filter(grepl("total",param)); bx1
 bx1%>%filter(x==2010)%>%tidyr::spread(key="scenario",value="value")%>%mutate(diff=Ref-HADGEM2Rcp8p5)%>%filter(diff!=0)
 
 scaleRange_i=data.frame(param=c("tethysWatWithdraw_total"),
-                         maxScale=c(14),
-                         minScale=c(0))
+                        maxScale=c(200),
+                        minScale=c(0))
+
+scaleRange_i=NULL
 
 metis.mapsProcess(polygonDataTables=bx1,
                   legendSingleColorOn =T,
@@ -730,10 +683,10 @@ diffOn_i=F
 scenRefDiffIndv_i = list(param=list(c("polygonScarcity")),
                          #scenRef=list(c("GFDL-ESM2M_rcp8p5")),
                          #scenDiff=list(c("GFDL-ESM2M_rcp2p6")),
-                         scenIndv=list(c("XxanthosHist1980to2010THADGEM2Rcp8p5",
-                                         "XxanthosHist1980to2010TPolicy",
-                                         "XxanthosHist1980to2010TRef",
-                                         "XHadGEM2-ES_rcp8p5THADGEM2Rcp8p5",
+                         scenIndv=list(c("XxanthosHist1950to2010THADGEM2Rcp8p5",
+                                         "XxanthosHist1950to2010TPolicy",
+                                         "XxanthosHist1950to2010TRef",
+                                         "XHadGEM2-ES_rcp4p5THADGEM2Rcp8p5",
                                          "XHadGEM2-ES_rcp4p5TPolicy",
                                          "XHadGEM2-ES_rcp4p5TRef"))); scenRefDiffIndv_i
 
@@ -853,7 +806,7 @@ diffOn_i=T
 scenRefDiffIndv_i = list(param=list(c("xanthosRunoff")),
                          #scenRef=list(c("GFDL-ESM2M_rcp8p5")),
                          #scenDiff=list(c("GFDL-ESM2M_rcp2p6")),
-                         scenIndv=list(c("GFDL-ESM2M_rcp8p5"))); scenRefDiffIndv_i
+                         scenIndv=list(c("GFDL-ESM2M_rcp4p5"))); scenRefDiffIndv_i
 
 #xRange_i= seq(from=2050,to=2050,by=10)
 xRange_i= c(2010,2050)

@@ -96,11 +96,9 @@
 #' "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
 #' # Socio-economics
 #' "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
-#' # Agriculture
-#' "agProdbyIrrRfd","agProdBiomass", "agProdForest", "agProdByCrop",
-#' # Land use
-#' "landIrrRfd", "landAlloc","landAllocByCrop",
-#' # Emissions
+#' "livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral","livestock_MeatDairybyTechImports",
+#' #Land use
+#' "landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",# Emissions
 #' "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
 #' "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
 #' "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")
@@ -184,6 +182,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                                   "CO2 emissions by sector"),
                     'ag'=c("Ag Production by Crop Type",
                            "ag production by tech"),
+                    'live'=c("meat and dairy production by tech"),
                     'socioecon'=c("GDP MER by region",
                                   "GDP per capita MER by region",
                                   "Population by region"),
@@ -338,8 +337,10 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                     "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
                     # Agriculture
                     "agProdbyIrrRfd","agProdBiomass", "agProdForest", "agProdByCrop",
+                    #Livestock
+                    "livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral","livestock_MeatDairybyTechImports",
                     # Land use
-                    "landIrrRfd", "landAlloc","landAllocByCrop",
+                    "landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",
                     # Emissions
                     "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
                     "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
@@ -1396,6 +1397,138 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                   cannot calculate" ,queryx, sep = ""))
     }}
 
+  paramx <- "livestock_MeatDairybyTechMixed"
+  if(paramx %in% paramsSelectx){
+    # Population
+    queryx <- "meat and dairy production by tech"
+    if (queryx %in% queriesx) {
+      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if (!is.null(regionsSelect)) {
+        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+      }
+      tbl <- tbl %>%
+        dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::filter(subsector=="Mixed")%>% # "Mixed"    "Pastoral" "Imports"
+        dplyr::mutate(param = "livestock_MeatDairybyTechMixed",
+                      sources = "Sources",
+                      origScen = scenario,
+                      origQuery = queryx,
+                      origValue = value,
+                      origUnits = Units,
+                      origX = year,
+                      scenario = scenNewNames,
+                      value = value,
+                      units = "(Mt)",
+                      vintage = paste("Vint_", year, sep = ""),
+                      x = year,
+                      xLabel = "Year",
+                      aggregate = "sum",
+                      class1 = sector,
+                      classLabel1 = "sector",
+                      classPalette1 = "pal_metis",
+                      class2 = technology,
+                      classLabel2 = "technology",
+                      classPalette2 = "pal_metis") %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+      datax <- dplyr::bind_rows(datax, tbl)
+    } else {
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }}
+
+  paramx <- "livestock_MeatDairybyTechPastoral"
+  if(paramx %in% paramsSelectx){
+    # Population
+    queryx <- "meat and dairy production by tech"
+    if (queryx %in% queriesx) {
+      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if (!is.null(regionsSelect)) {
+        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+      }
+      tbl <- tbl %>%
+        dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::filter(subsector=="Mixed")%>% # "Mixed"    "Pastoral" "Imports"
+        dplyr::mutate(param = "livestock_MeatDairybyTechPastoral",
+                      sources = "Sources",
+                      origScen = scenario,
+                      origQuery = queryx,
+                      origValue = value,
+                      origUnits = Units,
+                      origX = year,
+                      scenario = scenNewNames,
+                      value = value,
+                      units = "(Mt)",
+                      vintage = paste("Vint_", year, sep = ""),
+                      x = year,
+                      xLabel = "Year",
+                      aggregate = "sum",
+                      class1 = sector,
+                      classLabel1 = "sector",
+                      classPalette1 = "pal_metis",
+                      class2 = technology,
+                      classLabel2 = "technology",
+                      classPalette2 = "pal_metis") %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+      datax <- dplyr::bind_rows(datax, tbl)
+    } else {
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }}
+
+  paramx <- "livestock_MeatDairybyTechImports"
+  if(paramx %in% paramsSelectx){
+    # Population
+    queryx <- "meat and dairy production by tech"
+    if (queryx %in% queriesx) {
+      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if (!is.null(regionsSelect)) {
+        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+      }
+      tbl <- tbl %>%
+        dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::filter(subsector=="Mixed")%>% # "Mixed"    "Pastoral" "Imports"
+        dplyr::mutate(param = "livestock_MeatDairybyTechImports",
+                      sources = "Sources",
+                      origScen = scenario,
+                      origQuery = queryx,
+                      origValue = value,
+                      origUnits = Units,
+                      origX = year,
+                      scenario = scenNewNames,
+                      value = value,
+                      units = "(Mt)",
+                      vintage = paste("Vint_", year, sep = ""),
+                      x = year,
+                      xLabel = "Year",
+                      aggregate = "sum",
+                      class1 = sector,
+                      classLabel1 = "sector",
+                      classPalette1 = "pal_metis",
+                      class2 = technology,
+                      classLabel2 = "technology",
+                      classPalette2 = "pal_metis") %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+      datax <- dplyr::bind_rows(datax, tbl)
+    } else {
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }}
+
   paramx <- "pop"
   if(paramx %in% paramsSelectx){
     # Population
@@ -1625,8 +1758,8 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origUnits = Units,
                       origX = year,
                       scenario = scenNewNames,
-                      value = value/1000,
-                      units = "Irr vs Rfd Land Allocation (1000 km2)",
+                      value = value/10,
+                      units = "Irr vs Rfd Land Allocation (ha)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1634,9 +1767,97 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       class1 = water,
                       classLabel1 = "Water Source",
                       classPalette1 = "pal_metis",
+                      class2 = crop,
+                      classLabel2 = "crop",
+                      classPalette2 = "pal_metis") %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+      datax <- dplyr::bind_rows(datax, tbl)
+    } else {
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }}
+
+  paramx <- "landIrrCrop"
+  if(paramx %in% paramsSelectx){
+    # land allocation by crop and water source
+    queryx <- "land allocation by crop and water source"
+    if (queryx %in% queriesx) {
+      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if (!is.null(regionsSelect)) {
+        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+      }
+      tbl <- tbl %>%
+        dplyr::filter(!is.na(water),water=="IRR")%>%
+        dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::mutate(param = "landIrrCrop",
+                      sources = "Sources",
+                      origScen = scenario,
+                      origQuery = queryx,
+                      origValue = value,
+                      origUnits = Units,
+                      origX = year,
+                      scenario = scenNewNames,
+                      value = value/10,
+                      units = "Irr Land Allocation by Crop (ha)",
+                      vintage = paste("Vint_", year, sep = ""),
+                      x = year,
+                      xLabel = "Year",
+                      aggregate = "sum",
+                      class1 = crop,
+                      classLabel1 = "crop",
+                      classPalette1 = "pal_metis",
                       class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2") %>%
+                      classLabel2 = "class2",
+                      classPalette2 = "pal_metis") %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+      datax <- dplyr::bind_rows(datax, tbl)
+    } else {
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }}
+
+  paramx <- "landRfdCrop"
+  if(paramx %in% paramsSelectx){
+    # land allocation by crop and water source
+    queryx <- "land allocation by crop and water source"
+    if (queryx %in% queriesx) {
+      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if (!is.null(regionsSelect)) {
+        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+      }
+      tbl <- tbl %>%
+        dplyr::filter(!is.na(water),water=="RFD")%>%
+        dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::mutate(param = "landRfdCrop",
+                      sources = "Sources",
+                      origScen = scenario,
+                      origQuery = queryx,
+                      origValue = value,
+                      origUnits = Units,
+                      origX = year,
+                      scenario = scenNewNames,
+                      value = value/10,
+                      units = "Rainfed Land Allocation by Crop (ha)",
+                      vintage = paste("Vint_", year, sep = ""),
+                      x = year,
+                      xLabel = "Year",
+                      aggregate = "sum",
+                      class1 = crop,
+                      classLabel1 = "crop",
+                      classPalette1 = "pal_metis",
+                      class2 = "class2",
+                      classLabel2 = "class2",
+                      classPalette2 = "pal_metis") %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%

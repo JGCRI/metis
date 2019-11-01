@@ -3,6 +3,20 @@
 
 <aQuery>
 		<all-regions/>
+         <supplyDemandQuery title="meat and dairy production by tech">
+               <axis1 name="sector">sector</axis1>
+               <axis2 name="Year">physical-output[@vintage]</axis2>
+               <xPath buildList="true" dataName="output" group="false" sumAll="false">*[@type='sector' and
+               (@name='Beef' or @name='SheepGoat' or @name='Pork' or @name='Dairy' or @name='Poultry')]/
+               *[@type='subsector']/*[@type='technology']//
+               *[@type='output']/physical-output/node()</xPath>
+               <comments/>
+            </supplyDemandQuery>
+ </aQuery>
+
+
+<aQuery>
+		<all-regions/>
 <supplyDemandQuery title="Final energy by detailed end-use sector and fuel">
          <axis1 name="sector">sector</axis1>
          <axis2 name="Year">demand-physical[@vintage]</axis2>
@@ -10,8 +24,6 @@
          <comments/>
       </supplyDemandQuery>
  </aQuery>
-
-
 
 <aQuery>
 		<all-regions/>  

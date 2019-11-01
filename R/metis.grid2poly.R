@@ -451,7 +451,7 @@ for(grid_i in gridFiles){
  for(xanthosFile_i in xanthosFilesx){
    x <- data.table::fread(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param));
    xanthosTemp <- xanthosTemp %>%
-     dplyr::bind_rows(x)
+     dplyr::bind_rows(x%>%dplyr::mutate(subRegion=as.character(subRegion)))
  }
 
  # Create Mean historical xanthos
