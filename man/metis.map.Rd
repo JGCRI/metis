@@ -25,7 +25,7 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
   mapTitleSize = 1, numeric2Cat_list = NULL, catParam = NULL,
   innerMargins = c(0, 0, 0, 0), outerMargins = c(0.01, 0.01, 0.01,
   0.01), legendSingleColorOn = T, legendSingleValue = NULL,
-  legendSingleColor = "white")
+  legendSingleColor = "white", legendDigitsOverride = NULL)
 }
 \arguments{
 \item{dataPolygon}{Default = NULL,}
@@ -149,6 +149,8 @@ metis.map(dataPolygon = NULL, dataGrid = NULL, dataRaster = NULL,
 \item{legendSingleValue}{Default=NULL}
 
 \item{legendSingleColor}{Default="white"}
+
+\item{legendDigitsOverride}{Default=NULL}
 }
 \value{
 Returns the formatted data used to produce chart

@@ -150,7 +150,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     totalFFINonCO2 -> FracBioFuel -> FracFossilFuel -> TotalLiquids ->
     class_temp -> resource -> subRegAreaSum -> subsector->tblFinalNrgIntlAvShipMod -> 'transportation' ->
     'International Aviation' -> 'International Ship' -> 'International Aviation oil' -> 'a oil' ->
-    'International Ship oil' -> 'International Aviation liquids' -> liquids -> 'International Ship liquids'
+    'International Ship oil' -> 'International Aviation liquids' -> liquids -> 'International Ship liquids'->crop
 
 
 #---------------------
