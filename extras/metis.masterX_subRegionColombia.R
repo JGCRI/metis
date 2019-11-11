@@ -420,13 +420,19 @@ chosenRefMeanYears_i=c(1950:2010)
 
 
 # Grid Tables
-if(F){
+if(T){
 gridFiles <- list.files(paste(getwd(),"/outputs/Grid2Poly/",countryName,sep=""),full.names = T);
 gridFiles <- gridFiles[grepl(".csv",gridFiles) & grepl(".grid",gridFiles)];gridFiles
-gridFiles <- gridFiles[grepl("indv|total",gridFiles)];gridFiles
+gridFiles <- gridFiles[gridFiles %in% c(
+  "D:/metis/outputs/Grid2Poly/Colombia/gridCropped_XGFDL-ESM2M_rcp6p0TRef_subBasin_griddedScarcity.csv",
+  "D:/metis/outputs/Grid2Poly/Colombia/gridCropped_Ref_subBasin_tethysWatWithdraw_indv.csv",
+  "D:/metis/outputs/Grid2Poly/Colombia/gridCropped_Ref_subBasin_tethysWatWithdraw_total.csv",
+  "D:/metis/outputs/Grid2Poly/Colombia/gridCropped_Ref_subBasin_demeterLandUse.csv",
+  "D:/metis/outputs/Grid2Poly/Colombia/gridCropped_GFDL-ESM2M_rcp8p5_subBasin_xanthosRunoff.csv"
+)];gridFiles
 a <- tibble::tibble()
 for(gridFile_i in gridFiles){
-  atemp <- data.table::fread(gridFile_i)
+  atemp <- data.table::fread(gridFile_i)%>%tibble::as_tibble()
   a <- a%>%dplyr::bind_rows(atemp)
 }
 a <- a %>% unique(); a
@@ -461,20 +467,32 @@ animateOn_i=F
 # Grid test
 paramScenarios
 diffOn_i=F
-scenRefDiffIndv_i = list(param=list(c("tethysWatWithdraw_indv"),
-                                    c("tethysWatWithdraw_total")),
+scenRefDiffIndv_i = list(param=list(
+                                    # c("tethysWatWithdraw_indv"),
+                                     c("tethysWatWithdraw_total"),
+                                     c("griddedScarcity"),
+                                     c("polygonScarcity")
+                                    # c("demeterLandUse"),
+                                    #c("xanthosRunoff")
+                                    ),
                          #scenRef=list(c("GFDL-ESM2M_rcp8p5")),
                          #scenDiff=list(c("GFDL-ESM2M_rcp2p6")),
-                         scenIndv=list(c("HADGEM2Rcp8p5"),
-                                       c("HADGEM2Rcp8p5"))
+                         scenIndv=list(
+                                       # c("HADGEM2Rcp8p5"),
+                                        c("HADGEM2Rcp8p5"),
+                                       c("XGFDL-ESM2M_rcp6p0TRef"),
+                                       c("XGFDL-ESM2M_rcp2p6TPolicy")
+                                       # c("Ref"),
+                                       #c("GFDL-ESM2M_rcp8p5")
+                                       )
 ); scenRefDiffIndv_i
-xRange_i= seq(from=1950,to=2010,by=5)
+xRange_i= seq(from=2010,to=2050,by=5)
 multiFacetsOn_i=F  # Multifacets ignores all the scenarios given above and looks for a multiRef scenario in all the data provided
 refMultiA_i="GFDL-ESM2M"
 refMultiB_i="rcp2p6"
 
 metis.mapsProcess(polygonDataTables=bx,
-                  gridDataTables=a,
+                  gridDataTables=a%>%filter(!grepl("snow",class)),
                   xRange=xRange_i,
                   boundaryRegShape=boundaryRegShape_i,
                   boundaryRegCol=boundaryRegCol_i,
@@ -484,7 +502,7 @@ metis.mapsProcess(polygonDataTables=bx,
                   nameAppend=nameAppend_i,
                   legendOutsideSingle=legendOutsideSingle_i,
                   legendPosition=legendPosition_i,
-                  animateOn=animateOn_i,
+                  animateOn=T,
                   diffOn = diffOn_i,
                   scenRefDiffIndv=scenRefDiffIndv_i,
                   extension=T,
@@ -502,7 +520,7 @@ metis.mapsProcess(polygonDataTables=bx,
                   legendTextSizeAnim=NULL,
                   legendTextSizeMulti=NULL,
                   refMultiA = refMultiA_i,
-                  refMultiB = refMultiB_i, facetLabelSize = 1, facetCols=3,
+                  refMultiB = refMultiB_i, facetLabelSize = 3, facetCols=3,
                   chosenRefMeanYears=chosenRefMeanYears_i,
                   numeric2Cat_list=numeric2Cat_list,mapTitleOn = F,
                   folderName = paste(countryName,"gridTest",sep=""),

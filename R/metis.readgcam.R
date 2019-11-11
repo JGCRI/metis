@@ -1452,7 +1452,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-        dplyr::filter(subsector=="Mixed")%>% # "Mixed"    "Pastoral" "Imports"
+        dplyr::filter(subsector=="Pastoral")%>% # "Mixed"    "Pastoral" "Imports"
         dplyr::mutate(param = "livestock_MeatDairybyTechPastoral",
                       sources = "Sources",
                       origScen = scenario,
@@ -1496,7 +1496,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-        dplyr::filter(subsector=="Mixed")%>% # "Mixed"    "Pastoral" "Imports"
+        dplyr::filter(subsector=="Imports")%>% # "Mixed"    "Pastoral" "Imports"
         dplyr::mutate(param = "livestock_MeatDairybyTechImports",
                       sources = "Sources",
                       origScen = scenario,
@@ -1758,8 +1758,8 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origUnits = Units,
                       origX = year,
                       scenario = scenNewNames,
-                      value = value/10,
-                      units = "Irr vs Rfd Land Allocation (ha)",
+                      value = value,
+                      units = "Irr vs Rfd Land Allocation (1000 km2)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1802,8 +1802,8 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origUnits = Units,
                       origX = year,
                       scenario = scenNewNames,
-                      value = value/10,
-                      units = "Irr Land Allocation by Crop (ha)",
+                      value = value,
+                      units = "Irr Land Allocation by Crop (1000 km2)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1846,8 +1846,8 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origUnits = Units,
                       origX = year,
                       scenario = scenNewNames,
-                      value = value/10,
-                      units = "Rainfed Land Allocation by Crop (ha)",
+                      value = value,
+                      units = "Rainfed Land Allocation by Crop (1000 km2)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",

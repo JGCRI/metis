@@ -43,7 +43,7 @@
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}; library(devtools)
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}; library(rgcam)
 if("metis" %in% rownames(installed.packages()) == F){devtools::install()}; library(metis)
-library(ggalluvial);library(tibble);library(dplyr);library(rgdal)
+library(tibble);library(dplyr);library(rgdal); library(ggalluvial);
 
 
 #----------------------------

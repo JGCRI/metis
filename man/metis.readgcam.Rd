@@ -117,11 +117,9 @@ c(# Energy
 "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
 # Socio-economics
 "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
-# Agriculture
-"agProdbyIrrRfd","agProdBiomass", "agProdForest", "agProdByCrop",
-# Land use
-"landIrrRfd", "landAlloc","landAllocByCrop",
-# Emissions
+"livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral","livestock_MeatDairybyTechImports",
+#Land use
+"landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",# Emissions
 "emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
 "emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
 "emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")}

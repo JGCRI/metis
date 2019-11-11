@@ -29,12 +29,12 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
   legendTitleSizeMulti = NULL, legendTextSizeAnim = NULL,
   legendTextSizeMulti = NULL, refMultiA = NULL, refMultiB = NULL,
   chosenRefMeanYears = NULL, mapTitleSize = 0.5,
-  facetLabelSizeMulti = 2.5, facetLabelSizeMultiAB = 1,
+  facetLabelSize = 2.5, facetLabelSizeMultiAB = 1,
   numeric2Cat_list = NULL, diffOn = F, frameShow = T,
   pdfpng = "png", fillcolorNA = "gray", fillshowNA = NA,
   fillcolorNULL = "gray", legendSingleColorOn = T,
   legendSingleValue = NULL, legendSingleColor = "white",
-  facetCols = 4, mapTitleOn = T)
+  facetCols = 4, mapTitleOn = T, legendDigitsOverride = NULL)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -149,7 +149,7 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{mapTitleSize}{Default=0.5}
 
-\item{facetLabelSizeMulti}{Default =2.5}
+\item{facetLabelSize}{Default =2.5}
 
 \item{facetLabelSizeMultiAB}{Default =1}
 
@@ -176,6 +176,8 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{facetCols}{Default=4}
 
 \item{mapTitleOn}{Default=T}
+
+\item{legendDigitsOverride}{Default=NULL}
 }
 \value{
 Returns the formatted data used to produce chart
