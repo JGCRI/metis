@@ -291,7 +291,7 @@ boundariesX<- metis.boundaries(
   #subRegShpFile=subRegShpFile_i,
   subRegCol=subRegCol_i,
   subRegType=subRegType_i,
-  nameAppend=nameAppend_i,
+  nameAppend=paste(nameAppend_i,"_colorado",sep=""),
   expandPercent=expandPercent_i,
   overlapShape = overlapShape_i,
   #overlapShpFile=overlapShpFile_i,
@@ -352,14 +352,14 @@ boundariesX<- metis.boundaries(
 subRegShape_i = countryLocalBasin
 subRegCol_i = localBasinsShapeFileColName
 subRegType_i = "subBasin"
-nameAppend_i = "_localSubBasin"
+nameAppend_i = "_localSubBasinColorado"
 overlapShape_i = countryNE1
 
 boundariesX<- metis.boundaries(
   #labelsSize=0.5,
-  boundaryRegShape=boundaryRegShape_i,
-  boundaryRegCol=boundaryRegCol_i,
-  boundaryRegionsSelect=boundaryRegionsSelect_i,
+  #boundaryRegShape=boundaryRegShape_i,
+  #boundaryRegCol=boundaryRegCol_i,
+  #boundaryRegionsSelect=boundaryRegionsSelect_i,
   subRegShape=subRegShape_i,
   subRegCol=subRegCol_i,
   subRegCol1="FID_Subcue",
@@ -370,7 +370,7 @@ boundariesX<- metis.boundaries(
   extension = extension_i,
   grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
             paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
-  cropSubShape2Bound=cropSubShape2Bound_i)
+  cropSubShape2Bound=F)
 
 #labelsSize=0.5,
 boundaryRegShape=boundaryRegShape_i
