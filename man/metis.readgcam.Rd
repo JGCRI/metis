@@ -71,7 +71,9 @@ energy
 \item "industry final energy by fuel"
 \item "building final energy by subsector"
 \item "transport final energy by fuel"
-\item "transport final energy by mode and fuel"}
+\item "transport final energy by mode and fuel"
+\item "elec gen by gen tech and cooling tech and vintage"
+\item "Electricity generation by aggregate technology"}
 land
 \itemize{
 \item "land allocation by crop and water source",
@@ -111,6 +113,7 @@ c(# Energy
 "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
 # Electricity
 "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
+"elecNewCapCost","elecNewCapGW","elecAnnualRetPrematureCost","elecAnnualRetPrematureGW","elecCumCapCost","elecCumCapGW","elecCumRetPrematureCost","elecCumRetPrematureGW",
 # Transport
 "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
 # Water
@@ -120,13 +123,14 @@ c(# Energy
 "livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral","livestock_MeatDairybyTechImports",
 #Land use
 "landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",# Emissions
-"emissLUC", "emissCO2BySector","emissCO2NonCO2BySectorGWPAR5","emissCO2NonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
-"emissNonCO2ByResProdGWPAR5", "emissTotalFFIBySec","emissMethaneBySource",
-"emissCO2BySectorNonCO2GWPAR5", "emissCO2BySectorNonCO2GWPAR5LUC", "emissTotalBySec","emissCO2BySectorNoBio")}
-}
-\value{
-A list with the scenarios in the gcam database, queries in the queryxml file and a
-tibble with gcam data formatted for metis charts.
+"emissLUC", "emissNonCO2BySectorGWPAR5","emissNonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
+"emissNonCO2ByResProdGWPAR5", "emissBySectorGWPAR5FFI","emissMethaneBySourceGWPAR5",
+"emissByGasGWPAR5FFI", "emissByGasGWPAR5LUC", "emissBySectorGWPAR5LUC",
+"emissNonCO2ByResProdGTPAR5", "emissBySectorGTPAR5FFI","emissMethaneBySourceGTPAR5",
+"emissByGasGTPAR5FFI", "emissByGasGTPAR5LUC","emissBySectorGTPAR5LUC",
+"emissCO2BySectorNoBio"
+#' @return A list with the scenarios in the gcam database, queries in the queryxml file and a
+tibble with gcam data formatted for metis charts.}
 }
 \description{
 This function connects to a gcamdatabase and uses a query file to

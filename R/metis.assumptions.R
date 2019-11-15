@@ -24,12 +24,17 @@ metis.assumptions <- function() {
   #------------------
   # Conversions
   #------------------
-
+  GCAMbaseYear <- 2010
   convEJ2MTOE<-23.8845897  #https://www.iea.org/statistics/resources/unitconverter/
   convEJ2TWh<-277.77777777778
   convEJ2GW<-convEJ2TWh*1000/8760
+  convEJ2GWh <- 277777.778
+  convGW_kW <- 1e6
   conv1975USDperGJ22017USDperMWh<-3.62/0.2777778    # Deflators 1975 to 2017 from World Bank https://data.worldbank.org/indicator/NY.GDP.DEFL.ZS?locations=US&view=chart
   conv1975USDperGJ22017USDperMBTU<-3.62/0.947       # Deflators 1975 to 2017 from World Bank https://data.worldbank.org/indicator/NY.GDP.DEFL.ZS?locations=US&view=chart
+  convUSD_1975_2010	<- 3.227607538
+  conv_C_CO2 <- 44/12
+  conv_MT_GT <- 1e-3
 
   # Emissions Conversion to CO2eq
   # GWP conversions - uses 100-yr GWPs from IPPC AR4 and AR5
@@ -77,10 +82,27 @@ metis.assumptions <- function() {
     "MtC/yr",1
   )%>%as.data.frame;
 
+
+  # Data source for capacity factor:
+  # https://hub.globalccsinstitute.com/publications/renewable-power-generation-costs-2012-overview/52-capacity-factors-hydropower
+  # Data source for hydropower capital cost
+  # https://hub.globalccsinstitute.com/publications/renewable-power-generation-costs-2012-overview/51-hydropower-capital-costs
+  hydro_cap_fact <- 0.38
+  hydro_cost_GW <- 1.5
+
+
   return(list(
+         GCAMbaseYear=GCAMbaseYear,
          convEJ2MTOE=convEJ2MTOE,
          convEJ2TWh=convEJ2TWh,
          convEJ2GW=convEJ2GW,
+         convEJ2GWh=convEJ2GWh,
+         convGW_kW=convGW_kW,
+         convUSD_1975_2010=convUSD_1975_2010,
+         conv_C_CO2=conv_C_CO2,
+         conv_MT_GT=conv_MT_GT,
+         hydro_cap_fact=hydro_cap_fact,
+         hydro_cost_GW=hydro_cost_GW,
          conv1975USDperGJ22017USDperMWh=conv1975USDperGJ22017USDperMWh,
          conv1975USDperGJ22017USDperMBTU=conv1975USDperGJ22017USDperMBTU,
          convertGgTgMTC=convertGgTgMTC,

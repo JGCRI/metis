@@ -16,7 +16,7 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   scensSelect = "All", colOrder1 = NULL, colOrderName1 = NULL,
   colOrder2 = NULL, colOrderName2 = NULL, scaleRange = NULL,
   xScenCompFacetLabelSize = 35, legendPosition = "right",
-  figWidth = 13, figHeight = 9, multiPlotOn = F,
+  figWidth = 13, figHeight = 9, pointsOn = T, multiPlotOn = F,
   multiPlotFigsOnly = F, multiPlotFigLabels = T,
   multiPlotAllYears = F, mp = list(paramSet = list(c("energy"),
   c("water")), param = list(c("elecCapByFuel", "elecByTechTWh"),
@@ -123,6 +123,8 @@ c(# energy
 \item{figWidth}{Default = 13}
 
 \item{figHeight}{Default = 9}
+
+\item{pointsOn}{Default =T}
 
 \item{multiPlotOn}{Default=F,}
 

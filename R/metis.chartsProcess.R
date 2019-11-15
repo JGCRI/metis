@@ -93,6 +93,7 @@
 #' @param legendPosition Default="right" ("none", "left", "right", "bottom", "top", or two-element numeric vector)
 #' @param figWidth Default = 13
 #' @param figHeight Default = 9
+#' @param pointsOn Default =T
 #' @param multiPlotOn Default=F,
 #' @param multiPlotFigsOnly Default = F. Plot only multiplot figs. Much faster.
 #' @param multiPlotFigLabels Default = T. AutoPlot Labels
@@ -128,6 +129,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        legendPosition="right",
                        figWidth=13,
                        figHeight=9,
+                       pointsOn=T,
                        multiPlotOn=F,
                        multiPlotFigsOnly=F,
                        multiPlotFigLabels=T,
@@ -603,7 +605,7 @@ if(length(unique(tbl$region))>1){
 
         # Bar Chart
        if(multiPlotFigsOnly==F){
-       metis.chart(tbl_spC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+       metis.chart(tbl_spC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows=NULL,
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figBar_",j,"_compareRegions",nameAppend,sep=""),
@@ -615,7 +617,7 @@ if(length(unique(tbl$region))>1){
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_spC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_spC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows=NULL,
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figLines_",j,"_compareRegions",nameAppend,sep=""),
@@ -628,7 +630,7 @@ if(length(unique(tbl$region))>1){
 
           # Bar Chart
           if(multiPlotFigsOnly==F){
-          metis.chart(tbl_sp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+          metis.chart(tbl_sp, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows="class2",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
                       fileName = paste(k,"_figBar_",j,"_compareRegionsClass2",nameAppend,sep=""),
@@ -638,7 +640,7 @@ if(length(unique(tbl$region))>1){
 
           # Line Chart
           if(multiPlotFigsOnly==F){
-          metis.chart(tbl_sp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+          metis.chart(tbl_sp,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows="class2",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
                       fileName = paste(k,"_figLines_",j,"_compareRegionsClass2",nameAppend,sep=""),
@@ -704,7 +706,7 @@ if(length(unique(tbl$scenario))>1){
 
         # Bar Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="scenario",facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegions",nameAppend,sep=""),
@@ -714,7 +716,7 @@ if(length(unique(tbl$scenario))>1){
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="scenario",facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figLine_compareScenRegions",nameAppend,sep=""),
@@ -789,7 +791,7 @@ if(length(unique(tbl$scenario))>1){
 
           # Bar Chart Dodged
           if(multiPlotFigsOnly==F){
-          metis.chart(tbl_pAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+          metis.chart(tbl_pAgg, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge", classPalette = classPalette,
                       facet_columns="region",facet_rows=NULL,
             dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
@@ -799,7 +801,7 @@ if(length(unique(tbl$scenario))>1){
 
           # Line Chart Overlapped
           if(multiPlotFigsOnly==F){
-          metis.chart(tbl_pAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+          metis.chart(tbl_pAgg,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario", classPalette = classPalette,
                       facet_columns="region",facet_rows=NULL,
             dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
@@ -877,7 +879,7 @@ if(length(unique(tbl$scenario))>1){
 
         # Bar Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figBarDiff_compareScenRegionREF",nameAppend,sep=""),
@@ -887,7 +889,7 @@ if(length(unique(tbl$scenario))>1){
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figLineDiff_compareScenRegionREF",nameAppend,sep=""),
@@ -919,7 +921,7 @@ if(length(unique(tbl$scenario))>1){
 
         # Bar Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figBarDiff_compareScenRegionREF",nameAppend,sep=""),
@@ -929,7 +931,7 @@ if(length(unique(tbl$scenario))>1){
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figLineDiff_compareScenRegionREF",nameAppend,sep=""),
@@ -963,7 +965,7 @@ if(length(unique(tbl$scenario))>1){
 
         # Bar Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBarDiff_compareScenRegion",nameAppend,sep=""),
@@ -973,7 +975,7 @@ if(length(unique(tbl$scenario))>1){
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figLineDiff_compareScenRegion",nameAppend,sep=""),
@@ -1006,7 +1008,7 @@ if(length(unique(tbl$scenario))>1){
           # Bar Chart Dodged
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdAgg)){classPalettex=unique(tbl_pdAgg$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+          metis.chart(tbl_pdAgg, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge",
                       classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                       facet_rows="region",facet_columns = "scenario",
@@ -1018,7 +1020,7 @@ if(length(unique(tbl$scenario))>1){
           # Line Chart Overlapped
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdAgg)){classPalettex=unique(tbl_pdAgg$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+          metis.chart(tbl_pdAgg,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario",
                       classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                       facet_rows="region",facet_columns = "scenario",
@@ -1108,7 +1110,7 @@ if(length(unique(tbl$scenario))>1){
 
         # Bar Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figBarDiffPrcnt_compareScenRegion",nameAppend,sep=""),
@@ -1118,7 +1120,7 @@ if(length(unique(tbl$scenario))>1){
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figLineDiffPrcnt_compareScenRegion",nameAppend,sep=""),
@@ -1198,7 +1200,7 @@ if(length(unique(tbl$scenario))>1){
           # Bar Chart Dodged
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdC1)){classPalettex=unique(tbl_pdC1$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge",
                       classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                       facet_rows="region",facet_columns="scenario",
@@ -1210,7 +1212,7 @@ if(length(unique(tbl$scenario))>1){
           # Line Chart Overlapped
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdC1)){classPalettex=unique(tbl_pdC1$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"),xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario",
                       classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                       facet_rows="region",facet_columns="scenario",
@@ -1244,7 +1246,7 @@ if(length(unique(tbl$scenario))>1){
           # Bar Chart Dodged
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdC1)){classPalettex=unique(tbl_pdC1$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge",
                       classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                       facet_rows="region",facet_columns="scenario",
@@ -1256,7 +1258,7 @@ if(length(unique(tbl$scenario))>1){
           # Line Chart Overlapped
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdC1)){classPalettex=unique(tbl_pdC1$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"),xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,
+          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario",
                       classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                       facet_rows="region",facet_columns="scenario",
@@ -1326,13 +1328,13 @@ if(scenarioCompareOnly!=1){
       tbl_rspC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
 
       if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rspC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rspC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
                   fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )}
 
     # Bar Chart
-    metis.chart(tbl_rspC1%>%dplyr::mutate(label=units), xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+    metis.chart(tbl_rspC1%>%dplyr::mutate(label=units), xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),printFig = F,
     forceFacets = T, facet_columns="label",
     fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -1351,13 +1353,13 @@ if(scenarioCompareOnly!=1){
     # dirOutputs = paste(dirOutputs, "/Charts/", i, "/", j,sep = "");
     # fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep="");pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
     if(multiPlotFigsOnly==F){
-    metis.chart(tbl_rspC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+    metis.chart(tbl_rspC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                 dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
                 fileName = paste(k,"_figLine_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
     )}
 
     # Line Chart
-    metis.chart(tbl_rspC1%>%dplyr::mutate(label=units),xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+    metis.chart(tbl_rspC1%>%dplyr::mutate(label=units),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),printFig = F,
       forceFacets = T, facet_columns="label",
       fileName = paste(k,"_figLine_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -1379,14 +1381,14 @@ if(scenarioCompareOnly!=1){
 
       # Bar Chart
       if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rsp, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rsp, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                   facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
                   fileName = paste(k,"_figBar_",i,"_Class2_",j,nameAppend,sep="")
       )}
 
       # Line Chart
       if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rsp,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+      metis.chart(tbl_rsp,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                   facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
                   fileName = paste(k,"_figLine_",i,"_Class2_",j,nameAppend,sep="")
       )}
@@ -1444,7 +1446,10 @@ if(scenarioCompareOnly!=1){
         multiPlotlist_i<-list();
         plotSet_ix <- unique(plotSet_i[grepl("_Bar_",plotSet_i)])
         for(multiPlot_i in 1:length(plotSet_ix)){
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)
+          if(multiPlotFigLabels==F){
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"))}else{
+            multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"))
+          }
         };multiPlotlist_i
 
         if(multiPlotFigLabels==F){labels1=NULL}else{
@@ -1454,13 +1459,9 @@ if(scenarioCompareOnly!=1){
         #ncol
         if(length(plotSet_ix)>unique(mpParamPlots_i$nColMax)){ncol_i=unique(mpParamPlots_i$nColMax)}else{ncol_i=length(plotSet_ix)}; ncol_i
         if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
-        figure <- ggpubr::ggarrange(plotlist=multiPlotlist_i,
-                          ncol = ncol_i,nrow=nrow_i,
-                         #labels="auto",
-                         labels = labels1,
-                         font.label=list(size=15*ncol_i*nrow_i*1),
-                         hjust=0,vjust=1,
-                         legend="right"); figure
+        figure<-egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
+                       labels = labels1,
+                       label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.5*ncol_i*nrow_i))); figure
 
       metis.printPdfPng(figure=figure,
                           dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
@@ -1473,7 +1474,10 @@ if(scenarioCompareOnly!=1){
       multiPlotlist_i<-list();
       plotSet_ix <- unique(plotSet_i[grepl("_Line_",plotSet_i)])
       for(multiPlot_i in 1:length(plotSet_ix)){
-        multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])
+        if(multiPlotFigLabels==F){
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"))}else{
+            multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"))
+          }
       };multiPlotlist_i
 
       if(multiPlotFigLabels==F){labels1=NULL}else{
@@ -1483,13 +1487,9 @@ if(scenarioCompareOnly!=1){
       #ncol
       if(length(plotSet_ix)>unique(mpParamPlots_i$nColMax)){ncol_i=unique(mpParamPlots_i$nColMax)}else{ncol_i=length(plotSet_ix)}; ncol_i
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
-      figure <- ggpubr::ggarrange(plotlist=multiPlotlist_i,
-                          ncol = ncol_i,nrow=nrow_i,
-                          #labels="auto",
-                          labels = labels1,
-                          font.label=list(size=15*ncol_i*nrow_i*1),
-                          hjust=0,vjust=1,
-                          legend="right"); figure
+      figure<-egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
+                             labels = labels1,
+                             label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.5*ncol_i*nrow_i))); figure
 
       metis.printPdfPng(figure=figure,
                         dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
@@ -1585,7 +1585,7 @@ for(i in unique(tbl$region)){
 
       # Bar Chart
         if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rpC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figBar_",i,"_compareScen",nameAppend,sep=""),
@@ -1603,7 +1603,7 @@ for(i in unique(tbl$region)){
 
       # Line Chart
         if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rpC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+      metis.chart(tbl_rpC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figLine_",i,"_compareScen",nameAppend,sep=""),
@@ -1681,7 +1681,7 @@ for(i in unique(tbl$region)){
 
       # Bar Chart Dodged
         if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rpAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
+      metis.chart(tbl_rpAgg, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                   class ="scenario", position ="dodge", classPalette = classPalette,
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figBarDodged_",i,"_compareScen_",nameAppend,sep=""),
@@ -1689,7 +1689,7 @@ for(i in unique(tbl$region)){
       )}
 
         if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rpAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
+      metis.chart(tbl_rpAgg,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
                   class ="scenario", classPalette = classPalette,
                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                   fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep=""),figWidth = figWidth*figWMult,
@@ -1697,7 +1697,7 @@ for(i in unique(tbl$region)){
       )}
 
       # Line Chart Overlapped
-      metis.chart(tbl_rpAgg%>%dplyr::mutate(label=paste(units)),xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+      metis.chart(tbl_rpAgg%>%dplyr::mutate(label=paste(units)),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                   class ="scenario", classPalette = classPalette,
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep=""),figWidth = figWidth*figWMult,
@@ -1800,7 +1800,7 @@ for(i in unique(tbl$region)){
 
 
       # Bar Chart
-      metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                   facet_columns="scenario",
                   fileName = paste(j,"_figBarDiff_",i,"_compareScen1Scale",nameAppend,sep=""),
@@ -1808,7 +1808,7 @@ for(i in unique(tbl$region)){
                   figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )->mpx
 
-      metis.chart(tbl_rpdC1%>%dplyr::filter(scenario %in% scenRef_i),printFig=F, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpdC1%>%dplyr::filter(scenario %in% scenRef_i),printFig=F, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                   facet_columns="scenario",
                   fileName = paste(j,"_figBarDiff_",i,"_compareScen1Scale",nameAppend,sep=""),
@@ -1830,7 +1830,7 @@ for(i in unique(tbl$region)){
 
       # Line Chart
       if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+      metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                   facet_columns="scenario",
                   fileName = paste(j,"_figLineDiff_",i,"_compareScen1Scale",nameAppend,sep=""),
@@ -1863,7 +1863,7 @@ for(i in unique(tbl$region)){
 
 
       # Bar Chart
-      metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figBarDiff_",i,"_compareScen",nameAppend,sep=""),
@@ -1882,7 +1882,7 @@ for(i in unique(tbl$region)){
 
       # Line Chart
       if(multiPlotFigsOnly==F){
-     metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figLineDiff_",i,"_compareScen",nameAppend,sep=""),
@@ -1918,7 +1918,7 @@ for(i in unique(tbl$region)){
        # Bar Chart Dodged
        if(multiPlotFigsOnly==F){
        if("classPalette" %in% names(tbl_rpdAgg)){classPalettex=unique(tbl_rpdAgg$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdAgg, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
+       metis.chart(tbl_rpdAgg, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                    class ="scenario", position ="dodge",
                    classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
@@ -1929,7 +1929,7 @@ for(i in unique(tbl$region)){
        # Line Chart Overlapped
        if(multiPlotFigsOnly==F){
          if("classPalette" %in% names(tbl_rpdAgg)){classPalettex=unique(tbl_rpdAgg$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdAgg,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
+       metis.chart(tbl_rpdAgg,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
                    class ="scenario",
                    classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
@@ -1940,7 +1940,7 @@ for(i in unique(tbl$region)){
 
        # Line Chart Overlapped
        if("classPalette" %in% names(tbl_rpdAgg)){classPalettex=unique(tbl_rpdAgg$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdAgg%>%dplyr::mutate(label="Absolute Difference"),xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+       metis.chart(tbl_rpdAgg%>%dplyr::mutate(label="Absolute Difference"),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                    class ="scenario",
                    classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
@@ -2044,7 +2044,7 @@ for(i in unique(tbl$region)){
 
      # Bar Chart
      if(multiPlotFigsOnly==F){
-     metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figBarDiffPrcnt_",i,"_compareScen1Scale",nameAppend,sep=""),
@@ -2054,7 +2054,7 @@ for(i in unique(tbl$region)){
 
      # Line Chart
      if(multiPlotFigsOnly==F){
-     metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figLineDiffPrcnt_",i,"_compareScen1Scale",nameAppend,sep=""),
@@ -2089,7 +2089,7 @@ for(i in unique(tbl$region)){
 
      # Bar Chart
      if(multiPlotFigsOnly==F){
-     metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figBarDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
@@ -2098,7 +2098,7 @@ for(i in unique(tbl$region)){
      )}
 
      # Line Chart
-     metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figLineDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
@@ -2201,7 +2201,7 @@ for(i in unique(tbl$region)){
        # Bar Chart Dodged
        if(multiPlotFigsOnly==F){
          if("classPalette" %in% names(tbl_rpdC1)){classPalettex=unique(tbl_rpdC1$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
+       metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                    class ="scenario", position ="dodge",
                    classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
@@ -2212,7 +2212,7 @@ for(i in unique(tbl$region)){
        # Line Chart Overlapped
        if(multiPlotFigsOnly==F){
          if("classPalette" %in% names(tbl_rpdC1)){classPalettex=unique(tbl_rpdC1$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
+       metis.chart(tbl_rpdC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
                    class ="scenario",
                    classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
@@ -2252,7 +2252,7 @@ for(i in unique(tbl$region)){
        # Bar Chart Dodged
        if(multiPlotFigsOnly==F){
          if("classPalette" %in% names(tbl_rpdC1)){classPalettex=unique(tbl_rpdC1$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdC1, xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
+       metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                    class ="scenario", position ="dodge",
                    classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
@@ -2263,7 +2263,7 @@ for(i in unique(tbl$region)){
        # Line Chart Overlapped
        if(multiPlotFigsOnly==F){
          if("classPalette" %in% names(tbl_rpdC1)){classPalettex=unique(tbl_rpdC1$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdC1,xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+       metis.chart(tbl_rpdC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                    class ="scenario",
                    classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
@@ -2274,7 +2274,7 @@ for(i in unique(tbl$region)){
 
        # Line Chart Overlapped
        if("classPalette" %in% names(tbl_rpdC1)){classPalettex=unique(tbl_rpdC1$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdC1%>%dplyr::mutate(label="Percent Difference (%)"),xData=xData,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+       metis.chart(tbl_rpdC1%>%dplyr::mutate(label="Percent Difference (%)"),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                    class ="scenario",
                    classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
@@ -2352,38 +2352,100 @@ for(i in unique(tbl$region)){
     };lastrows
 
     if(multiPlotAllYears==T){
-      pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)]);pBRef
-      pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)]);pBDiff1S
-      pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL);pBDiffMS
-      pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL);pLDiffPrcnt
-      pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+ggplot2::theme(legend.position = "right")));pBLeg
+      if(multiPlotFigLabels==F){
+      pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+      pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+      pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+      pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+      }else{
+        pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+        pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+        pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+        pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+      }
+      g <- ggplot_build(pBRef);
+      pFilln<-unique(g$data[[1]]["fill"]);pFilln
+      pColn<-unique(g$data[[1]]["colour"]);pColn
+      if(nrow(pFilln)>1|nrow(pColn)>1){
+        pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+ggplot2::theme(legend.position = "right")))}else{
+          pBLeg<-ggplot() + theme_void()
+        }
+      pBRef;pBDiff1S;pBDiffMS;pLDiffPrcnt;pBLeg
     }else{
       if(!row_i %in% lastrows){
-        pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+
-          ggplot2::theme(axis.title.x=ggplot2::element_blank(),
-                         axis.text.x=ggplot2::element_blank(),
-                         axis.ticks.x=ggplot2::element_blank());pBRef
-        pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+
-          ggplot2::theme(axis.title.x=ggplot2::element_blank(),
-                         axis.text.x=ggplot2::element_blank(),
-                         axis.ticks.x=ggplot2::element_blank());pBDiff1S
-        pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+
-          ggplot2::theme(axis.title.x=ggplot2::element_blank(),
-                         axis.text.x=ggplot2::element_blank(),
-                         axis.ticks.x=ggplot2::element_blank());pBDiffMS
-        pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+
-          ggplot2::theme(axis.title.x=ggplot2::element_blank(),
-                         axis.text.x=ggplot2::element_blank(),
-                         axis.ticks.x=ggplot2::element_blank());pLDiffPrcnt
-        pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+ggplot2::theme(legend.position = "right")));pBLeg
+        if(multiPlotFigLabels==F){
+          pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+
+            theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),
+                  axis.title.x=ggplot2::element_blank(),
+                  axis.text.x=ggplot2::element_blank(),
+                  axis.ticks.x=ggplot2::element_blank(),legend.position="none")
+          pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+
+            theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),
+                  axis.title.x=ggplot2::element_blank(),
+                  axis.text.x=ggplot2::element_blank(),
+                  axis.ticks.x=ggplot2::element_blank(),legend.position="none")
+          pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+
+            theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),
+                  axis.title.x=ggplot2::element_blank(),
+                  axis.text.x=ggplot2::element_blank(),
+                  axis.ticks.x=ggplot2::element_blank(),legend.position="none")
+          pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+
+            theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),
+                  axis.title.x=ggplot2::element_blank(),
+                  axis.text.x=ggplot2::element_blank(),
+                  axis.ticks.x=ggplot2::element_blank(),legend.position="none")
+        }else{
+          pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+
+            theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+                  axis.title.x=ggplot2::element_blank(),
+                  axis.text.x=ggplot2::element_blank(),
+                  axis.ticks.x=ggplot2::element_blank(),legend.position="none")
+          pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+
+            theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+                  axis.title.x=ggplot2::element_blank(),
+                  axis.text.x=ggplot2::element_blank(),
+                  axis.ticks.x=ggplot2::element_blank(),legend.position="none")
+          pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+
+            theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+                  axis.title.x=ggplot2::element_blank(),
+                  axis.text.x=ggplot2::element_blank(),
+                  axis.ticks.x=ggplot2::element_blank(),legend.position="none")
+          pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+
+            theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+                  axis.title.x=ggplot2::element_blank(),
+                  axis.text.x=ggplot2::element_blank(),
+                  axis.ticks.x=ggplot2::element_blank(),legend.position="none")
+        }
+        g <- ggplot_build(pBRef);
+        pFilln<-unique(g$data[[1]]["fill"]);pFilln
+        pColn<-unique(g$data[[1]]["colour"]);pColn
+        if(nrow(pFilln)>1|nrow(pColn)>1){
+          pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+ggplot2::theme(legend.position = "right")))}else{
+            pBLeg<-ggplot() + theme_void()
+          }
+        pBRef;pBDiff1S;pBDiffMS;pLDiffPrcnt;pBLeg
       }else{
-        pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)]);pBRef
-        pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)]);pBDiff1S
-        pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL);pBDiffMS
-        pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL);pLDiffPrcnt
-        pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+ggplot2::theme(legend.position = "right")));pBLeg
-      }}
+        if(multiPlotFigLabels==F){
+          pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+          pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+          pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+          pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+        }else{
+          pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+          pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+          pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+          pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+        }
+        g <- ggplot_build(pBRef);
+        pFilln<-unique(g$data[[1]]["fill"]);pFilln
+        pColn<-unique(g$data[[1]]["colour"]);pColn
+        if(nrow(pFilln)>1|nrow(pColn)>1){
+        pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+ggplot2::theme(legend.position = "right")))}else{
+          pBLeg<-ggplot() + theme_void()
+        }
 
+        pBRef;pBDiff1S;pBDiffMS;pLDiffPrcnt;pBLeg
+      }}
 
     if(multiPlotFigLabels==F){labels1=NULL}else{
     labels1 <-paste(letters[seq(from=(countMultiLabel*2+1),to=(countMultiLabel*2+2),by=1)],")",sep="")}; labels1
@@ -2407,36 +2469,21 @@ for(i in unique(tbl$region)){
 
     # MultiPlots 2: Ref,diffs1scale,diffsPrcnt,leg
     assign(paste("figMScale_",mpdf[row_i,]$paramSet,"_",mpdf[row_i,]$param,sep=""),
-           ggpubr::ggarrange(pBRef,pBDiffMS,pLDiffPrcnt,pBLeg,
-                     ncol = 4,nrow=1,
-                     widths=c(1,nScen_i,nScen_i,0.5),
-                     #labels="auto",
-                     labels = labels2,
-                     font.label=list(size=15*(nScen_i+1.25)),
-                     hjust=-0.5,vjust=1,
-                     legend="none"))
+           egg::ggarrange(pBRef,pBDiffMS,pLDiffPrcnt,pBLeg,ncol = 4,nrow=1,
+                          labels = c(labels2,""),widths=c(1,nScen_i,nScen_i,0.5),
+                          label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.65*(nScen_i+1.25)))))
 
     # MultiPlots 2: Ref,diffsMscale,leg
     assign(paste("figMScaleDiffAbs_",mpdf[row_i,]$paramSet,"_",mpdf[row_i,]$param,sep=""),
-           ggpubr::ggarrange(pBRef,pBDiffMS,pBLeg,
-                             ncol = 3,nrow=1,
-                             widths=c(1,nScen_i,0.5),
-                             #labels="auto",
-                             labels = labels1,
-                             font.label=list(size=15*(nScen_i+1.25)),
-                             hjust=-0.5,vjust=1,
-                             legend="none"))
+           egg::ggarrange(pBRef,pBDiffMS,pBLeg,ncol = 3,nrow=1,
+                          labels = c(labels1,""),widths=c(1,nScen_i,0.5),
+                          label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.65*(nScen_i+1.25)))))
 
     # MultiPlots 2: Ref,diffsMscale,leg
     assign(paste("figMScaleDiffPrcnt_",mpdf[row_i,]$paramSet,"_",mpdf[row_i,]$param,sep=""),
-           ggpubr::ggarrange(pBRef,pLDiffPrcnt,pBLeg,
-                             ncol = 3,nrow=1,
-                             widths=c(1,nScen_i,0.5),
-                             #labels="auto",
-                             labels = labels1,
-                             font.label=list(size=15*(nScen_i+1.25)),
-                             hjust=-0.5,vjust=1,
-                             legend="none"))
+           egg::ggarrange(pBRef,pLDiffPrcnt,pBLeg,ncol = 3,nrow=1,
+                          labels = c(labels1,""),widths=c(1,nScen_i,0.5),
+                          label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.65*(nScen_i+1.25)))))
 
     multiPlotFigs <- multiPlotFigs %>%
       dplyr::bind_rows(tibble::tibble(paramSet=mpdf[row_i,]$paramSet,
@@ -2565,15 +2612,17 @@ if(T){
       mpParamPlots_i<-mpParamPlots_i%>% dplyr::arrange(match(param,unique(mpdf$param)));mpParamPlots_i
       plotSet_i <-unique(mpParamPlots_i$plot);plotSet_i
 
+
       # Plot diff Abs and Prcnt
       multiPlotlist_i<-list();
       plotSet_ix <- unique(plotSet_i[grepl("_lineSum",plotSet_i)]);plotSet_ix
       for(multiPlot_i in 1:length(plotSet_ix)){
-        if(grepl("lineSumAbs",plotSet_ix[multiPlot_i])){
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)
-        }else{
-        multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)
-        }
+        if(multiPlotFigLabels==F){
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"),
+                                                                                                    legend.position="none")}else{
+            multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+                                                                                                    legend.position="none")
+          }
       };multiPlotlist_i
 
       if(multiPlotFigLabels==F){labels1=NULL}else{
@@ -2582,20 +2631,16 @@ if(T){
       legRows = max(round(mpParamPlots_i[1,]$nScen/3),1);legRows
       mp_LineLeg <- ggpubr::as_ggplot(ggpubr::get_legend(get(plotSet_ix[1])+
                                                    ggplot2::theme(legend.position = "bottom")+
-                                                   ggplot2::guides(colour = ggplot2::guide_legend(nrow = legRows,title="Scenario"),
+                                                   ggplot2::guides(colour = ggplot2::guide_legend(nrow = legRows, byrow=T,title="Scenario"),
                                                             shape = ggplot2::guide_legend(nrow=legRows,title="Scenario"))));mp_LineLeg
       # MultiPlots 1: Ref,diffs1scale,diffsPrcnt,leg
       #ncol
       ncol_i=3;
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
-      figure <- ggpubr::ggarrange(ggpubr::ggarrange(plotlist=multiPlotlist_i,
-                                    labels = labels1,
-                                    font.label=list(size=3*ncol_i*(max(nrow_i,1)*1)),
-                                    hjust=0,vjust=1,
-                                    ncol = ncol_i,nrow=nrow_i,
-                                    legend="none"),
-                          mp_LineLeg, ncol=1,nrow=2,
-                          heights=c(1,(1/(nrow_i*3))),legend="none"); figure
+      figure<-egg::ggarrange(ggplotify::as.ggplot(egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
+                                                                 labels = labels1,
+                                                                 label.args = list(gp = grid::gpar(hjust = 0, vjust=0,  cex=0.5/3*ncol_i*nrow_i)))),
+                             mp_LineLeg, ncol=1,nrow=2, heights=c(nrow_i*4,1)); figure
 
       metis.printPdfPng(figure=figure,
                         dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
@@ -2608,11 +2653,12 @@ if(T){
       multiPlotlist_i<-list();
       plotSet_ix <- unique(plotSet_i[grepl("_lineSumDiff_|_lineSumAbs_",plotSet_i)]);plotSet_ix
       for(multiPlot_i in 1:length(plotSet_ix)){
-        if(grepl("lineSumAbs",plotSet_ix[multiPlot_i])){
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)
-        }else{
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)
-        }
+        if(multiPlotFigLabels==F){
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"),
+                                                                                                  legend.position="none")}else{
+           multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+                                                                                                   legend.position="none")
+                                                                                              }
       };multiPlotlist_i
 
       if(multiPlotFigLabels==F){labels1=NULL}else{
@@ -2621,20 +2667,16 @@ if(T){
       legRows = max(round(mpParamPlots_i[1,]$nScen/3),1);legRows
       mp_LineLeg <- ggpubr::as_ggplot(ggpubr::get_legend(get(plotSet_ix[1])+
                                                            ggplot2::theme(legend.position = "bottom")+
-                                                           ggplot2::guides(colour = ggplot2::guide_legend(nrow = legRows,title="Scenario"),
+                                                           ggplot2::guides(colour = ggplot2::guide_legend(nrow = legRows, byrow=T,title="Scenario"),
                                                                            shape = ggplot2::guide_legend(nrow=legRows,title="Scenario"))));mp_LineLeg
       # MultiPlots 1: Ref,diffs1scale,diffsPrcnt,leg
       #ncol
       ncol_i=2;
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
-      figure <- ggpubr::ggarrange(ggpubr::ggarrange(plotlist=multiPlotlist_i,
-                                                    labels = labels1,
-                                                    font.label=list(size=2*ncol_i*(max(nrow_i,1)*1)),
-                                                    hjust=0,vjust=1,
-                                                    ncol = ncol_i,nrow=nrow_i,
-                                                    legend="none"),
-                                  mp_LineLeg, ncol=1,nrow=2,
-                                  heights=c(1,(1/(nrow_i*2))),legend="none"); figure
+      figure<-egg::ggarrange(ggplotify::as.ggplot(egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
+                             labels = labels1,
+                             label.args = list(gp = grid::gpar(hjust = 0, vjust=0,  cex=0.25*ncol_i*nrow_i)))),
+                           mp_LineLeg, ncol=1,nrow=2, heights=c(nrow_i*4,1)); figure
 
       metis.printPdfPng(figure=figure,
                         dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
@@ -2647,11 +2689,12 @@ if(T){
       multiPlotlist_i<-list();
       plotSet_ix <- unique(plotSet_i[grepl("_lineSumDiffPrcnt_|_lineSumAbs_",plotSet_i)]);plotSet_ix
       for(multiPlot_i in 1:length(plotSet_ix)){
-        if(grepl("lineSumAbs",plotSet_ix[multiPlot_i])){
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)
-        }else{
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)
-        }
+        if(multiPlotFigLabels==F){
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"),
+                                                                                                  legend.position="none")}else{
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+                                                                                                legend.position="none")
+                                                                                                  }
       };multiPlotlist_i
 
       if(multiPlotFigLabels==F){labels1=NULL}else{
@@ -2660,20 +2703,17 @@ if(T){
       legRows = max(round(mpParamPlots_i[1,]$nScen/3),1);legRows
       mp_LineLeg <- ggpubr::as_ggplot(ggpubr::get_legend(get(plotSet_ix[1])+
                                                            ggplot2::theme(legend.position = "bottom")+
-                                                           ggplot2::guides(colour = ggplot2::guide_legend(nrow = legRows,title="Scenario"),
+                                                           ggplot2::guides(colour = ggplot2::guide_legend(nrow = legRows, byrow=T,title="Scenario"),
                                                                            shape = ggplot2::guide_legend(nrow=legRows,title="Scenario"))));mp_LineLeg
       # MultiPlots 1: Ref,diffs1scale,diffsPrcnt,leg
       #ncol
       ncol_i=2;
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
-      figure <- ggpubr::ggarrange(ggpubr::ggarrange(plotlist=multiPlotlist_i,
-                                                    labels = labels1,
-                                                    font.label=list(size=2*ncol_i*(max(nrow_i,1)*1)),
-                                                    hjust=0,vjust=1,
-                                                    ncol = ncol_i,nrow=nrow_i,
-                                                    legend="none"),
-                                  mp_LineLeg, ncol=1,nrow=2,
-                                  heights=c(1,(1/(nrow_i*2))),legend="none"); figure
+      figure<-egg::ggarrange(ggplotify::as.ggplot(egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
+                                                                 labels = labels1,
+                                                                 label.args = list(gp = grid::gpar(hjust = 0, vjust=0,  cex=0.25*ncol_i*nrow_i)))),
+                             mp_LineLeg, ncol=1,nrow=2, heights=c(nrow_i*4,1)); figure
+
 
       metis.printPdfPng(figure=figure,
                         dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
@@ -2690,11 +2730,12 @@ if(T){
       multiPlotlist_i<-list();
       plotSet_ix <- unique(plotSet_i[grepl("_lineSumAbs_",plotSet_i)]);plotSet_ix
       for(multiPlot_i in 1:length(plotSet_ix)){
-        if(grepl("lineSumAbs",plotSet_ix[multiPlot_i])){
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)
-        }else{
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)
-        }
+        if(multiPlotFigLabels==F){
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"),
+                                                                                                  legend.position="none")}else{
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+                                                                                                           legend.position="none")
+                                                                                                  }
       };multiPlotlist_i
 
       if(multiPlotFigLabels==F){labels1=NULL}else{
@@ -2703,25 +2744,22 @@ if(T){
       legRows = max(round(mpParamPlots_i[1,]$nScen/3),1);legRows
       mp_LineLeg <- ggpubr::as_ggplot(ggpubr::get_legend(get(plotSet_ix[1])+
                                                    ggplot2::theme(legend.position = "bottom")+
-                                                   ggplot2::guides(colour = ggplot2::guide_legend(nrow = legRows,title="Scenario"),
+                                                   ggplot2::guides(colour = ggplot2::guide_legend(nrow = legRows, byrow=T,title="Scenario"),
                                                           shape = ggplot2::guide_legend(nrow=legRows,title="Scenario"))));mp_LineLeg
       # MultiPlots 1: Ref,diffs1scale,diffsPrcnt,leg
       #ncol
-      if(round(length(plotSet_ix)/facetCols)<1){ncol_i=length(plotSet_ix)}else{ncol_i=facetCols};ncol_i
+      if(round(length(plotSet_ix)/facetCols)<=1){ncol_i=length(plotSet_ix)}else{ncol_i=facetCols};ncol_i
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
-      figure <- ggpubr::ggarrange(ggpubr::ggarrange(plotlist=multiPlotlist_i,
-                                    labels = labels1,
-                                    font.label=list(size=10*1.5*(max(nrow_i,1.5))*1),
-                                    hjust=0,vjust=1,
-                                    ncol = ncol_i,nrow=nrow_i,
-                                    legend="none"),
-                          mp_LineLeg, ncol=1,nrow=2,
-                          heights=c(1,(1/(nrow_i*3))),legend="none"); figure
+      figure<-egg::ggarrange(ggplotify::as.ggplot(egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
+                                                                 labels = labels1,
+                                                                 label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.5*ncol_i*nrow_i)))),
+                             mp_LineLeg, ncol=1,nrow=2, heights=c(nrow_i*4,1)); figure
+
 
       metis.printPdfPng(figure=figure,
                         dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
                         filename=paste(paramSet_i,"_",i,"_mplot_SumLineAbs",sep=""),
-                        figWidth=figWidth*max(ncol_i,1.5)*0.6,
+                        figWidth=figWidth*max(ncol_i,1.5)*0.5,
                         figHeight=figHeight*(max(nrow_i,1.5)+0.3)*0.75,
                         pdfpng="png")
 
