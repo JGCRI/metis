@@ -64,7 +64,7 @@ metis.colors <- function(palx=NULL) {
                           "#ABDDA4", "#66C2A5", "#3288BD", "#5E4FA2"),100)
 
     # Basic Colors
-    pal_Basic <- add.alpha(rep(c("firebrick3", "forestgreen", "dodgerblue3", "black", "magenta", "yellow", "cyan", "gray"),100),alpha=0.8)
+    pal_Basic <- add.alpha(rep(c("firebrick2", "green3", "dodgerblue3","deeppink2","gray", "darkgoldenrod2","cyan2","black"),100),alpha=0.8)
 
     pal_hot <- c('#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026',"#4d0000")
     pal_wet <- c('#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b','#00004d')
@@ -82,27 +82,29 @@ metis.colors <- function(palx=NULL) {
 
     pal_metis <- c(`a Coal` = "gray40",  `c coal` = "gray40", `3 coal` = "gray40", coal = "gray40", `coal (conv pul)` = "gray40",
                  Coal = "gray40",
-                 `b Coal w/CCS` = "gray20", `c coal CCS` = "gray20",
+                 `b Coal w/CCS` = "gray20", `c coal CCS` = "gray20", `Coal CCS` = "gray20",
                  `coal (IGCC CCS)` = "#c0237c",
                  `coal (IGCC)` = "#f0237c",
                  `coal (conv pul CCS)` = "#e0237c",
                  `c Gas` = "darkslategray1", `b natural gas` = "darkslategray1", `2 gas` = "darkslategray1", Gas = "darkslategray1",
                  gas = "darkslategray1", `gas (CC)` = "darkslategray1",
                  `d Gas w/CCS` = "darkslategray4", `b natural gas CCS` = "darkslategray4",
-                 `gas (CC CCS)` = "#25c9e0",
+                 `gas (CC CCS)` = "darkslategray4", `Gas CCS` = "darkslategray4",
                  `gas (CT)` = "#25e9e0",
                  `gas (steam)` = "greenyellow",
                  `e Oil` = "firebrick4", `a oil` = "firebrick4", oil = "firebrick4", Oil = "firebrick4", liquids="firebrick4",
                  `refined liquids` = "firebrick4", `refined liquids (steam)` = "firebrick4", `1 liquids` = "firebrick4",
                  `refined liquids (CC)` = "firebrick4", `refined liquids (CT)` = "firebrick4",
                  `refined liquids (CC CCS)` = "#f7988f", `f Oil w/CCS` = "#f7988f", `a oil CCS` = "#f7988f", `Oil w/CCS` = "#f7988f",
+                 `Oil CCS` = "#f7988f",
                  `fossil fuel liquid`="firebrick4",
                  `International Aviation liquids` = "indianred",`International Aviation Oil` = "indianred", `liquids av`="indianred",
                  `liquids intl av`="indianred", `fossil fuel liquids intl av`="indianred", `oil intl av`="indianred",
                  `liquids intl shp`="lightcoral", `fossil fuel liquids intl shp`="lightcoral",`oil intl shp`="lightcoral",
                  `International Ship liquids` = "lightcoral", `International Ship Oil` = "lightcoral",`liquids shp`="lightcoral",
-                 `g Biomass` = "darkolivegreen2", `g Bioenergy` = "darkolivegreen2", `d biomass` = "darkolivegreen2",  biomass = "darkolivegreen2",  Biomass = "darkolivegreen2",
-                  bioenergy = "darkolivegreen2", `d bioenergy` = "darkolivegreen2", Bioenergy = "darkolivegreen2", `h Bioenergy w/CCS` = '#7efd97',
+                 `g Biomass` = "darkolivegreen2", `g Bioenergy` = "darkolivegreen2", `d biomass` = "darkolivegreen2",  biomass = "darkolivegreen2",
+                 Biomass = "darkolivegreen2", `Biomass CCS` = "darkolivegreen2",
+                 bioenergy = "darkolivegreen2", `d bioenergy` = "darkolivegreen2", Bioenergy = "darkolivegreen2", `h Bioenergy w/CCS` = '#7efd97',
                  `j traditional bioenergy` = "chartreuse3",`traditional bioenergy` = "chartreuse3",`Traditional Bioenergy` = "chartreuse3",
                  `biomass (IGCC CCS)` = "#00a31d", `4 biomass` = "#00a31d",
                  `biomass (IGCC)` = "#00c31d",
@@ -113,6 +115,7 @@ metis.colors <- function(palx=NULL) {
                  `j traditional biomass` = "#11d081", `traditional biomass` = "#11d081",
                  `h Biomass w/CCS` = "#88c892", `d biomass CCS` = "#88c892",
                  `i Nuclear` = "#ef8e27", `e nuclear` = "#ef8e27", nuclear = "#ef8e27", Gen_II_LWR = "#ef8e27",
+                  Nuclear = "#ef8e27",
                  Gen_III = "#af8e27",
                  `j Geothermal` = "darkmagenta", `i geothermal` = "darkmagenta", geothermal = "darkmagenta", Geothermal = "darkmagenta",
                  `k Hydro` = "#3d86f9", `f hydro` = "#3d86f9", hydro = "#3d86f9", Hydro = "#3d86f9",

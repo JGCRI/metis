@@ -51,13 +51,14 @@ listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
 queryPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
 
 # Choose Query sets, individual queries or set to "All". For complete list see ?metis.readgcam
+
 queriesSelect_i = c("All") # Query sets are c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
 #queriesSelect_i = c("energy")
 
-dataGCAMRef<-metis.readgcam(reReadData=T, # Default Value is T
+dataGCAMRef<-metis.readgcam(reReadData=F, # Default Value is T
                                  dataProj = dataProj_i, # Default Value is "dataProj.proj"
                                  dataProjPath = dataProjPath_i,
-                                 scenOrigNames=c("GCAMOriginal", "Ref"),
+                                 scenOrigNames=c("GCAMOriginal","Ref"),
                                  scenNewNames=c("GCAMOrig","GCAMRef"),
                                  gcamdatabasePath=gcamdatabasePath_i,
                                  gcamdatabaseName=gcamdatabaseName_i,
@@ -82,7 +83,7 @@ dataGCAMRef<-metis.readgcam(reReadData=T, # Default Value is T
 
 
 dataGCAMRef$data
-unique(dataGCAMRef$data$param)
+unique(dataGCAMRef$data$param)%>%sort()
 unique(dataGCAMRef$data$scenario)
 
 rgcam::localDBConn(gcamdatabasePath_i,gcamdatabaseName_i) # if connecting directly to gcam database
@@ -245,7 +246,7 @@ queriesSelect_i = c("All") # Query sets are c("water", "energy", "land", "emissi
 #queriesSelect_i = c("energy")
 
 
-dataGCAMPolicyLivestockPasture<-metis.readgcam(reReadData=T, # Default Value is T
+dataGCAMPolicyLivestockPasture<-metis.readgcam(reReadData=F, # Default Value is T
                                         dataProj = dataProj_i, # Default Value is "dataProj.proj"
                                         dataProjPath = dataProjPath_i,
                                         scenOrigNames=c( "Ref_LivestockPasture_neg5", "Ref_LivestockPasture_neg10"),
@@ -295,6 +296,19 @@ dataGCAMPolicyIrrigationOilCrop<-metis.readgcam(reReadData=F, # Default Value is
                                          regionsSelect=regionsSelect_i, # Default Value is NULL
                                          queriesSelect=queriesSelect_i
 )
+
+# reReadData=F # Default Value is T
+# dataProj = dataProj_i # Default Value is "dataProj.proj"
+# dataProjPath = dataProjPath_i
+# scenOrigNames=c( "Ref","Ref_IrrOilCropCost_neg25", "Ref_IrrOilCropCost_neg75")
+# scenNewNames=c("Ref","IrrCostOil_neg25", "IrrCostOil_neg75")
+# gcamdatabasePath=gcamdatabasePath_i
+# gcamdatabaseName=gcamdatabaseName_i
+# queryxml="metisQueries.xml"  # Default Value is "metisQueries.xml"
+# queryPath = queryPath_i
+# dirOutputs= paste(getwd(),"/outputs",sep="") # Default Value is paste(getwd(),"/outputs",sep="")
+# regionsSelect=regionsSelect_i # Default Value is NULL
+# queriesSelect=queriesSelect_i
 
 
 dataGCAMPolicyIrrigationOilCrop$data
@@ -384,9 +398,13 @@ rTable_i <- dataGCAM %>% dplyr::filter(value!=0)  %>%
   dplyr::ungroup() %>% droplevels()
 
 rTable_iBeef <- rTable_i %>%
-  dplyr::filter(param %in% c("livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral"))%>%
+  dplyr::filter(param %in% c("livestock_MeatDairybyTechMixed"), class2=="Pasture_FodderGrass")%>%
   dplyr::filter(grepl("Beef",class1))%>%
-  dplyr::mutate(units="Beef (Mixed fed) (Mt)")
+  dplyr::mutate(units="Beef Mixed Feed (Mt)") %>%
+  dplyr::bind_rows(rTable_i %>%
+                     dplyr::filter(param %in% c("livestock_MeatDairybyTechPastoral",class2=="Pasture_FodderGrass"))%>%
+                     dplyr::filter(grepl("Beef",class1))%>%
+                     dplyr::mutate(units="Beef Pastoral (Mt)"))
 
 rTable_iMod <- rTable_i %>%
   dplyr::filter(!grepl("livestock",param))%>%
@@ -395,8 +413,7 @@ rTable_iMod <- rTable_i %>%
   dplyr::filter(!grepl("intl|International",class2))%>%
   dplyr::filter(!grepl("CHP",class1))%>%
   dplyr::filter(!grepl("CHP",class2))%>%
-  dplyr::filter(!(grepl("LUC",param) & x==2010))%>%
-  dplyr::filter(!(grepl("emissTotalBySec",param) & x==2010))%>%
+  dplyr::mutate(value=case_when(((grepl("LUC",class1)|grepl("LUC",class1)) & x==2010)~0,TRUE~value))%>%
   dplyr::mutate(class1=case_when(param=="elecByTechTWh" ~ gsub("a Coal","Fossil",class1),TRUE~class1),
                 class1=case_when(param=="elecByTechTWh" ~ gsub("c Gas","Fossil",class1),TRUE~class1),
                 class1=case_when(param=="elecByTechTWh" ~ gsub("e Oil","Fossil",class1),TRUE~class1),
@@ -404,18 +421,13 @@ rTable_iMod <- rTable_i %>%
                 class1=gsub("Refining and Hydrogen Production","Refining",class1),
                 class2=gsub("Refining and Hydrogen Production","Refining",class2),
                 value=case_when(grepl("(ha)",units)~value*10,TRUE~value),
-                units=case_when(grepl("(ha)",units)~gsub("(ha)","1000 km2",units),TRUE~units)) %>%
+                units=case_when(grepl("(ha)",units)~gsub("(ha)","1000 km2",units),TRUE~units),
+                value=case_when((grepl("emiss",param)&!grepl("LUC",class1)&!grepl("LUC",class2)&value<0)~0,TRUE~value)) %>%
   dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
                   aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                   origScen, origQuery, origUnits, origX)%>%
   dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
   dplyr::ungroup() %>% unique() %>% droplevels()
-
-paramsSelect_iMod=c(as.vector(as.character(unique(a$param))),
-                    "watConsumBySec","landAllocByCrop", "watWithdrawByCrop", "gdpPerCapita",
-                    "landIrrCrop","landIrrRfd","landRfdCrop",
-                    "livestock_MeatDairybyTechImports","livestock_MeatDairybyTechMixed", "livestock_MeatDairybyTechPastoral" )
-paramsSelect_iMod
 
 
 scaleRange_i = tibble::tribble(
@@ -433,26 +445,37 @@ mp_i<-list(paramSet=list(
   c("aglu"),
   c("energy"),
   c("water"),
-  c("emiss"),
+  c("emissByGas"),
+  c("emissBySec"),
   c("socio"),
   c("WEL"),
   c("energyDetail"),
   c("energyPrimFinalElec"),
-  c("emissDetail")),
+  c("elecCapCost"),
+  c("emissDetail"),
+  c("WEL1"),
+  c("WEL2")),
   param=list(
-    c("livestock_MeatDairybyTechImports","livestock_MeatDairybyTechMixed", "livestock_MeatDairybyTechPastoral"),
+    c("livestock_MeatDairybyTechMixed", "livestock_MeatDairybyTechPastoral"),
     c("landIrrCrop","landIrrRfd","landRfdCrop"),
     c("landAlloc","landAllocByCrop" ,"agProdByCrop"),
     c("energyFinalByFuelBySectorMTOE","energyFinalConsumBySecMTOE","elecByTechTWh"),
     c("watWithdrawBySec","watConsumBySec","watWithdrawByCrop"),
-    c("emissCO2BySectorNoBio","emissCO2NonCO2BySectorGTPAR5","emissCO2NonCO2BySectorGWPAR5"),
+    c("emissCO2BySectorNoBio","emissByGasGWPAR5FFI","emissByGasGTPAR5FFI"),
+    c("emissCO2BySectorNoBio","emissBySectorGWPAR5FFI","emissBySectorGTPAR5FFI"),
     c("pop","gdpGrowthRate","gdpPerCapita"),
     c("agProdByCrop","watWithdrawBySec","energyFinalByFuelBySectorMTOE",
       "landAlloc","watConsumBySec","energyFinalConsumBySecMTOE"),
     c("energyFinalSubsecByFuelBuildMTOE","energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecByFuelTranspMTOE"),
     c("energyPrimaryByFuelMTOE","energyFinalByFuelBySectorMTOE","elecByTechTWh"),
-    c("emissTotalBySec","emissMethaneBySource")),
+    c("elecNewCapGW","elecCumCapGW","elecNewCapCost","elecCumCapCost"),
+    c("emissLUC", "emissMethaneBySourceGWPAR5","emissMethaneBySourceGTPAR5"),
+    c("agProdByCrop","watWithdrawBySec","landIrrRfd","livestock_MeatDairybyTechPastoral",
+      "energyFinalByFuelBySectorMTOE","elecByTechTWh"),
+    c("agProdByCrop","watWithdrawBySec","landAllocByCrop","livestock_MeatDairybyTechPastoral",
+      "energyFinalByFuelBySectorMTOE","elecByTechTWh")),
   nColMax=list(
+    c(2),
     c(3),
     c(3),
     c(3),
@@ -463,46 +486,22 @@ mp_i<-list(paramSet=list(
     c(3),
     c(3),
     c(3),
-    c(2))
+    c(4),
+    c(3),
+    c(3),
+    c(3))
 )
 
 
-unlist(mp_i$param)
+mpParams<-unlist(mp_i$param)%>%sort(); mpParams
+
+paramsSelect_iMod=c(as.vector(as.character(unique(a$param))),
+                    mpParams[!mpParams %in% as.vector(as.character(unique(a$param)))])
+paramsSelect_iMod
 
 #----------------------------
 # REFERENCE
 #----------------------------
-
-
-
-if(T){
-  scensSelect_i = c("GCAMOrig", "GCAMRef")
-
-
-  charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
-                              dataTables=dataTables_i, # Default is NULL
-                              #paramsSelect=c("landAlloc","landAllocByCrop","agProdByCrop"), # Default is "All"
-                              paramsSelect=paramsSelect_iMod, # Default is "All"
-                              regionsSelect=regionsSelect_i, # Default is "All"
-                              scensSelect=scensSelect_i,
-                              xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
-                              scenRef="GCAMRef", # Default is NULL
-                              dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
-                              pdfpng="png", # Default is "png"
-                              regionCompareOnly=0, # Default is "0"
-                              scenarioCompareOnly=0, # Default is "0"
-                              useNewLabels=1,
-                              xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
-                              colOrder1 =scensSelect_i,
-                              colOrderName1 = "scenario",
-                              folderName = "OrigRef_all",
-                              scaleRange=scaleRange_i,
-                              multiPlotFigsOnly = F,
-                              mp=mp_i, multiPlotOn = T,
-                              multiPlotFigLabels=F)
-
-}
-
 
 
 if(T){
@@ -527,7 +526,7 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             colOrderName1 = "scenario",
                             folderName = "Reference_Mod",
                             scaleRange=scaleRange_i,
-                            multiPlotFigsOnly = F,
+                            multiPlotFigsOnly = T,
                             mp=mp_i, multiPlotOn = T,
                             multiPlotFigLabels=F)
 
@@ -633,7 +632,7 @@ if(T){
 
 
 #----------------------------
-# Livestock
+# Livestock PASTURE
 #----------------------------
 
 if(T){
@@ -735,29 +734,22 @@ if(T){
 }
 
 
-
-
 #----------------------------
-# Combined Scenarios
+# Combined Scenarios All Data
 #----------------------------
 
-mp_i_Mod<-list(paramSet=list(
-  c("WEL")),
-param=list(
-  c("agProdByCrop","watWithdrawBySec","energyFinalByFuelBySectorMTOE",
-    "elecByTechTWh","landIrrRfd")
-),
-nColMax=list(
-  c(3)
-))
+if(F){
 
-
-if(T){
-  scensSelect_i = c("GCAMRef","RiceYield_pos20","Livestock_neg10","IrrCostOil_neg75")
+  unique(dataGCAM$scenario)
+  scensSelect_i = c("GCAMOrig","GCAMRef","GFDL_RCP2p6","GFDL_RCP8p5",
+                    "LivestockPasture_neg10","LivestockPasture_neg5",
+                    "IrrCostOil_neg25","IrrCostOil_neg75","RiceYield_pos10","RiceYield_pos20")
 
   charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                               #dataTables=dataTables_i, # Default is NULL
-                              paramsSelect=unlist(mp_i_Mod$param), # Default is "All"
+                              paramsSelect=unlist(mp_i$param), # Default is "All"
+                              #paramsSelect=c("landIrrCrop",
+                              #               "landIrrRfd"),
                               regionsSelect=regionsSelect_i, # Default is "All"
                               scensSelect=scensSelect_i,
                               xCompare=c("2010","2020","2030","2050"), # Default is c("2015","2030","2050","2100")
@@ -771,9 +763,44 @@ if(T){
                               scaleRange=scaleRange_i,
                               colOrder1 =scensSelect_i ,
                               colOrderName1 = "scenario",
-                              folderName = "Policy_Comb_Mod",
+                              folderName = "AllScen_AllData",
                               multiPlotFigsOnly = T,
-                              mp = mp_i_Mod, multiPlotOn = T,
+                              mp = mp_i, multiPlotOn = T,
+                              multiPlotFigLabels=F)
+}
+
+
+
+
+#----------------------------
+# Combined Scenarios Just Policies
+#----------------------------
+
+
+if(T){
+
+
+  scensSelect_i = c("GCAMRef","RiceYield_pos20","LivestockPasture_neg10","IrrCostOil_neg75")
+
+  charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
+                              #dataTables=dataTables_i, # Default is NULL
+                              paramsSelect=unlist(mp_i$param), # Default is "All"
+                              regionsSelect=regionsSelect_i, # Default is "All"
+                              scensSelect=scensSelect_i,
+                              xCompare=c("2010","2020","2030","2050"), # Default is c("2015","2030","2050","2100")
+                              scenRef="GCAMRef", # Default is NULL
+                              dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
+                              pdfpng="png", # Default is "png"
+                              regionCompareOnly=0, # Default is "0"
+                              scenarioCompareOnly=0, # Default is "0"
+                              useNewLabels=1,
+                              xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
+                              scaleRange=scaleRange_i,
+                              colOrder1 =scensSelect_i ,
+                              colOrderName1 = "scenario",
+                              folderName = "Comb_Policy_Mod",
+                              multiPlotFigsOnly = T,
+                              mp = mp_i, multiPlotOn = T,
                               multiPlotFigLabels=F)
 
 
@@ -785,23 +812,27 @@ if(T){
 # Combined Scenarios
 #----------------------------
 
-mp_i_Mod<-list(paramSet=list(
-  c("WEL")),
-  param=list(
-    c("agProdByCrop","watWithdrawBySec","energyFinalByFuelBySectorMTOE",
-      "elecByTechTWh","landIrrRfd")
-  ),
-  nColMax=list(
-    c(3)
-  ))
+# mp_i_Mod<-list(paramSet=list(
+#   c("WEL1"),
+#   c("WEL2")),
+#   param=list(
+#     c("agProdByCrop","watWithdrawBySec","landIrrRfd","livestock_MeatDairybyTechPastoral",
+#       "energyFinalByFuelBySectorMTOE","elecByTechTWh"),
+#     c("agProdByCrop","watWithdrawBySec","landAllocByCrop","livestock_MeatDairybyTechPastoral",
+#       "energyFinalByFuelBySectorMTOE","elecByTechTWh")
+#   ),
+#   nColMax=list(
+#     c(3),
+#     c(3)
+#   ))
 
 
 if(T){
-  scensSelect_i = c("GCAMRef","GFDL_RCP2p6","GFDL_RCP8p5","RiceYield_pos20","Livestock_neg10","IrrCostOil_neg75")
+  scensSelect_i = c("GCAMRef","GFDL_RCP2p6","GFDL_RCP8p5","RiceYield_pos20","LivestockPasture_neg10","IrrCostOil_neg75")
 
   charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                               #dataTables=dataTables_i, # Default is NULL
-                              paramsSelect=unlist(mp_i_Mod$param), # Default is "All"
+                              paramsSelect=unlist(mp_i$param), # Default is "All"
                               regionsSelect=regionsSelect_i, # Default is "All"
                               scensSelect=scensSelect_i,
                               xCompare=c("2010","2020","2030","2050"), # Default is c("2015","2030","2050","2100")
@@ -815,13 +846,52 @@ if(T){
                               scaleRange=scaleRange_i,
                               colOrder1 =scensSelect_i ,
                               colOrderName1 = "scenario",
-                              folderName = "Policy_CombPolicyImpacts_Mod",
+                              folderName = "Comb_PolicyImpacts_Mod",
                               multiPlotFigsOnly = T,
-                              mp = mp_i_Mod, multiPlotOn = T,
+                              mp = mp_i, multiPlotOn = T,
+                              multiPlotFigLabels=T,
+                              pointsOn=F)
+
+
+}
+
+
+#----------------------------
+# Reference All
+#----------------------------
+
+
+if(T){
+  scensSelect_i = c("GCAMOrig", "GCAMRef")
+
+
+  charts<-metis.chartsProcess(rTable=rTable_i, # Default is NULL
+                              dataTables=dataTables_i, # Default is NULL
+                              #paramsSelect=c("landAlloc","landAllocByCrop","agProdByCrop"), # Default is "All"
+                              paramsSelect=paramsSelect_iMod, # Default is "All"
+                              regionsSelect=regionsSelect_i, # Default is "All"
+                              scensSelect=scensSelect_i,
+                              xCompare=c("2010","2015","2020","2030"), # Default is c("2015","2030","2050","2100")
+                              scenRef="GCAMRef", # Default is NULL
+                              dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
+                              pdfpng="png", # Default is "png"
+                              regionCompareOnly=0, # Default is "0"
+                              scenarioCompareOnly=0, # Default is "0"
+                              useNewLabels=1,
+                              xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
+                              colOrder1 =scensSelect_i,
+                              colOrderName1 = "scenario",
+                              folderName = "OrigRef_all",
+                              scaleRange=scaleRange_i,
+                              multiPlotFigsOnly = F,
+                              mp=mp_i, multiPlotOn = T,
                               multiPlotFigLabels=F)
 
 
 }
+
+
+
 
 
 

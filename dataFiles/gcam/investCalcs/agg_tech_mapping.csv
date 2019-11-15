@@ -1,0 +1,83 @@
+﻿# A mapping of GCAM electricity generation technologies to aggregate technologies,
+technology,agg_tech
+coal (conv pul) (once through),Coal
+coal (conv pul) (seawater),Coal
+coal (conv pul) (recirculating),Coal
+coal (conv pul) (cooling pond),Coal
+coal (conv pul) (dry cooling),Coal
+coal (IGCC) (once through),Coal
+coal (IGCC) (seawater),Coal
+coal (IGCC) (recirculating),Coal
+coal (IGCC) (dry cooling),Coal
+coal (conv pul CCS) (once through),Coal CCS
+coal (conv pul CCS) (seawater),Coal CCS
+coal (conv pul CCS) (recirculating),Coal CCS
+coal (conv pul CCS) (dry cooling),Coal CCS
+coal (IGCC CCS) (once through),Coal CCS
+coal (IGCC CCS) (seawater),Coal CCS
+coal (IGCC CCS) (recirculating),Coal CCS
+coal (IGCC CCS) (dry cooling),Coal CCS
+gas (steam/CT) (once through),Gas
+gas (steam/CT) (seawater),Gas
+gas (steam/CT) (recirculating),Gas
+gas (steam/CT) (cooling pond),Gas
+gas (steam/CT) (dry cooling),Gas
+gas (CC) (once through),Gas
+gas (CC) (seawater),Gas
+gas (CC) (recirculating),Gas
+gas (CC) (cooling pond),Gas
+gas (CC) (dry cooling),Gas
+gas (CC CCS) (once through),Gas CCS
+gas (CC CCS) (seawater),Gas CCS
+gas (CC CCS) (recirculating),Gas CCS
+gas (CC CCS) (dry cooling),Gas CCS
+refined liquids (steam/CT) (once through),Oil
+refined liquids (steam/CT) (seawater),Oil
+refined liquids (steam/CT) (recirculating),Oil
+refined liquids (steam/CT) (cooling pond),Oil
+refined liquids (steam/CT) (dry cooling),Oil
+refined liquids (CC) (once through),Oil
+refined liquids (CC) (seawater),Oil
+refined liquids (CC) (recirculating),Oil
+refined liquids (CC) (dry cooling),Oil
+refined liquids (CC CCS) (once through),Oil CCS
+refined liquids (CC CCS) (seawater),Oil CCS
+refined liquids (CC CCS) (recirculating),Oil CCS
+refined liquids (CC CCS) (dry cooling),Oil CCS
+biomass (conv) (once through),Biomass
+biomass (conv) (seawater),Biomass
+biomass (conv) (recirculating),Biomass
+biomass (conv) (cooling pond),Biomass
+biomass (conv) (dry cooling),Biomass
+biomass (IGCC) (once through),Biomass
+biomass (IGCC) (seawater),Biomass
+biomass (IGCC) (recirculating),Biomass
+biomass (IGCC) (dry cooling),Biomass
+biomass (conv CCS) (once through),Biomass CCS
+biomass (conv CCS) (seawater),Biomass CCS
+biomass (conv CCS) (recirculating),Biomass CCS
+biomass (conv CCS) (dry cooling),Biomass CCS
+biomass (IGCC CCS) (once through),Biomass CCS
+biomass (IGCC CCS) (seawater),Biomass CCS
+biomass (IGCC CCS) (recirculating),Biomass CCS
+biomass (IGCC CCS) (dry cooling),Biomass CCS
+Gen_II_LWR (once through),Nuclear
+Gen_II_LWR (seawater),Nuclear
+Gen_II_LWR (recirculating),Nuclear
+Gen_II_LWR (cooling pond),Nuclear
+Gen_III (once through),Nuclear
+Gen_III (seawater),Nuclear
+Gen_III (recirculating),Nuclear
+Gen_III (cooling pond),Nuclear
+CSP_storage (recirculating),Solar
+CSP_storage (dry_hybrid),Solar
+CSP (recirculating),Solar
+CSP (dry_hybrid),Solar
+PV,Solar
+rooftop_pv,Solar
+PV_storage,Solar
+geothermal (recirculating),Geothermal
+geothermal (dry_hybrid),Geothermal
+wind,Wind
+wind_storage,Wind
+hydro,Hydro

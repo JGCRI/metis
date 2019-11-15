@@ -42,6 +42,8 @@ Imports:
 	testthat (>= 2.0.1), 
 	knitr (>= 1.20), 
 	rmarkdown (>= 1.10), 
-	XML (>= 3.98-1.20)
+	XML (>= 3.98-1.20),
+	ggplotify (>= 0.0.4),
+	egg (>= 0.4.5) 
 Remotes: github::JGCRI/rgcam
 VignetteBuilder: knitr
