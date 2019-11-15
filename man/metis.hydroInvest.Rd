@@ -4,10 +4,12 @@
 \alias{metis.hydroInvest}
 \title{metis.hydroInvest}
 \usage{
-metis.hydroInvest(addition_costs, start_year, end_year)
+metis.hydroInvest(addition_costs, start_year = 2010)
 }
 \arguments{
 \item{addition_costs}{list formatted as produced by metis.elecInvest.R function}
+
+\item{start_year}{start year for analysis}
 }
 \value{
 Returns data in a form required by metislreadgcam.R

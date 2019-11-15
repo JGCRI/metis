@@ -2,7 +2,6 @@
 #'
 #' Function that calculates electricity subsector investment requirements from a given GCAM run.
 #'
-#' @param data Data table for charting
 #' @param elec_gen_vintage Electricity vintage query result
 #' @param start_year Start year of time frame of interest for analysis
 #' @param end_year end_year of time frame of interest for analysis
@@ -11,8 +10,20 @@
 #' @return Returns data in a form required by metislreadgcam.R
 #' @export
 
-metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, end_year=2050, skiprows=0) {
+metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, end_year=2050) {
 
+
+  #----------------
+  # Initialize variables by setting to NULL
+  #----------------
+
+  NULL -> year ->technology->wtechnology->sector.name->subsector.name->
+    intermittent.technology->capacity.factor->capacity.factor.temp->sector->
+    Year->value->scenario->region->subsector->Units->temp->prev_year->retirements->
+    supplysector->half.life->steepness->lifetime->s_curve_adj->OG_gen->gen_expect->
+    prev_yr_expect->additions->add_adj->ret_adj->ret_adj_OG->natural_retire->input.capital->
+    fixed.charge.rate->add_GW->capital.overnight->early_ret->early_ret_GW->agg_tech->
+    cap_invest->mutate_all->unrec_Cap-> dep_factor -> unrec_cap
 
   # ============================================================================
   # Mapping files
@@ -27,16 +38,16 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
   cap_cost_int_cool <- data.table::fread(paste(getwd(),"/dataFiles/gcam/investCalcs/L2233.GlobalIntTechCapital_elec_cool.csv", sep=""), skip=1, stringsAsFactors = FALSE)
 
   s_curve_shutdown <- tibble::as_tibble(data.table::fread(paste(getwd(),"/dataFiles/gcam/investCalcs/A23.globaltech_retirement.csv",sep=""), skip=1))%>%
-    dplyr::mutate(year=if_else(year=="final-historical-year","final-calibration-year",year),
-                  year=if_else(year=="initial-nonhistorical-year","initial-future-year",year)); s_curve_shutdown
+    dplyr::mutate(year=dplyr::if_else(year=="final-historical-year","final-calibration-year",year),
+                  year=dplyr::if_else(year=="initial-nonhistorical-year","initial-future-year",year)); s_curve_shutdown
 
   # Add water cooling technologies if they dont exist
   waterTechs <- s_curve_shutdown %>% dplyr::select(technology); waterTechs
   if(any(!grepl("once through",unique(waterTechs$technology),ignore.case = T))){
     waterTechsCooling <- waterTechs %>% dplyr::mutate(wtechnology=paste(technology," (dry cooling)",sep="")) %>%
-      bind_rows(waterTechs %>% dplyr::mutate(wtechnology=paste(technology," (once through)",sep=""))) %>%
-      bind_rows(waterTechs %>% dplyr::mutate(wtechnology=paste(technology," (recirculating)",sep=""))) %>%
-      bind_rows(waterTechs %>% dplyr::mutate(wtechnology=paste(technology," (seawater)",sep="")))
+      dplyr::bind_rows(waterTechs %>% dplyr::mutate(wtechnology=paste(technology," (once through)",sep=""))) %>%
+      dplyr::bind_rows(waterTechs %>% dplyr::mutate(wtechnology=paste(technology," (recirculating)",sep=""))) %>%
+      dplyr::bind_rows(waterTechs %>% dplyr::mutate(wtechnology=paste(technology," (seawater)",sep="")))
   }else{waterTechsCooling <- waterTechs %>% dplyr::mutate(wtechnology=technology)}
 
   s_curve_shutdown <- s_curve_shutdown %>%
@@ -54,7 +65,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
   # Get intermittent capacity factor column added to elec_gen_tech_cost
   capac_fac_int <- data.table::fread(paste(getwd(),"/dataFiles/gcam/investCalcs/L223.GlobalIntTechCapFac_elec.csv", sep=""), skip=1, stringsAsFactors = FALSE)
   capac_fac_int %>% dplyr::select(-sector.name, -subsector.name) %>%
-    rename(technology=intermittent.technology) %>% rename(capacity.factor.temp=capacity.factor) -> capac_fac_int_new
+    dplyr::rename(technology=intermittent.technology) %>% dplyr::rename(capacity.factor.temp=capacity.factor) -> capac_fac_int_new
   elec_gen_tech_cost <- merge(elec_gen_tech_cost, capac_fac_int_new, by=c("technology", "year"), all=TRUE)
   elec_gen_tech_cost <- elec_gen_tech_cost[, c(3,4,1,2,5,6,7,8,9)]  # Redplyr::arrange columns
   elec_gen_tech_cost[is.na(elec_gen_tech_cost)] <- 0
@@ -124,16 +135,16 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
 
   # Calculate additions by vintage
   elec_vintage %>%
-    dplyr::mutate(additions = if_else(vintage == Year, value, 0)) -> elec_vintage_add
+    dplyr::mutate(additions = dplyr::if_else(vintage == Year, value, 0)) -> elec_vintage_add
 
   # Calculate retirements by vintage
   elec_vintage %>%
-    group_by(scenario, region, subsector, technology, Units, vintage) %>%
-    dplyr::mutate(prev_year = lag(value, n = 1L)) %>%
+    dplyr::group_by(scenario, region, subsector, technology, Units, vintage) %>%
+    dplyr::mutate(prev_year = dplyr::lag(value, n = 1L)) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(prev_year = if_else(is.na(prev_year), 0, prev_year),
+    dplyr::mutate(prev_year = dplyr::if_else(is.na(prev_year), 0, prev_year),
            retirements = prev_year - value,
-           retirements = if_else(retirements < 0, 0, retirements)) %>%
+           retirements = dplyr::if_else(retirements < 0, 0, retirements)) %>%
     dplyr::arrange(vintage, technology, region) -> elec_vintage_ret
 
   # Calculate s-curve output fraction
@@ -142,20 +153,20 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
     dplyr::left_join(years_mapping, by = c("vintage")) %>%
     dplyr::left_join(s_curve_shutdown %>% dplyr::select(-supplysector),
               by = c("subsector", "technology", "year")) %>%
-    # dplyr::mutate(lifetime = if_else(technology == "hydro", 110, lifetime)) %>%
+    # dplyr::mutate(lifetime = dplyr::if_else(technology == "hydro", 110, lifetime)) %>%
     dplyr::mutate(half.life = as.numeric(half.life),
            steepness = as.numeric(steepness),
-           half.life = if_else(is.na(half.life), 0, half.life),
-           steepness = if_else(is.na(steepness), 0, steepness),
-           s_curve_frac = if_else(Year > vintage & half.life != 0,
+           half.life = dplyr::if_else(is.na(half.life), 0, half.life),
+           steepness = dplyr::if_else(is.na(steepness), 0, steepness),
+           s_curve_frac = dplyr::if_else(Year > vintage & half.life != 0,
                                   (1 / (1 + exp( steepness * ((Year - vintage) - half.life )))),
                                   1)) %>%
     unique()-> s_curve_frac
 
   # Adjust s-curve output fraction to ensure that all of the capacity is retired at the end of lifetime
   s_curve_frac %>%
-    dplyr::mutate(s_curve_adj = if_else(Year - vintage >= lifetime, 0, s_curve_frac),
-           s_curve_adj = if_else(is.na(s_curve_adj), 1, s_curve_adj)) %>%
+    dplyr::mutate(s_curve_adj = dplyr::if_else(Year - vintage >= lifetime, 0, s_curve_frac),
+           s_curve_adj = dplyr::if_else(is.na(s_curve_adj), 1, s_curve_adj)) %>%
     dplyr::select(scenario, region, subsector, technology, vintage, Units, Year, value, s_curve_adj) -> s_curve_frac_adj
 
   # Expected generation assuming natural shutdowns only
@@ -164,28 +175,28 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
     dplyr::left_join(elec_vintage %>%
                 dplyr::filter(vintage == Year) %>%
                 dplyr::select(-Year) %>%
-                rename(OG_gen = value),
+                dplyr::rename(OG_gen = value),
               by = c("scenario", "region", "subsector", "technology", "vintage", "Units")) %>%
     dplyr::mutate(gen_expect = OG_gen * s_curve_adj) -> elec_gen_expect
 
 
   # Expected natural retirements
   elec_gen_expect %>%
-    group_by(scenario, region, subsector, technology, Units, vintage) %>%
-    dplyr::mutate(prev_yr_expect = lag(gen_expect, n = 1L),
-           natural_retire = if_else(Year > vintage & prev_yr_expect > gen_expect, prev_yr_expect - gen_expect, 0)) %>%
+    dplyr::group_by(scenario, region, subsector, technology, Units, vintage) %>%
+    dplyr::mutate(prev_yr_expect = dplyr::lag(gen_expect, n = 1L),
+           natural_retire = dplyr::if_else(Year > vintage & prev_yr_expect > gen_expect, prev_yr_expect - gen_expect, 0)) %>%
     dplyr::ungroup() -> elec_retire_expect
 
 
   # Total additions per region/ technology/ year (in EJ)
   elec_vintage_add %>%
-    group_by(scenario, region, subsector, technology, Units, Year) %>%
+    dplyr::group_by(scenario, region, subsector, technology, Units, Year) %>%
     dplyr::summarise(additions = sum(additions)) %>%
     dplyr::ungroup() -> elec_total_add
 
   # Total retirements per region/ technology/ year (in EJ)
   elec_vintage_ret %>%
-    group_by(scenario, region, subsector, technology, Units, Year) %>%
+    dplyr::group_by(scenario, region, subsector, technology, Units, Year) %>%
     dplyr::summarise(retirements = sum(retirements)) %>%
     dplyr::ungroup() -> elec_total_ret
 
@@ -193,8 +204,8 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
   # Merge total additions and retirements data tables
   elec_total_add %>%
     dplyr::left_join(elec_total_ret, by = c("scenario", "region", "subsector", "technology", "Units", "Year")) %>%
-    dplyr::mutate(add_adj = if_else(additions > retirements, additions - retirements, 0),
-           ret_adj = if_else(retirements > additions, retirements - additions, 0)) -> elec_add_ret
+    dplyr::mutate(add_adj = dplyr::if_else(additions > retirements, additions - retirements, 0),
+           ret_adj = dplyr::if_else(retirements > additions, retirements - additions, 0)) -> elec_add_ret
 
   # Assign adjusted retirements to vintages, assuming older vintages retire first
   # Merge retirement by vintage and retirement by year data tables
@@ -215,10 +226,10 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
 
   # Create list of adjusted retirements by technology / year
   elec_ret_adj_vintage %>%
-    distinct(scenario, region, subsector, technology, Units, Year, ret_adj) -> elec_ret_adj_year
+    dplyr::distinct(scenario, region, subsector, technology, Units, Year, ret_adj) -> elec_ret_adj_year
 
   vintage <- unique(elec_ret_adj_vintage$Year)
-  elec_ret_adjust <- tibble()
+  elec_ret_adjust <- dplyr::tibble()
 
   for (v in vintage) {
 
@@ -229,19 +240,19 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
       dplyr::left_join(elec_ret_adj_year,
                 by = c("scenario", "region", "subsector", "technology", "Units", "Year")) %>%
       dplyr::mutate(ret_adj = ret_adj - retirements,
-             retirements = if_else(ret_adj < 0, retirements + ret_adj, retirements),
-             ret_adj = if_else(ret_adj < 0, 0, ret_adj)) -> elec_ret_adj_temp
+             retirements = dplyr::if_else(ret_adj < 0, retirements + ret_adj, retirements),
+             ret_adj = dplyr::if_else(ret_adj < 0, 0, ret_adj)) -> elec_ret_adj_temp
 
     elec_ret_adjust %>%
       dplyr::bind_rows(elec_ret_adj_temp) -> elec_ret_adjust
 
     # Revise list of adjusted retirements by technology / year, removing retirements allocated to vintage v
     elec_ret_adj_year %>%
-      rename(ret_adj_OG = ret_adj) %>%
+      dplyr::rename(ret_adj_OG = ret_adj) %>%
       dplyr::left_join(elec_ret_adj_temp %>%
                   dplyr::select(-vintage, -retirements),
                 by = c("scenario", "region", "subsector", "technology", "Units", "Year")) %>%
-      dplyr::mutate(ret_adj = if_else(is.na(ret_adj), ret_adj_OG, ret_adj)) %>%
+      dplyr::mutate(ret_adj = dplyr::if_else(is.na(ret_adj), ret_adj_OG, ret_adj)) %>%
       dplyr::select(-ret_adj_OG) -> elec_ret_adj_year
 
   }
@@ -258,7 +269,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
     dplyr::left_join(elec_retire_expect %>%
                 dplyr::select(scenario, region, subsector, technology, Units, Year, vintage, natural_retire),
               by = c("scenario", "region", "subsector", "technology", "Units", "Year", "vintage")) %>%
-    dplyr::mutate(early_ret = if_else(retirements > natural_retire, retirements - natural_retire, 0)) -> elec_ret_premature
+    dplyr::mutate(early_ret = dplyr::if_else(retirements > natural_retire, retirements - natural_retire, 0)) -> elec_ret_premature
 
 
   # Calculate final (adjusted) additions in GW
@@ -282,7 +293,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
     dplyr::left_join(cap_cost %>%
                 dplyr::select(-sector.name, -input.capital, -fixed.charge.rate),
               by = c("subsector" = "subsector.name", "technology", "vintage" = "year")) %>%
-    dplyr::mutate(capital.overnight = if_else(vintage == 2010, capital.overnight * .5, capital.overnight * 1),
+    dplyr::mutate(capital.overnight = dplyr::if_else(vintage == 2010, capital.overnight * .5, capital.overnight * 1),
            early_ret_GW = (early_ret * metis.assumptions()$convEJ2GWh) / (8760 * capacity.factor),
            Units = "GW") -> elec_ret_GW
 
@@ -302,11 +313,11 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
   # New Cap Costs
   elec_add_cap_invest %>%
     dplyr::left_join(tech_mapping, by = c("technology")) %>%
-    group_by(scenario, region, Year, Units, agg_tech) %>%
+    dplyr::group_by(scenario, region, Year, Units, agg_tech) %>%
     dplyr::summarise(cap_invest = sum(cap_invest,na.rm=T)) %>%
     dplyr::ungroup() %>%
     dplyr::filter(Year >= start_year) %>%
-    dplyr::mutate(cap_invest=if_else(Year==metis.assumptions()$GCAMbaseYear,0,cap_invest))%>%
+    dplyr::mutate(cap_invest=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,cap_invest))%>%
     tidyr::spread(Year, cap_invest) %>%
     mutate_all(~replace(., is.na(.), 0))%>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
@@ -315,14 +326,14 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
   # Cum Cap Costs
   elec_add_cap_invest %>%
     dplyr::left_join(tech_mapping, by = c("technology")) %>%
-    group_by(scenario, region, Year, Units, agg_tech) %>%
+    dplyr::group_by(scenario, region, Year, Units, agg_tech) %>%
     dplyr::summarise(cap_invest = sum(cap_invest,na.rm=T)) %>%
     dplyr::ungroup() %>%
-    group_by(scenario, region,Units, agg_tech) %>%
+    dplyr::group_by(scenario, region,Units, agg_tech) %>%
     dplyr::mutate(cap_invest = cumsum(cap_invest)) %>%
     dplyr::ungroup()%>%
     dplyr::filter(Year >= start_year) %>%
-    dplyr::mutate(cap_invest=if_else(Year==metis.assumptions()$GCAMbaseYear,0,cap_invest))%>%
+    dplyr::mutate(cap_invest=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,cap_invest))%>%
     tidyr::spread(Year, cap_invest) %>%
     mutate_all(~replace(., is.na(.), 0))%>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
@@ -331,7 +342,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
   # New Capacity
   elec_add_GW %>%
     dplyr::left_join(tech_mapping, by = c("technology")) %>%
-    group_by(scenario, region, Year, Units, agg_tech) %>%
+    dplyr::group_by(scenario, region, Year, Units, agg_tech) %>%
     dplyr::summarise(add_GW = sum(add_GW,na.rm=T)) %>%
     dplyr::ungroup() %>%
     dplyr::filter(Year >= start_year) %>%
@@ -343,10 +354,10 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
   # Cummulative Capacity
   elec_add_GW %>%
     dplyr::left_join(tech_mapping, by = c("technology")) %>%
-    group_by(scenario, region, Year, Units, agg_tech) %>%
+    dplyr::group_by(scenario, region, Year, Units, agg_tech) %>%
     dplyr::summarise(add_GW = sum(add_GW,na.rm=T)) %>%
     dplyr::ungroup() %>%
-    group_by(scenario, region,Units, agg_tech) %>%
+    dplyr::group_by(scenario, region,Units, agg_tech) %>%
     dplyr::mutate(add_GW = cumsum(add_GW)) %>%
     dplyr::ungroup()%>%
     dplyr::filter(Year >= start_year) %>%
@@ -358,12 +369,12 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
   # Premature retirements by region & technology
   elec_ret_cap_cost %>%
     dplyr::left_join(tech_mapping, by = c("technology")) %>%
-    group_by(scenario, region, Year, Units, agg_tech) %>%
+    dplyr::group_by(scenario, region, Year, Units, agg_tech) %>%
     dplyr::summarise(unrec_cap = sum(unrec_cap,na.rm=T)) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(unrec_cap = unrec_cap * -1) %>%
     dplyr::filter(Year >= start_year) %>%
-    dplyr::mutate(unrec_cap=if_else(Year==metis.assumptions()$GCAMbaseYear,0,unrec_cap))%>%
+    dplyr::mutate(unrec_cap=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,unrec_cap))%>%
     tidyr::spread(Year, unrec_cap) %>%
     mutate_all(~replace(., is.na(.), 0)) %>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
@@ -372,15 +383,15 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
   # Cum Premature retirements by region & technology
   elec_ret_cap_cost %>%
     dplyr::left_join(tech_mapping, by = c("technology")) %>%
-    group_by(scenario, region, Year, Units, agg_tech) %>%
+    dplyr::group_by(scenario, region, Year, Units, agg_tech) %>%
     dplyr::summarise(unrec_cap = sum(unrec_cap,na.rm=T)) %>%
     dplyr::ungroup() %>%
-    group_by(scenario, region,Units, agg_tech) %>%
+    dplyr::group_by(scenario, region,Units, agg_tech) %>%
     dplyr::mutate(unrec_cap = cumsum(unrec_cap)) %>%
     dplyr::ungroup()%>%
     dplyr::mutate(unrec_cap = unrec_cap * -1) %>%
     dplyr::filter(Year >= start_year) %>%
-    dplyr::mutate(unrec_cap=if_else(Year==metis.assumptions()$GCAMbaseYear,0,unrec_cap))%>%
+    dplyr::mutate(unrec_cap=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,unrec_cap))%>%
     tidyr::spread(Year, unrec_cap) %>%
     mutate_all(~replace(., is.na(.), 0)) %>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
@@ -390,7 +401,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
   # Premature retirements by region & technology
   elec_ret_GW %>%
     dplyr::left_join(tech_mapping, by = c("technology")) %>%
-    group_by(scenario, region, Year, Units, agg_tech) %>%
+    dplyr::group_by(scenario, region, Year, Units, agg_tech) %>%
     dplyr::summarise(early_ret_GW = sum(early_ret_GW,na.rm=T)) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(early_ret_GW = early_ret_GW * -1) %>%
@@ -403,10 +414,10 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2015, e
   # Cum Premature retirements by region & technology
   elec_ret_GW %>%
     dplyr::left_join(tech_mapping, by = c("technology")) %>%
-    group_by(scenario, region, Year, Units, agg_tech) %>%
+    dplyr::group_by(scenario, region, Year, Units, agg_tech) %>%
     dplyr::summarise(early_ret_GW = sum(early_ret_GW,na.rm=T)) %>%
     dplyr::ungroup() %>%
-    group_by(scenario, region,Units, agg_tech) %>%
+    dplyr::group_by(scenario, region,Units, agg_tech) %>%
     dplyr::mutate(early_ret_GW = cumsum(early_ret_GW)) %>%
     dplyr::ungroup()%>%
     dplyr::mutate(early_ret_GW = early_ret_GW * -1) %>%

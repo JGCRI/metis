@@ -296,6 +296,9 @@ io_sub$ioTbl
 
 
 # Choose Parameters or set to "All" for all params. For complete list see ?metis.chartsProcess
+
+  unique(rTable_i$param)%>%sort()
+
   paramsSelect_i=c("gdp", "gdpGrowthRate", "pop",
                    "energyFinalConsumBySecEJ","elecByTechTWh",
                    "emissCO2BySector","emissNonCO2BySectorGWPAR5",

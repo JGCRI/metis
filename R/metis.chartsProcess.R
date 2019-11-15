@@ -2447,11 +2447,6 @@ for(i in unique(tbl$region)){
         pBRef;pBDiff1S;pBDiffMS;pLDiffPrcnt;pBLeg
       }}
 
-    g <- ggplot_build(pBRefNo);
-    unique(g$data[[1]]["fill"])
-
-
-
     if(multiPlotFigLabels==F){labels1=NULL}else{
     labels1 <-paste(letters[seq(from=(countMultiLabel*2+1),to=(countMultiLabel*2+2),by=1)],")",sep="")}; labels1
     if(multiPlotFigLabels==F){labels2=NULL}else{

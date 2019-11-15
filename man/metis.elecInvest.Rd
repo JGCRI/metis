@@ -4,8 +4,8 @@
 \alias{metis.elecInvest}
 \title{metis.elecInvest}
 \usage{
-metis.elecInvest(elec_gen_vintage, world_regions, start_year = 2015,
-  end_year = 2050, skiprows = 0)
+metis.elecInvest(elec_gen_vintage, world_regions, start_year = 2010,
+  end_year = 2050)
 }
 \arguments{
 \item{elec_gen_vintage}{Electricity vintage query result}
@@ -15,8 +15,6 @@ metis.elecInvest(elec_gen_vintage, world_regions, start_year = 2015,
 \item{start_year}{Start year of time frame of interest for analysis}
 
 \item{end_year}{end_year of time frame of interest for analysis}
-
-\item{data}{Data table for charting}
 }
 \value{
 Returns data in a form required by metislreadgcam.R

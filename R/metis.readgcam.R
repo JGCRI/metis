@@ -153,7 +153,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     origUnits -> origScen -> origQuery -> classPalette2 -> classPalette1 -> classLabel2 -> classLabel1 -> class2 ->
     class1 -> connx -> aggregate -> Units -> sources -> paramx -> fuel -> technology -> input -> output -> water ->
     landleaf -> ghg -> Convert -> regionsSelectAll->cf1971to2100->gcamCapacityFactor -> . -> GWPAR5 -> tblelecByTechTWh ->
-    totalFFINonCO2 -> FracBioFuel -> FracFossilFuel -> TotalLiquids ->
+    totalFFINonCO2 -> FracBioFuel -> FracFossilFuel -> TotalLiquids -> agg_tech->
     class_temp -> resource -> subRegAreaSum -> subsector->tblFinalNrgIntlAvShipMod -> 'transportation' ->
     'International Aviation' -> 'International Ship' -> 'International Aviation oil' -> 'a oil' ->
     'International Ship oil' -> 'International Aviation liquids' -> liquids -> 'International Ship liquids'->crop
@@ -1044,18 +1044,18 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       end_year_i = max(unique(tbl$year))
       for (scen in scenarios){
         elec_gen_vintage <- tbl %>%
-          filter(scenario==scen) %>%
+          dplyr::filter(scenario==scen) %>%
           tidyr::spread(year, value) %>%
-          mutate_all(~replace(., is.na(.), 0))
+          dplyr::mutate_all(~replace(., is.na(.), 0))
         temp_list <- metis.elecInvest(elec_gen_vintage, world_regions=regionsSelect, start_year=start_year_i, end_year=end_year_i)
         start_yr_hydro <- start_year_i
         end_year <- end_year_i
         temp_df <- tbl2 %>%
-          filter(scenario==scen) %>%
-          rename(agg_tech=technology) %>%
-          filter(year>=start_yr_hydro, year<=end_year) %>%
+          dplyr::filter(scenario==scen) %>%
+          dplyr::rename(agg_tech=technology) %>%
+          dplyr::filter(year>=start_yr_hydro, year<=end_year) %>%
           tidyr::spread(year, value)%>%
-          mutate_all(~replace(., is.na(.), 0))
+          dplyr::mutate_all(~replace(., is.na(.), 0))
         if(counter==0){
           addition_costs <- temp_list
           # Include hydropower cost/installed capacity needs, which isn't handled in the SA_elec script because it is not vintaged.
@@ -1070,7 +1070,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         counter <- counter+1
       }
 
-      addition_costsWhydro <- metis.hydroInvest(addition_costs=addition_costs, start_year=start_year_i, end_year=end_year_i)$addition_costs
+      addition_costsWhydro <- metis.hydroInvest(addition_costs=addition_costs, start_year=start_year_i)$addition_costs
 
      # newCap_cost
       tbl1 <- addition_costsWhydro[["newCap_cost"]] %>%
@@ -3051,7 +3051,7 @@ paramx <- "emissBySectorGWPAR5FFI"
     # GHG emissions by resource production, using AR5 GWP values
     totalFFINonCO2 <- datax %>% dplyr::filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissNonCO2BySectorGWPAR5")) %>%
       dplyr::filter(!class1=='CO2')
-    # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
+    # dplyr::rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
     totalFFINonCO2 <- totalFFINonCO2 %>%
       dplyr::mutate(class_temp = class2) %>%
       dplyr::mutate(class2 = class1) %>%
@@ -3088,7 +3088,7 @@ paramx <- "emissBySectorGWPAR5FFI"
     # Same as FFI Emiss by Sec, except we are now adding LUC. So really it is the whole emissions picture (or close to it)
     totalFFINonCO2 <- datax %>% dplyr::filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissNonCO2BySectorGWPAR5")) %>%
       dplyr::filter(!class1=='CO2')
-    # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
+    # dplyr::rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
     totalFFINonCO2 <- totalFFINonCO2 %>%
       dplyr::mutate(class_temp = class2) %>%
       dplyr::mutate(class2 = class1) %>%
@@ -3126,7 +3126,7 @@ paramx <- "emissBySectorGWPAR5FFI"
     # GHG emissions by resource production, using AR5 GWP values
     totalFFINonCO2 <- datax %>% dplyr::filter(param %in% c("emissNonCO2ByResProdGWPAR5", "emissNonCO2BySectorGWPAR5")) %>%
       dplyr::filter(!class1=='CO2')
-    # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
+    # dplyr::rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
     totalFFICO2 <- datax %>% dplyr::filter(param %in% c("emissCO2BySectorNoBio")) %>% dplyr::mutate(class1 = "CO2")
     totalFFICO2Eq <- rbind(totalFFICO2, totalFFINonCO2)
     totalFFICO2Eq$param <- 'emissByGasGWPAR5FFI'
@@ -3168,7 +3168,7 @@ paramx <- "emissBySectorGWPAR5FFI"
       dplyr::mutate(class1=dplyr::if_else(class1=="LUC", "CO2 LUC", class1))
     totalCO2Eq <- rbind(totalFFICO2, NonCo2_LUC)
 
-    # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
+    # dplyr::rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
     totalCO2Eq$param <- 'emissByGasGWPAR5LUC'
     totalCO2Eq <- totalCO2Eq %>%
       dplyr::mutate(origQuery="comb_origQueries",
@@ -3685,7 +3685,7 @@ paramx <- "emissBySectorGWPAR5FFI"
       # GHG emissions by resource production, using AR5 GTP values
       totalFFINonCO2 <- datax %>% dplyr::filter(param %in% c("emissNonCO2ByResProdGTPAR5", "emissNonCO2BySectorGTPAR5")) %>%
         dplyr::filter(!class1=='CO2')
-      # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
+      # dplyr::rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
       totalFFINonCO2 <- totalFFINonCO2 %>%
         dplyr::mutate(class_temp = class2) %>%
         dplyr::mutate(class2 = class1) %>%
@@ -3722,7 +3722,7 @@ paramx <- "emissBySectorGWPAR5FFI"
       # Same as FFI Emiss by Sec, except we are now adding LUC. So really it is the whole emissions picture (or close to it)
       totalFFINonCO2 <- datax %>% dplyr::filter(param %in% c("emissNonCO2ByResProdGTPAR5", "emissNonCO2BySectorGTPAR5")) %>%
         dplyr::filter(!class1=='CO2')
-      # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
+      # dplyr::rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
       totalFFINonCO2 <- totalFFINonCO2 %>%
         dplyr::mutate(class_temp = class2) %>%
         dplyr::mutate(class2 = class1) %>%
@@ -3760,7 +3760,7 @@ paramx <- "emissBySectorGWPAR5FFI"
       # GHG emissions by resource production, using AR5 GTP values
       totalFFINonCO2 <- datax %>% dplyr::filter(param %in% c("emissNonCO2ByResProdGTPAR5", "emissNonCO2BySectorGTPAR5")) %>%
         dplyr::filter(!class1=='CO2')
-      # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
+      # dplyr::rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
       totalFFICO2 <- datax %>% dplyr::filter(param %in% c("emissCO2BySectorNoBio")) %>%dplyr::mutate(class1="CO2")
       totalFFICO2Eq <- rbind(totalFFICO2, totalFFINonCO2)
       totalFFICO2Eq$param <- 'emissByGasGTPAR5FFI'
@@ -3800,7 +3800,7 @@ paramx <- "emissBySectorGWPAR5FFI"
         dplyr::filter(!class1=='CO2')%>%dplyr::mutate(class1=dplyr::if_else(class1=="LUC", "CO2 LUC", class1))
       totalCO2Eq <- rbind(totalFFICO2, NonCo2_LUC)
 
-      # Rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
+      # dplyr::rename so that the nonCO2 classes 1 and 2 are consistent with the CO2 classes 1 and 2
       totalCO2Eq$param <- 'emissByGasGTPAR5LUC'
       totalCO2Eq <- totalCO2Eq %>%
         dplyr::mutate(origQuery="comb_origQueries",
