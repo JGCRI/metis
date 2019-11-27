@@ -190,7 +190,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   NULL->scenario->value->x->region->param->origValue->origScen->origQuery->year->
   origUnits->origX->sources->vintage->class1->classLabel1->classPalette1->yMax_i->yMin_i->
   class2->classLabel2->classPalette2->i->j->k->figWMult->classLabel1x ->classLabel2x-> classPalette1x-> classPalette2x->
-  nScen->paramSet->multiPlot->plot->scen->param
+  nScen->paramSet->multiPlot->plot->scen->param->lastrow
 
   aggregate_i <- aggregate
 
@@ -1447,8 +1447,8 @@ if(scenarioCompareOnly!=1){
         plotSet_ix <- unique(plotSet_i[grepl("_Bar_",plotSet_i)])
         for(multiPlot_i in 1:length(plotSet_ix)){
           if(multiPlotFigLabels==F){
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"))}else{
-            multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"))
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=15,r=15,b=30,unit="pt"))}else{
+            multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"))
           }
         };multiPlotlist_i
 
@@ -1475,8 +1475,8 @@ if(scenarioCompareOnly!=1){
       plotSet_ix <- unique(plotSet_i[grepl("_Line_",plotSet_i)])
       for(multiPlot_i in 1:length(plotSet_ix)){
         if(multiPlotFigLabels==F){
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"))}else{
-            multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"))
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=15,r=15,b=30,unit="pt"))}else{
+            multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"))
           }
       };multiPlotlist_i
 
@@ -2330,6 +2330,15 @@ for(i in unique(tbl$region)){
   multiPlotFigs<-tibble::tibble()
   countMultiLabel=0;
   paramSetCurrent=mpdf[1,]$paramSet
+
+  lastrows <- tibble::tibble()
+  for(ps_i in unique(mpdf$paramSet)){
+    pn_i<-length(unique((mpdf%>%dplyr::filter(paramSet==ps_i))$param))
+    lastrows <- lastrows%>%
+      dplyr::bind_rows(tibble::tibble(paramSet=c(ps_i),lastrow=pn_i))%>%
+      dplyr::mutate(lastrowCum=cumsum(lastrow))
+  };lastrows
+
   for(row_i in 1:nrow(mpdf)){
 
     if(row_i>1){
@@ -2345,103 +2354,97 @@ for(i in unique(tbl$region)){
 
     plotSet_i <-unique(mpParamPlots_i$plot);plotSet_i
 
-    lastrows <- c()
-    for(ps_i in unique(mpdf$paramSet)){
-      pn_i<-length(unique((mpdf%>%dplyr::filter(paramSet==ps_i))$param))
-      lastrows <- c(lastrows,pn_i)
-    };lastrows
-
     if(multiPlotAllYears==T){
       if(multiPlotFigLabels==F){
-      pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
-      pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
-      pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
-      pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+      pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+      pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+      pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+      pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
       }else{
-        pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
-        pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
-        pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
-        pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+        pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+        pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+        pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+        pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
       }
-      g <- ggplot_build(pBRef);
+      g <- ggplot2::ggplot_build(pBRef);
       pFilln<-unique(g$data[[1]]["fill"]);pFilln
       pColn<-unique(g$data[[1]]["colour"]);pColn
       if(nrow(pFilln)>1|nrow(pColn)>1){
         pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+ggplot2::theme(legend.position = "right")))}else{
-          pBLeg<-ggplot() + theme_void()
+          pBLeg<-ggplot2::ggplot() + ggplot2::theme_void()
         }
       pBRef;pBDiff1S;pBDiffMS;pLDiffPrcnt;pBLeg
     }else{
-      if(!row_i %in% lastrows){
+      if(!row_i %in% unique(lastrows$lastrowCum)){
         if(multiPlotFigLabels==F){
           pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+
-            theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),
+            ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),
                   axis.title.x=ggplot2::element_blank(),
                   axis.text.x=ggplot2::element_blank(),
                   axis.ticks.x=ggplot2::element_blank(),legend.position="none")
           pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+
-            theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),
+            ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),
                   axis.title.x=ggplot2::element_blank(),
                   axis.text.x=ggplot2::element_blank(),
                   axis.ticks.x=ggplot2::element_blank(),legend.position="none")
           pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+
-            theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),
+            ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),
                   axis.title.x=ggplot2::element_blank(),
                   axis.text.x=ggplot2::element_blank(),
                   axis.ticks.x=ggplot2::element_blank(),legend.position="none")
           pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+
-            theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),
+            ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),
                   axis.title.x=ggplot2::element_blank(),
                   axis.text.x=ggplot2::element_blank(),
                   axis.ticks.x=ggplot2::element_blank(),legend.position="none")
         }else{
           pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+
-            theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+            ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),
                   axis.title.x=ggplot2::element_blank(),
                   axis.text.x=ggplot2::element_blank(),
                   axis.ticks.x=ggplot2::element_blank(),legend.position="none")
           pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+
-            theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+            ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),
                   axis.title.x=ggplot2::element_blank(),
                   axis.text.x=ggplot2::element_blank(),
                   axis.ticks.x=ggplot2::element_blank(),legend.position="none")
           pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+
-            theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+            ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),
                   axis.title.x=ggplot2::element_blank(),
                   axis.text.x=ggplot2::element_blank(),
                   axis.ticks.x=ggplot2::element_blank(),legend.position="none")
           pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+
-            theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+            ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),
                   axis.title.x=ggplot2::element_blank(),
                   axis.text.x=ggplot2::element_blank(),
                   axis.ticks.x=ggplot2::element_blank(),legend.position="none")
         }
-        g <- ggplot_build(pBRef);
+        g <- ggplot2::ggplot_build(pBRef);
         pFilln<-unique(g$data[[1]]["fill"]);pFilln
         pColn<-unique(g$data[[1]]["colour"]);pColn
         if(nrow(pFilln)>1|nrow(pColn)>1){
           pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+ggplot2::theme(legend.position = "right")))}else{
-            pBLeg<-ggplot() + theme_void()
+            pBLeg<-ggplot2::ggplot() + ggplot2::theme_void()
           }
         pBRef;pBDiff1S;pBDiffMS;pLDiffPrcnt;pBLeg
       }else{
         if(multiPlotFigLabels==F){
-          pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
-          pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
-          pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
-          pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+          pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+          pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+          pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
+          pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=15, r=15,b=30,unit="pt"),legend.position="none")
         }else{
-          pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
-          pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
-          pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
-          pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+          pBRef<-get(plotSet_i[grepl("barDiffAbs1ScaleRef_",plotSet_i)])+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+          pBDiff1S<-get(plotSet_i[grepl("barDiffAbs1Scale_",plotSet_i)])+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+          pBDiffMS<-get(plotSet_i[grepl("barDiffAbs_",plotSet_i)])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
+          pLDiffPrcnt<-get(plotSet_i[grepl("lineDiffPrcnt_",plotSet_i)])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),legend.position="none")
         }
-        g <- ggplot_build(pBRef);
+        g <- ggplot2::ggplot_build(pBRef);
         pFilln<-unique(g$data[[1]]["fill"]);pFilln
         pColn<-unique(g$data[[1]]["colour"]);pColn
         if(nrow(pFilln)>1|nrow(pColn)>1){
         pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+ggplot2::theme(legend.position = "right")))}else{
-          pBLeg<-ggplot() + theme_void()
+          pBLeg<-ggplot2::ggplot() + ggplot2::theme_void()
         }
 
         pBRef;pBDiff1S;pBDiffMS;pLDiffPrcnt;pBLeg
@@ -2497,8 +2500,7 @@ for(i in unique(tbl$region)){
                                       nScen=nScen_i))%>%
       dplyr::bind_rows(tibble::tibble(paramSet=mpdf[row_i,]$paramSet,
                                       multiPlot=paste("figMScaleDiffPrcnt_",mpdf[row_i,]$paramSet,"_",mpdf[row_i,]$param,sep=""),
-                                      nScen=nScen_i));
-
+                                      nScen=nScen_i))
     };multiPlotFigs;
 
 for(paramSet_i in unique(multiPlotFigs$paramSet)){
@@ -2618,9 +2620,9 @@ if(T){
       plotSet_ix <- unique(plotSet_i[grepl("_lineSum",plotSet_i)]);plotSet_ix
       for(multiPlot_i in 1:length(plotSet_ix)){
         if(multiPlotFigLabels==F){
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"),
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=15,r=15,b=30,unit="pt"),
                                                                                                     legend.position="none")}else{
-            multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+            multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),
                                                                                                     legend.position="none")
           }
       };multiPlotlist_i
@@ -2654,9 +2656,9 @@ if(T){
       plotSet_ix <- unique(plotSet_i[grepl("_lineSumDiff_|_lineSumAbs_",plotSet_i)]);plotSet_ix
       for(multiPlot_i in 1:length(plotSet_ix)){
         if(multiPlotFigLabels==F){
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"),
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=15,r=15,b=30,unit="pt"),
                                                                                                   legend.position="none")}else{
-           multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+           multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),
                                                                                                    legend.position="none")
                                                                                               }
       };multiPlotlist_i
@@ -2690,9 +2692,9 @@ if(T){
       plotSet_ix <- unique(plotSet_i[grepl("_lineSumDiffPrcnt_|_lineSumAbs_",plotSet_i)]);plotSet_ix
       for(multiPlot_i in 1:length(plotSet_ix)){
         if(multiPlotFigLabels==F){
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"),
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=15,r=15,b=30,unit="pt"),
                                                                                                   legend.position="none")}else{
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),
                                                                                                 legend.position="none")
                                                                                                   }
       };multiPlotlist_i
@@ -2731,9 +2733,9 @@ if(T){
       plotSet_ix <- unique(plotSet_i[grepl("_lineSumAbs_",plotSet_i)]);plotSet_ix
       for(multiPlot_i in 1:length(plotSet_ix)){
         if(multiPlotFigLabels==F){
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=15,r=15,b=30,unit="pt"),
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=15,r=15,b=30,unit="pt"),
                                                                                                   legend.position="none")}else{
-          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+theme(plot.margin=margin(l=65,r=20,b=30,unit="pt"),
+          multiPlotlist_i[[multiPlot_i]] <-get(plotSet_ix[multiPlot_i])+ggplot2::ylab(NULL)+ggplot2::theme(plot.margin=ggplot2::margin(l=65,r=20,b=30,unit="pt"),
                                                                                                            legend.position="none")
                                                                                                   }
       };multiPlotlist_i
@@ -2776,3 +2778,4 @@ if(T){
   return(tbl)
 
   } # Close Function
+

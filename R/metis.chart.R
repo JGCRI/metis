@@ -60,6 +60,10 @@
 #' @param paletteRev Default =T
 #' @param forceFacets Default =F. When you have one facet only and want to show that.
 #' @param legendPosition Default ="right"
+#' @param theme_custom Default = NULL, "theme_gray","theme_bw","theme_linedraw","theme_light", "theme_minimal","theme_classic","theme_void","theme_dark"
+#' @param panelBGcolor Default = "white", Can also be "transparent"
+#' @param plotBGcolor Default = "white", Can also be "transparent"
+#' @param legendBGcolor Default = "white", Can also be "transparent"
 #' @keywords charts, diffplots, bubble, sankey.
 #' @return Returns the formatted data used to produce chart
 #' @import ggplot2
@@ -109,7 +113,11 @@ metis.chart<-function(data,
                          pointsSize = 4,
                          paletteRev=T,
                          forceFacets=F,
-                         legendPosition="right")
+                         legendPosition="right",
+                         theme_custom = NULL,
+                         panelBGcolor = NULL,
+                         plotBGcolor = NULL,
+                         legendBGcolor = NULL)
                         {
 
   # color=NULL
@@ -168,7 +176,7 @@ metis.chart<-function(data,
 # Initialize variables to remove binding errors if needed
 # -----------------
 
-NULL -> value -> tempName -> sankeyHjustCheck -> value1 -> levelsOn
+NULL -> value -> tempName -> sankeyHjustCheck -> value1 -> levelsOn -> theme_customX
 StatStratum <- ggalluvial::StatStratum # This is done so that ggplot2 recognizes stat stratum
 
 
@@ -291,23 +299,50 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
   } else{
   p <- ggplot(l1,aes(x=get(xData),y=get(yData),group=get(group))) +
       ggtitle(title) +
-      theme_bw() +
-      theme(
-        text =                element_text(family = NULL, face = "plain",colour = "black", size = 24,
-                                           hjust = 0.5, vjust = 0.5, angle = 0, lineheight = 0.9)
-        , axis.text.x =       element_text(size=24)
-        , axis.text.y =       element_text(size=24)
-        ,axis.title.x =       element_text(vjust = -1, margin=margin(t=1,unit="line"))
-        ,axis.title.y =       element_text(angle = 90, vjust = 2, margin=margin(r=1,unit="line"))
-        ,legend.key =         element_blank()
-        ,legend.key.size =    unit(1.5, 'lines')
-        ,legend.text =        element_text(size = rel(1.0), colour = "black")
-        ,legend.title =       element_text(size = rel(1.2), face = NULL, hjust = 0, colour = "black")
-        #,strip.background =   element_rect(fill = NA, colour = "black")
-        ,plot.margin =        unit(c(1, 1, 1, 1), "lines")
-        ,plot.title=          element_text(face="bold", hjust=0,size=20,margin = margin(b=20))
-      )
+      theme_bw()
+
+  # Custom Theme
+  if(!is.null(theme_custom)){
+    if(any(theme_custom %in% c("theme_gray","theme_bw","theme_linedraw","theme_light",
+                               "theme_minimal","theme_classic","theme_void","theme_dark"))){
+      if(theme_custom == "theme_gray"){theme_customX <- ggplot2::theme_gray()}
+      if(theme_custom == "theme_bw"){theme_customX <-  ggplot2::theme_bw()}
+      if(theme_custom == "theme_linedraw"){theme_customX <-  ggplot2::theme_linedraw()}
+      if(theme_custom == "theme_light"){theme_customX <-  ggplot2::theme_light()}
+      if(theme_custom == "theme_minimal"){theme_customX <-  ggplot2::theme_minimal()}
+      if(theme_custom == "theme_classic"){theme_customX <-  ggplot2::theme_classic()}
+      if(theme_custom == "theme_void"){theme_customX <-  ggplot2::theme_void()}
+      if(theme_custom == "theme_dark"){theme_customX <-  ggplot2::theme_dark()}
+      p <- p + theme_customX
+    }else{print("theme_gg provided not available. No theme applied")}
   }
+
+  if(!is.null(panelBGcolor)|!is.null(plotBGcolor)){
+    if(is.null(legendBGcolor)){legendBGcolor<-plotBGcolor}
+  p <- p +
+    theme(panel.background =   element_rect(fill = panelBGcolor),
+          plot.background =    element_rect(fill = plotBGcolor),
+          legend.background = element_rect(fill = legendBGcolor))}
+
+  p <- p +
+    theme(
+      text =                element_text(family = NULL, face = "plain",colour = "black", size = 24,
+                                         hjust = 0.5, vjust = 0.5, angle = 0, lineheight = 0.9)
+      , axis.text.x =       element_text(size=24)
+      , axis.text.y =       element_text(size=24)
+      ,axis.title.x =       element_text(vjust = -1, margin=margin(t=1,unit="line"))
+      ,axis.title.y =       element_text(angle = 90, vjust = 2, margin=margin(r=1,unit="line"))
+      ,legend.key =         element_blank()
+      ,legend.key.size =    unit(1.5, 'lines')
+      ,legend.text =        element_text(size = rel(1.0), colour = "black")
+      ,legend.title =       element_text(size = rel(1.2), face = NULL, hjust = 0, colour = "black")
+      #,strip.background =   element_rect(fill = NA, colour = "black")
+      ,plot.margin =        unit(c(1, 1, 1, 1), "lines")
+      ,plot.title=          element_text(face="bold", hjust=0,size=20,margin = margin(b=20))
+    )
+
+  }
+
 
 
   # Calculate number of facets. If both are one then
@@ -593,12 +628,22 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
 
 
         if(is.null(sankeyHjustCheck)){
+          if(any("transparent" %in% c(plotBGcolor,panelBGcolor))){
         metis.printPdfPng(figure=p,
                         dir=dirOutputs,
                         filename=fname,
                         figWidth=figWidth,
                         figHeight=figHeight,
-                        pdfpng=pdfpng)
+                        pdfpng=pdfpng,
+                        transparent=T)
+          }else{
+            metis.printPdfPng(figure=p,
+                              dir=dirOutputs,
+                              filename=fname,
+                              figWidth=figWidth,
+                              figHeight=figHeight,
+                              pdfpng=pdfpng)
+          }
           }
 
         #print(paste("Figure saved as: ",fileName,".",pdfpng," in folder: ", paste(dirOutputs,sep=""),sep=""))
