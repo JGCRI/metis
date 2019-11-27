@@ -32,7 +32,7 @@ localBasinsShapeFileColName = "code" # Will need to load the file to see which n
 # Read GCAM Data
 #---------------------------
 
-regionsSelect_i <- c("Uruguay")
+regionsSelect_i <- countryName
 dataProjPath_i <- paste(getwd(),"/dataFiles/gcam",sep="")
 queryPath_i <-paste(getwd(),"/dataFiles/gcam",sep="")
 
@@ -448,7 +448,7 @@ mp_i<-list(paramSet=list(
   c("emissByGas"),
   c("emissBySec"),
   c("socio"),
-  c("WEL"),
+  #c("WEL"),
   c("energyDetail"),
   c("energyPrimFinalElec"),
   c("elecCapCost"),
@@ -457,26 +457,25 @@ mp_i<-list(paramSet=list(
   c("WEL2")),
   param=list(
     c("livestock_MeatDairybyTechMixed", "livestock_MeatDairybyTechPastoral"),
-    c("landIrrCrop","landIrrRfd","landRfdCrop"),
+    c("landIrrRfd","landIrrCrop","landRfdCrop"),
     c("landAlloc","landAllocByCrop" ,"agProdByCrop"),
     c("energyFinalByFuelBySectorMTOE","energyFinalConsumBySecMTOE","elecByTechTWh"),
     c("watWithdrawBySec","watConsumBySec","watWithdrawByCrop"),
     c("emissCO2BySectorNoBio","emissByGasGWPAR5FFI","emissByGasGTPAR5FFI"),
     c("emissCO2BySectorNoBio","emissBySectorGWPAR5FFI","emissBySectorGTPAR5FFI"),
     c("pop","gdpGrowthRate","gdpPerCapita"),
-    c("agProdByCrop","watWithdrawBySec","energyFinalByFuelBySectorMTOE",
-      "landAlloc","watConsumBySec","energyFinalConsumBySecMTOE"),
+    # c("agProdByCrop","watWithdrawBySec","watConsumBySec","landAlloc",
+    #   "energyFinalByFuelBySectorMTOE","energyFinalConsumBySecMTOE","elecByTechTWh"),
     c("energyFinalSubsecByFuelBuildMTOE","energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecByFuelTranspMTOE"),
     c("energyPrimaryByFuelMTOE","energyFinalByFuelBySectorMTOE","elecByTechTWh"),
     c("elecNewCapGW","elecCumCapGW","elecNewCapCost","elecCumCapCost"),
     c("emissLUC", "emissMethaneBySourceGWPAR5","emissMethaneBySourceGTPAR5"),
-    c("agProdByCrop","watWithdrawBySec","landIrrRfd","livestock_MeatDairybyTechPastoral",
+    c("agProdByCrop","watWithdrawBySec","landAlloc",
       "energyFinalByFuelBySectorMTOE","elecByTechTWh"),
-    c("agProdByCrop","watWithdrawBySec","landAllocByCrop","livestock_MeatDairybyTechPastoral",
+    c("agProdByCrop","watWithdrawBySec","landAllocByCrop",
       "energyFinalByFuelBySectorMTOE","elecByTechTWh")),
   nColMax=list(
     c(2),
-    c(3),
     c(3),
     c(3),
     c(3),
@@ -498,6 +497,8 @@ mpParams<-unlist(mp_i$param)%>%sort(); mpParams
 paramsSelect_iMod=c(as.vector(as.character(unique(a$param))),
                     mpParams[!mpParams %in% as.vector(as.character(unique(a$param)))])
 paramsSelect_iMod
+
+pointsOn_i=T
 
 #----------------------------
 # REFERENCE
@@ -528,7 +529,7 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             scaleRange=scaleRange_i,
                             multiPlotFigsOnly = T,
                             mp=mp_i, multiPlotOn = T,
-                            multiPlotFigLabels=F)
+                            multiPlotFigLabels=T,pointsOn=pointsOn_i)
 
 }
 #----------------------------
@@ -559,7 +560,7 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             scaleRange=scaleRange_i,
                             multiPlotFigsOnly = T,
                             mp=mp_i, multiPlotOn = T,
-                            multiPlotFigLabels=F,
+                            multiPlotFigLabels=T,pointsOn=pointsOn_i,
                             facetCols=3)
 
 }
@@ -593,14 +594,38 @@ charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                             folderName = "Policy_RiceYield_Mod",
                             multiPlotFigsOnly = T,
                             mp = mp_i, multiPlotOn = T,
-                            multiPlotFigLabels=F)
+                            multiPlotFigLabels=T,pointsOn=pointsOn_i)
+
+# rTable=rTable_iMod # Default is NULL
+# #dataTables=dataTables_i, # Default is NULL
+# paramsSelect=unlist(mp_i$param) # Default is "All"
+# regionsSelect=regionsSelect_i # Default is "All"
+# scensSelect=scensSelect_i
+# xCompare=c("2010","2020","2030","2050") # Default is c("2015","2030","2050","2100")
+# scenRef="GCAMRef" # Default is NULL
+# dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+# pdfpng="png" # Default is "png"
+# regionCompareOnly=0 # Default is "0"
+# scenarioCompareOnly=0 # Default is "0"
+# useNewLabels=1
+# xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050)
+# scaleRange=scaleRange_i
+# colOrder1 =scensSelect_i
+# colOrderName1 = "scenario"
+# folderName = "Policy_RiceYield_Mod"
+# multiPlotFigsOnly = T
+# mp = mp_i
+# multiPlotOn = T
+# multiPlotFigLabels=T
+# pointsOn=pointsOn_i
+
 }
 
 #----------------------------
 # Livestock
 #----------------------------
 
-if(T){
+if(F){
 
   unique(dataGCAM$scenario)
   scensSelect_i = c("GCAMRef","Livestock_neg5","Livestock_neg10")
@@ -627,7 +652,7 @@ if(T){
                               folderName = "Policy_Livestock_Mod",
                               multiPlotFigsOnly = T,
                               mp = mp_i, multiPlotOn = T,
-                              multiPlotFigLabels=F)
+                              multiPlotFigLabels=T,pointsOn=pointsOn_i)
 }
 
 
@@ -662,7 +687,7 @@ if(T){
                               folderName = "Policy_LivestockPasture_Mod",
                               multiPlotFigsOnly = T,
                               mp = mp_i, multiPlotOn = T,
-                              multiPlotFigLabels=F)
+                              multiPlotFigLabels=T,pointsOn=pointsOn_i)
 }
 
 
@@ -670,7 +695,7 @@ if(T){
 # Irrigation
 #----------------------------
 
-if(T){
+if(F){
 
   unique(dataGCAM$scenario)
   scensSelect_i = c("GCAMRef","IrrCost_neg25","IrrCost_neg75","IrrCost_neg99")
@@ -696,7 +721,7 @@ if(T){
                               folderName = "Policy_Irrigation_Mod",
                               multiPlotFigsOnly = T,
                               mp = mp_i, multiPlotOn = T,
-                              multiPlotFigLabels=F)
+                              multiPlotFigLabels=T,pointsOn=pointsOn_i)
 }
 
 
@@ -730,7 +755,7 @@ if(T){
                               folderName = "Policy_IrrigationOil_Mod",
                               multiPlotFigsOnly = T,
                               mp = mp_i, multiPlotOn = T,
-                              multiPlotFigLabels=F)
+                              multiPlotFigLabels=T,pointsOn=pointsOn_i)
 }
 
 
@@ -766,7 +791,7 @@ if(F){
                               folderName = "AllScen_AllData",
                               multiPlotFigsOnly = T,
                               mp = mp_i, multiPlotOn = T,
-                              multiPlotFigLabels=F)
+                              multiPlotFigLabels=T,pointsOn=pointsOn_i)
 }
 
 
@@ -801,7 +826,7 @@ if(T){
                               folderName = "Comb_Policy_Mod",
                               multiPlotFigsOnly = T,
                               mp = mp_i, multiPlotOn = T,
-                              multiPlotFigLabels=F)
+                              multiPlotFigLabels=T,pointsOn=pointsOn_i)
 
 
 }
@@ -812,19 +837,19 @@ if(T){
 # Combined Scenarios
 #----------------------------
 
-# mp_i_Mod<-list(paramSet=list(
-#   c("WEL1"),
-#   c("WEL2")),
-#   param=list(
-#     c("agProdByCrop","watWithdrawBySec","landIrrRfd","livestock_MeatDairybyTechPastoral",
-#       "energyFinalByFuelBySectorMTOE","elecByTechTWh"),
-#     c("agProdByCrop","watWithdrawBySec","landAllocByCrop","livestock_MeatDairybyTechPastoral",
-#       "energyFinalByFuelBySectorMTOE","elecByTechTWh")
-#   ),
-#   nColMax=list(
-#     c(3),
-#     c(3)
-#   ))
+# mp_i_Mod <-list(paramSet=list(
+#     c("WEL1"),
+#     c("WEL2")),
+#     param=list(
+#       c("agProdByCrop","watWithdrawBySec","landAlloc",
+#         "energyFinalByFuelBySectorMTOE","elecByTechTWh"),
+#       c("agProdByCrop","watWithdrawBySec","landAllocByCrop",
+#         "energyFinalByFuelBySectorMTOE","elecByTechTWh")),
+#     nColMax=list(
+#       c(3),
+#       c(3))
+#   )
+
 
 
 if(T){
@@ -832,7 +857,7 @@ if(T){
 
   charts<-metis.chartsProcess(rTable=rTable_iMod, # Default is NULL
                               #dataTables=dataTables_i, # Default is NULL
-                              paramsSelect=unlist(mp_i$param), # Default is "All"
+                              paramsSelect=unlist(mp_i_Mod$param), # Default is "All"
                               regionsSelect=regionsSelect_i, # Default is "All"
                               scensSelect=scensSelect_i,
                               xCompare=c("2010","2020","2030","2050"), # Default is c("2015","2030","2050","2100")
@@ -840,7 +865,7 @@ if(T){
                               dirOutputs=paste(getwd(),"/outputs",sep=""), # Default is paste(getwd(),"/outputs",sep="")
                               pdfpng="png", # Default is "png"
                               regionCompareOnly=0, # Default is "0"
-                              scenarioCompareOnly=1, # Default is "0"
+                              scenarioCompareOnly=0, # Default is "0"
                               useNewLabels=1,
                               xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050),
                               scaleRange=scaleRange_i,
@@ -848,10 +873,31 @@ if(T){
                               colOrderName1 = "scenario",
                               folderName = "Comb_PolicyImpacts_Mod",
                               multiPlotFigsOnly = T,
-                              mp = mp_i, multiPlotOn = T,
-                              multiPlotFigLabels=T,
-                              pointsOn=F)
+                              mp = mp_i_Mod, multiPlotOn = T,
+                              multiPlotFigLabels=T,pointsOn=pointsOn_i)
 
+  # rTable=rTable_iMod # Default is NULL
+  # #dataTables=dataTables_i, # Default is NULL
+  # paramsSelect=unlist(mp_i$param) # Default is "All"
+  # regionsSelect=regionsSelect_i # Default is "All"
+  # scensSelect=scensSelect_i
+  # xCompare=c("2010","2020","2030","2050") # Default is c("2015","2030","2050","2100")
+  # scenRef="GCAMRef" # Default is NULL
+  # dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+  # pdfpng="png" # Default is "png"
+  # regionCompareOnly=0 # Default is "0"
+  # scenarioCompareOnly=1 # Default is "0"
+  # useNewLabels=1
+  # xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050)
+  # scaleRange=scaleRange_i
+  # colOrder1 =scensSelect_i
+  # colOrderName1 = "scenario"
+  # folderName = "Comb_PolicyImpacts_Mod"
+  # multiPlotFigsOnly = T
+  # mp = mp_i
+  # multiPlotOn = T
+  # multiPlotFigLabels=T
+  # pointsOn=pointsOn_i
 
 }
 
@@ -885,7 +931,7 @@ if(T){
                               scaleRange=scaleRange_i,
                               multiPlotFigsOnly = F,
                               mp=mp_i, multiPlotOn = T,
-                              multiPlotFigLabels=F)
+                              multiPlotFigLabels=T,pointsOn=pointsOn_i)
 
 
 }
