@@ -190,7 +190,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   NULL->scenario->value->x->region->param->origValue->origScen->origQuery->year->
   origUnits->origX->sources->vintage->class1->classLabel1->classPalette1->yMax_i->yMin_i->
   class2->classLabel2->classPalette2->i->j->k->figWMult->classLabel1x ->classLabel2x-> classPalette1x-> classPalette2x->
-  nScen->paramSet->multiPlot->plot->scen->param
+  nScen->paramSet->multiPlot->plot->scen->param->lastrow
 
   aggregate_i <- aggregate
 
@@ -2335,7 +2335,7 @@ for(i in unique(tbl$region)){
   for(ps_i in unique(mpdf$paramSet)){
     pn_i<-length(unique((mpdf%>%dplyr::filter(paramSet==ps_i))$param))
     lastrows <- lastrows%>%
-      dplyr::bind_rows(tibble(paramSet=c(ps_i),lastrow=pn_i))%>%
+      dplyr::bind_rows(tibble::tibble(paramSet=c(ps_i),lastrow=pn_i))%>%
       dplyr::mutate(lastrowCum=cumsum(lastrow))
   };lastrows
 
@@ -2371,7 +2371,7 @@ for(i in unique(tbl$region)){
       pColn<-unique(g$data[[1]]["colour"]);pColn
       if(nrow(pFilln)>1|nrow(pColn)>1){
         pBLeg<-ggpubr::as_ggplot(ggpubr::get_legend(pBRef+ggplot2::theme(legend.position = "right")))}else{
-          pBLeg<-ggplot2::ggplot() + ggplto2::theme_void()
+          pBLeg<-ggplot2::ggplot() + ggplot2::theme_void()
         }
       pBRef;pBDiff1S;pBDiffMS;pLDiffPrcnt;pBLeg
     }else{

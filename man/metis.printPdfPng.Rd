@@ -5,7 +5,7 @@
 \title{metis.printPdfPng}
 \usage{
 metis.printPdfPng(figure = NULL, dir = getwd(), filename = "plot",
-  figWidth = 13, figHeight = 9, pdfpng = "png")
+  figWidth = 13, figHeight = 9, pdfpng = "png", transparent = F)
 }
 \arguments{
 \item{figure}{Default=NULL. Figure to be printed}
@@ -19,6 +19,8 @@ metis.printPdfPng(figure = NULL, dir = getwd(), filename = "plot",
 \item{figHeight}{Default=9.}
 
 \item{pdfpng}{Default="png". Either "pdf" or "png"}
+
+\item{transparent}{Default=F}
 }
 \value{
 Prints out graphic

@@ -23,7 +23,9 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
   figWidth = 13, figHeight = 9, pdfpng = "png", sankeyLabelsOn = 1,
   colOrder1 = NULL, colOrderName1 = NULL, colOrder2 = NULL,
   colOrderName2 = NULL, pointsOn = 1, pointsSize = 4,
-  paletteRev = T, forceFacets = F, legendPosition = "right")
+  paletteRev = T, forceFacets = F, legendPosition = "right",
+  theme_custom = NULL, panelBGcolor = NULL, plotBGcolor = NULL,
+  legendBGcolor = NULL)
 }
 \arguments{
 \item{data}{Data table for charting}
@@ -139,6 +141,14 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
 \item{forceFacets}{Default =F. When you have one facet only and want to show that.}
 
 \item{legendPosition}{Default ="right"}
+
+\item{theme_custom}{Default = NULL, "theme_gray","theme_bw","theme_linedraw","theme_light", "theme_minimal","theme_classic","theme_void","theme_dark"}
+
+\item{panelBGcolor}{Default = "white", Can also be "transparent"}
+
+\item{plotBGcolor}{Default = "white", Can also be "transparent"}
+
+\item{legendBGcolor}{Default = "white", Can also be "transparent"}
 }
 \value{
 Returns the formatted data used to produce chart
