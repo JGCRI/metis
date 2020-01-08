@@ -22,6 +22,7 @@
 #' @param tethysFilesScarcity Default =NULL,
 #' @param xanthosFilesScarcity Default =NULL
 #' @param calculatePolyScarcity Default = F
+#' @param calculatePolyScarcityOnly Default = F
 #' @export
 
 metis.grid2poly<- function(gridFiles=NULL,
@@ -41,7 +42,8 @@ metis.grid2poly<- function(gridFiles=NULL,
                            paramScenariosFixed=NULL,
                            tethysFilesScarcity=NULL,
                            xanthosFilesScarcity=NULL,
-                           calculatePolyScarcity=F) {
+                           calculatePolyScarcity=F,
+                           calculatePolyScarcityOnly=F) {
 
   # grid=NULL
   # regionName ="region"
@@ -114,10 +116,12 @@ metis.grid2poly<- function(gridFiles=NULL,
   if (!dir.exists(paste(dirOutputs, "/Grid2Poly", sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly", sep = ""))}
   if(!is.null(folderName)){
   if (!dir.exists(paste(dirOutputs, "/Grid2Poly/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly/",folderName, sep = ""))}
-  dir=paste(dirOutputs, "/Grid2Poly/",folderName,sep = "")} else {
+  dirX=paste(dirOutputs, "/Grid2Poly/",folderName,sep = "")} else {
     if (!dir.exists(paste(dirOutputs, "/Grid2Poly", sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly", sep = ""))}
-    dir=paste(dirOutputs, "/Grid2Poly",sep = "")
+    dirX=paste(dirOutputs, "/Grid2Poly",sep = "")
   }
+
+  if(!calculatePolyScarcityOnly){
 
   #----------------
   # Cropped and Process Grid to Polygons
@@ -276,7 +280,7 @@ for(grid_i in gridFiles){
             }
 
             polyType=subRegType
-            grid_fname<-paste(dir, "/gridCropped_",scenario_i,"_",polyType,"_",param_i,nameAppend,".csv", sep = "")
+            grid_fname<-paste(dirX, "/gridCropped_",scenario_i,"_",polyType,"_",param_i,nameAppend,".csv", sep = "")
             data.table::fwrite(gridCroppedX%>%dplyr::mutate(polyType=polyType, region=regionName),
                                file = grid_fname,row.names = F, append = T)
             print(paste("Subregional grid data files written to: ",grid_fname, sep = ""))
@@ -285,7 +289,7 @@ for(grid_i in gridFiles){
 
           if(is.null(gridPolyLoop)){
 
-            if(!file.exists(paste(dir,"/subBasin_map_GridSize.png",sep=""))){
+            if(!file.exists(paste(dirX,"/subBasin_map_GridSize.png",sep=""))){
             print("Printing Grid overlay...")
             spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
             sp::gridded(spdf)<-TRUE
@@ -300,14 +304,14 @@ for(grid_i in gridFiles){
             rcropPx<-raster::intersect(shape,rCropP)
 
             metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(subRegType,"_map_GridSize_Labels",nameAppend,sep=""),
-                      dirOutputs = dir,
+                      dirOutputs = dirX,
                       overLayer = metis.map(labelsSize=labelsSize, dataPolygon=shape,fillColumn = subRegCol,
                                             fillPalette = "white",alpha=0,facetsON=F,
                                             labels=T,printFig=F),facetsON=F)
 
             print("Printing Grid overlay with Labels...")
             metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(subRegType,"_map_GridSize",nameAppend,sep=""),
-                      dirOutputs = dir,
+                      dirOutputs = dirX,
                       overLayer = metis.map(labelsSize=labelsSize, dataPolygon=shape,fillColumn = subRegCol,
                                             fillPalette = "white",alpha=0,facetsON=F,
                                             labels=F,printFig = F),facetsON=F)
@@ -396,7 +400,7 @@ for(grid_i in gridFiles){
               dplyr::mutate(scenarioMultiB = as.character(scenarioMultiB))}
 
           polyType=subRegType
-          poly_fname<-paste(dir, "/poly_",scenario_i,"_",polyType,"_",param_i,nameAppend,".csv", sep = "")
+          poly_fname<-paste(dirX, "/poly_",scenario_i,"_",polyType,"_",param_i,nameAppend,".csv", sep = "")
           data.table::fwrite(poly,
                              file = poly_fname,row.names = F, append=T)
           print(paste("Subregional polygon data files written to: ",poly_fname, sep = ""))
@@ -405,7 +409,7 @@ for(grid_i in gridFiles){
             dplyr::bind_rows(poly %>%
             dplyr::select(c("param","units","class","classPalette")[c("param","units","class","classPalette") %in% names(poly)])%>%
               dplyr::ungroup()%>%unique())%>%unique()
-          poly_fname<-paste(dir, "/poly_subregionalTemplate.csv", sep = "")
+          poly_fname<-paste(dirX, "/poly_subregionalTemplate.csv", sep = "")
           data.table::fwrite(template_subRegional_mapping,
                              file = poly_fname,row.names = F, append=T)
           print(paste("Subregional polygon template files written to: ",poly_fname, sep = ""))
@@ -425,6 +429,8 @@ for(grid_i in gridFiles){
   }else{print("No grid provided.")}
 }
 
+  } # Close if(!calculatePolyScarcityOnly)
+
 #----------------
 # Calculating polygon scarcity
 #---------------
@@ -432,13 +438,13 @@ for(grid_i in gridFiles){
  if(calculatePolyScarcity==T){
 
    xanthosData<-tibble::tibble()
- # List files in dir
- if(is.null(tethysFilesScarcity)){tethysFilesx<-list.files(dir)[grepl("poly_",list.files(dir)) &
-                                                                  grepl("tethys",list.files(dir)) &
-                                                                  grepl("total",list.files(dir))]}else{
+ # List files in dirX
+ if(is.null(tethysFilesScarcity)){tethysFilesx<-list.files(dirX)[grepl("poly_",list.files(dirX)) &
+                                                                  grepl("tethys",list.files(dirX)) &
+                                                                  grepl("total",list.files(dirX))]}else{
    tethysFilesx<-tethysFilesScarcity}; tethysFilesx
- if(is.null(xanthosFilesScarcity)){xanthosFilesx<-list.files(dir)[grepl("poly_",list.files(dir)) &
-                                                                    grepl("xanthos",list.files(dir))]}else{
+ if(is.null(xanthosFilesScarcity)){xanthosFilesx<-list.files(dirX)[grepl("poly_",list.files(dirX)) &
+                                                                    grepl("xanthos",list.files(dirX))]}else{
    xanthosFilesx<-xanthosFilesScarcity}; xanthosFilesx
 
 
@@ -449,7 +455,7 @@ for(grid_i in gridFiles){
 
  xanthosTemp <- tibble::tibble()
  for(xanthosFile_i in xanthosFilesx){
-   x <- data.table::fread(paste(dir,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param));
+   x <- data.table::fread(paste(dirX,"/",xanthosFile_i,sep="")) %>% dplyr::filter(grepl("xanthos",param));
    xanthosTemp <- xanthosTemp %>%
      dplyr::bind_rows(x%>%dplyr::mutate(subRegion=as.character(subRegion)))
  }
@@ -470,7 +476,7 @@ for(grid_i in gridFiles){
  xanthosHistx<-xanthosHistx%>%unique(); unique(xanthosHistx$scenario)
 
  if(nrow(xanthosHistx)>0){
- poly_fname<-paste(dir, "/poly_",unique(xanthosHistx$scenario),"_",unique(xanthosHistx$subRegType),"_",
+ poly_fname<-paste(dirX, "/poly_",unique(xanthosHistx$scenario),"_",unique(xanthosHistx$subRegType),"_",
                    unique(xanthosHistx$param),nameAppend,".csv", sep = "")
  data.table::fwrite(xanthosHistx,
                     file = poly_fname,row.names = F, append=T)
@@ -487,7 +493,7 @@ for(grid_i in gridFiles){
 
      print(paste("polygonScarcity for Xanthos file: ",xanthosFile_i," and tethys file: ",tethysFile_i,sep=""))
      x <- xanthosData%>%dplyr::filter(scenario==xanthosFile_i)
-     t <- data.table::fread(paste(dir,"/",tethysFile_i,sep="")) %>% dplyr::filter(grepl("tethys",param));
+     t <- data.table::fread(paste(dirX,"/",tethysFile_i,sep="")) %>% dplyr::filter(grepl("tethys",param));
      xGCM<-paste(unique(x$scenarioMultiA),sep="");xRCP<-paste(unique(x$scenarioMultiB),sep="")
      t1 <- t %>% tibble::as_tibble() %>%
        dplyr::mutate(scenarioMultiA=as.character(scenarioMultiA),scenarioMultiB=as.character(scenarioMultiB),
@@ -501,7 +507,7 @@ for(grid_i in gridFiles){
        s <- x %>% dplyr::filter(x %in% commonyears) %>% dplyr::bind_rows(t1 %>% dplyr::filter(x %in% commonyears)) %>% tibble::as_tibble();s
        s1 <- s %>% dplyr::select(subRegion,scenario,scenarioMultiA,scenarioMultiB,param,units,aggType,classPalette,class,x,value,region,class2)%>%
          dplyr::mutate(scenario=paste(scenario,"_",param,sep=""))%>%
-         dplyr::select(-param,-units,-class,-class2,-classPalette)%>%dplyr::filter(!is.na(x));s1
+         dplyr::select(-param,-units,-class,-class2,-classPalette)%>%dplyr::filter(!is.na(x)) %>% unique();s1
        s2 <- s1 %>% tidyr::spread(key="scenario",value="value");s2 %>% as.data.frame() %>% utils::head()
        scarcityScen <- paste("X",
                              gsub("_xanthosRunoff","",paste(unique(s1$scenario)[grepl("xanthos",unique(s1$scenario))],sep="")),
@@ -522,8 +528,8 @@ for(grid_i in gridFiles){
                        classPalette="pal_ScarcityCat",
                        subRegType=unique(s$subRegType));
 
-       data.table::fwrite(s3,paste(dir,"/poly_Scarcity_",scarcityScen,nameAppend,".csv",sep=""),append=T)
-       print(paste("Saving file as: ",dir,"/polyScarcity_",scarcityScen,".csv",sep=""))
+       data.table::fwrite(s3,paste(dirX,"/poly_Scarcity_",scarcityScen,nameAppend,".csv",sep=""),append=T)
+       print(paste("Saving file as: ",dirX,"/polyScarcity_",scarcityScen,".csv",sep=""))
 
      }else{print("Xanthos/Tethys GCM RCP's not the same so skipping...")}
     }

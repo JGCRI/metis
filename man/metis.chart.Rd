@@ -10,22 +10,22 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
   classPalette = "classPalette1", classLabel = "classLabel1",
   color = NULL, xLabel = "xLabel", yLabel = "yLabel",
   facet_rows = NULL, facet_columns = NULL, ncolrow = 6,
-  facetBGColor = "grey30", facetLabelColor = "white",
-  facetLabelSize = 24, scales = "fixed", useNewLabels = 0,
-  units = "units", xBreaksMaj = 10, xBreaksMin = 5,
-  yBreaksMajn = 5, yBreaksMinn = 10, sizeBarLines = 0.5,
-  sizeLines = 1.5, yMax = NULL, yMin = NULL, sectorToOrder = NULL,
-  sectorFromOrder = NULL, removeCols = NULL, bubbleSize = 10,
-  sankeyAxis1 = NULL, sankeyAxis2 = NULL,
+  facetBGColor = "grey30", facetBorderColor = "black",
+  facetLabelColor = "white", facetLabelSize = 24, scales = "fixed",
+  useNewLabels = 0, units = "units", xBreaksMaj = 10,
+  xBreaksMin = 5, yBreaksMajn = 5, yBreaksMinn = 10,
+  sizeBarLines = 0.5, sizeLines = 1.5, yMax = NULL, yMin = NULL,
+  sectorToOrder = NULL, sectorFromOrder = NULL, removeCols = NULL,
+  bubbleSize = 10, sankeyAxis1 = NULL, sankeyAxis2 = NULL,
   sankeyAxis1Label = "axis1Label", sankeyAxis2Label = "axis2Label",
   sankeyGroupColor = NULL, printFig = T, fileName = "chart",
   title = NULL, dirOutputs = NULL, folderName = NULL,
   figWidth = 13, figHeight = 9, pdfpng = "png", sankeyLabelsOn = 1,
-  colOrder1 = NULL, colOrderName1 = NULL, colOrder2 = NULL,
-  colOrderName2 = NULL, pointsOn = 1, pointsSize = 4,
-  paletteRev = T, forceFacets = F, legendPosition = "right",
-  theme_custom = NULL, panelBGcolor = NULL, plotBGcolor = NULL,
-  legendBGcolor = NULL)
+  xOrder = NULL, colOrder1 = NULL, colOrderName1 = NULL,
+  colOrder2 = NULL, colOrderName2 = NULL, pointsOn = 1,
+  pointsSize = 4, paletteRev = T, forceFacets = F,
+  legendPosition = "right", theme_custom = NULL, panelBGcolor = NULL,
+  plotBGcolor = "transparent", legendBGcolor = NULL)
 }
 \arguments{
 \item{data}{Data table for charting}
@@ -61,6 +61,8 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
 \item{ncolrow}{Number of columns or Rows for Faceted plots.}
 
 \item{facetBGColor}{Facet background color. Default ="grey30",}
+
+\item{facetBorderColor}{Default = "black"}
 
 \item{facetLabelColor}{Facet title text color. Default= "white",}
 
@@ -124,6 +126,8 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
 
 \item{sankeyLabelsOn}{Turn on labels for sankey stratum categories. "1" or "0". Default =1}
 
+\item{xOrder}{Default = NULL,}
+
 \item{colOrder1}{Order for sankey column 1. Default = NULL,}
 
 \item{colOrderName1}{Column name with sankey variables for column order 1. Default = NULL,}
@@ -146,7 +150,7 @@ metis.chart(data, dataNorm = NULL, chartType = "bar",
 
 \item{panelBGcolor}{Default = "white", Can also be "transparent"}
 
-\item{plotBGcolor}{Default = "white", Can also be "transparent"}
+\item{plotBGcolor}{Default = "transparent", Can also be "transparent"}
 
 \item{legendBGcolor}{Default = "white", Can also be "transparent"}
 }

@@ -180,12 +180,13 @@ metis.colors <- function(palx=NULL) {
                  urban="indianred2",tundra="antiquewhite1",shrubs="lightslateblue",`rock and desert`="black",
                  pasture="goldenrod1",otherarable="darkorange4",grass="darkolivegreen1",forest="darkgreen",
                  naturalOther="grey75",`CO2 Transport Intl Av`="cadetblue3",`CO2 Transport Intl Shp`="cadetblue4",
+                 CH4 = "firebrick4", CO2 = "black", HFCs = "cadetblue3", N2O = "forestgreen",
                  #---------------
                  # Agriculture
                  #--------------
                  Forest = "darkgreen" , NonFoodDemand_Forest = "darkolivegreen1",
                  biomass_grass='darkolivegreen2', biomass_tree='darkolivegreen2', Corn = "gold3" ,
-                 FiberCrop = "gold4",  MiscCrop = "darkorange4", OilCrop = "gray20", SoySunflower = "gray20",
+                 FiberCrop = "gold4",  MiscCrop = "darkorange4", OilCrop = "gray20", SoySunflower = "gray20",Soy = "gray20",soy = "gray20", SOY = "gray20",
                  OtherGrain  = "indianred2",
                  PalmFruit = "firebrick3" ,  Rice = "steelblue2", Root_Tuber  = "lightslateblue", SugarCrop = "yellow2",
                  Wheat  = "burlywood", FodderGrass = "darkseagreen1",
@@ -226,7 +227,9 @@ metis.colors <- function(palx=NULL) {
 
     metisPalettes <-list(pal_metis=pal_metis,pal_16 = pal_16,
                          pal_Basic = pal_Basic, pal_hot = pal_hot,
-                         pal_wet=pal_wet, pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,
+                         pal_wet=pal_wet,
+                         pal_seq=pal_seq,
+                         pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,
                          pal_div_GrBr=pal_div_GrBr,pal_div_BluRd=pal_div_BluRd,
                          pal_div_RdBlu=pal_div_RdBlu, pal_green=pal_green,
                          pal_div_BrGn=pal_div_BrGn,pal_div_BlRd=pal_div_BlRd,pal_sankey=pal_sankey,

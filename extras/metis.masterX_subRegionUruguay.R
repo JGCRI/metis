@@ -258,11 +258,20 @@ demeterScenarios=c("Ref")
 demeterUnits="Landuse (Fraction)"
 demeterTimesteps<-seq(from=2005,to=2100,by=5)
 # Tethys
-tethysFolders=c(paste(getwd(),"/dataFiles/grids/tethys/Uruguay/ReferenceUruguay",sep=""),
+tethysFolders=c(paste(getwd(),"/dataFiles/grids/tethys/Uruguay/Ref",sep=""),
                 paste(getwd(),"/dataFiles/grids/tethys/Uruguay/Impacts_GFDL2p6",sep=""),
-                paste(getwd(),"/dataFiles/grids/tethys/Uruguay/Impacts_GFDL8p5",sep="")
+                paste(getwd(),"/dataFiles/grids/tethys/Uruguay/Impacts_GFDL8p5",sep=""),
+                paste(getwd(),"/dataFiles/grids/tethys/Uruguay/Ref_IrrOilCropCost_neg25",sep=""),
+                paste(getwd(),"/dataFiles/grids/tethys/Uruguay/Ref_IrrOilCropCost_neg75",sep=""),
+                paste(getwd(),"/dataFiles/grids/tethys/Uruguay/Ref_LivestockPasture_neg5",sep=""),
+                paste(getwd(),"/dataFiles/grids/tethys/Uruguay/Ref_LivestockPasture_neg10",sep=""),
+                paste(getwd(),"/dataFiles/grids/tethys/Uruguay/Ref_RiceYield_pos10",sep=""),
+                paste(getwd(),"/dataFiles/grids/tethys/Uruguay/Ref_RiceYield_pos20",sep="")
                 )
-tethysScenarios=c("Ref", "GFDL2p6", "GFDL8p5")
+tethysScenarios=c("Ref", "GFDL2p6", "GFDL8p5",
+                  "PolIrrOilCropCostNeg25","PolIrrOilCropCostNeg75",
+                  "PolLivePastureNeg5","PolLivePastureNeg10",
+                  "PolRiceYielPos10", "PolRiceYielPos20")
 tethysFiles=c(
   "wddom_km3peryr","wdelec_km3peryr","wdirr_km3peryr","wdliv_km3peryr",
               "wdmfg_km3peryr","wdmin_km3peryr","wdnonag_km3peryr",
@@ -310,23 +319,23 @@ popFiles<-"grid_pop_map"
 popUnits<-"person"
 
 gridMetis<-metis.prepGrid(
-  demeterFolders=demeterFolders,
-  demeterScenarios=demeterScenarios,
-  demeterTimesteps=demeterTimesteps,
-  demeterUnits=demeterUnits,
+  # demeterFolders=demeterFolders,
+  # demeterScenarios=demeterScenarios,
+  # demeterTimesteps=demeterTimesteps,
+  # demeterUnits=demeterUnits,
   tethysFolders=tethysFolders,
   tethysScenarios=tethysScenarios,
   tethysFiles=tethysFiles,
   tethysUnits=tethysUnits,
-  xanthosFiles=xanthosFiles,
-  xanthosScenarios=xanthosScenarios,
-   xanthosCoordinatesPath=xanthosCoordinatesPath,
-   xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
-  spanLowess=spanLowess,
-  # dirOutputs=paste(getwd(),"/outputs",sep=""),
-  popFolder=popFolder,
-  popFiles=popFiles,
-  popUnits=popUnits,
+  # xanthosFiles=xanthosFiles,
+  # xanthosScenarios=xanthosScenarios,
+  xanthosCoordinatesPath=xanthosCoordinatesPath,
+  xanthosGridAreaHecsPath=xanthosGridAreaHecsPath,
+  # spanLowess=spanLowess,
+  # # dirOutputs=paste(getwd(),"/outputs",sep=""),
+  # popFolder=popFolder,
+  # popFiles=popFiles,
+  # popUnits=popUnits,
   folderName=paste(countryName,sep=""),
   saveFormat = "rds",
   filterYears = seq(1950,2100,by=5))
@@ -363,7 +372,10 @@ grid2polyX<-metis.grid2poly(gridFiles=grid_i,
   folderName = countryName,
   regionName = countryName,
   paramScenariosFixed=paramScenarios_i,
-  calculatePolyScarcity=T)
+  calculatePolyScarcity=T,
+  calculatePolyScarcityOnly=T,
+  xanthosFilesScarcity = c("poly_GFDL-ESM2M_rcp2p6_subBasin_xanthosRunoff.csv",
+                           "poly_GFDL-ESM2M_rcp8p5_subBasin_xanthosRunoff.csv"))
 
 # gridFiles=grid_i
 # subRegShape =subRegShape_i
@@ -377,6 +389,9 @@ grid2polyX<-metis.grid2poly(gridFiles=grid_i,
 # regionName = countryName
 # paramScenariosFixed=paramScenarios_i
 # calculatePolyScarcity=T
+# calculatePolyScarcityOnly=T
+# xanthosFilesScarcity = c("poly_GFDL-ESM2M_rcp2p6_subBasin_xanthosRunoff.csv",
+#                          "poly_GFDL-ESM2M_rcp8p5_subBasin_xanthosRunoff.csv")
 }
 
 #-----------
@@ -420,7 +435,7 @@ chosenRefMeanYears_i=c(1950:2010)
 
 
 # Grid Tables
-if(F){
+if(T){
 gridFiles <- list.files(paste(getwd(),"/outputs/Grid2Poly/",countryName,sep=""),full.names = T);
 gridFiles <- gridFiles[grepl(".csv",gridFiles) & grepl(".grid",gridFiles)];gridFiles
 a <- tibble::tibble()
@@ -454,6 +469,12 @@ bx <- bx %>% mutate(value=case_when(param=="population"~value/1e+6,
                     units=case_when(param=="population"~"million",
                                     TRUE~units))
 
+ax <- a %>% mutate(value=case_when(param=="population"~value/1e+6,
+                                    TRUE~value),
+                    units=case_when(param=="population"~"million",
+                                    TRUE~units)) %>%
+  dplyr::filter(!is.na(lat),!is.na(lon))
+
 animateOn_i=F
 
 
@@ -470,8 +491,9 @@ multiFacetsOn_i=F  # Multifacets ignores all the scenarios given above and looks
 refMultiA_i="GFDL-ESM2M"
 refMultiB_i="rcp2p6"
 
-metis.mapsProcess(mapTitleOn=F, polygonDataTables=bx,
-                 #gridDataTables=a,
+metis.mapsProcess(mapTitleOn=F,
+                 #polygonDataTables=bx,
+                 gridDataTables=ax,
                  xRange=xRange_i,
                  boundaryRegShape=boundaryRegShape_i,
                  boundaryRegCol=boundaryRegCol_i,
@@ -524,7 +546,7 @@ refMultiB_i="rcp2p6"
 scaleRange_i=NULL
 
 metis.mapsProcess(mapTitleOn=F, polygonDataTables=bx,
-                  #gridDataTables=a,
+                  gridDataTables=ax,
                   xRange=xRange_i,
                   boundaryRegShape=boundaryRegShape_i,
                   boundaryRegCol=boundaryRegCol_i,
@@ -565,8 +587,14 @@ paramScenarios%>%filter(grepl("tethys",param))
 diffOn_i=T
 scenRefDiffIndv_i = list(param=list(c("tethysWatWithdraw_indv")),
                          scenRef=list(c("Ref")),
-                         scenDiff=list(c("Ref","GFDL2p6","GFDL8p5")),
-                         scenIndv=list(c("Ref","GFDL2p6","GFDL8p5"))
+                         scenDiff=list(c("Ref", "GFDL2p6", "GFDL8p5",
+                                         "PolIrrOilCropCostNeg25","PolIrrOilCropCostNeg75",
+                                         "PolLivePastureNeg5","PolLivePastureNeg10",
+                                         "PolRiceYielPos10", "PolRiceYielPos20")),
+                         scenIndv=list(c("Ref", "GFDL2p6", "GFDL8p5",
+                                         "PolIrrOilCropCostNeg25","PolIrrOilCropCostNeg75",
+                                         "PolLivePastureNeg5","PolLivePastureNeg10",
+                                         "PolRiceYielPos10", "PolRiceYielPos20"))
 ); scenRefDiffIndv_i
 
 #xRange_i= seq(from=2050,to=2050,by=10)
@@ -576,6 +604,7 @@ refMultiA_i="GFDL-ESM2M"
 refMultiB_i="rcp2p6"
 
 bx1 <- bx %>% mutate(value=ifelse(value<0.01,0,value))
+ax1 <- ax %>% mutate(value=ifelse(value<0.01,0,value))
 
 #scaleRange_i=NULL
 scaleRange_i=data.frame(param=c("tethysWatWithdraw_indv"),
@@ -583,7 +612,7 @@ scaleRange_i=data.frame(param=c("tethysWatWithdraw_indv"),
                          minScale=c(-15))
 
 metis.mapsProcess(mapTitleOn=F, polygonDataTables=bx1,
-                  #gridDataTables=a,
+                  gridDataTables=ax1,
                   xRange=xRange_i,
                   boundaryRegShape=boundaryRegShape_i,
                   boundaryRegCol=boundaryRegCol_i,
@@ -624,8 +653,14 @@ paramScenarios%>%filter(grepl("tethys",param))
 diffOn_i=F
 scenRefDiffIndv_i = list(param=list(c("tethysWatWithdraw_indv")),
                          scenRef=list(c("Ref")),
-                         scenDiff=list(c("Ref","GFDL2p6","GFDL8p5")),
-                         scenIndv=list(c("Ref","GFDL2p6","GFDL8p5"))
+                         scenDiff=list(c("Ref", "GFDL2p6", "GFDL8p5",
+                                         "PolIrrOilCropCostNeg25","PolIrrOilCropCostNeg25",
+                                         "PolLivePastureNeg5","PolLivePastureNeg10",
+                                         "PolRiceYielPos10", "PolRiceYielPos20")),
+                         scenIndv=list(c("Ref", "GFDL2p6", "GFDL8p5",
+                                         "PolIrrOilCropCostNeg25","PolIrrOilCropCostNeg75",
+                                         "PolLivePastureNeg5","PolLivePastureNeg10",
+                                         "PolRiceYielPos10", "PolRiceYielPos20"))
 ); scenRefDiffIndv_i
 
 #xRange_i= seq(from=2050,to=2050,by=10)
@@ -635,6 +670,7 @@ refMultiA_i="GFDL-ESM2M"
 refMultiB_i="rcp2p6"
 
 bx1 <- bx %>% mutate(value=ifelse(value<0.01,0,value))
+ax1 <- ax %>% mutate(value=ifelse(value<0.01,0,value))
 
 scaleRange_i=NULL
 #scaleRange_i=data.frame(param=c("tethysWatWithdraw_indv"),
@@ -642,7 +678,7 @@ scaleRange_i=NULL
 #                        minScale=c(-15))
 
 metis.mapsProcess(mapTitleOn=F, polygonDataTables=bx1,
-                  #gridDataTables=a,
+                  gridDataTables=ax1,
                   xRange=xRange_i,
                   boundaryRegShape=boundaryRegShape_i,
                   boundaryRegCol=boundaryRegCol_i,
@@ -684,8 +720,14 @@ paramScenarios%>%filter(grepl("tethys",param))
 diffOn_i=T
 scenRefDiffIndv_i = list(param=list(c("tethysWatWithdraw_total")),
                          scenRef=list(c("Ref")),
-                         scenDiff=list(c("Ref","GFDL2p6","GFDL8p5")),
-                         scenIndv=list(c("Ref","GFDL2p6","GFDL8p5"))
+                         scenDiff=list(c("Ref", "GFDL2p6", "GFDL8p5",
+                                         "PolIrrOilCropCostNeg25","PolIrrOilCropCostNeg25",
+                                         "PolLivePastureNeg5","PolLivePastureNeg10",
+                                         "PolRiceYielPos10", "PolRiceYielPos20")),
+                         scenIndv=list(c("Ref", "GFDL2p6", "GFDL8p5",
+                                         "PolIrrOilCropCostNeg25","PolIrrOilCropCostNeg75",
+                                         "PolLivePastureNeg5","PolLivePastureNeg10",
+                                         "PolRiceYielPos10", "PolRiceYielPos20"))
 ); scenRefDiffIndv_i
 
 #xRange_i= seq(from=2050,to=2050,by=10)
@@ -704,7 +746,7 @@ scaleRange_i=NULL
 
 metis.mapsProcess(mapTitleOn=F, polygonDataTables=bx1,
                   legendSingleColorOn =T,
-                  #gridDataTables=a,
+                  gridDataTables=ax,
                   xRange=xRange_i,
                   boundaryRegShape=boundaryRegShape_i,
                   boundaryRegCol=boundaryRegCol_i,
@@ -740,9 +782,9 @@ metis.mapsProcess(mapTitleOn=F, polygonDataTables=bx1,
 
 # Scarcity total
 paramScenarios
-paramScenarios%>%filter(grepl("Hist",scenario))
+#paramScenarios%>%filter(grepl("Hist",scenario))
 diffOn_i=F
-scenRefDiffIndv_i = list(param=list(c("polygonScarcity")),
+scenRefDiffIndv_i = list(param=list(c("polygonScarcity","griddedScarcity")),
                          #scenRef=list(c("GFDL-ESM2M_rcp8p5")),
                          #scenDiff=list(c("GFDL-ESM2M_rcp2p6")),
                          scenIndv=list(c("XxanthosHist1950to2010TGFDL2p6",
@@ -751,7 +793,22 @@ scenRefDiffIndv_i = list(param=list(c("polygonScarcity")),
                                          "XGFDL-ESM2M_rcp2p6TGFDL2p6",
                                          "XGFDL-ESM2M_rcp8p5TGFDL8p5",
                                          "XGFDL-ESM2M_rcp2p6TRef",
-                                         "XGFDL-ESM2M_rcp8p5TRef"))); scenRefDiffIndv_i
+                                         "XGFDL-ESM2M_rcp8p5TRef",
+                                         "XGFDL-ESM2M_rcp2p6TPolIrrOilCropCostNeg25",
+                                         "XGFDL-ESM2M_rcp8p5TPolIrrOilCropCostNeg25",
+                                         "XGFDL-ESM2M_rcp2p6TPolIrrOilCropCostNeg75",
+                                         "XGFDL-ESM2M_rcp8p5TPolIrrOilCropCostNeg75",
+                                         "XGFDL-ESM2M_rcp2p6TPolLivePastureNeg5",
+                                         "XGFDL-ESM2M_rcp8p5TPolLivePastureNeg5",
+                                         "XGFDL-ESM2M_rcp2p6TPolLivePastureNeg10",
+                                         "XGFDL-ESM2M_rcp8p5TPolLivePastureNeg10",
+                                         "XGFDL-ESM2M_rcp2p6TPolRiceYielPos10",
+                                         "XGFDL-ESM2M_rcp8p5TPolRiceYielPos10",
+                                         "XGFDL-ESM2M_rcp2p6TPolRiceYielPos20",
+                                         "XGFDL-ESM2M_rcp8p5TPolRiceYielPos20"))); scenRefDiffIndv_i
+
+
+
 
 #xRange_i= seq(from=2050,to=2050,by=10)
 xRange_i= c(2010,2050)
@@ -760,77 +817,20 @@ refMultiA_i="GFDL-ESM2M"
 refMultiB_i="rcp2p6"
 
 bx1 <- bx %>% dplyr::mutate(classPalette="pal_hot")
+ax1 <- ax %>% dplyr::mutate(classPalette="pal_hot")
 # bx%>%filter(grepl("Hist",scenario),param=="polygonScarcity"); bx1
 # bx1%>%filter(x==2010)%>%tidyr::spread(key="scenario",value="value")%>%mutate(diff=XxanthosHist1980to2010TRef-XxanthosHist1980to2010THADGEM2Rcp8p5)%>%filter(diff!=0)
 
-scaleRange_i=data.frame(param=c("polygonScarcity"),
-                        maxScale=c(0.3),
-                        minScale=c(0))
+# scaleRange_i=data.frame(param=c("polygonScarcity"),
+#                         maxScale=c(0.3),
+#                         minScale=c(0))
 
 multiFacetsOn_i=T
 
-metis.mapsProcess(mapTitleOn=F, polygonDataTables=bx1,
+metis.mapsProcess(mapTitleOn=F,
+                  polygonDataTables=bx1,
                   legendSingleColorOn =T,
-                  #gridDataTables=a,
-                  xRange=xRange_i,
-                  boundaryRegShape=boundaryRegShape_i,
-                  boundaryRegCol=boundaryRegCol_i,
-                  boundaryRegionsSelect=boundaryRegionsSelect_i,
-                  subRegShape=subRegShape_i,
-                  subRegCol=subRegCol_i,
-                  nameAppend=nameAppend_i,
-                  legendOutsideSingle=legendOutsideSingle_i,
-                  legendPosition=legendPosition_i,
-                  animateOn=animateOn_i,
-                  diffOn = diffOn_i,
-                  scenRefDiffIndv=scenRefDiffIndv_i,
-                  extension=T,
-                  expandPercent = 3,
-                  figWidth=6,
-                  figHeight=7,
-                  paramsSelect = paramsSelect_i,
-                  scaleRange = scaleRange_i,
-                  multiFacetsOn = multiFacetsOn_i,
-                  multiFacetCols="scenarioMultiA",
-                  multiFacetRows="scenarioMultiB",
-                  legendOutsideMulti=T,
-                  legendPositionMulti=NULL,
-                  legendTitleSizeMulti=NULL,
-                  legendTextSizeAnim=NULL,
-                  legendTextSizeMulti=NULL,
-                  refMultiA = refMultiA_i,
-                  refMultiB = refMultiB_i,
-                  chosenRefMeanYears=chosenRefMeanYears_i,
-                  #numeric2Cat_list=numeric2Cat_list,
-                  folderName = paste(countryName,sep=""),
-                  pdfpng="png")
-
-# Demeter Land use
-paramScenarios
-paramScenarios%>%filter(grepl("demeter",param))
-diffOn_i=F
-scenRefDiffIndv_i = list(param=list(c("demeterLandUse")),
-                         #scenRef=list(c("GFDL-ESM2M_rcp8p5")),
-                         #scenDiff=list(c("GFDL-ESM2M_rcp2p6")),
-                         scenIndv=list(c("Ref"))
-); scenRefDiffIndv_i
-
-#xRange_i= seq(from=2050,to=2050,by=10)
-xRange_i= c(2010,2050)
-multiFacetsOn_i=F  # Multifacets ignores all the scenarios given above and looks for a multiRef scenario in all the data provided
-refMultiA_i="GFDL-ESM2M"
-refMultiB_i="rcp2p6"
-
-#bx1 <- bx %>% mutate(value=ifelse(value<0.01,0,value))
-bx1<-bx%>%filter(param=="demeterLandUse")%>%mutate(value=ifelse(value<1e-2,0,value))
-
-# scaleRange_i=data.frame(param=c("demeterLandUse"),
-#                         maxScale=c(0.2),
-#                         minScale=c(0))
-scaleRange_i=NULL
-
-metis.mapsProcess(mapTitleOn=F, polygonDataTables=bx1,
-                  #gridDataTables=a,
+                  gridDataTables=ax1,
                   xRange=xRange_i,
                   boundaryRegShape=boundaryRegShape_i,
                   boundaryRegCol=boundaryRegCol_i,
@@ -864,6 +864,70 @@ metis.mapsProcess(mapTitleOn=F, polygonDataTables=bx1,
                   folderName = paste(countryName,sep=""),
                   pdfpng="png")
 
+# Demeter Land use
+paramScenarios
+paramScenarios%>%filter(grepl("demeter",param))
+diffOn_i=F
+scenRefDiffIndv_i = list(param=list(c("demeterLandUse")),
+                         #scenRef=list(c("GFDL-ESM2M_rcp8p5")),
+                         #scenDiff=list(c("GFDL-ESM2M_rcp2p6")),
+                         scenIndv=list(c("Ref"))
+); scenRefDiffIndv_i
+
+#xRange_i= seq(from=2050,to=2050,by=10)
+xRange_i= c(2010,2050)
+multiFacetsOn_i=F  # Multifacets ignores all the scenarios given above and looks for a multiRef scenario in all the data provided
+refMultiA_i="GFDL-ESM2M"
+refMultiB_i="rcp2p6"
+
+#bx1 <- bx %>% mutate(value=ifelse(value<0.01,0,value))
+bx1<-bx%>%filter(param=="demeterLandUse",
+                 !class %in% c("snow","sparse","water"))%>%mutate(value=ifelse(value<1e-2,0,value))
+
+ax1<-ax%>%filter(param=="demeterLandUse",
+                 !class %in% c("snow","sparse","water"))%>%mutate(value=ifelse(value<1e-2,0,value))
+
+# scaleRange_i=data.frame(param=c("demeterLandUse"),
+#                         maxScale=c(0.2),
+#                         minScale=c(0))
+scaleRange_i=NULL
+
+metis.mapsProcess(mapTitleOn=F, polygonDataTables=bx1,
+                  gridDataTables=ax1,
+                  xRange=xRange_i,
+                  boundaryRegShape=boundaryRegShape_i,
+                  boundaryRegCol=boundaryRegCol_i,
+                  boundaryRegionsSelect=boundaryRegionsSelect_i,
+                  subRegShape=subRegShape_i,
+                  subRegCol=subRegCol_i,
+                  nameAppend=nameAppend_i,
+                  legendOutsideSingle=legendOutsideSingle_i,
+                  legendPosition=legendPosition_i,
+                  animateOn=animateOn_i,
+                  diffOn = diffOn_i,
+                  scenRefDiffIndv=scenRefDiffIndv_i,
+                  extension=T,
+                  expandPercent = 3,
+                  figWidth=6,
+                  figHeight=7,
+                  paramsSelect = paramsSelect_i,
+                  scaleRange = scaleRange_i,
+                  multiFacetsOn = multiFacetsOn_i,
+                  multiFacetCols="scenarioMultiA",
+                  multiFacetRows="scenarioMultiB",
+                  legendOutsideMulti=T,
+                  legendPositionMulti=NULL,
+                  legendTitleSizeMulti=NULL,
+                  legendTextSizeAnim=NULL,
+                  legendTextSizeMulti=NULL,
+                  refMultiA = refMultiA_i,
+                  refMultiB = refMultiB_i,
+                  chosenRefMeanYears=chosenRefMeanYears_i,
+                  numeric2Cat_list=numeric2Cat_list,
+                  folderName = paste(countryName,sep=""),
+                  pdfpng="png",
+                  facetCols = 5)
+
 # Xanthos Multi Scenarios
 paramScenarios
 paramScenarios%>%filter(grepl("xanthos",param))
@@ -883,10 +947,10 @@ bx1<-bx
 #bx1 <- bx %>% mutate(value=ifelse(value<0.01,0,value))
 #bx1<-bx %>% filter(!grepl("Hist",scenario))
 
-scaleRange_i=data.frame(param=c("xanthosRunoff"),
-                        maxScale=c(40),
-                        minScale=c(20))
-#scaleRange_i=NULL
+#scaleRange_i=data.frame(param=c("xanthosRunoff"),
+                        maxScale=c(120),
+                        minScale=c(0))
+scaleRange_i=NULL
 
 metis.mapsProcess(mapTitleOn=F, polygonDataTables=bx1,
                   #gridDataTables=a,

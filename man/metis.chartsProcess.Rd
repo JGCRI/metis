@@ -12,8 +12,10 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   aggregate = "sum", class = "class", classPalette = "pal_metis",
   regionCompare = 1, regionCompareOnly = 0, scenarioCompareOnly = 0,
   useNewLabels = 0, sizeBarLines = 0, sizeLines = 1.5,
-  folderName = "folderNameDefault", nameAppend = "",
-  scensSelect = "All", colOrder1 = NULL, colOrderName1 = NULL,
+  folderName = "folderNameDefault", facetBGColor = "grey30",
+  facetBorderColor = "black", facetLabelColor = "white",
+  facetLabelSize = 24, nameAppend = "", scensSelect = "All",
+  xOrder = NULL, colOrder1 = NULL, colOrderName1 = NULL,
   colOrder2 = NULL, colOrderName2 = NULL, scaleRange = NULL,
   xScenCompFacetLabelSize = 35, legendPosition = "right",
   figWidth = 13, figHeight = 9, pointsOn = T, multiPlotOn = F,
@@ -21,7 +23,9 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   multiPlotAllYears = F, mp = list(paramSet = list(c("energy"),
   c("water")), param = list(c("elecCapByFuel", "elecByTechTWh"),
   c("watWithdrawBySec", "watConsumBySec")), nColMax = list(c(3), c(3))),
-  facetCols = 3)
+  facetCols = 3, diffText = "_diff", diffPrcntText = "_diff_prcnt",
+  theme_custom = NULL, panelBGcolor = NULL,
+  plotBGcolor = "transparent", legendBGcolor = NULL)
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -102,9 +106,19 @@ c(# energy
 
 \item{folderName}{Default ="folderNameDefault"}
 
+\item{facetBGColor}{Default ="grey30",}
+
+\item{facetBorderColor}{Default ="black",}
+
+\item{facetLabelColor}{Default = "white",}
+
+\item{facetLabelSize}{Default =24}
+
 \item{nameAppend}{Default =""}
 
 \item{scensSelect}{Default = "All". Select regions to create charts for.}
+
+\item{xOrder}{Default = NULL,}
 
 \item{colOrder1}{Default = NULL,}
 
@@ -137,6 +151,18 @@ c(# energy
 \item{mp}{This is a list with the paramSet and related params plus the max number of rows desired for summary plots.}
 
 \item{facetCols}{Default=3}
+
+\item{diffText}{Default = "_diff",}
+
+\item{diffPrcntText}{Default = "_diff_prcnt"}
+
+\item{theme_custom}{Default = NULL, "theme_gray","theme_bw","theme_linedraw","theme_light", "theme_minimal","theme_classic","theme_void","theme_dark"}
+
+\item{panelBGcolor}{Default = NULL,}
+
+\item{plotBGcolor}{Default = "transparent",}
+
+\item{legendBGcolor}{Default = NULL}
 }
 \value{
 Produces charts in output folder and also returns combined table in metis format.
