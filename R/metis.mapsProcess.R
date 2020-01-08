@@ -76,6 +76,7 @@
 #' @param facetCols Default=4
 #' @param mapTitleOn Default=T
 #' @param legendDigitsOverride Default=NULL
+#' @param innerMargins Default =c(0,0,0,0) # bottom, left, top, right
 #' @export
 
 
@@ -149,7 +150,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            legendSingleColor="white",
                            facetCols=4,
                            mapTitleOn=T,
-                           legendDigitsOverride=NULL){
+                           innerMargins=c(0,0,0,0), # bottom, left, top, right
+                           legendDigitsOverride=NULL
+                           ){
 
   # polygonDataTables=NULL
   # gridDataTables=NULL
@@ -554,7 +557,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
     if(!is.null(extendedShape)){
       if(extendedShapeCol %in% names(extendedShape)){
-        underLayer<-metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL, dataPolygon=extendedShape, printFig=F,labelsAutoPlace = F,
+        underLayer<-metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL, dataPolygon=extendedShape, printFig=F,labelsAutoPlace = F,
                               fillColumn = extendedShapeCol,labels=extendedLabels, fillPalette = extendedFillColor,legendShow=F,
                               bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,
                               facetsON=F, figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng)
@@ -1082,7 +1085,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     legendTextSizeAnim = legendTextSizeS
                   }
 
-                metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,
+                metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,
                           panelLabel=panelLabelAnimated,
                           dataPolygon=shape,
                           dataGrid=mapx,
@@ -1147,7 +1150,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     legendBreaksAnim = animPrettyBreaksGrid
                   }
 
-                metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
+                metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
                           underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
@@ -1185,7 +1188,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     legendTextSizeAnim = legendTextSizeI
                   }
 
-                metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
+                metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
                           underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
@@ -1359,7 +1362,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 mapx@data<-mapx@data%>%dplyr::select(-lat,-lon)
                 names(mapx@data)<-paste("X",names(mapx@data),sep="")
 
-                metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
+                metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
@@ -1414,7 +1417,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,sep = "")
 
 
-                metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
+                metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
@@ -1448,7 +1451,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     legendTextSizeAnim = legendTextSizeI
                   }
 
-                metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
+                metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
@@ -1531,7 +1534,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 mapx@data<-mapx@data%>%dplyr::select(-lat,-lon)
                 names(mapx@data)<-paste("X",names(mapx@data),sep="")
 
-                metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
+                metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
@@ -1556,7 +1559,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
                           dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,sep = ""))
 
-                metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
+                metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
@@ -1591,7 +1594,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     legendTextSizeAnim = legendTextSizeI
                   }
 
-                metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
+                metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
                           fillColumn = names(mapx@data),
                           mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
@@ -1790,7 +1793,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       legendTitleMulti=paste(paste("Mean_",minX,"to",maxX,sep=""),"\n",legendTitle,sep="")
                       panelLabelMulti=NULL
 
-                      metis.map(legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
+                      metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
                                 underLayer=NULL, dataPolygon=mapx,
                                 fillColumn = names(mapx@data%>%dplyr::select(-subRegion,-scenarioMultiA,-scenarioMultiB)),
                                 mapTitle=paste(param_i," Ref Years ",sep="") , legendShow = T,
@@ -1849,7 +1852,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = "")
 
 
-                      metis.map(legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
+                      metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
                                 underLayer=NULL, dataPolygon=mapx,
                                 fillColumn = names(mapx@data%>%dplyr::select(-subRegion,-scenarioMultiA,-scenarioMultiB)),
                                 mapTitle=paste(param_i," Ref Years ",sep="") , legendShow = T,
@@ -1878,7 +1881,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                 dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))
 
 
-                      metis.map(legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
+                      metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
                                 underLayer=NULL, dataPolygon=mapx,
                                 fillColumn = names(mapx@data%>%dplyr::select(-subRegion,-scenarioMultiA,-scenarioMultiB)),
                                 mapTitle=paste(param_i," Ref Years ",sep="") , legendShow = T,
@@ -1981,7 +1984,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           legendTitleMulti=paste(x_i,"\n",legendTitle,sep="")
                           panelLabelMulti=NULL
 
-                          metis.map(legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
+                          metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
                                     underLayer=NULL, dataPolygon=mapx,
                                     fillColumn = names(mapx@data%>%dplyr::select(-subRegion,-scenarioMultiA,-scenarioMultiB)),
                                     mapTitle=paste(param_i,sep="") , legendShow = T,
@@ -2043,7 +2046,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = "")
 
 
-                          metis.map(legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
+                          metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
                                     underLayer=NULL, dataPolygon=mapx,
                                     fillColumn = names(mapx@data%>%dplyr::select(-subRegion,-scenarioMultiA,-scenarioMultiB)),
                                     mapTitle=paste(param_i,sep="") , legendShow = T,
@@ -2072,7 +2075,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                     dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
 
 
-                          metis.map(legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
+                          metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
                                     underLayer=NULL, dataPolygon=mapx,
                                     fillColumn = names(mapx@data%>%dplyr::select(-subRegion,-scenarioMultiA,-scenarioMultiB)),
                                     mapTitle=paste(param_i,sep="") , legendShow = T,
@@ -2242,7 +2245,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                        refMultiA," Ref MultiB:",refMultiB,
                                        "\nReference mean years: ",min(chosenRefMeanYearsX),"to",max(chosenRefMeanYearsX))
 
-                        metis.map(legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, mapTitle = mapTitle,panelLabel=panelLabelMulti,
+                        metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, mapTitle = mapTitle,panelLabel=panelLabelMulti,
                                   underLayer=NULL, dataPolygon=mapx,
                                   fillColumn = names(mapx@data%>%dplyr::select(-subRegion,-scenarioMultiA,-scenarioMultiB)),
                                   legendShow = T,
@@ -2273,7 +2276,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
 
-                        metis.map(legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, mapTitle = mapTitle,panelLabel=panelLabelMulti,
+                        metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, mapTitle = mapTitle,panelLabel=panelLabelMulti,
                                   underLayer=NULL, dataPolygon=mapx,
                                   fillColumn = names(mapx@data%>%dplyr::select(-subRegion,-scenarioMultiA,-scenarioMultiB)),
                                   legendShow = T,
@@ -2303,7 +2306,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                   dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
 
 
-                        metis.map(legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, mapTitle = mapTitle,panelLabel=panelLabelMulti,
+                        metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, mapTitle = mapTitle,panelLabel=panelLabelMulti,
                                   underLayer=NULL, dataPolygon=mapx,
                                   fillColumn = names(mapx@data%>%dplyr::select(-subRegion,-scenarioMultiA,-scenarioMultiB)),
                                   legendShow = T,
@@ -2521,7 +2524,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       legendTextSizeAnim = legendTextSizeS
                     }
 
-                  metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
+                  metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
                             underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
@@ -2577,7 +2580,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #                   fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
 #                   dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
 
-                  metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
+                  metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
                             underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
@@ -2643,7 +2646,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       legendTextSizeAnim = legendTextSizeI
                     }
 
-                  metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel= panelLabelAnimated,underLayer=underLayer,  dataPolygon=mapx,
+                  metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel= panelLabelAnimated,underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
                             legendOutside = legendOutsideAnimated,
@@ -2836,7 +2839,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   mapx@data<-mapx@data%>%dplyr::left_join(datax)%>%
                     dplyr::select(names(datax))
 
-                  metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
+                  metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
                             legendOutside = legendOutsideSingle,
@@ -2884,7 +2887,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
                   # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = "")
 
-                  metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
+                  metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
                             legendOutside = legendOutsideSingle,
@@ -2916,7 +2919,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       legendTextSizeAnim = legendTextSizeI
                     }
 
-                  metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
+                  metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                             mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
                             legendOutside = legendOutsideAnimated,
@@ -3003,7 +3006,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     mapx@data<-mapx@data%>%dplyr::left_join(datax)%>%
                       dplyr::select(names(datax))
 
-                    metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=mapx,
+                    metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer, dataPolygon=mapx,
                               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                               mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
                               legendOutside = legendOutsideSingle,
@@ -3049,7 +3052,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep="")
                     # dirOutputs = paste(dirOutputs,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = "")
 
-                    metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
+                    metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                               mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
                               legendOutside = legendOutsideSingle,
@@ -3082,7 +3085,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                         legendTextSizeAnim = legendTextSizeI
                       }
 
-                    metis.map(legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
+                    metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
                               mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T,
                               legendOutside = legendOutsideAnimated,

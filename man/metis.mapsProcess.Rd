@@ -34,7 +34,8 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
   pdfpng = "png", fillcolorNA = "gray", fillshowNA = NA,
   fillcolorNULL = "gray", legendSingleColorOn = T,
   legendSingleValue = NULL, legendSingleColor = "white",
-  facetCols = 4, mapTitleOn = T, legendDigitsOverride = NULL)
+  facetCols = 4, mapTitleOn = T, innerMargins = c(0, 0, 0, 0),
+  legendDigitsOverride = NULL)
 }
 \arguments{
 \item{polygonDataTables}{Default = NULL,}
@@ -176,6 +177,8 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 \item{facetCols}{Default=4}
 
 \item{mapTitleOn}{Default=T}
+
+\item{innerMargins}{Default =c(0,0,0,0) # bottom, left, top, right}
 
 \item{legendDigitsOverride}{Default=NULL}
 }

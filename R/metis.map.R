@@ -185,7 +185,6 @@ metis.map<-function(dataPolygon=NULL,
   # multiFacetCols=NULL
   # fillshowNA=NA
   # fillcolorNULL="grey30"
-  # facetsON=T
   # panelLabel=NULL
   # multiFacetRows=NULL
   # multiFacetCols=NULL

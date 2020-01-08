@@ -100,6 +100,17 @@
 #' @param multiPlotAllYears Default=F
 #' @param mp This is a list with the paramSet and related params plus the max number of rows desired for summary plots.
 #' @param facetCols Default=3
+#' @param facetLabelSize Default =24
+#' @param diffText Default = "_diff",
+#' @param diffPrcntText Default = "_diff_prcnt"
+#' @param theme_custom Default = NULL, "theme_gray","theme_bw","theme_linedraw","theme_light", "theme_minimal","theme_classic","theme_void","theme_dark"
+#' @param panelBGcolor Default = NULL,
+#' @param plotBGcolor Default = "transparent",
+#' @param legendBGcolor Default = NULL
+#' @param facetBGColor Default ="grey30",
+#' @param facetLabelColor Default = "white",
+#' @param facetBorderColor Default ="black",
+#' @param xOrder Default = NULL,
 #' @keywords charts, diffplots
 #' @return Produces charts in output folder and also returns combined table in metis format.
 #' @export
@@ -118,8 +129,13 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        regionCompareOnly=0,scenarioCompareOnly=0,useNewLabels=0,
                        sizeBarLines=0,sizeLines=1.5,
                        folderName="folderNameDefault",
+                       facetBGColor="grey30",
+                       facetBorderColor="black",
+                       facetLabelColor = "white",
+                       facetLabelSize=24,
                        nameAppend="",
                        scensSelect="All",
+                       xOrder = NULL,
                        colOrder1 = NULL,
                        colOrderName1 = NULL,
                        colOrder2 = NULL,
@@ -140,7 +156,13 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                                              c("watWithdrawBySec","watConsumBySec")),
                                   nColMax=list(c(3),
                                                c(3))),
-                       facetCols=3) {
+                       facetCols=3,
+                       diffText = "_diff",
+                       diffPrcntText = "_diff_prcnt",
+                       theme_custom=NULL,
+                       panelBGcolor = NULL,
+                       plotBGcolor = "transparent",
+                       legendBGcolor = NULL) {
 
 
   # regionCompare=1
@@ -166,7 +188,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   # sizeLines=1.5
   # nameAppend=""
   # scensSelect="All"
-  # colOrder1 = NULL
+  # xOrder = xOrder, colOrder1 = NULL
   # colOrderName1 = NULL
   # colOrder2 = NULL
   # colOrderName2 = NULL
@@ -176,12 +198,20 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   # figWidth=13
   # figHeight=9
   # multiPlotOn=F
+  # multiPlotAllYears=F
   # mp = list(paramSet=list(c("energy"),
   #                         c("water")),
   #           param=list(c("elecCapByFuel","elecByTechTWh"),
   #                      c("watWithdrawBySec","watConsumBySec")),
   #           nColMax=list(c(3),
   #                        c(3)))
+  #  facetCols=3
+  #  diffText = "_diff"
+  #  diffPrcntText = "_diff_prcnt"
+  #  theme_custom=NULL
+  #  panelBGcolor = NULL
+  #  plotBGcolor = "transparent"
+  #  legendBGcolor = NULL
 
 #------------------
 # Initialize variables to remove binding errors
@@ -238,7 +268,8 @@ addMissing<-function(data){
   if(!any(grepl("\\<units\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(units="units")}else{
     data <- data %>% dplyr::rename(!!"units" := (names(data)[grepl("\\<units\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(units=dplyr::case_when(is.na(units)~"units",TRUE~units))}
-  if(!"x"%in%names(data)){if("year"%in%names(data)){
+  if(!"x"%in%names(data)){
+    if("year"%in%names(data)){
     data<-data%>%dplyr::mutate(x=year)}else{data<-data%>%dplyr::mutate(x="x")}}
   if(!any(grepl("\\<vintage\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(vintage = paste("Vint_", x, sep = ""))}else{
     data <- data %>% dplyr::rename(!!"vintage" := (names(data)[grepl("\\<vintage\\>",names(data),ignore.case = T)])[1])
@@ -343,6 +374,7 @@ tbl<-dplyr::bind_rows(tbl,rTable)
 }
 
 
+
 #----------------
 # Check scaleRange
 #---------------
@@ -406,10 +438,13 @@ if(any(scensSelect!="All")){
        print(paste(unique(tbl$scenario),collapse=", "))}
 
 
+if(xData %in% names(tbl)){
+  tbl$x <- tbl[[xData]]
+}
 
 if(any(xRange!="All")){if(is.numeric(tbl$x)){tbl<-tbl%>%dplyr::filter(x %in% xRange)
-                       print(paste("Running analysis for chosen years: ",paste(xRange,collapse=", ")))}}else{
-                         print("One or more items in xRange is 'All' so running analysis for all years.")
+                       print(paste("Running analysis for chosen x: ",paste(xRange,collapse=", ")))}}else{
+                         print("One or more items in xRange is 'All' so running analysis for all x.")
                          print(paste(unique(tbl$x),collapse=", "))
                        }
 
@@ -605,24 +640,24 @@ if(length(unique(tbl$region))>1){
 
         # Bar Chart
        if(multiPlotFigsOnly==F){
-       metis.chart(tbl_spC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+       metis.chart(tbl_spC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows=NULL,
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figBar_",j,"_compareRegions",nameAppend,sep=""),
           figWidth = figWidth*max((length(unique(tbl_sp$region))/2),1)*figWMult,
-          figHeight = figHeight*max(1,ceiling(length(unique(tbl_sp$region))/4)*0.75),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+          figHeight = figHeight*max(1,ceiling(length(unique(tbl_sp$region))/4)*0.75),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )}
 
 
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_spC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_spC1,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows=NULL,
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figLines_",j,"_compareRegions",nameAppend,sep=""),
           figWidth = figWidth*max((length(unique(tbl_sp$region))/2),1)*figWMult,
-          figHeight = figHeight*max(1,ceiling(length(unique(tbl_sp$region))/4)*0.75),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+          figHeight = figHeight*max(1,ceiling(length(unique(tbl_sp$region))/4)*0.75),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )}
 
         # If class 2 available
@@ -630,22 +665,22 @@ if(length(unique(tbl$region))>1){
 
           # Bar Chart
           if(multiPlotFigsOnly==F){
-          metis.chart(tbl_sp, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+          metis.chart(tbl_sp, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows="class2",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
                       fileName = paste(k,"_figBar_",j,"_compareRegionsClass2",nameAppend,sep=""),
                       figWidth = figWidth*max((length(unique(tbl_sp$region))/2),1)*figWMult,
-                      figHeight = figHeight*max((length(unique(tbl_sp$class2))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      figHeight = figHeight*max((length(unique(tbl_sp$class2))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )}
 
           # Line Chart
           if(multiPlotFigsOnly==F){
-          metis.chart(tbl_sp,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+          metis.chart(tbl_sp,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows="class2",
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
                       fileName = paste(k,"_figLines_",j,"_compareRegionsClass2",nameAppend,sep=""),
                       figWidth = figWidth*max((length(unique(tbl_sp$region))/2),1)*figWMult,
-                      figHeight = figHeight*max((length(unique(tbl_sp$class2))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      figHeight = figHeight*max((length(unique(tbl_sp$class2))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )}
 
 
@@ -706,22 +741,22 @@ if(length(unique(tbl$scenario))>1){
 
         # Bar Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="scenario",facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegions",nameAppend,sep=""),
           figWidth = figWidth*max((length(unique(tbl_p$scenario))/2),1)*figWMult,
-          figHeight = figHeight*max((length(unique(tbl_p$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+          figHeight = figHeight*max((length(unique(tbl_p$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )}
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pC1,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="scenario",facet_rows="region",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figLine_compareScenRegions",nameAppend,sep=""),
           figWidth = figWidth*max((length(unique(tbl_p$scenario))/2),1)*figWMult,
-          figHeight = figHeight*max((length(unique(tbl_p$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+          figHeight = figHeight*max((length(unique(tbl_p$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )}
 
         #-------------------------
@@ -763,7 +798,7 @@ if(length(unique(tbl$scenario))>1){
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegion_xScenSelectYears",nameAppend,sep=""),
           figWidth = figWidth*max((length(unique(tbl_py$x)[unique(tbl_py$x) %in% xCompare])/3),1)*figWMult,
-          figHeight = figHeight*max((length(unique(tbl_py$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+          figHeight = figHeight*max((length(unique(tbl_py$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
         )}
 
 
@@ -791,22 +826,22 @@ if(length(unique(tbl$scenario))>1){
 
           # Bar Chart Dodged
           if(multiPlotFigsOnly==F){
-          metis.chart(tbl_pAgg, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+          metis.chart(tbl_pAgg, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge", classPalette = classPalette,
                       facet_columns="region",facet_rows=NULL,
             dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
-            fileName = paste(j,"_figBarDodged_compareScenRegion",nameAppend,sep=""),
-            figWidth = figWidth*figWMult,pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+            fileName = paste(j,"_figBarDodged_compareScenRegion",nameAppend,sep=""), paletteRev=F,
+            figWidth = figWidth*figWMult,pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )}
 
           # Line Chart Overlapped
           if(multiPlotFigsOnly==F){
-          metis.chart(tbl_pAgg,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+          metis.chart(tbl_pAgg,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario", classPalette = classPalette,
-                      facet_columns="region",facet_rows=NULL,
+                      facet_columns="region",facet_rows=NULL,paletteRev = F,
             dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
             fileName = paste(j,"_figLineOverlap_compareScenRegion",nameAppend,sep=""),
-            figWidth = figWidth*figWMult,pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+            figWidth = figWidth*figWMult,pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )}
         }
 
@@ -842,11 +877,11 @@ if(length(unique(tbl$scenario))>1){
           tbl_temp[is.na(tbl_temp)] <- 0
 
           tbl_temp <- tbl_temp %>%
-            dplyr::mutate(!!paste(k,"_diff",sep=""):=get(k)-get(scenRef_i))%>%
+            dplyr::mutate(!!paste(k,diffText,sep=""):=get(k)-get(scenRef_i))%>%
             dplyr::select(-dplyr::one_of(c(k,scenRef_i)))
           tbl_temp<-tbl_temp%>%
             tidyr::gather(key=scenario,value=!!yData,
-                          -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,"_diff",sep="")]))
+                          -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,diffText,sep="")]))
           tbl_pd<-dplyr::bind_rows(tbl_pd,tbl_temp)
         }
 
@@ -879,22 +914,26 @@ if(length(unique(tbl$scenario))>1){
 
         # Bar Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figBarDiff_compareScenRegionREF",nameAppend,sep=""),
                     figWidth = figWidth*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
-                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                    xOrder = xOrder, colOrder1 = c(colOrder1[1],c(colOrder1[1],paste(colOrder1,diffText,sep=""))),colOrderName1 = colOrderName1,
+                    colOrder2 = c(colOrder2[1],c(colOrder2[1],paste(colOrder2,diffText,sep=""))), colOrderName2 = colOrderName2
         )}
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figLineDiff_compareScenRegionREF",nameAppend,sep=""),
                     figWidth = figWidth*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
-                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                    xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+                    colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
         )}
 
         # Keep ref scenario
@@ -921,22 +960,26 @@ if(length(unique(tbl$scenario))>1){
 
         # Bar Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figBarDiff_compareScenRegionREF",nameAppend,sep=""),
                     figWidth = figWidth*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
-                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                    xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+                    colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
         )}
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figLineDiff_compareScenRegionREF",nameAppend,sep=""),
                     figWidth = figWidth*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
-                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                    xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+                    colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
         )}
 
 
@@ -965,22 +1008,26 @@ if(length(unique(tbl$scenario))>1){
 
         # Bar Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBarDiff_compareScenRegion",nameAppend,sep=""),
           figWidth = figWidth*((length(unique(tbl_pd$scenario)))/((length(unique(tbl_pd$scenario)))+1))*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
-          figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+          figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+          xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+          colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
         )}
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,
+        metis.chart(tbl_pdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
           dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figLineDiff_compareScenRegion",nameAppend,sep=""),
           figWidth = figWidth*((length(unique(tbl_pd$scenario)))/((length(unique(tbl_pd$scenario)))+1))*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
-          figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+          figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+          xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+          colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
         )}
 
         #-------------------------
@@ -1008,25 +1055,25 @@ if(length(unique(tbl$scenario))>1){
           # Bar Chart Dodged
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdAgg)){classPalettex=unique(tbl_pdAgg$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdAgg, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
-                      class ="scenario", position ="dodge",
-                      classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
-                      facet_rows="region",facet_columns = "scenario",
+          metis.chart(tbl_pdAgg, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+                      class ="scenario", position ="dodge", figWidth=figWidth, figHeight=figHeight,
+                      classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
+                      facet_rows="region",facet_columns = "scenario",paletteRev=F,
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figBarDodgedDiff_compareScenRegion",nameAppend,sep=""),forceFacets = T,
-                      pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )}
 
           # Line Chart Overlapped
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdAgg)){classPalettex=unique(tbl_pdAgg$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdAgg,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,
+          metis.chart(tbl_pdAgg,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario",
-                      classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
-                      facet_rows="region",facet_columns = "scenario",
+                      classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
+                      facet_rows="region",facet_columns = "scenario",paletteRev=F,figWidth=figWidth, figHeight=figHeight,
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figLineOverlapDiff_compareScenRegion",nameAppend,sep=""),forceFacets = T,
-                      pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )}
         }
 
@@ -1110,22 +1157,26 @@ if(length(unique(tbl$scenario))>1){
 
         # Bar Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figBarDiffPrcnt_compareScenRegion",nameAppend,sep=""),
                     figWidth = figWidth*((length(unique(tbl_pd$scenario)))/((length(unique(tbl_pd$scenario)))+1))*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
-                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                    xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                    colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
         )}
 
         # Line Chart
         if(multiPlotFigsOnly==F){
-        metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,
+        metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
                     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figLineDiffPrcnt_compareScenRegion",nameAppend,sep=""),
                     figWidth = figWidth*((length(unique(tbl_pd$scenario)))/((length(unique(tbl_pd$scenario)))+1))*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
-                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                    figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                    xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                    colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
         )}
         #-------------------------
         # Aggregate and Plot Dodged/OverLapping Plots
@@ -1200,25 +1251,29 @@ if(length(unique(tbl$scenario))>1){
           # Bar Chart Dodged
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdC1)){classPalettex=unique(tbl_pdC1$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge",
-                      classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
-                      facet_rows="region",facet_columns="scenario",
+                      classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
+                      facet_rows="region",facet_columns="scenario",figWidth=figWidth, figHeight=figHeight,
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figBarDodgedDiffPrcnt_compareScenRegionREF",nameAppend,sep=""),forceFacets = T,
-                      pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
+                      xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                      colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
           )}
 
           # Line Chart Overlapped
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdC1)){classPalettex=unique(tbl_pdC1$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,
+          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"),xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario",
-                      classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
-                      facet_rows="region",facet_columns="scenario",
+                      classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
+                      facet_rows="region",facet_columns="scenario",figWidth=figWidth, figHeight=figHeight,
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figLineOverlapDiffPrcnt_compareScenRegionREF",nameAppend,sep=""),forceFacets = T,
-                      pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
+                      xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                      colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
           )}
 
         # Drop the ref scenario
@@ -1246,25 +1301,29 @@ if(length(unique(tbl$scenario))>1){
           # Bar Chart Dodged
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdC1)){classPalettex=unique(tbl_pdC1$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"), xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge",
-                      classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
-                      facet_rows="region",facet_columns="scenario",
+                      classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
+                      facet_rows="region",facet_columns="scenario",figWidth=figWidth, figHeight=figHeight,
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figBarDodgedDiffPrcnt_compareScenRegion",nameAppend,sep=""),forceFacets = T,
-                      pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
+                      xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                      colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
           )}
 
           # Line Chart Overlapped
           if(multiPlotFigsOnly==F){
             if("classPalette" %in% names(tbl_pdC1)){classPalettex=unique(tbl_pdC1$classPalette)}else{classPalettex="pal_Basic"}
-          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,
+          metis.chart(tbl_pdC1%>%dplyr::mutate(units="~Percent"),xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario",
-                      classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
-                      facet_rows="region",facet_columns="scenario",
+                      classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
+                      facet_rows="region",facet_columns="scenario",figWidth=figWidth, figHeight=figHeight,
                       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figLineOverlapDiffPrcnt_compareScenRegion",nameAppend,sep=""),forceFacets = T,
-                      pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                      pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
+                      xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                      colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
           )}
         }
 
@@ -1328,16 +1387,16 @@ if(scenarioCompareOnly!=1){
       tbl_rspC1<-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
 
       if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rspC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
-                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
-                  fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+      metis.chart(tbl_rspC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
+                  fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )}
 
     # Bar Chart
-    metis.chart(tbl_rspC1%>%dplyr::mutate(label=units), xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+    metis.chart(tbl_rspC1%>%dplyr::mutate(label=units), xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
     dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),printFig = F,
-    forceFacets = T, facet_columns="label",
-    fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+    forceFacets = T, facet_columns="label",figWidth=figWidth, figHeight=figHeight,
+    fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
     )->mpx
 
     if(k %in% unlist(mp$param)){
@@ -1351,18 +1410,18 @@ if(scenarioCompareOnly!=1){
 
     # data=tbl_rspC1; xData=xData;yData=yData;xLabel=xLabel;yLabel=yLabel;sizeBarLines=sizeBarLines;useNewLabels=useNewLabels;sizeLines=sizeLines; chartType = "bar";
     # dirOutputs = paste(dirOutputs, "/Charts/", i, "/", j,sep = "");
-    # fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep="");pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+    # fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep="");pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
     if(multiPlotFigsOnly==F){
-    metis.chart(tbl_rspC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
-                dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
-                fileName = paste(k,"_figLine_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+    metis.chart(tbl_rspC1,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+                dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
+                fileName = paste(k,"_figLine_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
     )}
 
     # Line Chart
-    metis.chart(tbl_rspC1%>%dplyr::mutate(label=units),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+    metis.chart(tbl_rspC1%>%dplyr::mutate(label=units),xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),printFig = F,
-      forceFacets = T, facet_columns="label",
-      fileName = paste(k,"_figLine_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+      forceFacets = T, facet_columns="label",figWidth=figWidth, figHeight=figHeight,
+      fileName = paste(k,"_figLine_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
     )->mpx
 
 
@@ -1381,15 +1440,15 @@ if(scenarioCompareOnly!=1){
 
       # Bar Chart
       if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rsp, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
-                  facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
+      metis.chart(tbl_rsp, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+                  facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
                   fileName = paste(k,"_figBar_",i,"_Class2_",j,nameAppend,sep="")
       )}
 
       # Line Chart
       if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rsp,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
-                  facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),
+      metis.chart(tbl_rsp,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+                  facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
                   fileName = paste(k,"_figLine_",i,"_Class2_",j,nameAppend,sep="")
       )}
     }
@@ -1461,7 +1520,7 @@ if(scenarioCompareOnly!=1){
         if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
         figure<-egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
                        labels = labels1,
-                       label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.5*ncol_i*nrow_i))); figure
+                       label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=1*ncol_i*nrow_i))); figure
 
       metis.printPdfPng(figure=figure,
                           dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
@@ -1489,7 +1548,7 @@ if(scenarioCompareOnly!=1){
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
       figure<-egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
                              labels = labels1,
-                             label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.5*ncol_i*nrow_i))); figure
+                             label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=1*ncol_i*nrow_i))); figure
 
       metis.printPdfPng(figure=figure,
                         dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
@@ -1585,12 +1644,12 @@ for(i in unique(tbl$region)){
 
       # Bar Chart
         if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rpC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figBar_",i,"_compareScen",nameAppend,sep=""),
         figWidth = figWidth*max((length(unique(tbl_rp$scenario))/2),1)*figWMult,
-        figHeight = figHeight*max((length(unique(tbl_rp$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+        figHeight = figHeight*max((length(unique(tbl_rp$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )}
 
 
@@ -1599,16 +1658,16 @@ for(i in unique(tbl$region)){
       # fileName = paste(j,"_figBar_",i,"_compareScen",nameAppend,sep="")
       # figWidth = figWidth*max((length(unique(tbl_rp$scenario))/2),1)*figWMult
       # figHeight = figHeight*max((length(unique(tbl_rp$region))/2),1)
-      # pdfpng=pdfpng; legendPosition=legendPosition, colOrder1 = colOrder1; colOrderName1 = colOrderName1; colOrder2 = colOrder2; colOrderName2 = colOrderName2
+      # pdfpng=pdfpng; legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1; colOrderName1 = colOrderName1; colOrder2 = colOrder2; colOrderName2 = colOrderName2
 
       # Line Chart
         if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rpC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+      metis.chart(tbl_rpC1,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figLine_",i,"_compareScen",nameAppend,sep=""),
         figWidth = figWidth*max((length(unique(tbl_rp$scenario))/2),1)*figWMult,
-        figHeight = figHeight*max((length(unique(tbl_rp$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+        figHeight = figHeight*max((length(unique(tbl_rp$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )}
 
 
@@ -1651,7 +1710,7 @@ for(i in unique(tbl$region)){
        dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figBar_",i,"_compareScen_xScenSelectYears",nameAppend,sep=""),
         figWidth = figWidth*max((length(unique(tbl_rpy$x)[unique(tbl_rpy$x) %in% xCompare])/3),1)*figWMult,
-        figHeight = figHeight*max((length(unique(tbl_rpy$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+        figHeight = figHeight*max((length(unique(tbl_rpy$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )}
 
 
@@ -1681,29 +1740,60 @@ for(i in unique(tbl$region)){
 
       # Bar Chart Dodged
         if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rpAgg, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
+      metis.chart(tbl_rpAgg, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                   class ="scenario", position ="dodge", classPalette = classPalette,
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
-        fileName = paste(j,"_figBarDodged_",i,"_compareScen_",nameAppend,sep=""),
-        figWidth = figWidth*figWMult,pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+        fileName = paste(j,"_figBarDodged_",i,"_compareScen_",nameAppend,sep=""), paletteRev=F,figHeight=figHeight,
+        figWidth = figWidth*figWMult,pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )}
 
         if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rpAgg,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
-                  class ="scenario", classPalette = classPalette,
+      if("classPalette" %in% names(tbl_rpAgg)){classPalettex=unique(tbl_rpAgg$classPalette)}else{classPalettex="pal_Basic"}
+      metis.chart(tbl_rpAgg,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
+                  class ="scenario", classPalette = classPalette, figHeight=figHeight,
                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
-                  fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep=""),figWidth = figWidth*figWMult,
-                  pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                  fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep=""),figWidth = figWidth*figWMult, paletteRev = F,
+                  pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )}
 
       # Line Chart Overlapped
-      metis.chart(tbl_rpAgg%>%dplyr::mutate(label=paste(units)),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
-                  class ="scenario", classPalette = classPalette,
+      if("classPalette" %in% names(tbl_rpAgg)){classPalettex=unique(tbl_rpAgg$classPalette)}else{classPalettex="pal_Basic"}
+      metis.chart(tbl_rpAgg%>%dplyr::mutate(label=paste(units)),xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+                  class ="scenario", classPalette = classPalettex,
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
-        fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep=""),figWidth = figWidth*figWMult,
+        fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep=""),figWidth = figWidth*figWMult, figHeight=figHeight,
         printFig = F, forceFacets = T, facet_columns="label",
-        pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+        pdfpng=pdfpng, legendPosition=legendPosition,
+        xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2, paletteRev = F
       )->mpx
+
+      # data=tbl_rpAgg%>%dplyr::mutate(label=paste(units))
+      # xData=xData
+      # pointsOn=pointsOn
+      # yData=yData
+      # xLabel=xLabel
+      # yLabel=yLabel
+      # facetLabelSize = facetLabelSize
+      # yMax=yMax_i
+      # yMin=yMin_i
+      # sizeBarLines=sizeBarLines
+      # useNewLabels=useNewLabels
+      # sizeLines=sizeLines
+      # chartType = "line"
+      # class ="scenario"
+      # classPalette = classPalettex
+      # dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = "")
+      # fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep="")
+      # figWidth = figWidth*figWMult
+      # printFig = F
+      # forceFacets = T
+      # facet_columns="label"
+      # pdfpng=pdfpng
+      # legendPosition=legendPosition
+      # xOrder = xOrder, colOrder1 = colOrder1
+      # colOrderName1 = colOrderName1
+      # colOrder2 = colOrder2
+      # colOrderName2 = colOrderName2
 
       if(j %in% unlist(mp$param)){
         mpnScen<-length(unique(tbl_rpAgg$scenario))
@@ -1756,11 +1846,11 @@ for(i in unique(tbl$region)){
         tbl_temp[is.na(tbl_temp)] <- 0
 
         tbl_temp <- tbl_temp %>%
-          dplyr::mutate(!!paste(k,"_diff",sep=""):=get(k)-get(scenRef_i))%>%
+          dplyr::mutate(!!paste(k,diffText,sep=""):=get(k)-get(scenRef_i))%>%
           dplyr::select(-dplyr::one_of(c(k,scenRef_i)))
         tbl_temp<-tbl_temp%>%
           tidyr::gather(key=scenario,value=!!yData,
-                        -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,"_diff",sep="")]))
+                        -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,diffText,sep="")]))
         tbl_rpd<-dplyr::bind_rows(tbl_rpd,tbl_temp)
       }
 
@@ -1800,20 +1890,24 @@ for(i in unique(tbl$region)){
 
 
       # Bar Chart
-      metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                   facet_columns="scenario",
                   fileName = paste(j,"_figBarDiff_",i,"_compareScen1Scale",nameAppend,sep=""),
                   figWidth = figWidth*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
-                  figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                  figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                  xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+                  colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
       )->mpx
 
-      metis.chart(tbl_rpdC1%>%dplyr::filter(scenario %in% scenRef_i),printFig=F, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpdC1%>%dplyr::filter(scenario %in% scenRef_i),printFig=F, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                   facet_columns="scenario",
                   fileName = paste(j,"_figBarDiff_",i,"_compareScen1Scale",nameAppend,sep=""),
                   figWidth = figWidth*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
-                  figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                  figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                  xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+                  colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
       )->mpxR
 
 
@@ -1830,13 +1924,24 @@ for(i in unique(tbl$region)){
 
       # Line Chart
       if(multiPlotFigsOnly==F){
-      metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+      metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                   facet_columns="scenario",
                   fileName = paste(j,"_figLineDiff_",i,"_compareScen1Scale",nameAppend,sep=""),
                   figWidth = figWidth*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
-                  figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                  figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                  xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+                  colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
       )}
+
+      # dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = "");
+      # fileName = paste(j,"_figLineDiff_",i,"_compareScen1Scale",nameAppend,sep="");
+      # data=tbl_rpdC1; xData=xData; pointsOn=pointsOn;yData=yData;xLabel=xLabel;yLabel=yLabel;facetLabelSize = facetLabelSize; sizeBarLines=sizeBarLines;useNewLabels=useNewLabels;sizeLines=sizeLines; chartType = "line";
+      # facet_columns="scenario";
+      # figWidth = figWidth*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult;forceFacets = T;
+      # figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1);pdfpng=pdfpng; legendPosition=legendPosition;
+      # xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep=""));colOrderName1 = colOrderName1;
+      # colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")); colOrderName2 = colOrderName2
 
       # Drop the ref scenario
       tbl_rpdx <- tbl_rpd %>%
@@ -1863,12 +1968,14 @@ for(i in unique(tbl$region)){
 
 
       # Bar Chart
-      metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+      metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figBarDiff_",i,"_compareScen",nameAppend,sep=""),
         figWidth = figWidth*((length(unique(tbl_rpd$scenario)))/((length(unique(tbl_rpd$scenario)))+1))*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
-        figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+        figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+        xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+        colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
       )->mpx
 
       if(j %in% unlist(mp$param)){
@@ -1882,12 +1989,14 @@ for(i in unique(tbl$region)){
 
       # Line Chart
       if(multiPlotFigsOnly==F){
-     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
         dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figLineDiff_",i,"_compareScen",nameAppend,sep=""),
         figWidth = figWidth*((length(unique(tbl_rpd$scenario)))/((length(unique(tbl_rpd$scenario)))+1))*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
-        figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+        figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+        xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+        colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
       )}
 
 
@@ -1918,36 +2027,43 @@ for(i in unique(tbl$region)){
        # Bar Chart Dodged
        if(multiPlotFigsOnly==F){
        if("classPalette" %in% names(tbl_rpdAgg)){classPalettex=unique(tbl_rpdAgg$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdAgg, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
+       metis.chart(tbl_rpdAgg, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                    class ="scenario", position ="dodge",
-                   classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
+                   classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figBarDodgedDiff_",i,"_compareScen_",nameAppend,sep=""), forceFacets = T,
-                   pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,figWidth=figWidth, figHeight=figHeight,
+                   xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+                   colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
        )}
 
        # Line Chart Overlapped
        if(multiPlotFigsOnly==F){
          if("classPalette" %in% names(tbl_rpdAgg)){classPalettex=unique(tbl_rpdAgg$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdAgg,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
+       metis.chart(tbl_rpdAgg,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
                    class ="scenario",
-                   classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
+                   classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiff_",i,"_compareScen",nameAppend,sep=""),
-                   forceFacets = T,
-                   pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   forceFacets = T,figWidth=figWidth, figHeight=figHeight,
+                   pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
+                   xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+                   colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
        )}
 
        # Line Chart Overlapped
        if("classPalette" %in% names(tbl_rpdAgg)){classPalettex=unique(tbl_rpdAgg$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdAgg%>%dplyr::mutate(label="Absolute Difference"),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+       metis.chart(tbl_rpdAgg%>%dplyr::mutate(label="Absolute Difference"),xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                    class ="scenario",
-                   classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
+                   classPalette =  metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiff_",i,"_compareScen",nameAppend,sep=""),
-                   forceFacets = T,printFig = F,facet_columns="label",
-                   pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   forceFacets = T,printFig = F,facet_columns="label",figWidth=figWidth, figHeight=figHeight,
+                   pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
+                   xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
+                   colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
        )->mpx
+
 
        if(j %in% unlist(mp$param)){
          mpnScen<-length(unique(tbl_rpdAgg$scenario))
@@ -1999,11 +2115,11 @@ for(i in unique(tbl$region)){
        tbl_temp[is.na(tbl_temp)] <- 0
 
        tbl_temp <- tbl_temp %>%
-         dplyr::mutate(!!paste(k,"_diff_prcnt",sep=""):=(get(k)-get(scenRef_i))*100/get(scenRef_i))%>%
+         dplyr::mutate(!!paste(k,diffPrcntText,sep=""):=(get(k)-get(scenRef_i))*100/get(scenRef_i))%>%
          dplyr::select(-dplyr::one_of(c(k,scenRef_i)))
        tbl_temp<-tbl_temp%>%
          tidyr::gather(key=scenario,value=!!yData,
-                       -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,"_diff_prcnt",sep="")]))
+                       -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,diffPrcntText,sep="")]))
        tbl_rpd<-dplyr::bind_rows(tbl_rpd,tbl_temp)
      }
 
@@ -2044,22 +2160,26 @@ for(i in unique(tbl$region)){
 
      # Bar Chart
      if(multiPlotFigsOnly==F){
-     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figBarDiffPrcnt_",i,"_compareScen1Scale",nameAppend,sep=""),
                  figWidth = figWidth*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
-                 figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                 figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                 xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                 colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
      )}
 
      # Line Chart
      if(multiPlotFigsOnly==F){
-     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figLineDiffPrcnt_",i,"_compareScen1Scale",nameAppend,sep=""),
                  figWidth = figWidth*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
-                 figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                 figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                 xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                 colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
      )}
 
 
@@ -2089,21 +2209,25 @@ for(i in unique(tbl$region)){
 
      # Bar Chart
      if(multiPlotFigsOnly==F){
-     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
+     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figBarDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
                  figWidth = figWidth*((length(unique(tbl_rpd$scenario)))/((length(unique(tbl_rpd$scenario)))+1))*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
-                 figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                 figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                 xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                 colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
      )}
 
      # Line Chart
-     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+     metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figLineDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
                  figWidth = figWidth*((length(unique(tbl_rpd$scenario)))/((length(unique(tbl_rpd$scenario)))+1))*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
-                 figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                 figHeight = figHeight*max((length(unique(tbl_rpd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
+                 xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                 colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
      )->mpx
 
      if(j %in% unlist(mp$param)){
@@ -2155,11 +2279,11 @@ for(i in unique(tbl$region)){
        tbl_temp[is.na(tbl_temp)] <- 0
 
        tbl_temp <- tbl_temp %>%
-         dplyr::mutate(!!paste(k,"_diff_prcnt",sep=""):=(get(k)-get(scenRef_i))*100/get(scenRef_i))%>%
+         dplyr::mutate(!!paste(k,diffPrcntText,sep=""):=(get(k)-get(scenRef_i))*100/get(scenRef_i))%>%
          dplyr::select(-dplyr::one_of(c(k,scenRef_i)))
        tbl_temp<-tbl_temp%>%
          tidyr::gather(key=scenario,value=!!yData,
-                       -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,"_diff_prcnt",sep="")]))
+                       -c(names(tbl_temp)[!names(tbl_temp) %in% paste(k,diffPrcntText,sep="")]))
        tbl_rpd<-dplyr::bind_rows(tbl_rpd,tbl_temp)
      }
 
@@ -2201,24 +2325,28 @@ for(i in unique(tbl$region)){
        # Bar Chart Dodged
        if(multiPlotFigsOnly==F){
          if("classPalette" %in% names(tbl_rpdC1)){classPalettex=unique(tbl_rpdC1$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
+       metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                    class ="scenario", position ="dodge",
-                   classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
+                   classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figBarDodgedDiffPrcnt_",i,"_compareScen1Scale",nameAppend,sep=""),forceFacets = T,
-                   pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,figWidth=figWidth, figHeight=figHeight,
+                   xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                   colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
        )}
 
        # Line Chart Overlapped
        if(multiPlotFigsOnly==F){
          if("classPalette" %in% names(tbl_rpdC1)){classPalettex=unique(tbl_rpdC1$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
+       metis.chart(tbl_rpdC1,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
                    class ="scenario",
-                   classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
+                   classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiffPrcnt_",i,"_compareScen1Scale",nameAppend,sep=""),
-                   forceFacets = T,
-                   pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   forceFacets = T,figWidth=figWidth, figHeight=figHeight,
+                   pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
+                   xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                   colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
        )}
        }
 
@@ -2252,35 +2380,41 @@ for(i in unique(tbl$region)){
        # Bar Chart Dodged
        if(multiPlotFigsOnly==F){
          if("classPalette" %in% names(tbl_rpdC1)){classPalettex=unique(tbl_rpdC1$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
+       metis.chart(tbl_rpdC1, xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                    class ="scenario", position ="dodge",
-                   classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
+                   classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figBarDodgedDiffPrcnt_",i,"_compareScen_",nameAppend,sep=""),forceFacets = T,
-                   pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,figWidth=figWidth, figHeight=figHeight,
+                   xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                   colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
        )}
 
        # Line Chart Overlapped
        if(multiPlotFigsOnly==F){
          if("classPalette" %in% names(tbl_rpdC1)){classPalettex=unique(tbl_rpdC1$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdC1,xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+       metis.chart(tbl_rpdC1,xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                    class ="scenario",
-                   classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
+                   classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
-                   forceFacets = T,facet_columns=NULL,
-                   pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   forceFacets = T,facet_columns=NULL,figWidth=figWidth, figHeight=figHeight,
+                   pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
+                   xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                   colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
        )}
 
        # Line Chart Overlapped
        if("classPalette" %in% names(tbl_rpdC1)){classPalettex=unique(tbl_rpdC1$classPalette)}else{classPalettex="pal_Basic"}
-       metis.chart(tbl_rpdC1%>%dplyr::mutate(label="Percent Difference (%)"),xData=xData, pointsOn=pointsOn,yData=yData,xLabel=xLabel,yLabel=yLabel, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
+       metis.chart(tbl_rpdC1%>%dplyr::mutate(label="Percent Difference (%)"),xData=xData, pointsOn=pointsOn, theme_custom=theme_custom,  panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                    class ="scenario",
-                   classPalette = paste(metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],sep=""),
+                   classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
-                   forceFacets = T,facet_columns="label",printFig = F,
-                   pdfpng=pdfpng, legendPosition=legendPosition, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
+                   forceFacets = T,facet_columns="label",printFig = F,figWidth=figWidth, figHeight=figHeight,
+                   pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
+                   xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
+                   colOrder2 = c(colOrder2[1],paste(colOrder2,diffPrcntText,sep="")), colOrderName2 = colOrderName2
        )->mpx
 
        if(j %in% unlist(mp$param)){
@@ -2451,9 +2585,9 @@ for(i in unique(tbl$region)){
       }}
 
     if(multiPlotFigLabels==F){labels1=NULL}else{
-    labels1 <-paste(letters[seq(from=(countMultiLabel*2+1),to=(countMultiLabel*2+2),by=1)],")",sep="")}; labels1
+    labels1 <-c(paste(letters[seq(from=(countMultiLabel*2+1),to=(countMultiLabel*2+2),by=1)],")",sep=""),"")}; labels1
     if(multiPlotFigLabels==F){labels2=NULL}else{
-    labels2 <-paste(letters[seq(from=(countMultiLabel*3+1),to=(countMultiLabel*3+3),by=1)],")",sep="")}; labels2
+    labels2 <-c(paste(letters[seq(from=(countMultiLabel*3+1),to=(countMultiLabel*3+3),by=1)],")",sep=""),"")}; labels2
 
     # nScen_i=max(unique((mpParamPlots_i%>%dplyr::filter(grepl("1Scale_",plot)))$nScen)); nScen_i
     #
@@ -2473,20 +2607,20 @@ for(i in unique(tbl$region)){
     # MultiPlots 2: Ref,diffs1scale,diffsPrcnt,leg
     assign(paste("figMScale_",mpdf[row_i,]$paramSet,"_",mpdf[row_i,]$param,sep=""),
            egg::ggarrange(pBRef,pBDiffMS,pLDiffPrcnt,pBLeg,ncol = 4,nrow=1,
-                          labels = c(labels2,""),widths=c(1,nScen_i,nScen_i,0.5),
-                          label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.65*(nScen_i+1.25)))))
+                          labels = labels2,widths=c(1,nScen_i,nScen_i,1),
+                          label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=1*(nScen_i+1.25)))))
 
     # MultiPlots 2: Ref,diffsMscale,leg
     assign(paste("figMScaleDiffAbs_",mpdf[row_i,]$paramSet,"_",mpdf[row_i,]$param,sep=""),
            egg::ggarrange(pBRef,pBDiffMS,pBLeg,ncol = 3,nrow=1,
-                          labels = c(labels1,""),widths=c(1,nScen_i,0.5),
-                          label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.65*(nScen_i+1.25)))))
+                          labels = labels1,widths=c(1,nScen_i,1),
+                          label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=1*(nScen_i+1.25)))))
 
     # MultiPlots 2: Ref,diffsMscale,leg
     assign(paste("figMScaleDiffPrcnt_",mpdf[row_i,]$paramSet,"_",mpdf[row_i,]$param,sep=""),
            egg::ggarrange(pBRef,pLDiffPrcnt,pBLeg,ncol = 3,nrow=1,
-                          labels = c(labels1,""),widths=c(1,nScen_i,0.5),
-                          label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.65*(nScen_i+1.25)))))
+                          labels = labels1,widths=c(1,nScen_i,1),
+                          label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=1*(nScen_i+1.25)))))
 
     multiPlotFigs <- multiPlotFigs %>%
       dplyr::bind_rows(tibble::tibble(paramSet=mpdf[row_i,]$paramSet,
@@ -2641,7 +2775,7 @@ if(T){
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
       figure<-egg::ggarrange(ggplotify::as.ggplot(egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
                                                                  labels = labels1,
-                                                                 label.args = list(gp = grid::gpar(hjust = 0, vjust=0,  cex=0.5/3*ncol_i*nrow_i)))),
+                                                                 label.args = list(gp = grid::gpar(hjust = 0, vjust=0,  cex=1/3*ncol_i*nrow_i)))),
                              mp_LineLeg, ncol=1,nrow=2, heights=c(nrow_i*4,1)); figure
 
       metis.printPdfPng(figure=figure,
@@ -2677,7 +2811,7 @@ if(T){
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
       figure<-egg::ggarrange(ggplotify::as.ggplot(egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
                              labels = labels1,
-                             label.args = list(gp = grid::gpar(hjust = 0, vjust=0,  cex=0.25*ncol_i*nrow_i)))),
+                             label.args = list(gp = grid::gpar(hjust = 0, vjust=0,  cex=0.5*ncol_i*nrow_i)))),
                            mp_LineLeg, ncol=1,nrow=2, heights=c(nrow_i*4,1)); figure
 
       metis.printPdfPng(figure=figure,
@@ -2713,7 +2847,7 @@ if(T){
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
       figure<-egg::ggarrange(ggplotify::as.ggplot(egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
                                                                  labels = labels1,
-                                                                 label.args = list(gp = grid::gpar(hjust = 0, vjust=0,  cex=0.25*ncol_i*nrow_i)))),
+                                                                 label.args = list(gp = grid::gpar(hjust = 0, vjust=0,  cex=0.5*ncol_i*nrow_i)))),
                              mp_LineLeg, ncol=1,nrow=2, heights=c(nrow_i*4,1)); figure
 
 
@@ -2754,15 +2888,15 @@ if(T){
       if((length(plotSet_ix)/ncol_i)<1){nrow_i=1}else{nrow_i=ceiling(length(plotSet_ix)/ncol_i)};nrow_i
       figure<-egg::ggarrange(ggplotify::as.ggplot(egg::ggarrange(plots=multiPlotlist_i,ncol = ncol_i,nrow=nrow_i,
                                                                  labels = labels1,
-                                                                 label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=0.5*ncol_i*nrow_i)))),
+                                                                 label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=1*ncol_i*nrow_i)))),
                              mp_LineLeg, ncol=1,nrow=2, heights=c(nrow_i*4,1)); figure
 
 
       metis.printPdfPng(figure=figure,
                         dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
                         filename=paste(paramSet_i,"_",i,"_mplot_SumLineAbs",sep=""),
-                        figWidth=figWidth*max(ncol_i,1.5)*0.5,
-                        figHeight=figHeight*(max(nrow_i,1.5)+0.3)*0.75,
+                        figWidth=figWidth*max(ncol_i,3)*0.5,
+                        figHeight=figHeight*(max(nrow_i))*1,
                         pdfpng="png")
 
 

@@ -18,6 +18,7 @@
 #' @param facet_rows Data variable to be used for facet rows (dataframe or table column name).Default "region"
 #' @param facet_columns Data variable to be used for facet columns (dataframe or table column name).Default "scenario"
 #' @param facetBGColor Facet background color. Default ="grey30",
+#' @param facetBorderColor Default = "black"
 #' @param facetLabelColor Facet title text color. Default= "white",
 #' @param facetLabelSize Facet title text size. Default =1.5,
 #' @param scales Fixed or free scales for multiple sankey plots. Default "fixed"
@@ -62,8 +63,9 @@
 #' @param legendPosition Default ="right"
 #' @param theme_custom Default = NULL, "theme_gray","theme_bw","theme_linedraw","theme_light", "theme_minimal","theme_classic","theme_void","theme_dark"
 #' @param panelBGcolor Default = "white", Can also be "transparent"
-#' @param plotBGcolor Default = "white", Can also be "transparent"
+#' @param plotBGcolor Default = "transparent", Can also be "transparent"
 #' @param legendBGcolor Default = "white", Can also be "transparent"
+#' @param xOrder Default = NULL,
 #' @keywords charts, diffplots, bubble, sankey.
 #' @return Returns the formatted data used to produce chart
 #' @import ggplot2
@@ -78,6 +80,7 @@ metis.chart<-function(data,
                          xLabel="xLabel",yLabel="yLabel",
                          facet_rows=NULL,facet_columns=NULL,ncolrow=6,
                          facetBGColor="grey30",
+                         facetBorderColor="black",
                          facetLabelColor = "white",
                          facetLabelSize=24,
                          scales="fixed",
@@ -105,6 +108,7 @@ metis.chart<-function(data,
                          figHeight=9,
                          pdfpng="png",
                          sankeyLabelsOn=1,
+                         xOrder = NULL,
                          colOrder1 = NULL,
                          colOrderName1 = NULL,
                          colOrder2 = NULL,
@@ -116,7 +120,7 @@ metis.chart<-function(data,
                          legendPosition="right",
                          theme_custom = NULL,
                          panelBGcolor = NULL,
-                         plotBGcolor = NULL,
+                         plotBGcolor = "transparent",
                          legendBGcolor = NULL)
                         {
 
@@ -218,6 +222,7 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
   l1<-l1%>%dplyr::mutate(units=dplyr::case_when(!grepl(" ",units)~paste("~",units),
                                          TRUE~units),
                          units=gsub(" ","~",units))
+
   if(length(classPalette)>1){
     paletteX<-classPalette}else{
   if(classPalette %in% names(l1)){
@@ -255,8 +260,8 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
 
   if(!is.null(names(paletteX))){
     if(!all(levels(l1[[class]]) %in% names(paletteX))){
-  add_colors<-(metis.colors()$pal_Basic)[1:length(levels(l1[[class]])[!levels(l1[[class]]) %in% names(paletteX)])]
-  names(add_colors)<-levels(l1[[class]])[!levels(l1[[class]]) %in% names(paletteX)]
+  add_colors<-paletteX[1:length(levels(l1[[class]])[!levels(l1[[class]]) %in% names(paletteX)])]; add_colors
+  names(add_colors)<-levels(l1[[class]])[!levels(l1[[class]]) %in% names(paletteX)]; add_colors
   paletteX<-c(paletteX,add_colors)}}
 
   if(class(l1[[class]])=="factor"){
@@ -272,11 +277,20 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
     if(levelsOn){l1[[class]]<-factor(l1[[class]],levels=names(paletteX))}
   }
 
+  if(all(names(paletteX) %in% colOrder1)){
+    names(paletteX) <- colOrder1[colOrder1 %in% names(paletteX)]; paletteX
+  }
+
+  if(all(names(paletteX) %in% colOrder2)){
+    names(paletteX) <- colOrder2[colOrder2 %in% names(paletteX)]; paletteX
+  }
+
   # Set column order
   if(!is.null(colOrder1) & !is.null(colOrderName1)){
     if(!colOrderName1 %in% names(l1)){print("colOrderName1 provided not in dataframe names. Ignoring.")}
     colOrderSet <- c(colOrder1[ colOrder1 %in% unique(as.character(l1[[colOrderName1]]))],
                      unique(as.character(l1[[colOrderName1]]))[!unique(as.character(l1[[colOrderName1]])) %in% colOrder1]); colOrderSet
+
     if(length(colOrderSet)>0){
       l1 <- l1 %>% dplyr::mutate(!!as.name(colOrderName1) := factor(!!as.name(colOrderName1), levels = colOrderSet))
     }
@@ -290,6 +304,12 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
       l1 <- l1 %>% dplyr::mutate(!!as.name(colOrderName2) := factor(!!as.name(colOrderName2), levels = colOrderSet))
     }
   }
+
+  if(!is.null(xOrder)){
+    xOrderx = xOrder[xOrder %in% unique(l1[[xData]])]
+    l1 <- l1 %>% dplyr::mutate(!!as.name(xData) := factor(!!as.name(xData), levels = xOrderx))
+  }
+
 
 
 
@@ -550,7 +570,8 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
           }}}} else {
 
     if(is.null(facet_rows) & !is.null(facet_columns)){
-      p <- p + facet_wrap(facet_columns,ncol=ncolrow,scales = scales)}
+      p <- p + facet_wrap(facet_columns,ncol=ncolrow,scales = scales)
+      }
 
     if(!is.null(facet_rows) & is.null(facet_columns)){
         p <- p + facet_wrap(facet_rows,nrow=ncolrow,scales = scales)}}
@@ -558,7 +579,7 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
 
 
   # General Themes
-  p <- p + theme(strip.background = element_rect(fill = facetBGColor, colour = 'black'),
+  p <- p + theme(strip.background = element_rect(fill = facetBGColor, colour = facetBorderColor),
                  strip.text = element_text(colour = facetLabelColor))
 
   if(printFig!=F){

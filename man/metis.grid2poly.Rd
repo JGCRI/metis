@@ -11,7 +11,7 @@ metis.grid2poly(gridFiles = NULL, regionName = "region",
   nameAppend = "", labelsSize = 1.2, paramsSelect = "All",
   scenariosSelect = "All", paramScenariosFixed = NULL,
   tethysFilesScarcity = NULL, xanthosFilesScarcity = NULL,
-  calculatePolyScarcity = F)
+  calculatePolyScarcity = F, calculatePolyScarcityOnly = F)
 }
 \arguments{
 \item{gridFiles}{Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",}
@@ -49,6 +49,8 @@ metis.grid2poly(gridFiles = NULL, regionName = "region",
 \item{xanthosFilesScarcity}{Default =NULL}
 
 \item{calculatePolyScarcity}{Default = F}
+
+\item{calculatePolyScarcityOnly}{Default = F}
 }
 \value{
 A table with data by polygon ID for each shapefile provided
