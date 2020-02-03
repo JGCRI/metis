@@ -239,7 +239,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   NULL->lat->lon->param->region->scenario->subRegion->subRegType -> value ->
     x->year->gridID->underLayer->maxScale->minScale->
     valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX->classPalette->shapeTblScenMultiABRef->
-    shapeTblDiff -> gridTblDiff -> shapeTblMultiOrig->countCheck
+    shapeTblDiff -> gridTblDiff -> shapeTblMultiOrig->countCheck-> multiFacetCol -> multiFacetRow
 
   dirOutputsX <- dirOutputs;
 
@@ -291,7 +291,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       data<-data%>%dplyr::mutate(param=as.character(param),param=dplyr::case_when(is.na(param)~"params",TRUE~param))}
     if(!any(grepl("\\<multiFacetCol\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(multiFacetCol="multiFacetCol")}else{
       data <- data %>% dplyr::rename(!!"multiFacetCol" := (names(data)[grepl("\\<multiFacetCol\\>",names(data),ignore.case = T)])[1])
-      data<-data %> %dplyr::mutate(multiFacetCol=dplyr::case_when(is.na(multiFacetCol)~"multiFacetCol",TRUE~multiFacetCol))}
+      data<-data %>%dplyr::mutate(multiFacetCol=dplyr::case_when(is.na(multiFacetCol)~"multiFacetCol",TRUE~multiFacetCol))}
     if(!any(grepl("\\<multiFacetRow\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(multiFacetRow="multiFacetRow")}else{
       data <- data %>% dplyr::rename(!!"multiFacetRow" := (names(data)[grepl("\\<multiFacetRow\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(multiFacetRow=dplyr::case_when(is.na(multiFacetRow)~"multiFacetRow",TRUE~multiFacetRow))}
@@ -771,9 +771,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   if(!is.null(shapeTbl)){
     if(nrow(shapeTbl)>0){
     shapeTbl <- shapeTbl %>%
-      dplyr::mutate(multiFacetCol=case_when(multiFacetCols!="multiFacetCol"~!!as.name(multiFacetCols),
+      dplyr::mutate(multiFacetCol=dplyr::case_when(multiFacetCols!="multiFacetCol"~!!as.name(multiFacetCols),
                     TRUE~"MultiANone"),
-                    multiFacetRow=case_when(multiFacetRows!="multiFacetRow"~!!as.name(multiFacetRows),
+                    multiFacetRow=dplyr::case_when(multiFacetRows!="multiFacetRow"~!!as.name(multiFacetRows),
                                             TRUE~"MultiBNone"))
     shapeTbl<-shapeTbl%>%dplyr::mutate(subRegion=as.character(subRegion))
     shapeTbl<-droplevels(shapeTbl)
@@ -784,9 +784,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   if(!is.null(shapeTblScenMultiABRef)){
     if(nrow(shapeTblScenMultiABRef)>0){
       shapeTblScenMultiABRef <- shapeTblScenMultiABRef %>%
-        dplyr::mutate(multiFacetCol=case_when(multiFacetCols!="multiFacetCol"~!!as.name(multiFacetCols),
+        dplyr::mutate(multiFacetCol=dplyr::case_when(multiFacetCols!="multiFacetCol"~!!as.name(multiFacetCols),
                                               TRUE~"MultiANone"),
-                      multiFacetRow=case_when(multiFacetRows!="multiFacetRow"~!!as.name(multiFacetRows),
+                      multiFacetRow=dplyr::case_when(multiFacetRows!="multiFacetRow"~!!as.name(multiFacetRows),
                                               TRUE~"MultiBNone"))
       shapeTblScenMultiABRef<-shapeTblScenMultiABRef%>%dplyr::mutate(subRegion=as.character(subRegion))
       shapeTblScenMultiABRef<-droplevels(shapeTblScenMultiABRef)
@@ -797,9 +797,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   if(!is.null(shapeTblMultiOrig)){
     if(nrow(shapeTblMultiOrig)>0){
       shapeTblMultiOrig <- shapeTblMultiOrig %>%
-        dplyr::mutate(multiFacetCol=case_when(multiFacetCols!="multiFacetCol"~!!as.name(multiFacetCols),
+        dplyr::mutate(multiFacetCol=dplyr::case_when(multiFacetCols!="multiFacetCol"~!!as.name(multiFacetCols),
                                               TRUE~"MultiANone"),
-                      multiFacetRow=case_when(multiFacetRows!="multiFacetRow"~!!as.name(multiFacetRows),
+                      multiFacetRow=dplyr::case_when(multiFacetRows!="multiFacetRow"~!!as.name(multiFacetRows),
                                               TRUE~"MultiBNone"))
       shapeTblMultiOrig<-shapeTblMultiOrig%>%dplyr::mutate(subRegion=as.character(subRegion))
       shapeTblMultiOrig<-droplevels(shapeTblMultiOrig)
@@ -809,9 +809,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   if(!is.null(gridTbl)){
     if(nrow(gridTbl)>0){
       gridTbl <- gridTbl %>%
-        dplyr::mutate(multiFacetCol=case_when(multiFacetCols!="multiFacetCol"~!!as.name(multiFacetCols),
+        dplyr::mutate(multiFacetCol=dplyr::case_when(multiFacetCols!="multiFacetCol"~!!as.name(multiFacetCols),
                                               TRUE~"MultiANone"),
-                      multiFacetRow=case_when(multiFacetRows!="multiFacetRow"~!!as.name(multiFacetRows),
+                      multiFacetRow=dplyr::case_when(multiFacetRows!="multiFacetRow"~!!as.name(multiFacetRows),
                                               TRUE~"MultiBNone"))
     gridTbl<-droplevels(gridTbl)
     }

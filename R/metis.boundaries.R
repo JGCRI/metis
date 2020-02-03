@@ -40,6 +40,9 @@
 #' @param grids Default = NULL. Metis comes with 0.5 and 0.25 grids in c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
 #' @param innerMargins Default =c(0,0.1,0,0.1), # bottom, left, top, right
 #' @param outerMargins Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right
+#' @param compassScale Default =T
+#' @param scalePos Default = c("right","bottom"),
+#' @param compassPos Default = c("left","bottom")
 #' @param extendedBoundary Default=NULL, Shapefile
 #' @param extendedBoundaryOV Default=NULL, Shapefile
 #' paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""))

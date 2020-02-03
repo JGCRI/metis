@@ -98,6 +98,12 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
 
 \item{outerMargins}{Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right}
 
+\item{compassScale}{Default =T}
+
+\item{scalePos}{Default = c("right","bottom"),}
+
+\item{compassPos}{Default = c("left","bottom")}
+
 \item{extendedBoundary}{Default=NULL, Shapefile}
 
 \item{extendedBoundaryOV}{Default=NULL, Shapefile

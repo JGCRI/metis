@@ -522,7 +522,7 @@ if(length(fillPalette)==1){
 
 if(!is.null(shape)){
   if(nrow(shape@data)>0){
-    shape@data <- shape@data %>% mutate_if(is.numeric, list(~na_if(abs(.), Inf)))
+    shape@data <- shape@data %>% dplyr::mutate_if(is.numeric, list(~na_if(abs(.), Inf)))
     }
   }
 
@@ -873,10 +873,10 @@ if(!is.null(overLayer)){
 if(compassScale){
   if(!is.null(scalePos)){
   if(scalePos!=F & scalePos!="none"){
-  map <- map +  tm_scale_bar(position=scalePos)}}
+  map <- map +  tmap::tm_scale_bar(position=scalePos)}}
   if(!is.null(compassPos)){
   if(compassPos!=F & compassPos!="none"){
-    map <- map +  tm_compass(position=compassPos)}}
+    map <- map +  tmap::tm_compass(position=compassPos)}}
 }
 
 
