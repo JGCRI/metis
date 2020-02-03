@@ -10,7 +10,9 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
   subRegCol1 = NULL, subRegionsSelect = NULL,
   subRegType = "subRegType", dirOutputs = paste(getwd(), "/outputs",
-  sep = ""), folderName = NULL, nameAppend = "", expandPercent = 2,
+  sep = ""), folderName = NULL, nameAppend = "",
+  expandPercentWidth = 2, expandPercentHeight = 2,
+  expandPercentWidthOV = 2, expandPercentHeightOV = 2,
   overlapShape = NULL, overlapShpFolder = NULL,
   overlapShpFile = NULL, labelsSize = 1.2, fillcolorNA = NULL,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
@@ -18,7 +20,10 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   extendedHighLightColor = "cornsilk1", extendedLabelsColor = "grey30",
   extdendedLabelSize = 0.7, extension = T, fillPalette = "Spectral",
   cropSubShape2Bound = T, grids = NULL, innerMargins = c(0.1, 0.2,
-  0.1, 0.2), outerMargins = c(0.01, 0.01, 0.01, 0.01))
+  0.1, 0.2), outerMargins = c(0.01, 0.01, 0.01, 0.01),
+  compassScale = T, scalePos = c("right", "bottom"),
+  compassPos = c("left", "bottom"), extendedBoundary = NULL,
+  extendedBoundaryOV = NULL)
 }
 \arguments{
 \item{boundaryRegShape}{Default=NULL. Boundary region shape if already read into R.}
@@ -51,7 +56,13 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
 
 \item{nameAppend}{Default="". Name to append to saved files.}
 
-\item{expandPercent}{Default=2. Percentage to expand boundary region beyond chosen region.}
+\item{expandPercentWidth}{Default=2. Percentage to expand boundary region beyond chosen region.}
+
+\item{expandPercentHeight}{Default=2. Percentage to expand boundary region beyond chosen region.}
+
+\item{expandPercentWidthOV}{Default=2. Percentage to expand boundary region beyond chosen region.}
+
+\item{expandPercentHeightOV}{Default=2. Percentage to expand boundary region beyond chosen region.}
 
 \item{overlapShape}{Default = NULL. If boundary lines of another shapefile are desired specify the shape here.}
 
@@ -85,7 +96,17 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
 
 \item{innerMargins}{Default =c(0,0.1,0,0.1), # bottom, left, top, right}
 
-\item{outerMargins}{Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right
+\item{outerMargins}{Default =c(0.01,0.01,0.01,0.01) # bottom, left, top, right}
+
+\item{compassScale}{Default =T}
+
+\item{scalePos}{Default = c("right","bottom"),}
+
+\item{compassPos}{Default = c("left","bottom")}
+
+\item{extendedBoundary}{Default=NULL, Shapefile}
+
+\item{extendedBoundaryOV}{Default=NULL, Shapefile
 paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""))
 This may happen in the case of disputed boundaries.}
 }

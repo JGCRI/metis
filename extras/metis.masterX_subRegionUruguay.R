@@ -43,7 +43,8 @@ localBasinsShapeFileColName = "code" # Will need to load the file to see which n
 if(file.exists(paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,"/",countryName,"LocalBasin.shp",sep=""))){
   countryLocalBasin=readOGR(dsn=paste(getwd(),"/dataFiles/gis/other/shapefiles_",countryName,sep=""),
                             layer=paste(countryName,"LocalBasin",sep=""),use_iconv=T,encoding='UTF-8')
-  metis.map(dataPolygon=countryLocalBasin,fillColumn =localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")}
+  metis.map(dataPolygon=countryLocalBasin,fillColumn =localBasinsShapeFileColName,printFig=F, facetsON = F, labels=T, legendStyle = "cat")
+  }
 
 
 #------------
@@ -179,7 +180,10 @@ subRegShape_i = countryNE1
 subRegCol_i = "name"
 subRegType_i = "state"
 nameAppend_i = "_NE"
-expandPercent_i = 2
+expandPercentWidth_i = 2
+expandPercentHeight_i = 2
+expandPercentWidthOV_i = 35
+expandPercentHeightOV_i = 75
 overlapShape_i = countryGCAMBasin
 extension_i =  T
 cropSubShape2Bound_i = T
@@ -192,12 +196,17 @@ boundariesX<- metis.boundaries(
   subRegCol=subRegCol_i,
   subRegType=subRegType_i,
   nameAppend=nameAppend_i,
-  expandPercent=expandPercent_i,
+  expandPercentWidth=expandPercentWidth_i,
+  expandPercentHeight=expandPercentHeight_i,
+  expandPercentWidthOV=expandPercentWidthOV_i,
+  expandPercentHeightOV=expandPercentHeightOV_i,
   overlapShape = overlapShape_i,
   extension = extension_i,
   grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
             paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
-  cropSubShape2Bound=cropSubShape2Bound_i
+  cropSubShape2Bound=cropSubShape2Bound_i,
+  compassPos = NULL,
+  scalePos = c(0.6,0.2)
 )
 
 

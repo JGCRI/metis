@@ -998,7 +998,7 @@ if(T){
                               mp = mp_ix, multiPlotOn = T,
                               multiPlotFigLabels=F,pointsOn=pointsOn_i,
                               facetLabelSize=25,
-                              figWidth=7,figHeight=4,
+                              figWidth=12,figHeight=7,
                               facetLabelColor = "black", facetBGColor="transparent", facetBorderColor = "transparent")
 
   mp_ix<-list(paramSet=list(

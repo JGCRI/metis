@@ -24,7 +24,7 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 6, figHeight = 7, scaleRange = NULL,
   paramsSelect = "All", multiFacetsOn = F,
-  multiFacetCols = "scenarioMultiA", multiFacetRows = "scenarioMultiB",
+  multiFacetCols = "multiFacetCol", multiFacetRows = "multiFacetRow",
   legendOutsideMulti = T, legendPositionMulti = NULL,
   legendTitleSizeMulti = NULL, legendTextSizeAnim = NULL,
   legendTextSizeMulti = NULL, refMultiA = NULL, refMultiB = NULL,
@@ -128,9 +128,9 @@ metis.mapsProcess(polygonDataTables = NULL, gridDataTables = NULL,
 
 \item{multiFacetsOn}{Default = F,}
 
-\item{multiFacetCols}{Default ="scenarioMultiB",}
+\item{multiFacetCols}{Default ="multiFacetRow",}
 
-\item{multiFacetRows}{Default ="scenarioMultiA",}
+\item{multiFacetRows}{Default ="multiFacetCol",}
 
 \item{legendOutsideMulti}{Default = NULL,}
 
