@@ -155,7 +155,9 @@ metis.chart<-function(data,
   # sizeLines=1.5
   # printFig = T
   # fileName = "chart"
-  # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # title = NULL
+  # dirOutputs=NULL
+  # folderName=NULL
   # figWidth=13
   # figHeight=9
   # pdfpng="png"
@@ -175,6 +177,13 @@ metis.chart<-function(data,
   # sankeyLabelsOn=1
   # pointsOn = 1
   # pointsSize = 4
+  # paletteRev=T
+  # forceFacets=F
+  # legendPosition="right"
+  # theme_custom = NULL
+  # panelBGcolor = NULL
+  # plotBGcolor = "transparent"
+  # legendBGcolor = NULL
 
 #------------------
 # Initialize variables to remove binding errors if needed

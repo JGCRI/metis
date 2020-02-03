@@ -65,6 +65,9 @@
 #' @param legendSingleValue Default=NULL
 #' @param legendSingleColor Default="white"
 #' @param legendDigitsOverride Default=NULL
+#' @param compassScale Default=F
+#' @param scalePos Default = c("RIGHT","BOTTOM")
+#' @param compassPos Default = c("LEFT","BOTTOM")
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
 #' @export
@@ -130,7 +133,10 @@ metis.map<-function(dataPolygon=NULL,
                   legendSingleColorOn=T,
                   legendSingleValue=NULL,
                   legendSingleColor="white",
-                  legendDigitsOverride=NULL
+                  legendDigitsOverride=NULL,
+                  compassScale=F,
+                  scalePos = c("right","bottom"),
+                  compassPos = c("left","bottom")
                   ){
 
 
@@ -509,8 +515,21 @@ if(length(fillPalette)==1){
             }}; graphics::pie(rep(1,length(fillPalette)),label=names(fillPalette),col=fillPalette)
 
 
+
 #-----------------
-#----------------
+# Remove Inf values
+#-----------------
+
+if(!is.null(shape)){
+  if(nrow(shape@data)>0){
+    shape@data <- shape@data %>% mutate_if(is.numeric, list(~na_if(abs(.), Inf)))
+    }
+  }
+
+#--------------
+# Plot
+#-------------
+
 
 if(!is.null(raster)){
 
@@ -849,6 +868,15 @@ if(!is.null(mapTitle)){map<- map + tmap::tm_layout(main.title = mapTitle, main.t
 
 if(!is.null(overLayer)){
   map<-map+overLayer
+}
+
+if(compassScale){
+  if(!is.null(scalePos)){
+  if(scalePos!=F & scalePos!="none"){
+  map <- map +  tm_scale_bar(position=scalePos)}}
+  if(!is.null(compassPos)){
+  if(compassPos!=F & compassPos!="none"){
+    map <- map +  tm_compass(position=compassPos)}}
 }
 
 
