@@ -130,6 +130,10 @@ metis.boundaries<- function(boundaryRegShape=NULL,
   # compassScale=T
   # scalePos = c("right","bottom")
   # compassPos = c("left","bottom")
+  # expandPercentWidth =2
+  # expandPercentHeight=2
+  # expandPercentWidthOV =2
+  # expandPercentHeightOV=2
 
 
 #----------------
@@ -485,6 +489,19 @@ if(!is.null(boundaryHighlight) & !is.null(underLayer)){
 regionHL<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=boundaryHighlight,
           fileName = paste(boundaryRegionsSelect,nameAppend,sep=""),dirOutputs = dir,
           underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,facetsON = F,labels=F)}
+
+# legendStyle="cat"
+# fillcolorNA=fillcolorNA
+# labelsSize=labelsSize
+# labelsAutoPlace=F
+# dataPolygon=boundaryHighlight
+# fileName = paste(boundaryRegionsSelect,nameAppend,sep="")
+# dirOutputs = dir
+# underLayer = underLayer
+# bgColor=extendedBGColor
+# frameShow=T
+# facetsON = F
+# labels=F
 
 if(!is.null(boundaryHighlightOV) & !is.null(underLayerOV)){
 regionHLOV<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=boundaryHighlightOV,

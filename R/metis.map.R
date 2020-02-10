@@ -200,6 +200,13 @@ metis.map<-function(dataPolygon=NULL,
   # catParam=NULL
   # innerMargins=c(0,0,0,0)
   # outerMargins=c(0.01,0.01,0.01,0.01)
+  # legendSingleColorOn=T
+  # legendSingleValue=NULL
+  # legendSingleColor="white"
+  # legendDigitsOverride=NULL
+  # compassScale=F
+  # scalePos = c("right","bottom")
+  # compassPos = c("left","bottom")
 
 #------------------
 # Initialize variables to remove binding errors if needed
@@ -521,9 +528,11 @@ if(length(fillPalette)==1){
 #-----------------
 
 if(!is.null(shape)){
+  if(class(shape)!="tmap"){
   if(nrow(shape@data)>0){
     shape@data <- shape@data %>% dplyr::mutate_if(is.numeric, list(~na_if(abs(.), Inf)))
     }
+   }# If not tmap
   }
 
 #--------------

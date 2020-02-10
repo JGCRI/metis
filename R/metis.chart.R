@@ -493,15 +493,6 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
         }
       }
     }
-
-  if(!is.null(yMax) & !is.null(yMin)){p = p +  coord_cartesian(ylim=c(yMin, yMax)) }
-  if(!is.null(yMax) & is.null(yMin)) {p = p +  coord_cartesian(ylim=c(min(l1[[yData]]), yMax)) }
-  if(is.null(yMax) & !is.null(yMin)) {p = p +  coord_cartesian(ylim=c(yMin, max(l1[[yData]]))) }
-
-  # General Themes
-  p <- p + theme(strip.text = element_text(size=facetLabelSize))
-
-
   }
 
   if(chartType=="line"){
@@ -519,15 +510,6 @@ if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
     if(pointsOn==1){p = p + guides(shape = guide_legend(title=unique(l1[[classLabel]]))) }
     }
     }
-
-  if(!is.null(yMax) & !is.null(yMin)){p = p +  coord_cartesian(ylim=c(yMin, yMax)) }
-  if(!is.null(yMax) & is.null(yMin)) {p = p +  coord_cartesian(ylim=c(min(l1[[yData]]), yMax)) }
-  if(is.null(yMax) & !is.null(yMin)) {p = p +  coord_cartesian(ylim=c(yMin, max(l1[[yData]]))) }
-
-  # General Themes
-  p <- p + theme(strip.text = element_text(size=facetLabelSize))
-
-
   }
 
 
@@ -540,7 +522,14 @@ if(!yLabel%in%names(l1)){p<-p+ylab(yLabel)}else{p<-p+ylab(eval(parse(text=paste(
 
   if(!chartType %in% c("bubble","sankey")){
   p <- p + theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
-       scale_y_continuous(breaks = scales::pretty_breaks(n = yBreaksMajn), minor_breaks = waiver())}
+       scale_y_continuous(breaks = scales::pretty_breaks(n = yBreaksMajn), minor_breaks = waiver())
+
+  # Scale Range
+  p = p +  ggplot2::expand_limits(y=c(yMin, yMax))
+
+  # General Themes
+  p <- p + theme(strip.text = element_text(size=facetLabelSize))
+  }
 
 if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1[[xData]])),max(range(l1[[xData]])),by=xBreaksMaj)),
                                minor_breaks=(seq(min(range(l1[[xData]])),max(range(l1[[xData]])),by=xBreaksMin)),
