@@ -113,13 +113,9 @@ metis.grid2poly<- function(gridFiles=NULL,
   #---------------
 
   if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
-  if (!dir.exists(paste(dirOutputs, "/Grid2Poly", sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly", sep = ""))}
-  if(!is.null(folderName)){
-  if (!dir.exists(paste(dirOutputs, "/Grid2Poly/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly/",folderName, sep = ""))}
-  dirX=paste(dirOutputs, "/Grid2Poly/",folderName,sep = "")} else {
-    if (!dir.exists(paste(dirOutputs, "/Grid2Poly", sep = ""))){dir.create(paste(dirOutputs, "/Grid2Poly", sep = ""))}
-    dirX=paste(dirOutputs, "/Grid2Poly",sep = "")
-  }
+  if (!dir.exists(paste(dirOutputs,"/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/",folderName,sep = ""))}
+  if (!dir.exists(paste(dirOutputs,"/",folderName, "/Grid2Poly/", sep = ""))){dir.create(paste(dirOutputs, "/",folderName, "/Grid2Poly/", sep = ""))}
+  dirX=paste(dirOutputs,"/",folderName, "/Grid2Poly/",sep = "")
 
   if(!calculatePolyScarcityOnly){
 

@@ -10,7 +10,8 @@ metis.readgcam(gcamdatabasePath = NULL, gcamdatabaseName = NULL,
   scenNewNames = NULL, reReadData = T, dataProj = "dataProj.proj",
   dataProjPath = paste(getwd(), "/outputs", sep = ""),
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All")
+  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All",
+  folderName = NULL)
 }
 \arguments{
 \item{gcamdatabasePath}{Path to gcam database folder}
@@ -131,6 +132,8 @@ c(# Energy
 "emissCO2BySectorNoBio"
 #' @return A list with the scenarios in the gcam database, queries in the queryxml file and a
 tibble with gcam data formatted for metis charts.}
+
+\item{folderName}{Default = NULL}
 }
 \description{
 This function connects to a gcamdatabase and uses a query file to

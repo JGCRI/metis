@@ -418,7 +418,7 @@ tbl<-dplyr::bind_rows(tbl,rTable)
     scaleRange = scaleRange %>%
       dplyr::left_join(scaleRangeDefault %>%
                          dplyr::select(param,names(scaleRangeDefault)[!names(scaleRangeDefault) %in% names(scaleRange)])) %>%
-      dplyr::bind_rows(scaleRangeDefault %>% filter(!param %in% unique(scaleRange$param)))
+      dplyr::bind_rows(scaleRangeDefault %>% dplyr::filter(!param %in% unique(scaleRange$param)))
 
   scaleRange[is.na(scaleRange)]<-NA_real_
   scaleRange[scaleRange=="NA"]<-NA_real_
@@ -496,36 +496,36 @@ if(any(is.na(unique(tbl$scenario)))){stop("NA scenario not valid. Please check y
 #------------------
 if (!dir.exists(dirOutputs)){
   dir.create(dirOutputs)}
-if (!dir.exists(paste(dirOutputs, "/Charts", sep = ""))){
-  dir.create(paste(dirOutputs, "/Charts", sep = ""))}
-  if (!dir.exists(paste(dirOutputs, "/Charts/",folderName, sep = ""))){
-    dir.create(paste(dirOutputs, "/Charts/",folderName, sep = ""))}
+if (!dir.exists(paste(dirOutputs, "/", folderName, sep = ""))){
+  dir.create(paste(dirOutputs, "/", folderName, sep = ""))}
+  if (!dir.exists(paste(dirOutputs, "/", folderName, "/Charts", sep = ""))){
+    dir.create(paste(dirOutputs, "/", folderName, "/Charts", sep = ""))}
 
 
 if(length(unique(tbl$region))>1){
-  if (!dir.exists(paste(dirOutputs, "/Charts/",folderName,"/compareRegions", sep = ""))){
-    dir.create(paste(dirOutputs, "/Charts/",folderName,"/compareRegions", sep = ""))}
-  if (!dir.exists(paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""))){
-    dir.create(paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""))}
+  if (!dir.exists(paste(dirOutputs, "/", folderName, "/Charts","/compareRegions", sep = ""))){
+    dir.create(paste(dirOutputs, "/", folderName, "/Charts","/compareRegions", sep = ""))}
+  if (!dir.exists(paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""))){
+    dir.create(paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""))}
   for (j in unique(tbl$scenario)) {
-    if (!dir.exists(paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = "")))
-    {dir.create(paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""))}
+    if (!dir.exists(paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = "")))
+    {dir.create(paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""))}
   }
 } # If length(unique(tbl$region))>1
 
 if(regionCompareOnly!=1){
   for (i in unique(tbl$region)){
     tbl_r<-tbl%>%dplyr::filter(region==i)
-    if (!dir.exists(paste(dirOutputs, "/Charts/",folderName,"/", i, sep = ""))){
-      dir.create(paste(dirOutputs, "/Charts/",folderName,"/", i, sep = ""))}
-    if (!dir.exists(paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""))){
-      dir.create(paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""))}
+    if (!dir.exists(paste(dirOutputs, "/", folderName, "/Charts","/", i, sep = ""))){
+      dir.create(paste(dirOutputs, "/", folderName, "/Charts","/", i, sep = ""))}
+    if (!dir.exists(paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""))){
+      dir.create(paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""))}
     if(length(unique(tbl_r$scenario))>1){
-      if (!dir.exists(paste(dirOutputs, "/Charts/",folderName,"/", i, "/compareScen",sep = ""))){
-        dir.create(paste(dirOutputs, "/Charts/",folderName,"/", i, "/compareScen",sep = ""))}}
+      if (!dir.exists(paste(dirOutputs, "/", folderName, "/Charts","/", i, "/compareScen",sep = ""))){
+        dir.create(paste(dirOutputs, "/", folderName, "/Charts","/", i, "/compareScen",sep = ""))}}
     for (j in unique(tbl_r$scenario)) {
-      if (!dir.exists(paste(dirOutputs, "/Charts/",folderName,"/", i,"/", j,sep = "")))
-      {dir.create(paste(dirOutputs, "/Charts/",folderName,"/", i,"/", j,sep = ""))}
+      if (!dir.exists(paste(dirOutputs, "/", folderName, "/Charts","/", i,"/", j,sep = "")))
+      {dir.create(paste(dirOutputs, "/", folderName, "/Charts","/", i,"/", j,sep = ""))}
     }
   }
 } # Close if(regionCompareOnly!=1)
@@ -567,7 +567,7 @@ tblAggClass1<-dplyr::bind_rows(tblAggClass1sums,tblAggClass1means)%>%dplyr::ungr
 
 # Check
 # tbl%>%as.data.frame()%>%select(scenario,class1,x,param,value)%>%
-# filter(x %in% c(2010,2015),param=="energyFinalConsumBySecMTOE",scenario=="GCAMRef")%>%
+# dplyr::filter(x %in% c(2010,2015),param=="energyFinalConsumBySecMTOE",scenario=="GCAMRef")%>%
 # group_by(scenario,x)%>%summarize(sum=sum(value/metis.assumptions()$convEJ2MTOE))
 
 
@@ -591,22 +591,22 @@ for(i in unique(tbl$region)){
                      dplyr::filter(region == i)%>%
                      dplyr::select(scenario,region,param,units, class1, class2, x, value, vintage)%>%
                      tidyr::spread(scenario,yData),
-                   file = paste(dirOutputs, "/Charts/",folderName,"/Tables_regional_",i,".csv", sep = ""),row.names = F)
+                   file = paste(dirOutputs, "/", folderName, "/Charts","/Tables_regional_",i,".csv", sep = ""),row.names = F)
 
   utils::write.csv(tblAgg%>%
                      dplyr::filter(region == i)%>%
                      tidyr::spread(scenario,yData),
-                   file = paste(dirOutputs, "/Charts/",folderName,"/Tables_regional_",i,"_aggParam.csv", sep = ""),row.names = F)
+                   file = paste(dirOutputs, "/", folderName, "/Charts","/Tables_regional_",i,"_aggParam.csv", sep = ""),row.names = F)
 
   utils::write.csv(tblAggClass1%>%
                      dplyr::filter(region == i)%>%
                      tidyr::spread(scenario,yData),
-                   file = paste(dirOutputs, "/Charts/",folderName,"/Tables_regional_",i,"_aggClass1.csv", sep = ""),row.names = F)
+                   file = paste(dirOutputs, "/", folderName, "/Charts","/Tables_regional_",i,"_aggClass1.csv", sep = ""),row.names = F)
 
   utils::write.csv(tblAggClass2%>%
                      dplyr::filter(region == i)%>%
                      tidyr::spread(scenario,yData),
-                   file = paste(dirOutputs, "/Charts/",folderName,"/Tables_regional_",i,"_aggClass2.csv", sep = ""),row.names = F)
+                   file = paste(dirOutputs, "/", folderName, "/Charts","/Tables_regional_",i,"_aggClass2.csv", sep = ""),row.names = F)
 
 
 }
@@ -614,19 +614,19 @@ for(i in unique(tbl$region)){
 utils::write.csv(tbl%>%
                    dplyr::select(scenario, region, param, units, class1, class2, x, value, vintage)%>%
                    tidyr::spread(scenario,yData),
-                 file = paste(dirOutputs, "/Charts/",folderName,"/Tables_regional_allRegions.csv", sep = ""),row.names = F)
+                 file = paste(dirOutputs, "/", folderName, "/Charts","/Tables_regional_allRegions.csv", sep = ""),row.names = F)
 
 utils::write.csv(tblAgg%>%
                    tidyr::spread(scenario,yData),
-                 file = paste(dirOutputs, "/Charts/",folderName,"/Tables_regional_allRegions_aggParam.csv", sep = ""),row.names = F)
+                 file = paste(dirOutputs, "/", folderName, "/Charts","/Tables_regional_allRegions_aggParam.csv", sep = ""),row.names = F)
 
 utils::write.csv(tblAggClass1%>%
                    tidyr::spread(scenario,yData),
-                 file = paste(dirOutputs, "/Charts/",folderName,"/Tables_regional_allRegions_aggClass1.csv", sep = ""),row.names = F)
+                 file = paste(dirOutputs, "/", folderName, "/Charts","/Tables_regional_allRegions_aggClass1.csv", sep = ""),row.names = F)
 
 utils::write.csv(tblAggClass2%>%
                    tidyr::spread(scenario,yData),
-                 file = paste(dirOutputs, "/Charts/",folderName,"/Tables_regional_allRegions_aggClass2.csv", sep = ""),row.names = F)
+                 file = paste(dirOutputs, "/", folderName, "/Charts","/Tables_regional_allRegions_aggClass2.csv", sep = ""),row.names = F)
 
 
 
@@ -685,7 +685,7 @@ if(length(unique(tbl$region))>1){
                    legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                    facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows=NULL,
-          dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
+          dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figBar_",j,"_compareRegions",nameAppend,sep=""),
           figWidth = figWidth*max((length(unique(tbl_sp$region))/2),1)*figWMult,
           figHeight = figHeight*max(1,ceiling(length(unique(tbl_sp$region))/4)*0.75),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -699,7 +699,7 @@ if(length(unique(tbl$region))>1){
                     legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                     facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows=NULL,
-          dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
+          dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
           fileName = paste(k,"_figLines_",j,"_compareRegions",nameAppend,sep=""),
           figWidth = figWidth*max((length(unique(tbl_sp$region))/2),1)*figWMult,
           figHeight = figHeight*max(1,ceiling(length(unique(tbl_sp$region))/4)*0.75),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -714,7 +714,7 @@ if(length(unique(tbl$region))>1){
                       legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                       facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="region",facet_rows="class2",
-                      dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
+                      dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
                       fileName = paste(k,"_figBar_",j,"_compareRegionsClass2",nameAppend,sep=""),
                       figWidth = figWidth*max((length(unique(tbl_sp$region))/2),1)*figWMult,
                       figHeight = figHeight*max((length(unique(tbl_sp$class2))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -726,7 +726,7 @@ if(length(unique(tbl$region))>1){
                       legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                       facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="region",facet_rows="class2",
-                      dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
+                      dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),j,sep = ""),
                       fileName = paste(k,"_figLines_",j,"_compareRegionsClass2",nameAppend,sep=""),
                       figWidth = figWidth*max((length(unique(tbl_sp$region))/2),1)*figWMult,
                       figHeight = figHeight*max((length(unique(tbl_sp$class2))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -795,7 +795,7 @@ if(length(unique(tbl$scenario))>1){
                     legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                     facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",facet_columns="scenario",facet_rows="region",
-          dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+          dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegions",nameAppend,sep=""),
           figWidth = figWidth*max((length(unique(tbl_p$scenario))/2),1)*figWMult,
           figHeight = figHeight*max((length(unique(tbl_p$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -807,7 +807,7 @@ if(length(unique(tbl$scenario))>1){
                     legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                     facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",facet_columns="scenario",facet_rows="region",
-          dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+          dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figLine_compareScenRegions",nameAppend,sep=""),
           figWidth = figWidth*max((length(unique(tbl_p$scenario))/2),1)*figWMult,
           figHeight = figHeight*max((length(unique(tbl_p$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -850,7 +850,7 @@ if(length(unique(tbl$scenario))>1){
         metis.chart(tbl_pyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = xScenCompFacetLabelSize,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData, facet_rows="region",
                     yMax=yMax_i, yMin=yMin_i,
-          dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+          dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBar_compareScenRegion_xScenSelectYears",nameAppend,sep=""),
           figWidth = figWidth*max((length(unique(tbl_py$x)[unique(tbl_py$x) %in% xCompare])/3),1)*figWMult,
           figHeight = figHeight*max((length(unique(tbl_py$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
@@ -886,7 +886,7 @@ if(length(unique(tbl$scenario))>1){
                       facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
                       class ="scenario", position ="dodge", classPalette = classPalette,
                       facet_columns="region",facet_rows=NULL,
-            dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+            dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
             fileName = paste(j,"_figBarDodged_compareScenRegion",nameAppend,sep=""), paletteRev=F,
             figWidth = figWidth*figWMult,pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )}
@@ -898,7 +898,7 @@ if(length(unique(tbl$scenario))>1){
                       facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario", classPalette = classPalette,
                       facet_columns="region",facet_rows=NULL,paletteRev = F,
-            dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+            dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
             fileName = paste(j,"_figLineOverlap_compareScenRegion",nameAppend,sep=""),
             figWidth = figWidth*figWMult,pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )}
@@ -977,7 +977,7 @@ if(length(unique(tbl$scenario))>1){
                     legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                     facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
-                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                    dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figBarDiff_compareScenRegionREF",nameAppend,sep=""),
                     figWidth = figWidth*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
                     figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
@@ -991,7 +991,7 @@ if(length(unique(tbl$scenario))>1){
                     legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                     facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
-                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                    dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figLineDiff_compareScenRegionREF",nameAppend,sep=""),
                     figWidth = figWidth*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
                     figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
@@ -1027,7 +1027,7 @@ if(length(unique(tbl$scenario))>1){
                     legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                     facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
-                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                    dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figBarDiff_compareScenRegionREF",nameAppend,sep=""),
                     figWidth = figWidth*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
                     figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
@@ -1041,7 +1041,7 @@ if(length(unique(tbl$scenario))>1){
                     legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                     facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
-                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                    dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figLineDiff_compareScenRegionREF",nameAppend,sep=""),
                     figWidth = figWidth*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
                     figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
@@ -1094,7 +1094,7 @@ if(length(unique(tbl$scenario))>1){
                     legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                     facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMaxDiffAbs_i, yMin=yMinDiffAbs_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
-          dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+          dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figBarDiff_compareScenRegion",nameAppend,sep=""),
           figWidth = figWidth*((length(unique(tbl_pd$scenario)))/((length(unique(tbl_pd$scenario)))+1))*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
           figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
@@ -1108,7 +1108,7 @@ if(length(unique(tbl$scenario))>1){
                     legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                     facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,  yMax=yMaxDiffAbs_i, yMin=yMinDiffAbs_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
-          dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+          dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
           fileName = paste(j,"_figLineDiff_compareScenRegion",nameAppend,sep=""),
           figWidth = figWidth*((length(unique(tbl_pd$scenario)))/((length(unique(tbl_pd$scenario)))+1))*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
           figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
@@ -1148,7 +1148,7 @@ if(length(unique(tbl$scenario))>1){
                       class ="scenario", position ="dodge", figWidth=figWidth, figHeight=figHeight,
                       classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                       facet_rows="region",facet_columns = "scenario",paletteRev=F,
-                      dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                      dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figBarDodgedDiff_compareScenRegion",nameAppend,sep=""),forceFacets = T,
                       pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )}
@@ -1162,7 +1162,7 @@ if(length(unique(tbl$scenario))>1){
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario",
                       classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                       facet_rows="region",facet_columns = "scenario",paletteRev=F,figWidth=figWidth, figHeight=figHeight,
-                      dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                      dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figLineOverlapDiff_compareScenRegion",nameAppend,sep=""),forceFacets = T,
                       pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
           )}
@@ -1266,7 +1266,7 @@ if(length(unique(tbl$scenario))>1){
                     plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize,
                     facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,yMax=yMaxDiffPrcnt_i, yMin=yMinDiffPrcnt_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_rows="region", facet_columns="scenario",
-                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                    dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figBarDiffPrcnt_compareScenRegion",nameAppend,sep=""),
                     figWidth = figWidth*((length(unique(tbl_pd$scenario)))/((length(unique(tbl_pd$scenario)))+1))*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
                     figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
@@ -1280,7 +1280,7 @@ if(length(unique(tbl$scenario))>1){
                     plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize,
                     facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,yMax=yMaxDiffPrcnt_i, yMin=yMinDiffPrcnt_i,
                     sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line", facet_rows="region", facet_columns="scenario",
-                    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                    dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                     fileName = paste(j,"_figLineDiffPrcnt_compareScenRegion",nameAppend,sep=""),
                     figWidth = figWidth*((length(unique(tbl_pd$scenario)))/((length(unique(tbl_pd$scenario)))+1))*max((length(unique(tbl_pd$scenario))/2),1)*figWMult,forceFacets = T,
                     figHeight = figHeight*max((length(unique(tbl_pd$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition,
@@ -1369,7 +1369,7 @@ if(length(unique(tbl$scenario))>1){
                       class ="scenario", position ="dodge",
                       classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                       facet_rows="region",facet_columns="scenario",figWidth=figWidth, figHeight=figHeight,
-                      dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                      dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figBarDodgedDiffPrcnt_compareScenRegionREF",nameAppend,sep=""),forceFacets = T,
                       pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
                       xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
@@ -1385,7 +1385,7 @@ if(length(unique(tbl$scenario))>1){
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario",
                       classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                       facet_rows="region",facet_columns="scenario",figWidth=figWidth, figHeight=figHeight,
-                      dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                      dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figLineOverlapDiffPrcnt_compareScenRegionREF",nameAppend,sep=""),forceFacets = T,
                       pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
                       xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
@@ -1424,7 +1424,7 @@ if(length(unique(tbl$scenario))>1){
                       class ="scenario", position ="dodge",yMax=yMaxDiffPrcnt_i, yMin=yMinDiffPrcnt_i,
                       classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                       facet_rows="region",facet_columns="scenario",figWidth=figWidth, figHeight=figHeight,
-                      dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                      dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figBarDodgedDiffPrcnt_compareScenRegion",nameAppend,sep=""),forceFacets = T,
                       pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
                       xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
@@ -1440,7 +1440,7 @@ if(length(unique(tbl$scenario))>1){
                       sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",class ="scenario",
                       classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
                       facet_rows="region",facet_columns="scenario",figWidth=figWidth, figHeight=figHeight,yMax=yMaxDiffPrcnt_i, yMin=yMinDiffPrcnt_i,
-                      dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
+                      dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/compareRegions/",gsub(" ","",paste(unique(unique(tbl$region)),collapse="")),"compareScen", sep = ""),
                       fileName = paste(j,"_figLineOverlapDiffPrcnt_compareScenRegion",nameAppend,sep=""),forceFacets = T,
                       pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
                       xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
@@ -1514,7 +1514,7 @@ if(scenarioCompareOnly!=1){
                   legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                   facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,
                   sizeLines=sizeLines, chartType = "bar",
-                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
+                  dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
                   fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )}
 
@@ -1523,7 +1523,7 @@ if(scenarioCompareOnly!=1){
                 panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,
                 facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,
                 yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
-    dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),printFig = F,
+    dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i, "/", j,sep = ""),printFig = F,
     forceFacets = T, facet_columns="label",figWidth=figWidth, figHeight=figHeight,
     fileName = paste(k,"_figBar_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
     )->mpx
@@ -1545,7 +1545,7 @@ if(scenarioCompareOnly!=1){
                 legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                 facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,
                 sizeLines=sizeLines, chartType = "line",
-                dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
+                dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
                 fileName = paste(k,"_figLine_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
     )}
 
@@ -1554,7 +1554,7 @@ if(scenarioCompareOnly!=1){
                 panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,
                 facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,
                 yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
-      dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),printFig = F,
+      dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i, "/", j,sep = ""),printFig = F,
       forceFacets = T, facet_columns="label",figWidth=figWidth, figHeight=figHeight,
       fileName = paste(k,"_figLine_",i,"_",j,nameAppend,sep=""),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
     )->mpx
@@ -1580,7 +1580,7 @@ if(scenarioCompareOnly!=1){
                   facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,
                   facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,
                   sizeLines=sizeLines, chartType = "bar",
-                  facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
+                  facet_columns = "class2", dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
                   fileName = paste(k,"_figBar_",i,"_Class2_",j,nameAppend,sep="")
       )}
 
@@ -1590,7 +1590,7 @@ if(scenarioCompareOnly!=1){
                   plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize,
                   facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                   sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
-                  facet_columns = "class2", dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
+                  facet_columns = "class2", dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i, "/", j,sep = ""),figWidth=figWidth, figHeight=figHeight,
                   fileName = paste(k,"_figLine_",i,"_Class2_",j,nameAppend,sep="")
       )}
     }
@@ -1665,7 +1665,7 @@ if(scenarioCompareOnly!=1){
                        label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=1*ncol_i*nrow_i))); figure
 
       metis.printPdfPng(figure=figure,
-                          dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
+                          dir=paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""),
                           filename=paste(paramSet_i,"_",i,"_",j,"_mplot_Bar",sep=""),
                           figWidth=figWidth*ncol_i,
                           figHeight=figHeight*nrow_i,
@@ -1693,7 +1693,7 @@ if(scenarioCompareOnly!=1){
                              label.args = list(gp = grid::gpar(hjust = 0, vjust=0, cex=1*ncol_i*nrow_i))); figure
 
       metis.printPdfPng(figure=figure,
-                        dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
+                        dir=paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""),
                         filename=paste(paramSet_i,"_",i,"_",j,"_mplot_Line",sep=""),
                         figWidth=figWidth*ncol_i,
                         figHeight=figHeight*nrow_i,
@@ -1793,7 +1793,7 @@ for(i in unique(tbl$region)){
                   plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize,
                   facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                   sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
-        dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+        dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figBar_",i,"_compareScen",nameAppend,sep=""),
         figWidth = figWidth*max((length(unique(tbl_rp$scenario))/2),1)*figWMult,
@@ -1814,7 +1814,7 @@ for(i in unique(tbl$region)){
                   legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                   facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                   sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
-        dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+        dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figLine_",i,"_compareScen",nameAppend,sep=""),
         figWidth = figWidth*max((length(unique(tbl_rp$scenario))/2),1)*figWMult,
@@ -1873,7 +1873,7 @@ for(i in unique(tbl$region)){
       if(multiPlotFigsOnly==F){
       metis.chart(tbl_rpyC1, xData ="scenario", yData=yData,xLabel=xLabel,yLabel=yLabel, facetLabelSize = xScenCompFacetLabelSize,
                   sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns = xData,
-       dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),yMax=yMax_i, yMin=yMin_i,
+       dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),yMax=yMax_i, yMin=yMin_i,
         fileName = paste(j,"_figBar_",i,"_compareScen_xScenSelectYears",nameAppend,sep=""),
         figWidth = figWidth*max((length(unique(tbl_rpy$x)[unique(tbl_rpy$x) %in% xCompare])/3),1)*figWMult,
         figHeight = figHeight*max((length(unique(tbl_rpy$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder,
@@ -1927,7 +1927,7 @@ for(i in unique(tbl$region)){
                   facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i,
                   sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar", facet_columns=NULL,
                   class ="scenario", position ="dodge", classPalette = classPalette,
-        dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+        dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figBarDodged_",i,"_compareScen_",nameAppend,sep=""), paletteRev=F,figHeight=figHeight,
         figWidth = figWidth*figWMult,pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )}
@@ -1939,7 +1939,7 @@ for(i in unique(tbl$region)){
                   facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,
                   sizeLines=sizeLines, chartType = "line", facet_columns=NULL,
                   class ="scenario", classPalette = classPalette, figHeight=figHeight,
-                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                  dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                   fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep=""),figWidth = figWidth*figWMult, paletteRev = F,
                   pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
       )}
@@ -1951,7 +1951,7 @@ for(i in unique(tbl$region)){
                   facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,
                   yMax=yMax_i, yMin=yMin_i, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                   class ="scenario", classPalette = classPalettex,
-        dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+        dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
         fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep=""),figWidth = figWidth*figWMult, figHeight=figHeight,
         printFig = F, forceFacets = T, facet_columns="label",
         pdfpng=pdfpng, legendPosition=legendPosition,
@@ -1973,7 +1973,7 @@ for(i in unique(tbl$region)){
       # chartType = "line"
       # class ="scenario"
       # classPalette = classPalettex
-      # dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = "")
+      # dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = "")
       # fileName = paste(j,"_figLineOverlap_",i,"_compareScen",nameAppend,sep="")
       # figWidth = figWidth*figWMult
       # printFig = F
@@ -2099,7 +2099,7 @@ for(i in unique(tbl$region)){
                   legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                   facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines,
                   chartType = "bar",yMax=yMax_i, yMin=yMin_i,
-                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                  dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                   facet_columns="scenario",
                   fileName = paste(j,"_figBarDiff_",i,"_compareScen1Scale",nameAppend,sep=""),
                   figWidth = figWidth*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
@@ -2112,7 +2112,7 @@ for(i in unique(tbl$region)){
                   panelBGcolor=panelBGcolor, plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,
                   facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor,
                   sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
-                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                  dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                   facet_columns="scenario",yMax=yMax_i, yMin=yMin_i,
                   fileName = paste(j,"_figBarDiff_",i,"_compareScen1Scale",nameAppend,sep=""),
                   figWidth = figWidth*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
@@ -2139,7 +2139,7 @@ for(i in unique(tbl$region)){
                   legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                   facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines,
                   chartType = "line",yMax=yMax_i, yMin=yMin_i,
-                  dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                  dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                   facet_columns="scenario",
                   fileName = paste(j,"_figLineDiff_",i,"_compareScen1Scale",nameAppend,sep=""),
                   figWidth = figWidth*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
@@ -2148,7 +2148,7 @@ for(i in unique(tbl$region)){
                   colOrder2 = c(colOrder2[1],paste(colOrder2,diffText,sep="")), colOrderName2 = colOrderName2
       )}
 
-      # dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = "");
+      # dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = "");
       # fileName = paste(j,"_figLineDiff_",i,"_compareScen1Scale",nameAppend,sep="");
       # data=tbl_rpdC1; xData=xData; pointsOn=pointsOn;yData=yData;xLabel=xLabel;yLabel=yLabel;facetLabelSize = facetLabelSize; sizeBarLines=sizeBarLines;useNewLabels=useNewLabels;sizeLines=sizeLines; chartType = "line";
       # facet_columns="scenario";
@@ -2201,7 +2201,7 @@ for(i in unique(tbl$region)){
                   plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize,
                   facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,
                   useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",yMax=yMaxDiffAbs_i, yMin=yMinDiffAbs_i,
-        dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+        dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figBarDiff_",i,"_compareScen",nameAppend,sep=""),
         figWidth = figWidth*((length(unique(tbl_rpd$scenario)))/((length(unique(tbl_rpd$scenario)))+1))*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
@@ -2218,7 +2218,7 @@ for(i in unique(tbl$region)){
       # chartType = "bar"
       # yMax=yMaxDiffAbs_i
       # yMin=yMinDiffAbs_i
-      # dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = "")
+      # dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = "")
       # facet_columns="scenario"
       # fileName = paste(j,"_figBarDiff_",i,"_compareScen",nameAppend,sep="")
       # figWidth = figWidth*((length(unique(tbl_rpd$scenario)))/((length(unique(tbl_rpd$scenario)))+1))*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult
@@ -2248,7 +2248,7 @@ for(i in unique(tbl$region)){
                  plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize,
                  facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,
                  useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",yMax=yMaxDiffAbs_i, yMin=yMinDiffAbs_i,
-        dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+        dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
         facet_columns="scenario",
         fileName = paste(j,"_figLineDiff_",i,"_compareScen",nameAppend,sep=""),
         figWidth = figWidth*((length(unique(tbl_rpd$scenario)))/((length(unique(tbl_rpd$scenario)))+1))*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
@@ -2291,7 +2291,7 @@ for(i in unique(tbl$region)){
                    chartType = "bar", facet_columns=NULL,yMax=yMaxDiffAbs_i, yMin=yMinDiffAbs_i,
                    class ="scenario", position ="dodge",
                    classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
-                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                   dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figBarDodgedDiff_",i,"_compareScen_",nameAppend,sep=""), forceFacets = T,
                    pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,figWidth=figWidth, figHeight=figHeight,
                    xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffText,sep="")),colOrderName1 = colOrderName1,
@@ -2307,7 +2307,7 @@ for(i in unique(tbl$region)){
                    chartType = "line", facet_columns=NULL,yMax=yMaxDiffAbs_i, yMin=yMinDiffAbs_i,
                    class ="scenario",
                    classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
-                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                   dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiff_",i,"_compareScen",nameAppend,sep=""),
                    forceFacets = T,figWidth=figWidth, figHeight=figHeight,
                    pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
@@ -2323,7 +2323,7 @@ for(i in unique(tbl$region)){
                    sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",yMax=yMaxDiffAbs_i, yMin=yMinDiffAbs_i,
                    class ="scenario",
                    classPalette =  metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
-                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                   dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiff_",i,"_compareScen",nameAppend,sep=""),
                    forceFacets = T,printFig = F,facet_columns="label",figWidth=figWidth, figHeight=figHeight,
                    pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
@@ -2431,7 +2431,7 @@ for(i in unique(tbl$region)){
                  legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines,
                  chartType = "bar",
-                 dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                 dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figBarDiffPrcnt_",i,"_compareScen1Scale",nameAppend,sep=""),
                  figWidth = figWidth*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
@@ -2446,7 +2446,7 @@ for(i in unique(tbl$region)){
                  legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,
                  facetBGColor=facetBGColor,  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines,
                  chartType = "line",
-                 dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                 dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",
                  fileName = paste(j,"_figLineDiffPrcnt_",i,"_compareScen1Scale",nameAppend,sep=""),
                  figWidth = figWidth*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
@@ -2501,7 +2501,7 @@ for(i in unique(tbl$region)){
                  plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,
                  facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,
                  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "bar",
-                 dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                 dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",yMax=yMaxDiffPrcnt_i, yMin=yMinDiffPrcnt_i,
                  fileName = paste(j,"_figBarDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
                  figWidth = figWidth*((length(unique(tbl_rpd$scenario)))/((length(unique(tbl_rpd$scenario)))+1))*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
@@ -2515,7 +2515,7 @@ for(i in unique(tbl$region)){
                  plotBGcolor=plotBGcolor, legendBGcolor=legendBGcolor,yData=yData,xLabel=xLabel,yLabel=yLabel,
                  facetLabelSize = facetLabelSize, facetBorderColor=facetBorderColor,  facetBGColor=facetBGColor,
                  facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
-                 dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                 dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                  facet_columns="scenario",yMax=yMaxDiffPrcnt_i, yMin=yMinDiffPrcnt_i,
                  fileName = paste(j,"_figLineDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
                  figWidth = figWidth*((length(unique(tbl_rpd$scenario)))/((length(unique(tbl_rpd$scenario)))+1))*max((length(unique(tbl_rpd$scenario))/2),1)*figWMult,forceFacets = T,
@@ -2625,7 +2625,7 @@ for(i in unique(tbl$region)){
                    chartType = "bar", facet_columns=NULL,
                    class ="scenario", position ="dodge",
                    classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
-                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                   dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figBarDodgedDiffPrcnt_",i,"_compareScen1Scale",nameAppend,sep=""),forceFacets = T,
                    pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,figWidth=figWidth, figHeight=figHeight,
                    xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
@@ -2641,7 +2641,7 @@ for(i in unique(tbl$region)){
                    chartType = "line", facet_columns=NULL,
                    class ="scenario",
                    classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
-                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                   dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiffPrcnt_",i,"_compareScen1Scale",nameAppend,sep=""),
                    forceFacets = T,figWidth=figWidth, figHeight=figHeight,
                    pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
@@ -2703,7 +2703,7 @@ for(i in unique(tbl$region)){
                    chartType = "bar", facet_columns=NULL,
                    class ="scenario", position ="dodge",yMax=yMaxDiffPrcnt_i, yMin=yMinDiffPrcnt_i,
                    classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
-                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                   dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figBarDodgedDiffPrcnt_",i,"_compareScen_",nameAppend,sep=""),forceFacets = T,
                    pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,figWidth=figWidth, figHeight=figHeight,
                    xOrder = xOrder, colOrder1 = c(colOrder1[1],paste(colOrder1,diffPrcntText,sep="")),colOrderName1 = colOrderName1,
@@ -2719,7 +2719,7 @@ for(i in unique(tbl$region)){
                    facetLabelColor=facetLabelColor, sizeBarLines=sizeBarLines,useNewLabels=useNewLabels,sizeLines=sizeLines, chartType = "line",
                    class ="scenario",yMax=yMaxDiffPrcnt_i, yMin=yMinDiffPrcnt_i,
                    classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
-                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                   dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
                    forceFacets = T,facet_columns=NULL,figWidth=figWidth, figHeight=figHeight,
                    pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
@@ -2736,7 +2736,7 @@ for(i in unique(tbl$region)){
                    sizeLines=sizeLines, chartType = "line",yMax=yMaxDiffPrcnt_i, yMin=yMinDiffPrcnt_i,
                    class ="scenario",
                    classPalette = metis.colors()[[classPalettex]][!metis.colors()[[classPalettex]] %in% metis.colors()[[classPalettex]][1]],
-                   dirOutputs = paste(dirOutputs, "/Charts/",folderName,"/", i,"/compareScen",sep = ""),
+                   dirOutputs = paste(dirOutputs, "/", folderName, "/Charts","/", i,"/compareScen",sep = ""),
                    fileName = paste(j,"_figLineOverlapDiffPrcnt_",i,"_compareScen",nameAppend,sep=""),
                    forceFacets = T,facet_columns="label",printFig = F,figWidth=figWidth, figHeight=figHeight,
                    pdfpng=pdfpng, legendPosition=legendPosition,paletteRev=F,
@@ -2978,7 +2978,7 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
   # figure <- ggpubr::ggarrange(plotlist=multiPlotlist_i,ncol=1,nrow=length(multiPlotlist_i)); figure
   # # Plot Combined Figure for the Param Set
   # metis.printPdfPng(figure=figure,
-  #                     dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
+  #                     dir=paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""),
   #                     filename=paste(paramSet_i,"_",i,"_mplot_diff1Scale",sep=""),
   #                     figWidth=figWidth*((nScen_i+nScen_i-1)/nScen_i+1.25),
   #                     figHeight=figHeight*length(multiPlotlist_i),
@@ -2993,7 +2993,7 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
   figure <- ggpubr::ggarrange(plotlist=multiPlotlist_i,ncol=1,nrow=length(multiPlotlist_i)); figure
   # Plot Combined Figure for the Param Set
   metis.printPdfPng(figure=figure,
-                    dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
+                    dir=paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""),
                     filename=paste(paramSet_i,"_",i,"_mplot_diffMultiScale",sep=""),
                     figWidth=figWidth*((nScen_i-1)/nScen_i+2.25)*max(1,nScen_i/3),
                     figHeight=figHeight*length(multiPlotlist_i),
@@ -3008,7 +3008,7 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
   figure <- ggpubr::ggarrange(plotlist=multiPlotlist_i,ncol=1,nrow=length(multiPlotlist_i)); figure
   # Plot Combined Figure for the Param Set
   metis.printPdfPng(figure=figure,
-                    dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
+                    dir=paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""),
                     filename=paste(paramSet_i,"_",i,"_mplot_diffMultiScaleAbs",sep=""),
                     figWidth=figWidth*((nScen_i-1)/nScen_i+2.25),
                     figHeight=figHeight*length(multiPlotlist_i),
@@ -3023,7 +3023,7 @@ for(paramSet_i in unique(multiPlotFigs$paramSet)){
   figure <- ggpubr::ggarrange(plotlist=multiPlotlist_i,ncol=1,nrow=length(multiPlotlist_i)); figure
   # Plot Combined Figure for the Param Set
   metis.printPdfPng(figure=figure,
-                    dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
+                    dir=paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""),
                     filename=paste(paramSet_i,"_",i,"_mplot_diffMultiScalePrcnt",sep=""),
                     figWidth=figWidth*((nScen_i-1)/nScen_i+2.25),
                     figHeight=figHeight*length(multiPlotlist_i),
@@ -3106,7 +3106,7 @@ if(T){
                              mp_LineLeg, ncol=1,nrow=2, heights=c(nrow_i*4,1)); figure
 
       metis.printPdfPng(figure=figure,
-                        dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
+                        dir=paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""),
                         filename=paste(paramSet_i,"_",i,"_mplot_SumLineDiffAbsPrcnt",sep=""),
                         figWidth=figWidth*max(ncol_i,1.5)*0.6,
                         figHeight=figHeight*(max(nrow_i,1.5)+0.3)*0.75,
@@ -3142,7 +3142,7 @@ if(T){
                            mp_LineLeg, ncol=1,nrow=2, heights=c(nrow_i*4,1)); figure
 
       metis.printPdfPng(figure=figure,
-                        dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
+                        dir=paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""),
                         filename=paste(paramSet_i,"_",i,"_mplot_SumLineDiffAbs",sep=""),
                         figWidth=figWidth*max(ncol_i,1.5)*0.6,
                         figHeight=figHeight*(max(nrow_i,1.5)+0.3)*0.75,
@@ -3179,7 +3179,7 @@ if(T){
 
 
       metis.printPdfPng(figure=figure,
-                        dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
+                        dir=paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""),
                         filename=paste(paramSet_i,"_",i,"_mplot_SumLineDiffPrcnt",sep=""),
                         figWidth=figWidth*max(ncol_i,1.5)*0.6,
                         figHeight=figHeight*(max(nrow_i,1.5)+0.3)*0.75,
@@ -3220,7 +3220,7 @@ if(T){
 
 
       metis.printPdfPng(figure=figure,
-                        dir=paste(dirOutputs, "/Charts/",folderName,"/", i,"/multiPlot", sep = ""),
+                        dir=paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""),
                         filename=paste(paramSet_i,"_",i,"_mplot_SumLineAbs",sep=""),
                         figWidth=figWidth*max(ncol_i,3)*0.5,
                         figHeight=figHeight*(max(nrow_i))*1,

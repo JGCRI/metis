@@ -883,21 +883,21 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect<-"region"}
 
     if (!dir.exists(dirOutputsX)){dir.create(dirOutputsX)}
-    if (!dir.exists(paste(dirOutputsX, "/Maps", sep = ""))){
-      dir.create(paste(dirOutputsX, "/Maps", sep = ""))}
+    if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, sep = ""))){
+      dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, sep = ""))}
 
-    if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,sep = ""))){
-      dir.create(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,sep = ""))}
+    if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",sep = ""))){
+      dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",sep = ""))}
 
     if(!is.null(gridTbl)){
       if(nrow(gridTbl)>0){
 
-    if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/raster",sep = ""))){
-      dir.create(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/raster",sep = ""))}
+    if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster",sep = ""))){
+      dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster",sep = ""))}
 
       for(param_i in unique(gridTbl$param)){
-        if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/raster/",param_i,sep = ""))){
-          dir.create(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/raster/",param_i,sep = ""))}
+        if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,sep = ""))){
+          dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,sep = ""))}
 
 
     if(!is.null(indvScenariosGrid)){
@@ -921,16 +921,16 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
           }
 
         if(multiFacetsOn==T){
-          if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/compareMultiFacets",sep = ""))){
-            dir.create(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/compareMultiFacets",sep = ""))}}
+          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/compareMultiFacets",sep = ""))){
+            dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/compareMultiFacets",sep = ""))}}
 
 
         for (scenario_i in unique((gridTbl%>%dplyr::filter(param==param_i))$scenario)) {
-          if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/",scenario_i,sep = ""))){
-            dir.create(paste(dirOutputsX,  "/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/",scenario_i,sep = ""))}
+          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,sep = ""))){
+            dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,sep = ""))}
 
-          if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/",scenario_i,"/byYear",sep = ""))){
-            dir.create(paste(dirOutputsX,  "/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/",scenario_i,"/byYear",sep = ""))}
+          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,"/byYear",sep = ""))){
+            dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,"/byYear",sep = ""))}
 
 
         } # Close for scenario i
@@ -945,13 +945,13 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     if(nrow(shapeTbl)>0){
 
     for (subRegion_i in unique(shapeTbl$subRegType)) {
-      if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,sep = ""))){
-        dir.create(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,sep = ""))} # Close subRegion directory
+      if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,sep = ""))){
+        dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,sep = ""))} # Close subRegion directory
     } # Close subRegion
 
     for(param_i in unique(shapeTbl$param)){
-      if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,sep = ""))){
-        dir.create(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,sep = ""))}
+      if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,sep = ""))){
+        dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,sep = ""))}
 
     if(!is.null(indvScenariosShape)){
 
@@ -975,22 +975,22 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
           }
 
         if(multiFacetsOn==T){
-          if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))){
-            dir.create(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))}
-          if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))){
-            dir.create(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))}
-          if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))){
-            dir.create(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))}
+          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))){
+            dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))}
+          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))){
+            dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))}
+          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))){
+            dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))}
         }
 
         unique((shapeTbl%>%dplyr::filter(param==param_i))$scenario)
 
         for (scenario_i in unique((shapeTbl%>%dplyr::filter(param==param_i))$scenario)) {
-          if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))){
-            dir.create(paste(dirOutputsX,  "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/",  scenario_i,sep = ""))}
+          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))){
+            dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/",  scenario_i,sep = ""))}
 
-          if (!dir.exists(paste(dirOutputsX, "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))){
-            dir.create(paste(dirOutputsX,  "/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))}
+          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))){
+            dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))}
 
 
 
@@ -1009,8 +1009,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
   if(nrow(shapeTbl)>0){
   data.table::fwrite(shapeTbl%>%
-                       tidyr::spread(key="class",value="value"),paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/shapeTbl.csv",sep = ""))
-    print(paste("Map data table written to ",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",folderName,dirNameAppend,"Tbl.csv",sep = ""))
+                       tidyr::spread(key="class",value="value"),paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/Tbl.csv",sep = ""))
+    print(paste("Map data table written to ",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/Tbl.csv",sep = ""))
   }
 
   # -------------------
@@ -1151,7 +1151,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           figHeight=figHeight,
                           pdfpng = pdfpng,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-                          dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/byYear",sep = ""))
+                          dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep = ""))
 
                 # numeric2Cat_list=numeric2Cat_list
                 # catParam=param_i
@@ -1180,7 +1180,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 # figWidth=figWidth
                 # figHeight=figHeight
                 # fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-                # dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/byYear",sep = "")
+                # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep = "")
 
                 if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
                 if(length(names(mapx@data))==countCheck){
@@ -1215,7 +1215,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           figHeight=figHeight,
                           pdfpng = pdfpng,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
-                          dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/byYear",sep = ""))
+                          dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep = ""))
 
                 if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
                 if(length(names(mapx@data))==countCheck){
@@ -1252,7 +1252,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           figHeight=figHeight,
                           pdfpng = pdfpng,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
-                          dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/byYear",sep = ""))
+                          dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep = ""))
 
                 # numeric2Cat_list=numeric2Cat_list
                 # catParam=param_i
@@ -1280,7 +1280,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 # figWidth=figWidth
                 # figHeight=figHeight
                 # fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep="")
-                # dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/byYear",sep = "")
+                # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep = "")
 
               } # if nrow(datax) > 1
             }# Close years loop
@@ -1290,14 +1290,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
             if(animateOn==T){
 
               animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
-              animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/byYear",sep=""),
+              animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep=""),
                                       pattern = paste(".*",param_i,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
               animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-              magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/",
+              magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                         animName,sep = ""))
-              print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/",
+              print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                                        animName,sep = ""))
-              fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/",
+              fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                    animName,sep = "")
               tempImage<-magick::image_read(fnameTempImage)
               croppedImage<-magick::image_trim(tempImage,fuzz=0);
@@ -1305,14 +1305,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
               animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
-              animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/byYear",sep=""),
+              animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep=""),
                                       pattern = paste(".*",param_i,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
               animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-              magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/",
+              magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                           animName,sep = ""))
-              print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/",
+              print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                           animName,sep = ""))
-              fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/",
+              fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                    animName,sep = "")
               tempImage<-magick::image_read(fnameTempImage)
               croppedImage<-magick::image_trim(tempImage,fuzz=0);
@@ -1320,21 +1320,21 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
               animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
-              animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/byYear",sep=""),
+              animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep=""),
                                       pattern = paste(".*",param_i,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
               animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-              magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/",
+              magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                           animName,sep = ""))
-              print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/",
+              print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                           animName,sep = ""))
-              fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/",
+              fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                    animName,sep = "")
               tempImage<-magick::image_read(fnameTempImage)
               croppedImage<-magick::image_trim(tempImage,fuzz=0);
               magick::image_write(croppedImage,fnameTempImage)
 
 
-              #unlink(paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+              #unlink(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
             } # If Animate ON==t
 
 
@@ -1425,7 +1425,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           figHeight=figHeight,
                           pdfpng = pdfpng,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-                          dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,sep = ""))
+                          dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
 
                 # numeric2Cat_list=numeric2Cat_list
@@ -1454,7 +1454,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 # figWidth=figWidth
                 # figHeight=figHeight
                 # fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-                # dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,sep = "")
+                # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = "")
 
 
                 metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
@@ -1478,7 +1478,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
-                          dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,sep = ""))
+                          dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
 
                 if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
@@ -1511,7 +1511,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
-                          dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,sep = ""))
+                          dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
               } # if(nrow(datax)>1){
 
@@ -1597,7 +1597,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
-                          dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,sep = ""))
+                          dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
                 metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
                           dataGrid=mapx,
@@ -1621,7 +1621,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
-                          dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,sep = ""))
+                          dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
 
                 if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
@@ -1655,7 +1655,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
                           fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
-                          dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/raster/",param_i,"/", scenario_i,sep = ""))
+                          dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
 
               } # if(nrow(datax)>1){
@@ -1896,7 +1896,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       # multiFacetRows=multiFacetRows
                       # multiFacetCols=multiFacetCols
                       # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_MEAN_KMEANS",sep="")
-                      # dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = "")
+                      # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = "")
 
 
                       metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -1925,7 +1925,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                 multiFacetRows="multiFacetRow",
                                 multiFacetCols="multiFacetCol",
                                 fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_RefYears_",class_i,nameAppend,"_MEAN_PRETTY",sep=""),
-                                dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))
+                                dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))
 
 
                       metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -2059,7 +2059,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                     multiFacetRows="multiFacetRow",
                                     multiFacetCols="multiFacetCol",
                                     fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_KMEANS",sep=""),
-                                    dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
+                                    dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
 
                           ##ZARRAR
                           # numeric2Cat_list=numeric2Cat_list
@@ -2092,7 +2092,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           # multiFacetRows=multiFacetRows
                           # multiFacetCols=multiFacetCols
                           # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_KMEANS",sep="")
-                          # dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = "")
+                          # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = "")
 
 
                           metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -2121,7 +2121,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                     multiFacetRows="multiFacetRow",
                                     multiFacetCols="multiFacetCol",
                                     fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_PRETTY",sep=""),
-                                    dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
+                                    dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
 
 
                           metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -2149,7 +2149,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                     multiFacetRows="multiFacetRow",
                                     multiFacetCols="multiFacetCol",
                                     fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_FREESCALE",sep=""),
-                                    dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
+                                    dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
 
 
 
@@ -2161,14 +2161,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     if(animateOn==T){
 
                       animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_PRETTY.gif",sep="")
-                      animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
+                      animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
                                               pattern = paste(".*",param_i,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
                       animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                      magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
                                                   animName,sep = ""))
-                      print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
                                   animName,sep = ""))
-                      fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
                                            animName,sep = "")
                       tempImage<-magick::image_read(fnameTempImage)
                       croppedImage<-magick::image_trim(tempImage,fuzz=0);
@@ -2176,35 +2176,35 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
                       animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_KMEANS.gif",sep="")
-                      animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
+                      animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
                                               pattern = paste(".*",param_i,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
                       animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                      magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
                                                   animName,sep = ""))
-                      print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
                                   animName,sep = ""))
-                      fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
                                            animName,sep = "")
                       tempImage<-magick::image_read(fnameTempImage)
                       croppedImage<-magick::image_trim(tempImage,fuzz=0);
                       magick::image_write(croppedImage,fnameTempImage)
 
                       animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_FREESCALE.gif",sep="")
-                      animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
+                      animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
                                               pattern = paste(".*",param_i,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
                       animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                      magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
                                                   animName,sep = ""))
-                      print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
                                   animName,sep = ""))
-                      fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
                                            animName,sep = "")
                       tempImage<-magick::image_read(fnameTempImage)
                       croppedImage<-magick::image_trim(tempImage,fuzz=0);
                       magick::image_write(croppedImage,fnameTempImage)
 
 
-                      #unlink(paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+                      #unlink(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
                     } # If Animate ON==t
 
 
@@ -2322,7 +2322,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #                                   multiFacetCols="multiFacetCol",
 #                                   mapTitleSize=mapTitleSize,
 #                                   fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_DIFF_KMEANS",sep=""),
-#                                   dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
+#                                   dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
 #
 #
 #
@@ -2353,7 +2353,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #                                   multiFacetCols="multiFacetCol",
 #                                   mapTitleSize=mapTitleSize,
 #                                   fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_DIFF_PRETTY",sep=""),
-#                                   dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
+#                                   dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
 #
 #
 #                         metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, mapTitle = mapTitle,panelLabel=panelLabelMulti,
@@ -2382,7 +2382,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #                                   multiFacetCols="multiFacetCol",
 #                                   mapTitleSize=mapTitleSize,
 #                                   fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_DIFF_FREESCALE",sep=""),
-#                                   dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
+#                                   dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
 #
 #
 #
@@ -2395,14 +2395,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #                   if(animateOn==T){
 #
 #                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_DIFF_PRETTY.gif",sep="")
-#                     animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
+#                     animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
 #                                             pattern = paste(".*",param_i,".*",class_i,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
 #                     animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-#                     magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
 #                                                 animName,sep = ""))
-#                     print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
 #                                 animName,sep = ""))
-#                     fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
 #                                          animName,sep = "")
 #                     tempImage<-magick::image_read(fnameTempImage)
 #                     croppedImage<-magick::image_trim(tempImage,fuzz=0);
@@ -2410,34 +2410,34 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #
 #
 #                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_DIFF_KMEANS.gif",sep="")
-#                     animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
+#                     animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
 #                                             pattern = paste(".*",param_i,".*",class_i,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
 #                     animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-#                     magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
 #                                                 animName,sep = ""))
-#                     print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
 #                                 animName,sep = ""))
-#                     fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
 #                                          animName,sep = "")
 #                     tempImage<-magick::image_read(fnameTempImage)
 #                     croppedImage<-magick::image_trim(tempImage,fuzz=0);
 #                     magick::image_write(croppedImage,fnameTempImage)
 #
 #                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_DIFF_FREESCALE.gif",sep="")
-#                     animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
+#                     animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
 #                                             pattern = paste(".*",param_i,".*",class_i,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
 #                     animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-#                     magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
 #                                                 animName,sep = ""))
-#                     print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
 #                                 animName,sep = ""))
-#                     fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
 #                                          animName,sep = "")
 #                     tempImage<-magick::image_read(fnameTempImage)
 #                     croppedImage<-magick::image_trim(tempImage,fuzz=0);
 #                     magick::image_write(croppedImage,fnameTempImage)
 #
-#                     #unlink(paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+#                     #unlink(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
 #                   } # If Animate ON==t
 #
 
@@ -2599,7 +2599,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             figWidth=figWidth,
                             figHeight=figHeight, pdfpng = pdfpng,
                             fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
 #
 #                   legendSingleColorOn=legendSingleColorOn
 #                   legendSingleValue=legendSingleValue
@@ -2630,7 +2630,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #                   figWidth=figWidth
 #                   figHeight=figHeight
 #                   fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-#                   dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
+#                   dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
 
                   metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
                             underLayer=underLayer,  dataPolygon=mapx,
@@ -2655,7 +2655,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             figWidth=figWidth,
                             figHeight=figHeight, pdfpng = pdfpng,
                             fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
 #
                   # numeric2Cat_list=numeric2Cat_list
                   # catParam=param_i
@@ -2684,7 +2684,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # figHeight=figHeight
                   # pdfpng = pdfpng
                   # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep="")
-                  # dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
+                  # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
 
                   if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
                   if(length(names(mapx@data))==countCheck){
@@ -2719,7 +2719,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             figWidth=figWidth,
                             figHeight=figHeight, pdfpng = pdfpng,
                             fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
 
                   # innerMargins=innerMargins
                   # legendDigitsOverride=legendDigitsOverride
@@ -2759,7 +2759,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # figHeight=figHeight
                   # pdfpng = pdfpng
                   # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep="")
-                  # dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
+                  # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
 
 
                 }# if(nrow(datax)>1){
@@ -2770,15 +2770,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
               if(animateOn==T){
 
                 animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
-                animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
+                animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
                                         pattern = paste(".*",param_i,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
                 print(animFiles)
                 animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
                                             animName,sep = ""))
-                print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
                             animName,sep = ""))
-                fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
                                      animName,sep = "")
                 tempImage<-magick::image_read(fnameTempImage)
                 croppedImage<-magick::image_trim(tempImage,fuzz=0);
@@ -2787,14 +2787,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
                 animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
-                animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
+                animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
                                         pattern = paste(".*",param_i,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
                 animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
                                             animName,sep = ""))
-                print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
                             animName,sep = ""))
-                fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
                                      animName,sep = "")
                 tempImage<-magick::image_read(fnameTempImage)
                 croppedImage<-magick::image_trim(tempImage,fuzz=0);
@@ -2802,21 +2802,21 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
                 animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
-                animFiles <- list.files(path = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
+                animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
                                         pattern = paste(".*",param_i,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
                 animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                magick::image_write(animation,paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
                                             animName,sep = ""))
-                print(paste("animation saved in :",dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
                             animName,sep = ""))
-                fnameTempImage=paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
                                      animName,sep = "")
                 tempImage<-magick::image_read(fnameTempImage)
                 croppedImage<-magick::image_trim(tempImage,fuzz=0);
                 magick::image_write(croppedImage,fnameTempImage)
 
 
-                #unlink(paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+                #unlink(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
               } # If Animate ON==t
 
 
@@ -2916,7 +2916,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             fillPalette = fillPalette,
                             bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
                             fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
 
                   # numeric2Cat_list=numeric2Cat_list
                   # catParam=param_i
@@ -2943,7 +2943,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # figWidth=figWidth
                   # figHeight=figHeight
                   # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-                  # dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = "")
+                  # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = "")
 
                   metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
@@ -2964,7 +2964,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             fillPalette = fillPalette,
                             bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
                             fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
 
 
                   if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
@@ -2995,7 +2995,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             fillPalette = fillPalette,
                             bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
                             fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
 
                   # Animate 2 : each param: If class == 1 { (Map x Anim Years}
 
@@ -3085,7 +3085,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                               fillPalette = fillPalette,
                               bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
                               fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
-                              dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                              dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
 
                     # numeric2Cat_list=numeric2Cat_list; catParam=param_i; underLayer=underLayer; dataPolygon=mapx;
                     # fillColumn = names(mapx@data%>%dplyr::select(-subRegion))
@@ -3108,7 +3108,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     # fillPalette = fillPalette;
                     # bgColor = bgColorChosen;figWidth=figWidth;figHeight=figHeight; pdfpng = pdfpng
                     # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep="")
-                    # dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = "")
+                    # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = "")
 
                     metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
@@ -3131,7 +3131,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                               fillPalette = fillPalette,
                               bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
                               fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
-                              dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                              dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
 
                     if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
                     if(length(names(mapx@data))==countCheck){
@@ -3163,7 +3163,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                               fillPalette = fillPalette,
                               bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
                               fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
-                              dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                              dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
 
 
                     # Animate 2 : each param: If class == 1 { (Map x Anim Years}

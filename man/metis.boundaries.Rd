@@ -10,7 +10,7 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
   subRegShpFolder = NULL, subRegShpFile = NULL, subRegCol = NULL,
   subRegCol1 = NULL, subRegionsSelect = NULL,
   subRegType = "subRegType", dirOutputs = paste(getwd(), "/outputs",
-  sep = ""), folderName = NULL, nameAppend = "",
+  sep = ""), regionName = NULL, folderName = NULL, nameAppend = "",
   expandPercentWidth = 2, expandPercentHeight = 2,
   expandPercentWidthOV = 2, expandPercentHeightOV = 2,
   overlapShape = NULL, overlapShpFolder = NULL,
@@ -51,6 +51,8 @@ metis.boundaries(boundaryRegShape = NULL, boundaryRegShpFolder = NULL,
 \item{subRegType}{Default="subRegType". Type of subregion. Eg. "states", "basins" etc.}
 
 \item{dirOutputs}{Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.}
+
+\item{regionName}{Default = NULL,}
 
 \item{folderName}{Default = NULL,}
 

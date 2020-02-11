@@ -25,8 +25,8 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   c("watWithdrawBySec", "watConsumBySec")), nColMax = list(c(3), c(3))),
   facetCols = 3, diffText = "_diff", diffPrcntText = "_diff_prcnt",
   theme_custom = NULL, panelBGcolor = NULL,
-  plotBGcolor = "transparent", legendBGcolor = NULL,
-  yMinDefault = NULL, yMaxDefault = NULL, yMaxDiffAbsDefault = NULL,
+  plotBGcolor = "transparent", legendBGcolor = NULL, yMinDefault = 0,
+  yMaxDefault = NULL, yMaxDiffAbsDefault = NULL,
   yMinDiffAbsDefault = NULL, yMaxDiffPrcntDefault = NULL,
   yMinDiffPrcntDefault = NULL)
 }

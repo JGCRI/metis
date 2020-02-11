@@ -155,12 +155,6 @@ popGWP,population,millions,class,2000,1.128756342,Junín,subRegType,Peru,pal_hot
 popGWP,population,millions,class,2005,1.190694127,Junín,subRegType,Peru,pal_hot
 popGWP,population,millions,class,2010,1.244656858,Junín,subRegType,Peru,pal_hot
 popGWP,population,millions,class,2015,1.289570499,Junín,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1990,0.003336532,Tacna,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.00378107,Tacna,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.004272803,Tacna,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.004792441,Tacna,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.005329267,Tacna,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.005879253,Tacna,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.027214364,Tacna,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.005410246,Tacna,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.006061703,Tacna,subRegType,Peru,pal_wet
@@ -221,12 +215,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.008542372,Tacna,su
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.008604731,Tacna,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.008595711,Tacna,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.008526286,Tacna,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,6.19E-05,Madre de Dios,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,7.39E-05,Madre de Dios,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,8.81E-05,Madre de Dios,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.000104455,Madre de Dios,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.000122786,Madre de Dios,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.000143178,Madre de Dios,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.000589181,Madre de Dios,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.000136816,Madre de Dios,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.000159685,Madre de Dios,subRegType,Peru,pal_wet
@@ -287,12 +275,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.000202623,Madre de
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.000204103,Madre de Dios,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.000203884,Madre de Dios,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.000202222,Madre de Dios,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,3.64E-05,Loreto,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,4.24E-05,Loreto,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,4.93E-05,Loreto,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,5.69E-05,Loreto,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,6.50E-05,Loreto,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,7.36E-05,Loreto,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.000321253,Loreto,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,8.15E-05,Loreto,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,9.35E-05,Loreto,subRegType,Peru,pal_wet
@@ -353,12 +335,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.000101922,Loreto,s
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.000102684,Loreto,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.000102593,Loreto,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.000101781,Loreto,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.001163442,Amazonas,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.001293589,Amazonas,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.001436911,Amazonas,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.001585152,Amazonas,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.001734086,Amazonas,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.001881667,Amazonas,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.008611856,Amazonas,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.001684277,Amazonas,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.001856168,Amazonas,subRegType,Peru,pal_wet
@@ -419,12 +395,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.002615779,Amazonas
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.002634874,Amazonas,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.002632112,Amazonas,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.002610853,Amazonas,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.005542604,Cajamarca,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.006102723,Cajamarca,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.006708957,Cajamarca,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.007319238,Cajamarca,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.007911737,Cajamarca,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.008475434,Cajamarca,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.039827851,Cajamarca,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.007696735,Cajamarca,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.008373837,Cajamarca,subRegType,Peru,pal_wet
@@ -485,12 +455,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.011800715,Cajamarc
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.01188686,Cajamarca,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.011874399,Cajamarca,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.011778494,Cajamarca,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.010947353,Tumbes,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.012574344,Tumbes,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.014408986,Tumbes,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.016390427,Tumbes,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.01848672,Tumbes,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.020681237,Tumbes,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.088785956,Tumbes,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.017902998,Tumbes,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.020340827,Tumbes,subRegType,Peru,pal_wet
@@ -551,12 +515,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.028665032,Tumbes,s
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.028874287,Tumbes,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.028844017,Tumbes,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.028611055,Tumbes,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.004553745,Piura,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.004962189,Piura,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.005397332,Piura,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.005825003,Piura,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.00622821,Piura,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.006599061,Piura,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.031606114,Piura,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.006041597,Piura,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.006501274,Piura,subRegType,Peru,pal_wet
@@ -617,12 +575,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.009161831,Piura,su
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.009228712,Piura,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.009219037,Piura,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.009144579,Piura,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.000143939,Ucayali,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.000172133,Ucayali,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.000205629,Ucayali,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.000243916,Ucayali,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.000286822,Ucayali,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.00033439,Ucayali,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.001493822,Ucayali,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.00051118,Ucayali,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.000590292,Ucayali,subRegType,Peru,pal_wet
@@ -683,12 +635,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.000468585,Ucayali,
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00047203,Ucayali,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.000471444,Ucayali,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.000467397,Ucayali,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.001014605,Puno,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.001129808,Puno,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.001255625,Puno,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.001384708,Puno,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.001512869,Puno,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.001638152,Puno,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.007763398,Puno,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.001516372,Puno,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.001667568,Puno,subRegType,Peru,pal_wet
@@ -749,12 +695,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.002349998,Puno,sub
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.002367153,Puno,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.002364671,Puno,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.002345573,Puno,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.001625288,Moquegua,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.001763358,Moquegua,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.001910286,Moquegua,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.002054011,Moquegua,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.002188493,Moquegua,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.002311243,Moquegua,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.011610673,Moquegua,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.002211628,Moquegua,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.002372134,Moquegua,subRegType,Peru,pal_wet
@@ -815,12 +755,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.003342898,Moquegua
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.003367301,Moquegua,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.003363771,Moquegua,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.003336603,Moquegua,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.001248755,Arequipa,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.001341708,Arequipa,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.00143912,Arequipa,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.001531614,Arequipa,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.001614835,Arequipa,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.001687085,Arequipa,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.008619429,Arequipa,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.001624688,Arequipa,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.001723876,Arequipa,subRegType,Peru,pal_wet
@@ -881,12 +815,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.002429349,Arequipa
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.002447083,Arequipa,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.002444517,Arequipa,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.002424774,Arequipa,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.004033797,Ica,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.004369525,Ica,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.004725382,Ica,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.005070685,Ica,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.005390744,Ica,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.005679004,Ica,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.028249972,Ica,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.005369257,Ica,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.00574468,Ica,subRegType,Peru,pal_wet
@@ -947,12 +875,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.008095612,Ica,subR
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00815471,Ica,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.008146161,Ica,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.008080368,Ica,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.008275155,Lima,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.008928609,Lima,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.009617615,Lima,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.010279728,Lima,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.010885419,Lima,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.011422317,Lima,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.056792354,Lima,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.010751455,Lima,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.01145788,Lima,subRegType,Peru,pal_wet
@@ -1013,12 +935,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.016146861,Lima,sub
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.016264733,Lima,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.016247682,Lima,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.016116456,Lima,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.31335133,Lima Province,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.338261831,Lima Province,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.36452147,Lima Province,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.38976048,Lima Province,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.412853448,Lima Province,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.433324806,Lima Province,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,2.154458373,Lima Province,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.407989958,Lima Province,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.434905186,Lima Province,subRegType,Peru,pal_wet
@@ -1079,12 +995,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.612884193,Lima Pro
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.617358251,Lima Province,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.616711041,Lima Province,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.611730113,Lima Province,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,1.066220259,Callao,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,1.150990727,Callao,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,1.240352422,Callao,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,1.326241323,Callao,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,1.404827658,Callao,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,1.474495521,Callao,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,7.335300335,Callao,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,1.389094022,Callao,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,1.480742441,Callao,subRegType,Peru,pal_wet
@@ -1145,12 +1055,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,2.086716062,Callao,s
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,2.1019491,Callao,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,2.099745514,Callao,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,2.082786711,Callao,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.003419374,Áncash,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.003590181,Áncash,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.003764777,Áncash,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.003919095,Áncash,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.004043834,Áncash,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.00413693,Áncash,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.021461899,Áncash,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.003959036,Áncash,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.004113413,Áncash,subRegType,Peru,pal_wet
@@ -1211,12 +1115,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.005796771,Áncash,s
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.005839087,Áncash,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.005832966,Áncash,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.005785855,Áncash,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.004226575,La Libertad,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.004578454,La Libertad,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.004952266,La Libertad,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.005316197,La Libertad,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.005655022,La Libertad,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.005962149,La Libertad,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.029015206,La Libertad,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.005517846,La Libertad,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.005908308,La Libertad,subRegType,Peru,pal_wet
@@ -1277,12 +1175,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.008326202,La Liber
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.008386984,La Libertad,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.008378191,La Libertad,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.008310524,La Libertad,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.016452301,Lambayeque,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.017779716,Lambayeque,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.019181403,Lambayeque,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.020532787,Lambayeque,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.021774486,Lambayeque,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.022881061,Lambayeque,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.111732828,Lambayeque,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.021183306,Lambayeque,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.022607322,Lambayeque,subRegType,Peru,pal_wet
@@ -1343,12 +1235,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.03185906,Lambayequ
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.032091631,Lambayeque,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.032057988,Lambayeque,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.031799068,Lambayeque,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.000916397,Cusco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.000987006,Cusco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.001061465,Cusco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.001132906,Cusco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.001198154,Cusco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.00125593,Cusco,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.006300842,Cusco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.001191326,Cusco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.001268269,Cusco,subRegType,Peru,pal_wet
@@ -1409,12 +1295,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00178729,Cusco,sub
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.001800337,Cusco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.00179845,Cusco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.001783925,Cusco,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.001152742,Ayacucho,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.001221449,Ayacucho,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.001293108,Ayacucho,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.001359432,Ayacucho,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.001417046,Ayacucho,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.001464973,Ayacucho,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.007558634,Ayacucho,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.001408607,Ayacucho,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.001479003,Ayacucho,subRegType,Peru,pal_wet
@@ -1475,12 +1355,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.002084265,Ayacucho
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.00209948,Ayacucho,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.002097279,Ayacucho,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.00208034,Ayacucho,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.003135324,Apurímac,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.003546536,Apurímac,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.004008463,Apurímac,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.00449927,Apurímac,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.005007139,Apurímac,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.005526118,Apurímac,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.025046202,Apurímac,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.004983145,Apurímac,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.005585503,Apurímac,subRegType,Peru,pal_wet
@@ -1541,12 +1415,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.007871294,Apurímac
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.007928755,Apurímac,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.007920443,Apurímac,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.007856472,Apurímac,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.003586633,Huancavelica,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.003685905,Huancavelica,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.003783496,Huancavelica,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.003855664,Huancavelica,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.003894719,Huancavelica,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.00390075,Huancavelica,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.021362173,Huancavelica,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.003857746,Huancavelica,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.003924019,Huancavelica,subRegType,Peru,pal_wet
@@ -1607,12 +1475,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.00552987,Huancavel
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.005570238,Huancavelica,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.005564398,Huancavelica,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.005519457,Huancavelica,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.000844669,San Martín,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.001014716,San Martín,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.00121773,San Martín,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.001450849,San Martín,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.001713411,San Martín,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.002006054,San Martín,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.007897893,San Martín,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.001667488,San Martín,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.001982759,San Martín,subRegType,Peru,pal_wet
@@ -1673,12 +1535,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.002794177,San Mart
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.002814574,San Martín,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.002811624,San Martín,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.002788915,San Martín,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.002076295,Huánuco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.002386255,Huánuco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.002742936,Huánuco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.003133707,Huánuco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.003552106,Huánuco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.00399508,Huánuco,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.017179901,Huánuco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.003481448,Huánuco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.003976726,Huánuco,subRegType,Peru,pal_wet
@@ -1739,12 +1595,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.005604147,Huánuco,
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.005645057,Huánuco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.005639139,Huánuco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.005593594,Huánuco,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.00191462,Pasco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.001983418,Pasco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.002060263,Pasco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.00213339,Pasco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.002199252,Pasco,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.002257942,Pasco,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.01172971,Pasco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.002161664,Pasco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.002253903,Pasco,subRegType,Peru,pal_wet
@@ -1805,12 +1655,6 @@ Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2035,0.003176282,Pasco,su
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2040,0.003199469,Pasco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2045,0.003196115,Pasco,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Mining,2050,0.003170301,Pasco,subRegType,Peru,pal_wet
-popGWP,population,millions,class,1990,0.00233546,Junín,subRegType,Peru,pal_hot
-popGWP,population,millions,class,1995,0.002486213,Junín,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2000,0.002642908,Junín,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2005,0.002788415,Junín,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2010,0.002915266,Junín,subRegType,Peru,pal_hot
-popGWP,population,millions,class,2015,0.003020932,Junín,subRegType,Peru,pal_hot
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2005,0.015389975,Junín,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2010,0.002876561,Junín,subRegType,Peru,pal_wet
 Eg1,tethysWatWithdraw_indv,WaterWithdrawals(mm),Domestic,2015,0.003027369,Junín,subRegType,Peru,pal_wet

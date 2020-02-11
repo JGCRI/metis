@@ -184,6 +184,7 @@ metis.chart<-function(data,
   # panelBGcolor = NULL
   # plotBGcolor = "transparent"
   # legendBGcolor = NULL
+  # xOrder = NULL
 
 #------------------
 # Initialize variables to remove binding errors if needed
@@ -196,21 +197,25 @@ StatStratum <- ggalluvial::StatStratum # This is done so that ggplot2 recognizes
 #------------------
 # Create Directories
 # -----------------
+
+if(printFig!=F){
 if(!is.null(dirOutputs)){
+  dirOutputs = paste(getwd(),"/",gsub(paste(getwd(),"/",sep=""),"",dirOutputs),sep="")
   if (!dir.exists(paste(dirOutputs,sep=""))){dir.create(paste(dirOutputs,sep=""))}
   if(!is.null(folderName)){
     if (!dir.exists(paste(dirOutputs,"/",folderName,sep=""))){dir.create(paste(dirOutputs,"/",folderName,sep=""))}
     if(dirOutputs==paste(dirOutputs,sep="")){dirOutputs=paste(dirOutputs,"/",folderName,sep="")}
   }
 }else{
-  if(!is.null(folderName)){dirOutputs=paste(getwd(),"/outputs/Charts/",folderName,sep="")}else{
-    dirOutputs=paste(getwd(),"/outputs/Charts/",sep="")
-  }
-if (!dir.exists(paste(getwd(),"/outputs",sep=""))){dir.create(paste(getwd(),"/outputs",sep=""))}
-if (!dir.exists(paste(getwd(),"/outputs/Charts",sep=""))){dir.create(paste(getwd(),"/outputs/Charts",sep=""))}
+  if(!is.null(folderName)){
+    dirOutputs=paste(getwd(),"/",folderName,sep="")
+    }else{
+      dirOutputs=paste(getwd(),sep="")
+      }
 if(!is.null(folderName)){
-  if (!dir.exists(paste(getwd(),"/outputs/Charts/",folderName,sep=""))){dir.create(paste(getwd(),"/outputs/Charts/",folderName,sep=""))}
+  if (!dir.exists(paste(getwd(),"/",folderName,sep=""))){dir.create(paste(getwd(),"/",folderName,sep=""))}
  }
+}
 }
 
 #------------------------------------------
@@ -542,10 +547,10 @@ if(is.numeric(l1[[xData]])){p<- p + scale_x_continuous (breaks=(seq(min(range(l1
 
   if(!is.null(facet_rows) & !is.null(facet_columns)){
 
-    if(forceFacets==T){p <- p + facet_grid(get(facet_rows)~get(facet_columns),scales=scales)}else{
+    if(forceFacets==T){p <- p + facet_grid(rows=vars(!!as.name(facet_rows)), cols=vars(!!as.name(facet_columns)),scales=scales)}else{
 
     if(length(unique(l1[[facet_rows]]))>1 & length(unique(l1[[facet_columns]]))>1){
-    p <- p + facet_grid(get(facet_rows)~get(facet_columns),scales=scales)} else {
+    p <- p + facet_grid(rows=vars(!!as.name(facet_rows)), cols=vars(!!as.name(facet_columns)),scales=scales)} else {
 
       if(length(unique(l1[[facet_rows]]))>1 & !length(unique(l1[[facet_columns]]))>1){
         p <- p + facet_wrap(facet_rows,nrow=ncolrow,scales = scales)
