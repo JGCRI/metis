@@ -121,7 +121,7 @@ metis.colors <- function(palx=NULL) {
                  Gen_III = "#af8e27",
                  `j Geothermal` = "darkmagenta", `i geothermal` = "darkmagenta", geothermal = "darkmagenta", Geothermal = "darkmagenta",
                  `k Hydro` = "#3d86f9", `f hydro` = "#3d86f9", hydro = "#3d86f9", Hydro = "#3d86f9",
-                 `l Wind` = "slateblue2", `g wind` = "slateblue2",  wind = "slateblue2", Wind = "slateblue2",
+                 `l Wind` = "lightcyan", `g wind` = "lightcyan",  wind = "lightcyan", Wind = "lightcyan",
                  `m Solar` = "#fdfa28", `h solar` = "#fdfa28", solar = "#fdfa28", Solar = "#fdfa28",
                  CSP = "#cdd67b",
                  PV = "#fdd67b",

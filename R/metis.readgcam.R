@@ -3,6 +3,7 @@
 #' This function connects to a gcamdatabase and uses a query file to
 #' out results into a table ready for plotting.
 #' @param dirOutputs Full path to directory for outputs
+#' @param folderName Default = NULL
 #' @param gcamdatabasePath Path to gcam database folder
 #' @param gcamdatabaseName Name of gcam database
 #' @param queryxml Name of the query.xml file. By default it is "metisQueries.xml"
@@ -126,7 +127,8 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                            dirOutputs = paste(getwd(), "/outputs", sep = ""),
                            regionsSelect = NULL,
                            queriesSelect="All",
-                           paramsSelect="All"
+                           paramsSelect="All",
+                           folderName=NULL
 ){
 
 
@@ -223,14 +225,16 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 #----------------------------
   if (!dir.exists(dirOutputs)){
     dir.create(dirOutputs)}  # Output Directory
-  if (!dir.exists(paste(dirOutputs,"/readGCAMTables",sep=""))){
-    dir.create(paste(dirOutputs,"/readGCAMTables",sep=""))}  # Output Directory
-  if (!dir.exists(paste(dirOutputs, "/readGCAMTables/Tables_gcam", sep = ""))){
-    dir.create(paste(dirOutputs, "/readGCAMTables/Tables_gcam", sep = ""))}  # GCAM output directory
-  if (!dir.exists(paste(dirOutputs, "/readGCAMTables/Tables_Templates", sep = ""))){
-    dir.create(paste(dirOutputs, "/readGCAMTables/Tables_Templates", sep = ""))}  # GCAM output directory
-  if (!dir.exists(paste(dirOutputs, "/readGCAMTables/Tables_Local", sep = ""))){
-    dir.create(paste(dirOutputs, "/readGCAMTables/Tables_Local", sep = ""))}  # GCAM output directory
+  if (!dir.exists(paste(dirOutputs, "/", folderName, sep = ""))){
+    dir.create(paste(dirOutputs, "/", folderName, sep = ""))}
+  if (!dir.exists(paste(dirOutputs, "/", folderName,"/readGCAMTables",sep=""))){
+    dir.create(paste(dirOutputs, "/", folderName,"/readGCAMTables",sep=""))}  # Output Directory
+  if (!dir.exists(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam", sep = ""))){
+    dir.create(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam", sep = ""))}  # GCAM output directory
+  if (!dir.exists(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates", sep = ""))){
+    dir.create(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates", sep = ""))}  # GCAM output directory
+  if (!dir.exists(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Local", sep = ""))){
+    dir.create(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Local", sep = ""))}  # GCAM output directory
 
   # Check for new scenario names
   if (is.null(scenNewNames)) {
@@ -4514,13 +4518,13 @@ paramx <- "emissBySectorGWPAR5FFI"
                    row.names = F)
 
   if (is.null(regionsSelect) | regionsSelectAll==T) {
-    utils::write.csv(datax, file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
+    utils::write.csv(datax, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
                                          "to", max(range(datax$x)), ".csv", sep = ""), row.names = F)
-    print(paste("GCAM data table saved to: ", paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions.csv", sep = "")))
+    print(paste("GCAM data table saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions.csv", sep = "")))
 
-    utils::write.csv(dataTemplate, file = paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = ""),
+    utils::write.csv(dataTemplate, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = ""),
                      row.names = F)
-    print(paste("GCAM data template saved to: ", paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = "")))
+    print(paste("GCAM data template saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = "")))
 
   } else {
 
@@ -4533,7 +4537,7 @@ paramx <- "emissBySectorGWPAR5FFI"
 
       print(paste("Saving data table for region: ",region_i,"...", sep = ""))
       utils::write.csv(datax %>% dplyr::filter(region == region_i),
-                       file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,".csv", sep = ""),row.names = F)
+                       file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,".csv", sep = ""),row.names = F)
 
       # Aggregate across classes
       dataxAggsums<-datax%>%
@@ -4549,14 +4553,17 @@ paramx <- "emissBySectorGWPAR5FFI"
       dataxAgg<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
 
       utils::write.csv(dataxAgg %>% dplyr::filter(region == region_i),
-                       file = paste(dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_aggClass.csv", sep = ""),row.names = F)
+                       file = gsub("//","/",paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_",
+                                    region_i,"_aggClass.csv", sep = "")),row.names = F)
 
       utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
-                       file = paste(dirOutputs, "/readGCAMTables/Tables_Templates/template_Regional_",region_i,".csv", sep = ""),row.names = F)
+                       file = gsub("//","/",paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_",
+                                         region_i,".csv", sep = "")),row.names = F)
       #utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
-      #                 file = paste(dirOutputs, "/Tables/Tables_Local/local_Regional_",region_i,".csv", sep = ""),row.names = F)
+      #                 file = paste(dirOutputs, "/", folderName, "/Tables/Tables_Local/local_Regional_",region_i,".csv", sep = ""),row.names = F)
 
-      print(paste("Table saved to: ",dirOutputs, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_aggClass.csv", sep = ""))
+      print(gsub("//","/",paste("Table saved to: ",dirOutputs, "/", folderName,
+                  "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_aggClass.csv", sep = "")))
     }
   }
 

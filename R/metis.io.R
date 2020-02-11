@@ -113,10 +113,12 @@ metis.io<-function(ioTable0 = NULL,
 #------------------
 if (!dir.exists(dirOutputs)){
   dir.create(dirOutputs)}
-if (!dir.exists(paste(dirOutputs, "/IO", sep = ""))){
-  dir.create(paste(dirOutputs, "/IO", sep = ""))}
-  if (!dir.exists(paste(dirOutputs, "/IO/",folderName, sep = ""))){
-    dir.create(paste(dirOutputs, "/IO/",folderName, sep = ""))}
+if (!dir.exists(paste(dirOutputs,"/", folderName, sep = ""))){
+  dir.create(paste(dirOutputs,"/", folderName,sep = ""))}
+  if (!dir.exists(paste(dirOutputs,"/", folderName,"/IO/", sep = ""))){
+    dir.create(paste(dirOutputs,"/", folderName,"/IO/",sep = ""))}
+
+  dirX <- paste(dirOutputs,"/", folderName,"/IO/",sep = "")
 
 
 #----------------
@@ -976,8 +978,8 @@ ioTbl_Output = ioTbl_Output %>% dplyr::bind_rows(ioTable_complete %>% tibble::as
 
 
   data.table::fwrite(ioTbl_Output,
-                   file = paste(dirOutputs,"/IO/",folderName,"/ioTable.csv", sep = ""),row.names = F)
-  print(paste("ioTbl_Output saved as ", paste(dirOutputs,"/IO/",folderName,"/ioTable.csv", sep = ""),sep=""))
+                   file = paste(dirX,"/ioTable.csv", sep = ""),row.names = F)
+  print(paste("ioTbl_Output saved as ", paste(dirX,"/ioTable.csv", sep = ""),sep=""))
 
 
 #-------------------------------------------------------------------------------------------------------
@@ -998,25 +1000,25 @@ ioTbl_Output = ioTbl_Output %>% dplyr::bind_rows(ioTable_complete %>% tibble::as
     for(scenario_i in scenarios){
         # for(year_i in years){
 
-      if (!dir.exists(paste(dirOutputs, "/IO/",folderName,"/",region_i, sep = ""))){
-        dir.create(paste(dirOutputs, "/IO/",folderName,"/",region_i,  sep = ""))}
-      if (!dir.exists(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i, sep = ""))){
-        dir.create(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,  sep = ""))}
+      if (!dir.exists(paste(dirX,"/",region_i, sep = ""))){
+        dir.create(paste(dirX,"/",region_i,  sep = ""))}
+      if (!dir.exists(paste(dirX,"/",region_i,"/",scenario_i, sep = ""))){
+        dir.create(paste(dirX,"/",region_i,"/",scenario_i,  sep = ""))}
 
 
       if(length(unique((sol_list$ioTbl)$subRegion))>1){
 
         if(combSubRegionPlots==1){
 
-          if (!dir.exists(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubReg", sep = ""))){
-            dir.create(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubReg",  sep = ""))}
+          if (!dir.exists(paste(dirX,"/",region_i,"/",scenario_i,"/combSubReg", sep = ""))){
+            dir.create(paste(dirX,"/",region_i,"/",scenario_i,"/combSubReg",  sep = ""))}
 
 
 #--------------
 # Combined Subregions
 #----------
 
-dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubReg",sep = "")
+dir<-paste(dirX,"/",region_i,"/",scenario_i,"/combSubReg",sep = "")
 
 
 #---------------------
@@ -1749,10 +1751,10 @@ dir<-paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/combSubRe
   for(subRegion_i in subRegions){
 
 
-    if (!dir.exists(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/",subRegion_i, sep = ""))){
-      dir.create(paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/",subRegion_i,  sep = ""))}
+    if (!dir.exists(paste(dirX,"/",region_i,"/",scenario_i,"/",subRegion_i, sep = ""))){
+      dir.create(paste(dirX,"/",region_i,"/",scenario_i,"/",subRegion_i,  sep = ""))}
 
-    dir<- paste(dirOutputs, "/IO/",folderName,"/",region_i,"/",scenario_i,"/",subRegion_i,  sep = "")
+    dir<- paste(dirX,"/",region_i,"/",scenario_i,"/",subRegion_i,  sep = "")
 
     #---------------------
     # sol_Output

@@ -965,15 +965,16 @@ if(T){
 
 
   mp_ix<-list(paramSet=list(
-    c("WEL1"),
+    #c("WEL1"),
     c("WEL2")),
     param=list(
-      c("landAlloc","agProdByCrop","watWithdrawBySec",
-        "energyFinalByFuelBySectorMTOE","elecByTechTWh","emissByGasGWPAR5FFI"),
+     # c("landAlloc","agProdByCrop","watWithdrawBySec",
+     #   "energyFinalByFuelBySectorMTOE","elecByTechTWh","emissByGasGWPAR5FFI"),
       c("landAllocByCrop","agProdByCrop","watWithdrawBySec",
-        "energyFinalByFuelBySectorMTOE","elecByTechTWh","emissByGasGWPAR5FFI")),
+        "energyFinalByFuelBySectorMTOE",
+        "elecByTechTWh","emissByGasGWPAR5FFI")),
     nColMax=list(
-      c(3),
+     # c(3),
       c(3))
   )
 
@@ -998,8 +999,53 @@ if(T){
                               mp = mp_ix, multiPlotOn = T,
                               multiPlotFigLabels=F,pointsOn=pointsOn_i,
                               facetLabelSize=25,
-                              figWidth=12,figHeight=7,
-                              facetLabelColor = "black", facetBGColor="transparent", facetBorderColor = "transparent")
+                              figWidth=9,figHeight=9,
+                              facetLabelColor = "black", facetBGColor="transparent", facetBorderColor = "transparent",
+                              yMinDefault = 0,
+                              yMaxDefault = NULL,
+                              yMaxDiffAbsDefault = NULL,
+                              yMinDiffAbsDefault  = NULL,
+                              yMaxDiffPrcntDefault = 40,
+                              yMinDiffPrcntDefault = -10)
+
+
+  # rTable=rtx # Default is NULL
+  # #dataTables=dataTables_i, # Default is NULL
+  # paramsSelect=unlist(mp_ix$param) # Default is "All"
+  # regionsSelect=regionsSelect_i # Default is "All"
+  # scensSelect=scensSelect_i
+  # xCompare=c("2010","2020","2030","2050") # Default is c("2015","2030","2050","2100")
+  # scenRef="Reference" # Default is NULL
+  # dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
+  # pdfpng="png" # Default is "png"
+  # regionCompareOnly=0 # Default is "0"
+  # scenarioCompareOnly=1 # Default is "0"
+  # useNewLabels=1
+  # xRange=c(2010,2015,2020,2025,2030,2035,2040,2045,2050)
+  # scaleRange=scaleRange_i
+  # colOrder1 =scensSelect_i
+  # colOrderName1 = "scenario"
+  # folderName = "Comb_All"
+  # multiPlotFigsOnly = T
+  # mp = mp_ix
+  # multiPlotOn = T
+  # multiPlotFigLabels=F
+  # pointsOn=pointsOn_i
+  # facetLabelSize=25
+  # figWidth=12
+  # figHeight=7
+  # facetLabelColor = "black"
+  # facetBGColor="transparent"
+  # facetBorderColor = "transparent"
+  # yMinDefault = 0
+  # yMaxDefault = NULL
+  # yMaxDiffAbsDefault = 2
+  # yMinDiffAbsDefault  = -2
+  # yMaxDiffPrcntDefault = 5
+  # yMinDiffPrcntDefault = -5
+
+
+
 
   mp_ix<-list(paramSet=list(
     c("WEL1NoLabels")),
@@ -1080,7 +1126,7 @@ if(T){
                               mp = mp_ix, multiPlotOn = T,
                               multiPlotFigLabels=F,pointsOn=pointsOn_i,
                               #facetLabelSize=40,
-                              figWidth=7,figHeight=5,
+                              figWidth=7,figHeight=4,
                               facetLabelColor = "transparent", facetBGColor="transparent", facetBorderColor = "transparent")
 
 

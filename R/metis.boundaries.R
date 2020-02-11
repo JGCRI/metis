@@ -17,6 +17,7 @@
 #' @param subRegionsSelect  Default=NULL. The region to choose from the given sub-region shapefile.
 #' @param subRegType  Default="subRegType". Type of subregion. Eg. "states", "basins" etc.
 #' @param dirOutputs  Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.
+#' @param regionName Default = NULL,
 #' @param folderName Default = NULL,
 #' @param nameAppend  Default="". Name to append to saved files.
 #' @param extension Default = T. Should the map be extended beyond chosen shapefile boudnaries.
@@ -63,6 +64,7 @@ metis.boundaries<- function(boundaryRegShape=NULL,
                          subRegionsSelect=NULL,
                          subRegType="subRegType",
                          dirOutputs=paste(getwd(),"/outputs",sep=""),
+                         regionName=NULL,
                          folderName=NULL,
                          nameAppend="",
                          expandPercentWidth =2,
@@ -130,6 +132,10 @@ metis.boundaries<- function(boundaryRegShape=NULL,
   # compassScale=T
   # scalePos = c("right","bottom")
   # compassPos = c("left","bottom")
+  # expandPercentWidth =2
+  # expandPercentHeight=2
+  # expandPercentWidthOV =2
+  # expandPercentHeightOV=2
 
 
 #----------------
@@ -205,16 +211,24 @@ if(!is.null(boundaryRegShape)){boundaryRegShape<-sp::spTransform(boundaryRegShap
 # Create Folders
 #---------------
 
-if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
-if (!dir.exists(paste(dirOutputs, "/Boundaries", sep = ""))){dir.create(paste(dirOutputs, "/Boundaries", sep = ""))}
-if(!is.null(folderName)){
-  if (!dir.exists(paste(dirOutputs, "/Boundaries/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/Boundaries/",folderName, sep = ""))}
-  if (!dir.exists(paste(dirOutputs, "/Boundaries/",folderName,"/",boundaryRegionsSelect, sep = ""))){dir.create(paste(dirOutputs, "/Boundaries/",folderName,"/",boundaryRegionsSelect,sep = ""))}
-  dir=paste(dirOutputs, "/Boundaries/",folderName,"/",boundaryRegionsSelect,sep = "")
-} else {
-  if (!dir.exists(paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect, sep = ""))){dir.create(paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect,sep = ""))}
-  dir=paste(dirOutputs, "/Boundaries/",boundaryRegionsSelect,sep = "")
+if(is.null(regionName)){
+  if(!is.null(boundaryRegionsSelect)){
+  regionName<-paste(boundaryRegionsSelect,collapse="")}else{
+    regionName <- NULL
   }
+}
+
+if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
+if (!dir.exists(paste(dirOutputs, "/", folderName, sep = ""))){dir.create(paste(dirOutputs, "/", folderName, sep = ""))}
+if(!is.null(folderName)){
+  if (!dir.exists(paste(dirOutputs, "/", folderName, "/Boundaries/", sep = ""))){dir.create(paste(dirOutputs, "/", folderName, "/Boundaries/", sep = ""))}
+  if (!dir.exists(paste(dirOutputs, "/", folderName, "/Boundaries/","/",regionName, sep = ""))){dir.create(paste(dirOutputs, "/", folderName, "/Boundaries/","/",regionName,sep = ""))}
+  dir=paste(dirOutputs, "/", folderName, "/Boundaries/","/",regionName,sep = "")
+} else {
+  if (!dir.exists(paste(dirOutputs, "/Boundaries/",regionName, sep = ""))){dir.create(paste(dirOutputs, "/Boundaries/",regionName,sep = ""))}
+  dir=paste(dirOutputs, "/Boundaries/",regionName,sep = "")
+}
+
 
 
 #----------------
@@ -485,6 +499,19 @@ if(!is.null(boundaryHighlight) & !is.null(underLayer)){
 regionHL<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=boundaryHighlight,
           fileName = paste(boundaryRegionsSelect,nameAppend,sep=""),dirOutputs = dir,
           underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,facetsON = F,labels=F)}
+
+# legendStyle="cat"
+# fillcolorNA=fillcolorNA
+# labelsSize=labelsSize
+# labelsAutoPlace=F
+# dataPolygon=boundaryHighlight
+# fileName = paste(boundaryRegionsSelect,nameAppend,sep="")
+# dirOutputs = dir
+# underLayer = underLayer
+# bgColor=extendedBGColor
+# frameShow=T
+# facetsON = F
+# labels=F
 
 if(!is.null(boundaryHighlightOV) & !is.null(underLayerOV)){
 regionHLOV<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=boundaryHighlightOV,

@@ -25,7 +25,10 @@ metis.chartsProcess(dataTables = NULL, rTable = NULL, scenRef = NULL,
   c("watWithdrawBySec", "watConsumBySec")), nColMax = list(c(3), c(3))),
   facetCols = 3, diffText = "_diff", diffPrcntText = "_diff_prcnt",
   theme_custom = NULL, panelBGcolor = NULL,
-  plotBGcolor = "transparent", legendBGcolor = NULL)
+  plotBGcolor = "transparent", legendBGcolor = NULL, yMinDefault = 0,
+  yMaxDefault = NULL, yMaxDiffAbsDefault = NULL,
+  yMinDiffAbsDefault = NULL, yMaxDiffPrcntDefault = NULL,
+  yMinDiffPrcntDefault = NULL)
 }
 \arguments{
 \item{dataTables}{Vector of strings with full path to datatables to be read in.
@@ -163,6 +166,18 @@ c(# energy
 \item{plotBGcolor}{Default = "transparent",}
 
 \item{legendBGcolor}{Default = NULL}
+
+\item{yMinDefault}{Default = NULL,}
+
+\item{yMaxDefault}{Default = NULL}
+
+\item{yMaxDiffAbsDefault}{Default = NULL,}
+
+\item{yMinDiffAbsDefault}{Default = NULL}
+
+\item{yMaxDiffPrcntDefault}{Default = NULL,}
+
+\item{yMinDiffPrcntDefault}{Default = NULL}
 }
 \value{
 Produces charts in output folder and also returns combined table in metis format.

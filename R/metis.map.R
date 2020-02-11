@@ -107,7 +107,7 @@ metis.map<-function(dataPolygon=NULL,
                   overLayer=NULL,
                   printFig=T,
                   fileName="map",
-                  dirOutputs=paste(getwd(),"/outputs/Maps",sep=""),
+                  dirOutputs=NULL,
                   folderName=NULL,
                   facetFreeScale=F,
                   facetRows=NA,
@@ -200,6 +200,13 @@ metis.map<-function(dataPolygon=NULL,
   # catParam=NULL
   # innerMargins=c(0,0,0,0)
   # outerMargins=c(0.01,0.01,0.01,0.01)
+  # legendSingleColorOn=T
+  # legendSingleValue=NULL
+  # legendSingleColor="white"
+  # legendDigitsOverride=NULL
+  # compassScale=F
+  # scalePos = c("right","bottom")
+  # compassPos = c("left","bottom")
 
 #------------------
 # Initialize variables to remove binding errors if needed
@@ -361,16 +368,36 @@ ns="tmap"
 
 utils::assignInNamespace(x="process_facet_layout", value=process_facet_layout, ns="tmap")
 
+
+
+#------------------
+# Create Directories
+# -----------------
+
+if(printFig!=F){
+if(!is.null(dirOutputs)){
+  dirOutputs = paste(getwd(),"/",gsub(paste(getwd(),"/",sep=""),"",dirOutputs),sep="")
+  if (!dir.exists(paste(dirOutputs,sep=""))){dir.create(paste(dirOutputs,sep=""))}
+  if(!is.null(folderName)){
+    if (!dir.exists(paste(dirOutputs,"/",folderName,sep=""))){dir.create(paste(dirOutputs,"/",folderName,sep=""))}
+    if(dirOutputs==paste(dirOutputs,sep="")){dirOutputs=paste(dirOutputs,"/",folderName,sep="")}
+  }
+}else{
+  if(!is.null(folderName)){
+    dirOutputs=paste(getwd(),"/",folderName,sep="")
+  }else{
+    dirOutputs=paste(getwd(),sep="")
+  }
+  if(!is.null(folderName)){
+    if (!dir.exists(paste(getwd(),"/",folderName,sep=""))){dir.create(paste(getwd(),"/",folderName,sep=""))}
+  }
+}
+}
+
 #------------------------------------------
 # Read data and check inputs
 #------------------------------------------
 
-if (!dir.exists(paste(getwd(),"/outputs",sep=""))){dir.create(paste(getwd(),"/outputs",sep=""))}
-if (!dir.exists(paste(getwd(),"/outputs/Maps",sep=""))){dir.create(paste(getwd(),"/outputs/Maps",sep=""))}
-if(!is.null(folderName)){
-  if (!dir.exists(paste(getwd(),"/outputs/Maps/",folderName,sep=""))){dir.create(paste(getwd(),"/outputs/Maps/",folderName,sep=""))}
-  if(dirOutputs==paste(getwd(),"/outputs/Maps",sep="")){dirOutputs=paste(getwd(),"/outputs/Maps/",folderName,sep="")}
-}
 
 if(!is.null(dataPolygon)){
   print("Using given dataPolygon file as shape.")
@@ -521,9 +548,11 @@ if(length(fillPalette)==1){
 #-----------------
 
 if(!is.null(shape)){
+  if(class(shape)!="tmap"){
   if(nrow(shape@data)>0){
     shape@data <- shape@data %>% dplyr::mutate_if(is.numeric, list(~na_if(abs(.), Inf)))
     }
+   }# If not tmap
   }
 
 #--------------

@@ -6,10 +6,6 @@
 # Install necessary packages
 #----------------------------
 
-#----------------------------
-# Install necessary packages
-#----------------------------
-
 # Devtools
 # ---------
 # For updated instructions and additional operating systems see:
@@ -44,47 +40,8 @@ if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtoo
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}; library(rgcam)
 if("metis" %in% rownames(installed.packages()) == F){devtools::install()}; library(metis)
 library(tibble);library(dplyr);library(rgdal); library(ggalluvial);
+NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
 
-#----------------------------
-# Input/Output (metis.io.R)
-#---------------------------
-
-# IO test 1 - Simple
-ioTable0=tibble::tribble( # Initial Flows
-  ~supplySubSector,  ~water,  ~ag,   ~elec,  ~domestic, ~export, ~mining, ~other, ~units,
-  "water",            0,    30,      5,        8,         5,       5,    5, "km3",
-  "ag",               0,    0,      1,        0,          10,      0,    0, "ton",
-  "elec",             3,    0.3,    0,        0.5,        1,       2,    5, "TWh",
-  "livestock",        1,    0.1,    0,        0.3,        2,       3,    2, "head");ioTable0
-
-
-io<-metis.io(ioTable0 = ioTable0, folderName = "metisExample",plotSankeys=T, nameAppend = "_testSimple")
-# View Outputs
-io$A
-io$L
-io$ioTbl
-
-
-# IO test 2 with subSectors
-ioTable0=tibble::tribble( # Initial Flows
-  ~supplySubSector,  ~supplySector, ~w_GW,  ~ag_Wheat,   ~elec_Coal,  ~domestic, ~export, ~mining, ~other, ~units,
-  "w_GW",            "water",     0,    10,      1,        3,         1,       2,    1, "km3",
-  "w_SW",            "water",     0,    30,      5,        8,         5,       5,    5, "km3",
-  "ag_Biofuel",      "ag",      0,    0,       2,        0,         8,       0,    0, "ton",
-  "ag_Wheat",        "ag",      0,    0,       0,        6,         9,       0,    0, "ton",
-  "ag_Rice",         "ag",     0,    0,       0,        5,         20,      0,    0, "ton",
-  "elec_Coal",       "elec",     3,    0.3,     0,        0.6,       1,       3,    6, "TWh",
-  "elec_Wind",       "elec",     2,    0.2,     0,        0.4,       0.677,       2,    4, "TWh",
-  "elec_Oil",        "elec",     1,    0.1,     0,        0.2,       0.333,       1,    2, "TWh",
-  "livestock_Cow",   "livestock",     0,    0,     0,        0,    30,       60,    0, "head",
-  "livestock_Chicken", "livestock",   0,    0,     0,        0,    50,       90,    0, "head");ioTable0
-
-
-io_sub<-metis.io(ioTable0 = ioTable0, folderName = "metisExample",plotSankeys=T, nameAppend = "_testSubSector")
-# View Outputs
-io_sub$A
-io_sub$L
-io_sub$ioTbl
 
 #----------------------------
 # Read GCAM Data (metis.readgcam.R)
@@ -128,8 +85,9 @@ io_sub$ioTbl
                          dataProjPath = dataProjPath_i,
                          regionsSelect = regionsSelect_i ,
                          #paramsSelect=paramsSelect_i,
-                         queriesSelect = queriesSelect_i #
-                       )
+                         queriesSelect = queriesSelect_i, #
+                         folderName = "metisExample"
+                         )
 
   dataGCAM$data # To view the data read that was read.
 
@@ -179,9 +137,9 @@ io_sub$ioTbl
    2020,   20,
    2030,   30
    )
-   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "line", fileName = "chart_eg_line", folderName = "metisExample")
-   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", fileName = "chart_eg_bar", folderName = "metisExample")
-   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", color = "blue",folderName = "metisExample",
+   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "line", fileName = "chart_eg_line", dirOutputs="outputs",folderName = "metisExample")
+   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", fileName = "chart_eg_bar", dirOutputs="outputs", folderName = "metisExample")
+   metis.chart(data = tbl, xData = "x", yData = "value", chartType = "bar", color = "blue", dirOutputs="outputs", folderName = "metisExample",
                yLabel = "New y Label", xLabel = "New X label", fileName = "chart_eg_bar_blue", title = "Title")
    # See ?metis.chart for more details on further customization eg. tick marks, title size ect.
 
@@ -220,20 +178,26 @@ io_sub$ioTbl
    metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel",
                chartType = "line",  classPalette=my_pal,
                facet_rows="region",facet_columns="scen",
-               fileName="chart_eg_line_multi_Set1",folderName = "metisExample"
+               fileName="chart_eg_line_multi_Set1",dirOutputs="outputs",folderName = "metisExample"
                )
+
+
+   metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel",
+               chartType = "line",  classPalette=my_pal,
+               facet_rows="region",facet_columns="scen",dirOutputs="outputs",folderName = "metisExample"
+   )
 
    my_pal <- metis.colors()$pal_Basic
 
    metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel", position="stack",
                group="fuel",chartType = "bar", classPalette=my_pal,
                facet_rows="region",facet_columns="scen",
-               fileName="chart_eg_barStack_multi_palBasic",folderName = "metisExample")
+               fileName="chart_eg_barStack_multi_palBasic",dirOutputs="outputs",folderName = "metisExample")
 
    metis.chart(data = tbl_multi, xData = "x", yData = "value", class="fuel", position="dodge",
                group="fuel",chartType = "bar", classPalette=my_pal,
                facet_rows="region",facet_columns="scen",
-               fileName="chart_eg_barDodge_multi_Set1",folderName = "metisExample")
+               fileName="chart_eg_barDodge_multi_Set1",dirOutputs="outputs",folderName = "metisExample")
 
 
 # Sankey Diagram Example
@@ -247,7 +211,7 @@ io_sub$ioTbl
    metis.chart(data=df, chartType="sankey", yData="value", sankeyGroupColor="supplySector",
                classLabel="From", class = "supplySector", classPalette = metis.colors()$pal_Basic,
                sankeyAxis1="supplySector",sankeyAxis2="demandSector",sankeyAxis1Label ="From",sankeyAxis2Label="To",
-               facet_columns="region", fileName="chart_eg_sankey_multi",folderName = "metisExample")
+               facet_columns="region", fileName="chart_eg_sankey_multi",dirOutputs="outputs",folderName = "metisExample")
 
 #------------------------------------------------------------------------------------------
 # Charts Process (metis.chartsProcess.R)
@@ -277,10 +241,10 @@ io_sub$ioTbl
    localData <- localData %>% mutate(vintage="Vintage", class2="class2")
 
    if (!dir.exists(paste(getwd(), "/outputs", sep = ""))){dir.create(paste(getwd(), "/outputs", sep = ""))}
-   if (!dir.exists(paste(getwd(), "/outputs/Charts", sep = ""))){dir.create(paste(getwd(), "/outputs/Charts", sep = ""))}
-   if (!dir.exists(paste(getwd(), "/outputs/Charts/metisExample", sep = ""))){dir.create(paste(getwd(), "/outputs/Charts/metisExample", sep = ""))}
-   data.table::fwrite(localData, file = paste(getwd(), "/outputs/Charts/metisExample/example_localFile.csv", sep = ""),row.names = F)
-   dataTables_i =  c(paste(getwd(), "/outputs/Charts/metisExample/example_localFile.csv", sep = ""))
+   if (!dir.exists(paste(getwd(), "/outputs/metisExample", sep = ""))){dir.create(paste(getwd(), "/outputs/metisExample/Charts", sep = ""))}
+   if (!dir.exists(paste(getwd(), "/outputs/metisExample/Charts", sep = ""))){dir.create(paste(getwd(), "/outputs/metisExample/Charts", sep = ""))}
+   data.table::fwrite(localData, file = paste(getwd(), "/outputs/metisExample/Charts/example_localFile.csv", sep = ""),row.names = F)
+   dataTables_i =  c(paste(getwd(), "/outputs/metisExample/Charts/example_localFile.csv", sep = ""))
 
 # Can also add data .csv outputs from metis.readgcam.R which are autmatically saved in
   # ./metis/outputs/readGCAMTables/Tables_gcam for each of the regions selected.
@@ -345,7 +309,7 @@ io_sub$ioTbl
   metis.map(dataPolygon=exampleUSmainland,fillColumn = colName_i,labels=T ,labelsAutoPlace = F, printFig=F,facetsON=F, folderName="metisExample")
   # Shapefile with values
   metis.map(dataPolygon=exampleUSmainland,fillColumn = "latitude",labels=T ,printFig=F,facetsON=T,
-            legendShow = T, legendOutside = T, fillPalette = "Spectral", labelsAutoPlace = F, folderName="metisExample")
+            legendShow = T, legendOutside = T, fillPalette = "Spectral", labelsAutoPlace = F)
 
 # Example 2. using the natural earth Shapefiles provided with metis in ./metis/dataFiles/gis/metis/naturalEarth
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
@@ -358,17 +322,17 @@ io_sub$ioTbl
   exampleNE1Cropped@data = droplevels(exampleNE1Cropped@data)
   plot(exampleNE1Cropped)
   metis.map(dataPolygon=exampleNE1Cropped,fillColumn = colName_i,labels=T ,printFig=T,facetsON=F,
-            labelsAutoPlace = F, folderName="metisExample")
+            labelsAutoPlace = F, dirOutputs="outputs",folderName="metisExample")
 
 # The cropped shapefile can be saved for later use if desired.
   # Create a directory to save the file to
   if (!dir.exists(paste(getwd(),"/outputs",sep=""))){dir.create(paste(getwd(),"/outputs",sep=""))}
-  if (!dir.exists(paste(getwd(),"/outputs/Maps",sep=""))){dir.create(paste(getwd(),"/outputs/Maps",sep=""))}
-  if (!dir.exists(paste(getwd(),"/outputs/Maps/metisExample",sep=""))){dir.create(paste(getwd(),"/outputs/Maps/metisExample",sep=""))}
-  if (!dir.exists(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""))){
-  dir.create(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""))}
+  if (!dir.exists(paste(getwd(),"/outputs/metisExample",sep=""))){dir.create(paste(getwd(),"/outputs/metisExample",sep=""))}
+  if (!dir.exists(paste(getwd(),"/outputs/metisExample/Maps",sep=""))){dir.create(paste(getwd(),"/outputs/metisExample/Maps",sep=""))}
+  if (!dir.exists(paste(getwd(),"/outputs/metisExample/Maps/ExampleShapefile",sep=""))){
+  dir.create(paste(getwd(),"/outputs/metisExample/Maps/ExampleShapefile",sep=""))}
   rgdal::writeOGR(obj=exampleNE1Cropped,
-                  dsn=paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile",sep=""),
+                  dsn=paste(getwd(),"/outputs/metisExample/Maps/ExampleShapefile",sep=""),
                   layer=paste("Argentina_states_example",sep=""),
                   driver="ESRI Shapefile", overwrite_layer=TRUE)
 
@@ -387,14 +351,14 @@ io_sub$ioTbl
   # Crop the shapefile to the desired subRegion
   exampleSubRegionCropped<-exampleSubRegion[(exampleSubRegion$admin==countryName),]
   head(exampleSubRegionCropped@data)
-  metis.map(dataPolygon=exampleSubRegionCropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
+  metis.map(dataPolygon=exampleSubRegionCropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F)
 
   # Can Further subset the shapefile if desired
   chosenSubRegions = c("Cusco","Madre de Dios", "Pasco")
   exampleSubRegion_chooseState<-exampleSubRegionCropped[(exampleSubRegionCropped[[subRegCol_i]] %in% chosenSubRegions),]
   exampleSubRegion_chooseState@data <- droplevels(exampleSubRegion_chooseState@data)
     head(exampleSubRegion_chooseState@data)
-  metis.map(dataPolygon=exampleSubRegion_chooseState,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
+  metis.map(dataPolygon=exampleSubRegion_chooseState,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F)
 
   exampleBoundaries<- metis.boundaries(
                             boundaryRegShape=NULL,
@@ -406,7 +370,8 @@ io_sub$ioTbl
                             subRegCol=subRegCol_i,
                             subRegType="state",
                             nameAppend="_example",
-                            expandPercent=2,
+                            expandPercentWidth = 2,
+                            expandPercentHeight = 2,
                             overlapShpFile="Global235_CLM_final_5arcmin_multipart",
                             overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
                             extension = T,
@@ -443,7 +408,8 @@ io_sub$ioTbl
                           subRegCol=subRegCol_i,
                           subRegType="state",
                           nameAppend="_example",
-                          expandPercent=10,
+                          expandPercentWidth = 10,
+                          expandPercentHeight = 10,
                           overlapShpFile="Global235_CLM_final_5arcmin_multipart",
                           overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
                           extension = T,
@@ -461,7 +427,8 @@ io_sub$ioTbl
                             subRegCol=subRegCol_i,
                             subRegType="state",
                             nameAppend="_exampleSubset",
-                            expandPercent=10,
+                            expandPercentWidth = 10,
+                            expandPercentHeight = 10,
                             overlapShpFile="Global235_CLM_final_5arcmin_multipart",
                             overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
                             extension = T,
@@ -540,6 +507,7 @@ io_sub$ioTbl
                  fps=1,
                  expandPercent = 2,
                  extension=T)
+
 
 
 #--------------------------------------------------
@@ -688,6 +656,49 @@ io_sub$ioTbl
                      scaleRange = scaleRange_i)
 
 
+#----------------------------
+# Input/Output (metis.io.R)
+#---------------------------
+
+  # IO test 1 - Simple
+  ioTable0=tibble::tribble( # Initial Flows
+    ~supplySubSector,  ~water,  ~ag,   ~elec,  ~domestic, ~export, ~mining, ~other, ~units,
+    "water",            0,    30,      5,        8,         5,       5,    5, "km3",
+    "ag",               0,    0,      1,        0,          10,      0,    0, "ton",
+    "elec",             3,    0.3,    0,        0.5,        1,       2,    5, "TWh",
+    "livestock",        1,    0.1,    0,        0.3,        2,       3,    2, "head");ioTable0
+
+
+  io<-metis.io(ioTable0 = ioTable0, folderName = "metisExample",plotSankeys=T, nameAppend = "_testSimple")
+  # View Outputs
+  io$A
+  io$L
+  io$ioTbl
+
+
+  # IO test 2 with subSectors
+  ioTable0=tibble::tribble( # Initial Flows
+    ~supplySubSector,  ~supplySector, ~w_GW,  ~ag_Wheat,   ~elec_Coal,  ~domestic, ~export, ~mining, ~other, ~units,
+    "w_GW",            "water",     0,    10,      1,        3,         1,       2,    1, "km3",
+    "w_SW",            "water",     0,    30,      5,        8,         5,       5,    5, "km3",
+    "ag_Biofuel",      "ag",      0,    0,       2,        0,         8,       0,    0, "ton",
+    "ag_Wheat",        "ag",      0,    0,       0,        6,         9,       0,    0, "ton",
+    "ag_Rice",         "ag",     0,    0,       0,        5,         20,      0,    0, "ton",
+    "elec_Coal",       "elec",     3,    0.3,     0,        0.6,       1,       3,    6, "TWh",
+    "elec_Wind",       "elec",     2,    0.2,     0,        0.4,       0.677,       2,    4, "TWh",
+    "elec_Oil",        "elec",     1,    0.1,     0,        0.2,       0.333,       1,    2, "TWh",
+    "livestock_Cow",   "livestock",     0,    0,     0,        0,    30,       60,    0, "head",
+    "livestock_Chicken", "livestock",   0,    0,     0,        0,    50,       90,    0, "head");ioTable0
+
+
+  io_sub<-metis.io(ioTable0 = ioTable0, folderName = "metisExample",plotSankeys=T, nameAppend = "_testSubSector")
+  # View Outputs
+  io_sub$A
+  io_sub$L
+  io_sub$ioTbl
+
+
+
 #------------------------------
 # Metis Tests (Check if outputs from metis.master.R are working as expected)
 #------------------------------
@@ -709,45 +720,49 @@ io_sub$ioTbl
     } else { testInstallPackages = "Test Install Packages: Failed"}; print(testInstallPackages)
 
     # Test: IO Check
-    if(nrow(io$A)>1 & nrow(io_sub$A)>1){
+    if(!is.null(io)){
+    if(nrow(io$A)>1){
       testIO = "Test IO: Passed"
-    } else { testIO = "Test IO: Failed"}; print(testIO)
+    }} else { testIO = "Test IO: Failed"}; print(testIO)
 
     # Test: readgcam Check
+    if(!is.null(dataGCAM)){
     if(nrow(dataGCAM$data)>1){
       testReadGCAM = "Test readGCAM: Passed"
-    } else { testReadGCAM = "Test readGCAM: Failed"}; print(testReadGCAM)
+    }} else { testReadGCAM = "Test readGCAM: Failed"}; print(testReadGCAM)
 
     # Test: charts Check
-    if(file.exists(paste(getwd(),"/outputs/charts/metisExample/chart_eg_line_multi_Set1.png",sep="")) &
-       file.exists(paste(getwd(),"/outputs/charts/metisExample/chart_eg_sankey_multi.png",sep=""))){
+    if(file.exists(paste(getwd(),"/outputs/metisExample/chart_eg_line_multi_Set1.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/metisExample/chart_eg_sankey_multi.png",sep=""))){
       testChart = "Test chart: Passed"
     } else { testChart = "Test chart: Failed"}; print(testChart)
 
     # Test: chartsProcess Check
-    if(file.exists(paste(getwd(),"/outputs/charts/metisExample/compareRegions/ArgentinaColombiaEg1/landAlloc_figBar_Eg1_compareRegions.png",sep="")) &
-       file.exists(paste(getwd(),"/outputs/charts/metisExample/compareRegions/ArgentinaColombiacompareScen/watConsumBySec_figBarDiff_compareScenRegion.png",sep=""))){
+    if(file.exists(paste(getwd(),"/outputs/metisExample/charts/compareRegions/ArgentinaColombiaEg1/agProdByCrop_figBar_Eg1_compareRegions.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/metisExample/charts/compareRegions/ArgentinaColombiacompareScen/watConsumBySec_figBarDiff_compareScenRegion.png",sep=""))){
       testChartsProcess = "Test chartsProcess: Passed"
     } else { testChartsProcess = "Test chartsProcess: Failed"}; print(testChartsProcess)
 
     # Test: map Check
-    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/ExampleShapefile/Argentina_states_example.shp",sep=""))){
+    if(file.exists(paste(getwd(),"/outputs/metisExample/Maps/ExampleShapefile/Argentina_states_example.shp",sep=""))){
       testMap = "Test map: Passed"
     } else { testMap = "Test map: Failed"}; print(testMap)
 
     # Test: boundary Check
+    if(!is.null(exampleBoundaries)){
     if(exampleBoundaries$subRegShape$admin[1]=="United States of America"){
       testBoundary = "Test boundary: Passed"
-    } else { testBoundary = "Test boundary: Failed"}; print(testBoundary)
+    }} else { testBoundary = "Test boundary: Failed"}; print(testBoundary)
 
     # Test: grid2Poly Check
+    if(!is.null(exampleGrid2poly)){
     if(nrow(exampleGrid2poly)>1){
       testGrid2Poly = "Test grid2Poly: Passed"
-    } else { testGrid2Poly = "Test grid2Poly: Failed"}; print(testGrid2Poly)
+    }} else { testGrid2Poly = "Test grid2Poly: Failed"}; print(testGrid2Poly)
 
     # Test: mapsProcess Check
-    if(file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/tethysWatWithdraw_indv/Eg1/byYear/map_metisExample_subRegType_tethysWatWithdraw_indv_2030_Eg1_exampleSubRegionMap_FREESCALE.png",sep="")) &
-       file.exists(paste(getwd(),"/outputs/Maps/metisExample/subRegType/tethysWatWithdraw_indv/Eg1/anim_metisExample_subRegType_tethysWatWithdraw_indv_Eg1_exampleSubRegionMap_FREESCALE.gif",sep=""))){
+    if(file.exists(paste(getwd(),"/outputs/metisExample/Maps/subRegType/tethysWatWithdraw_indv/Eg1/byYear/map_metisExample_subRegType_tethysWatWithdraw_indv_2030_Eg1_exampleSubRegionMap_FREESCALE.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/metisExample/Maps/subRegType/tethysWatWithdraw_indv/Eg1/anim_metisExample_subRegType_tethysWatWithdraw_indv_Eg1_exampleSubRegionMap_FREESCALE.gif",sep=""))){
       testMapsProcess = "Test mapsProcess: Passed"
     } else { testMapsProcess = "Test mapsProcess: Failed"}; print(testMapsProcess)
 
