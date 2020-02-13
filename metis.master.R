@@ -284,44 +284,26 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
                           scenarioCompareOnly=0, # Default 0. If set to 1, will only run comparison plots and not individual
                           folderName = "metisExample")
 
-  # rTable=rTable_i # Default is NULL
-  # dataTables=dataTables_i # Default is NULL.
-  # paramsSelect=paramsSelect_i # Default is "All"
-  # regionsSelect=regionsSelect_i # Default is "All"
-  # xCompare=c("2015","2030","2050","2100") # Default is c("2015","2030","2050","2100")
-  # scenRef="Eg1" # Default is NULL
-  # dirOutputs=paste(getwd(),"/outputs",sep="") # Default is paste(getwd(),"/outputs",sep="")
-  # regionCompareOnly=0 # Default 0. If set to 1, will only run comparison plots and not individual
-  # scenarioCompareOnly=1 # Default 0. If set to 1, will only run comparison plots and not individual
-  # folderName = "metisExample"
-
 #-------------------
 # Maps (metis.map.R)
 #-------------------
 
-# Example 1. Using example Shapefile for US States Provided with metis in ./metis/dataFiles/examples.
-  examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
-  examplePolyFile<-paste("US_states_mainland_ne1",sep="")
-  exampleUSmainland=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
-  head(exampleUSmainland@data) # Choose the appropriate column name
-  colName_i = "postal"
+# Example 1. Using US states metis pre-loaded Shape File (mapUS49)
+  head(mapUS49@data) # Choose the appropriate column name
+  colName_i = "subRegion"
   # Categorical Shapefile
-  metis.map(dataPolygon=exampleUSmainland,fillColumn = colName_i,labels=T ,labelsAutoPlace = F, printFig=F,facetsON=F, folderName="metisExample")
-  # Shapefile with values
-  metis.map(dataPolygon=exampleUSmainland,fillColumn = "latitude",labels=T ,printFig=F,facetsON=T,
-            legendShow = T, legendOutside = T, fillPalette = "Spectral", labelsAutoPlace = F)
+  metis.map(dataPolygon=mapUS49,fillColumn = colName_i,labels=T ,labelsAutoPlace = F,
+            printFig=F,facetsON=F, folderName="metisExample")
 
-# Example 2. using the natural earth Shapefiles provided with metis in ./metis/dataFiles/gis/metis/naturalEarth
-  examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
-  examplePolyFile<-paste("ne_10m_admin_1_states_provinces",sep="")
-  exampleNE1=rgdal::readOGR(dsn=examplePolyFolder, layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
-  head(exampleNE1@data) # Choose the column name
-  colName_i = "name"
+# Example 2. Using global country map provided with metis mapGlobalCountry
+  head(mapGlobalCountry@data) # Choose the column name
+  colName_i = "subRegion"
   # Crop the shapefile to desired boundary by subsetting
-  exampleNE1Cropped = exampleNE1[exampleNE1$admin=="Peru",]
-  exampleNE1Cropped@data = droplevels(exampleNE1Cropped@data)
-  plot(exampleNE1Cropped)
-  metis.map(dataPolygon=exampleNE1Cropped,fillColumn = colName_i,labels=T ,printFig=T,facetsON=F,
+  mapx = mapGlobalCountry
+  mapx = mapx[mapx$subRegion=="Peru",]
+  mapx@data = droplevels(mapx@data)
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = colName_i,labels=T ,printFig=T,facetsON=F,
             labelsAutoPlace = F, dirOutputs="outputs",folderName="metisExample")
 
 # The cropped shapefile can be saved for later use if desired.
@@ -340,16 +322,15 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
 # Boundaries
 #------------
 
+# Use pre-loaded (state, basin) maps to plot boundary regions for any country
+
 # Example 1: Peru
   countryName = "Peru"
-  examplePolyFolder_i<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
-  examplePolyFile_i<-paste("ne_10m_admin_1_states_provinces",sep="")
-  exampleSubRegion=rgdal::readOGR(dsn=examplePolyFolder_i,
-                        layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
+  exampleSubRegion=metis::mapGlobalStatesProvinces
   head(exampleSubRegion@data)
-  subRegCol_i = "name"
+  subRegCol_i = "subRegion"
   # Crop the shapefile to the desired subRegion
-  exampleSubRegionCropped<-exampleSubRegion[(exampleSubRegion$admin==countryName),]
+  exampleSubRegionCropped<-exampleSubRegion[(exampleSubRegion$region==countryName),]
   head(exampleSubRegionCropped@data)
   metis.map(dataPolygon=exampleSubRegionCropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F)
 
@@ -361,10 +342,8 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
   metis.map(dataPolygon=exampleSubRegion_chooseState,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F)
 
   exampleBoundaries<- metis.boundaries(
-                            boundaryRegShape=NULL,
-                            boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
-                            boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),
-                            boundaryRegCol="ADMIN",
+                            boundaryRegShape = metis::mapGlobalCountry,
+                            boundaryRegCol = "subRegion",
                             boundaryRegionsSelect=countryName,
                             subRegShape=exampleSubRegionCropped,
                             subRegCol=subRegCol_i,
