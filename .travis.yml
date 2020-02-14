@@ -4,6 +4,8 @@ language: R
 cache: packages
 dist: xenial
 
+warnings_are_errors: false
+
 addons:
   apt:
     source:
