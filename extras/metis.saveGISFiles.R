@@ -21,6 +21,8 @@ mapx@data <- mapx@data %>%
   dplyr::mutate(region="World",subRegionType="country", source="https://www.naturalearthdata.com/downloads/",
                 subRegion = as.character(subRegion),
                 subRegion=if_else(subRegion=="United States of America","USA",subRegion))
+mapx <- mapx[!grepl("Antarctica",mapx$subRegion),]
+mapx@data <- mapx@data%>%droplevels()
 format(object.size(mapx), units="Mb")
 mapx<-as(simplify_shape(mapx, fact = 0.1),Class="Spatial")
 format(object.size(mapx), units="Mb")
@@ -43,10 +45,12 @@ mapx@data <- mapx@data %>%
   dplyr::mutate(subRegionType="states", source="https://www.naturalearthdata.com/downloads/",
                 region = as.character(region),
                 region=if_else(region=="United States of America","USA",region))
+mapx <- mapx[!grepl("Antarctica",mapx$region),]
+mapx@data <- mapx@data%>%droplevels()
 format(object.size(mapx), units="Mb")
 mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
 format(object.size(mapx), units="Mb")
-#sp::plot(mapx)
+# sp::plot(mapx)
 # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F, fileName="factp1")
 mapStates <- mapx
 use_data(mapStates, overwrite=T)
@@ -499,6 +503,10 @@ if(!exists("mapUS49County")){
 if(F){
 
   library(tmap)
+
+  # World
+    metis.map(dataPolygon=metis::mapCountries,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapStates,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
 
   # GCAM
     metis.map(dataPolygon=metis::mapGCAMReg32,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
