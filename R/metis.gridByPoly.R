@@ -48,12 +48,12 @@ metis.gridByPoly <- function(gridDataTables = NULL,
 # Create Folders
 #---------------
 
-  if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
-
   if(saveFile){
-  if (!dir.exists(paste(dirOutputs, "/GridByPoly", sep = ""))){dir.create(paste(dirOutputs, "/GridByPoly", sep = ""))}
-  if (!dir.exists(paste(dirOutputs, "/GridByPoly/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/GridByPoly/",folderName, sep = ""))}
-  dir = paste(dirOutputs, "/GridByPoly/",folderName, sep = "")}
+  if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
+  if (!dir.exists(paste(dirOutputs,"/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/",folderName,sep = ""))}
+  if (!dir.exists(paste(dirOutputs,"/",folderName, "/GridByPoly/", sep = ""))){dir.create(paste(dirOutputs, "/",folderName, "/GridByPoly/", sep = ""))}
+    dir = paste(dirOutputs,"/",folderName, "/GridByPoly/",sep = "")
+  }
 
 
 # Check inputs provided
