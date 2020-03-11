@@ -145,7 +145,7 @@ metis.map<-function(dataPolygon=NULL,
   # dataRaster=NULL
   # shpFolder=NULL
   # shpFile=NULL
-  # #fillPalette="Spectral"
+  # fillPalette="Spectral"
   # borderColor="gray20"
   # lwd=1
   # lty=1
@@ -550,7 +550,7 @@ if(length(fillPalette)==1){
 if(!is.null(shape)){
   if(class(shape)!="tmap"){
   if(nrow(shape@data)>0){
-    shape@data <- shape@data %>% dplyr::mutate_if(is.numeric, list(~na_if(abs(.), Inf)))
+    shape@data <- shape@data %>% dplyr::mutate_if(is.numeric, list(~dplyr::na_if(abs(.), Inf)))
     }
    }# If not tmap
   }

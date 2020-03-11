@@ -1,6 +1,9 @@
 
 library(tibble);library(dplyr);library(rgdal);library(devtools);library(metis); library(rmapshaper); library(tmaptools)
 
+# Current Data
+data(package="metis")
+
 #-----------------
 # World Maps (Countries, States)
 #-----------------
@@ -18,6 +21,8 @@ mapx@data <- mapx@data %>%
   dplyr::mutate(region="World",subRegionType="country", source="https://www.naturalearthdata.com/downloads/",
                 subRegion = as.character(subRegion),
                 subRegion=if_else(subRegion=="United States of America","USA",subRegion))
+mapx <- mapx[!grepl("Antarctica",mapx$subRegion),]
+mapx@data <- mapx@data%>%droplevels()
 format(object.size(mapx), units="Mb")
 mapx<-as(simplify_shape(mapx, fact = 0.1),Class="Spatial")
 format(object.size(mapx), units="Mb")
@@ -40,10 +45,12 @@ mapx@data <- mapx@data %>%
   dplyr::mutate(subRegionType="states", source="https://www.naturalearthdata.com/downloads/",
                 region = as.character(region),
                 region=if_else(region=="United States of America","USA",region))
+mapx <- mapx[!grepl("Antarctica",mapx$region),]
+mapx@data <- mapx@data%>%droplevels()
 format(object.size(mapx), units="Mb")
 mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
 format(object.size(mapx), units="Mb")
-#sp::plot(mapx)
+# sp::plot(mapx)
 # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F, fileName="factp1")
 mapStates <- mapx
 use_data(mapStates, overwrite=T)
@@ -52,6 +59,81 @@ use_data(mapStates, overwrite=T)
 #-----------------
 # GCAM Maps (Regions, Basins, Land)
 #-----------------
+
+# GCAM 32 Regions
+#------------------
+if(!exists("mapGCAMReg32")){
+  examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
+  examplePolyFile<-paste("region32_0p5deg",sep="")
+  x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  head(x@data); names(x@data)
+  mapx <- x
+  idMapping <- data.table::fread(paste(getwd(),"/dataFiles/gis/metis/gcam/GCAM_region_names.csv",sep=""),skip=4,header=T)
+  mapx@data <- mapx@data %>%
+    dplyr::select(subRegionAlt=reg32_id) %>%
+    dplyr::mutate(subRegionType="GCAMReg32", source="https://confluence.pnnl.gov/confluence/display/JGCRI/GCAM+Shape+Files",
+                  region = "World",
+                  subRegionAlt=as.integer(subRegionAlt))%>%
+    dplyr::left_join(idMapping%>%
+                       dplyr::select(subRegion=region, subRegionAlt=GCAM_region_ID)%>%
+                       unique())
+  mapx@data <- droplevels(mapx@data)
+  format(object.size(mapx), units="Mb")
+  #mapx<-as(simplify_shape(mapx, fact = 0.05),Class="Spatial")
+  #format(object.size(mapx), units="Mb")
+  #sp::plot(mapx)
+  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F, fileName="factp1")
+  mapGCAMReg32 <- mapx
+  use_data(mapGCAMReg32, overwrite=T)
+}
+
+
+# GCAM Basins
+#------------------
+if(!exists("mapGCAMBasins")){
+  examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
+  examplePolyFile<-paste("Global235_CLM_final_5arcmin_multipart",sep="")
+  x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  head(x@data); names(x@data)
+  mapx <- x
+  mapx@data <- mapx@data %>%
+    dplyr::select(subRegion=basin_name, subRegionAlt=basin_id) %>%
+    dplyr::mutate(region = "World")
+  format(object.size(mapx), units="Mb")
+  #mapx<-as(simplify_shape(mapx, fact = 0.05),Class="Spatial")
+  #format(object.size(mapx), units="Mb")
+  #sp::plot(mapx)
+  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F, fileName="factp1")
+  mapGCAMBasins <- mapx
+  use_data(mapGCAMBasins, overwrite=T)
+}
+
+
+# GCAM Land
+#------------------
+if(!exists("mapGCAMLand")){
+  examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
+  examplePolyFile<-paste("region32glu_moirai_out_vect",sep="")
+  x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  head(x@data); names(x@data)
+  mapx <- x
+  idMapping <- data.table::fread(paste(getwd(),"/dataFiles/gis/metis/gcam/GCAM_region_names.csv",sep=""),skip=4,header=T)
+  mapx@data <- mapx@data %>%
+    dplyr::select(subRegion=glu_name, subRegionAlt=Rg32Glu_id, glu_id, reg32_id) %>%
+    dplyr::mutate(subRegionType="GCAMRegLand", source="https://confluence.pnnl.gov/confluence/display/JGCRI/GCAM+Shape+Files",
+                  region = "World")%>%
+    dplyr::left_join(idMapping%>%
+                       dplyr::select(reg32_name=region, reg32_id=GCAM_region_ID)%>%
+                       unique())
+  head(mapx@data)
+  format(object.size(mapx), units="Mb")
+  #mapx<-as(simplify_shape(mapx, fact = 0.05),Class="Spatial")
+  #format(object.size(mapx), units="Mb")
+  #sp::plot(mapx)
+  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F, fileName="factp1")
+  mapGCAMLand <- mapx
+  use_data(mapGCAMLand, overwrite=T)
+}
 
 
 
@@ -130,7 +212,7 @@ use_data(mapHydroShed2, overwrite=T)
 #-------------------
 if(!exists("mapHydroShed3")){
 examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/subbasin_hydrobasin",sep="")
-examplePolyFile<-paste("hydrobasins_level_1",sep="")
+examplePolyFile<-paste("hydrobasins_level_3",sep="")
 x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
 head(x@data); names(x@data)
 mapx <- x
@@ -156,35 +238,35 @@ mapHydroShed3 <- mapx
 use_data(mapHydroShed3, overwrite=T)
 }
 
-# HydroSheds Level 4
-#-------------------
-if(!exists("mapHydroShed4")){
-examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/subbasin_hydrobasin",sep="")
-examplePolyFile<-paste("hydrobasins_level_1",sep="")
-x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
-head(x@data); names(x@data)
-mapx <- x
-mapx@data <- mapx@data %>%
-  dplyr::select(subRegion=HYBAS_ID, SUB_AREA) %>%
-  dplyr::mutate(region="World",subRegionType="basin", subRegionAlt=subRegion,source="https://www.naturalearthdata.com/downloads/")
-head(mapx@data); mapx@data%>%distinct(region)%>%arrange(region)
-a<-tmaptools::simplify_shape(mapx, fact = 0.01)
-mapx <- as(sf::st_collection_extract(x = st_geometry(a),
-                                     type = "POLYGON"), "Spatial")
-format(object.size(mapx), units="Mb")
-# Need to Covnert this back to an spdf
-p.df <- data.frame( ID=1:length(mapx))
-pid <- sapply(slot(mapx, "polygons"), function(x) slot(x, "ID")) # Extract polygon ID's
-p.df <- data.frame( ID=1:length(mapx), row.names = pid) # Create dataframe with correct rownames
-p <- SpatialPolygonsDataFrame(mapx, p.df)
-p@data <- a%>%as.data.frame()%>%dplyr::select(-geometry)
-mapx<-p
-format(object.size(mapx), units="Mb")
-# sp::plot(mapx)
-# metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F,fileName = "HydroShed1")
-mapHydroShed4 <- mapx
-use_data(mapHydroShed4, overwrite=T)
-}
+# # HydroSheds Level 4
+# #-------------------
+# if(!exists("mapHydroShed4")){
+# examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/subbasin_hydrobasin",sep="")
+# examplePolyFile<-paste("hydrobasins_level_4",sep="")
+# x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+# head(x@data); names(x@data)
+# mapx <- x
+# mapx@data <- mapx@data %>%
+#   dplyr::select(subRegion=HYBAS_ID, SUB_AREA) %>%
+#   dplyr::mutate(region="World",subRegionType="basin", subRegionAlt=subRegion,source="https://www.naturalearthdata.com/downloads/")
+# head(mapx@data); mapx@data%>%distinct(region)%>%arrange(region)
+# a<-tmaptools::simplify_shape(mapx, fact = 0.01)
+# mapx <- as(sf::st_collection_extract(x = st_geometry(a),
+#                                      type = "POLYGON"), "Spatial")
+# format(object.size(mapx), units="Mb")
+# # Need to Covnert this back to an spdf
+# p.df <- data.frame( ID=1:length(mapx))
+# pid <- sapply(slot(mapx, "polygons"), function(x) slot(x, "ID")) # Extract polygon ID's
+# p.df <- data.frame( ID=1:length(mapx), row.names = pid) # Create dataframe with correct rownames
+# p <- SpatialPolygonsDataFrame(mapx, p.df)
+# p@data <- a%>%as.data.frame()%>%dplyr::select(-geometry)
+# mapx<-p
+# format(object.size(mapx), units="Mb")
+# # sp::plot(mapx)
+# # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F,fileName = "HydroShed1")
+# mapHydroShed4 <- mapx
+# use_data(mapHydroShed4, overwrite=T)
+# }
 
 # HUC USGS
 # https://water.usgs.gov/GIS/huc.html
@@ -208,7 +290,7 @@ format(object.size(mapx), units="Mb")
 mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
 format(object.size(mapx), units="Mb")
 #sp::plot(mapx)
-#metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+#metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F)
 mapUS52HUC2 <- mapx
 use_data(mapUS52HUC2, overwrite=T)
 }
@@ -216,7 +298,7 @@ use_data(mapUS52HUC2, overwrite=T)
 # US49 HUC 2
 #-------------------
 if(!exists("mapUS49HUC2")){
-mapx <- mapUS52HUC2[!grepl("PR|HI|AK|CN|AS|GU|MP",mapUS52HUC2$STATES),]
+mapx <- mapUS52HUC2[!grepl("19|20|21|22",mapUS52HUC2$subRegion),]
 mapx@data <- mapx@data%>%droplevels()
 head(mapx@data); mapx@data%>%distinct(subRegionAlt)%>%arrange(subRegionAlt)
 format(object.size(mapx), units="Mb")
@@ -351,7 +433,7 @@ x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encodin
 head(x@data); names(x@data); nrow(x)
 mapx <- x
 mapx@data <- mapx@data %>%
-  dplyr::select(subRegion=STUSPS,subRegionAlt=NAME) %>%
+  dplyr::select(subRegion=STUSPS,subRegionAlt=NAME, STATEFP) %>%
   dplyr::mutate(region="USA",subRegionType="state", source="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html")
 head(mapx@data); unique(mapx$subRegion)
 # sp::plot(mapx)
@@ -373,14 +455,77 @@ use_data(mapUS49, overwrite=T)
 }
 
 
+# US 52 Counties
+#-------------------
+if(!exists("mapUS52County")){
+  examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/USA/cb_2018_us_county_20m",sep="")
+  examplePolyFile<-paste("cb_2018_us_county_20m",sep="")
+  x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  head(x@data); names(x@data); nrow(x)
+  mapx <- x
+  mapx@data <- mapx@data %>%
+    dplyr::select(subRegion=NAME,subRegionAlt=COUNTYFP,STATEFP) %>%
+    dplyr::mutate(region="USA",subRegionType="county", source="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html") %>%
+    dplyr::left_join(mapUS52@data%>%dplyr::select(STATEFP,STATECODE=subRegion, STATENAME=subRegionAlt))
+  head(mapx@data); unique(mapx$subRegion)
+  # sp::plot(mapx)
+  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  mapUS52County <- mapx
+  use_data(mapUS52County, overwrite=T)
+}
+
+
+
+# US 49 Counties
+#-------------------
+if(!exists("mapUS49County")){
+  mapx <- mapUS52County[(!mapUS52County$STATECODE %in% c("AK","HI","PR")),]
+  mapx@data <- mapx@data%>%droplevels()
+  head(mapx@data); nrow(mapx); mapx@data%>%distinct(subRegion)
+  # sp::plot(mapx)
+  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  mapUS49County<-mapx
+  use_data(mapUS49County, overwrite=T)
+}
+
+
+
 #-------------------
 # Save Plots
 #-------------------
 
 # GCAM Maps (Regions, Basins, Land)
-# US Maps (States, Counties, Regions, Grid Regions)
+# US Maps (States, Counties)
 # HydroShedMaps (HydroShed1,HydroShed2,HydroShed3)
 # HUCMaps (HUC2, HUC4, HUC6)
 # Grids (Grid0p5, Grid0p25)
 
+if(F){
+
+  library(tmap)
+
+  # World
+    metis.map(dataPolygon=metis::mapCountries,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapStates,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+
+  # GCAM
+    metis.map(dataPolygon=metis::mapGCAMReg32,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapGCAMBasins,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapGCAMLand,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  # US
+    metis.map(dataPolygon=metis::mapUS52,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapUS52County,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapUS49,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapUS49County,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  # HydroSheds
+    metis.map(dataPolygon=metis::mapHydroShed1,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapHydroShed2,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapHydroShed3,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  # USGS HUC
+    metis.map(dataPolygon=metis::mapUS52HUC2,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapUS52HUC4,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapUS49HUC2,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+    metis.map(dataPolygon=metis::mapUS49HUC4,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+
+}
 

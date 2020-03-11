@@ -37,6 +37,7 @@
 # MacOS (Using Homebrew): brew install imagemagick@6
 
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}; library(devtools)
+# install_github(repo="JGCRI/metis"); library(metis); .rs.restartR()
 if("rgcam" %in% rownames(installed.packages()) == F){install_github(repo="JGCRI/rgcam")}; library(rgcam)
 if("metis" %in% rownames(installed.packages()) == F){devtools::install()}; library(metis)
 library(tibble);library(dplyr);library(rgdal); library(ggalluvial);
