@@ -240,3 +240,24 @@
 #'  head(mapUS49County@data)
 #' }
 "mapUS49County"
+
+#' Empty global grid 0.25 degrees
+#' @source JGCRI
+#' @format R tibble
+#' @examples
+#' \dontrun{
+#' library(metis)
+#' head(grid025)
+#' }
+"grid025"
+
+#' US 49 States
+#' Excludes Alaska, Hawaii and Puerto Rico. Includes DC.
+#' @source JGCRI
+#' @format R tibble
+#' @examples
+#' \dontrun{
+#' library(metis)
+#' head(grid050)
+#' }
+"grid050"
