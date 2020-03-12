@@ -489,6 +489,21 @@ if(!exists("mapUS49County")){
 }
 
 
+# Grid Files
+#-------------------
+if(!exists("grid025")){
+  gridx <-  tibble::as_tibble(data.table::fread(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep="")));
+  grid025<-gridx
+  use_data(grid025, overwrite=T)
+}
+
+if(!exists("grid050")){
+  gridx <-  tibble::as_tibble(data.table::fread(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")));
+  grid050<-gridx
+  use_data(grid050, overwrite=T)
+}
+
+
 
 #-------------------
 # Save Plots
@@ -526,6 +541,9 @@ if(F){
     metis.map(dataPolygon=metis::mapUS52HUC4,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
     metis.map(dataPolygon=metis::mapUS49HUC2,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
     metis.map(dataPolygon=metis::mapUS49HUC4,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  # Grids
+    metis::grid025
+    metis::grid050
 
 }
 
