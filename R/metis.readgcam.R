@@ -389,7 +389,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origUnits = Units,
                       origX = year,
                       scenario = scenNewNames,
-                      units = "Final Energy Intl. Av & Shp (EJ)",
+                      units = "Final Energy Intl. Av and Shp (EJ)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
