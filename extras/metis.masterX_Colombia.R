@@ -74,7 +74,7 @@ library(tidyr)
 
   # Reading in the no bio query so it works with Rgcam
 
-  dataGCAM<-metis.readgcam(reReadData = T,  # F
+  dataGCAM<-metis.readgcam(reReadData = F,  # F
                            gcamdatabasePath = gcamdatabasePath_i,
                            gcamdatabaseName = gcamdatabaseName_i,
                            scenOrigNames = scenOrigNames_i,
