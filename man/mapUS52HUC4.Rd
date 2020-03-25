@@ -4,7 +4,9 @@
 \name{mapUS52HUC4}
 \alias{mapUS52HUC4}
 \title{USGS Hydrological Unit Code (HUC)}
-\format{A SpatialPolygonsDataFrame}
+\format{
+A SpatialPolygonsDataFrame
+}
 \source{
 \url{https://water.usgs.gov/GIS/huc.html} \url{https://nrcs.app.box.com/v/huc}
 }

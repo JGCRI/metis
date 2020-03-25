@@ -4,14 +4,27 @@
 \alias{metis.grid2poly}
 \title{metis.grid2poly}
 \usage{
-metis.grid2poly(gridFiles = NULL, regionName = "region",
-  subRegShape = NULL, subRegShpFolder = NULL, subRegShpFile = NULL,
-  subRegCol = NULL, subRegType = "subRegType", aggType = NULL,
-  dirOutputs = paste(getwd(), "/outputs", sep = ""), folderName = NULL,
-  nameAppend = "", labelsSize = 1.2, paramsSelect = "All",
-  scenariosSelect = "All", paramScenariosFixed = NULL,
-  tethysFilesScarcity = NULL, xanthosFilesScarcity = NULL,
-  calculatePolyScarcity = F, calculatePolyScarcityOnly = F)
+metis.grid2poly(
+  gridFiles = NULL,
+  regionName = "region",
+  subRegShape = NULL,
+  subRegShpFolder = NULL,
+  subRegShpFile = NULL,
+  subRegCol = NULL,
+  subRegType = "subRegType",
+  aggType = NULL,
+  dirOutputs = paste(getwd(), "/outputs", sep = ""),
+  folderName = NULL,
+  nameAppend = "",
+  labelsSize = 1.2,
+  paramsSelect = "All",
+  scenariosSelect = "All",
+  paramScenariosFixed = NULL,
+  tethysFilesScarcity = NULL,
+  xanthosFilesScarcity = NULL,
+  calculatePolyScarcity = F,
+  calculatePolyScarcityOnly = F
+)
 }
 \arguments{
 \item{gridFiles}{Default=NULL. Grid file in .csv format or a R table, data frame or tibble with as a minimum columns with "lat","lon" and "value",}
