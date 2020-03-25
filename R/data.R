@@ -261,3 +261,26 @@
 #' head(grid050)
 #' }
 "grid050"
+
+#' Intersection of GCAM Basins and countries
+#' Intersection of GCAM Basins and countries.
+#' @source JGCRI
+#' @format R tibble
+#' @examples
+#' \dontrun{
+#' library(metis)
+#' head(mapIntersectGCAMBasinCountry)
+#' }
+"mapIntersectGCAMBasinCountry"
+
+
+#' Intersection of GCAM Basins and GCAM 32 Regions
+#' Intersection of GCAM Basins and GCAM 32 Regions.
+#' @source JGCRI
+#' @format R tibble
+#' @examples
+#' \dontrun{
+#' library(metis)
+#' head(mapIntersectGCAMBasin32Reg)
+#' }
+"mapIntersectGCAMBasin32Reg"

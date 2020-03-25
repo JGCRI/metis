@@ -4,12 +4,22 @@
 \alias{metis.io}
 \title{metis.io}
 \usage{
-metis.io(ioTable0 = NULL, useIntensity = 0, A0 = NULL,
-  dirOutputs = paste(getwd(), "/outputs", sep = ""), nameAppend = "",
-  figWidth = 9, figHeight = 7, sankeyLabelAbsPlots = 1,
-  combSubRegionPlots = 1, folderName = "folderNameDefault",
-  pdfpng = "png", sankeyAxis1Label = "From", sankeyAxis2Label = "To",
-  plotSankeys = T)
+metis.io(
+  ioTable0 = NULL,
+  useIntensity = 0,
+  A0 = NULL,
+  dirOutputs = paste(getwd(), "/outputs", sep = ""),
+  nameAppend = "",
+  figWidth = 9,
+  figHeight = 7,
+  sankeyLabelAbsPlots = 1,
+  combSubRegionPlots = 1,
+  folderName = "folderNameDefault",
+  pdfpng = "png",
+  sankeyAxis1Label = "From",
+  sankeyAxis2Label = "To",
+  plotSankeys = T
+)
 }
 \arguments{
 \item{ioTable0}{Initial ioTable. Must have columns: supplySubSector,total,export and cap. Each supply sector should also have imports. Default = NULL,}
