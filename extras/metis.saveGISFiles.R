@@ -73,15 +73,15 @@ if(!exists("mapGCAMReg32")){
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
   head(x@data); names(x@data)
   mapx <- x
-  idMapping <- data.table::fread(paste(getwd(),"/dataFiles/gis/metis/gcam/GCAM_region_names.csv",sep=""),skip=4,header=T)
+  idMapping <- tibble::as_tibble(data.table::fread(paste(getwd(),"/dataFiles/gis/metis/gcam/GCAM_region_names.csv",sep=""),skip=4,header=T))
   mapx@data <- mapx@data %>%
-    dplyr::select(subRegionAlt=reg32_id) %>%
+    dplyr::mutate(reg32_id=as.character(reg32_id))%>%
+    left_join(idMapping%>%dplyr::mutate(reg32_id=as.character(GCAM_region_ID)),by="reg32_id")%>%
     dplyr::mutate(subRegionType="GCAMReg32", source="https://confluence.pnnl.gov/confluence/display/JGCRI/GCAM+Shape+Files",
+                  subRegion=region,
                   region = "World",
-                  subRegionAlt=as.integer(subRegionAlt))%>%
-    dplyr::left_join(idMapping%>%
-                       dplyr::select(subRegion=region, subRegionAlt=GCAM_region_ID)%>%
-                       unique())
+                  subRegionAlt=reg32_id)%>%
+    dplyr::select(-ID,-GRIDCODE,-GCAM_region_ID,-reg32_id)
   mapx@data <- droplevels(mapx@data)
   format(object.size(mapx), units="Mb")
   #mapx<-as(simplify_shape(mapx, fact = 0.05),Class="Spatial")
@@ -562,11 +562,11 @@ if(!exists("mapIntersectGCAMBasin32Reg")){
                   subRegionAlt=paste(subRegionAlt.1,subRegionAlt.2,sep="_X_"),
                   subRegionType=paste(subRegionType.1,subRegionType.2,sep="_X_")) %>%
     dplyr::rename(subRegion_GCAMBasin=subRegion.1,
-                  subRegion_Country=subRegion.2,
+                  subRegion_GCAMReg32=subRegion.2,
                   subRegionAlt_GCAMBasin=subRegionAlt.1,
-                  subRegionAlt_Country=subRegionAlt.2,
+                  subRegionAlt_GCAMreg32=subRegionAlt.2,
                   subRegionType_GCAMBasin=subRegionType.1,
-                  subRegionType_Country=subRegionType.2) %>%
+                  subRegionType_GCAMReg32=subRegionType.2) %>%
     dplyr::select(-region.1,-region.2)
   head(mapx@data)
   # sp::plot(mapx)
