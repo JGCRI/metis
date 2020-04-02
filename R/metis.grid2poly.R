@@ -23,6 +23,7 @@
 #' @param xanthosFilesScarcity Default =NULL
 #' @param calculatePolyScarcity Default = F
 #' @param calculatePolyScarcityOnly Default = F
+#' @param saveFiles Default =T
 #' @export
 
 metis.grid2poly<- function(gridFiles=NULL,
@@ -43,7 +44,8 @@ metis.grid2poly<- function(gridFiles=NULL,
                            tethysFilesScarcity=NULL,
                            xanthosFilesScarcity=NULL,
                            calculatePolyScarcity=F,
-                           calculatePolyScarcityOnly=F) {
+                           calculatePolyScarcityOnly=F,
+                           saveFiles=T) {
 
   # grid=NULL
   # regionName ="region"
@@ -72,7 +74,7 @@ metis.grid2poly<- function(gridFiles=NULL,
     param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon->overlapShape->
     gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis -> template_subRegional_mapping -> scenarioGCM ->
     scenarioRCP -> class2 -> scenarioPolicy -> valueTethys -> valueXanthos -> scenarioSSP -> gridCellArea ->
-    gridCellAreaRatio -> area -> areaPrcnt -> scenarioMultiA -> scenarioMultiB
+    gridCellAreaRatio -> area -> areaPrcnt -> scenarioMultiA -> scenarioMultiB->nrowOrig->nrowNew
 
   #------------------
   # Function for adding any missing columns if needed
@@ -81,6 +83,7 @@ metis.grid2poly<- function(gridFiles=NULL,
   addMissing<-function(data){
     if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
     if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}
+    if(!"x"%in%names(data)){data<-data%>%dplyr::mutate(x="x")}
     return(data)
   }
 
@@ -127,13 +130,23 @@ metis.grid2poly<- function(gridFiles=NULL,
  gridCropped <-tibble::tibble()
  template_subRegional_mapping <- tibble::tibble()
  count=0;
+ gridCount=0;
 
 for(grid_i in gridFiles){
+  if(gridCount==0){ # In case a R tbl is provided directly
 
-    if(file.exists(grid_i)){
-      print(paste("Reading grid file: ", grid_i,sep=""))
+  if(any(class(gridFiles)=="character")){
+     print(paste("Reading grid file: ", grid_i,sep=""))
       if(grepl(".csv",grid_i)){grid<-data.table::fread(grid_i,encoding="Latin-1")}
-      if(grepl(".rds",grid_i)){grid<-readRDS(grid_i)}
+      if(grepl(".rds",grid_i)){grid<-readRDS(grid_i)}}else{
+        if(any(class(gridFiles) %in% c("tbl_df","tbl","data.frame"))){
+         grid = gridFiles
+         gridCount=1;
+        }
+      }
+
+    if(nrow(grid)>0){
+
       grid<-grid%>%addMissing()%>%tibble::as_tibble()%>%unique(); grid
 
       paramScenarios <- grid%>%dplyr::select(param,scenario)%>%unique(); paramScenarios
@@ -166,9 +179,6 @@ for(grid_i in gridFiles){
             print(paramScenarios)
           }
         }}
-
-
-
 
     }else{
       stop(paste("Grid file ",grid," does not exist",sep=""))
@@ -209,8 +219,8 @@ for(grid_i in gridFiles){
 
         if(!"aggType" %in% names(gridx)){
           if(is.null(aggType)){
-            print("Column aggType is missing from grid data. Assigning aggType='depth'")
-            gridx<-gridx%>%dplyr::mutate(aggType="depth")}else{
+            print("Column aggType is missing from grid data. Assigning aggType='vol'")
+            gridx<-gridx%>%dplyr::mutate(aggType="vol")}else{
               gridx<-gridx%>%dplyr::mutate(aggType=aggType)
             }}
 
@@ -243,6 +253,11 @@ for(grid_i in gridFiles){
           print("Uniting columns...")
           gridx<-gridx%>%dplyr::filter(aggType==aggType_i)%>%
             tidyr::unite(col="key",names(gridx)[!names(gridx) %in% c("lat","lon","value")],sep="_",remove=T)
+          nrowOrig = nrow(gridx)
+          if(aggType_i=="depth"){gridx <- gridx %>% dplyr::group_by(lat,lon,key)%>%dplyr::summarize(value=mean(value))%>%dplyr::ungroup()}
+          if(aggType_i=="vol"){gridx <- gridx %>% dplyr::group_by(lat,lon,key)%>%dplyr::summarize(value=sum(value))%>%dplyr::ungroup()}
+          nrowNew =nrow(gridx)
+          if(nrowOrig!=nrowNew){print("WARNING: Multiple lat/lon data had same attributes and were combined.")}
           print("Columns united.")
 
           gridx<-gridx%>%unique()%>%tidyr::spread(key=key,value=value)
@@ -251,6 +266,7 @@ for(grid_i in gridFiles){
 
          gridCropped<-tibble::as_tibble(metis.gridByPoly(gridDataTables=gridx%>%dplyr::ungroup(),
                                                                           shape=shape,colName=subRegCol))
+         # gridDataTables=gridx%>%dplyr::ungroup();shape=shape;colName=subRegCol
 
          print(paste("Grid cropped.",sep=""))
 
@@ -277,9 +293,10 @@ for(grid_i in gridFiles){
 
             polyType=subRegType
             grid_fname<-paste(dirX, "/gridCropped_",scenario_i,"_",polyType,"_",param_i,nameAppend,".csv", sep = "")
+            if(saveFiles){
             data.table::fwrite(gridCroppedX%>%dplyr::mutate(polyType=polyType, region=regionName),
                                file = grid_fname,row.names = F, append = T)
-            print(paste("Subregional grid data files written to: ",grid_fname, sep = ""))
+            print(paste("Subregional grid data files written to: ",grid_fname, sep = ""))}
 
           } # If nrow(gridCropped)
 
@@ -397,18 +414,20 @@ for(grid_i in gridFiles){
 
           polyType=subRegType
           poly_fname<-paste(dirX, "/poly_",scenario_i,"_",polyType,"_",param_i,nameAppend,".csv", sep = "")
-          data.table::fwrite(poly,
+          if(saveFiles){
+            data.table::fwrite(poly,
                              file = poly_fname,row.names = F, append=T)
-          print(paste("Subregional polygon data files written to: ",poly_fname, sep = ""))
+          print(paste("Subregional polygon data files written to: ",poly_fname, sep = ""))}
 
           template_subRegional_mapping <- template_subRegional_mapping %>%
             dplyr::bind_rows(poly %>%
             dplyr::select(c("param","units","class","classPalette")[c("param","units","class","classPalette") %in% names(poly)])%>%
               dplyr::ungroup()%>%unique())%>%unique()
           poly_fname<-paste(dirX, "/poly_subregionalTemplate.csv", sep = "")
-          data.table::fwrite(template_subRegional_mapping,
+          if(saveFiles){
+            data.table::fwrite(template_subRegional_mapping,
                              file = poly_fname,row.names = F, append=T)
-          print(paste("Subregional polygon template files written to: ",poly_fname, sep = ""))
+          print(paste("Subregional polygon template files written to: ",poly_fname, sep = ""))}
         } # Close loop for aggType
       }
 
@@ -423,7 +442,7 @@ for(grid_i in gridFiles){
 
 
   }else{print("No grid provided.")}
-}
+}}
 
   } # Close if(!calculatePolyScarcityOnly)
 
@@ -474,9 +493,10 @@ for(grid_i in gridFiles){
  if(nrow(xanthosHistx)>0){
  poly_fname<-paste(dirX, "/poly_",unique(xanthosHistx$scenario),"_",unique(xanthosHistx$subRegType),"_",
                    unique(xanthosHistx$param),nameAppend,".csv", sep = "")
- data.table::fwrite(xanthosHistx,
+ if(saveFiles){
+   data.table::fwrite(xanthosHistx,
                     file = poly_fname,row.names = F, append=T)
- print(paste("Subregional polygon data files written to: ",poly_fname, sep = ""))}
+ print(paste("Subregional polygon data files written to: ",poly_fname, sep = ""))}}
 
 
  xanthosData <- xanthosTemp%>%dplyr::bind_rows(xanthosHistx);
@@ -524,14 +544,16 @@ for(grid_i in gridFiles){
                        classPalette="pal_ScarcityCat",
                        subRegType=unique(s$subRegType));
 
+       if(saveFiles){
        data.table::fwrite(s3,paste(dirX,"/poly_Scarcity_",scarcityScen,nameAppend,".csv",sep=""),append=T)
-       print(paste("Saving file as: ",dirX,"/polyScarcity_",scarcityScen,".csv",sep=""))
+       print(paste("Saving file as: ",dirX,"/polyScarcity_",scarcityScen,".csv",sep=""))}
 
      }else{print("Xanthos/Tethys GCM RCP's not the same so skipping...")}
     }
  }}
 }
 
+  if(nrowOrig!=nrowNew){print("WARNING: Multiple lat/lon data had same attributes and were combined.")}
 
   return(poly)
 

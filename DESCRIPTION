@@ -1,9 +1,9 @@
 Package: metis
-Title: Sub-Regional Nexus Modeling Tool
+Title: Flexible Scale Multi-Sector Modeling
 Version: 1.0.0
 Authors@R: person("Zarrar", "Khan", email = "zarrar.khan@pnnl.gov", role = c("aut", "cre"))
 Description: Package to process water-energy-land nexus data to different sub-regional levels.
-Depends:
+Depends: R (>= 2.10)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

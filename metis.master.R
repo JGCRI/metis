@@ -90,6 +90,18 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
                          folderName = "metisExample"
                          )
 
+  # reReadData = F
+  # #gcamdatabasePath = gcamdatabasePath_i,
+  # #gcamdatabaseName = gcamdatabaseName_i,
+  # scenOrigNames = scenOrigNames_i
+  # scenNewNames = scenNewNames_i
+  # dataProj = dataProj_i
+  # dataProjPath = dataProjPath_i
+  # regionsSelect = regionsSelect_i
+  # #paramsSelect=paramsSelect_i
+  # queriesSelect = queriesSelect_i #
+  # folderName = "metisExample"
+
   dataGCAM$data # To view the data read that was read.
 
 
@@ -290,17 +302,17 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
 #-------------------
 
 # Example 1. Using US states metis pre-loaded Shape File (mapUS49)
-  head(mapUS49@data) # Choose the appropriate column name
+  head(metis::mapUS49@data) # Choose the appropriate column name
   colName_i = "subRegion"
   # Categorical Shapefile
   metis.map(dataPolygon=mapUS49,fillColumn = colName_i,labels=T ,labelsAutoPlace = F,
             printFig=F,facetsON=F, folderName="metisExample")
 
 # Example 2. Using global country map provided with metis mapGlobalCountry
-  head(mapGlobalCountry@data) # Choose the column name
+  head(metis::mapCountries@data) # Choose the column name
   colName_i = "subRegion"
   # Crop the shapefile to desired boundary by subsetting
-  mapx = mapGlobalCountry
+  mapx = metis::mapCountries
   mapx = mapx[mapx$subRegion=="Peru",]
   mapx@data = droplevels(mapx@data)
   sp::plot(mapx)
@@ -314,7 +326,7 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
   if (!dir.exists(paste(getwd(),"/outputs/metisExample/Maps",sep=""))){dir.create(paste(getwd(),"/outputs/metisExample/Maps",sep=""))}
   if (!dir.exists(paste(getwd(),"/outputs/metisExample/Maps/ExampleShapefile",sep=""))){
   dir.create(paste(getwd(),"/outputs/metisExample/Maps/ExampleShapefile",sep=""))}
-  rgdal::writeOGR(obj=exampleNE1Cropped,
+  rgdal::writeOGR(obj=mapx,
                   dsn=paste(getwd(),"/outputs/metisExample/Maps/ExampleShapefile",sep=""),
                   layer=paste("Argentina_states_example",sep=""),
                   driver="ESRI Shapefile", overwrite_layer=TRUE)
@@ -327,7 +339,7 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
 
 # Example 1: Peru
   countryName = "Peru"
-  exampleSubRegion=metis::mapGlobalStatesProvinces
+  exampleSubRegion=metis::mapStates
   head(exampleSubRegion@data)
   subRegCol_i = "subRegion"
   # Crop the shapefile to the desired subRegion
@@ -343,7 +355,7 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
   metis.map(dataPolygon=exampleSubRegion_chooseState,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F)
 
   exampleBoundaries<- metis.boundaries(
-                            boundaryRegShape = metis::mapGlobalCountry,
+                            boundaryRegShape = metis::mapCountries,
                             boundaryRegCol = "subRegion",
                             boundaryRegionsSelect=countryName,
                             subRegShape=exampleSubRegionCropped,
@@ -360,61 +372,68 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
                             folderName="metisExample")
 
 # Example 2: USA
-  countryName = "United States of America"
-  examplePolyFolder_i<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
-  examplePolyFile_i<-paste("US_states_mainland_ne1_states",sep="")
-  exampleSubRegion=rgdal::readOGR(dsn=examplePolyFolder_i,layer=examplePolyFile_i,use_iconv=T,encoding='UTF-8')
+  countryName = "USA"
+  exampleSubRegion=metis::mapUS49
   head(exampleSubRegion@data)
-  subRegCol_i = "postal"
+  subRegCol_i = "subRegion"
   # Crop the shapefile to the desired subRegion
-  exampleSubRegionCropped<-exampleSubRegion[(exampleSubRegion$admin==countryName),]
-  head(exampleSubRegionCropped@data)
-  metis.map(dataPolygon=exampleSubRegionCropped,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
+  metis.map(dataPolygon=exampleSubRegion,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
 
   # Can Further subset the shapefile if desired
   chosenSubRegions = c("CA","NV","UT","CO","AZ","TX","OK","WY","TX")
-  exampleSubRegion_chooseState<-exampleSubRegionCropped[(exampleSubRegionCropped[[subRegCol_i]] %in% chosenSubRegions),]
+  exampleSubRegion_chooseState<-exampleSubRegion[(exampleSubRegion[[subRegCol_i]] %in% chosenSubRegions),]
   exampleSubRegion_chooseState@data <- droplevels(exampleSubRegion_chooseState@data)
   head(exampleSubRegion_chooseState@data)
   metis.map(dataPolygon=exampleSubRegion_chooseState,fillColumn = subRegCol_i,labels=T ,printFig=F,facetsON=F, folderName="metisExample")
 
   exampleBoundaries<- metis.boundaries(
-                          boundaryRegShape=NULL,
-                          boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
-                          boundaryRegShpFile=paste("ne0_USMainLand_cropped",sep=""),
-                          boundaryRegCol="ADMIN",
-                          boundaryRegionsSelect=countryName,
-                          subRegShape=exampleSubRegionCropped,
+                          regionName="USA",
+                          #boundaryRegShape=metis::mapUS49,
+                          #boundaryRegCol="subRegion",
+                          #boundaryRegionsSelect=countryName,
+                          subRegShape=exampleSubRegion,
                           subRegCol=subRegCol_i,
                           subRegType="state",
                           nameAppend="_example",
-                          expandPercentWidth = 10,
-                          expandPercentHeight = 10,
-                          overlapShpFile="Global235_CLM_final_5arcmin_multipart",
-                          overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
-                          extension = T,
+                          expandPercentWidth = 2,
+                          expandPercentHeight = 2,
+                          overlapShape = metis::mapGCAMBasins,
+                          #overlapShpFile="Global235_CLM_final_5arcmin_multipart",
+                          #overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
+                          extension = F,
                           #grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
                           #          paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
                           folderName="metisExample")
 
   exampleBoundaries<- metis.boundaries(
-                            boundaryRegShape=NULL,
-                            boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
-                            boundaryRegShpFile=paste("ne0_USMainLand_cropped",sep=""),
-                            boundaryRegCol="ADMIN",
-                            boundaryRegionsSelect=countryName,
+                            regionName="USA",
+                            # boundaryRegShape=metis::mapCountries,
+                            # boundaryRegCol="subRegion",
+                            # boundaryRegionsSelect=countryName,
                             subRegShape=exampleSubRegion_chooseState,
                             subRegCol=subRegCol_i,
                             subRegType="state",
                             nameAppend="_exampleSubset",
-                            expandPercentWidth = 10,
-                            expandPercentHeight = 10,
-                            overlapShpFile="Global235_CLM_final_5arcmin_multipart",
-                            overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
-                            extension = T,
-                            grids = c(paste(getwd(),"/dataFiles/grids/emptyGrids/grid_025.csv",sep=""),
-                                      paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep="")),
+                            # expandPercentWidth = 10,
+                            # expandPercentHeight = 10,
+                            overlapShape = metis::mapGCAMBasins,
+                            extension = F,
+                            grids = metis::grid050,
                             folderName="metisExample")
+
+  # boundaryRegShape=metis::mapCountries
+  # boundaryRegCol="subRegion"
+  # boundaryRegionsSelect=countryName
+  # subRegShape=exampleSubRegion_chooseState
+  # subRegCol=subRegCol_i
+  # subRegType="state"
+  # nameAppend="_exampleSubset"
+  # expandPercentWidth = 10
+  # expandPercentHeight = 10
+  # overlapShape = metis::mapGCAMBasins
+  # extension = T
+  # grids = metis::grid050
+  # folderName="metisExample"
 
 #-----------
 # Grid to Poly
@@ -473,10 +492,9 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
                  gridDataTables=exampleGridTable_i,
                  xRange=c(2005,2010,2015,2020,2025,2030),
                  folderName="metisExample",
-                 boundaryRegShpFolder=paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep=""),
-                 boundaryRegShpFile=paste("ne_10m_admin_0_countries",sep=""),
-                 boundaryRegCol="NAME",
-                 boundaryRegionsSelect=countryName,
+                 boundaryRegShape = metis::mapCountries,
+                 boundaryRegCol="subRegion",
+                 boundaryRegionsSelect="Peru",
                  subRegShape=NULL,
                  subRegShpFolder=examplePolyFolder_i,
                  subRegShpFile=examplePolyFile_i,
@@ -503,11 +521,9 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
 
 # Read in Boundary Region
     # Read in the GCAM 32 regions shapefile which comes with metis.
-    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
-    boundaryRegShpFile_i <- paste("region32_0p5deg_regions",sep="")
-    boundaryRegShp_i = rgdal::readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    boundaryRegShp_i = metis::mapGCAMReg32
     head(boundaryRegShp_i@data)
-    boundaryRegCol_i = "region"
+    boundaryRegCol_i = "subRegion"
     metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
 
     # Choose GCAM region
@@ -533,11 +549,9 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
 
 # Read in subregion shapefile
     # Read in the  SubBasin GCAM Basins shapefile which comes with metis.
-    subRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
-    subRegShpFile_i <- paste("Global235_CLM_final_5arcmin_multipart",sep="")
-    subRegShp_i = rgdal::readOGR(dsn=subRegShpFolder_i,layer=subRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    subRegShp_i = metis::mapGCAMBasins
     head(subRegShp_i@data)
-    subRegCol_i = "basin_name"
+    subRegCol_i = "subRegion"
     metis.map(dataPolygon=subRegShp_i,fillColumn = subRegCol_i,labels=F ,printFig=F,facetsON=F)
 
 # Run metis.boundaries on the two shapefiles and selected region to get the cropped shapefile.
@@ -549,7 +563,8 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
       subRegCol=subRegCol_i,
       subRegType="GCAMBasin",
       nameAppend="",
-      expandPercent=2,
+      expandPercentWidth =2,
+      expandPercentHeight =2,
       #overlapShpFile="Global235_CLM_final_5arcmin_multipart",
       #overlapShpFolder=paste(getwd(),"/dataFiles/gis/metis/gcam",sep=""),
       extension = T,
@@ -580,6 +595,11 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
     # Make sure shapefile subRegions and PolygonTable subregions match
     unique(polyTable$subRegion); unique(subRegShp_i_Crop@data[[subRegCol_i]])
 
+    scenRefDiffIndv_i = list(param=list(c("waterConsumption")),
+                             scenRef=list(c("SSP2_Ref")),
+                             scenDiff=list(c("SSP2_GFDL_PDSSAT","SSP2_IPSL_PDSSAT")),
+                             scenIndv=list(c("SSP2_Ref","SSP2_GFDL_PDSSAT")))
+
     metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
                      xRange=c(2010,2020,2030,2040,2050),
@@ -593,7 +613,23 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
                      animateOn=T,
                      fps=1,
                      extension=F,
-                     diffOn = T)
+                     diffOn = T,
+                     scenRefDiffIndv=scenRefDiffIndv_i)
+
+    # polygonDataTables=examplePolygonTable_i
+    # #gridDataTables=exampleGridTable_i
+    # xRange=c(2010,2020,2030,2040,2050)
+    # folderName="metisExample_extended"
+    # boundaryRegionsSelect=boundaryRegionsSelect_i
+    # boundaryRegShape=boundaryRegShp_i
+    # subRegShape=subRegShp_i_Crop
+    # boundaryRegCol = boundaryRegCol_i
+    # subRegCol=subRegCol_i
+    # nameAppend=""
+    # animateOn=T
+    # fps=1
+    # extension=F
+    # diffOn = T
 
 # Improved map using available parameters.
     # Shift legend outside and change the scale_range to get conistent scale across scenarios.
@@ -609,13 +645,16 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
       "waterConsumption", 0, 60)
 
     # Select natural Earth country Map
-    boundaryRegShpFolder_i <- paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
-    boundaryRegShpFile_i <- paste("ne_10m_admin_0_countries",sep="")
-    boundaryRegShp_i = rgdal::readOGR(dsn=boundaryRegShpFolder_i,layer=boundaryRegShpFile_i,use_iconv=T,encoding='UTF-8')
+    boundaryRegShp_i = metis::mapCountries
     head(boundaryRegShp_i@data)
-    boundaryRegCol_i = "NAME"
+    boundaryRegCol_i = "subRegion"
     metis.map(dataPolygon=boundaryRegShp_i,fillColumn = boundaryRegCol_i,labels=F ,printFig=F,facetsON=F)
     boundaryRegionsSelect_i = c("China")
+
+    scenRefDiffIndv_i = list(param=list(c("waterConsumption")),
+                             scenRef=list(c("SSP2_Ref")),
+                             scenDiff=list(c("SSP2_GFDL_PDSSAT","SSP2_IPSL_PDSSAT")),
+                             scenIndv=list(c("SSP2_Ref","SSP2_GFDL_PDSSAT")))
 
     metis.mapsProcess(polygonDataTables=examplePolygonTable_i,
                      #gridDataTables=exampleGridTable_i,
@@ -628,12 +667,13 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
                      subRegCol=subRegCol_i,
                      nameAppend="_improvedFig",
                      legendPosition=c("LEFT","bottom"),
-                     animateOn=T,
+                     animateOn=F,
                      fps=1,
                      extension=T,
                      diffOn = T,
                      legendOutsideSingle = T,
-                     scaleRange = scaleRange_i)
+                     scaleRange = scaleRange_i,
+                     scenRefDiffIndv=scenRefDiffIndv_i)
 
 
 #----------------------------
@@ -718,8 +758,8 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
     } else { testChart = "Test chart: Failed"}; print(testChart)
 
     # Test: chartsProcess Check
-    if(file.exists(paste(getwd(),"/outputs/metisExample/charts/compareRegions/ArgentinaColombiaEg1/agProdByCrop_figBar_Eg1_compareRegions.png",sep="")) &
-       file.exists(paste(getwd(),"/outputs/metisExample/charts/compareRegions/ArgentinaColombiacompareScen/watConsumBySec_figBarDiff_compareScenRegion.png",sep=""))){
+    if(file.exists(paste(getwd(),"/outputs/metisExample/charts/compareRegions/ArgentinaColombiaEg1/energyFinalConsumBySecEJ_figBar_Eg1_compareRegions.png",sep="")) &
+       file.exists(paste(getwd(),"/outputs/metisExample/charts/compareRegions/ArgentinaColombiacompareScen/energyFinalConsumBySecEJ_figBar_compareScenRegion_xScenSelectYears.png",sep=""))){
       testChartsProcess = "Test chartsProcess: Passed"
     } else { testChartsProcess = "Test chartsProcess: Failed"}; print(testChartsProcess)
 
@@ -729,10 +769,9 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
     } else { testMap = "Test map: Failed"}; print(testMap)
 
     # Test: boundary Check
-    if(!is.null(exampleBoundaries)){
-    if(exampleBoundaries$subRegShape$admin[1]=="United States of America"){
+    if(file.exists(paste(getwd(),"/outputs/metisExample/Boundaries/Peru/Peru_example.png",sep=""))){
       testBoundary = "Test boundary: Passed"
-    }} else { testBoundary = "Test boundary: Failed"}; print(testBoundary)
+    } else { testBoundary = "Test boundary: Failed"}; print(testBoundary)
 
     # Test: grid2Poly Check
     if(!is.null(exampleGrid2poly)){
@@ -741,8 +780,7 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
     }} else { testGrid2Poly = "Test grid2Poly: Failed"}; print(testGrid2Poly)
 
     # Test: mapsProcess Check
-    if(file.exists(paste(getwd(),"/outputs/metisExample/Maps/subRegType/tethysWatWithdraw_indv/Eg1/byYear/map_metisExample_subRegType_tethysWatWithdraw_indv_2030_Eg1_exampleSubRegionMap_FREESCALE.png",sep="")) &
-       file.exists(paste(getwd(),"/outputs/metisExample/Maps/subRegType/tethysWatWithdraw_indv/Eg1/anim_metisExample_subRegType_tethysWatWithdraw_indv_Eg1_exampleSubRegionMap_FREESCALE.gif",sep=""))){
+    if(file.exists(paste(getwd(),"/outputs/metisExample/Maps/subRegType/population/popGWP/byYear/map_metisExample_subRegType_population_2005_popGWP_exampleSubRegionMap_KMEANS.png",sep=""))){
       testMapsProcess = "Test mapsProcess: Passed"
     } else { testMapsProcess = "Test mapsProcess: Failed"}; print(testMapsProcess)
 

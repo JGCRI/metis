@@ -41,7 +41,7 @@ metis.gridByPoly <- function(gridDataTables = NULL,
 
   print(paste("Starting metis.gridByPoly.R...",sep=""))
 
-  NULL->lat->lon->gridx->area -> areaRatio -> subRegAreaSum
+  NULL->lat->lon->gridx->area -> areaRatio -> subRegAreaSum->GridByPolyID->gridCellArea->maxAreaDuplicates
 
 
 #----------------
@@ -127,7 +127,23 @@ metis.gridByPoly <- function(gridDataTables = NULL,
 # Subset gridded data
 gridByPoly<-rcropPx@data%>%dplyr::select(lat,lon,colName,gridCellArea=area,subRegAreaSum,gridCellAreaRatio=areaRatio)%>%
   dplyr::left_join(gridx, by=c("lat","lon"))%>%
-  unique()
+  unique()%>%
+  tibble::rowid_to_column(var = "GridByPolyID")
+
+  nrowOrig = nrow(gridByPoly)
+# If multiple regions cut across same grid cells may get duplicate id's
+# In this case choose grid cell with larger area
+  gridByPoly <- gridByPoly%>%
+    dplyr::group_by(GridByPolyID)%>%
+    dplyr::mutate(maxAreaDuplicates=max(gridCellArea))%>%
+    dplyr::ungroup()%>%
+    dplyr::filter(gridCellArea==maxAreaDuplicates)%>%
+    dplyr::ungroup()%>%
+    dplyr::select(-maxAreaDuplicates)
+
+  if(nrow(gridByPoly)<nrowOrig){print("Multiple shapes overlapped same grid cell. Grid cell assigned to shape with most area in cell.")}
+ # Check for duplicates
+ #  gridByPoly%>%dplyr::filter(id %in% gridByPoly$id[duplicated(gridByPoly$id)])%>%arrange(id)
 
 # Save Data
 if(saveFile){

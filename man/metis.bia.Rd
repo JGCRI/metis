@@ -4,31 +4,23 @@
 \alias{metis.bia}
 \title{metis.bia}
 \usage{
-metis.bia(
-  biaInputsFolder = "NA",
-  biaInputsFiles = "NA",
-  reReadData = 1,
-  regionsSelect = NULL,
-  dataProj = "dataProj.proj",
-  dataProjPath = gcamdatabasePath,
-  scenOrigNames = NULL,
-  scenNewNames = NULL,
-  gcamdatabasePath = "NA",
-  gcamdatabaseName = "NA",
-  queryxml = "metisQueries.xml",
+metis.bia(biaInputsFolder = "NA", biaInputsFiles = "NA",
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), reReadData = 1,
+  regionsSelect = NULL, regionsSelectDiagnostic = NULL,
+  dataProj = "dataProj.proj", dataProjPath = NULL,
+  scenOrigNames = NULL, scenNewNames = NULL, gcamdatabasePath = "NA",
+  gcamdatabaseName = "NA", queryxml = "metisQueries.xml",
   queryPath = paste(getwd(), "/dataFiles/gcam", sep = ""),
-  queriesSelect = "All",
-  paramsSelect = c("elecByTech", "elecCapBySubsector"),
-  gridChoice = "grid_050",
-  diagnosticsON = T,
-  subsectorNAdistribute = "even",
-  nameAppend = ""
-)
+  queriesSelect = "All", paramsSelect = c("elecByTech",
+  "elecCapBySubsector"), gridChoice = "grid_050", diagnosticsON = F,
+  subsectorNAdistribute = "even", folderName = NULL, nameAppend = "")
 }
 \arguments{
 \item{biaInputsFolder}{Bia Inputs Folder Path}
 
 \item{biaInputsFiles}{Bia Inputs Folder Path}
+
+\item{dirOutputs}{Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.}
 
 \item{reReadData}{Default = 1. will read the GCAM data base and create a queryData.proj file
 in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
@@ -37,9 +29,11 @@ folder which may have been created from an old run.}
 
 \item{regionsSelect}{The regions to analyze in a vector. Example c('Colombia','Argentina')}
 
+\item{regionsSelectDiagnostic}{Default = NULL (sets to regionsSelect). Choose the regions to run diagnostics.}
+
 \item{dataProj}{Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.}
 
-\item{dataProjPath}{Folder that contains the dataProj or where it will be produced.}
+\item{dataProjPath}{Default = NULL. Folder that contains the dataProj or where it will be produced.}
 
 \item{scenOrigNames}{Original Scenarios names in GCAM database in a string vector.
 For example c('scenario1','scenario2).}
@@ -65,6 +59,8 @@ the same folder as specified by gcamdatabasePath}
 \item{diagnosticsON}{Default = T.}
 
 \item{subsectorNAdistribute}{Default = "even". Choose "even" for even distribution or "totalOther" to distribute based on sum of all other subsectors..}
+
+\item{folderName}{Default = NULL,}
 
 \item{nameAppend}{Default=""}
 }

@@ -4,9 +4,7 @@
 \name{grid025}
 \alias{grid025}
 \title{Empty global grid 0.25 degrees}
-\format{
-R tibble
-}
+\format{R tibble}
 \source{
 JGCRI
 }
