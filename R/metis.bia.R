@@ -379,6 +379,12 @@ metis.bia<- function(biaInputsFolder = "NA",
                                            unique(dataFromGCAM$class1)[grepl("chp",unique(dataFromGCAM$class1),ignore.case=T)][1],
                                            class1))}
 
+            if(length(unique(dataFromGCAM$class1)[grepl("refined liquids",unique(dataFromGCAM$class1),ignore.case=T)])==1){
+              gridWRI <- gridWRI %>%
+                dplyr::mutate(class1=dplyr::if_else(grepl("oil",class1,ignore.case=T),
+                                                    unique(dataFromGCAM$class1)[grepl("refined liquids",unique(dataFromGCAM$class1),ignore.case=T)][1],
+                                                    class1))}
+
             for(class1_i in c("coal","gas","oil","biomass","nuclear","geothermal","hydrogen","hydro","wind","solar")){
             if(length(unique(dataFromGCAM$class1)[grepl(class1_i,unique(dataFromGCAM$class1),ignore.case=T)])==1){
               gridWRI <- gridWRI %>%
@@ -742,6 +748,13 @@ metis.bia<- function(biaInputsFolder = "NA",
            dplyr::mutate(class1=dplyr::if_else(grepl("cogen",class1,ignore.case=T),
                                         unique(dataFromGCAM$class1)[grepl("chp",unique(dataFromGCAM$class1),ignore.case=T)],
                                         class1))}
+
+       # Rename to GCAM class names
+       if(length(unique(dataFromGCAM$class1)[grepl("refined liquids",unique(dataFromGCAM$class1),ignore.case=T)])==1){
+         gWRI <- gWRI %>%
+           dplyr::mutate(class1=dplyr::if_else(grepl("oil",class1,ignore.case=T),
+                                               unique(dataFromGCAM$class1)[grepl("refined liquids",unique(dataFromGCAM$class1),ignore.case=T)],
+                                               class1))}
 
        for(class1_i in c("coal","gas","oil","biomass","nuclear","geothermal","hydro","wind","solar")){
          if(length(unique(dataFromGCAM$class1)[grepl(class1_i,unique(dataFromGCAM$class1),ignore.case=T)])==1){
