@@ -4,15 +4,8 @@
 \alias{metis.printPdfPng}
 \title{metis.printPdfPng}
 \usage{
-metis.printPdfPng(
-  figure = NULL,
-  dir = getwd(),
-  filename = "plot",
-  figWidth = 13,
-  figHeight = 9,
-  pdfpng = "png",
-  transparent = F
-)
+metis.printPdfPng(figure = NULL, dir = getwd(), filename = "plot",
+  figWidth = 13, figHeight = 9, pdfpng = "png", transparent = F)
 }
 \arguments{
 \item{figure}{Default=NULL. Figure to be printed}

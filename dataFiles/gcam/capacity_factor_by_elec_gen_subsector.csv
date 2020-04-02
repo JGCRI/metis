@@ -1,14 +1,18 @@
-"% Modified from: A23.globaltech_capacity_factor.csv  , located at .\input\gcamdata\inst\extdata\energy\A23.globaltech_capacity_factor.csv",
-% Values calculated from an average of the capacity factors of the technologies within each subsector,
-"% Exceptions: (1) For ""m Solar"" capacity factor the CSP_storage capacity factor value of 0.65 was excluded from the average. (2) The ""k Hydro"" capacity factor was sourced from Global CCS Institute ""Renewable power generation costs in 2012: an overview"" - 5.2 Capacity factors for hydropower, since hydropower is calculated endogenously within GCAM. (3) No cogeneration capacity factor ""n CHP"" was given. ",
+"# Modified from: A23.globaltech_capacity_factor.csv  , located at .\input\gcamdata\inst\extdata\energy\A23.globaltech_capacity_factor.csv",
+"# Modified from: A23.globaltech_capacity_factor.csv  , located at .\input\gcamdata\inst\extdata\gcam-usa\NREL_us_re_capacity_factors.csv",
+# Hydrogen fuel cells from: https://www.eia.gov/todayinenergy/detail.php?id=35872 and https://www.nrel.gov/analysis/tech-cap-factor.html,
+# Values calculated from an average of the capacity factors of the technologies within each subsector,
+"# Exceptions: (1) For ""solar"" capacity factor the CSP_storage capacity factor value of 0.65 was excluded from the average. (2) The ""hydro"" capacity factor was sourced from Global CCS Institute ""Renewable power generation costs in 2012: an overview"" - 5.2 Capacity factors for hydropower, since hydropower is calculated endogenously within GCAM. (3) No cogeneration capacity factor ""n CHP"" was given. (4) rooftop_pv was assumed the same as solar average (5) grid_storage assumed to have a high cap factor equal to that of nuclear",
 class1,cf1971to2100
-a Coal,0.8125
-c Gas,0.816666667
-e Oil,0.816666667
-g Biomass,0.825
-i Nuclear,0.9
-j Geothermal,0.9
-k Hydro,0.5
-l Wind,0.37
-m Solar,0.216666667
-n CHP,
+coal,0.8125
+gas,0.816666667
+oil,0.816666667
+biomass,0.825
+nuclear,0.9
+geothermal,0.9
+hydro,0.5
+wind,0.37
+solar,0.216666667
+rooftop_pv,0.216667
+hydrogen,0.8
+grid_storage,0.9

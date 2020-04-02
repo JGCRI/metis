@@ -144,7 +144,7 @@ metis.boundaries<- function(boundaryRegShape=NULL,
 
 NULL->bbox1->bbox1OV->extendedSubReg->extendedSubRegOV->shape->boundaryHighlight->boundaryHighlightOV->boundaryHighlightOVNoLabel->
   regionHL->subRegHighlight->subRegionHL->extendedShape->underLayer->underLayerOV->underLayerOVNoLabel->subRegHighlightLabels->
-  add_grid_name->fillPaletteOrig->lat->lon
+  add_grid_name->fillPaletteOrig->lat->lon->gridx
 
 tmap::tmap_options(max.categories=1000)
 
@@ -240,7 +240,9 @@ if(!is.null(boundaryRegShape)){
   if(!is.null(boundaryRegCol) & !is.null(boundaryRegionsSelect)){
     if(!boundaryRegCol %in% names(boundaryRegShape@data)){
       print(paste("boundaryRegCol provided: ",boundaryRegCol," is not a column in boundaryRegShape.",sep=""))
-      print(paste(names(boundaryRegShape@data),sep=""))}else{
+      print(paste(names(boundaryRegShape@data),sep=""))
+      print(paste("boundaryRegCol provided: ",boundaryRegCol," is not a column in boundaryRegShape.",sep=""))
+      }else{
     if(!boundaryRegionsSelect %in% unique(boundaryRegShape@data[[boundaryRegCol]])){
           print(paste("boundaryRegionsSelect provided: ",boundaryRegionsSelect," is not a region in boundaryRegShape.",sep=""))
           print(paste(unique(boundaryRegShape@data[[boundaryRegCol]]),sep=""))}else{
@@ -635,7 +637,13 @@ if(!is.null(overlapShape)){
 
 # Grid Overlay
 
+countGrids=0;
 for(grid_i in grids){
+  if(countGrids==0){
+if(class(grids) %in% c("tbl_df","tbl","data.frame")){
+ gridx=grids
+ countGrids=1
+}else{
   if(!is.null(grid_i)){
     if(all(!class(grid_i) %in% c("tbl_df","tbl","data.frame"))){
       if(any(grepl(".csv",paste(grid_i)))){
@@ -645,7 +653,7 @@ for(grid_i in grids){
           gridx<-gridx%>%unique()}}}}else{
             print(paste("Grid file ",grid_i," does not exist. Skipping Grid Overlay",sep=""))
             gridx=NULL
-          }
+          }}
 
 if(!is.null(gridx)){
   names(gridx)=gsub("latitude","lat",names(gridx))
@@ -700,7 +708,7 @@ print(paste("Subregional grid data files written to: ",grid_fname, sep = ""))
 
 }
 
-}
+}}
 }
 
 if(!is.null(subRegShape) & !is.null(boundaryRegShape)){

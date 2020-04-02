@@ -4,12 +4,22 @@
 #'
 #' List of Assumptions
 #' \itemize{
-#' \item convEJ2TWh
-#' \item convEJ2GW
-#' \item conv1975USDperGJ22017USDperMWh
-#' \item conv1975USDperGJ22017USDperMBTU
-#' \item convertGgTgMTC
-#' \item GWPType}
+#' \item GCAMbaseYear,
+#' \item convEJ2MTOE,
+#' \item convEJ2TWh,
+#' \item convEJ2GW,
+#' \item convEJ2GWh,
+#' \item convGW_kW,
+#' \item convUSD_1975_2010,
+#' \item conv_C_CO2,
+#' \item conv_MT_GT,
+#' \item hydro_cap_fact,
+#' \item hydro_cost_GW,
+#' \item conv1975USDperGJ22017USDperMWh,
+#' \item conv1975USDperGJ22017USDperMBTU,
+#' \item convertGgTgMTC,
+#' \item GWP,
+#' \item US52=US52}
 #' @keywords assumptions
 #' @return A list of assumptions
 #' @export
@@ -91,6 +101,14 @@ metis.assumptions <- function() {
   hydro_cost_GW <- 1.5
 
 
+  # GCAM USA
+  US52 <- c("AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA",
+            "HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME",
+            "MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM",
+            "NV","NY","OH","OK","OR","PA","PR","RI","SC","SD","TN",
+            "TX","UT","VA","VT","WA","WI","WV","WY")
+
+
   return(list(
          GCAMbaseYear=GCAMbaseYear,
          convEJ2MTOE=convEJ2MTOE,
@@ -106,5 +124,6 @@ metis.assumptions <- function() {
          conv1975USDperGJ22017USDperMWh=conv1975USDperGJ22017USDperMWh,
          conv1975USDperGJ22017USDperMBTU=conv1975USDperGJ22017USDperMBTU,
          convertGgTgMTC=convertGgTgMTC,
-         GWP=GWP))
+         GWP=GWP,
+         US52=US52))
 }

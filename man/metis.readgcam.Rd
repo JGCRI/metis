@@ -4,22 +4,14 @@
 \alias{metis.readgcam}
 \title{metis.readgcam}
 \usage{
-metis.readgcam(
-  gcamdatabasePath = NULL,
-  gcamdatabaseName = NULL,
-  queryxml = "metisQueries.xml",
-  queryPath = paste(getwd(), "/dataFiles/gcam", sep = ""),
-  scenOrigNames = NULL,
-  scenNewNames = NULL,
-  reReadData = T,
-  dataProj = "dataProj.proj",
+metis.readgcam(gcamdatabasePath = NULL, gcamdatabaseName = NULL,
+  queryxml = "metisQueries.xml", queryPath = paste(getwd(),
+  "/dataFiles/gcam", sep = ""), scenOrigNames = NULL,
+  scenNewNames = NULL, reReadData = T, dataProj = "dataProj.proj",
   dataProjPath = paste(getwd(), "/outputs", sep = ""),
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  regionsSelect = NULL,
-  queriesSelect = "All",
-  paramsSelect = "All",
-  folderName = NULL
-)
+  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All",
+  folderName = NULL, nameAppend = "")
 }
 \arguments{
 \item{gcamdatabasePath}{Path to gcam database folder}
@@ -72,7 +64,6 @@ water
 energy
 \itemize{
 \item "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS"
-\item "Electricity generation by aggregate technology ORDERED SUBSECTORS"
 \item "Final energy by detailed end-use sector and fuel"
 \item "total final energy by aggregate sector"
 \item "refined liquids production by subsector"
@@ -80,8 +71,12 @@ energy
 \item "industry final energy by fuel"
 \item "building final energy by subsector"
 \item "transport final energy by fuel"
-\item "transport final energy by mode and fuel"
-\item "elec gen by gen tech and cooling tech and vintage"
+\item "transport final energy by mode and fuel"}
+electricity
+\itemize{
+\item "elec gen by gen tech USA"
+\item "elec gen by gen tech cogen USA"
+\item "elec gen by gen tech and cooling tech"
 \item "Electricity generation by aggregate technology"}
 land
 \itemize{
@@ -142,6 +137,8 @@ c(# Energy
 tibble with gcam data formatted for metis charts.}
 
 \item{folderName}{Default = NULL}
+
+\item{nameAppend}{Default="". Name to append to saved files.}
 }
 \description{
 This function connects to a gcamdatabase and uses a query file to

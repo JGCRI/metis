@@ -15,12 +15,22 @@ This function loads holds the different assumptions used throughout the metis pa
 \details{
 List of Assumptions
 \itemize{
-\item convEJ2TWh
-\item convEJ2GW
-\item conv1975USDperGJ22017USDperMWh
-\item conv1975USDperGJ22017USDperMBTU
-\item convertGgTgMTC
-\item GWPType}
+\item GCAMbaseYear,
+\item convEJ2MTOE,
+\item convEJ2TWh,
+\item convEJ2GW,
+\item convEJ2GWh,
+\item convGW_kW,
+\item convUSD_1975_2010,
+\item conv_C_CO2,
+\item conv_MT_GT,
+\item hydro_cap_fact,
+\item hydro_cost_GW,
+\item conv1975USDperGJ22017USDperMWh,
+\item conv1975USDperGJ22017USDperMBTU,
+\item convertGgTgMTC,
+\item GWP,
+\item US52=US52}
 }
 \examples{
 library(metis)

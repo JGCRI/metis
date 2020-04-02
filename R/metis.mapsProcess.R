@@ -577,6 +577,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
         print(paste("Boundary Shape not subset. Skipping Extension.",sep=""))
         underLayer=NULL}
     }
+  }else{
+    innerMargins=c(0.1,0.1,0.1,0.1)
   }
 
 

@@ -4,6 +4,7 @@
 #' out results into a table ready for plotting.
 #' @param dirOutputs Full path to directory for outputs
 #' @param folderName Default = NULL
+#' @param nameAppend  Default="". Name to append to saved files.
 #' @param gcamdatabasePath Path to gcam database folder
 #' @param gcamdatabaseName Name of gcam database
 #' @param queryxml Name of the query.xml file. By default it is "metisQueries.xml"
@@ -43,7 +44,6 @@
 #' energy
 #' \itemize{
 #' \item "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS"
-#' \item "Electricity generation by aggregate technology ORDERED SUBSECTORS"
 #' \item "Final energy by detailed end-use sector and fuel"
 #' \item "total final energy by aggregate sector"
 #' \item "refined liquids production by subsector"
@@ -51,8 +51,12 @@
 #' \item "industry final energy by fuel"
 #' \item "building final energy by subsector"
 #' \item "transport final energy by fuel"
-#' \item "transport final energy by mode and fuel"
-#' \item "elec gen by gen tech and cooling tech and vintage"
+#' \item "transport final energy by mode and fuel"}
+#' electricity
+#' \itemize{
+#' \item "elec gen by gen tech USA"
+#' \item "elec gen by gen tech cogen USA"
+#' \item "elec gen by gen tech and cooling tech"
 #' \item "Electricity generation by aggregate technology"}
 #' land
 #' \itemize{
@@ -128,7 +132,8 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                            regionsSelect = NULL,
                            queriesSelect="All",
                            paramsSelect="All",
-                           folderName=NULL
+                           folderName=NULL,
+                           nameAppend=""
 ){
 
 
@@ -158,7 +163,8 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     totalFFINonCO2 -> FracBioFuel -> FracFossilFuel -> TotalLiquids -> agg_tech->
     class_temp -> resource -> subRegAreaSum -> subsector->tblFinalNrgIntlAvShipMod -> 'transportation' ->
     'International Aviation' -> 'International Ship' -> 'International Aviation oil' -> 'a oil' ->
-    'International Ship oil' -> 'International Aviation liquids' -> liquids -> 'International Ship liquids'->crop
+    'International Ship oil' -> 'International Aviation liquids' -> liquids -> 'International Ship liquids'->crop->
+    paramsSelectAll -> dataTemplate->tblFinalNrgIntlAvShip->datax
 
 
 #---------------------
@@ -171,7 +177,6 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                               "water consumption by sector",
                               "biophysical water demand by crop type and land region"),
                     'energy'=c("primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS",
-                               "Electricity generation by aggregate technology ORDERED SUBSECTORS",
                                "Final energy by detailed end-use sector and fuel",
                                "total final energy by aggregate sector",
                                "refined liquids production by subsector",
@@ -179,9 +184,11 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                                "industry final energy by fuel",
                                "building final energy by subsector",
                                "transport final energy by fuel",
-                               "transport final energy by mode and fuel",
-                               "elec gen by gen tech and cooling tech and vintage",
-                               "Electricity generation by aggregate technology"),
+                               "transport final energy by mode and fuel"),
+                    'electricity'=c("elec gen by gen tech USA",
+                                    "elec gen by gen tech cogen USA",
+                                    "elec gen by gen tech and cooling tech",
+                                    "Electricity generation by aggregate technology"),
                     'land'=c("land allocation by crop and water source",
                              "aggregated land allocation",
                              "land allocation by crop"),
@@ -291,9 +298,9 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
 
     for (scenario_i in scenOrigNames) {
-      dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = dataProj,
-                                          scenario = scenario_i, queryFile = paste(queryPath, "/subSetQueries.xml", sep = ""))  # Check your queries file
-    }
+       dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = dataProj,
+                                           scenario = scenario_i, queryFile = paste(queryPath, "/subSetQueries.xml", sep = ""))  # Check your queries file
+      }
 
     file.copy(from = paste(getwd(), "/", dataProj, sep = ""), to = dataProjPath, overwrite = T,
               copy.mode = TRUE)
@@ -323,47 +330,50 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                                                   print(paste("Running remaining queriesSelect: ",  paste(queriesSelectx[(queriesSelectx %in% queries)],collapse=", "), sep=""))}
                                                 queriesx <- queriesSelectx}}
 
+  paramsSelectAll <- c(# Energy
+    "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
+    "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
+    "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
+    "energyFinalConsumByIntlShpAvEJ",
+    "energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
+    "energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
+    "energyFinalSubsecByFuelBuildMTOE", "energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecBySectorBuildMTOE",
+    "energyFinalConsumByIntlShpAvMTOE",
+    "energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
+    "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
+    "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
+    "energyFinalConsumByIntlShpAvTWh","energyFinalConsumBySecNOIntlShpAvTWh",
+    # Electricity
+    "elecByTechTWh","elecByTechTWh1","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
+    "elecNewCapCost","elecNewCapGW","elecAnnualRetPrematureCost","elecAnnualRetPrematureGW",
+    "elecCumCapCost","elecCumCapGW","elecCumRetPrematureCost","elecCumRetPrematureGW",
+    # Transport
+    "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
+    # Water
+    "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
+    # Socio-economics
+    "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
+    # Agriculture
+    "agProdbyIrrRfd","agProdBiomass", "agProdForest", "agProdByCrop",
+    #Livestock
+    "livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral","livestock_MeatDairybyTechImports", "livestock_MeatDairybySubsector",
+    # Land use
+    "landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",
+    # Emissions
+    "emissNonCO2BySectorGWPAR5","emissNonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
+    "emissLUC", "emissCO2BySectorNoBio",
+    "emissNonCO2ByResProdGWPAR5", "emissMethaneBySourceGWPAR5",
+    "emissByGasGWPAR5FFI", "emissByGasGWPAR5LUC", "emissBySectorGWPAR5FFI","emissBySectorGWPAR5LUC",
+    "emissNonCO2ByResProdGTPAR5", "emissMethaneBySourceGTPAR5",
+    "emissByGasGTPAR5FFI", "emissByGasGTPAR5LUC","emissBySectorGTPAR5FFI","emissBySectorGTPAR5LUC")
+
 
   if(any(grepl("all",paramsSelect,ignore.case=T))){
-
-    paramsSelectx=c(# Energy
-                    "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
-                    "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
-                    "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
-                    "energyFinalConsumByIntlShpAvEJ",
-                    "energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
-                    "energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
-                    "energyFinalSubsecByFuelBuildMTOE", "energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecBySectorBuildMTOE",
-                    "energyFinalConsumByIntlShpAvMTOE",
-                    "energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
-                    "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
-                    "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
-                    "energyFinalConsumByIntlShpAvTWh","energyFinalConsumBySecNOIntlShpAvTWh",
-                    # Electricity
-                    "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
-                    "elecNewCapCost","elecNewCapGW","elecAnnualRetPrematureCost","elecAnnualRetPrematureGW",
-                    "elecCumCapCost","elecCumCapGW","elecCumRetPrematureCost","elecCumRetPrematureGW",
-                    # Transport
-                    "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
-                    # Water
-                    "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
-                    # Socio-economics
-                    "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
-                    # Agriculture
-                    "agProdbyIrrRfd","agProdBiomass", "agProdForest", "agProdByCrop",
-                    #Livestock
-                    "livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral","livestock_MeatDairybyTechImports", "livestock_MeatDairybySubsector",
-                    # Land use
-                    "landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",
-                    # Emissions
-                    "emissNonCO2BySectorGWPAR5","emissNonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
-                    "emissLUC", "emissCO2BySectorNoBio",
-                    "emissNonCO2ByResProdGWPAR5", "emissMethaneBySourceGWPAR5",
-                    "emissByGasGWPAR5FFI", "emissByGasGWPAR5LUC", "emissBySectorGWPAR5FFI","emissBySectorGWPAR5LUC",
-                    "emissNonCO2ByResProdGTPAR5", "emissMethaneBySourceGTPAR5",
-                    "emissByGasGTPAR5FFI", "emissByGasGTPAR5LUC","emissBySectorGTPAR5FFI","emissBySectorGTPAR5LUC")
+    paramsSelectx <- paramsSelectAll
   }else{paramsSelectx=paramsSelect}
 
+  # Check if any of the selected parameters are available in the GCAM data
+  if(any(paramsSelectx %in% paramsSelectAll)){
 
   datax <- tibble::tibble()
 
@@ -941,20 +951,25 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
 
   paramx <- "elecByTechTWh"
   if(paramx %in% paramsSelectx){
-    # Electricity generation by aggregate technology
-    queryx <- "Electricity generation by aggregate technology ORDERED SUBSECTORS"
+    tblUSA<-tibble::tibble()
+    tblUSACogen<-tibble::tibble()
+    tblGCAMReg<-tibble::tibble()
+
+    #-------------
+    # For GCAM USA no cogen
+    #-------------
+    queryx <- "elec gen by gen tech USA"
     if (queryx %in% queriesx) {
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if (!is.null(regionsSelect)) {
-        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+        tbl <- tbl %>%
+          dplyr::filter(region %in% regionsSelect) %>%
+          dplyr::filter(region %in% metis.assumptions()$US52)%>%
+          dplyr::filter(!sector %in% "industrial energy use")
       }
-      tbl <- tbl %>%
+      tblUSA <- tbl %>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "elecByTechTWh",
-                      technology=gsub("biomass","bioenergy",technology),
-                      technology=gsub("b\\sbiomass","b bioenergy",technology),
-                      technology=gsub("g\\sBiomass","g Bioenergy",technology),
-                      technology=gsub("h\\sBiomass\\sw\\/CCS","h Bioenergy w/CCS",technology),
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
@@ -968,35 +983,135 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       x = year,
                       xLabel = "Year",
                       aggregate = "sum",
-                      class1 = technology,
+                      class1 = subsector,
                       classLabel1 = "Fuel",
                       classPalette1 = "pal_metis",
-                      class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2")%>%
+                      class2 = paste(technology,sector,sep=" "),
+                      classLabel2 = "Technology",
+                      classPalette2 = "pal_metis")
+    }else {
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }
+    #-------------
+    # For GCAM USA cogen
+    #-------------
+    queryx <- "elec gen by gen tech cogen USA"
+    if (queryx %in% queriesx) {
+      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if (!is.null(regionsSelect)) {
+        tbl <- tbl %>%
+          dplyr::filter(region %in% regionsSelect) %>%
+          dplyr::filter(region %in% metis.assumptions()$US52)
+      }
+      tblUSACogen <- tbl %>%
+        dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::mutate(param = "elecByTechTWh",
+                      sources = "Sources",
+                      origScen = scenario,
+                      origQuery = queryx,
+                      origValue = value,
+                      origUnits = Units,
+                      origX = year,
+                      scenario = scenNewNames,
+                      value = value * metis.assumptions()$convEJ2TWh,
+                      units = "Electricity Generation by Fuel (TWh)",
+                      vintage = paste("Vint_", year, sep = ""),
+                      x = year,
+                      xLabel = "Year",
+                      aggregate = "sum",
+                      class1 = subsector,
+                      classLabel1 = "Fuel",
+                      classPalette1 = "pal_metis",
+                      class2 = technology,
+                      classLabel2 = "Technology",
+                      classPalette2 = "pal_metis")
+    }else {
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }
+      #--------------------
+      # GCAM other Regions
+      #------------------------
+      queryx <- "elec gen by gen tech and cooling tech"
+      if (queryx %in% queriesx) {
+        tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+        if (!is.null(regionsSelect)) {
+          tbl <- tbl %>%
+            dplyr::filter(region %in% regionsSelect) %>%
+            dplyr::filter(!region %in% metis.assumptions()$US52)
+        }
+        tblGCAMReg <- tbl %>%
+          dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+          dplyr::mutate(param = "elecByTechTWh",
+                        sources = "Sources",
+                        origScen = scenario,
+                        origQuery = queryx,
+                        origValue = value,
+                        origUnits = Units,
+                        origX = year,
+                        scenario = scenNewNames,
+                        value = value * metis.assumptions()$convEJ2TWh,
+                        units = "Electricity Generation by Fuel (TWh)",
+                        vintage = paste("Vint_", year, sep = ""),
+                        x = year,
+                        xLabel = "Year",
+                        aggregate = "sum",
+                        class1 = subsector,
+                        classLabel1 = "Fuel",
+                        classPalette1 = "pal_metis",
+                        class2 = technology,
+                        classLabel2 = "Technology",
+                        classPalette2 = "pal_metis")
+      }else {
+        if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+      }
+
+      # Combine USA with others
+      commonNames = names(tblUSA)[names(tblUSA) %in% names(tblGCAMReg)];
+      commonNames = commonNames[commonNames %in% names(tblUSACogen)];commonNames
+      tbl <- tblUSA %>%
+        dplyr::select(commonNames) %>%
+        dplyr::bind_rows(tblUSACogen %>%
+                           dplyr::select(commonNames)) %>%
+        dplyr::bind_rows(tblGCAMReg %>%
+                           dplyr::select(commonNames))
+      tbl <- tblGCAMReg
+      if(nrow(tblUSA)>0){
+        tbl <- tbl %>%
+          dplyr::select(commonNames) %>%
+          dplyr::bind_rows(tblUSA %>%
+                             dplyr::select(commonNames))
+      }
+      if(nrow(tblUSACogen)>0){
+        tbl <- tbl %>%
+          dplyr::select(commonNames) %>%
+          dplyr::bind_rows(tblUSACogen %>%
+                             dplyr::select(commonNames))
+      }
+      if(nrow(tbl)>0){
+      tbl <- tbl %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX) %>%
+       dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
+        dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
-      tblelecByTechTWh<-tbl
-    } else {
-      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
-    }}
+      tblelecByTechTWh<-tbl}
+    }
 
+
+  # Capacity Calculation based on exogenous cap factors
   if(!is.null(tblelecByTechTWh)){
   if(file.exists(paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""))){
-    capfactors <- data.table::fread(file=paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""),skip=3,encoding="Latin-1")
+    capfactors <- data.table::fread(file=paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""),skip=5,encoding="Latin-1")
+    capfactors
     paramx <- "elecCapByFuel"
     if(paramx %in% paramsSelectx){
-      # Electricity Capacity by Subsector
-      queryx <- "Electricity generation by aggregate technology ORDERED SUBSECTORS"
-      if (queryx %in% queriesx) {
         tbl <- tblelecByTechTWh  # Tibble
-        rm(tblelecByTechTWh)
+        #rm(tblelecByTechTWh)
         if (!is.null(regionsSelect)) {
           tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
         }
@@ -1004,7 +1119,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
           dplyr::full_join(capfactors, by="class1")%>%
           dplyr::mutate(param = "elecCapByFuel",
                         gcamCapacityFactor=cf1971to2100,
-                        value = value*metis.assumptions()$convEJ2GW/metis.assumptions()$convEJ2TWh/gcamCapacityFactor,
+                        value = value*1000/(8760*gcamCapacityFactor),
                         origValue = value,
                         units = "Electricity Capacity by Fuel (GW)",
                         origUnits = units) %>%
@@ -1014,12 +1129,10 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         origScen, origQuery, origValue, origUnits, origX)
 
         datax <- dplyr::bind_rows(datax, tbl)
-      } else {
-        if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
-      }}
+      }
   } else {print(paste("Electricity capacity factor file capacity_factor_by_elec_gen_subsector.csv not found. Skipping param elecCapByFuel."))}
   } else {
-  if("Electricity generation by aggregate technology ORDERED SUBSECTORS" %in% queriesSelectx){
+  if("elec gen by gen tech and cooling tech" %in% queriesSelectx){
     print(paste("elecByTechTWh did not run so skipping param elecCapByFuel."))}
   }
 
@@ -1111,7 +1224,8 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origScen, origQuery, origValue, origUnits, origX)%>%
         dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
-                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+                        origScen, origQuery, origUnits, origX)%>%
+        dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
 
       # newCap_GW
@@ -4455,6 +4569,10 @@ paramx <- "emissBySectorGWPAR5FFI"
       if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
+  } # Close datax assignments
+
+
+  if(nrow(datax)>0){
 
   datax<-datax%>%unique()
 
@@ -4476,8 +4594,6 @@ paramx <- "emissBySectorGWPAR5FFI"
   datax<-datax%>%unique()
 
   # metis.chart(tbl,xData="x",yData="value",useNewLabels = 0)
-
-  }
 
   # Check
   # unique(datax$param)%>%sort();unique(datax$scenario)%>%sort()
@@ -4503,69 +4619,166 @@ paramx <- "emissBySectorGWPAR5FFI"
   # Save Data in CSV
   #---------------------
 
+  if(!all(regionsSelect %in% unique(datax$region))){
+    print(paste("Regions not available in data: ", paste(regionsSelect[!(regionsSelect %in% unique(datax$region))],collapse=", "), sep=""))
+    print(paste("Running remaining regions: ",  paste(regionsSelect[(regionsSelect %in% unique(datax$region))],collapse=", "), sep=""))
+  }
+
+
   if (!dir.exists(paste(getwd(),"/dataFiles", sep = ""))){
     dir.create(paste(getwd(),"/dataFiles", sep = ""))}  # dataFiles directory (should already exist)
   if (!dir.exists(paste(getwd(),"/dataFiles/mapping", sep = ""))){
     dir.create(paste(getwd(),"/dataFiles/mapping", sep = ""))}  # mapping directory
 
+  # Template Maps
   if (file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
     fullTemplateMapExisting <- data.table::fread(file=paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""),encoding="Latin-1")
     fullTemplateMap <- fullTemplateMap %>% dplyr::bind_rows(fullTemplateMapExisting) %>% unique()
   }
 
+    utils::write.csv(fullTemplateMap, file = paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""),row.names = F)
 
-  utils::write.csv(fullTemplateMap, file = paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""),
-                   row.names = F)
-
-  if (is.null(regionsSelect) | regionsSelectAll==T) {
+    # All Data
     utils::write.csv(datax, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
-                                         "to", max(range(datax$x)), ".csv", sep = ""), row.names = F)
-    print(paste("GCAM data table saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions.csv", sep = "")))
+                                         "to", max(range(datax$x)),nameAppend, ".csv", sep = ""), row.names = F)
+    print(paste("GCAM data table saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions",nameAppend,".csv", sep = "")))
+    utils::write.csv(dataTemplate, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions",
+                                                nameAppend,".csv", sep = ""),row.names = F)
+    print(paste("GCAM data template saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions",nameAppend,".csv", sep = "")))
 
-    utils::write.csv(dataTemplate, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = ""),
+    # Aggregate across Class 1
+    dataxAggsums<-datax%>%
+      dplyr::filter(aggregate=="sum")%>%
+      dplyr::select(-c(class1,classLabel1,classPalette1))%>%
+      dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
+      dplyr::summarize_at(c("value"),list(~sum(.,na.rm = T)))
+    dataxAggmeans<-datax%>%
+      dplyr::filter(aggregate=="mean")%>%
+      dplyr::select(-c(class1,classLabel1,classPalette1))%>%
+      dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
+      dplyr::summarize_at(c("value"),list(~mean(.,na.rm = T)))
+    dataxAggClass<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
+
+    utils::write.csv(dataxAggClass,
+                     file = gsub("//","/",paste(dirOutputs, "/", folderName,
+                                                "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggClass1",
+                                                nameAppend,".csv", sep = "")),row.names = F)
+
+    print(paste("GCAM data with aggregated to class 1 saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
+                              "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggClass1",
+                              nameAppend,".csv", sep = "")),sep=""))
+
+    dataTemplateAggClass <- dataxAggClass %>%
+      dplyr::mutate(scenario = "Local Data", value = 0, sources="Sources", x=2010) %>%
+      dplyr::select(scenario, region, sources, param, units, class1,x, value) %>%
+      unique()
+
+    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggClass1",nameAppend,".csv", sep = ""),
                      row.names = F)
-    print(paste("GCAM data template saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions.csv", sep = "")))
+    print(paste("GCAM data template aggregated to class 1 saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggClass1",nameAppend,".csv", sep = "")))
 
-  } else {
 
-    if(!all(regionsSelect %in% unique(datax$region))){
-      print(paste("Regions not available in data: ", paste(regionsSelect[!(regionsSelect %in% unique(datax$region))],collapse=", "), sep=""))
-      print(paste("Running remaining regions: ",  paste(regionsSelect[(regionsSelect %in% unique(datax$region))],collapse=", "), sep=""))
-    }
+    # Aggregate across Class 1
+    dataxAggsums<-datax%>%
+      dplyr::filter(aggregate=="sum")%>%
+      dplyr::select(-c(class2,classLabel2,classPalette2))%>%
+      dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
+      dplyr::summarize_at(c("value"),list(~sum(.,na.rm = T)))
+    dataxAggmeans<-datax%>%
+      dplyr::filter(aggregate=="mean")%>%
+      dplyr::select(-c(class2,classLabel2,classPalette2))%>%
+      dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
+      dplyr::summarize_at(c("value"),list(~mean(.,na.rm = T)))
+    dataxAggClass<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
 
-    for (region_i in regionsSelect[(regionsSelect %in% unique(datax$region))]) {
+    utils::write.csv(dataxAggClass,
+                     file = gsub("//","/",paste(dirOutputs, "/", folderName,
+                                                "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggClass2",
+                                                nameAppend,".csv", sep = "")),row.names = F)
 
-      print(paste("Saving data table for region: ",region_i,"...", sep = ""))
-      utils::write.csv(datax %>% dplyr::filter(region == region_i),
-                       file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,".csv", sep = ""),row.names = F)
+    print(paste("GCAM data with aggregated to class 2 saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
+                                                                                   "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggClass2",
+                                                                                   nameAppend,".csv", sep = "")),sep=""))
 
-      # Aggregate across classes
-      dataxAggsums<-datax%>%
-        dplyr::filter(aggregate=="sum")%>%
-        dplyr::select(-tidyselect::contains("class"))%>%
-        dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
-        dplyr::summarize_at(c("value"),list(~sum(.,na.rm = T)))
-      dataxAggmeans<-datax%>%
-        dplyr::filter(aggregate=="mean")%>%
-        dplyr::select(-tidyselect::contains("class"))%>%
-        dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
-        dplyr::summarize_at(c("value"),list(~mean(.,na.rm = T)))
-      dataxAgg<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
+    dataTemplateAggClass <- dataxAggClass %>%
+      dplyr::mutate(scenario = "Local Data", value = 0, sources="Sources", x=2010) %>%
+      dplyr::select(scenario, region, sources, param, units, class2,x, value) %>%
+      unique()
 
-      utils::write.csv(dataxAgg %>% dplyr::filter(region == region_i),
-                       file = gsub("//","/",paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_",
-                                    region_i,"_aggClass.csv", sep = "")),row.names = F)
+    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggClass2",nameAppend,".csv", sep = ""),
+                     row.names = F)
+    print(paste("GCAM data template aggregated to class 2 saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggClass2",nameAppend,".csv", sep = "")))
 
-      utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
-                       file = gsub("//","/",paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_",
-                                         region_i,".csv", sep = "")),row.names = F)
-      #utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
-      #                 file = paste(dirOutputs, "/", folderName, "/Tables/Tables_Local/local_Regional_",region_i,".csv", sep = ""),row.names = F)
 
-      print(gsub("//","/",paste("Table saved to: ",dirOutputs, "/", folderName,
-                  "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_aggClass.csv", sep = "")))
-    }
-  }
+    # Aggregate across Param
+    dataxAggsums<-datax%>%
+      dplyr::filter(aggregate=="sum")%>%
+      dplyr::select(-c(class2,classLabel2,classPalette2,class1,classLabel1,classPalette1))%>%
+      dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
+      dplyr::summarize_at(c("value"),list(~sum(.,na.rm = T)))
+    dataxAggmeans<-datax%>%
+      dplyr::filter(aggregate=="mean")%>%
+      dplyr::select(-c(class2,classLabel2,classPalette2,class1,classLabel1,classPalette1))%>%
+      dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
+      dplyr::summarize_at(c("value"),list(~mean(.,na.rm = T)))
+    dataxAggClass<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
+
+    utils::write.csv(dataxAggClass,
+                     file = gsub("//","/",paste(dirOutputs, "/", folderName,
+                                                "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggParam",
+                                                nameAppend,".csv", sep = "")),row.names = F)
+
+    print(paste("GCAM data with aggregated to param saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
+                                                                                   "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggParam",
+                                                                                   nameAppend,".csv", sep = "")),sep=""))
+
+    dataTemplateAggClass <- dataxAggClass %>%
+      dplyr::mutate(scenario = "Local Data", value = 0, sources="Sources", x=2010) %>%
+      dplyr::select(scenario, region, sources, param, units, x, value) %>%
+      unique()
+
+    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggParam",nameAppend,".csv", sep = ""),
+                     row.names = F)
+    print(paste("GCAM data template aggregated to param saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggParam",nameAppend,".csv", sep = "")))
+
+    # Print output for each region
+    # for (region_i in regionsSelect[(regionsSelect %in% unique(datax$region))]) {
+    #
+    #   print(paste("Saving data table for region: ",region_i,"...", sep = ""))
+    #   utils::write.csv(datax %>% dplyr::filter(region == region_i),
+    #                    file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,nameAppend,".csv", sep = ""),row.names = F)
+    #
+    #   # Aggregate across classes
+    #   dataxAggsums<-datax%>%
+    #     dplyr::filter(aggregate=="sum")%>%
+    #     dplyr::select(-tidyselect::contains("class"))%>%
+    #     dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
+    #     dplyr::summarize_at(c("value"),list(~sum(.,na.rm = T)))
+    #   dataxAggmeans<-datax%>%
+    #     dplyr::filter(aggregate=="mean")%>%
+    #     dplyr::select(-tidyselect::contains("class"))%>%
+    #     dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
+    #     dplyr::summarize_at(c("value"),list(~mean(.,na.rm = T)))
+    #   dataxAgg<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
+    #
+    #   utils::write.csv(dataxAgg %>% dplyr::filter(region == region_i),
+    #                    file = gsub("//","/",paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_",
+    #                                 region_i,"_aggClass",nameAppend,".csv", sep = "")),row.names = F)
+    #
+    #   # utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
+    #   #                  file = gsub("//","/",paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_",
+    #   #                                    region_i,nameAppend,".csv", sep = "")),row.names = F)
+    #   # #utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
+    #   #                 file = paste(dirOutputs, "/", folderName, "/Tables/Tables_Local/local_Regional_",region_i,".csv", sep = ""),row.names = F)
+    #
+    #   print(gsub("//","/",paste("Table saved to: ",dirOutputs, "/", folderName,
+    #               "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_aggClass",nameAppend,".csv", sep = "")))
+    # }
+
+  }else{print("No data for any of the regions, params or queries selected")} # Close datax nrow check
+
+  }else{ # CLose Param Check
+    print(paste("None of the parameters in paramsSelect: ", paste(paramsSelect,collapse=",")," are available."))}
 
   return(list(data = datax, dataTemplate = dataTemplate, scenarios = scenarios, queries = queries))
 

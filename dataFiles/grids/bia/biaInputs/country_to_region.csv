@@ -1,4 +1,4 @@
-region_32_code,ctry_code,region,ctry_name
+region_code,ctry_code,region,ctry_name
 29,238,Southeast Asia,Fiji
 23,103,Russia,Russia
 13,17,EU-15,Wallis & Futuna
@@ -236,3 +236,54 @@ region_32_code,ctry_code,region,ctry_name
 29,241,Southeast Asia,Norfolk I.
 29,244,Southeast Asia,Tuvalu
 33,248,Uruguay,Uruguay
+33,150,AK,United States
+34,150,AL,United States
+35,150,AR,United States
+36,150,AZ,United States
+37,150,CA,United States
+38,150,CO,United States
+39,150,CT,United States
+40,150,DC,United States
+41,150,DE,United States
+42,150,FL,United States
+43,150,GA,United States
+44,150,HI,United States
+45,150,IA,United States
+46,150,ID,United States
+47,150,IL,United States
+48,150,IN,United States
+49,150,KS,United States
+50,150,KY,United States
+51,150,LA,United States
+52,150,MA,United States
+53,150,MD,United States
+54,150,ME,United States
+55,150,MI,United States
+56,150,MN,United States
+57,150,MO,United States
+58,150,MS,United States
+59,150,MT,United States
+60,150,NC,United States
+61,150,ND,United States
+62,150,NE,United States
+63,150,NH,United States
+64,150,NJ,United States
+65,150,NM,United States
+66,150,NV,United States
+67,150,NY,United States
+68,150,OH,United States
+69,150,OK,United States
+70,150,OR,United States
+71,150,PA,United States
+72,150,RI,United States
+73,150,SC,United States
+74,150,SD,United States
+75,150,TN,United States
+76,150,TX,United States
+77,150,UT,United States
+78,150,VA,United States
+79,150,VT,United States
+80,150,WA,United States
+81,150,WI,United States
+82,150,WV,United States
+83,150,WY,United States

@@ -1,55 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <queries>
 
-<aQuery>
-      <supplyDemandQuery title="Electricity generation by aggregate technology">
-         <axis1 name="technology">technology</axis1>
-         <axis2 name="Year">physical-output[@vintage]</axis2>
-         <xPath buildList="true" dataName="output" group="false" sumAll="false">*[@type = 'sector' (: collapse :) and (@name='electricity' or @name='elect_td_bld' or @name='industrial energy use' )]//*[@type = 'technology' and not (@name='elect_td_bld' or @name='electricity')]/*[@type='output' (:collapse:) and (@name='electricity' or @name='elect_td_bld')]/physical-output/node()</xPath>
-         <comments/>
-         <labelRewriteList append-values="false">
-            <level name="technology">
-               <rewrite from="gas (CC CCS)" to="Gas w/CCS"/>
-               <rewrite from="hydro" to="Hydro"/>
-               <rewrite from="biomass (conv)" to="Biomass"/>
-               <rewrite from="rooftop_pv" to="Solar"/>
-               <rewrite from="PV" to="Solar"/>
-               <rewrite from="coal (IGCC)" to="Coal"/>
-               <rewrite from="biomass (conv CCS)" to="Biomass w/CCS"/>
-               <rewrite from="hydrogen cogen" to="CHP"/>
-               <rewrite from="CSP_storage" to="Solar"/>
-               <rewrite from="coal cogen" to="CHP"/>
-               <rewrite from="biomass (IGCC)" to="Biomass"/>
-               <rewrite from="gas cogen" to="CHP"/>
-               <rewrite from="coal (conv pul CCS)" to="Coal w/CCS"/>
-               <rewrite from="biomass (IGCC CCS)" to="Biomass w/CCS"/>
-               <rewrite from="geothermal" to="Geothermal"/>
-               <rewrite from="refined liquids (CC CCS)" to="Oil w/CCS"/>
-               <rewrite from="refined liquids (steam/CT)" to="Oil"/>
-               <rewrite from="gas (CC)" to="Gas"/>
-               <rewrite from="CSP" to="Solar"/>
-               <rewrite from="coal (IGCC CCS)" to="Coal w/CCS"/>
-               <rewrite from="Gen_II_LWR" to="Nuclear"/>
-               <rewrite from="coal (conv pul)" to="Coal"/>
-               <rewrite from="gas (steam/CT)" to="Gas"/>
-               <rewrite from="wind_storage" to="Wind"/>
-               <rewrite from="PV_storage" to="Solar"/>
-               <rewrite from="Gen_III" to="Nuclear"/>
-               <rewrite from="refined liquids (CC)" to="Oil"/>
-               <rewrite from="refined liquids cogen" to="CHP"/>
-               <rewrite from="biomass cogen" to="CHP"/>
-               <rewrite from="wind" to="Wind"/>
-            </level>
-         </labelRewriteList>
-      </supplyDemandQuery>
+  <aQuery>
+        <region name ="HI" />
+        <region name ="DE" />
+        <region name ="TX" />
+        <region name ="MA" />
+        <region name ="MD" />
+        <region name ="ME" />
+        <region name ="IA" />
+        <region name ="ID" />
+        <region name ="MI" />
+        <region name ="UT" />
+        <region name ="MN" />
+        <region name ="MO" />
+        <region name ="IL" />
+        <region name ="IN" />
+        <region name ="MS" />
+        <region name ="MT" />
+        <region name ="AK" />
+        <region name ="VA" />
+        <region name ="AL" />
+        <region name ="AR" />
+        <region name ="NC" />
+        <region name ="ND" />
+        <region name ="RI" />
+        <region name ="NE" />
+        <region name ="AZ" />
+        <region name ="NH" />
+        <region name ="NJ" />
+        <region name ="VT" />
+        <region name ="NM" />
+        <region name ="FL" />
+        <region name ="NV" />
+        <region name ="WA" />
+        <region name ="NY" />
+        <region name ="SC" />
+        <region name ="SD" />
+        <region name ="WI" />
+        <region name ="OH" />
+        <region name ="GA" />
+        <region name ="OK" />
+        <region name ="CA" />
+        <region name ="WV" />
+        <region name ="WY" />
+        <region name ="OR" />
+        <region name ="KS" />
+        <region name ="CO" />
+        <region name ="KY" />
+        <region name ="CT" />
+        <region name ="PA" />
+        <region name ="LA" />
+        <region name ="TN" />
+        <region name ="DC" />
+        <supplyDemandQuery title="elec gen by gen tech USA">
+            <axis1 name="technology">technology</axis1>
+            <axis2 name="Year">physical-output[@vintage]</axis2>
+            <xPath buildList="true" dataName="output" group="false" sumAll="false">*[@type='sector' and (@name='electricity' or 
+                @name='base load generation' or @name='intermediate generation' or @name='subpeak generation' or @name='peak generation' or 
+                @name='elect_td_bld' or @name='industrial energy use')]//
+                *[@type='subsector']//*[@type='technology' and not (@name='electricity' or @name='elect_td_bld')]/
+                *[@type='output' (:collapse:) and (@name='electricity' or @name='base load generation' or @name='intermediate generation' or 
+                @name='subpeak generation' or @name='peak generation' or @name='elect_td_bld')]/
+                physical-output/node()</xPath>
+            <comments/>
+        </supplyDemandQuery>
+</aQuery>
+
+  <aQuery>
+        <region name ="HI" />
+        <region name ="DE" />
+        <region name ="TX" />
+        <region name ="MA" />
+        <region name ="MD" />
+        <region name ="ME" />
+        <region name ="IA" />
+        <region name ="ID" />
+        <region name ="MI" />
+        <region name ="UT" />
+        <region name ="MN" />
+        <region name ="MO" />
+        <region name ="IL" />
+        <region name ="IN" />
+        <region name ="MS" />
+        <region name ="MT" />
+        <region name ="AK" />
+        <region name ="VA" />
+        <region name ="AL" />
+        <region name ="AR" />
+        <region name ="NC" />
+        <region name ="ND" />
+        <region name ="RI" />
+        <region name ="NE" />
+        <region name ="AZ" />
+        <region name ="NH" />
+        <region name ="NJ" />
+        <region name ="VT" />
+        <region name ="NM" />
+        <region name ="FL" />
+        <region name ="NV" />
+        <region name ="WA" />
+        <region name ="NY" />
+        <region name ="SC" />
+        <region name ="SD" />
+        <region name ="WI" />
+        <region name ="OH" />
+        <region name ="GA" />
+        <region name ="OK" />
+        <region name ="CA" />
+        <region name ="WV" />
+        <region name ="WY" />
+        <region name ="OR" />
+        <region name ="KS" />
+        <region name ="CO" />
+        <region name ="KY" />
+        <region name ="CT" />
+        <region name ="PA" />
+        <region name ="LA" />
+        <region name ="TN" />
+        <region name ="DC" />
+        <supplyDemandQuery title="elec gen by gen tech cogen USA">
+            <axis1 name="technology">technology</axis1>
+            <axis2 name="Year">physical-output[@vintage]</axis2>
+            <xPath buildList="true" dataName="output" group="false" sumAll="false">*[@type='sector' and (@name='electricity' or 
+                @name='base load generation' or @name='intermediate generation' or @name='subpeak generation' or @name='peak generation' or 
+                @name='elect_td_bld' or @name='industrial energy use')]/
+                *[@type='subsector']/*[@type='technology' and not (@name='electricity' or @name='elect_td_bld')]/
+                *[@type='output' (:collapse:) and (@name='electricity' or @name='base load generation' or @name='intermediate generation' or 
+                @name='subpeak generation' or @name='peak generation' or @name='elect_td_bld')]/
+                physical-output/node()</xPath>
+            <comments/>
+        </supplyDemandQuery>
 </aQuery>
 
 <aQuery>
-      <all-regions/>
-            <supplyDemandQuery title="elec gen by gen tech and cooling tech and vintage">
+<all-regions/>
+<supplyDemandQuery title="elec gen by gen tech and cooling tech">
                <axis1 name="technology">technology</axis1>
                <axis2 name="Year">physical-output[@vintage]</axis2>
-               <xPath buildList="true" dataName="output" group="false" sumAll="false">*[@type='sector' and (@name='electricity' or @name='elect_td_bld' or
+               <xPath buildList="true" dataName="output" group="false" sumAll="false"> *[@type='sector' and (@name='electricity' or @name='elect_td_bld' or
                   contains(@name,'elec_')) and not(contains(@name, 'water_td'))]/
                   *[@type='subsector' and not (@name='elect_td_bld')]/
                   *[@type='technology' and not(@name='biomass (conv)' or @name='biomass (conv CCS)' or @name='biomass (IGCC)' or @name='biomass (IGCC CCS)'
@@ -58,7 +147,7 @@
                                    or @name='refined liquids (steam/CT)' or @name='refined liquids (CC)' or @name='refined liquids (CC CCS)'
                                    or @name='geothermal' or @name='Gen_II_LWR' or @name='Gen_III'
                                    or @name='CSP' or @name='CSP_storage')]/
-                  *[@type='output' (:collapse:)]/physical-output/node()
+                  *[@type='output']/physical-output/node()
                </xPath>
                <comments/>
                <labelRewriteList append-values="false">
@@ -104,9 +193,53 @@
                      <rewrite from="refined liquids (steam/CT)" to="refined liquids"/>
                   </level>
                </labelRewriteList>
-               <showAttribute attribute-name="year" level="technology"/>
             </supplyDemandQuery>
-      </aQuery>
+</aQuery>
+
+<aQuery>
+      <supplyDemandQuery title="Electricity generation by aggregate technology">
+         <axis1 name="technology">technology</axis1>
+         <axis2 name="Year">physical-output[@vintage]</axis2>
+         <xPath buildList="true" dataName="output" group="false" sumAll="false">*[@type = 'sector' (: collapse :) and (@name='electricity' or @name='elect_td_bld' or @name='industrial energy use' )]//*[@type = 'technology' and not (@name='elect_td_bld' or @name='electricity')]/*[@type='output' (:collapse:) and (@name='electricity' or @name='elect_td_bld')]/physical-output/node()</xPath>
+         <comments/>
+         <labelRewriteList append-values="false">
+            <level name="technology">
+               <rewrite from="gas (CC CCS)" to="Gas w/CCS"/>
+               <rewrite from="hydro" to="Hydro"/>
+               <rewrite from="biomass (conv)" to="Biomass"/>
+               <rewrite from="rooftop_pv" to="Solar"/>
+               <rewrite from="PV" to="Solar"/>
+               <rewrite from="coal (IGCC)" to="Coal"/>
+               <rewrite from="biomass (conv CCS)" to="Biomass w/CCS"/>
+               <rewrite from="hydrogen cogen" to="CHP"/>
+               <rewrite from="CSP_storage" to="Solar"/>
+               <rewrite from="coal cogen" to="CHP"/>
+               <rewrite from="biomass (IGCC)" to="Biomass"/>
+               <rewrite from="gas cogen" to="CHP"/>
+               <rewrite from="coal (conv pul CCS)" to="Coal w/CCS"/>
+               <rewrite from="biomass (IGCC CCS)" to="Biomass w/CCS"/>
+               <rewrite from="geothermal" to="Geothermal"/>
+               <rewrite from="refined liquids (CC CCS)" to="Oil w/CCS"/>
+               <rewrite from="refined liquids (steam/CT)" to="Oil"/>
+               <rewrite from="gas (CC)" to="Gas"/>
+               <rewrite from="CSP" to="Solar"/>
+               <rewrite from="coal (IGCC CCS)" to="Coal w/CCS"/>
+               <rewrite from="Gen_II_LWR" to="Nuclear"/>
+               <rewrite from="coal (conv pul)" to="Coal"/>
+               <rewrite from="gas (steam/CT)" to="Gas"/>
+               <rewrite from="wind_storage" to="Wind"/>
+               <rewrite from="PV_storage" to="Solar"/>
+               <rewrite from="Gen_III" to="Nuclear"/>
+               <rewrite from="refined liquids (CC)" to="Oil"/>
+               <rewrite from="refined liquids cogen" to="CHP"/>
+               <rewrite from="biomass cogen" to="CHP"/>
+               <rewrite from="wind" to="Wind"/>
+            </level>
+         </labelRewriteList>
+      </supplyDemandQuery>
+</aQuery>
+
+
 
 <aQuery>
 		<all-regions/>
@@ -275,50 +408,6 @@
             <comments/>
          </demographicsQuery>
       </aQuery>
-
-<aQuery>
-      <supplyDemandQuery title="Electricity generation by aggregate technology ORDERED SUBSECTORS">
-         <axis1 name="technology">technology</axis1>
-         <axis2 name="Year">physical-output[@vintage]</axis2>
-         <xPath buildList="true" dataName="output" group="false" sumAll="false">*[@type = 'sector' (: collapse :) and (@name='electricity' or @name='elect_td_bld' or @name='industrial energy use' )]//*[@type = 'technology' and not (@name='elect_td_bld' or @name='electricity')]/*[@type='output' (:collapse:) and (@name='electricity' or @name='elect_td_bld')]/physical-output/node()</xPath>
-         <comments/>
-         <labelRewriteList append-values="false">
-            <level name="technology">
-               <rewrite from="gas (CC CCS)" to="d Gas w/CCS"/>
-               <rewrite from="hydro" to="k Hydro"/>
-               <rewrite from="biomass (conv)" to="g Biomass"/>
-               <rewrite from="rooftop_pv" to="m Solar"/>
-               <rewrite from="PV" to="m Solar"/>
-               <rewrite from="coal (IGCC)" to="a Coal"/>
-               <rewrite from="biomass (conv CCS)" to="h Biomass w/CCS"/>
-               <rewrite from="hydrogen cogen" to="n CHP"/>
-               <rewrite from="CSP_storage" to="m Solar"/>
-               <rewrite from="coal cogen" to="n CHP"/>
-               <rewrite from="biomass (IGCC)" to="g Biomass"/>
-               <rewrite from="gas cogen" to="n CHP"/>
-               <rewrite from="coal (conv pul CCS)" to="b Coal w/CCS"/>
-               <rewrite from="biomass (IGCC CCS)" to="h Biomass w/CCS"/>
-               <rewrite from="geothermal" to="j Geothermal"/>
-               <rewrite from="refined liquids (CC CCS)" to="f Oil w/CCS"/>
-               <rewrite from="refined liquids (steam/CT)" to="e Oil"/>
-               <rewrite from="gas (CC)" to="c Gas"/>
-               <rewrite from="CSP" to="m Solar"/>
-               <rewrite from="coal (IGCC CCS)" to="b Coal w/CCS"/>
-               <rewrite from="Gen_II_LWR" to="i Nuclear"/>
-               <rewrite from="coal (conv pul)" to="a Coal"/>
-               <rewrite from="gas (steam/CT)" to="c Gas"/>
-               <rewrite from="wind_storage" to="l Wind"/>
-               <rewrite from="PV_storage" to="m Solar"/>
-               <rewrite from="Gen_III" to="i Nuclear"/>
-               <rewrite from="refined liquids (CC)" to="e Oil"/>
-               <rewrite from="refined liquids cogen" to="n CHP"/>
-               <rewrite from="biomass cogen" to="n CHP"/>
-               <rewrite from="wind" to="l Wind"/>
-            </level>
-         </labelRewriteList>
-      </supplyDemandQuery>
-</aQuery>
-
 
 	<aQuery>
       <all-regions/>
