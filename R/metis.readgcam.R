@@ -40,7 +40,10 @@
 #' \item "water consumption by water mapping source"
 #' \item "water withdrawals by sector"
 #' \item "water consumption by sector"
-#' \item "biophysical water demand by crop type and land region"}
+#' \item "biophysical water demand by crop type and land region"
+#' \item "Basin level available runoff"
+#' \item "water withdrawals by state, sector, basin (includes desal)"
+#' \item "water consumption by state, sector, basin (includes desal)"}
 #' energy
 #' \itemize{
 #' \item "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS"
@@ -150,6 +153,8 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
   # regionsSelect = NULL
   # queriesSelect="All"
   # paramsSelect="All"
+  # folderName=NULL
+  # nameAppend=""
 
 
   #----------------
@@ -175,7 +180,10 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
                               "water consumption by water mapping source",
                               "water withdrawals by sector",
                               "water consumption by sector",
-                              "biophysical water demand by crop type and land region"),
+                              "water withdrawals by state, sector, basin (includes desal)",
+                              "water consumption by state, sector, basin (includes desal)",
+                              "biophysical water demand by crop type and land region",
+                              "Basin level available runoff"),
                     'energy'=c("primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS",
                                "Final energy by detailed end-use sector and fuel",
                                "total final energy by aggregate sector",
@@ -350,7 +358,8 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
     # Transport
     "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
     # Water
-    "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
+    "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons",
+    "watIrrWithdrawBasin","watIrrConsBasin","watSupRunoffBasin",
     # Socio-economics
     "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
     # Agriculture
@@ -963,9 +972,12 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if (!is.null(regionsSelect)) {
         tbl <- tbl %>%
-          dplyr::filter(region %in% regionsSelect) %>%
-          dplyr::filter(region %in% metis.assumptions()$US52)%>%
-          dplyr::filter(!sector %in% "industrial energy use")
+          dplyr::filter(region %in% regionsSelect)
+      }
+      if (nrow(tbl)>0) {
+      tbl <- tbl %>%
+        dplyr::filter(region %in% metis.assumptions()$US52)%>%
+        dplyr::filter(!sector %in% "industrial energy use")
       }
       tblUSA <- tbl %>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
@@ -1000,7 +1012,10 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if (!is.null(regionsSelect)) {
         tbl <- tbl %>%
-          dplyr::filter(region %in% regionsSelect) %>%
+          dplyr::filter(region %in% regionsSelect)
+      }
+      if (nrow(tbl)>0) {
+        tbl <- tbl %>%
           dplyr::filter(region %in% metis.assumptions()$US52)
       }
       tblUSACogen <- tbl %>%
@@ -1505,17 +1520,32 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
 
   # metis.chart(tbl,xData="x",yData="value",useNewLabels = 0)
 
-  paramx <- "watConsumBySec"
+
+   paramx <- "watConsumBySec"
   if(paramx %in% paramsSelectx){
     # water consumption by sector
-    queryx <- "water consumption by sector"
+    queryx <- "water consumption by state, sector, basin (includes desal)"
     if (queryx %in% queriesx) {
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if(nrow(tbl)>0){
+        # If GCAM USA then remove "USA" region and use states
+        if(any(metis.assumptions()$US52 %in% unique(tbl$region))){
+          tbl <- tbl %>% dplyr::filter(region!="USA") # Remove region USA and use states instead
+        }
+      }
       if (!is.null(regionsSelect)) {
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::mutate(sector=case_when(
+          sector=="water_td_an_C"~"animal",
+          sector=="water_td_dom_C"~"domestic",
+          sector=="water_td_elec_C"~"electric",
+          sector=="water_td_ind_C"~"industry",
+          sector=="water_td_pri_C"~"primary",
+          grepl("_irr_",sector)~"irrigation",
+          TRUE~sector)) %>%
         dplyr::mutate(param = "watConsumBySec",
                       sources = "Sources",
                       origScen = scenario,
@@ -1533,9 +1563,9 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       class1 = sector,
                       classLabel1 = "Sector",
                       classPalette1 = "pal_metis",
-                      class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2")%>%
+                      class2 = subsector,
+                      classLabel2 = "basin",
+                      classPalette2 = "pal_metis")%>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -1548,17 +1578,32 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
+
   paramx<- "watWithdrawBySec"
   if(paramx %in% paramsSelectx){
-    # water withdrawals by sector
-    queryx <- "water withdrawals by sector"
+    # water consumption by sector
+    queryx <- "water withdrawals by state, sector, basin (includes desal)"
     if (queryx %in% queriesx) {
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if(nrow(tbl)>0){
+        # If GCAM USA then remove "USA" region and use states
+        if(any(metis.assumptions()$US52 %in% unique(tbl$region))){
+          tbl <- tbl %>% dplyr::filter(region!="USA") # Remove region USA and use states instead
+        }
+      }
       if (!is.null(regionsSelect)) {
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::mutate(sector=case_when(
+          sector=="water_td_an_W"~"livestock",
+          sector=="water_td_dom_W"~"municipal",
+          sector=="water_td_elec_W"~"electricity",
+          sector=="water_td_ind_W"~"industry",
+          sector=="water_td_pri_W"~"mining",
+          grepl("_irr_",sector)~"agriculture",
+          TRUE~sector)) %>%
         dplyr::mutate(param = "watWithdrawBySec",
                       sources = "Sources",
                       origScen = scenario,
@@ -1568,7 +1613,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       origX = year,
                       scenario = scenNewNames,
                       value = value,
-                      units = "Water Withdrawals by Sector (km3)",
+                      units = "Water Consumption by Sector (km3)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
                       xLabel = "Year",
@@ -1576,9 +1621,9 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       class1 = sector,
                       classLabel1 = "Sector",
                       classPalette1 = "pal_metis",
-                      class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2")%>%
+                      class2 = subsector,
+                      classLabel2 = "basin",
+                      classPalette2 = "pal_metis")%>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -1591,18 +1636,33 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
+
   paramx <- "watWithdrawByCrop"
   if(paramx %in% paramsSelectx){
     # water withdrawals by sector
     queryx <- "water withdrawals by crop"
     if (queryx %in% queriesx) {
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      # Need to add in conveyance losses for USA when running GCAM USA
+      # gcamusa.CONVEYANCE_LOSSES <- 0.829937455747218 from constants.R
+      if(nrow(tbl)>0){
+        if(any(unique(tbl$region) %in% metis.assumptions()$US52)){
+          tbl <- tbl %>%
+            dplyr::mutate(value = case_when(region=="USA"~value/0.829937455747218,
+                                            TRUE~value)) %>%
+            dplyr::filter(!region %in% metis.assumptions()$US52)
+        }
+      }
       if (!is.null(regionsSelect)) {
-        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+        if(any(regionsSelect %in% metis.assumptions()$US52)){
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect,"USA"))
+        } else {
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect))
+        }
       }
       tbl <- tbl %>%
         dplyr::filter(sector!="industry", sector!="mining" , sector!="municipal"
-                      , sector!="electricity" , sector!="livestock")%>%
+                      , sector!="electricity" , sector!="livestock", !grepl("water_td_",sector))%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "watWithdrawByCrop",
                       sources = "Sources",
@@ -1771,6 +1831,52 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
     } else {
       if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
+
+
+  paramx <- "watSupRunoffBasin"
+  if(paramx %in% paramsSelectx){
+    # water consumption by water mapping source
+    queryx <- "Basin level available runoff"
+    if (queryx %in% queriesx) {
+      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if (!is.null(regionsSelect)) {
+        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+      }
+      tbl <- tbl %>%
+        dplyr::mutate(class1=gsub("\\_.*","",basin))%>%
+        dplyr::select(-basin)%>%
+        dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::mutate(param = "watSupRunoffBasin",
+                      sources = "Sources",
+                      origScen = scenario,
+                      origQuery = queryx,
+                      origValue = value,
+                      origUnits = Units,
+                      origX = year,
+                      scenario = scenNewNames,
+                      value = value,
+                      units = "Runoff (km3)",
+                      vintage = paste("Vint_", year, sep = ""),
+                      x = year,
+                      xLabel = "Year",
+                      aggregate = "sum",
+                      classLabel1 = "basin",
+                      classPalette1 = "pal_wet",
+                      class2 = "class2",
+                      classLabel2 = "classLabel2",
+                      classPalette2 = "classPalette2") %>%
+        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+      datax <- dplyr::bind_rows(datax, tbl)
+    } else {
+      if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }}
+
 
   paramx <- "gdpPerCapita"
   if(paramx  %in% paramsSelectx){

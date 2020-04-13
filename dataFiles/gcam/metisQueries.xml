@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <queries>
 
+<aQuery>
+<supplyDemandQuery title="water consumption by state, sector, basin (includes desal)">
+            <axis1 name="technology">technology</axis1>
+            <axis2 name="Year">physical-output[@vintage]</axis2>
+            <xPath buildList="true" dataName="input" group="false" sumAll="false">*[@type='sector']/*[@type='subsector']/*[@type='technology']/*[@type='output' (:collapse:)
+                and contains(@name,'water_td') and ends-with(@name,'_C')]/physical-output/node()</xPath>
+            <comments/>
+        </supplyDemandQuery>
+</aQuery>
+
+<aQuery>
+<supplyDemandQuery title="water withdrawals by state, sector, basin (includes desal)">
+            <axis1 name="technology">technology</axis1>
+            <axis2 name="Year">physical-output[@vintage]</axis2>
+            <xPath buildList="true" dataName="input" group="false" sumAll="false">*[@type='sector']/*[@type='subsector']/*[@type='technology']/*[@type='output' (:collapse:)
+                and contains(@name,'water_td') and ends-with(@name,'_W')]/physical-output/node()</xPath>
+            <comments/>
+        </supplyDemandQuery>
+</aQuery>
+
+  <aQuery>
+<all-regions/>
+<resourceQuery title="Basin level available runoff">
+            <axis1 name="Basin">resource[@name]</axis1>
+            <axis2 name="Year">max-annual-subresource[@year]</axis2>
+            <xPath buildList="true" dataName="input" group="false" sumAll="false">*[@type = 'resource' and contains(@name, 'water withdrawals')]/*[@type = 'subresource' and contains(@name, 'runoff')]/max-annual-subresource/node()</xPath>
+            <comments/>
+        </resourceQuery>
+</aQuery>
+
   <aQuery>
         <region name ="HI" />
         <region name ="DE" />
