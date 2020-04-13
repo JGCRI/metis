@@ -14,4 +14,3 @@ addons:
       - libgdal-dev
       - libmagick++-dev
       - libudunits2-dev
-      - liblgweom-dev
