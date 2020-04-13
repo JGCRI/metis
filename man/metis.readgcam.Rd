@@ -60,7 +60,10 @@ water
 \item "water consumption by water mapping source"
 \item "water withdrawals by sector"
 \item "water consumption by sector"
-\item "biophysical water demand by crop type and land region"}
+\item "biophysical water demand by crop type and land region"
+\item "Basin level available runoff"
+\item "water withdrawals by state, sector, basin (includes desal)"
+\item "water consumption by state, sector, basin (includes desal)"}
 energy
 \itemize{
 \item "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS"

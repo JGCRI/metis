@@ -1011,8 +1011,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
   if(nrow(shapeTbl)>0){
   data.table::fwrite(shapeTbl%>%
-                       tidyr::spread(key="class",value="value"),paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/Tbl.csv",sep = ""))
-    print(paste("Map data table written to ",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/Tbl.csv",sep = ""))
+                       tidyr::spread(key="class",value="value"),paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/Tbl",nameAppend,".csv",sep = ""))
+    print(paste("Map data table written to ",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/Tbl",nameAppend,".csv",sep = ""))
   }
 
   # -------------------
