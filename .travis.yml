@@ -4,7 +4,10 @@ language: R
 cache: false
 dist: xenial
 
-before_install:  - R -e 'install.packages("lwgeom", repos=c("https://r-spatial.github.io/lwgeom/"))'
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y liblwgeom-dev
+  - R -e 'install.packages("lwgeom", repos=c("https://r-spatial.github.io/lwgeom/"))'
 
 warnings_are_errors: false
 
