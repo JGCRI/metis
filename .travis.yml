@@ -4,7 +4,8 @@ language: R
 cache: false
 dist: xenial
 
-before_install:  - R -e 'install.packages("lwgeom", repos=c("https://r-spatial.github.io/lwgeom/"))'
+r_github_packages:
+  - r-spatial/lwgeom
 
 warnings_are_errors: false
 
