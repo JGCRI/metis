@@ -1,8 +1,10 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
-cache: packages
+cache: false
 dist: xenial
+
+before_install:  - R -e 'install.packages("lwgeom", repos=c("https://r-spatial.github.io/lwgeom/"))'
 
 warnings_are_errors: false
 
