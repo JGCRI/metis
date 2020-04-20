@@ -1868,7 +1868,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                 multiFacetRows="multiFacetRow",
                                 multiFacetCols="multiFacetCol",
                                 fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_RefYears_",class_i,nameAppend,"_MEAN_KMEANS",sep=""),
-                                dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))
+                                dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))
 
 
                       # panelLabel=panelLabelMulti
@@ -1955,7 +1955,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                 multiFacetRows="multiFacetRow",
                                 multiFacetCols="multiFacetCol",
                                 fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_RefYears_",class_i,nameAppend,"_MEAN_FREESCALE",sep=""),
-                                dirOutputs = paste(dirOutputsX,"/Maps/",folderName,dirNameAppend,"/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))
+                                dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))
 
 
 
