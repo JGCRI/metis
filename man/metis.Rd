@@ -3,7 +3,6 @@
 \docType{package}
 \name{metis}
 \alias{metis}
-\alias{metis-package}
 \title{metis: Sub-Regional nexus Package}
 \description{
 The Metis package provides

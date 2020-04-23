@@ -4,7 +4,9 @@
 \name{mapCountries}
 \alias{mapCountries}
 \title{World Map of Countries}
-\format{A SpatialPolygonsDataFrame}
+\format{
+A SpatialPolygonsDataFrame
+}
 \source{
 Made with Natural Earth. \url{http://www5.statcan.gc.ca/cansim/}
 }

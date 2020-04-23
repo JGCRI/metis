@@ -4,7 +4,9 @@
 \name{mapGCAMReg32}
 \alias{mapGCAMReg32}
 \title{GCAM 32 Regions}
-\format{A SpatialPolygonsDataFrame}
+\format{
+A SpatialPolygonsDataFrame
+}
 \source{
 From JGCRI confluence page. \url{https://confluence.pnnl.gov/confluence/display/JGCRI/GCAM+Shape+Files}
 }

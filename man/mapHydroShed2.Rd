@@ -4,7 +4,9 @@
 \name{mapHydroShed2}
 \alias{mapHydroShed2}
 \title{HydroSHEDS level 2}
-\format{A SpatialPolygonsDataFrame}
+\format{
+A SpatialPolygonsDataFrame
+}
 \source{
 Lehner, B., Grill G. (2013): Global river hydrography and network routing:
 baseline data and new approaches to study the world’s large river systems.
