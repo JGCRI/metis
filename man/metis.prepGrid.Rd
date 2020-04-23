@@ -4,18 +4,34 @@
 \alias{metis.prepGrid}
 \title{metis.prepGrid}
 \usage{
-metis.prepGrid(demeterFolders = NULL, demeterScenarios = NULL,
+metis.prepGrid(
+  demeterFolders = NULL,
+  demeterScenarios = NULL,
   demeterTimesteps = seq(from = 2005, to = 2100, by = 5),
-  demeterUnits = NULL, tethysFolders = NULL, tethysScenarios = NULL,
-  tethysUnits = NULL, tethysFiles = c("wddom", "wdelec", "wdirr",
-  "wdliv", "wdmfg", "wdmin", "wdnonag", "wdtotal"), xanthosFiles = NULL,
-  xanthosScenarios = NULL, xanthosScenarioAssign = NULL,
-  xanthosCoordinatesPath = NULL, xanthosGridAreaHecsPath = NULL,
-  tethysFilesScarcity = NULL, xanthosFilesScarcity = NULL,
-  spanLowess = 0.25, popFolder = NULL, popFiles = NULL,
-  biaFolder = NULL, biaFiles = NULL, popUnits = NULL,
-  dirOutputs = paste(getwd(), "/outputs", sep = ""), folderName = NULL,
-  saveFormat = "rds", filterYears = NULL)
+  demeterUnits = NULL,
+  tethysFolders = NULL,
+  tethysScenarios = NULL,
+  tethysUnits = NULL,
+  tethysFiles = c("wddom", "wdelec", "wdirr", "wdliv", "wdmfg", "wdmin", "wdnonag",
+    "wdtotal"),
+  xanthosFiles = NULL,
+  xanthosScenarios = NULL,
+  xanthosScenarioAssign = NULL,
+  xanthosCoordinatesPath = NULL,
+  xanthosGridAreaHecsPath = NULL,
+  tethysFilesScarcity = NULL,
+  xanthosFilesScarcity = NULL,
+  spanLowess = 0.25,
+  popFolder = NULL,
+  popFiles = NULL,
+  biaFolder = NULL,
+  biaFiles = NULL,
+  popUnits = NULL,
+  dirOutputs = paste(getwd(), "/outputs", sep = ""),
+  folderName = NULL,
+  saveFormat = "rds",
+  filterYears = NULL
+)
 }
 \arguments{
 \item{demeterFolders}{Full path to demeter outputs}

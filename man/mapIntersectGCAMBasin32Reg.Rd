@@ -5,7 +5,9 @@
 \alias{mapIntersectGCAMBasin32Reg}
 \title{Intersection of GCAM Basins and GCAM 32 Regions
 Intersection of GCAM Basins and GCAM 32 Regions.}
-\format{R tibble}
+\format{
+R tibble
+}
 \source{
 JGCRI
 }

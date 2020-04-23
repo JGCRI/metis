@@ -4,7 +4,9 @@
 \name{mapGCAMLand}
 \alias{mapGCAMLand}
 \title{GCAM Land}
-\format{A SpatialPolygonsDataFrame}
+\format{
+A SpatialPolygonsDataFrame
+}
 \source{
 From the moirai project.
 Shapefile received directly from Alan V. Di Vittorio.
