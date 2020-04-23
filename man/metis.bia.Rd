@@ -4,29 +4,16 @@
 \alias{metis.bia}
 \title{metis.bia}
 \usage{
-metis.bia(
-  biaInputsFolder = "NA",
-  biaInputsFiles = "NA",
-  dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  reReadData = 1,
-  regionsSelect = NULL,
-  regionsSelectDiagnostic = NULL,
-  dataProj = "dataProj.proj",
-  dataProjPath = NULL,
-  scenOrigNames = NULL,
-  scenNewNames = NULL,
-  gcamdatabasePath = "NA",
-  gcamdatabaseName = "NA",
-  queryxml = "metisQueries.xml",
+metis.bia(biaInputsFolder = "NA", biaInputsFiles = "NA",
+  dirOutputs = paste(getwd(), "/outputs", sep = ""), reReadData = 1,
+  regionsSelect = NULL, regionsSelectDiagnostic = NULL,
+  dataProj = "dataProj.proj", dataProjPath = NULL,
+  scenOrigNames = NULL, scenNewNames = NULL, gcamdatabasePath = "NA",
+  gcamdatabaseName = "NA", queryxml = "metisQueries.xml",
   queryPath = paste(getwd(), "/dataFiles/gcam", sep = ""),
-  queriesSelect = "All",
-  paramsSelect = c("elecByTech", "elecCapBySubsector"),
-  gridChoice = "grid_050",
-  diagnosticsON = F,
-  subsectorNAdistribute = "even",
-  folderName = NULL,
-  nameAppend = ""
-)
+  queriesSelect = "All", paramsSelect = c("elecByTech",
+  "elecCapBySubsector"), gridChoice = "grid_050", diagnosticsON = F,
+  subsectorNAdistribute = "even", folderName = NULL, nameAppend = "")
 }
 \arguments{
 \item{biaInputsFolder}{Bia Inputs Folder Path}

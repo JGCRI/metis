@@ -4,12 +4,8 @@
 \alias{metis.elecInvest}
 \title{metis.elecInvest}
 \usage{
-metis.elecInvest(
-  elec_gen_vintage,
-  world_regions,
-  start_year = 2010,
-  end_year = 2050
-)
+metis.elecInvest(elec_gen_vintage, world_regions, start_year = 2010,
+  end_year = 2050)
 }
 \arguments{
 \item{elec_gen_vintage}{Electricity vintage query result}
