@@ -5,9 +5,7 @@
 \alias{grid050}
 \title{US 49 States
 Excludes Alaska, Hawaii and Puerto Rico. Includes DC.}
-\format{
-R tibble
-}
+\format{R tibble}
 \source{
 JGCRI
 }

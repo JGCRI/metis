@@ -19,3 +19,6 @@
 ^Uruguay_datProj.proj
 ^DISCLAIMER$
 ^\.travis\.yml$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

@@ -4,23 +4,14 @@
 \alias{metis.readgcam}
 \title{metis.readgcam}
 \usage{
-metis.readgcam(
-  gcamdatabasePath = NULL,
-  gcamdatabaseName = NULL,
-  queryxml = "metisQueries.xml",
-  queryPath = paste(getwd(), "/dataFiles/gcam", sep = ""),
-  scenOrigNames = NULL,
-  scenNewNames = NULL,
-  reReadData = T,
-  dataProj = "dataProj.proj",
+metis.readgcam(gcamdatabasePath = NULL, gcamdatabaseName = NULL,
+  queryxml = "metisQueries.xml", queryPath = paste(getwd(),
+  "/dataFiles/gcam", sep = ""), scenOrigNames = NULL,
+  scenNewNames = NULL, reReadData = T, dataProj = "dataProj.proj",
   dataProjPath = paste(getwd(), "/outputs", sep = ""),
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  regionsSelect = NULL,
-  queriesSelect = "All",
-  paramsSelect = "All",
-  folderName = NULL,
-  nameAppend = ""
-)
+  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All",
+  folderName = NULL, nameAppend = "")
 }
 \arguments{
 \item{gcamdatabasePath}{Path to gcam database folder}
