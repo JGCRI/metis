@@ -4,7 +4,9 @@
 \name{mapGCAMBasins}
 \alias{mapGCAMBasins}
 \title{GCAM Basins}
-\format{A SpatialPolygonsDataFrame}
+\format{
+A SpatialPolygonsDataFrame
+}
 \source{
 From JGCRI confluence page. \url{https://confluence.pnnl.gov/confluence/display/JGCRI/GCAM+Shape+Files}
 }

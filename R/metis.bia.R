@@ -138,12 +138,12 @@ metis.bia<- function(biaInputsFolder = "NA",
   #------------------
 
   print("Reading GCAM data ...")
-  readgcamdata<-metis.readgcam(gcamdatabasePath = gcamdatabasePath, gcamdatabaseName = gcamdatabaseName,
-                               queryxml = queryxml, queryPath = queryPath,
+  readgcamdata<-metis.readgcam(gcamdatabase = paste(gcamdatabasePath,gcamdatabaseName,sep=""),
                                scenOrigNames = scenOrigNames, scenNewNames = scenNewNames, reReadData = reReadData,
-                               dataProj = dataProj, dataProjPath = dataProjPath, dirOutputs = dir,
-                               regionsSelect = regionsSelect, queriesSelect = queriesSelect , paramsSelect = paramsSelect,
+                               dataProjFile = paste(dataProjPath,dataProj,sep=""), dirOutputs = dir,
+                               regionsSelect = regionsSelect, paramsSelect = paramsSelect,
                                nameAppend=nameAppend)
+
 
   print("GCAM data read.")
 
@@ -763,12 +763,11 @@ metis.bia<- function(biaInputsFolder = "NA",
                                           unique(dataFromGCAM$class1)[grepl(class1_i,unique(dataFromGCAM$class1),ignore.case=T)],
                                           class1))}}
 
-       readAllGCAMcapDataList<-metis.readgcam(gcamdatabasePath = gcamdatabasePath, gcamdatabaseName = gcamdatabaseName,
-                                    queryxml = queryxml, queryPath = queryPath,
+       readAllGCAMcapDataList<-metis.readgcam(gcamdatabase = paste(gcamdatabasePath,gcamdatabaseName,sep=""),
                                     scenOrigNames = scenOrigNames, scenNewNames = scenNewNames, reReadData = reReadData,
-                                    dataProj = dataProj, dataProjPath = dataProjPath, dirOutputs = dir,
+                                    dataProjFile = paste(dataProjPath,dataProj,sep=""), dirOutputs = dir,
                                     regionsSelect = regionsSelectDiagnostic, nameAppend = paste("Diagnostic",nameAppend,sep=""),
-                                    queriesSelect = queriesSelect , paramsSelect = c("elecByTechTWh", "elecCapByFuel"))
+                                    paramsSelect = c("elecByTechTWh", "elecCapByFuel"))
 
        readAllGCAMcapData<-readAllGCAMcapDataList$data%>%
          dplyr::filter(param=="elecCapByFuel")%>%

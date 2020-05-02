@@ -58,52 +58,35 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
 # This is data that has already been extracted from a gcamdatabse using queries and rgcam
 # and is thus much faster to process than connecting directly to the gcamdatabase.
 # The data must have been extracted using queries that are available in metisQueries.xml
-  dataProjPath_i <- paste(getwd(),"/dataFiles/examples",sep="") # Path to dataProj file.
-  dataProj_i <-"Example_dataProj.proj"  # Use if gcamdata has been saved as .proj file
+  dataProjFile_i <- paste(getwd(),"/dataFiles/examples/Example_dataProj.proj",sep="") # Path to dataProj file.
 
 # Get list of scenarios and rename if desired.
-  dataProjLoaded <- loadProject(paste(dataProjPath_i, "/",dataProj_i , sep = ""))
+  dataProjLoaded <- loadProject(paste(dataProjFile_i, sep = ""))
   listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
   listQueries(dataProjLoaded) # List of Queries in queryxml
-
 
 # Scenario names
   scenOrigNames_i = c("ExampleScen1","ExampleScen2")
   scenNewNames_i = c("Eg1","Eg2")  # Names to replace the original names for final figures.
 
 # Choose Query sets, individual queries or set to "All". For complete list see ?metis.readgcam
-  queriesSelect_i = c("All") # Query sets are c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
+  paramsSelect_i = c("energy") # Param sets are c("water", "energy", "electricity","land", "emissions", "ag", "socioecon", "transport")
 
 # Select regions from the 32 GCAM regions.
   regionsSelect_i <- c("Argentina","Colombia")
 
   dataGCAM<-metis.readgcam(reReadData = F,
-                         #gcamdatabasePath = gcamdatabasePath_i,
-                         #gcamdatabaseName = gcamdatabaseName_i,
-                         scenOrigNames = scenOrigNames_i,
+                         #gcamdatabase = gcamdatabasePath_i,
+                         scenOrigNames = NULL,
                          scenNewNames = scenNewNames_i,
-                         dataProj = dataProj_i,
-                         dataProjPath = dataProjPath_i,
+                         dataProjFile = dataProjFile_i,
                          regionsSelect = regionsSelect_i ,
-                         #paramsSelect=paramsSelect_i,
-                         queriesSelect = queriesSelect_i, #
-                         folderName = "metisExample"
+                         paramsSelect=paramsSelect_i,
+                         folderName = "metisExample",
+                         saveData = F
                          )
 
-  # reReadData = F
-  # #gcamdatabasePath = gcamdatabasePath_i,
-  # #gcamdatabaseName = gcamdatabaseName_i,
-  # scenOrigNames = scenOrigNames_i
-  # scenNewNames = scenNewNames_i
-  # dataProj = dataProj_i
-  # dataProjPath = dataProjPath_i
-  # regionsSelect = regionsSelect_i
-  # #paramsSelect=paramsSelect_i
-  # queriesSelect = queriesSelect_i #
-  # folderName = "metisExample"
-
   dataGCAM$data # To view the data read that was read.
-
 
 # If connecting directly to a gcamdatabase then can use the following method.
 # Uncomment the following lines of code (use ctrl+C to uncomment multiple lines together)

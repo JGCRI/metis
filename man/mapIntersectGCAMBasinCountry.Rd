@@ -5,7 +5,9 @@
 \alias{mapIntersectGCAMBasinCountry}
 \title{Intersection of GCAM Basins and countries
 Intersection of GCAM Basins and countries.}
-\format{R tibble}
+\format{
+R tibble
+}
 \source{
 JGCRI
 }

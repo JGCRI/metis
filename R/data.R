@@ -1,3 +1,143 @@
+#-----------------
+# Internal Data
+#-----------------
+
+#' metisQueries xml file
+#'
+#' @source Metis
+#' @format .xml
+#' @examples
+#' \dontrun{
+#'  library(metis); library(XML)
+#'  metis::xmlMetisQueries
+#'  # Can save xml
+#'  XML::saveXML(metis::xmlMetisQueries, file=paste(getwd(), "/metisQueries.xml", sep = ""))
+#' }
+"xmlMetisQueries"
+
+# metis.readgcam internal files
+
+#' data_capac_fac
+#'
+#' @source paste(getwd(),"/dataFiles/gcam/investCalcs/L223.GlobalTechCapFac_elec.csv", sep="")
+#' @format .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  metis::data_capac_fac
+#' }
+"data_capac_fac"
+
+# metis.elecInvest internal files
+
+#' data_tech_mapping
+#'
+#' @source paste(getwd(),"/dataFiles/gcam/investCalcs/agg_tech_mapping.csv", sep="")
+#' @format .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  metis::tech_mapping
+#' }
+"data_tech_mapping"
+
+#' data_capac_fac_int
+#'
+#' @source paste(getwd(),"/dataFiles/gcam/investCalcs/L223.GlobalIntTechCapFac_elec.csv", sep="")
+#' @format .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  metis::data_capac_fac_int
+#' }
+"data_capac_fac_int"
+
+
+#' data_A23.globaltech_retirement
+#'
+#' @source paste(getwd(),"/dataFiles/gcam/investCalcs/A23.globaltech_retirement.csv",sep="")
+#' @format .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  metis::data_A23.globaltech_retirement
+#' }
+"data_A23.globaltech_retirement"
+
+#' data_cap_cost_int_cool
+#'
+#' @source paste(getwd(),"/dataFiles/gcam/investCalcs/L2233.GlobalIntTechCapital_elec_cool.csv", sep="")
+#' @format .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  metis::data_cap_cost_int_cool
+#' }
+"data_cap_cost_int_cool"
+
+#' data_cap_cost_int_tech
+#'
+#' @source paste(getwd(),"/dataFiles/gcam/investCalcs/L2233.GlobalIntTechCapital_elec.csv", sep="")
+#' @format .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  metis::data_cap_cost_int_tech
+#' }
+"data_cap_cost_int_tech"
+
+#' data_cap_cost_cool
+#'
+#' @source paste(getwd(),"/dataFiles/gcam/investCalcs/L2233.GlobalTechCapital_elec_cool.csv", sep="")
+#' @format .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  metis::data_cap_cost_cool
+#' }
+"data_cap_cost_cool"
+
+#' data_capfactors
+#'
+#' @source paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep="")
+#' @format .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  metis::data_capfactors
+#' }
+"data_capfactors"
+
+#' data_cap_cost_tech
+#'
+#' @source paste(getwd(),"/dataFiles/gcam/investCalcs/L2233.GlobalTechCapital_elecPassthru.csv", sep="")
+#' @format .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  metis::data_cap_cost_tech
+#' }
+"data_cap_cost_tech"
+
+
+
+#-----------------
+# Example data files to test metis
+#-----------------
+
+#' Example GCAM .proj file
+#'
+#' @source GCAM run proj file.
+#' @format .proj saved as a list
+#' @examples
+#' \dontrun{
+#'  library(metis); library(rgcam)
+#'  dataProjLoaded <- metis::exampleGCAMproj
+#'  rgcam::listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
+#'  rgcam::listQueries(dataProjLoaded) # List of Queries in queryxml
+#' }
+"exampleGCAMproj"
+
 
 #-----------------
 # World Maps (Countries, States)
