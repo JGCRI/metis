@@ -4,26 +4,29 @@
 \alias{metis.readgcam}
 \title{metis.readgcam}
 \usage{
-metis.readgcam(gcamdatabasePath = NULL, gcamdatabaseName = NULL,
-  queryxml = "metisQueries.xml", queryPath = paste(getwd(),
-  "/dataFiles/gcam", sep = ""), scenOrigNames = NULL,
-  scenNewNames = NULL, reReadData = T, dataProj = "dataProj.proj",
-  dataProjPath = paste(getwd(), "/outputs", sep = ""),
+metis.readgcam(
+  gcamdatabase = NULL,
+  queryFile = NULL,
+  dataProjFile = paste(getwd(), "/outputs/dataProj.proj", sep = ""),
+  scenOrigNames = "All",
+  scenNewNames = NULL,
+  reReadData = T,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  regionsSelect = NULL, queriesSelect = "All", paramsSelect = "All",
-  folderName = NULL, nameAppend = "")
+  regionsSelect = NULL,
+  paramsSelect = "All",
+  folderName = NULL,
+  nameAppend = "",
+  saveData = T
+)
 }
 \arguments{
-\item{gcamdatabasePath}{Path to gcam database folder}
+\item{gcamdatabase}{Default = NULL. Full path to GCAM database folder.}
 
-\item{gcamdatabaseName}{Name of gcam database}
+\item{queryFile}{Defualt = NULL. When NULL metis loads pre-saved xml file metis::xmlMetisQueries}
 
-\item{queryxml}{Name of the query.xml file. By default it is "metisQueries.xml"}
+\item{dataProjFile}{Default = NULL. Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.}
 
-\item{queryPath}{Folder that contains the query.xml file.By default it is
-the same folder as specified by gcamdatabasePath}
-
-\item{scenOrigNames}{Original Scenarios names in GCAM database in a string vector.
+\item{scenOrigNames}{Default = "All". Original Scenarios names in GCAM database in a string vector.
 For example c('scenario1','scenario2).}
 
 \item{scenNewNames}{New Names which may be shorter and more useful for figures etc.
@@ -34,81 +37,23 @@ in the same folder as the GCAM database. If FALSE will load a '.proj' file if a 
 with full path is provided otherwise it will search for a dataProj.proj file in the existing
 folder which may have been created from an old run.}
 
-\item{dataProj}{Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.}
-
-\item{dataProjPath}{Folder that contains the dataProj or where it will be produced.
-By default it is the same folder as specified by gcamdatabasePath}
-
 \item{dirOutputs}{Full path to directory for outputs}
 
 \item{regionsSelect}{The regions to analyze in a vector. Example c('Colombia','Argentina'). Full list:
-c(USA, Africa_Eastern, Africa_Northern, Africa_Southern, Africa_Western, Australia_NZ, Brazil, Canada
+
+USA, Africa_Eastern, Africa_Northern, Africa_Southern, Africa_Western, Australia_NZ, Brazil, Canada
 Central America and Caribbean, Central Asia, China, EU-12, EU-15, Europe_Eastern, Europe_Non_EU,
 European Free Trade Association, India, Indonesia, Japan, Mexico, Middle East, Pakistan, Russia,
 South Africa, South America_Northern, South America_Southern, South Asia, South Korea, Southeast Asia,}
 
-\item{queriesSelect}{Default = "All". Predetermined subsets or a vector of queries to read from the queryxml for example
-predetermined subsets would be c('water','energy') or
-selection of queries would be c("Total final energy by aggregate end-use sector", "Population by region").
-The queries must be availble in the queryxml file.
-Queryset names include: c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
-Current list of queries for each set include:
-water
-\itemize{
-\item "water withdrawals by crop"
-\item "water withdrawals by water mapping source"
-\item "water consumption by water mapping source"
-\item "water withdrawals by sector"
-\item "water consumption by sector"
-\item "biophysical water demand by crop type and land region"
-\item "Basin level available runoff"
-\item "water withdrawals by state, sector, basin (includes desal)"
-\item "water consumption by state, sector, basin (includes desal)"}
-energy
-\itemize{
-\item "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS"
-\item "Final energy by detailed end-use sector and fuel"
-\item "total final energy by aggregate sector"
-\item "refined liquids production by subsector"
-\item "building final energy by fuel"
-\item "industry final energy by fuel"
-\item "building final energy by subsector"
-\item "transport final energy by fuel"
-\item "transport final energy by mode and fuel"}
-electricity
-\itemize{
-\item "elec gen by gen tech USA"
-\item "elec gen by gen tech cogen USA"
-\item "elec gen by gen tech and cooling tech"
-\item "Electricity generation by aggregate technology"}
-land
-\itemize{
-\item "land allocation by crop and water source",
-\item "aggregated land allocation",
-\item "land allocation by crop"}
-emissions
-\itemize{
-\item "nonCO2 emissions by resource production",
-\item "nonCO2 emissions by sector"
-\item "Land Use Change Emission (future)"
-\item "CO2 emissions by sector (no bio)"
-\item "CO2 emissions by sector"}
-ag
-\itemize{
-\item "Ag Production by Crop Type"
-\item "ag production by tech"}
-socioecon
-\itemize{
-\item "GDP MER by region"
-\item "GDP per capita MER by region"
-\item "Population by region"}
-transport
-\itemize{
-\item "transport service output by mode"
-\item "transport service output by tech (new)"}}
+\item{paramsSelect}{Default = "All".
 
-\item{paramsSelect}{Default = "All". If desired dplyr::select a subset of paramaters to analyze from the full list of parameters:
-c(# Energy
+Choose "All" or paramSet from "energy", "electricity", "transport",
+"water" , "socioecon" ,"ag" , "livestock" ,"land"  ,"emissions".
+
+Or pick an individual param from the list:
+
+# energy
 "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
 "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
 "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
@@ -118,30 +63,46 @@ c(# Energy
 "energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
 "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
 "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
-# Electricity
+
+# electricity
 "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
 "elecNewCapCost","elecNewCapGW","elecAnnualRetPrematureCost","elecAnnualRetPrematureGW","elecCumCapCost","elecCumCapGW","elecCumRetPrematureCost","elecCumRetPrematureGW",
-# Transport
+
+# transport
 "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
-# Water
+
+# water
 "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
-# Socio-economics
+
+# socioecon
 "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
+
+ # ag
+ "agProdbyIrrRfd", "agProdBiomass", "agProdForest","agProdByCrop",
+
+ # livestock
 "livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral","livestock_MeatDairybyTechImports", "livestock_MeatDairybySubsector",
-#Land use
-"landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",# Emissions
+
+# land
+"landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",
+
+ # emissions
 "emissLUC", "emissNonCO2BySectorGWPAR5","emissNonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
 "emissNonCO2ByResProdGWPAR5", "emissBySectorGWPAR5FFI","emissMethaneBySourceGWPAR5",
 "emissByGasGWPAR5FFI", "emissByGasGWPAR5LUC", "emissBySectorGWPAR5LUC",
 "emissNonCO2ByResProdGTPAR5", "emissBySectorGTPAR5FFI","emissMethaneBySourceGTPAR5",
 "emissByGasGTPAR5FFI", "emissByGasGTPAR5LUC","emissBySectorGTPAR5LUC",
-"emissCO2BySectorNoBio"
-#' @return A list with the scenarios in the gcam database, queries in the queryxml file and a
-tibble with gcam data formatted for metis charts.}
+"emissCO2BySectorNoBio"}
 
 \item{folderName}{Default = NULL}
 
 \item{nameAppend}{Default="". Name to append to saved files.}
+
+\item{saveData}{Default = "T". Set to F if do not want to save any data to file.}
+}
+\value{
+A list with the scenarios in the gcam database, queries in the queryxml file and a
+tibble with gcam data formatted for metis charts.
 }
 \description{
 This function connects to a gcamdatabase and uses a query file to

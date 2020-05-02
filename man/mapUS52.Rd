@@ -5,7 +5,9 @@
 \alias{mapUS52}
 \title{US 52 States
 Includes Alaska, Hawaii and Puerto Rico as well as DC.}
-\format{A SpatialPolygonsDataFrame}
+\format{
+A SpatialPolygonsDataFrame
+}
 \source{
 US Census bureau. \url{https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html}
 }

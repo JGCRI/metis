@@ -5,12 +5,10 @@
 #' @param dirOutputs Full path to directory for outputs
 #' @param folderName Default = NULL
 #' @param nameAppend  Default="". Name to append to saved files.
-#' @param gcamdatabasePath Path to gcam database folder
-#' @param gcamdatabaseName Name of gcam database
-#' @param queryxml Name of the query.xml file. By default it is "metisQueries.xml"
-#' @param queryPath Folder that contains the query.xml file.By default it is
-#' the same folder as specified by gcamdatabasePath
-#' @param scenOrigNames Original Scenarios names in GCAM database in a string vector.
+#' @param gcamdatabase Default = NULL. Full path to GCAM database folder.
+#' @param queryFile Defualt = NULL. When NULL metis loads pre-saved xml file metis::xmlMetisQueries
+#' @param dataProjFile Default = NULL. Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.
+#' @param scenOrigNames Default = "All". Original Scenarios names in GCAM database in a string vector.
 #' For example c('scenario1','scenario2).
 #' @param scenNewNames New Names which may be shorter and more useful for figures etc.
 #' Default will use Original Names. For example c('scenario1','scenario2)
@@ -18,77 +16,21 @@
 #' in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
 #' with full path is provided otherwise it will search for a dataProj.proj file in the existing
 #' folder which may have been created from an old run.
-#' @param dataProj Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.
-#' @param dataProjPath Folder that contains the dataProj or where it will be produced.
-#' By default it is the same folder as specified by gcamdatabasePath
 #' @param regionsSelect The regions to analyze in a vector. Example c('Colombia','Argentina'). Full list:
-#' c(USA, Africa_Eastern, Africa_Northern, Africa_Southern, Africa_Western, Australia_NZ, Brazil, Canada
+#'
+#' USA, Africa_Eastern, Africa_Northern, Africa_Southern, Africa_Western, Australia_NZ, Brazil, Canada
 #' Central America and Caribbean, Central Asia, China, EU-12, EU-15, Europe_Eastern, Europe_Non_EU,
 #' European Free Trade Association, India, Indonesia, Japan, Mexico, Middle East, Pakistan, Russia,
 #' South Africa, South America_Northern, South America_Southern, South Asia, South Korea, Southeast Asia,
 # Taiwan, Argentina, Colombia, Uruguay)
-#' @param queriesSelect Default = "All". Predetermined subsets or a vector of queries to read from the queryxml for example
-#' predetermined subsets would be c('water','energy') or
-#' selection of queries would be c("Total final energy by aggregate end-use sector", "Population by region").
-#' The queries must be availble in the queryxml file.
-#' Queryset names include: c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
-#' Current list of queries for each set include:
-#' water
-#' \itemize{
-#' \item "water withdrawals by crop"
-#' \item "water withdrawals by water mapping source"
-#' \item "water consumption by water mapping source"
-#' \item "water withdrawals by sector"
-#' \item "water consumption by sector"
-#' \item "biophysical water demand by crop type and land region"
-#' \item "Basin level available runoff"
-#' \item "water withdrawals by state, sector, basin (includes desal)"
-#' \item "water consumption by state, sector, basin (includes desal)"}
-#' energy
-#' \itemize{
-#' \item "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS"
-#' \item "Final energy by detailed end-use sector and fuel"
-#' \item "total final energy by aggregate sector"
-#' \item "refined liquids production by subsector"
-#' \item "building final energy by fuel"
-#' \item "industry final energy by fuel"
-#' \item "building final energy by subsector"
-#' \item "transport final energy by fuel"
-#' \item "transport final energy by mode and fuel"}
-#' electricity
-#' \itemize{
-#' \item "elec gen by gen tech USA"
-#' \item "elec gen by gen tech cogen USA"
-#' \item "elec gen by gen tech and cooling tech"
-#' \item "Electricity generation by aggregate technology"}
-#' land
-#' \itemize{
-#' \item "land allocation by crop and water source",
-#' \item "aggregated land allocation",
-#' \item "land allocation by crop"}
-#' emissions
-#' \itemize{
-#' \item "nonCO2 emissions by resource production",
-#' \item "nonCO2 emissions by sector"
-#' \item "Land Use Change Emission (future)"
-#' \item "CO2 emissions by sector (no bio)"
-#' \item "CO2 emissions by sector"}
-#' ag
-#' \itemize{
-#' \item "Ag Production by Crop Type"
-#' \item "ag production by tech"}
-#' socioecon
-#' \itemize{
-#' \item "GDP MER by region"
-#' \item "GDP per capita MER by region"
-#' \item "Population by region"}
-#' transport
-#' \itemize{
-#' \item "transport service output by mode"
-#' \item "transport service output by tech (new)"}
+#' @param paramsSelect Default = "All".
 #'
-#' @param paramsSelect Default = "All". If desired dplyr::select a subset of paramaters to analyze from the full list of parameters:
-#' c(# Energy
+#' Choose "All" or paramSet from "energy", "electricity", "transport",
+#' "water" , "socioecon" ,"ag" , "livestock" ,"land"  ,"emissions".
+#'
+#' Or pick an individual param from the list:
+#'
+#' # energy
 #' "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
 #' "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
 #' "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
@@ -98,63 +40,70 @@
 #' "energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
 #' "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
 #' "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
-#' # Electricity
+#'
+#' # electricity
 #' "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
 #' "elecNewCapCost","elecNewCapGW","elecAnnualRetPrematureCost","elecAnnualRetPrematureGW","elecCumCapCost","elecCumCapGW","elecCumRetPrematureCost","elecCumRetPrematureGW",
-#' # Transport
+#'
+#' # transport
 #' "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
-#' # Water
+#'
+#' # water
 #' "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
-#' # Socio-economics
+#'
+#' # socioecon
 #' "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
+#'
+#'  # ag
+#'  "agProdbyIrrRfd", "agProdBiomass", "agProdForest","agProdByCrop",
+#'
+#'  # livestock
 #' "livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral","livestock_MeatDairybyTechImports", "livestock_MeatDairybySubsector",
-#' #Land use
-#' "landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",# Emissions
+#'
+#' # land
+#' "landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",
+#'
+#'  # emissions
 #' "emissLUC", "emissNonCO2BySectorGWPAR5","emissNonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
 #' "emissNonCO2ByResProdGWPAR5", "emissBySectorGWPAR5FFI","emissMethaneBySourceGWPAR5",
 #' "emissByGasGWPAR5FFI", "emissByGasGWPAR5LUC", "emissBySectorGWPAR5LUC",
 #' "emissNonCO2ByResProdGTPAR5", "emissBySectorGTPAR5FFI","emissMethaneBySourceGTPAR5",
 #' "emissByGasGTPAR5FFI", "emissByGasGTPAR5LUC","emissBySectorGTPAR5LUC",
 #' "emissCO2BySectorNoBio"
-#' #' @return A list with the scenarios in the gcam database, queries in the queryxml file and a
+#' @param saveData Default = "T". Set to F if do not want to save any data to file.
+#' @return A list with the scenarios in the gcam database, queries in the queryxml file and a
 #' tibble with gcam data formatted for metis charts.
 #' @keywords gcam, gcam database, query
 #' @export
 
 
-metis.readgcam <- function(gcamdatabasePath = NULL,
-                           gcamdatabaseName = NULL,
-                           queryxml = "metisQueries.xml",
-                           queryPath = paste(getwd(),"/dataFiles/gcam",sep=""),
-                           scenOrigNames = NULL,
+metis.readgcam <- function(gcamdatabase = NULL,
+                           queryFile = NULL,
+                           dataProjFile = paste(getwd(), "/outputs/dataProj.proj", sep = ""),
+                           scenOrigNames = "All",
                            scenNewNames = NULL,
                            reReadData = T,
-                           dataProj = "dataProj.proj",
-                           dataProjPath = paste(getwd(), "/outputs", sep = ""),
                            dirOutputs = paste(getwd(), "/outputs", sep = ""),
                            regionsSelect = NULL,
-                           queriesSelect="All",
                            paramsSelect="All",
                            folderName=NULL,
-                           nameAppend=""
+                           nameAppend="",
+                           saveData = T
 ){
 
 
-  # gcamdatabasePath = NULL
-  # gcamdatabaseName = NULL
-  # queryxml = "metisQueries.xml"
-  # queryPath = paste(getwd(),"/dataFiles/gcam",sep="")
-  # scenOrigNames = NULL
+  # gcamdatabase = NULL
+  # queryFile = paste(getwd(),"/dataFiles/gcam/metisQueries.xml",sep="")
+  # dataProjFile = paste(getwd(), "/outputs/dataProj.proj", sep = "")
+  # scenOrigNames = "All"
   # scenNewNames = NULL
   # reReadData = T
-  # dataProj = "dataProj.proj"
-  # dataProjPath = paste(getwd(), "/outputs", sep = "")
   # dirOutputs = paste(getwd(), "/outputs", sep = "")
   # regionsSelect = NULL
-  # queriesSelect="All"
   # paramsSelect="All"
   # folderName=NULL
   # nameAppend=""
+  # saveData=T
 
 
   #----------------
@@ -169,70 +118,130 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     class_temp -> resource -> subRegAreaSum -> subsector->tblFinalNrgIntlAvShipMod -> 'transportation' ->
     'International Aviation' -> 'International Ship' -> 'International Aviation oil' -> 'a oil' ->
     'International Ship oil' -> 'International Aviation liquids' -> liquids -> 'International Ship liquids'->crop->
-    paramsSelectAll -> dataTemplate->tblFinalNrgIntlAvShip->datax
+    paramsSelectAll -> dataTemplate->tblFinalNrgIntlAvShip->datax->group->basin
 
 
 #---------------------
-# Query sets and query dplyr::select
+# Params and Queries
 #---------------------
-  querySets <- list('water'=c("water withdrawals by crop",
-                              "water withdrawals by water mapping source",
-                              "water consumption by water mapping source",
-                              "water withdrawals by sector",
-                              "water consumption by sector",
-                              "water withdrawals by state, sector, basin (includes desal)",
-                              "water consumption by state, sector, basin (includes desal)",
-                              "biophysical water demand by crop type and land region",
-                              "Basin level available runoff"),
-                    'energy'=c("primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS",
-                               "Final energy by detailed end-use sector and fuel",
-                               "total final energy by aggregate sector",
-                               "refined liquids production by subsector",
-                               "building final energy by fuel",
-                               "industry final energy by fuel",
-                               "building final energy by subsector",
-                               "transport final energy by fuel",
-                               "transport final energy by mode and fuel"),
-                    'electricity'=c("elec gen by gen tech USA",
-                                    "elec gen by gen tech cogen USA",
-                                    "elec gen by gen tech and cooling tech",
-                                    "Electricity generation by aggregate technology"),
-                    'land'=c("land allocation by crop and water source",
-                             "aggregated land allocation",
-                             "land allocation by crop"),
-                    'emissions'=c("nonCO2 emissions by resource production",
-                                  "nonCO2 emissions by sector",
-                                  "Land Use Change Emission (future)",
-                                  "CO2 emissions by sector (no bio)",
-                                  "CO2 emissions by sector"),
-                    'ag'=c("Ag Production by Crop Type",
-                           "ag production by tech"),
-                    'live'=c("meat and dairy production by tech"),
-                    'socioecon'=c("GDP MER by region",
-                                  "GDP per capita MER by region",
-                                  "Population by region"),
-                    'transport'=c("transport service output by mode",
-                                  "transport service output by tech (new)"))
+
+  paramQueryMap <- tibble::tribble(
+    ~group, ~param, ~query,
+    "energy","energyPrimaryByFuelEJ","primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS",
+    "energy","energyPrimaryRefLiqProdEJ", "refined liquids production by subsector",
+    "energy","energyFinalConsumBySecEJ", "total final energy by aggregate sector",
+    "energy","energyFinalByFuelBySectorEJ", "Final energy by detailed end-use sector and fuel",
+    "energy","energyFinalSubsecByFuelTranspEJ", "transport final energy by fuel",
+    "energy","energyFinalSubsecByFuelBuildEJ", "building final energy by fuel",
+    "energy","energyFinalSubsecByFuelIndusEJ", "industry final energy by fuel",
+    "energy","energyFinalSubsecBySectorBuildEJ", "building final energy by subsector",
+    "energy","energyFinalConsumByIntlShpAvEJ", "transport final energy by mode and fuel",
+    "energy","energyPrimaryByFuelMTOE", "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS",
+    "energy","energyPrimaryRefLiqProdMTOE", "refined liquids production by subsector",
+    "energy","energyFinalConsumBySecMTOE", "total final energy by aggregate sector",
+    "energy","energyFinalbyFuelMTOE", "Final energy by detailed end-use sector and fuel",
+    "energy","energyFinalSubsecByFuelTranspMTOE", "transport final energy by fuel",
+    "energy","energyFinalSubsecByFuelBuildMTOE", "building final energy by fuel",
+    "energy","energyFinalSubsecByFuelIndusMTOE", "industry final energy by fuel",
+    "energy","energyFinalSubsecBySectorBuildMTOE", "building final energy by subsector",
+    "energy","energyFinalConsumByIntlShpAvMTOE", "transport final energy by mode and fuel",
+    "energy","energyPrimaryByFuelTWh", "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS",
+    "energy","energyPrimaryRefLiqProdTWh", "refined liquids production by subsector",
+    "energy","energyFinalConsumBySecTWh", "total final energy by aggregate sector",
+    "energy","energyFinalbyFuelTWh", "Final energy by detailed end-use sector and fuel",
+    "energy","energyFinalSubsecByFuelTranspTWh", "transport final energy by fuel",
+    "energy","energyFinalSubsecByFuelBuildTWh", "building final energy by fuel",
+    "energy","energyFinalSubsecByFuelIndusTWh", "industry final energy by fuel",
+    "energy","energyFinalSubsecBySectorBuildTWh", "building final energy by subsector",
+    "energy","energyFinalConsumByIntlShpAvTWh", "transport final energy by mode and fuel",
+    # Electricity
+    "electricity","elecByTechTWh", c("industry final energy by fuel","elec gen by gen tech cogen USA","elec gen by gen tech and cooling tech"),
+    "electricity","elecCapByFuel", c("industry final energy by fuel","elec gen by gen tech cogen USA","elec gen by gen tech and cooling tech"),
+    "electricity","elecFinalBySecTWh", "Final energy by detailed end-use sector and fuel",
+    "electricity","elecFinalByFuelTWh", "Final energy by detailed end-use sector and fuel",
+    "electricity","elecNewCapCost", c("elec gen by gen tech and cooling tech and vintage","Electricity generation by aggregate technology"),
+    "electricity","elecNewCapGW", c("elec gen by gen tech and cooling tech and vintage","Electricity generation by aggregate technology"),
+    "electricity","elecAnnualRetPrematureCost", c("elec gen by gen tech and cooling tech and vintage","Electricity generation by aggregate technology"),
+    "electricity","elecAnnualRetPrematureGW", c("elec gen by gen tech and cooling tech and vintage","Electricity generation by aggregate technology"),
+    "electricity","elecCumCapCost", c("elec gen by gen tech and cooling tech and vintage","Electricity generation by aggregate technology"),
+    "electricity","elecCumCapGW", c("elec gen by gen tech and cooling tech and vintage","Electricity generation by aggregate technology"),
+    "electricity","elecCumRetPrematureCost", c("elec gen by gen tech and cooling tech and vintage","Electricity generation by aggregate technology"),
+    "electricity","elecCumRetPrematureGW", c("elec gen by gen tech and cooling tech and vintage","Electricity generation by aggregate technology"),
+    # Transport
+    "transport","transportPassengerVMTByMode", "transport service output by mode",
+    "transport","transportFreightVMTByMode", "transport service output by mode",
+    "transport","transportPassengerVMTByFuel","transport service output by tech (new)",
+    "transport","transportFreightVMTByFuel", "transport service output by tech (new)",
+    # Water
+    "water","watConsumBySec", "water consumption by state, sector, basin (includes desal)",
+    "water","watWithdrawBySec", "water withdrawals by state, sector, basin (includes desal)",
+    "water","watWithdrawByCrop", "water withdrawals by crop",
+    "water","watBioPhysCons", "biophysical water demand by crop type and land region",
+    "water","watIrrWithdrawBasin", "water withdrawals by water mapping source",
+    "water","watIrrConsBasin", "water consumption by water mapping source",
+    "water","watSupRunoffBasin", "Basin level available runoff",
+    # Socio-economics
+    "socioecon","gdpPerCapita", "GDP per capita MER by region",
+    "socioecon","gdp", "GDP MER by region",
+    "socioecon","gdpGrowthRate", "GDP Growth Rate (Percent)",
+    "socioecon","pop", "Population by region",
+    # Agriculture
+    "ag","agProdbyIrrRfd", "ag production by tech",
+    "ag","agProdBiomass", "Ag Production by Crop Type",
+    "ag","agProdForest", "Ag Production by Crop Type",
+    "ag","agProdByCrop", "Ag Production by Crop Type",
+    #Livestock
+    "livestock","livestock_MeatDairybyTechMixed", "meat and dairy production by tech",
+    "livestock","livestock_MeatDairybyTechPastoral", "meat and dairy production by tech",
+    "livestock","livestock_MeatDairybyTechImports", "meat and dairy production by tech",
+    "livestock","livestock_MeatDairybySubsector", "meat and dairy production by tech",
+    # Land use
+    "land","landIrrRfd", "land allocation by crop and water source",
+    "land","landIrrCrop", "land allocation by crop and water source",
+    "land","landRfdCrop", "land allocation by crop and water source",
+    "land","landAlloc", "aggregated land allocation",
+    "land","landAllocByCrop", "land allocation by crop",
+    # Emissions
+    "emissions","emissNonCO2BySectorGWPAR5", "nonCO2 emissions by sector",
+    "emissions","emissNonCO2BySectorGTPAR5", "nonCO2 emissions by sector",
+    "emissions","emissNonCO2BySectorOrigUnits", "nonCO2 emissions by sector",
+    "emissions","emissLUC", "Land Use Change Emission (future)",
+    "emissions","emissCO2BySectorNoBio", "CO2 emissions by sector (no bio)",
+    "emissions","emissNonCO2ByResProdGWPAR5", "nonCO2 emissions by resource production",
+    "emissions","emissMethaneBySourceGWPAR5", "nonCO2 emissions by sector",
+    "emissions","emissByGasGWPAR5FFI", c("nonCO2 emissions by resource production","nonCO2 emissions by sector"),
+    "emissions","emissByGasGWPAR5LUC", c("nonCO2 emissions by resource production","nonCO2 emissions by sector"),
+    "emissions","emissBySectorGWPAR5FFI", c("nonCO2 emissions by resource production","nonCO2 emissions by sector"),
+    "emissions","emissBySectorGWPAR5LUC", c("nonCO2 emissions by resource production","nonCO2 emissions by sector"),
+    "emissions","emissNonCO2ByResProdGTPAR5", "nonCO2 emissions by resource production",
+    "emissions","emissMethaneBySourceGTPAR5", "nonCO2 emissions by sector",
+    "emissions","emissByGasGTPAR5FFI", c("nonCO2 emissions by resource production","nonCO2 emissions by sector"),
+    "emissions","emissByGasGTPAR5LUC", c("nonCO2 emissions by resource production","nonCO2 emissions by sector"),
+    "emissions","emissBySectorGTPAR5FFI",  c("nonCO2 emissions by resource production","nonCO2 emissions by sector"),
+    "emissions","emissBySectorGTPAR5LUC", c("nonCO2 emissions by resource production","nonCO2 emissions by sector")
+  ); paramQueryMap
 
   # Check if queriesSelect is a querySet or one of the queries
-  if(!any(c("All","all") %in% queriesSelect)){
-  if(any(queriesSelect %in% names(querySets))){
-    queriesSelectx <- as.vector(unlist(querySets[names(querySets) %in% queriesSelect]))
-    print(paste("queriesSelect chosen include the following querySets: ",paste(queriesSelect,collapse=", "),".",sep=""))
+  if(!any(c("All","all") %in% paramsSelect)){
+  if(any(paramsSelect %in% unique(paramQueryMap$group))){
+    queriesSelectx <- as.vector(unlist(unique((paramQueryMap%>%dplyr::filter(group %in% paramsSelect))$query)))
+    print(paste("queriesSelect chosen include the following querySets: ",paste(paramsSelect,collapse=", "),".",sep=""))
     print(paste("Which include the following queries: ",paste(queriesSelectx,collapse=", "),".",sep=""))
     #print(paste("Other queries not run include: ",paste(as.vector(unlist(querySets))[!as.vector(unlist(querySets)) %in% queriesSelectx],collapse=", "),".",sep=""))
   }else{
-    if(any(queriesSelect %in% as.vector(unlist(querySets)))){
-      queriesSelectx <- queriesSelect[queriesSelect %in% as.vector(unlist(querySets))]
+    if(any(paramsSelect %in% as.vector(unique(paramQueryMap$param)))){
+      queriesSelectx<- as.vector(unlist(unique((paramQueryMap%>%dplyr::filter(param %in% paramsSelect))$query)))
       print(paste("queriesSelect chosen include the following queries: ",paste(queriesSelectx,collapse=", "),".",sep=""))
      # print(paste("Other queries not run include: ",paste(as.vector(unlist(querySets))[!as.vector(unlist(querySets)) %in% queriesSelectx],collapse=", "),".",sep=""))
     }else {
-      queriesSelectx <-  queriesSelect
-      print(paste("None of the queries in queriesSelect are available in metisQueries.xml: ",paste(queriesSelectx,collapse=", "),".",sep=""))
-      print(paste("Queries in metisQueries.xml include: ",paste(as.vector(unlist(querySets))[!as.vector(unlist(querySets)) %in% queriesSelectx],collapse=", "),".",sep=""))
-    }
+      queriesSelectx <-  NULL
+      print(paste("Params in metisQueries.xml include: ",paste(as.vector(unlist(unique(paramQueryMap$param))),collapse=", "),".",sep=""))
+      print("")
+      print(paste("Chosen paramsSelect: ",paste(paramsSelect,collapse=", "),".",sep=""))
+      stop("None of the params chosen are available.")
+      }
   }}else{
-    queriesSelectx <- as.vector(unlist(querySets))
+    queriesSelectx <- as.vector(unlist(unique(paramQueryMap$query)))
   }
 
 #-----------------------------
@@ -242,31 +251,157 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     dir.create(dirOutputs)}  # Output Directory
   if (!dir.exists(paste(dirOutputs, "/", folderName, sep = ""))){
     dir.create(paste(dirOutputs, "/", folderName, sep = ""))}
-  if (!dir.exists(paste(dirOutputs, "/", folderName,"/readGCAMTables",sep=""))){
-    dir.create(paste(dirOutputs, "/", folderName,"/readGCAMTables",sep=""))}  # Output Directory
-  if (!dir.exists(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam", sep = ""))){
-    dir.create(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam", sep = ""))}  # GCAM output directory
-  if (!dir.exists(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates", sep = ""))){
-    dir.create(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates", sep = ""))}  # GCAM output directory
-  if (!dir.exists(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Local", sep = ""))){
-    dir.create(paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Local", sep = ""))}  # GCAM output directory
+  if (!dir.exists(paste(dirOutputs, "/", folderName,"/readGCAM",sep=""))){
+    dir.create(paste(dirOutputs, "/", folderName,"/readGCAM",sep=""))}  # Output Directory
+  if (!dir.exists(paste(dirOutputs, "/", folderName, "/readGCAM/Tables_gcam", sep = ""))){
+    dir.create(paste(dirOutputs, "/", folderName, "/readGCAM/Tables_gcam", sep = ""))}  # GCAM output directory
+  if (!dir.exists(paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates", sep = ""))){
+    dir.create(paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates", sep = ""))}  # GCAM output directory
+  if (!dir.exists(paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Local", sep = ""))){
+    dir.create(paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Local", sep = ""))}  # GCAM output directory
 
-  # Check for new scenario names
-  if (is.null(scenNewNames)) {
-    scenNewNames <- scenOrigNames}
+#----------------
+# Set file paths
+#----------------
+
+  if(is.null(gcamdatabase)){
+    gcamdatabasePath = NULL
+    gcamdatabaseName = NULL
+  }else{
+    if(is.character(gcamdatabase)){
+      if(dir.exists(gcamdatabase)){
+        gcamdatabasePath <- gsub("[^/]+$","",gcamdatabase)
+        gcamdatabaseName <- basename(gcamdatabase)
+        print(paste("Connecting to GCAM database provided ",gcamdatabase,"...",sep=""))
+      }else{print(paste("The GCAM database path provided dos not exist: ", gcamdatabase, sep=""))}
+    }else{
+      print(paste("gcamdatabase provided is not a character string to the GCAM database path. Please check your entry."))
+    }
+  }
+
+  if(is.null(queryFile)){
+    XML::saveXML(metis::xmlMetisQueries, file=paste(dirOutputs, "/", folderName,"/readGCAM/metisQueries.xml", sep = ""))
+    queryFile <- paste(dirOutputs, "/", folderName,"/readGCAM/metisQueries.xml", sep = "")
+    queryPath <- gsub("[^/]+$","",queryFile)
+    queryxml <- basename(queryFile)
+  }else{
+    if(is.character(queryFile)){
+      if(file.exists(queryFile)){
+        queryPath <- gsub("[^/]+$","",queryFile)
+        queryxml <- basename(queryFile)
+        print(paste("Connecting to the queryFile provided ",queryFile,"...",sep=""))
+      }else{print(paste("The queryFile path provided dos not exist: ", queryFile, sep=""))}
+    }else{
+      print(paste("The queryFile path provided is not a character string to the query file. Please check your entry."))
+    }
+  }
+
+
+  if(is.null(dataProjFile)){
+    dataProj = "dataProj"
+    dataProjPath = paste(dirOutputs, "/", folderName,"/readGCAM/", sep = "")
+  }else{
+    if(is.list(dataProjFile)){
+      dataProjPath <- paste(dirOutputs, "/", folderName,"/readGCAM/", sep = "")
+      dataProj <- paste("dataProj", sep = "")
+    }else{
+    if(is.character(dataProjFile)){
+      if(grepl("/",dataProjFile)){
+        if(file.exists(dataProjFile)){
+        dataProjPath <- gsub("[^/]+$","",dataProjFile)
+        dataProj <- basename(dataProjFile)
+        print(paste("Connecting to the dataProjFile provided ",dataProjFile,"...",sep=""))}else{
+          dataProjPath <- gsub("[^/]+$","",dataProjFile)
+          dataProj <- basename(dataProjFile)
+          print(paste("Will save GCAM data to ",dataProjFile,"...",sep=""))
+        }
+      }else{
+        dataProjPath <- paste(dirOutputs, "/", folderName,"/readGCAM/", sep = "")
+        dataProj <- dataProjFile
+        print(paste("Will save data to: ", dataProjFile, sep=""))
+      }
+    }else{
+      print(paste("The dataProjFile path provided is not a character string to the query file. Please check your entry."))
+    }
+    }
+  }
+
+
+  # Set new scenario names if provided
+  if (is.null(scenOrigNames)) {
+    scenNewNames <- NULL
+    print("scenOrigNames is NULL so cannot assign scenNewNames.")
+    print("To set new names for scenarios please enter original names in scenOrigNames and then corresponding new names in scenNewNames.")
+  } else {
+    if(any(grepl("all",scenOrigNames,ignore.case = T))){
+      scenNewNames <- NULL
+      print("scenOrigNames is All so cannot assign scenNewNames.")
+      print("To set new names for scenarios please enter original names in scenOrigNames and then corresponding new names in scenNewNames.")
+    }
+    }
 
 #---------------------------------------------
 # Read gcam database or existing dataProj.proj
 #--------------------------------------------
+
+  # In case user sets reReadData=F T and provides a .proj file instead of a gcamdatabase
+  if((is.null(gcamdatabasePath) | is.null(gcamdatabaseName)) &
+     reReadData==T){
+    if(is.list(dataProjFile)){
+      reReadData=F
+      print("Setting reReadData to F because no gcamdatabase is provided but a valid dataProjFile provided.")
+    }else{
+    if(file.exists(dataProjFile)){
+    reReadData=F
+    print("Setting reReadData to F because no gcamdatabase is provided but a valid dataProjFile provided.")
+  }}
+  }
+
   if (!reReadData) {
  # Check for proj file path and folder if incorrect give error
+    if(!is.list(dataProjFile)){
     if(!file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){stop(paste("dataProj file: ", dataProjPath,"/",dataProj," is incorrect or doesn't exist.",sep=""))}
-
-    if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))) {
-      dataProjLoaded <- rgcam::loadProject(paste(dataProjPath, "/", dataProj, sep = ""))
-    } else {
-      stop(paste("No ", dataProj, " file exists. Please set reReadData=T to create dataProj.proj"))
     }
+
+  # Checking if dataProjFile is preloaded xml metis::xmlMetiQueries
+  if(is.list(dataProjFile)){
+    dataProjLoaded <- rgcam::loadProject(dataProjFile)
+    }else{
+   if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))) {
+      dataProjLoaded <- rgcam::loadProject(paste(dataProjPath, "/", dataProj, sep = ""))
+   } else {
+     stop(paste("No ", dataProj, " file exists. Please set reReadData=T to create dataProj.proj"))
+   }}
+
+      scenarios <- rgcam::listScenarios(dataProjLoaded); scenarios  # List of Scenarios in GCAM database
+      queries <- rgcam::listQueries(dataProjLoaded); queries  # List of queries in GCAM database
+
+      # Select Scenarios
+      if(is.null(scenOrigNames)){
+        scenOrigNames <- scenarios[1]
+        print(paste("scenOrigNames set to NULL so using only first scenario: ",scenarios[1],sep=""))
+        print(paste("from all available scenarios: ",paste(scenarios,collapse=", "),sep=""))
+        print("To run all scenarios please set scenOrigNames to 'All'")
+      } else {
+        if(any(grepl("all",scenOrigNames,ignore.case = T))){
+          scenOrigNames <- scenarios
+          print(paste("scenOrigNames set to 'All' so using all available scenarios: ",paste(scenarios,collapse=", "),sep=""))
+        } else {
+          if(any(scenOrigNames %in% scenarios)){
+            print(paste("scenOrigNames available in scenarios are :",paste(scenOrigNames[scenOrigNames %in% scenarios],collapse=", "),sep=""))
+            if(length(scenOrigNames[!scenOrigNames %in% scenarios])>0){
+              print(paste("scenOrigNames not available in scenarios are :",paste(scenOrigNames[!scenOrigNames %in% scenarios],collapse=", "),sep=""))}
+            if(length(scenarios[!scenarios %in% scenOrigNames])>0){
+              print(paste("Other scenarios not selected are :",paste(scenarios[!scenarios %in% scenOrigNames],collapse=", "),sep=""))}
+          } else {
+            print(paste("None of the scenOrigNames : ",paste(scenOrigNames,collapse=", "),sep=""))
+            print(paste("are in the available scenarios : ",paste(scenarios,collapse=", "),sep=""))
+          }
+        }
+      }
+
+      scenarios <- scenOrigNames # Set scenarios to chosen scenarios
+
   } else {
 
   # Check for query file and folder if incorrect give error
@@ -274,7 +409,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     if(file.exists(paste(queryPath, "/subSetQueries.xml", sep = ""))){unlink(paste(queryPath, "/subSetQueries.xml", sep = ""))}
 
     # Subset the query file if queriwsSelect is not "All"
-    if(!any(c("All","all") %in% queriesSelect)){
+    if(!any(c("All","all") %in% paramsSelect)){
 
     xmlFilePath = paste(queryPath, "/", queryxml, sep = "")
     xmlfile <- XML::xmlTreeParse(xmlFilePath)
@@ -289,7 +424,7 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     }
     XML::saveXML(top, file=paste(queryPath, "/subSetQueries.xml", sep = ""))
     } else {
-      print(paste("queriesSelect includes 'All' so running all available queries: ",paste(queriesSelectx,collapse=", "),".",sep=""))
+      print(paste("paramsSelect includes 'All' so running all available queries: ",paste(queriesSelectx,collapse=", "),".",sep=""))
       file.copy(from=paste(queryPath, "/", queryxml, sep = ""), to=paste(queryPath, "/subSetQueries.xml", sep = ""))
     }
 
@@ -301,9 +436,50 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
     if(is.null(gcamdatabasePath) | is.null(gcamdatabaseName)){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
     if(!file.exists(paste(gcamdatabasePath, "/", gcamdatabaseName, sep = ""))){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
 
-    if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){
+    # Get names of scenarios in database
+    # Save Message from rgcam::localDBConn to a text file and then extract names
+    zz <- file(paste(getwd(),"/test.txt",sep=""), open = "wt")
+    sink(zz,type="message")
+    rgcam::localDBConn(gcamdatabasePath,gcamdatabaseName)
+    sink()
+    # Read temp file
+    con <- file(paste(getwd(),"/test.txt",sep=""),"r")
+    first_line <- readLines(con,n=1)
+    close(con)
+    if(file.exists(paste(getwd(),"/test.txt",sep=""))){unlink(paste(getwd(),"/test.txt",sep=""))}
+    # Extract scenario names from saved line
+    s1 <- gsub(".*:","",first_line)
+    s2 <- gsub(" ","",s1)
+    scenarios <- as.vector(unlist(strsplit(s2,",")))
+    print(paste("All scenarios in data available: ", scenarios, sep=""))
+
+
+    if(file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){
       file.remove(paste(dataProjPath, "/", dataProj, sep = ""))}  # Delete old project file
 
+    # Select Scenarios
+    if(is.null(scenOrigNames)){
+      scenOrigNames <- scenarios[1]
+      print(paste("scenOrigNames set to NULL so using only first scenario: ",scenarios[1],sep=""))
+      print(paste("from all available scenarios: ",paste(scenarios,collapse=", "),sep=""))
+      print("To run all scenarios please set scenOrigNames to 'All'")
+    } else {
+        if(any(grepl("all",scenOrigNames,ignore.case = T))){
+          scenOrigNames <- scenarios
+          print(paste("scenOrigNames set to 'All' so using all available scenarios: ",paste(scenarios,collapse=", "),sep=""))
+        } else {
+          if(any(scenOrigNames %in% scenarios)){
+            print(paste("scenOrigNames available in scenarios are :",paste(scenOrigNames[scenOrigNames %in% scenarios],collapse=", "),sep=""))
+            if(length(scenOrigNames[!scenOrigNames %in% scenarios])>0){
+            print(paste("scenOrigNames not available in scenarios are :",paste(scenOrigNames[!scenOrigNames %in% scenarios],collapse=", "),sep=""))}
+            if(length(scenarios[!scenarios %in% scenOrigNames])>0){
+            print(paste("Other scenarios not selected are :",paste(scenarios[!scenarios %in% scenOrigNames],collapse=", "),sep=""))}
+          } else {
+            print(paste("None of the scenOrigNames : ",paste(scenOrigNames,collapse=", "),sep=""))
+            print(paste("are in the available scenarios : ",paste(scenarios,collapse=", "),sep=""))
+          }
+        }
+    }
 
     for (scenario_i in scenOrigNames) {
        dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = dataProj,
@@ -314,11 +490,19 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
               copy.mode = TRUE)
     file.remove(dataProj)
     dataProjLoaded <- rgcam::loadProject(paste(dataProjPath, "/", dataProj, sep = ""))
+
+    # Save list of scenarios and queries
+    scenarios <- rgcam::listScenarios(dataProjLoaded); scenarios  # List of Scenarios in GCAM database
+    queries <- rgcam::listQueries(dataProjLoaded); queries  # List of queries in GCAM database
   }
 
-  # Save list of scenarios and queries
-  scenarios <- rgcam::listScenarios(dataProjLoaded); scenarios  # List of Scenarios in GCAM database
   queries <- rgcam::listQueries(dataProjLoaded); queries  # List of Queries in queryxml
+
+  # Set new scenario names if provided
+  if (is.null(scenNewNames)) {
+    scenNewNames <- scenOrigNames}else{
+      scenNewNames <- scenNewNames[1:length(scenOrigNames)]
+    }
 
   # Get All Regions
   if(length(queries)==0){stop("No queries found. PLease check data.")}
@@ -330,56 +514,24 @@ metis.readgcam <- function(gcamdatabasePath = NULL,
 
   # Read in paramaters from query file to create formatted table
 
-  if(any(queriesSelect=="All")){queriesx <- queries} else{
+  if(any(paramsSelect=="All")){queriesx <- queries} else{
     if(!any(queriesSelectx %in% queries)){stop("None of the selected queries are available in the data that has been read.
-Please check your data if reRead was set to F. Otherwise check the queriesSelect entries and the queryxml file.")} else {
+Please check your data if reRead was set to F. Otherwise check the paramSelect entries and the queryxml file.")} else {
                                                 if(length(queriesSelectx[!(queriesSelectx %in% queries)])>0){
                                                   print(paste("Queries not available in queryxml: ", paste(queriesSelectx[!(queriesSelectx %in% queries)],collapse=", "), sep=""))
                                                   print(paste("Running remaining queriesSelect: ",  paste(queriesSelectx[(queriesSelectx %in% queries)],collapse=", "), sep=""))}
                                                 queriesx <- queriesSelectx}}
 
-  paramsSelectAll <- c(# Energy
-    "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
-    "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
-    "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
-    "energyFinalConsumByIntlShpAvEJ",
-    "energyPrimaryByFuelMTOE","energyPrimaryRefLiqProdMTOE",
-    "energyFinalConsumBySecMTOE","energyFinalbyFuelMTOE","energyFinalSubsecByFuelTranspMTOE",
-    "energyFinalSubsecByFuelBuildMTOE", "energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecBySectorBuildMTOE",
-    "energyFinalConsumByIntlShpAvMTOE",
-    "energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
-    "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
-    "energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
-    "energyFinalConsumByIntlShpAvTWh","energyFinalConsumBySecNOIntlShpAvTWh",
-    # Electricity
-    "elecByTechTWh","elecByTechTWh1","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
-    "elecNewCapCost","elecNewCapGW","elecAnnualRetPrematureCost","elecAnnualRetPrematureGW",
-    "elecCumCapCost","elecCumCapGW","elecCumRetPrematureCost","elecCumRetPrematureGW",
-    # Transport
-    "transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
-    # Water
-    "watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons",
-    "watIrrWithdrawBasin","watIrrConsBasin","watSupRunoffBasin",
-    # Socio-economics
-    "gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
-    # Agriculture
-    "agProdbyIrrRfd","agProdBiomass", "agProdForest", "agProdByCrop",
-    #Livestock
-    "livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral","livestock_MeatDairybyTechImports", "livestock_MeatDairybySubsector",
-    # Land use
-    "landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",
-    # Emissions
-    "emissNonCO2BySectorGWPAR5","emissNonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
-    "emissLUC", "emissCO2BySectorNoBio",
-    "emissNonCO2ByResProdGWPAR5", "emissMethaneBySourceGWPAR5",
-    "emissByGasGWPAR5FFI", "emissByGasGWPAR5LUC", "emissBySectorGWPAR5FFI","emissBySectorGWPAR5LUC",
-    "emissNonCO2ByResProdGTPAR5", "emissMethaneBySourceGTPAR5",
-    "emissByGasGTPAR5FFI", "emissByGasGTPAR5LUC","emissBySectorGTPAR5FFI","emissBySectorGTPAR5LUC")
+  paramsSelectAll <- as.vector(unlist(unique(paramQueryMap$param)))
 
 
   if(any(grepl("all",paramsSelect,ignore.case=T))){
     paramsSelectx <- paramsSelectAll
-  }else{paramsSelectx=paramsSelect}
+    } else {
+      if(any(paramsSelect %in% as.vector(unique(paramQueryMap$group)))){
+        paramsSelectx <- unique((paramQueryMap%>%dplyr::filter(group %in% paramsSelect))$param)
+      } else {paramsSelectx=paramsSelect}
+    }
 
   # Check if any of the selected parameters are available in the GCAM data
   if(any(paramsSelectx %in% paramsSelectAll)){
@@ -387,6 +539,8 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
   datax <- tibble::tibble()
 
   if(T){
+
+  queriesx <- queriesx[queriesx %in% queries]
 
   paramx<-"energyFinalConsumByIntlShpAvEJ"
   # Total final energy by aggregate end-use sector
@@ -399,6 +553,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::filter(mode %in% c("International Aviation", "International Ship"))%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "energyFinalConsumByIntlShpAvEJ",
                       sources = "Sources",
@@ -444,6 +599,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "energyFinalConsumBySecEJ",
                       sources = "Sources",
@@ -537,6 +693,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "energyFinalSubsecBySectorBuildEJ",
                       sector=gsub("comm\\scooling","Commercial CoolingHeating",sector),
@@ -586,6 +743,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::filter(!grepl("trn",input))%>%
         dplyr::mutate(input=dplyr::if_else(input=="biomass","bioenergy",input),
@@ -660,6 +818,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::rename(sector=input) %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(sector=gsub("elect_td_bld","electricity",sector),
                       sector=gsub("delivered gas","gas",sector),
@@ -708,6 +867,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::rename(sector=input) %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(sector=gsub("elect_td_ind","electricity",sector),
                       sector=gsub("wholesale gas","gas",sector),
@@ -772,6 +932,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       sector=gsub("trn\\_pass","transportation",sector),
                       sector = dplyr::case_when(grepl("trn_",sector)~"transportation",
                                                             TRUE~sector))%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "elecFinalBySecTWh",
                       sources = "Sources",
@@ -829,6 +990,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                       input=gsub("traditional\\sbiomass","biomass",input),
                       input=gsub("delivered\\sgas","gas",input),
                       input=gsub("district\\sheat","Other",input))%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "elecFinalByFuelTWh",
                       sources = "Sources",
@@ -872,6 +1034,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "energyPrimaryByFuelEJ",
                       fuel=gsub("biomass","bioenergy",fuel),
@@ -980,6 +1143,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         dplyr::filter(!sector %in% "industrial energy use")
       }
       tblUSA <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "elecByTechTWh",
                       sources = "Sources",
@@ -1019,6 +1183,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
           dplyr::filter(region %in% metis.assumptions()$US52)
       }
       tblUSACogen <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "elecByTechTWh",
                       sources = "Sources",
@@ -1055,6 +1220,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
             dplyr::filter(!region %in% metis.assumptions()$US52)
         }
         tblGCAMReg <- tbl %>%
+          dplyr::filter(scenario %in% scenOrigNames)%>%
           dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
           dplyr::mutate(param = "elecByTechTWh",
                         sources = "Sources",
@@ -1080,6 +1246,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
       }
 
+    if(nrow(tblUSA)>0 | nrow(tblUSACogen)>0 | nrow(tblGCAMReg)>0){
       # Combine USA with others
       commonNames = names(tblUSA)[names(tblUSA) %in% names(tblGCAMReg)];
       commonNames = commonNames[commonNames %in% names(tblUSACogen)];commonNames
@@ -1102,6 +1269,9 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
           dplyr::bind_rows(tblUSACogen %>%
                              dplyr::select(commonNames))
       }
+
+    } # Check different tblUSA, tblUSACogen and tblGCAMReg
+
       if(nrow(tbl)>0){
       tbl <- tbl %>%
         dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
@@ -1120,8 +1290,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
 
   # Capacity Calculation based on exogenous cap factors
   if(!is.null(tblelecByTechTWh)){
-  if(file.exists(paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""))){
-    capfactors <- data.table::fread(file=paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep=""),skip=5,encoding="Latin-1")
+    capfactors <- metis::data_capfactors
     capfactors
     paramx <- "elecCapByFuel"
     if(paramx %in% paramsSelectx){
@@ -1145,7 +1314,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
 
         datax <- dplyr::bind_rows(datax, tbl)
       }
-  } else {print(paste("Electricity capacity factor file capacity_factor_by_elec_gen_subsector.csv not found. Skipping param elecCapByFuel."))}
+
   } else {
   if("elec gen by gen tech and cooling tech" %in% queriesSelectx){
     print(paste("elecByTechTWh did not run so skipping param elecCapByFuel."))}
@@ -1161,19 +1330,21 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
     queryx <- "elec gen by gen tech and cooling tech and vintage"
     queryx2 <- "Electricity generation by aggregate technology"
     if (queryx %in% queriesx & queryx2 %in% queries) {
+
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if (!is.null(regionsSelect)) {
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
-      tbl2 <- rgcam::getQuery(dataProjLoaded, queryx2)  # Tibble
+      tblx <- rgcam::getQuery(dataProjLoaded, queryx2)  # Tibble
       if (!is.null(regionsSelect)) {
-        tbl2 <- tbl2 %>% dplyr::filter(region %in% regionsSelect)
+        tblx <- tblx %>% dplyr::filter(region %in% regionsSelect)
       }
 
       counter <- 0
       # NEW--must do loop throug scenarios due to current design of script
       start_year_i = max(min(unique(tbl$year)),metis.assumptions()$GCAMbaseYear)
       end_year_i = max(unique(tbl$year))
+      temp_list = list()
       for (scen in scenarios){
         elec_gen_vintage <- tbl %>%
           dplyr::filter(scenario==scen) %>%
@@ -1182,7 +1353,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         temp_list <- metis.elecInvest(elec_gen_vintage, world_regions=regionsSelect, start_year=start_year_i, end_year=end_year_i)
         start_yr_hydro <- start_year_i
         end_year <- end_year_i
-        temp_df <- tbl2 %>%
+        temp_df <- tblx %>%
           dplyr::filter(scenario==scen) %>%
           dplyr::rename(agg_tech=technology) %>%
           dplyr::filter(year>=start_yr_hydro, year<=end_year) %>%
@@ -1204,9 +1375,13 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
 
       addition_costsWhydro <- metis.hydroInvest(addition_costs=addition_costs, start_year=start_year_i)$addition_costs
 
+      tbl1<-tbl2<-tbl3<-tbl4<-tbl5<-tbl6<-tbl7<-tbl8<-tibble::tibble()
+
      # newCap_cost
+      if(nrow(addition_costsWhydro[["newCap_cost"]])>0){
       tbl1 <- addition_costsWhydro[["newCap_cost"]] %>%
         tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
         dplyr::mutate(year=as.numeric(year),
@@ -1242,10 +1417,13 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         origScen, origQuery, origUnits, origX)%>%
         dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
+      }
 
       # newCap_GW
+      if(nrow(addition_costs[["newCap_GW"]])>0){
       tbl2 <- addition_costs[["newCap_GW"]] %>%
         tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
         dplyr::mutate(year=as.numeric(year),
@@ -1280,11 +1458,13 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
-
+      }
 
       # retPremature_cost
+      if(nrow(addition_costs[["annualPrematureRet_cost"]])>0){
       tbl3 <- addition_costs[["annualPrematureRet_cost"]] %>%
         tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
         dplyr::mutate(year=as.numeric(year),
@@ -1319,10 +1499,13 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
+      }
 
       # retPremature_GW
+      if(nrow(addition_costs[["annualPrematureRet_GW"]])>0){
       tbl4 <- addition_costs[["annualPrematureRet_GW"]] %>%
         tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
         dplyr::mutate(year=as.numeric(year),
@@ -1357,11 +1540,13 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
-
+      }
 
       # newCap_cost
+      if(nrow(addition_costsWhydro[["cumCap_cost"]])>0){
       tbl5 <- addition_costsWhydro[["cumCap_cost"]] %>%
         tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
         dplyr::mutate(year=as.numeric(year),
@@ -1396,10 +1581,13 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
+      }
 
       # newCap_GW
+      if(nrow(addition_costs[["cumCap_GW"]])>0){
       tbl6 <- addition_costs[["cumCap_GW"]] %>%
         tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
         dplyr::mutate(year=as.numeric(year),
@@ -1434,11 +1622,14 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
+    }
 
 
       # retPremature_cost
+    if(nrow(addition_costs[["cumPrematureRet_cost"]])>0){
       tbl7 <- addition_costs[["cumPrematureRet_cost"]] %>%
         tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
         dplyr::mutate(year=as.numeric(year),
@@ -1473,10 +1664,13 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
+    }
 
       # retPremature_GW
+    if(nrow(addition_costs[["cumPrematureRet_GW"]])>0){
       tbl8 <- addition_costs[["cumPrematureRet_GW"]] %>%
         tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
         dplyr::mutate(year=as.numeric(year),
@@ -1511,6 +1705,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
+    }
 
       datax <- dplyr::bind_rows(datax, tbl1,tbl2,tbl3,tbl4,tbl5,tbl6,tbl7,tbl8)
     } else {
@@ -1537,8 +1732,9 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-        dplyr::mutate(sector=case_when(
+        dplyr::mutate(sector=dplyr::case_when(
           sector=="water_td_an_C"~"animal",
           sector=="water_td_dom_C"~"domestic",
           sector=="water_td_elec_C"~"electric",
@@ -1595,8 +1791,9 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
-        dplyr::mutate(sector=case_when(
+        dplyr::mutate(sector=dplyr::case_when(
           sector=="water_td_an_W"~"livestock",
           sector=="water_td_dom_W"~"municipal",
           sector=="water_td_elec_W"~"electricity",
@@ -1648,7 +1845,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       if(nrow(tbl)>0){
         if(any(unique(tbl$region) %in% metis.assumptions()$US52)){
           tbl <- tbl %>%
-            dplyr::mutate(value = case_when(region=="USA"~value/0.829937455747218,
+            dplyr::mutate(value = dplyr::case_when(region=="USA"~value/0.829937455747218,
                                             TRUE~value)) %>%
             dplyr::filter(!region %in% metis.assumptions()$US52)
         }
@@ -1663,6 +1860,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       tbl <- tbl %>%
         dplyr::filter(sector!="industry", sector!="mining" , sector!="municipal"
                       , sector!="electricity" , sector!="livestock", !grepl("water_td_",sector))%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "watWithdrawByCrop",
                       sources = "Sources",
@@ -1706,6 +1904,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "watBioPhysCons",
                       sources = "Sources",
@@ -1752,6 +1951,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         dplyr::filter(grepl("_irr_",input))%>%
         dplyr::mutate(input=gsub("water_td_irr_","",input),
                       input=gsub("_W","",input))%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "watIrrWithdrawBasin",
                       sources = "Sources",
@@ -1799,6 +1999,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         dplyr::filter(grepl("_irr_",input))%>%
         dplyr::mutate(input=gsub("water_td_irr_","",input),
                       input=gsub("_C","",input))%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "watIrrConsBasin",
                       sources = "Sources",
@@ -1845,6 +2046,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       tbl <- tbl %>%
         dplyr::mutate(class1=gsub("\\_.*","",basin))%>%
         dplyr::select(-basin)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "watSupRunoffBasin",
                       sources = "Sources",
@@ -1888,6 +2090,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "gdpPerCapita",
                       sources = "Sources",
@@ -1931,6 +2134,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "gdp",
                       sources = "Sources",
@@ -2009,6 +2213,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::filter(subsector=="Mixed")%>% # "Mixed"    "Pastoral" "Imports"
         dplyr::mutate(param = "livestock_MeatDairybyTechMixed",
@@ -2054,6 +2259,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "livestock_MeatDairybySubsector",
                       sources = "Sources",
@@ -2099,6 +2305,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::filter(subsector=="Pastoral")%>% # "Mixed"    "Pastoral" "Imports"
         dplyr::mutate(param = "livestock_MeatDairybyTechPastoral",
@@ -2143,6 +2350,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::filter(subsector=="Imports")%>% # "Mixed"    "Pastoral" "Imports"
         dplyr::mutate(param = "livestock_MeatDairybyTechImports",
@@ -2187,6 +2395,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "pop",
                       sources = "Sources",
@@ -2231,6 +2440,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::filter(Units=="Mt")%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "agProdbyIrrRfd",
                       sources = "Sources",
@@ -2278,6 +2488,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::filter(Units=="EJ",sector==output)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "agProdBiomass",
                       sources = "Sources",
@@ -2317,6 +2528,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::filter(Units=="billion m3",sector==output)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "agProdForest",
                       sources = "Sources",
@@ -2357,6 +2569,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::filter(Units=="Mt",sector==output, sector!="Pasture")%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "agProdByCrop",
                       sources = "Sources",
@@ -2397,6 +2610,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::filter(!is.na(water))%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "landIrrRfd",
                       sources = "Sources",
@@ -2441,6 +2655,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::filter(!is.na(water),water=="IRR")%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "landIrrCrop",
                       sources = "Sources",
@@ -2485,6 +2700,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
       }
       tbl <- tbl %>%
         dplyr::filter(!is.na(water),water=="RFD")%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "landRfdCrop",
                       sources = "Sources",
@@ -2540,6 +2756,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
           landleaf=gsub("shrubs","naturalOther",landleaf),
           landleaf=gsub("rock\\sand\\sdesert","naturalOther",landleaf),
           landleaf=gsub("tundra","naturalOther",landleaf))%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "landAlloc",
                       sources = "Sources",
@@ -2601,6 +2818,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
           landleaf=gsub("Grassland","Delete",landleaf),
           landleaf=gsub("UrbanLand","Delete",landleaf)) %>%
         dplyr::filter(!landleaf %in% c('Delete')) %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "landAllocByCrop",
                       sources = "Sources",
@@ -2646,6 +2864,7 @@ Please check your data if reRead was set to F. Otherwise check the queriesSelect
         dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
         dplyr::mutate(origValue=value,value=value*Convert*44/12,
                       origUnits=Units,units="Emissions LUC - (MTCO2eq)")%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(param = "emissLUC",
                       sources = "Sources",
@@ -2805,6 +3024,7 @@ paramx <- "emissCO2BySectorNoBio"
         class1=dplyr::if_else(class1=="biomass","Crops",class1),
         class1=gsub("backup\\_electricity","Electricity",class1),
         class1=gsub("csp\\_backup","Electricity",class1))%>%
+      dplyr::filter(scenario %in% scenOrigNames)%>%
       dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
       dplyr::mutate(param = "emissCO2BySectorNoBio",
                     sources = "Sources",
@@ -2843,6 +3063,7 @@ paramx <- "emissCO2BySectorNoBio"
       #emiss_sector_mapping <- read.csv(CO2mappingFile, skip=1)
       tbl <- tbl %>%
         dplyr::filter(ghg!="CO2")%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(class1=ghg, class2=sector) %>%
         dplyr::mutate(class1 = dplyr::case_when ((grepl("HFC", class1)) ~ "HFCs",
@@ -3009,6 +3230,7 @@ paramx <- "emissCO2BySectorNoBio"
       }
       #emiss_sector_mapping <- read.csv(CO2mappingFile, skip=1)
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(class1=sector, class2=ghg) %>%
         dplyr::filter(class2 %in% c('CH4', 'CH4_AGR', 'CH4_AWB')) %>%
@@ -3160,6 +3382,7 @@ paramx <- "emissCO2BySectorNoBio"
       }
       #emiss_sector_mapping <- read.csv(CO2mappingFile, skip=1)
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(class1 = ghg, class2 = resource) %>%
         dplyr::mutate(class1 = dplyr::case_when ((grepl("HFC", class1)) ~ "HFCs",
@@ -3479,6 +3702,7 @@ paramx <- "emissBySectorGWPAR5FFI"
       }
       tbl <- tbl %>%
         dplyr::filter(ghg!="CO2")%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(class1=ghg, class2=sector) %>%
         dplyr::mutate(class1 = dplyr::case_when ((grepl("HFC", class1)) ~ "HFCs",
@@ -3641,6 +3865,7 @@ paramx <- "emissBySectorGWPAR5FFI"
       }
       #emiss_sector_mapping <- read.csv(CO2mappingFile, skip=1)
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(class1=sector, class2=ghg) %>%
         dplyr::filter(class2 %in% c('CH4', 'CH4_AGR', 'CH4_AWB')) %>%
@@ -3793,6 +4018,7 @@ paramx <- "emissBySectorGWPAR5FFI"
       }
       #emiss_sector_mapping <- read.csv(CO2mappingFile, skip=1)
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(class1 = ghg, class2 = resource) %>%
         dplyr::mutate(class1 = dplyr::case_when ((grepl("HFC", class1)) ~ "HFCs",
@@ -4112,6 +4338,7 @@ paramx <- "emissBySectorGWPAR5FFI"
         dplyr::mutate(origValue=value,
                       origUnits=Units,
                       units="Variable Units")%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(class1=ghg, class2=sector) %>%
         dplyr::mutate(class1 = dplyr::case_when ((grepl("HFC", class1)) ~ paste("HFCs",units,sep="_"),
@@ -4270,6 +4497,7 @@ paramx <- "emissBySectorGWPAR5FFI"
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::filter(sector %in% vmt_array, !mode %in% c('Cycle', 'Walk', '2W', '4W', 'LDV', 'road')) %>%
         dplyr::mutate(mode=gsub("International\\sAviation","Plane",mode),
@@ -4326,6 +4554,7 @@ paramx <- "emissBySectorGWPAR5FFI"
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::filter(sector %in% vmt_array, !mode %in% c('road')) %>%
         dplyr::mutate(mode=dplyr::if_else(mode=="Domestic Ship","Ship",mode),
@@ -4375,6 +4604,7 @@ paramx <- "emissBySectorGWPAR5FFI"
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(subsector=dplyr::if_else(subsector=="biomass liquids","biomass liquids", subsector),
                       subsector=dplyr::if_else(subsector=="coal to liquids","coal to liquids", subsector),
@@ -4440,6 +4670,7 @@ paramx <- "emissBySectorGWPAR5FFI"
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::filter(sector %in% vmt_array, !technology %in% c('Cycle', 'Walk', '2W', '4W', 'LDV', 'road')) %>%
         dplyr::mutate(technology=gsub("NG","gas", technology),
@@ -4507,6 +4738,7 @@ paramx <- "emissBySectorGWPAR5FFI"
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::filter(sector %in% vmt_array, !technology %in% c('road')) %>%
         dplyr::mutate(technology=gsub("NG","gas", technology),
@@ -4571,6 +4803,7 @@ paramx <- "emissBySectorGWPAR5FFI"
       }
       tbl <- tbl %>%
         dplyr::rename(sector=input) %>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(sector=gsub("elect_td_trn","electricity",sector),
                       sector=gsub("delivered gas","gas",sector),
@@ -4721,6 +4954,9 @@ paramx <- "emissBySectorGWPAR5FFI"
                   classLabel1, classPalette1, classLabel2, classPalette2) %>%
     unique()
 
+
+  if(saveData){
+
   #---------------------
   # Save Data in CSV
   #---------------------
@@ -4745,12 +4981,12 @@ paramx <- "emissBySectorGWPAR5FFI"
     utils::write.csv(fullTemplateMap, file = paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""),row.names = F)
 
     # All Data
-    utils::write.csv(datax, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
+    utils::write.csv(datax, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
                                          "to", max(range(datax$x)),nameAppend, ".csv", sep = ""), row.names = F)
-    print(paste("GCAM data table saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions",nameAppend,".csv", sep = "")))
-    utils::write.csv(dataTemplate, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions",
+    print(paste("GCAM data table saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_gcam/gcamDataTable_AllRegions",nameAppend,".csv", sep = "")))
+    utils::write.csv(dataTemplate, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegions",
                                                 nameAppend,".csv", sep = ""),row.names = F)
-    print(paste("GCAM data template saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegions",nameAppend,".csv", sep = "")))
+    print(paste("GCAM data template saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegions",nameAppend,".csv", sep = "")))
 
     # Aggregate across Class 1
     dataxAggsums<-datax%>%
@@ -4767,11 +5003,11 @@ paramx <- "emissBySectorGWPAR5FFI"
 
     utils::write.csv(dataxAggClass,
                      file = gsub("//","/",paste(dirOutputs, "/", folderName,
-                                                "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggClass1",
+                                                "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggClass1",
                                                 nameAppend,".csv", sep = "")),row.names = F)
 
-    print(paste("GCAM data with aggregated to class 1 saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
-                              "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggClass1",
+    print(paste("GCAM data aggregated to class 1 saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
+                              "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggClass1",
                               nameAppend,".csv", sep = "")),sep=""))
 
     dataTemplateAggClass <- dataxAggClass %>%
@@ -4779,9 +5015,9 @@ paramx <- "emissBySectorGWPAR5FFI"
       dplyr::select(scenario, region, sources, param, units, class1,x, value) %>%
       unique()
 
-    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggClass1",nameAppend,".csv", sep = ""),
+    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggClass1",nameAppend,".csv", sep = ""),
                      row.names = F)
-    print(paste("GCAM data template aggregated to class 1 saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggClass1",nameAppend,".csv", sep = "")))
+    print(paste("GCAM data template aggregated to class 1 saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggClass1",nameAppend,".csv", sep = "")))
 
 
     # Aggregate across Class 1
@@ -4799,11 +5035,11 @@ paramx <- "emissBySectorGWPAR5FFI"
 
     utils::write.csv(dataxAggClass,
                      file = gsub("//","/",paste(dirOutputs, "/", folderName,
-                                                "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggClass2",
+                                                "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggClass2",
                                                 nameAppend,".csv", sep = "")),row.names = F)
 
-    print(paste("GCAM data with aggregated to class 2 saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
-                                                                                   "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggClass2",
+    print(paste("GCAM data aggregated to class 2 saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
+                                                                                   "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggClass2",
                                                                                    nameAppend,".csv", sep = "")),sep=""))
 
     dataTemplateAggClass <- dataxAggClass %>%
@@ -4811,9 +5047,9 @@ paramx <- "emissBySectorGWPAR5FFI"
       dplyr::select(scenario, region, sources, param, units, class2,x, value) %>%
       unique()
 
-    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggClass2",nameAppend,".csv", sep = ""),
+    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggClass2",nameAppend,".csv", sep = ""),
                      row.names = F)
-    print(paste("GCAM data template aggregated to class 2 saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggClass2",nameAppend,".csv", sep = "")))
+    print(paste("GCAM data template aggregated to class 2 saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggClass2",nameAppend,".csv", sep = "")))
 
 
     # Aggregate across Param
@@ -4831,11 +5067,11 @@ paramx <- "emissBySectorGWPAR5FFI"
 
     utils::write.csv(dataxAggClass,
                      file = gsub("//","/",paste(dirOutputs, "/", folderName,
-                                                "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggParam",
+                                                "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggParam",
                                                 nameAppend,".csv", sep = "")),row.names = F)
 
-    print(paste("GCAM data with aggregated to param saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
-                                                                                   "/readGCAMTables/Tables_gcam/gcamDataTable_AllRegions_aggParam",
+    print(paste("GCAM data aggregated to param saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
+                                                                                   "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggParam",
                                                                                    nameAppend,".csv", sep = "")),sep=""))
 
     dataTemplateAggClass <- dataxAggClass %>%
@@ -4843,16 +5079,16 @@ paramx <- "emissBySectorGWPAR5FFI"
       dplyr::select(scenario, region, sources, param, units, x, value) %>%
       unique()
 
-    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggParam",nameAppend,".csv", sep = ""),
+    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggParam",nameAppend,".csv", sep = ""),
                      row.names = F)
-    print(paste("GCAM data template aggregated to param saved to: ", paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_AllRegionsAggParam",nameAppend,".csv", sep = "")))
+    print(paste("GCAM data template aggregated to param saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggParam",nameAppend,".csv", sep = "")))
 
     # Print output for each region
     # for (region_i in regionsSelect[(regionsSelect %in% unique(datax$region))]) {
     #
     #   print(paste("Saving data table for region: ",region_i,"...", sep = ""))
     #   utils::write.csv(datax %>% dplyr::filter(region == region_i),
-    #                    file = paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,nameAppend,".csv", sep = ""),row.names = F)
+    #                    file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_gcam/gcamDataTable_",region_i,nameAppend,".csv", sep = ""),row.names = F)
     #
     #   # Aggregate across classes
     #   dataxAggsums<-datax%>%
@@ -4868,23 +5104,29 @@ paramx <- "emissBySectorGWPAR5FFI"
     #   dataxAgg<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
     #
     #   utils::write.csv(dataxAgg %>% dplyr::filter(region == region_i),
-    #                    file = gsub("//","/",paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_gcam/gcamDataTable_",
+    #                    file = gsub("//","/",paste(dirOutputs, "/", folderName, "/readGCAM/Tables_gcam/gcamDataTable_",
     #                                 region_i,"_aggClass",nameAppend,".csv", sep = "")),row.names = F)
     #
     #   # utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
-    #   #                  file = gsub("//","/",paste(dirOutputs, "/", folderName, "/readGCAMTables/Tables_Templates/template_Regional_",
+    #   #                  file = gsub("//","/",paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_",
     #   #                                    region_i,nameAppend,".csv", sep = "")),row.names = F)
     #   # #utils::write.csv(dataTemplate %>% dplyr::filter(region == region_i),
     #   #                 file = paste(dirOutputs, "/", folderName, "/Tables/Tables_Local/local_Regional_",region_i,".csv", sep = ""),row.names = F)
     #
     #   print(gsub("//","/",paste("Table saved to: ",dirOutputs, "/", folderName,
-    #               "/readGCAMTables/Tables_gcam/gcamDataTable_",region_i,"_aggClass",nameAppend,".csv", sep = "")))
+    #               "/readGCAM/Tables_gcam/gcamDataTable_",region_i,"_aggClass",nameAppend,".csv", sep = "")))
     # }
+
+  } # Close if saveData
 
   }else{print("No data for any of the regions, params or queries selected")} # Close datax nrow check
 
   }else{ # CLose Param Check
     print(paste("None of the parameters in paramsSelect: ", paste(paramsSelect,collapse=",")," are available."))}
+
+  print("Outputs returned as list containing data, dataTemplate, scenarios and queries.")
+  print("View as listName$data, listName$dataTemplate, listName$scenarios, listName$queries.")
+  print("metis.readgcam run completed.")
 
   return(list(data = datax, dataTemplate = dataTemplate, scenarios = scenarios, queries = queries))
 

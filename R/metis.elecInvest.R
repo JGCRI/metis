@@ -23,7 +23,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     supplysector->half.life->steepness->lifetime->s_curve_adj->OG_gen->gen_expect->
     prev_yr_expect->additions->add_adj->ret_adj->ret_adj_OG->natural_retire->input.capital->
     fixed.charge.rate->add_GW->capital.overnight->early_ret->early_ret_GW->agg_tech->
-    cap_invest->mutate_all->unrec_Cap-> dep_factor -> unrec_cap
+    cap_invest->unrec_Cap-> dep_factor -> unrec_cap
 
   # ============================================================================
   # Mapping files
@@ -32,12 +32,12 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
                               vintage=c(metis.assumptions()$GCAMbaseYear,seq(metis.assumptions()$GCAMbaseYear+5,2100,by=5))))%>%
     dplyr::mutate(year=as.character(year));years_mapping
 
-  cap_cost_tech <- data.table::fread(paste(getwd(),"/dataFiles/gcam/investCalcs/L2233.GlobalTechCapital_elecPassthru.csv", sep=""), skip=1, stringsAsFactors = FALSE)
-  cap_cost_cool <- data.table::fread(paste(getwd(),"/dataFiles/gcam/investCalcs/L2233.GlobalTechCapital_elec_cool.csv", sep=""), skip=1, stringsAsFactors = FALSE)
-  cap_cost_int_tech <- data.table::fread(paste(getwd(),"/dataFiles/gcam/investCalcs/L2233.GlobalIntTechCapital_elec.csv", sep=""), skip=1, stringsAsFactors = FALSE)
-  cap_cost_int_cool <- data.table::fread(paste(getwd(),"/dataFiles/gcam/investCalcs/L2233.GlobalIntTechCapital_elec_cool.csv", sep=""), skip=1, stringsAsFactors = FALSE)
+  cap_cost_tech <- metis::data_cap_cost_tech
+  cap_cost_cool <- metis::data_cap_cost_cool
+  cap_cost_int_tech <- metis::data_cap_cost_int_tech
+  cap_cost_int_cool <- metis::data_cap_cost_int_cool
 
-  s_curve_shutdown <- tibble::as_tibble(data.table::fread(paste(getwd(),"/dataFiles/gcam/investCalcs/A23.globaltech_retirement.csv",sep=""), skip=1))%>%
+  s_curve_shutdown <- tibble::as_tibble(metis::data_A23.globaltech_retirement)%>%
     dplyr::mutate(year=dplyr::if_else(year=="final-historical-year","final-calibration-year",year),
                   year=dplyr::if_else(year=="initial-nonhistorical-year","initial-future-year",year)); s_curve_shutdown
 
@@ -58,12 +58,12 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
   # Combine the cooling technology cost sheets, and the electricity generating technology cost dataframes
   elec_gen_tech_cost <- rbind(cap_cost_tech, cap_cost_int_tech)
   # Get dispatchable capacity factor column added to elec_gen_tech_cost
-  capac_fac <- data.table::fread(paste(getwd(),"/dataFiles/gcam/investCalcs/L223.GlobalTechCapFac_elec.csv", sep=""), skip=1, stringsAsFactors = FALSE)
+  capac_fac <- metis::data_capac_fac
   capac_fac %>% dplyr::select(-sector.name, -subsector.name) -> capac_fac_new
   elec_gen_tech_cost <- merge(elec_gen_tech_cost, capac_fac_new, by=c("technology", "year"), all=TRUE)
   elec_gen_tech_cost <- elec_gen_tech_cost[, c(3,4,1,2,5,6,7,8)]  # Redplyr::arrange columns
   # Get intermittent capacity factor column added to elec_gen_tech_cost
-  capac_fac_int <- data.table::fread(paste(getwd(),"/dataFiles/gcam/investCalcs/L223.GlobalIntTechCapFac_elec.csv", sep=""), skip=1, stringsAsFactors = FALSE)
+  capac_fac_int <- metis::data_capac_fac_int
   capac_fac_int %>% dplyr::select(-sector.name, -subsector.name) %>%
     dplyr::rename(technology=intermittent.technology) %>% dplyr::rename(capacity.factor.temp=capacity.factor) -> capac_fac_int_new
   elec_gen_tech_cost <- merge(elec_gen_tech_cost, capac_fac_int_new, by=c("technology", "year"), all=TRUE)
@@ -107,7 +107,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
   D[,'old.technology'] <- NA
   cap_cost <- rbind(cap_cost, D)
 
-  tech_mapping <- data.table::fread(paste(getwd(),"/dataFiles/gcam/investCalcs/agg_tech_mapping.csv", sep=""), skip=1)
+  tech_mapping <- metis::data_tech_mapping
 
   # ============================================================================
   # Some constants and conversion factors
@@ -319,7 +319,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::filter(Year >= start_year) %>%
     dplyr::mutate(cap_invest=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,cap_invest))%>%
     tidyr::spread(Year, cap_invest) %>%
-    mutate_all(~replace(., is.na(.), 0))%>%
+    dplyr::mutate_all(~replace(., is.na(.), 0))%>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
     dplyr::arrange(region, agg_tech)-> newCap_cost
 
@@ -335,7 +335,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::filter(Year >= start_year) %>%
     dplyr::mutate(cap_invest=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,cap_invest))%>%
     tidyr::spread(Year, cap_invest) %>%
-    mutate_all(~replace(., is.na(.), 0))%>%
+    dplyr::mutate_all(~replace(., is.na(.), 0))%>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
     dplyr::arrange(region, agg_tech)-> cumCap_cost
 
@@ -347,7 +347,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::ungroup() %>%
     dplyr::filter(Year >= start_year) %>%
     tidyr::spread(Year, add_GW) %>%
-    mutate_all(~replace(., is.na(.), 0)) %>%
+    dplyr::mutate_all(~replace(., is.na(.), 0)) %>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
     dplyr::arrange(region, agg_tech) -> newCap_GW
 
@@ -362,7 +362,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::ungroup()%>%
     dplyr::filter(Year >= start_year) %>%
     tidyr::spread(Year, add_GW) %>%
-    mutate_all(~replace(., is.na(.), 0)) %>%
+    dplyr::mutate_all(~replace(., is.na(.), 0)) %>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
     dplyr::arrange(region, agg_tech) -> cumCap_GW
 
@@ -376,7 +376,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::filter(Year >= start_year) %>%
     dplyr::mutate(unrec_cap=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,unrec_cap))%>%
     tidyr::spread(Year, unrec_cap) %>%
-    mutate_all(~replace(., is.na(.), 0)) %>%
+    dplyr::mutate_all(~replace(., is.na(.), 0)) %>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
     dplyr::arrange(region, agg_tech) -> annualPrematureRet_cost
 
@@ -393,7 +393,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::filter(Year >= start_year) %>%
     dplyr::mutate(unrec_cap=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,unrec_cap))%>%
     tidyr::spread(Year, unrec_cap) %>%
-    mutate_all(~replace(., is.na(.), 0)) %>%
+    dplyr::mutate_all(~replace(., is.na(.), 0)) %>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
     dplyr::arrange(region, agg_tech) -> cumPrematureRet_cost
 
@@ -407,7 +407,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::mutate(early_ret_GW = early_ret_GW * -1) %>%
     dplyr::filter(Year >= start_year) %>%
     tidyr::spread(Year, early_ret_GW) %>%
-    mutate_all(~replace(., is.na(.), 0)) %>%
+    dplyr::mutate_all(~replace(., is.na(.), 0)) %>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
     dplyr::arrange(region, agg_tech) -> annualPrematureRet_GW
 
@@ -423,7 +423,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::mutate(early_ret_GW = early_ret_GW * -1) %>%
     dplyr::filter(Year >= start_year) %>%
     tidyr::spread(Year, early_ret_GW) %>%
-    mutate_all(~replace(., is.na(.), 0)) %>%
+    dplyr::mutate_all(~replace(., is.na(.), 0)) %>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
     dplyr::arrange(region, agg_tech) -> cumPrematureRet_GW
 
