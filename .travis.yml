@@ -6,6 +6,11 @@ dist: xenial
 
 r_github_packages:
   - r-spatial/lwgeom
+  
+r_packages:
+  - sp
+  - rgdal
+  - rgeos
 
 warnings_are_errors: false
 
@@ -17,3 +22,4 @@ addons:
       - libgdal-dev
       - libmagick++-dev
       - libudunits2-dev
+      - libgeos-dev
