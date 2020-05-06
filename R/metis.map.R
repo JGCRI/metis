@@ -376,12 +376,19 @@ utils::assignInNamespace(x="process_facet_layout", value=process_facet_layout, n
 
 if(printFig!=F){
 if(!is.null(dirOutputs)){
+  if(grepl("/",dirOutputs)){
+    if(!dir.exists(dirOutputs)){
+      print(paste("dirOutputs entered: ", dirOutputs, " is invalid.",sep=""))
+      stop("Please enter a valid directory path or set to NULL for default 'output' folder.")
+    }
+  }else{
   dirOutputs = paste(getwd(),"/",gsub(paste(getwd(),"/",sep=""),"",dirOutputs),sep="")
   if (!dir.exists(paste(dirOutputs,sep=""))){dir.create(paste(dirOutputs,sep=""))}
   if(!is.null(folderName)){
     if (!dir.exists(paste(dirOutputs,"/",folderName,sep=""))){dir.create(paste(dirOutputs,"/",folderName,sep=""))}
     if(dirOutputs==paste(dirOutputs,sep="")){dirOutputs=paste(dirOutputs,"/",folderName,sep="")}
   }
+}
 }else{
   if(!is.null(folderName)){
     dirOutputs=paste(getwd(),"/",folderName,sep="")
