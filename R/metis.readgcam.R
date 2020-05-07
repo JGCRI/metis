@@ -155,8 +155,8 @@ metis.readgcam <- function(gcamdatabase = NULL,
     "energy","energyFinalSubsecBySectorBuildTWh", "building final energy by subsector",
     "energy","energyFinalConsumByIntlShpAvTWh", "transport final energy by mode and fuel",
     # Electricity
-    "electricity","elecByTechTWh", c("industry final energy by fuel","elec gen by gen tech cogen USA","elec gen by gen tech and cooling tech"),
-    "electricity","elecCapByFuel", c("industry final energy by fuel","elec gen by gen tech cogen USA","elec gen by gen tech and cooling tech"),
+    "electricity","elecByTechTWh", c("industry final energy by fuel","elec gen by gen tech cogen USA","elec gen by gen tech USA","elec gen by gen tech and cooling tech"),
+    "electricity","elecCapByFuel", c("industry final energy by fuel","elec gen by gen tech cogen USA","elec gen by gen tech USA","elec gen by gen tech and cooling tech"),
     "electricity","elecFinalBySecTWh", "Final energy by detailed end-use sector and fuel",
     "electricity","elecFinalByFuelTWh", "Final energy by detailed end-use sector and fuel",
     "electricity","elecNewCapCost", c("elec gen by gen tech and cooling tech and vintage","Electricity generation by aggregate technology"),
@@ -222,7 +222,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
   ); paramQueryMap
 
   # Check if queriesSelect is a querySet or one of the queries
-  if(!any(c("All","all") %in% paramsSelect)){
+  if(!any(c("all","All","ALL") %in% paramsSelect)){
   if(any(paramsSelect %in% unique(paramQueryMap$group))){
     queriesSelectx <- as.vector(unlist(unique((paramQueryMap%>%dplyr::filter(group %in% paramsSelect))$query)))
     print(paste("queriesSelect chosen include the following querySets: ",paste(paramsSelect,collapse=", "),".",sep=""))
@@ -270,8 +270,8 @@ metis.readgcam <- function(gcamdatabase = NULL,
   }else{
     if(is.character(gcamdatabase)){
       if(dir.exists(gcamdatabase)){
-        gcamdatabasePath <- gsub("[^/]+$","",gcamdatabase)
-        gcamdatabaseName <- basename(gcamdatabase)
+        gcamdatabasePath <- gsub("/$","",gsub("[^/]+$","",gcamdatabase)); gcamdatabasePath
+        gcamdatabaseName <- basename(gcamdatabase); gcamdatabaseName
         print(paste("Connecting to GCAM database provided ",gcamdatabase,"...",sep=""))
       }else{print(paste("The GCAM database path provided dos not exist: ", gcamdatabase, sep=""))}
     }else{
@@ -299,10 +299,10 @@ metis.readgcam <- function(gcamdatabase = NULL,
 
   if(is.null(dataProjFile)){
     dataProj = "dataProj"
-    dataProjPath = paste(dirOutputs, "/", folderName,"/readGCAM/", sep = "")
+    dataProjPath = gsub("//","/",paste(dirOutputs, "/", folderName,"/readGCAM/", sep = ""))
   }else{
     if(is.list(dataProjFile)){
-      dataProjPath <- paste(dirOutputs, "/", folderName,"/readGCAM/", sep = "")
+      dataProjPath <- gsub("//","/",paste(dirOutputs, "/", folderName,"/readGCAM/", sep = ""))
       dataProj <- paste("dataProj", sep = "")
     }else{
     if(is.character(dataProjFile)){
@@ -313,12 +313,12 @@ metis.readgcam <- function(gcamdatabase = NULL,
         print(paste("Connecting to the dataProjFile provided ",dataProjFile,"...",sep=""))}else{
           dataProjPath <- gsub("[^/]+$","",dataProjFile)
           dataProj <- basename(dataProjFile)
-          print(paste("Will save GCAM data to ",dataProjFile,"...",sep=""))
+          print(gsub("//","/",paste("Will save GCAM data to ",dataProjPath,"/",dataProjFile,"...",sep="")))
         }
       }else{
-        dataProjPath <- paste(dirOutputs, "/", folderName,"/readGCAM/", sep = "")
+        dataProjPath <- gsub("//","/",paste(dirOutputs, "/", folderName,"/readGCAM/", sep = ""))
         dataProj <- dataProjFile
-        print(paste("Will save data to: ", dataProjFile, sep=""))
+        print(paste("Will save data to: ", dataProjPath,"/",dataProjFile, sep=""))
       }
     }else{
       print(paste("The dataProjFile path provided is not a character string to the query file. Please check your entry."))
@@ -333,7 +333,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
     print("scenOrigNames is NULL so cannot assign scenNewNames.")
     print("To set new names for scenarios please enter original names in scenOrigNames and then corresponding new names in scenNewNames.")
   } else {
-    if(any(grepl("all",scenOrigNames,ignore.case = T))){
+    if(any(c("all","All","ALL") %in% scenOrigNames)){
       scenNewNames <- NULL
       print("scenOrigNames is All so cannot assign scenNewNames.")
       print("To set new names for scenarios please enter original names in scenOrigNames and then corresponding new names in scenNewNames.")
@@ -360,15 +360,16 @@ metis.readgcam <- function(gcamdatabase = NULL,
   if (!reReadData) {
  # Check for proj file path and folder if incorrect give error
     if(!is.list(dataProjFile)){
-    if(!file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){stop(paste("dataProj file: ", dataProjPath,"/",dataProj," is incorrect or doesn't exist.",sep=""))}
+    if(!file.exists(gsub("//","/",paste(dataProjPath, "/", dataProj, sep = "")))){
+      stop(gsub("//","/",paste("dataProj file: ", dataProjPath,"/",dataProj," is incorrect or doesn't exist.",sep="")))}
     }
 
   # Checking if dataProjFile is preloaded xml metis::xmlMetiQueries
   if(is.list(dataProjFile)){
     dataProjLoaded <- rgcam::loadProject(dataProjFile)
     }else{
-   if (file.exists(paste(dataProjPath, "/", dataProj, sep = ""))) {
-      dataProjLoaded <- rgcam::loadProject(paste(dataProjPath, "/", dataProj, sep = ""))
+   if (file.exists(gsub("//","/",paste(dataProjPath, "/", dataProj, sep = "")))) {
+      dataProjLoaded <- rgcam::loadProject(gsub("//","/",paste(dataProjPath, "/", dataProj, sep = "")))
    } else {
      stop(paste("No ", dataProj, " file exists. Please set reReadData=T to create dataProj.proj"))
    }}
@@ -383,7 +384,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
         print(paste("from all available scenarios: ",paste(scenarios,collapse=", "),sep=""))
         print("To run all scenarios please set scenOrigNames to 'All'")
       } else {
-        if(any(grepl("all",scenOrigNames,ignore.case = T))){
+        if(any(c("all","All","ALL") %in% scenOrigNames)){
           scenOrigNames <- scenarios
           print(paste("scenOrigNames set to 'All' so using all available scenarios: ",paste(scenarios,collapse=", "),sep=""))
         } else {
@@ -405,13 +406,13 @@ metis.readgcam <- function(gcamdatabase = NULL,
   } else {
 
   # Check for query file and folder if incorrect give error
-    if(!file.exists(paste(queryPath, "/", queryxml, sep = ""))){stop(paste("query file: ", queryPath,"/",queryxml," is incorrect or doesn't exist.",sep=""))}
-    if(file.exists(paste(queryPath, "/subSetQueries.xml", sep = ""))){unlink(paste(queryPath, "/subSetQueries.xml", sep = ""))}
+    if(!file.exists(gsub("//","/",paste(queryPath, "/", queryxml, sep = "")))){stop(paste("query file: ", queryPath,"/",queryxml," is incorrect or doesn't exist.",sep=""))}
+    if(file.exists(gsub("//","/",paste(queryPath, "/subSetQueries.xml", sep = "")))){unlink(gsub("//","/",paste(queryPath, "/subSetQueries.xml", sep = "")))}
 
     # Subset the query file if queriwsSelect is not "All"
-    if(!any(c("All","all") %in% paramsSelect)){
+    if(!any(c("All","all","ALL") %in% paramsSelect)){
 
-    xmlFilePath = paste(queryPath, "/", queryxml, sep = "")
+    xmlFilePath = gsub("//","/",paste(queryPath, "/", queryxml, sep = ""))
     xmlfile <- XML::xmlTreeParse(xmlFilePath)
     xmltop <- XML::xmlRoot(xmlfile)
     top <- XML::xmlNode(XML::xmlName(xmltop))
@@ -422,19 +423,23 @@ metis.readgcam <- function(gcamdatabase = NULL,
           top <- XML::addChildren(top, xmltop[[i]])
       }
     }
-    XML::saveXML(top, file=paste(queryPath, "/subSetQueries.xml", sep = ""))
+    XML::saveXML(top, file=gsub("//","/",paste(queryPath, "/subSetQueries.xml", sep = "")))
     } else {
       print(paste("paramsSelect includes 'All' so running all available queries: ",paste(queriesSelectx,collapse=", "),".",sep=""))
-      file.copy(from=paste(queryPath, "/", queryxml, sep = ""), to=paste(queryPath, "/subSetQueries.xml", sep = ""))
+      file.copy(from=gsub("//","/",paste(queryPath, "/", queryxml, sep = "")),
+                to=gsub("//","/",paste(queryPath, "/subSetQueries.xml", sep = "")))
     }
 
-    if(!file.exists(paste(queryPath, "/subSetQueries.xml", sep = ""))){stop(paste("query file: ", queryPath,"/subSetQueries.xml is incorrect or doesn't exist.",sep=""))}else{
-      print(paste("Reading queries from queryFile created: ", queryPath,"/subSetQueries.xml.",sep=""))
+    if(!file.exists(gsub("//","/",paste(queryPath, "/subSetQueries.xml", sep = "")))){
+      stop(gsub("//","/",paste("query file: ", queryPath,"/subSetQueries.xml is incorrect or doesn't exist.",sep="")))}else{
+      print(gsub("//","/",paste("Reading queries from queryFile created: ", queryPath,"/subSetQueries.xml.",sep="")))
     }
 
     # Check for gcamdatbasePath and gcamdatabasename
-    if(is.null(gcamdatabasePath) | is.null(gcamdatabaseName)){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
-    if(!file.exists(paste(gcamdatabasePath, "/", gcamdatabaseName, sep = ""))){stop(paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep=""))}
+    if(is.null(gcamdatabasePath) | is.null(gcamdatabaseName)){
+      stop(gsub("//","/",paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep="")))}
+    if(!file.exists(gsub("//","/",paste(gcamdatabasePath, "/", gcamdatabaseName, sep = "")))){
+      stop(gsub("//","/",paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep="")))}
 
     # Get names of scenarios in database
     # Save Message from rgcam::localDBConn to a text file and then extract names
@@ -442,20 +447,23 @@ metis.readgcam <- function(gcamdatabase = NULL,
     sink(zz,type="message")
     rgcam::localDBConn(gcamdatabasePath,gcamdatabaseName)
     sink()
+    closeAllConnections()
     # Read temp file
-    con <- file(paste(getwd(),"/test.txt",sep=""),"r")
-    first_line <- readLines(con,n=1)
-    close(con)
+    con <- file(paste(getwd(),"/test.txt",sep=""),open = "r")
+    first_line <- readLines(con,n=1); first_line
+    closeAllConnections()
+    if(grepl("error",first_line,ignore.case = T)){stop(paste(first_line))}
+    print(first_line)
     if(file.exists(paste(getwd(),"/test.txt",sep=""))){unlink(paste(getwd(),"/test.txt",sep=""))}
     # Extract scenario names from saved line
-    s1 <- gsub(".*:","",first_line)
-    s2 <- gsub(" ","",s1)
+    s1 <- gsub(".*:","",first_line);s1
+    s2 <- gsub(" ","",s1);s2
     scenarios <- as.vector(unlist(strsplit(s2,",")))
-    print(paste("All scenarios in data available: ", scenarios, sep=""))
+    print(paste("All scenarios in data available: ", paste(scenarios,collapse=", "), sep=""))
 
 
-    if(file.exists(paste(dataProjPath, "/", dataProj, sep = ""))){
-      file.remove(paste(dataProjPath, "/", dataProj, sep = ""))}  # Delete old project file
+    if(file.exists(gsub("//","/",paste(dataProjPath, "/", dataProj, sep = "")))){
+      unlink(gsub("//","/",paste(dataProjPath, "/", dataProj, sep = "")))}  # Delete old project file
 
     # Select Scenarios
     if(is.null(scenOrigNames)){
@@ -464,7 +472,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
       print(paste("from all available scenarios: ",paste(scenarios,collapse=", "),sep=""))
       print("To run all scenarios please set scenOrigNames to 'All'")
     } else {
-        if(any(grepl("all",scenOrigNames,ignore.case = T))){
+        if(any(c("all","All","ALL") %in% scenOrigNames)){
           scenOrigNames <- scenarios
           print(paste("scenOrigNames set to 'All' so using all available scenarios: ",paste(scenarios,collapse=", "),sep=""))
         } else {
@@ -477,19 +485,17 @@ metis.readgcam <- function(gcamdatabase = NULL,
           } else {
             print(paste("None of the scenOrigNames : ",paste(scenOrigNames,collapse=", "),sep=""))
             print(paste("are in the available scenarios : ",paste(scenarios,collapse=", "),sep=""))
+            stop("Please check scenOrigNames and rerun.")
           }
         }
     }
 
     for (scenario_i in scenOrigNames) {
-       dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = dataProj,
-                                           scenario = scenario_i, queryFile = paste(queryPath, "/subSetQueries.xml", sep = ""))  # Check your queries file
+       dataProj.proj <- rgcam::addScenario(conn = rgcam::localDBConn(gcamdatabasePath, gcamdatabaseName), proj = gsub("//","/",paste(dataProjPath, "/", dataProj, sep = "")),
+                                           scenario = scenario_i, queryFile = gsub("//","/",paste(queryPath, "/subSetQueries.xml", sep = "")))  # Check your queries file
       }
 
-    file.copy(from = paste(getwd(), "/", dataProj, sep = ""), to = dataProjPath, overwrite = T,
-              copy.mode = TRUE)
-    file.remove(dataProj)
-    dataProjLoaded <- rgcam::loadProject(paste(dataProjPath, "/", dataProj, sep = ""))
+    dataProjLoaded <- rgcam::loadProject(gsub("//","/",paste(dataProjPath, "/", dataProj, sep = "")))
 
     # Save list of scenarios and queries
     scenarios <- rgcam::listScenarios(dataProjLoaded); scenarios  # List of Scenarios in GCAM database
@@ -508,13 +514,13 @@ metis.readgcam <- function(gcamdatabase = NULL,
   if(length(queries)==0){stop("No queries found. PLease check data.")}
   tbl <- rgcam::getQuery(dataProjLoaded, queries[1])  # Tibble
   regionsAll<-unique(tbl$region)
-  if(any(regionsSelect=="All" | regionsSelect=="all" )){regionsSelect<-regionsAll; regionsSelectAll=T}else{
+  if(any(c("all","All","ALL") %in% regionsSelect)){regionsSelect<-regionsAll; regionsSelectAll=T}else{
     regionsSelectAll=F
   }
 
   # Read in paramaters from query file to create formatted table
 
-  if(any(paramsSelect=="All")){queriesx <- queries} else{
+  if(any(c("all","All","ALL") %in% paramsSelect)){queriesx <- queries} else{
     if(!any(queriesSelectx %in% queries)){stop("None of the selected queries are available in the data that has been read.
 Please check your data if reRead was set to F. Otherwise check the paramSelect entries and the queryxml file.")} else {
                                                 if(length(queriesSelectx[!(queriesSelectx %in% queries)])>0){
@@ -525,7 +531,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
   paramsSelectAll <- as.vector(unlist(unique(paramQueryMap$param)))
 
 
-  if(any(grepl("all",paramsSelect,ignore.case=T))){
+  if(any(c("all","All","ALL") %in% paramsSelect)){
     paramsSelectx <- paramsSelectAll
     } else {
       if(any(paramsSelect %in% as.vector(unique(paramQueryMap$group)))){
@@ -1248,28 +1254,15 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
 
     if(nrow(tblUSA)>0 | nrow(tblUSACogen)>0 | nrow(tblGCAMReg)>0){
       # Combine USA with others
-      commonNames = names(tblUSA)[names(tblUSA) %in% names(tblGCAMReg)];
-      commonNames = commonNames[commonNames %in% names(tblUSACogen)];commonNames
-      tbl <- tblUSA %>%
-        dplyr::select(commonNames) %>%
-        dplyr::bind_rows(tblUSACogen %>%
-                           dplyr::select(commonNames)) %>%
-        dplyr::bind_rows(tblGCAMReg %>%
-                           dplyr::select(commonNames))
-      tbl <- tblGCAMReg
-      if(nrow(tblUSA)>0){
-        tbl <- tbl %>%
-          dplyr::select(commonNames) %>%
-          dplyr::bind_rows(tblUSA %>%
-                             dplyr::select(commonNames))
-      }
-      if(nrow(tblUSACogen)>0){
-        tbl <- tbl %>%
-          dplyr::select(commonNames) %>%
-          dplyr::bind_rows(tblUSACogen %>%
-                             dplyr::select(commonNames))
-      }
+      commonNames = c(names(tblUSA),names(tblUSACogen),names(tblGCAMReg))%>%unique()
 
+      tbl <- tibble::tibble()
+      if(nrow(tblUSA)>0){tbl <- tbl %>% dplyr::bind_rows(tblUSA %>%
+                                                           dplyr::select(commonNames[commonNames %in% names(tblUSA)]))}
+      if(nrow(tblUSACogen)>0){tbl <- tbl %>% dplyr::bind_rows(tblUSACogen %>%
+                                                                dplyr::select(commonNames[commonNames %in% names(tblUSACogen)]))}
+      if(nrow(tblGCAMReg)>0){tbl <- tbl %>% dplyr::bind_rows(tblGCAMReg %>%
+                                                               dplyr::select(commonNames[commonNames %in% names(tblGCAMReg)]))}
     } # Check different tblUSA, tblUSACogen and tblGCAMReg
 
       if(nrow(tbl)>0){
