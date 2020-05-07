@@ -2,14 +2,6 @@ context("metis.readgcam Tests")
 library(metis)
 library(rgcam)
 
-test_that("metis.readgcam reads data from .proj file", {
-
-  dataGCAM<-metis.readgcam(dataProj = metis::exampleGCAMproj,saveData = F)
-  tVal <- nrow(dataGCAM$data[!complete.cases(dataGCAM$data),])
-  expect_equal(0, tVal)
-
-
-})
 
 test_that("metis.readgcam reads data from .proj file for regionsSelect='Colombia'", {
 
@@ -24,7 +16,7 @@ test_that("metis.readgcam reads data from .proj file for regionsSelect='Colombia
 
 })
 
-test_that("metis.readgcam reads data from .proj file for paramsSelect=c('energy','water')", {
+test_that("metis.readgcam reads data from .proj file for paramsSelect=c('energy')", {
 
   dataGCAM<-metis.readgcam(reReadData = F,
                            dataProjFile = metis::exampleGCAMproj,
