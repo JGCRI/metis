@@ -177,6 +177,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        yMinDiffPrcntDefault = NULL) {
 
 
+  # pointsOn=T
   # regionCompare=1
   # dataTables=NULL
   # rTable=NULL
@@ -184,6 +185,10 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   # dirOutputs=paste(getwd(),"/outputs",sep="")
   # pdfpng="png"
   # xRange="All"
+  # facetBGColor="grey30"
+  # facetBorderColor="black"
+  # facetLabelColor = "white"
+  # facetBGColor = "grey30"
   # xCompare=c("2015","2030","2050","2100")
   # paramsSelect="All"
   # regionsSelect="All"
@@ -207,6 +212,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   # colOrderName2 = NULL
   # scaleRange = NULL
   # xScenCompFacetLabelSize = 35
+  # facetLabelSize =24
   # legendPosition="right"
   # figWidth=13
   # figHeight=9
@@ -231,6 +237,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   # yMinDiffAbsDefault  = NULL
   # yMaxDiffPrcntDefault = NULL
   # yMinDiffPrcntDefault = NULL
+  # multiPlotFigsOnly=F
 
 #------------------
 # Initialize variables to remove binding errors
@@ -494,6 +501,11 @@ if(any(is.na(unique(tbl$scenario)))){stop("NA scenario not valid. Please check y
 #------------------
 # Create Folders if needed
 #------------------
+
+  if(!is.null(dirOutputs)){
+  if(grepl("/",dirOutputs)){dirOutputs = dirOutputs}else{
+    dirOutputs = paste(getwd(),"/",gsub(paste(getwd(),"/",sep=""),"",dirOutputs),sep="")}}
+
 if (!dir.exists(dirOutputs)){
   dir.create(dirOutputs)}
 if (!dir.exists(paste(dirOutputs, "/", folderName, sep = ""))){
@@ -767,7 +779,7 @@ if(length(unique(tbl$scenario))>1){
       if(!is.null(yMinDefault) & is.null(yMin_i)){yMin_i=min(yMinDefault,min(tbl_p$value))}
 
 
-      if(length(unique((tbl_p%>%dplyr::filter(value>0))$scenario))>1){
+      if(length(unique((tbl_p%>%dplyr::filter(value!=0))$scenario))>1){
 
       if(nrow(tbl_p)>0){
 
@@ -1764,7 +1776,7 @@ for(i in unique(tbl$region)){
           }}}
 
 
-      if(length(unique((tbl_rp%>%dplyr::filter(value>0))$scenario))>1){
+      if(length(unique((tbl_rp%>%dplyr::filter(value!=0))$scenario))>1){
 
       if(nrow(tbl_rp)>0){
 
@@ -1798,7 +1810,8 @@ for(i in unique(tbl$region)){
         fileName = paste(j,"_figBar_",i,"_compareScen",nameAppend,sep=""),
         figWidth = figWidth*max((length(unique(tbl_rp$scenario))/2),1)*figWMult,
         figHeight = figHeight*max((length(unique(tbl_rp$region))/2),1),pdfpng=pdfpng, legendPosition=legendPosition, xOrder = xOrder, colOrder1 = colOrder1,colOrderName1 = colOrderName1,colOrder2 = colOrder2, colOrderName2 = colOrderName2
-      )}
+      )
+          }
 
 
       # data=tbl_rpC1; xData=xData;yData=yData;xLabel=xLabel;yLabel=yLabel; sizeBarLines=sizeBarLines;useNewLabels=useNewLabels;sizeLines=sizeLines; chartType = "bar";
