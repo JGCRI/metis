@@ -200,7 +200,8 @@ StatStratum <- ggalluvial::StatStratum # This is done so that ggplot2 recognizes
 
 if(printFig!=F){
 if(!is.null(dirOutputs)){
-  dirOutputs = paste(getwd(),"/",gsub(paste(getwd(),"/",sep=""),"",dirOutputs),sep="")
+  if(grepl("/",dirOutputs)){dirOutputs = dirOutputs}else{
+  dirOutputs = paste(getwd(),"/",gsub(paste(getwd(),"/",sep=""),"",dirOutputs),sep="")}
   if (!dir.exists(paste(dirOutputs,sep=""))){dir.create(paste(dirOutputs,sep=""))}
   if(!is.null(folderName)){
     if (!dir.exists(paste(dirOutputs,"/",folderName,sep=""))){dir.create(paste(dirOutputs,"/",folderName,sep=""))}
@@ -217,6 +218,8 @@ if(!is.null(folderName)){
  }
 }
 }
+
+
 
 #------------------------------------------
 # Format data to include any missing columns
