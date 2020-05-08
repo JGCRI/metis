@@ -196,6 +196,29 @@
 #' }
 "mapGCAMBasins"
 
+#' GCAM Basins cropped to US52
+#'
+#' @source Created from metis maps
+#' @format A SpatialPolygonsDataFrame
+#' @examples
+#' \dontrun{
+#'  library(sp); library(metis)
+#'  sp::plot(mapGCAMBasinsUS52)
+#'  head(mapGCAMBasinsUS52@data)
+#' }
+"mapGCAMBasinsUS52"
+
+#' GCAM Basins cropped to US49
+#'
+#' @source Created from metis maps.
+#' @format A SpatialPolygonsDataFrame
+#' @examples
+#' \dontrun{
+#'  library(sp); library(metis)
+#'  sp::plot(mapGCAMBasinsUS49)
+#'  head(mapGCAMBasinsUS49@data)
+#' }
+"mapGCAMBasinsUS49"
 
 
 #' GCAM Land
