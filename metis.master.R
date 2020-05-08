@@ -84,6 +84,7 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
                          paramsSelect=paramsSelect_i,
                          folderName = "metisExample",
                          saveData = F
+                         folderName = NULL
                          )
 
   dataGCAM$data # To view the data read that was read.
