@@ -16,7 +16,7 @@
 #' @param subRegShape Default = NULL,
 #' @param subRegShpFolder Default = paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
 #' @param subRegShpFile Default = paste("gadm36_1",sep=""),
-#' @param subRegCol Default ="NAME_1",
+#' @param subRegCol Default ="subRegion",
 #' @param dirNameAppend Default =""
 #' @param nameAppend Default =""
 #' @param legendOutsideSingle Default =F, Single plots by default have legends inside. This can be moved out if wanted.
@@ -83,14 +83,14 @@
 metis.mapsProcess<-function(polygonDataTables=NULL,
                            gridDataTables=NULL,
                            dirOutputs=paste(getwd(),"/outputs",sep=""),
-                           folderName="folderNameDefault",
+                           folderName="",
                            xRange="All",
                            labels=F,
                            labelsSize=1.2,
                            subRegShape=NULL,
                            subRegShpFolder=NULL,
                            subRegShpFile=NULL,
-                           subRegCol=NULL,
+                           subRegCol="subRegion",
                            dirNameAppend="",
                            nameAppend="",
                            legendOutsideSingle=T,
@@ -136,7 +136,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            refMultiB=NULL,
                            chosenRefMeanYears=NULL,
                            mapTitleSize=0.5,
-                           facetLabelSize=2.5,
+                           facetLabelSize=1.5,
                            facetLabelSizeMultiAB=1,
                            numeric2Cat_list=NULL,
                            diffOn = F,
@@ -1011,8 +1011,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
   if(nrow(shapeTbl)>0){
   data.table::fwrite(shapeTbl%>%
-                       tidyr::spread(key="class",value="value"),paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/Tbl",nameAppend,".csv",sep = ""))
-    print(paste("Map data table written to ",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/Tbl",nameAppend,".csv",sep = ""))
+                       tidyr::spread(key="class",value="value"),paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/mapTbl",nameAppend,".csv",sep = ""))
+    print(paste("Map data table written to ",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/mapTbl",nameAppend,".csv",sep = ""))
   }
 
   # -------------------

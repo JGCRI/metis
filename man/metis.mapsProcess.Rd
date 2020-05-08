@@ -8,14 +8,14 @@ metis.mapsProcess(
   polygonDataTables = NULL,
   gridDataTables = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  folderName = "folderNameDefault",
+  folderName = "",
   xRange = "All",
   labels = F,
   labelsSize = 1.2,
   subRegShape = NULL,
   subRegShpFolder = NULL,
   subRegShpFile = NULL,
-  subRegCol = NULL,
+  subRegCol = "subRegion",
   dirNameAppend = "",
   nameAppend = "",
   legendOutsideSingle = T,
@@ -100,7 +100,7 @@ metis.mapsProcess(
 
 \item{subRegShpFile}{Default = paste("gadm36_1",sep=""),}
 
-\item{subRegCol}{Default ="NAME_1",}
+\item{subRegCol}{Default ="subRegion",}
 
 \item{dirNameAppend}{Default =""}
 
