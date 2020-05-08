@@ -578,7 +578,7 @@ if(!exists("mapIntersectGCAMBasin32Reg")){
 }
 
 # Intersection of GCAM Basins and US 52
-if(!exists("mapGCAMBasinUS52")){
+if(!exists("mapGCAMBasinsUS52")){
   m1 <- metis::mapGCAMBasins
   m2 <- metis::mapUS52
   m2 <- sp::spTransform(m2,raster::crs(m1))
@@ -587,12 +587,12 @@ if(!exists("mapGCAMBasinUS52")){
   # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
-  mapGCAMBasinUS52<-mapx
-  use_data(mapGCAMBasinUS52, overwrite=T)
+  mapGCAMBasinsUS52<-mapx
+  use_data(mapGCAMBasinsUS52, overwrite=T)
 }
 
 # Intersection of GCAM Basins and US 49 States
-if(!exists("mapGCAMBasinUS49")){
+if(!exists("mapGCAMBasinsUS49")){
   m1 <- metis::mapGCAMBasins
   m2 <- metis::mapUS49
   m2 <- sp::spTransform(m2,raster::crs(m1))
@@ -602,8 +602,8 @@ if(!exists("mapGCAMBasinUS49")){
   # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
-  mapGCAMBasinUS49<-mapx
-  use_data(mapGCAMBasinUS49, overwrite=T)
+  mapGCAMBasinsUS49<-mapx
+  use_data(mapGCAMBasinsUS49, overwrite=T)
 }
 
 
