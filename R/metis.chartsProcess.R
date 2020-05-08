@@ -3248,6 +3248,7 @@ if(T){
   } # Close if multiple scenarios available
 } # Close if(regionCompareOnly==1)
 
+  print("metis.chartsProcess complete.")
 
   return(tbl)
 
