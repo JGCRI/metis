@@ -13,7 +13,6 @@ test_that("metis.readgcam reads data from .proj file for regionsSelect='Colombia
   unlink(paste(getwd(),"/outputs",sep=""))
   expect_equal(0, tVal)
 
-
 })
 
 test_that("metis.readgcam reads data from .proj file for paramsSelect=c('energy')", {
@@ -25,7 +24,6 @@ test_that("metis.readgcam reads data from .proj file for paramsSelect=c('energy'
   tVal <- nrow(dataGCAM$data[!complete.cases(dataGCAM$data),])
   unlink(paste(getwd(),"/outputs",sep=""))
   expect_equal(0, tVal)
-
 
 })
 
