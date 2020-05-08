@@ -384,17 +384,18 @@ if(!is.null(dirOutputs)){
     }
 
     if(!is.null(folderName)){
+      if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
       dirOutputs=gsub("//","/",paste(dirOutputs,"/",folderName,sep=""))
-      if (!dir.exists(paste(getwd(),"/",folderName,sep=""))){dir.create(paste(getwd(),"/",folderName,sep=""))}
+      if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
     }
 
   }else{
 
-  dirOutputs = gsub("//","/",paste(getwd(),"/",gsub(paste(getwd(),"/",sep=""),"",dirOutputs),sep=""))
+  dirOutputs = gsub("//","/",paste(getwd(),"/",dirOutputs),sep="")
   if (!dir.exists(paste(dirOutputs,sep=""))){dir.create(paste(dirOutputs,sep=""))}
   if(!is.null(folderName)){
-    if (!dir.exists(paste(dirOutputs,"/",folderName,sep=""))){dir.create(paste(dirOutputs,"/",folderName,sep=""))}
-    if(dirOutputs==gsub("//","/",paste(dirOutputs,sep=""))){dirOutputs=paste(dirOutputs,"/",folderName,sep="")}
+    dirOutputs=gsub("//","/",paste(dirOutputs,"/",folderName,sep=""))
+    if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
     }
   }
 }else{
