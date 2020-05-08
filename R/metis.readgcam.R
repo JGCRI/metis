@@ -567,7 +567,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origorigX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Final Energy Intl. Av and Shp (EJ)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -580,10 +580,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = gsub(" enduse","",input),
                       classLabel2 = "Fuel",
                       classPalette2 = "pal_metis")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
         dplyr::ungroup()%>%
@@ -613,7 +613,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Final Energy by Sector (EJ)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -626,10 +626,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
         dplyr::ungroup()%>%
@@ -662,7 +662,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
         dplyr::rename(`transport intl av`=`International Aviation`,
                       `transport intl shp`=`International Ship`) %>%
         tidyr::gather(key="class1",value="value",
-                      -scenario, -region, -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
+                      -scenario, -region, -subRegion, -subRegType,   -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
                       -classLabel1, -classPalette1, -classLabel2, -classPalette2,
                       -origScen,-origQuery,-origUnits,-origX)%>%
         dplyr::mutate(origValue=value); tblSepTransportIntlAvShip%>%as.data.frame()
@@ -676,10 +676,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
         }
 
       tblMod <- tblMod %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -713,7 +713,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Building Final Energy By Subsector (EJ)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -726,10 +726,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = subsector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
         dplyr::ungroup()%>%
@@ -785,7 +785,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Final Energy by Fuel (EJ)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -801,10 +801,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
         dplyr::mutate(class1=dplyr::case_when(class2=="trans intl av"~paste(class1,"av",sep=" "),
                                              class2=="trans intl shp"~paste(class1,"shp",sep=" "),
                                              TRUE~class1))%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -837,7 +837,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Building Final Energy by Fuel (EJ)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -850,10 +850,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -887,7 +887,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Industry Final Energy by Fuel (EJ)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -900,10 +900,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -946,7 +946,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value * metis.assumptions()$convEJ2TWh,
                       units = "Final Electricity by Sector (TWh)",
@@ -960,10 +960,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = input,
                       classLabel2 = "input",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1004,7 +1004,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value * metis.assumptions()$convEJ2TWh,
                       units = "Final Electricity by Fuel (TWh)",
@@ -1018,10 +1018,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = sector,
                       classLabel2 = "Sector",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1050,7 +1050,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Primary Energy Consumption by Fuel (EJ)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -1063,10 +1063,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1099,7 +1099,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
           dplyr::rename(`oil intl av`=`International Aviation oil`,
                         `oil intl shp`=`International Ship oil`)%>%
           tidyr::gather(key="class1",value="value",
-                        -scenario, -region, -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
+                        -scenario, -region, -subRegion, -subRegType,   -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
                         -classLabel1, -classPalette1, -classLabel2, -classPalette2,
                         -origScen,-origQuery,-origUnits,-origX)%>%
           dplyr::mutate(origValue=value); tblSepPrimaryIntlAvShip%>%as.data.frame()
@@ -1113,10 +1113,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
       }
 
       tblMod <- tblMod %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1157,7 +1157,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value * metis.assumptions()$convEJ2TWh,
                       units = "Electricity Generation by Fuel (TWh)",
@@ -1197,7 +1197,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value * metis.assumptions()$convEJ2TWh,
                       units = "Electricity Generation by Fuel (TWh)",
@@ -1234,7 +1234,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                         origQuery = queryx,
                         origValue = value,
                         origUnits = Units,
-                        origX = year,
+                        origX = year, subRegion=region, subRegType="GCAMRegion",
                         scenario = scenNewNames,
                         value = value * metis.assumptions()$convEJ2TWh,
                         units = "Electricity Generation by Fuel (TWh)",
@@ -1267,10 +1267,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
 
       if(nrow(tbl)>0){
       tbl <- tbl %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX) %>%
        dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%
@@ -1301,7 +1301,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                         units = "Electricity Capacity by Fuel (GW)",
                         origUnits = units) %>%
           dplyr::filter(!is.na(value))%>%
-          dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+          dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origValue, origUnits, origX)
 
@@ -1373,7 +1373,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
      # newCap_cost
       if(nrow(addition_costsWhydro[["newCap_cost"]])>0){
       tbl1 <- addition_costsWhydro[["newCap_cost"]] %>%
-        tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        tidyr::gather(key="year",value=value,-Units,-scenario,-region, -subRegion, -subRegType,  -agg_tech)%>%
         dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
@@ -1389,7 +1389,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "New Elec Cap Cost (Billion 2010 USD)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -1402,10 +1402,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%
         dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
@@ -1415,7 +1415,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
       # newCap_GW
       if(nrow(addition_costs[["newCap_GW"]])>0){
       tbl2 <- addition_costs[["newCap_GW"]] %>%
-        tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        tidyr::gather(key="year",value=value,-Units,-scenario,-region, -subRegion, -subRegType,  -agg_tech)%>%
         dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
@@ -1431,7 +1431,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "New Elec Cap (GW)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -1444,10 +1444,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1456,7 +1456,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
       # retPremature_cost
       if(nrow(addition_costs[["annualPrematureRet_cost"]])>0){
       tbl3 <- addition_costs[["annualPrematureRet_cost"]] %>%
-        tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        tidyr::gather(key="year",value=value,-Units,-scenario,-region, -subRegion, -subRegType,  -agg_tech)%>%
         dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
@@ -1472,7 +1472,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Premature Elec Retire Cost (billion 2010 USD)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -1485,10 +1485,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1497,7 +1497,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
       # retPremature_GW
       if(nrow(addition_costs[["annualPrematureRet_GW"]])>0){
       tbl4 <- addition_costs[["annualPrematureRet_GW"]] %>%
-        tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        tidyr::gather(key="year",value=value,-Units,-scenario,-region, -subRegion, -subRegType,  -agg_tech)%>%
         dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
@@ -1513,7 +1513,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Premature Elec Retire (GW)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -1526,10 +1526,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1538,7 +1538,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
       # newCap_cost
       if(nrow(addition_costsWhydro[["cumCap_cost"]])>0){
       tbl5 <- addition_costsWhydro[["cumCap_cost"]] %>%
-        tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        tidyr::gather(key="year",value=value,-Units,-scenario,-region, -subRegion, -subRegType,  -agg_tech)%>%
         dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
@@ -1554,7 +1554,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "New Elec Cap Cost (billion 2010 USD)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -1567,10 +1567,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1579,7 +1579,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
       # newCap_GW
       if(nrow(addition_costs[["cumCap_GW"]])>0){
       tbl6 <- addition_costs[["cumCap_GW"]] %>%
-        tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        tidyr::gather(key="year",value=value,-Units,-scenario,-region, -subRegion, -subRegType,  -agg_tech)%>%
         dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
@@ -1595,7 +1595,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "New Elec Cap (GW)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -1608,10 +1608,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1621,7 +1621,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
       # retPremature_cost
     if(nrow(addition_costs[["cumPrematureRet_cost"]])>0){
       tbl7 <- addition_costs[["cumPrematureRet_cost"]] %>%
-        tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        tidyr::gather(key="year",value=value,-Units,-scenario,-region, -subRegion, -subRegType,  -agg_tech)%>%
         dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
@@ -1637,7 +1637,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Premature Elec Retire Cost (billion 2010 USD)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -1650,10 +1650,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1662,7 +1662,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
       # retPremature_GW
     if(nrow(addition_costs[["cumPrematureRet_GW"]])>0){
       tbl8 <- addition_costs[["cumPrematureRet_GW"]] %>%
-        tidyr::gather(key="year",value=value,-Units,-scenario,-region,-agg_tech)%>%
+        tidyr::gather(key="year",value=value,-Units,-scenario,-region, -subRegion, -subRegType,  -agg_tech)%>%
         dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::rename(technology=agg_tech)%>%
@@ -1678,7 +1678,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Premature Elec Retire (GW)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -1691,10 +1691,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources,class1,class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources,class1,class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1741,7 +1741,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Water Consumption by Sector (km3)",
@@ -1755,10 +1755,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = subsector,
                       classLabel2 = "basin",
                       classPalette2 = "pal_metis")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1800,7 +1800,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Water Consumption by Sector (km3)",
@@ -1814,10 +1814,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = subsector,
                       classLabel2 = "basin",
                       classPalette2 = "pal_metis")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1861,7 +1861,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Water Withdrawals by Crop (km3)",
@@ -1875,10 +1875,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1905,7 +1905,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Biophysical Water Consumption (km3)",
@@ -1919,10 +1919,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -1952,7 +1952,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Irrigation Water Withdrawal (km3)",
@@ -1966,10 +1966,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2000,7 +2000,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Irrigation Water Consumption (km3)",
@@ -2014,10 +2014,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2037,7 +2037,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
-        dplyr::mutate(class1=gsub("\\_.*","",basin))%>%
+        dplyr::mutate(subRegion=gsub(" ","_",gsub("\\_.*","",basin)))%>%
         dplyr::select(-basin)%>%
         dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
@@ -2048,6 +2048,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origValue = value,
                       origUnits = Units,
                       origX = year,
+                      subRegType="GCAMBasin",
                       scenario = scenNewNames,
                       value = value,
                       units = "Runoff (km3)",
@@ -2055,15 +2056,16 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       x = year,
                       xLabel = "Year",
                       aggregate = "sum",
-                      classLabel1 = "basin",
+                      class1="class1",
+                      classLabel1 = "runoff",
                       classPalette1 = "pal_wet",
                       class2 = "class2",
                       classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      classPalette2 = "pal_wet") %>%
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2091,7 +2093,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "GDP per Capita (Thousand 1990 USD per Person)",
@@ -2105,10 +2107,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2135,7 +2137,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value/1000,
                       units = "GDP (Billion 1990 USD)",
@@ -2149,10 +2151,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2184,10 +2186,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origUnits = units,
                       origX = x) %>%
         dplyr::ungroup() %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2215,7 +2217,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Livestock Production Mixed Feed (Mt)",
@@ -2229,10 +2231,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = technology,
                       classLabel2 = "technology",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2260,7 +2262,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Livestock Production (Mt)",
@@ -2274,10 +2276,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = subsector,
                       classLabel2 = "subsector",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2307,7 +2309,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Livestock Production Pastoral (Mt)",
@@ -2321,10 +2323,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = technology,
                       classLabel2 = "technology",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2352,7 +2354,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Livestock Production Imported Feed (Mt)",
@@ -2366,10 +2368,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = technology,
                       classLabel2 = "technology",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2396,7 +2398,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value/1000,
                       units = "Population (Millions)",
@@ -2410,10 +2412,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2440,7 +2442,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origScen = scenario,
                       origQuery = queryx,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       origValue = value,
                       scenario = scenNewNames,
                       value = value,
@@ -2458,10 +2460,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
         dplyr::filter(class1!="NA")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2489,7 +2491,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Biomass Production (Mt)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -2502,7 +2504,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(origScen,origQuery, origValue, origUnits, origX, region, param, scenario,
+        dplyr::select(origScen,origQuery, origValue, origUnits, origX, region, subRegion, subRegType,   param, scenario,
                       value, units, vintage, x, xLabel, aggregate, class1, classLabel1, classPalette1,
                       class2, classLabel2, classPalette2)%>%dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
@@ -2529,7 +2531,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Ag Production (billion m3)",
@@ -2543,7 +2545,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(origScen,origQuery, origValue, origUnits, origX, region, param, scenario,
+        dplyr::select(origScen,origQuery, origValue, origUnits, origX, region, subRegion, subRegType,   param, scenario,
                       value, units, vintage, x, xLabel, aggregate, class1, classLabel1, classPalette1,
                       class2, classLabel2, classPalette2)%>%dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
@@ -2570,7 +2572,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Ag Production (Mt)",
@@ -2584,7 +2586,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(origScen,origQuery, origValue, origUnits, origX, region, param, scenario,
+        dplyr::select(origScen,origQuery, origValue, origUnits, origX, region, subRegion, subRegType,   param, scenario,
                       value, units, vintage, x, xLabel, aggregate, class1, classLabel1, classPalette1,
                       class2, classLabel2, classPalette2)%>%dplyr::filter(!is.na(value))
       datax <- dplyr::bind_rows(datax, tbl)
@@ -2611,7 +2613,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Irr vs Rfd Land (1000 km2)",
@@ -2625,10 +2627,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = crop,
                       classLabel2 = "crop",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2656,7 +2658,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Irr Crop Land (1000 km2)",
@@ -2670,10 +2672,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "class2",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2701,7 +2703,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Rainfed Crop Land (1000 km2)",
@@ -2715,10 +2717,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "class2",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2757,7 +2759,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Land Allocation (1000 km2)",
@@ -2770,10 +2772,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       classPalette1 = "pal_metis",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2819,7 +2821,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       units = "Crop Land (1000 km2)",
@@ -2832,10 +2834,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       classPalette1 = "pal_metis",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -2864,7 +2866,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origScen = scenario,
                       origQuery = queryx,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       value = value,
                       origValue = origValue,
@@ -2879,10 +2881,10 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       class2 = "class2",
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value)) %>%
@@ -3023,7 +3025,7 @@ paramx <- "emissCO2BySectorNoBio"
                     sources = "Sources",
                     origScen = scenario,
                     origQuery = queryx,
-                    origX = year,
+                    origX = year, subRegion=region, subRegType="GCAMRegion",
                     scenario = scenNewNames,
                     vintage = paste("Vint_", year, sep = ""),
                     x = year,
@@ -3033,10 +3035,10 @@ paramx <- "emissCO2BySectorNoBio"
                     classPalette1 = "pal_metis",
                     classLabel2 = "sectorDetail",
                     classPalette2 = "pal_metis") %>%
-      dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+      dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
-      dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+      dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
       dplyr::filter(!is.na(value))
@@ -3189,7 +3191,7 @@ paramx <- "emissCO2BySectorNoBio"
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
@@ -3199,10 +3201,10 @@ paramx <- "emissCO2BySectorNoBio"
                       classPalette1 = "pal_metis",
                       classLabel2 = "sector",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -3342,7 +3344,7 @@ paramx <- "emissCO2BySectorNoBio"
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
@@ -3352,10 +3354,10 @@ paramx <- "emissCO2BySectorNoBio"
                       classPalette1 = "pal_metis",
                       classLabel2 = "GHG",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -3508,7 +3510,7 @@ paramx <- "emissCO2BySectorNoBio"
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
@@ -3518,10 +3520,10 @@ paramx <- "emissCO2BySectorNoBio"
                       classPalette1 = "pal_metis",
                       classLabel2 = "sector",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -3553,10 +3555,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
-      dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+      dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
-      dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+      dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
       dplyr::filter(!is.na(value))
@@ -3591,10 +3593,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
-      dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+      dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
-      dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+      dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
       dplyr::filter(!is.na(value))
@@ -3623,10 +3625,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
-      dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+      dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
-      dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+      dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
       dplyr::filter(!is.na(value))
@@ -3663,10 +3665,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                     classLabel1 = "sector",
                     classLabel2 = "subSector",
                     classPalette1 = 'pal_metis')%>%
-      dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+      dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                     aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                     origScen, origQuery, origValue, origUnits, origX)%>%
-      dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+      dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
       dplyr::filter(!is.na(value))
@@ -3825,7 +3827,7 @@ paramx <- "emissBySectorGWPAR5FFI"
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
@@ -3835,10 +3837,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                       classPalette1 = "pal_metis",
                       classLabel2 = "sector",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -3978,7 +3980,7 @@ paramx <- "emissBySectorGWPAR5FFI"
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
@@ -3988,10 +3990,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                       classPalette1 = "pal_metis",
                       classLabel2 = "GHG",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4145,7 +4147,7 @@ paramx <- "emissBySectorGWPAR5FFI"
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
@@ -4155,10 +4157,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                       classPalette1 = "pal_metis",
                       classLabel2 = "sector",
                       classPalette2 = "pal_metis") %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4190,10 +4192,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                       classLabel1 = "sector",
                       classLabel2 = "subSector",
                       classPalette1 = 'pal_metis')%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4228,10 +4230,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                       classLabel1 = "sector",
                       classLabel2 = "subSector",
                       classPalette1 = 'pal_metis')%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4260,10 +4262,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                       classLabel1 = "sector",
                       classLabel2 = "subSector",
                       classPalette1 = 'pal_metis')%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4298,10 +4300,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                       classLabel1 = "sector",
                       classLabel2 = "subSector",
                       classPalette1 = 'pal_metis')%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4455,7 +4457,7 @@ paramx <- "emissBySectorGWPAR5FFI"
                       sources = "Sources",
                       origScen = scenario,
                       origQuery = queryx,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
@@ -4466,10 +4468,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                       classLabel2 = "sector",
                       classPalette2 = "pal_metis",
                       origUnits = dplyr::case_when(class1=="Other"~"Units",TRUE~origUnits)) %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4511,7 +4513,7 @@ paramx <- "emissBySectorGWPAR5FFI"
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Pasenger (million pass-km)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -4524,10 +4526,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4562,7 +4564,7 @@ paramx <- "emissBySectorGWPAR5FFI"
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Freight (million ton-km)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -4575,10 +4577,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                       class2 = sector,
                       classLabel2 = "classLabel2",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4609,7 +4611,7 @@ paramx <- "emissBySectorGWPAR5FFI"
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Refined Liquids Production (EJ)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -4622,10 +4624,10 @@ paramx <- "emissBySectorGWPAR5FFI"
                       class2 = sector,
                       classLabel2 = "Refining",
                       classPalette2 = "classPalette2")%>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4633,12 +4635,12 @@ paramx <- "emissBySectorGWPAR5FFI"
       # Create table that stores total liquids production in refining
       QueryTbl <- tbl
       TotalLiquidsProdTbl <- QueryTbl %>%
-        dplyr::group_by(scenario, region, x) %>%
+        dplyr::group_by(scenario, region, subRegion, subRegType,   x) %>%
         dplyr::summarise(TotalLiquids=sum(value))
       # Return to original table, and calculate fraction of total liquids production that is biofuels. QueryTbl can now
       # be applied to VMT by fuel categories (passenger and freight) below.
       FracBioFuel_tbl <- QueryTbl %>%
-        dplyr::select(scenario, region, class1, x, value) %>%
+        dplyr::select(scenario, region, subRegion, subRegType,   class1, x, value) %>%
         dplyr::left_join(TotalLiquidsProdTbl, by=c('x', 'scenario', 'region')) %>%
         dplyr::filter(class1=='biomass liquids') %>%
         dplyr::mutate(FracBioFuel=value/TotalLiquids) %>%
@@ -4679,7 +4681,7 @@ paramx <- "emissBySectorGWPAR5FFI"
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Passenger (million pass-km)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -4708,10 +4710,10 @@ paramx <- "emissBySectorGWPAR5FFI"
         tbl <- rbind(tbl, tbl2)
       }
       tbl <- tbl %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4744,7 +4746,7 @@ paramx <- "emissBySectorGWPAR5FFI"
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Freight (million ton-km)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -4773,10 +4775,10 @@ paramx <- "emissBySectorGWPAR5FFI"
         tbl <- rbind(tbl, tbl2)
       }
       tbl <- tbl %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4809,7 +4811,7 @@ paramx <- "emissBySectorGWPAR5FFI"
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year,
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Transport Final Energy by Fuel (EJ)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -4838,10 +4840,10 @@ paramx <- "emissBySectorGWPAR5FFI"
       #   tbl <- rbind(tbl, tbl2)
       # }
       tbl <- tbl %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4874,7 +4876,7 @@ paramx <- "emissBySectorGWPAR5FFI"
           dplyr::rename(`liquids intl av`=`International Aviation liquids`,
                         `liquids intl shp`=`International Ship liquids`) %>%
           tidyr::gather(key="class1",value="value",
-                        -scenario, -region, -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
+                        -scenario, -region, -subRegion, -subRegType,   -param, -sources, -class2, -x, -xLabel, -vintage, -units, -aggregate,
                         -classLabel1, -classPalette1, -classLabel2, -classPalette2,
                         -origScen,-origQuery,-origUnits,-origX)%>%
           dplyr::mutate(origValue=value); tblSepTransportFinalIntlAvShip%>%as.data.frame()
@@ -4888,10 +4890,10 @@ paramx <- "emissBySectorGWPAR5FFI"
       }
 
       tblMod <- tblMod %>%
-        dplyr::select(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units, value,
+        dplyr::select(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
-        dplyr::group_by(scenario, region, param, sources, class1, class2, x, xLabel, vintage, units,
+        dplyr::group_by(scenario, region, subRegion, subRegType,   param, sources, class1, class2, x, xLabel, vintage, units,
                         aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
@@ -4939,7 +4941,7 @@ paramx <- "emissBySectorGWPAR5FFI"
 
   dataTemplate <- datax %>%
     dplyr::mutate(scenario = "Local Data", value = 0, sources="Sources", x=2010) %>%
-    dplyr::select(scenario, region, sources, param, units, class1,class2, x, value) %>%
+    dplyr::select(scenario, region, subRegion, subRegType,   sources, param, units, class1,class2, x, value) %>%
     unique()
 
   fullTemplateMap <- datax %>%
@@ -4974,14 +4976,14 @@ paramx <- "emissBySectorGWPAR5FFI"
     utils::write.csv(fullTemplateMap, file = paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""),row.names = F)
 
     # All Data
-    utils::write.csv(datax, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_", min(range(datax$x)),
+    utils::write.csv(datax, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_gcam/gcamDataTable_", min(range(datax$x)),
                                          "to", max(range(datax$x)),nameAppend, ".csv", sep = ""), row.names = F)
-    print(paste("GCAM data table saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_gcam/gcamDataTable_AllRegions",nameAppend,".csv", sep = "")))
-    utils::write.csv(dataTemplate, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegions",
+    print(paste("GCAM data table saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_gcam/gcamDataTable_",nameAppend,".csv", sep = "")))
+    utils::write.csv(dataTemplate, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_",
                                                 nameAppend,".csv", sep = ""),row.names = F)
-    print(paste("GCAM data template saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegions",nameAppend,".csv", sep = "")))
+    print(paste("GCAM data template saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_",nameAppend,".csv", sep = "")))
 
-    # Aggregate across Class 1
+    # Aggregate across Class 2
     dataxAggsums<-datax%>%
       dplyr::filter(aggregate=="sum")%>%
       dplyr::select(-c(class1,classLabel1,classPalette1))%>%
@@ -4994,23 +4996,23 @@ paramx <- "emissBySectorGWPAR5FFI"
       dplyr::summarize_at(c("value"),list(~mean(.,na.rm = T)))
     dataxAggClass<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
 
-    utils::write.csv(dataxAggClass,
+    utils::write.csv(dataxAggClass %>% dplyr::rename(class=class2,classLabel=classLabel2,classPalette=classPalette2),
                      file = gsub("//","/",paste(dirOutputs, "/", folderName,
-                                                "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggClass1",
+                                                "/readGCAM/Tables_gcam/gcamDataTable_aggClass2",
                                                 nameAppend,".csv", sep = "")),row.names = F)
 
     print(paste("GCAM data aggregated to class 1 saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
-                              "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggClass1",
+                              "/readGCAM/Tables_gcam/gcamDataTable_aggClass2",
                               nameAppend,".csv", sep = "")),sep=""))
 
-    dataTemplateAggClass <- dataxAggClass %>%
+    dataTemplateAggClass <- dataxAggClass  %>% dplyr::rename(class=class2,classLabel=classLabel2,classPalette=classPalette2) %>%
       dplyr::mutate(scenario = "Local Data", value = 0, sources="Sources", x=2010) %>%
-      dplyr::select(scenario, region, sources, param, units, class1,x, value) %>%
+      dplyr::select(scenario, region, subRegion, subRegType,   sources, param, units, class,x, value) %>%
       unique()
 
-    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggClass1",nameAppend,".csv", sep = ""),
+    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AggClass2",nameAppend,".csv", sep = ""),
                      row.names = F)
-    print(paste("GCAM data template aggregated to class 1 saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggClass1",nameAppend,".csv", sep = "")))
+    print(paste("GCAM data template aggregated to class 2 saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AggClass2",nameAppend,".csv", sep = "")))
 
 
     # Aggregate across Class 1
@@ -5026,55 +5028,55 @@ paramx <- "emissBySectorGWPAR5FFI"
       dplyr::summarize_at(c("value"),list(~mean(.,na.rm = T)))
     dataxAggClass<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
 
-    utils::write.csv(dataxAggClass,
+    utils::write.csv(dataxAggClass  %>% dplyr::rename(class=class1,classLabel=classLabel1,classPalette=classPalette1),
                      file = gsub("//","/",paste(dirOutputs, "/", folderName,
-                                                "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggClass2",
+                                                "/readGCAM/Tables_gcam/gcamDataTable_aggClass1",
                                                 nameAppend,".csv", sep = "")),row.names = F)
 
     print(paste("GCAM data aggregated to class 2 saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
-                                                                                   "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggClass2",
+                                                                                   "/readGCAM/Tables_gcam/gcamDataTable_aggClass1",
                                                                                    nameAppend,".csv", sep = "")),sep=""))
 
-    dataTemplateAggClass <- dataxAggClass %>%
+    dataTemplateAggClass <- dataxAggClass  %>% dplyr::rename(class=class1,classLabel=classLabel1,classPalette=classPalette1) %>%
       dplyr::mutate(scenario = "Local Data", value = 0, sources="Sources", x=2010) %>%
-      dplyr::select(scenario, region, sources, param, units, class2,x, value) %>%
+      dplyr::select(scenario, region, subRegion, subRegType,   sources, param, units, class,x, value) %>%
       unique()
 
-    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggClass2",nameAppend,".csv", sep = ""),
+    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AggClass1",nameAppend,".csv", sep = ""),
                      row.names = F)
-    print(paste("GCAM data template aggregated to class 2 saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggClass2",nameAppend,".csv", sep = "")))
+    print(paste("GCAM data template aggregated to class 1 saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AggClass1",nameAppend,".csv", sep = "")))
 
 
     # Aggregate across Param
     dataxAggsums<-datax%>%
       dplyr::filter(aggregate=="sum")%>%
-      dplyr::select(-c(class2,classLabel2,classPalette2,class1,classLabel1,classPalette1))%>%
+      dplyr::select(-c(class2,classLabel2,classPalette2,class1,classLabel1))%>%
       dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
       dplyr::summarize_at(c("value"),list(~sum(.,na.rm = T)))
     dataxAggmeans<-datax%>%
       dplyr::filter(aggregate=="mean")%>%
-      dplyr::select(-c(class2,classLabel2,classPalette2,class1,classLabel1,classPalette1))%>%
+      dplyr::select(-c(class2,classLabel2,classPalette2,class1,classLabel1))%>%
       dplyr::group_by_at(dplyr::vars(-value,-origValue))%>%
       dplyr::summarize_at(c("value"),list(~mean(.,na.rm = T)))
     dataxAggClass<-dplyr::bind_rows(dataxAggsums,dataxAggmeans)%>%dplyr::ungroup()
 
-    utils::write.csv(dataxAggClass,
+    utils::write.csv(dataxAggClass %>% dplyr::rename(classPalette=classPalette1),
                      file = gsub("//","/",paste(dirOutputs, "/", folderName,
-                                                "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggParam",
+                                                "/readGCAM/Tables_gcam/gcamDataTable_aggParam",
                                                 nameAppend,".csv", sep = "")),row.names = F)
 
     print(paste("GCAM data aggregated to param saved to: ",gsub("//","/",paste(dirOutputs, "/", folderName,
-                                                                                   "/readGCAM/Tables_gcam/gcamDataTable_AllRegions_aggParam",
+                                                                                   "/readGCAM/Tables_gcam/gcamDataTable_aggParam",
                                                                                    nameAppend,".csv", sep = "")),sep=""))
 
     dataTemplateAggClass <- dataxAggClass %>%
       dplyr::mutate(scenario = "Local Data", value = 0, sources="Sources", x=2010) %>%
-      dplyr::select(scenario, region, sources, param, units, x, value) %>%
+      dplyr::select(scenario, region, subRegion, subRegType,   sources, param, units, x, value) %>%
       unique()
 
-    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggParam",nameAppend,".csv", sep = ""),
+    utils::write.csv(dataTemplateAggClass, file = paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AggParam",nameAppend,".csv", sep = ""),
                      row.names = F)
-    print(paste("GCAM data template aggregated to param saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AllRegionsAggParam",nameAppend,".csv", sep = "")))
+    print(paste("GCAM data template aggregated to param saved to: ", paste(dirOutputs, "/", folderName, "/readGCAM/Tables_Templates/template_Regional_AggParam",nameAppend,".csv", sep = "")))
 
     # Print output for each region
     # for (region_i in regionsSelect[(regionsSelect %in% unique(datax$region))]) {
