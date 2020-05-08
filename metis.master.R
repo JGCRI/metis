@@ -490,6 +490,25 @@ NULL -> exampleGrid2poly->exampleBoundaries->dataGCAM->io->io_sub
                  expandPercent = 2,
                  extension=T)
 
+    # polygonDataTables=examplePolygonTable_i
+    # gridDataTables=exampleGridTable_i
+    # xRange=c(2005,2010,2015,2020,2025,2030)
+    # folderName="metisExample"
+    # boundaryRegShape = metis::mapCountries
+    # boundaryRegCol="subRegion"
+    # boundaryRegionsSelect="Peru"
+    # subRegShape=NULL
+    # subRegShpFolder=examplePolyFolder_i
+    # subRegShpFile=examplePolyFile_i
+    # subRegCol=subRegCol_i
+    # nameAppend="_exampleSubRegionMap"
+    # legendPosition=c("LEFT","bottom")
+    # animateOn=T
+    # fps=1
+    # expandPercent = 2
+    # extension=T
+    # frameShow = T
+
 
 
 #--------------------------------------------------

@@ -567,7 +567,7 @@ Please check your data if reRead was set to F. Otherwise check the paramSelect e
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origorigX = year, subRegion=region, subRegType="GCAMRegion",
+                      origX = year, subRegion=region, subRegType="GCAMRegion",
                       scenario = scenNewNames,
                       units = "Final Energy Intl. Av and Shp (EJ)",
                       vintage = paste("Vint_", year, sep = ""),

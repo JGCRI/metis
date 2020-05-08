@@ -45,9 +45,10 @@ metis.map(
   facetFreeScale = F,
   facetRows = NA,
   facetCols = 4,
-  facetBGColor = "grey30",
-  facetLabelColor = "white",
+  facetBGColor = NA,
+  facetLabelColor = "black",
   facetLabelSize = 1.5,
+  facetLabelBorderLwd = NA_real_,
   alpha = 1,
   fillcolorNA = "gray",
   fillshowNA = NA,
@@ -153,11 +154,13 @@ metis.map(
 
 \item{facetCols}{Default = 3,}
 
-\item{facetBGColor}{Default = "grey75",}
+\item{facetBGColor}{Default = NA}
 
 \item{facetLabelColor}{Default = "black",}
 
 \item{facetLabelSize}{Default = 1.5,}
+
+\item{facetLabelBorderLwd}{Default=NA,}
 
 \item{alpha}{Default = 1}
 
