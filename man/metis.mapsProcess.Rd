@@ -33,7 +33,7 @@ metis.mapsProcess(
   boundaryRegShape = NULL,
   boundaryRegShpFolder = NULL,
   boundaryRegShpFile = NULL,
-  boundaryRegCol = NULL,
+  boundaryRegCol = "subRegion",
   boundaryRegionsSelect = NULL,
   extendedLabels = T,
   extendedFillColor = "grey75",
@@ -61,11 +61,13 @@ metis.mapsProcess(
   refMultiB = NULL,
   chosenRefMeanYears = NULL,
   mapTitleSize = 0.5,
-  facetLabelSize = 2.5,
+  facetBGColor = NA,
+  facetLabelColor = "black",
+  facetLabelSize = 1.5,
   facetLabelSizeMultiAB = 1,
   numeric2Cat_list = NULL,
   diffOn = F,
-  frameShow = T,
+  frameShow = F,
   pdfpng = "png",
   fillcolorNA = "gray",
   fillshowNA = NA,
@@ -191,6 +193,10 @@ metis.mapsProcess(
 \item{chosenRefMeanYears}{Default=NULL}
 
 \item{mapTitleSize}{Default=0.5}
+
+\item{facetBGColor}{Default = NA}
+
+\item{facetLabelColor}{Default = Black}
 
 \item{facetLabelSize}{Default =2.5}
 

@@ -407,19 +407,19 @@ if(!is.null(extendedShape)){
                         fillColumn = boundaryRegCol,labelsAutoPlace=F,
                         labels=T, outerMargins = outerMargins,
                         fillPalette = extendedFillColor,
-                        bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
+                        bgColor = extendedBGColor, frameShow=T, facetLabelBorderLwd=0.5, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
 
   underLayerOV<- metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, dataPolygon=extendedShapeOV,printFig=F,
                          fillColumn = boundaryRegCol,labelsAutoPlace=F,
                          labels=T, outerMargins = outerMargins,
                          fillPalette = extendedFillColor,
-                         bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
+                         bgColor = extendedBGColor, frameShow=T, facetLabelBorderLwd=0.5, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
 
   underLayerOVNoLabel<- metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, dataPolygon=extendedShapeOV,printFig=F,
                            fillColumn = boundaryRegCol,labelsAutoPlace=F,
                            labels=F, outerMargins = outerMargins,
                            fillPalette = extendedFillColor,
-                           bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
+                           bgColor = extendedBGColor, frameShow=T, facetLabelBorderLwd=0.5, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
 
 
   boundaryHighlight<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=boundaryRegShape,
@@ -448,20 +448,20 @@ if(!is.null(extendedShape)){
                            fillColumn = subRegCol,labelsAutoPlace=F,
                            labels=T, outerMargins = outerMargins,
                            fillPalette = extendedFillColor,
-                           bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
+                           bgColor = extendedBGColor, frameShow=T, facetLabelBorderLwd=0.5, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
 
     underLayerOV<- metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, dataPolygon=extendedShapeOV,printFig=F,
                            fillColumn = subRegCol,labelsAutoPlace=F,
                            labels=T, outerMargins = outerMargins,
                            fillPalette = extendedFillColor,
-                           bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
+                           bgColor = extendedBGColor, frameShow=T, facetLabelBorderLwd=0.5, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
 
 
     underLayerOVNoLabel<- metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, dataPolygon=extendedShapeOV,printFig=F,
                              fillColumn = subRegCol,labelsAutoPlace=F,
                              labels=F, outerMargins = outerMargins,
                              fillPalette = extendedFillColor,
-                             bgColor = extendedBGColor, frameShow=T, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
+                             bgColor = extendedBGColor, frameShow=T, facetLabelBorderLwd=0.5, labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,facetsON = F)
 
 
     subRegHighlightLabels<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=subRegShape,
@@ -500,7 +500,7 @@ if(!is.null(extendedShape)){
 if(!is.null(boundaryHighlight) & !is.null(underLayer)){
 regionHL<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=boundaryHighlight,
           fileName = paste(boundaryRegionsSelect,nameAppend,sep=""),dirOutputs = dir,
-          underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,facetsON = F,labels=F)}
+          underLayer = underLayer,bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,facetsON = F,labels=F)}
 
 # legendStyle="cat"
 # fillcolorNA=fillcolorNA
@@ -518,12 +518,12 @@ regionHL<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labels
 if(!is.null(boundaryHighlightOV) & !is.null(underLayerOV)){
 regionHLOV<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=boundaryHighlightOV,
                     fileName = paste(boundaryRegionsSelect,nameAppend,"OV",sep=""),dirOutputs = dir,
-                    underLayer = underLayerOV,bgColor=extendedBGColor,frameShow=T,facetsON = F,labels=F,
+                    underLayer = underLayerOV,bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,facetsON = F,labels=F,
                     compassScale=compassScale,scalePos = scalePos,compassPos = compassPos)
 
 regionHLOVNoLabel<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=boundaryHighlightOVNoLabel,
                       fileName = paste(boundaryRegionsSelect,nameAppend,"OV_Nolabel",sep=""),dirOutputs = dir,
-                      underLayer = underLayerOVNoLabel,bgColor=extendedBGColor,frameShow=T,facetsON = F,labels=F,
+                      underLayer = underLayerOVNoLabel,bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,facetsON = F,labels=F,
                       compassScale=compassScale,scalePos = scalePos,compassPos = compassPos)
 
 }
@@ -531,37 +531,37 @@ regionHLOVNoLabel<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSi
 if(!is.null(subRegHighlight) & !is.null(underLayer)){
 subRegionHLNoLabel<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labels=F, dataPolygon=subRegHighlight,
                     fileName = paste(boundaryRegionsSelect,"_",subRegType,nameAppend,sep=""),dirOutputs = dir,
-                    underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,facetsON = F)}
+                    underLayer = underLayer,bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,facetsON = F)}
 if(!is.null(subRegHighlightLabels) & !is.null(underLayer)){
 subRegionHL<-metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F, dataPolygon=subRegHighlightLabels,
                        fileName = paste(boundaryRegionsSelect,"_Labels_",subRegType,nameAppend,sep=""),dirOutputs = dir,
-                       underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,facetsON = F)}
+                       underLayer = underLayer,bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,facetsON = F)}
 
 if(!is.null(subRegShape) & !is.null(regionHL)){
 metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F,  dataPolygon=subRegShape,fillColumn = subRegCol,
           fileName = paste(boundaryRegionsSelect,"_fill_",subRegType,nameAppend,sep=""),dirOutputs = dir,
-          underLayer = regionHL,bgColor=extendedBGColor,frameShow=T,labels=F,facetsON = F,fillPalette=fillPaletteOrig)
+          underLayer = regionHL,bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,labels=F,facetsON = F,fillPalette=fillPaletteOrig)
 metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize,  dataPolygon=subRegShape,fillColumn = subRegCol,
             fileName = paste(boundaryRegionsSelect,"_fill_Labels_",subRegType,nameAppend,sep=""),dirOutputs = dir,labelsAutoPlace=F,
-            underLayer = regionHL,bgColor=extendedBGColor,frameShow=T,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
+            underLayer = regionHL,bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
 if(!is.null(subRegCol1)){
 metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize,  dataPolygon=subRegShape,fillColumn = subRegCol1,
           fileName = paste(boundaryRegionsSelect,"_fill_Labels1_",subRegType,nameAppend,sep=""),dirOutputs = dir,labelsAutoPlace=F,
-          underLayer = regionHL,bgColor=extendedBGColor,frameShow=T,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
+          underLayer = regionHL,bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
 }
 }
 
 if(!is.null(subRegShape) & !is.null(underLayer)){
 metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, labelsAutoPlace=F,  dataPolygon=subRegShape,fillColumn = subRegCol,
           fileName = paste(boundaryRegionsSelect,"_fill_under_",subRegType,nameAppend,sep=""),dirOutputs = dir,
-          underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,labels=F,facetsON = F,fillPalette=fillPaletteOrig)
+          underLayer = underLayer,bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,labels=F,facetsON = F,fillPalette=fillPaletteOrig)
 metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize,  dataPolygon=subRegShape,fillColumn = subRegCol,
           fileName = paste(boundaryRegionsSelect,"_fill_under_Labels_",subRegType,nameAppend,sep=""),dirOutputs = dir,labelsAutoPlace=F,
-          underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
+          underLayer = underLayer,bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
 if(!is.null(subRegCol1)){
 metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize,  dataPolygon=subRegShape,fillColumn = subRegCol1,
           fileName = paste(boundaryRegionsSelect,"_fill_under_Labels1_",subRegType,nameAppend,sep=""),dirOutputs = dir,labelsAutoPlace=F,
-          underLayer = underLayer,bgColor=extendedBGColor,frameShow=T,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
+          underLayer = underLayer,bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,labels=T, outerMargins = outerMargins,facetsON = F,fillPalette=fillPaletteOrig)
 }
 }
 
@@ -570,11 +570,11 @@ if(!is.null(overlapShape)){
   if(!is.null(regionHL)){
   metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, dataPolygon=overlapBoundary,
             fileName = paste(boundaryRegionsSelect,"_OverLap_",subRegType,nameAppend,sep=""),dirOutputs = dir,
-            underLayer = regionHL,borderColor="red",bgColor=extendedBGColor,frameShow=T,facetsON=F)}
+            underLayer = regionHL,borderColor="red",bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,facetsON=F)}
   if(!is.null(subRegionHL)){
   metis.map(legendStyle="cat",fillcolorNA=fillcolorNA, labelsSize=labelsSize, dataPolygon=overlapSubReg,
           fileName = paste(boundaryRegionsSelect,"_OverLap_double_",subRegType,nameAppend,sep=""),dirOutputs = dir,
-          underLayer = subRegionHL,borderColor="red",bgColor=extendedBGColor,frameShow=T,facetsON=F)}
+          underLayer = subRegionHL,borderColor="red",bgColor=extendedBGColor,frameShow=T, facetLabelBorderLwd=0.5,facetsON=F)}
 }
 
 

@@ -43,8 +43,9 @@
 #' @param facetFreeScale Default = F,
 #' @param facetRows Default = NA,
 #' @param facetCols Default = 3,
-#' @param facetBGColor Default = "grey75",
+#' @param facetBGColor Default = NA
 #' @param facetLabelColor Default = "black",
+#' @param facetLabelBorderLwd Default=NA,
 #' @param facetLabelSize Default = 1.5,
 #' @param alpha Default = 1
 #' @param fillcolorNA Default =NULL
@@ -112,9 +113,10 @@ metis.map<-function(dataPolygon=NULL,
                   facetFreeScale=F,
                   facetRows=NA,
                   facetCols=4,
-                  facetBGColor="grey30",
-                  facetLabelColor = "white",
+                  facetBGColor=NA,
+                  facetLabelColor = "black",
                   facetLabelSize=1.5,
+                  facetLabelBorderLwd=NA_real_,
                   alpha=1,
                   fillcolorNA="gray",
                   fillshowNA=NA,
@@ -594,7 +596,8 @@ if(!is.null(raster)){
       tmap::tm_layout(panel.labels=gsub("X","",fillColumn),
                 panel.label.bg.color = facetBGColor,
                 panel.label.color = facetLabelColor,
-                panel.label.size = facetLabelSize)
+                panel.label.size = facetLabelSize,
+                frame.lwd = facetLabelBorderLwd)
     figWidth=figWidth*1.2
   }
 
@@ -877,7 +880,8 @@ if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
               inner.margins = innerMargins,outer.margins=outerMargins) +
     tmap::tm_layout(panel.label.bg.color = facetBGColor,
                     panel.label.color = facetLabelColor,
-                    panel.label.size = facetLabelSize);map
+                    panel.label.size = facetLabelSize,
+                    frame.lwd = facetLabelBorderLwd);map
 
   if(!is.null(multiFacetRows) | !is.null(multiFacetCols)){map<-map+tmap::tm_layout(asp=1)}else{
     map<-map+tmap::tm_layout(asp=NA)
