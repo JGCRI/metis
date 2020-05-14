@@ -13,7 +13,7 @@
 #' @param folderName Default = NULL,
 #' @param fillPalette Default = "Spectral",
 #' @param borderColor Default = "gray20",
-#' @param lwd Default = 1,
+#' @param lwd Default = 0.1,
 #' @param lty Default = 1,
 #' @param bgColor Default = "white",
 #' @param frameShow Default = F,
@@ -45,7 +45,7 @@
 #' @param facetCols Default = 3,
 #' @param facetBGColor Default = NA
 #' @param facetLabelColor Default = "black",
-#' @param facetLabelBorderLwd Default=NA,
+#' @param facetLabelBorderLwd Default=NA_real_,
 #' @param facetLabelSize Default = 1.5,
 #' @param alpha Default = 1
 #' @param fillcolorNA Default =NULL
@@ -80,13 +80,13 @@ metis.map<-function(dataPolygon=NULL,
                   shpFile=NULL,
                   fillPalette="Spectral",
                   borderColor="gray20",
-                  lwd=1,
+                  lwd=0.1,
                   lty=1,
                   bgColor="white",
                   frameShow=F,
                   fillColumn=NULL, # Or give column data with
                   labels=F,
-                  labelsSize=1.2,
+                  labelsSize=1.0,
                   labelsColor="black",
                   labelsAutoPlace=F,
                   figWidth=9,
@@ -94,8 +94,8 @@ metis.map<-function(dataPolygon=NULL,
                   legendWidth=-1,
                   legendShow=F,
                   legendOutside=F,
-                  legendTextSize=1,
-                  legendTitleSize=2,
+                  legendTextSize=0.6,
+                  legendTitleSize=1,
                   legendOutsidePosition=NULL,
                   legendPosition=NULL,
                   legendDigits=NULL,
@@ -115,7 +115,7 @@ metis.map<-function(dataPolygon=NULL,
                   facetCols=4,
                   facetBGColor=NA,
                   facetLabelColor = "black",
-                  facetLabelSize=1.5,
+                  facetLabelSize=1,
                   facetLabelBorderLwd=NA_real_,
                   alpha=1,
                   fillcolorNA="gray",
@@ -127,7 +127,7 @@ metis.map<-function(dataPolygon=NULL,
                   multiFacetCols=NULL,
                   mapTitleOn=T,
                   mapTitle=NULL,
-                  mapTitleSize=1,
+                  mapTitleSize=0.5,
                   numeric2Cat_list=NULL,
                   catParam=NULL,
                   innerMargins=c(0,0,0,0), # bottom, left, top, right
@@ -214,10 +214,10 @@ metis.map<-function(dataPolygon=NULL,
 # Initialize variables to remove binding errors if needed
 # -----------------
 
-NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette->legendSinglecolorOn
+NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette->legendSinglecolorOn->legendLabelsX
 
 legendTitle=gsub(" ","\n",legendTitle)
-tmap::tmap_mode(mode = c("plot"))
+suppressMessages(tmap::tmap_mode(mode = c("plot")))
 tmap::tmap_options(max.categories=10000)
 
 fillPaletteOrig <- fillPalette
@@ -260,9 +260,9 @@ process_facet_layout <- function(gm) {
   gasp <- fW/fH
   if (gasp>dasp2) {
     xs <- 0
-    ys <- grid::convertHeight(unit(dh2-(dw2 / gasp), "inch"), "npc", valueOnly=TRUE)
+    ys <- grid::convertHeight(grid::unit(dh2-(dw2 / gasp), "inch"), "npc", valueOnly=TRUE)
   } else {
-    xs <- grid::convertWidth(unit(dw2-(gasp * dh2), "inch"), "npc", valueOnly=TRUE)
+    xs <- grid::convertWidth(grid::unit(dw2-(gasp * dh2), "inch"), "npc", valueOnly=TRUE)
     ys <- 0
   }
 
@@ -271,16 +271,16 @@ process_facet_layout <- function(gm) {
   spc <- 1e-5
 
   gm <- within(gm, {
-    between.margin.y <- grid::convertHeight(unit(fpi$between.margin.in, "inch"), "npc", valueOnly=TRUE)
-    between.margin.x <- grid::convertWidth(unit(fpi$between.margin.in, "inch"), "npc", valueOnly=TRUE)
-    panelh <- grid::convertHeight(unit(fpi$pSH, "inch"), "npc", valueOnly=TRUE)
-    panelw <- grid::convertWidth(unit(fpi$pSW, "inch"), "npc", valueOnly=TRUE)
+    between.margin.y <- grid::convertHeight(grid::unit(fpi$between.margin.in, "inch"), "npc", valueOnly=TRUE)
+    between.margin.x <- grid::convertWidth(grid::unit(fpi$between.margin.in, "inch"), "npc", valueOnly=TRUE)
+    panelh <- grid::convertHeight(grid::unit(fpi$pSH, "inch"), "npc", valueOnly=TRUE)
+    panelw <- grid::convertWidth(grid::unit(fpi$pSW, "inch"), "npc", valueOnly=TRUE)
 
-    ylabWnpc <- grid::convertWidth(unit(fpi$ylabWin, "inch"), "npc", valueOnly=TRUE)
-    xlabHnpc <- grid::convertHeight(unit(fpi$xlabHin, "inch"), "npc", valueOnly=TRUE)
+    ylabWnpc <- grid::convertWidth(grid::unit(fpi$ylabWin, "inch"), "npc", valueOnly=TRUE)
+    xlabHnpc <- grid::convertHeight(grid::unit(fpi$xlabHin, "inch"), "npc", valueOnly=TRUE)
 
-    ygridWnpc <- grid::convertWidth(unit(fpi$ygridWin, "inch"), "npc", valueOnly=TRUE)
-    xgridHnpc <- grid::convertHeight(unit(fpi$xgridHin, "inch"), "npc", valueOnly=TRUE)
+    ygridWnpc <- grid::convertWidth(grid::unit(fpi$ygridWin, "inch"), "npc", valueOnly=TRUE)
+    xgridHnpc <- grid::convertHeight(grid::unit(fpi$xgridHin, "inch"), "npc", valueOnly=TRUE)
 
     attr.between.legend.and.map <- attr.outside.position %in% c("top", "bottom")
 
@@ -393,7 +393,7 @@ if(!is.null(dirOutputs)){
 
   }else{
 
-  dirOutputs = gsub("//","/",paste(getwd(),"/",dirOutputs),sep="")
+  dirOutputs = gsub("//","/",paste(getwd(),"/",dirOutputs,sep=""))
   if (!dir.exists(paste(dirOutputs,sep=""))){dir.create(paste(dirOutputs,sep=""))}
   if(!is.null(folderName)){
     dirOutputs=gsub("//","/",paste(dirOutputs,"/",folderName,sep=""))
@@ -417,7 +417,7 @@ if(!is.null(dirOutputs)){
 
 
 if(!is.null(dataPolygon)){
-  print("Using given dataPolygon file as shape.")
+  # print("Using given dataPolygon file as shape.")
   if(!is.null(shpFolder) & !is.null(shpFile)){print(paste("NOT reading shapefile '",shpFile,"' from folder '",shpFolder,"'",sep=""))}
     shape<-dataPolygon
   }else{
@@ -463,7 +463,7 @@ if(!is.null(numeric2Cat_list)){
        legendTextSize <- numeric2Cat_list$numeric2Cat_legendTextSize[[list_index]]
        }
      } else {print("numerc2Cat_list does not contain the appropriate sublists: 'numeric2Cat_param','numeric2Cat_breaks','numeric2Cat_labels','numeric2Cat_catPalette'. Skipping conversion to Categorical")}
-   } else {print("numerc2Cat_list is not a list. Skipping conversion to Categorical")}
+   } # else {print("numerc2Cat_list is not a list. Skipping conversion to Categorical")}
 
 
 # If categorical data then set as factor
@@ -567,7 +567,7 @@ if(length(fillPalette)==1){
 if(!is.null(shape)){
   if(class(shape)!="tmap"){
   if(nrow(shape@data)>0){
-    shape@data <- shape@data %>% dplyr::mutate_if(is.numeric, list(~dplyr::na_if(abs(.), Inf)))
+    shape@data[mapply(is.infinite, shape@data)] <- NA
     }
    }# If not tmap
   }
@@ -676,6 +676,7 @@ if(is.null(legendBreaks)){
 
   # Legend Labels
   a<-c()
+  if(length(legendBreaksX)>1){
   for(i in 1:(length(legendBreaksX)-1)){
     if(i!=1){lower<-upperLast}else{lower <- round(legendBreaksX[i],(legendDigits))};lower
     upper <- round(legendBreaksX[i+1],legendDigits); upper
@@ -699,6 +700,7 @@ if(is.null(legendBreaks)){
                         paste(legendSingleValuex,sep=""),
                         legendLabelsX[(singlevalLoc):length(legendLabelsX)])
       }}; legendLabelsX
+  }
 
   # Fill palette
   if(T){
@@ -712,14 +714,14 @@ if(is.null(legendBreaks)){
     graphics::pie(rep(1,length(fillColDown)),label=names(fillColDown),col=fillColDown)
 
     if(max(legendBreaksX)<=legendSingleValuex){
-      if(grepl("diff|div|ratio",fillPaletteOrig,ignore.case=T)){
+      if(any(grepl("diff|div|ratio",fillPaletteOrig,ignore.case=T))){
         fillPaletteX<-grDevices::colorRampPalette(fillColDown)(length(legendLabelsX))
       }else{
         fillPaletteX<-grDevices::colorRampPalette(fillPalette)(length(legendLabelsX))
       }
       }else{
       if(min(legendBreaksX)>=legendSingleValuex){
-        if(grepl("diff|div|ratio",fillPaletteOrig,ignore.case=T)){
+        if(any(grepl("diff|div|ratio",fillPaletteOrig,ignore.case=T))){
           fillPaletteX<-grDevices::colorRampPalette(fillColUp)(length(legendLabelsX))
         }else{
         fillPaletteX<-grDevices::colorRampPalette(fillPalette)(length(legendLabelsX))
@@ -731,8 +733,10 @@ if(is.null(legendBreaks)){
           fillPaletteXDown <- rev(grDevices::colorRampPalette(fillColDown)(singlevalLoc))};fillPaletteXDown
         fillPaletteX <-c(fillPaletteXDown,fillPaletteXUp)
       }
-    }
-    graphics::pie(rep(1,length(fillPaletteX)),label=names(fillPaletteX),col=fillPaletteX)
+      }
+
+    if(length(fillPaletteX)>0){
+    graphics::pie(rep(1,length(fillPaletteX)),label=names(fillPaletteX),col=fillPaletteX)}
 
    if(min(legendBreaksX)>=legendSingleValuex){
      fillPaletteX<-c(paste(legendSingleColor,sep=""),
@@ -786,7 +790,7 @@ if(is.null(legendBreaks)){
   length(legendBreaksX);length(legendLabelsX);legendBreaksX;legendLabelsX
 
 if(length(legendBreaksX)-1!=length(legendLabelsX)){
-  print("Length of legend breaks must be length of legend labels +1. Skipping setting singleValeColor.")
+  # print("Length of legend breaks must be length of legend labels +1. Skipping setting singleValeColor.")
   legendFixedBreaksX=legendFixedBreaks
   legendBreaksX=legendBreaks
   legendLabelsX=NULL
@@ -958,7 +962,6 @@ metis.printPdfPng(figure=map,
                 figHeight=figHeight,
                 pdfpng=pdfpng)
 
-print(paste("Figure saved as: ",fileName,".",pdfpng," in folder: ", paste(dirOutputs,sep=""),sep=""))
   }}else{
     print("printFig set to F so no figure will be saved.")
     print(map)}

@@ -127,16 +127,36 @@
 
 #' Example GCAM .proj file
 #'
-#' @source GCAM run proj file.
-#' @format .proj saved as a list
+#' @source metis.readgcam() run outputs saved
+#' @format R table or .csv
 #' @examples
 #' \dontrun{
-#'  library(metis); library(rgcam)
-#'  dataProjLoaded <- metis::exampleGCAMproj
-#'  rgcam::listScenarios(dataProjLoaded)  # List of Scenarios in GCAM database
-#'  rgcam::listQueries(dataProjLoaded) # List of Queries in queryxml
+#'  library(metis);
+#'  metis::exampleGCAMproj
 #' }
 "exampleGCAMproj"
+
+#' Example data by param to plot in Maps
+#'
+#' @source metis.readgcam() run outputs saved
+#' @format R table or .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  mapData <- metis::exampleMapDataParam
+#' }
+"exampleMapDataParam"
+
+#' Example data by class to plot in Maps
+#'
+#' @source metis.readgcam() run outputs saved
+#' @format R table or .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  mapData <- metis::exampleMapDataClass
+#' }
+"exampleMapDataClass"
 
 
 #-----------------
@@ -425,7 +445,50 @@
 #' }
 "grid050"
 
-#' Intersection of GCAM Basins and countries
+
+#--------------------
+# Cropped
+#--------------------
+
+#' Cropped of GCAM Basins and US52
+#' @source JGCRI
+#' @format R tibble
+#' @examples
+#' \dontrun{
+#' library(metis)
+#' head(mapGCAMBasinsUS52)
+#' }
+"mapGCAMBasinsUS52"
+
+#' Cropped of GCAM Basins and US49
+#' @source JGCRI
+#' @format R tibble
+#' @examples
+#' \dontrun{
+#' library(metis)
+#' head(mapGCAMBasinsUS49)
+#' }
+"mapGCAMBasinsUS49"
+
+
+#--------------------
+# Mergers
+#--------------------
+
+#' Merge of GCAM 32 and US52
+#' @source JGCRI
+#' @format R tibble
+#' @examples
+#' \dontrun{
+#' library(metis)
+#' head(mapGCAMReg32US52)
+#' }
+"mapGCAMReg32US52"
+
+#--------------------
+# Intersections
+#--------------------
+
 #' Intersection of GCAM Basins and countries.
 #' @source JGCRI
 #' @format R tibble
@@ -436,8 +499,6 @@
 #' }
 "mapIntersectGCAMBasinCountry"
 
-
-#' Intersection of GCAM Basins and GCAM 32 Regions
 #' Intersection of GCAM Basins and GCAM 32 Regions.
 #' @source JGCRI
 #' @format R tibble
@@ -447,3 +508,7 @@
 #' head(mapIntersectGCAMBasin32Reg)
 #' }
 "mapIntersectGCAMBasin32Reg"
+
+
+
+

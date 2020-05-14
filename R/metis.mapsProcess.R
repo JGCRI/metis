@@ -64,9 +64,10 @@
 #' @param facetBGColor Default = NA
 #' @param facetLabelColor Default = Black
 #' @param facetLabelSizeMultiAB Default =1
+#' @param facetLabelBorderLwd Default=NA_real_,
 #' @param numeric2Cat_list Default=NULL,
-#' @param scenRefDiffIndv Default = NULL
-#' @param diffOn Default = F. Whether to calculate diff values between scenarios.
+#' @param scenRef Reference Scenario. Default = NULL
+#' @param scenDiff Scenarios to Diff. Default = NULL
 #' @param frameShow Default = T. Whether to plot frame around maps and facets.
 #' @param pdfpng Save IO figures as pdf or png. Type=String. Options: 'pdf' or 'png'. Default = 'png'
 #' @param fillcolorNA Default="gray",
@@ -79,6 +80,8 @@
 #' @param mapTitleOn Default=T
 #' @param legendDigitsOverride Default=NULL
 #' @param innerMargins Default =c(0,0,0,0) # bottom, left, top, right
+#' @param classPalette Default = NULL
+#' @param classPaletteDiff Default = "pal_div_RdBl"
 #' @export
 
 
@@ -88,7 +91,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            folderName="",
                            xRange="All",
                            labels=F,
-                           labelsSize=1.2,
+                           labelsSize=1.0,
                            subRegShape=NULL,
                            subRegShpFolder=NULL,
                            subRegShpFile=NULL,
@@ -99,13 +102,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            legendOutsidePosition=NULL,
                            legendPosition=NULL,
                            legendFixedBreaks=5,
-                           legendTitleSizeO=2,
-                           legendTextSizeO=1,
-                           legendTitleSizeI=1.5,
-                           legendTextSizeI=1,
+                           legendTitleSizeO=1.0,
+                           legendTextSizeO=0.6,
+                           legendTitleSizeI=1.0,
+                           legendTextSizeI=0.6,
                            animateOn=T,
                            fps=1,
-                           scenRefDiffIndv=NULL,
+                           scenRef=NULL,
+                           scenDiff=NULL,
                            extension=F,
                            boundaryRegShape=NULL,
                            boundaryRegShpFolder=NULL,
@@ -140,10 +144,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            mapTitleSize=0.5,
                            facetBGColor=NA,
                            facetLabelColor ="black",
-                           facetLabelSize=1.5,
+                           facetLabelSize=1.0,
                            facetLabelSizeMultiAB=1,
+                           facetLabelBorderLwd =NA_real_,
                            numeric2Cat_list=NULL,
-                           diffOn = F,
                            frameShow = F,
                            pdfpng = 'png',
                            fillcolorNA="gray",
@@ -155,21 +159,25 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            facetCols=4,
                            mapTitleOn=T,
                            innerMargins=c(0,0,0,0), # bottom, left, top, right
-                           legendDigitsOverride=NULL
+                           legendDigitsOverride=NULL,
+                           classPalette = NULL,
+                           classPaletteDiff = "pal_div_RdBl"
                            ){
 
   # polygonDataTables=NULL
   # gridDataTables=NULL
   # dirOutputs=paste(getwd(),"/outputs",sep="")
+  # folderName=""
   # xRange="All"
   # labels=F
   # labelsSize=1.2
   # subRegShape=NULL
   # subRegShpFolder=NULL
   # subRegShpFile=NULL
-  # subRegCol=NULL
+  # subRegCol="subRegion"
   # dirNameAppend=""
-  # legendOutsideSingle=F
+  # nameAppend=""
+  # legendOutsideSingle=T
   # legendOutsidePosition=NULL
   # legendPosition=NULL
   # legendFixedBreaks=5
@@ -179,14 +187,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # legendTextSizeI=1
   # animateOn=T
   # fps=1
-  # scenRefDiffIndv=NULL
+  # scenRef=NULL
+  # scenDiff=NULL
   # extension=F
   # boundaryRegShape=NULL
   # boundaryRegShpFolder=NULL
   # boundaryRegShpFile=NULL
-  # boundaryRegCol=NULL
+  # boundaryRegCol="subRegion"
   # boundaryRegionsSelect=NULL
-  # fillcolorNA=NULL
+  # extendedLabels =T
   # extendedFillColor="grey75"
   # extendedBGColor="lightblue1"
   # extendedHighLightColor="cornsilk1"
@@ -194,15 +203,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # extdendedLabelSize=0.7
   # extendedShape=NULL
   # extendedShapeCol=NULL
-  # expandPercent=2
+  # expandPercent=3
   # projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
-  # figWidth=9
+  # figWidth=6
   # figHeight=7
   # scaleRange=NULL
   # paramsSelect="All"
   # multiFacetsOn=F
-  # multiFacetCols="multiFacetRow"
-  # multiFacetRows="multiFacetCol"
+  # multiFacetCols="multiFacetCol"
+  # multiFacetRows="multiFacetRow"
   # legendOutsideMulti=T
   # legendPositionMulti=NULL
   # legendTitleSizeMulti=NULL
@@ -212,17 +221,13 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # refMultiB=NULL
   # chosenRefMeanYears=NULL
   # mapTitleSize=0.5
-  # facetLabelSize=3
+  # facetBGColor=NA
+  # facetLabelColor ="black"
+  # facetLabelSize=1.5
+  # facetLabelSizeMultiAB=1
+  # facetLabelBorderLwd =NA_real_
   # numeric2Cat_list=NULL
-  # diffOn=F
-  # frameShow = T
-  # facetLabelSizeMultiAB=1.5
-  # fillcolorNA="gray"
-  # fillshowNA=NA
-  # fillcolorNULL="gray"
-  # legendSingleColorOn=T
-  # legendSingleValue=NULL
-  # legendSingleColor="white"
+  # frameShow = F
   # pdfpng = 'png'
   # fillcolorNA="gray"
   # fillshowNA=NA
@@ -234,21 +239,30 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # mapTitleOn=T
   # innerMargins=c(0,0,0,0) # bottom, left, top, right
   # legendDigitsOverride=NULL
+  # classPalette = NULL
+  # classPaletteDiff = "pal_div_RdBl"
 
 
   #------------------
   # Initialize variables to remove binding errors
   # -----------------
 
+  if(T){
   NULL->lat->lon->param->region->scenario->subRegion->subRegType -> value ->
     x->year->gridID->underLayer->maxScale->minScale->
-    valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX->classPalette->shapeTblScenMultiABRef->
-    shapeTblDiff -> gridTblDiff -> shapeTblMultiOrig->countCheck-> multiFacetCol -> multiFacetRow
+    valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX->shapeTblScenMultiABRef->
+    shapeTblDiff -> gridTblDiff -> shapeTblMultiOrig->countCheck-> multiFacetCol -> multiFacetRow->classPaletteOrig->
+      xLabel->vintage->aggregate->query
 
+  classPaletteOrig <- classPalette
+  subRegShapeOrig <- subRegShape
+  subRegShpFileOrig <- subRegShpFile
+  subRegShpFolderOrig <- subRegShpFolder
+  boundaryRegShapeOrig <- boundaryRegShape
+  boundaryRegShpFileOrig <- boundaryRegShpFile
+  boundaryRegShpFolderOrig <- boundaryRegShpFolder
 
   dirOutputsX <- dirOutputs;
-
-  if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect="region"}
 
   # Set legend size based on where legend is placed
   if(legendOutsideSingle==T){legendTitleSizeS=legendTitleSizeO;legendTextSizeS=legendTextSizeO;legendPositionS=NULL}
@@ -256,11 +270,13 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   if(is.null(legendPositionMulti)){legendPositionMulti=legendPosition}
   if(legendOutsideMulti==T){if(is.null(legendTitleSizeMulti)){legendTitleSizeMulti=legendTitleSizeO;legendTextSizeMulti=legendTextSizeO;legendPositionMulti=NULL}}
   if(legendOutsideMulti==F){if(is.null(legendTitleSizeMulti)){legendTitleSizeMulti=legendTitleSizeI;legendTextSizeMulti=legendTextSizeI;legendPositionMulti=legendPosition}}
+}
 
   #------------------
   # Function for adding any missing columns if needed
   # -----------------
 
+  if(T){
   addMissing<-function(data){
     if(!any(grepl("\\<scenario\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenario="scenario")}else{
       data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenario\\>",names(data),ignore.case = T)])[1])
@@ -282,6 +298,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     if(!any(grepl("\\<region\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(region="region")}else{
       data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<region\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(region=as.character(region),region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
+    if(!any(grepl("\\<class\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(class="class")}else{
+      data <- data %>% dplyr::rename(!!"class" := (names(data)[grepl("\\<class\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(class=as.character(class),class=dplyr::case_when(is.na(class)~"class",TRUE~class))}
     if(!any(grepl("\\<regions\\>",names(data),ignore.case = T))){}else{
       data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<regions\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(region=as.character(region),region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
@@ -303,15 +322,31 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
      return(data)
   }
 
-
-
   if(is.null(gridDataTables) & is.null(polygonDataTables)){
     stop ("Both gridDataTables and polygonDataTables are Null. Need to provide atleast one of the two.")
   }
+}
+
+  #------------------
+  # Create Folders
+  #------------------
+
+  if(T){
+
+
+  if (!dir.exists(dirOutputsX)){dir.create(dirOutputsX)}
+  if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, sep = ""))){
+    dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, sep = ""))}
+
+  if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",sep = ""))){
+    dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",sep = ""))}
+  } # Close create folders
 
   #------------------
   # Read in grid Tables (Either csv tables or an R Table)
   #------------------
+
+  if(T){
 
   gridTbl<-tibble::tibble()
 
@@ -337,51 +372,45 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
     }else{gridTbl<-gridDataTables}
 
+  }else{gridTbl=gridDataTables}
+
+
+  if(!is.null(gridTbl)){
+  if(nrow(gridTbl)>0){
+
     # Add missing columns
     gridTbl<-addMissing(gridTbl)
 
-    if(!"subRegType" %in% names(gridTbl)){
-      print(paste("'subRegType' column not present in grid data provided. Creating class column 'subRegType'",sep=""))
-      gridTbl<-gridTbl%>%dplyr::mutate(subRegType="raster")
-    }
-    if(!"class" %in% names(gridTbl)){
-      print(paste("'class' column not present in grid data provided. Creating class column 'class'",sep=""))
-      gridTbl<-gridTbl%>%dplyr::mutate(class="class")
-    }
-    if(!"x" %in% names(gridTbl)){
-      print(paste("'x' column not present in grid data provided. Creating x column 'x'",sep=""))
-      gridTbl<-gridTbl%>%dplyr::mutate(x="x")
-    }
-    if(!"param" %in% names(gridTbl)){
-      print(paste("'param' column not present in grid data provided. Creating param column 'param'",sep=""))
-      gridTbl<-gridTbl%>%dplyr::mutate(param="param")
-    }
-    if(!"classPalette" %in% names(gridTbl)){
-      print(paste("'classPalette' column not present in grid data provided. Creating classPalette column 'classPalette'",sep=""))
-      gridTbl<-gridTbl%>%dplyr::mutate(classPalette="pal_hot")
-    }
-    if(!"value" %in% names(gridTbl)){
-      stop("'value' column not present in grid data provided. Need to have values. Check data.",sep="")
-    }
-    # Check to see if correct columns are present in data
-    if(!"scenario" %in% names(gridTbl)){
-      print(paste("'scenario' column not present in polygon data provided. Creating scenario 'scenario'",sep=""))
-      gridTbl<-gridTbl%>%dplyr::mutate(scenario="scenario")
-    }
-    if(!"subRegType" %in% names(gridTbl)){
-      print(paste("'subRegType' column not present in polygon data provided. Creating subRegType 'subRegion'",sep=""))
-      gridTbl<-gridTbl%>%dplyr::mutate(subRegType="subRegion")
-    }
-
-
+    if(!"value" %in% names(gridTbl)){stop("'value' column not present in grid data provided. Need to have values. Check data.",sep="")}
     if(!"lat" %in% names(gridTbl)){stop("'lat' column not present in grid data provided. Need to have lat. Check data.",sep="")}
     if(!"lon" %in% names(gridTbl)){stop("'lon' column not present in grid data provided. Need to have lat. Check data.",sep="")}
 
-  }else{gridTbl=gridDataTables}
+
+  if(any("classPalette" %in% names(gridTbl))){
+    gridTbl <- gridTbl %>% dplyr::mutate(classPalette=dplyr::case_when(is.na(classPalette)~"pal_hot",
+                                                                       classPalette=="pal_metis"~"pal_hot",
+                                                                       classPalette=="pal_16"~"pal_hot",
+                                                                       TRUE~classPalette))}
+  #Set classPalette based on metis.mappings()$mapParamQuery
+  gridTbl <- gridTbl %>%
+    dplyr::left_join(metis.mappings()$mapParamQuery, by=c("param")) %>%
+    dplyr::mutate(classPalette=dplyr::case_when(!is.na(mapPalette)~mapPalette,
+                                         TRUE~classPalette))
+
+    # Set classPalette if given
+  if(!is.null(classPaletteOrig)){
+    gridTbl <- gridTbl %>% dplyr::mutate(classPalette = classPaletteOrig)
+  }
+
+  }}
+
+  } # Close read in Grid Tables
 
   #------------------
   # Read in shape Tables (Either csv tables or R table
   #------------------
+
+  if(T){
 
   shapeTbl<-tibble::tibble()
 
@@ -409,206 +438,54 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
     }else{shapeTbl<-polygonDataTables}}
 
-  # Add missing columns
-  shapeTbl<-addMissing(shapeTbl)
-  shapeTbl <- shapeTbl %>% dplyr::mutate(classPalette=dplyr::case_when(is.na(classPalette)~"pal_hot",
-                                                                TRUE~classPalette),
-                                         subRegion=as.character(subRegion))
 
-  if(nrow(shapeTbl)>0){
-    if(!"class" %in% names(shapeTbl)){
-      print(paste("'class' column not present in polygon data provided. Creating class column 'class'",sep=""))
-      shapeTbl<-shapeTbl%>%dplyr::mutate(class="class")
-    }
-    if(!"x" %in% names(shapeTbl)){
-      print(paste("'x' column not present in polygon data provided. Creating x column 'x'",sep=""))
-      shapeTbl<-shapeTbl%>%dplyr::mutate(x="x")
-    }
-    if(!"param" %in% names(shapeTbl)){
-      print(paste("'param' column not present in polygon data provided. Creating param column 'param'",sep=""))
-      shapeTbl<-shapeTbl%>%dplyr::mutate(param="param")
-    }
-    if(!"classPalette" %in% names(shapeTbl)){
-      print(paste("'classPalette' column not present in polygon data provided. Creating classPalette column 'classPalette'",sep=""))
-      shapeTbl<-shapeTbl%>%dplyr::mutate(classPalette="pal_hot")
-    }
-    if(!"value" %in% names(shapeTbl)){
-      stop("'value' column not present in polygon data provided. Need to have values. Check data.",sep="")
-    }
-    # Check to see if correct columns are present in data
-    if(!"scenario" %in% names(shapeTbl)){
-      print(paste("'scenario' column not present in polygon data provided. Creating scenario 'scenario'",sep=""))
-      shapeTbl<-shapeTbl%>%dplyr::mutate(scenario="scenario")
-    }
-    if(!"subRegType" %in% names(shapeTbl)){
-      print(paste("'subRegType' column not present in polygon data provided. Creating subRegType 'subRegion'",sep=""))
-      shapeTbl<-shapeTbl%>%dplyr::mutate(subRegType="subRegion")
-    }
-  }
+  if(!is.null(shapeTbl)){
+    if(nrow(shapeTbl)>0){
 
-  #------------------
-  # Read in shape files
-  #------------------
+      # Add missing columns
+      shapeTbl<-addMissing(shapeTbl)
 
-  if(is.null(boundaryRegShape)){
-    if(!is.null(boundaryRegShpFolder) & !is.null(boundaryRegShpFile)){
-      if(!dir.exists(boundaryRegShpFolder)){
-        stop("Shapefile folder: ", boundaryRegShpFolder ," is incorrect or doesn't exist.",sep="")}
-      if(!file.exists(paste(boundaryRegShpFolder,"/",boundaryRegShpFile,".shp",sep=""))){
-        stop("Shape file: ", paste(boundaryRegShpFolder,"/",boundaryRegShpFile,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
-      boundaryRegShape=rgdal::readOGR(dsn=boundaryRegShpFolder,layer=boundaryRegShpFile,use_iconv=T,encoding='UTF-8')
-      print(paste("Boundary Shape : ",boundaryRegShpFolder,"/",boundaryRegShpFile,".shp",sep=""))
-      print(raster::head(boundaryRegShape))
-    } # close if(!is.null(boundaryRegShpFolder) & !is.null(boundaryRegShpFile))
-  }
+      if(!"value" %in% names(shapeTbl)){stop("'value' column not present in polygon data provided. Need to have values. Check data.",sep="")}
 
-  if(is.null(subRegShape)){
-    if(!is.null(subRegShpFolder) & !is.null(subRegShpFile)){
-      if(!dir.exists(subRegShpFolder)){
-        stop("Shapefile folder: ", subRegShpFolder ," is incorrect or doesn't exist.",sep="")}
-      if(!file.exists(paste(subRegShpFolder,"/",subRegShpFile,".shp",sep=""))){
-        stop("Shape file: ", paste(subRegShpFolder,"/",subRegShpFile,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
-      subRegShape=rgdal::readOGR(dsn=subRegShpFolder,layer=subRegShpFile,use_iconv=T,encoding='UTF-8')
-      print(paste("Sub Reg Shape : ",subRegShpFolder,"/",subRegShpFile,".shp",sep=""))
-      print(raster::head(subRegShape))
-    } # if(!is.null(subRegShpFolder) & !is.null(subRegShpFile)){
-  }
+      shapeTbl <- shapeTbl %>% dplyr::mutate(classPalette=dplyr::case_when(is.na(classPalette)~"pal_hot",
+                                                                         classPalette=="pal_metis"~"pal_hot",
+                                                                         classPalette=="pal_16"~"pal_hot",
+                                                                         TRUE~classPalette),
+                                            subRegion=as.character(subRegion))
 
+      #Set classPalette based on metis.mappings()$mapParamQuery
+      shapeTbl <- shapeTbl %>%
+        dplyr::left_join(metis.mappings()$mapParamQuery, by=c("param")) %>%
+        dplyr::mutate(classPalette=dplyr::case_when(!is.na(mapPalette)~mapPalette,
+                                             TRUE~classPalette))
 
-  if(is.null(boundaryRegShape) & is.null(subRegShape)){
-    stop("No valid boundary or subregional shape file available")}
+    # Set classPalette if given
+      if(!is.null(classPaletteOrig)){shapeTbl <- shapeTbl %>% dplyr::mutate(classPalette = classPaletteOrig)}
+  }}
 
-  if(!is.null(boundaryRegShape) & !is.null(subRegShape)){
-    sp::proj4string(boundaryRegShape) <- sp::proj4string(subRegShape)
-  }
-
-  extendedLabels <- T
-
-  if(is.null(boundaryRegShape) & !is.null(subRegShape)){
-    boundaryRegShape<-subRegShape
-    boundaryRegCol <- subRegCol
-    extendedBGColor <- "white"
-    extendedLabels <- F
-  }
-
-
-  if(!subRegCol %in% names(subRegShape)){stop(paste("SubRegCol: ",subRegCol," not present in subRegShape",sep=""))}
-
-  if(!is.null(subRegShape)){
-    subRegShape@data[[subRegCol]] <- as.character(subRegShape@data[[subRegCol]])
-    if(!all(unique(shapeTbl$subRegion) %in% unique(subRegShape@data[[subRegCol]]))){
-      print(paste("subregions in polygon data table not present in shape file. : ",
-                 paste(unique(shapeTbl$subRegion)[!unique(shapeTbl$subRegion) %in% unique(subRegShape@data[[subRegCol]])],collapse=", "),sep=""))
-      print(paste("Removing subRegions not present in shapefile from datatable: ",
-                  paste(unique(shapeTbl$subRegion)[!unique(shapeTbl$subRegion) %in% unique(subRegShape@data[[subRegCol]])],collapse=", "),sep=""))
-      shapeTbl <- shapeTbl %>% dplyr::filter(subRegion %in% unique(subRegShape@data[[subRegCol]]))
-      print(paste("Remaining subRegions in dataTable are: ",paste(unique(shapeTbl$subRegion),collapse=", "),sep=""))}
-    }
-
-  subRegShape@data<-subRegShape@data%>%dplyr::mutate(subRegion=get(subRegCol))
-
+  } # Read in SHape Tables
 
   #----------------
   # Check scaleRange
   #---------------
 
+  if(T){
   scaleRange[is.na(scaleRange)]<-NA_real_
   scaleRange[scaleRange=="NA"]<-NA_real_
   if(!all(c("param","maxScale","minScale") %in% names(scaleRange))){
     paste("Incorrect column names for scaleRange: ",names(scaleRange),". Should include param, maxScale, minscale.")
     paste("Setting scaleRange to NULL.")
     scaleRange=NULL
-  }
-
-  #----------------
-  # Create Boundary and subRegional shapefiles
-  #---------------
-
-  shape<-subRegShape
-
-  if(!subRegCol %in% names(shape)){stop(paste("SubRegCol: ",subRegCol," not present in shape",sep=""))}
-
-  shape@data<-shape@data%>%dplyr::mutate(subRegion=get(subRegCol), subRegion=as.character(subRegion))
-
-  #----------------
-  # Create Boundary Extension
-  #---------------
-
-  bgColorChosen="white"
-
-  if(extension==T){
-
-    frameShow=T;facetLabelBorderLwd=0.1;facetBGColor="grey30";facetLabelColor = "white"
-
-    if(is.null(extendedShape)){
-
-      extendedBoundary <- metis::mapCountries
-
-      if(!is.null(boundaryRegCol) & !is.null(boundaryRegShape)){
-        if(boundaryRegCol %in% names(boundaryRegShape)){
-          boundaryRegShape<-boundaryRegShape[which(boundaryRegShape[[boundaryRegCol]] %in% boundaryRegionsSelect),]
-          print(paste("boundaryRegShape subset to boundaryRegionSelect: ",boundaryRegionsSelect,sep=""))
-          bbox1<-as.data.frame(sp::bbox(boundaryRegShape))
-          extendedShapeCol<-boundaryRegCol
-        }}else{
-          bbox1<-as.data.frame(sp::bbox(shape))
-          extendedShapeCol<-subRegCol
-        }
-
-      if(!is.null(bbox1)){
-        bbox1$min;bbox1$max
-        rangeX<-abs(range(bbox1$min[1],bbox1$max[1])[2]-range(bbox1$min[1],bbox1$max[1])[1])
-        rangeY<-abs(range(bbox1$min[2],bbox1$max[2])[2]-range(bbox1$min[2],bbox1$max[2])[1])
-        bbox1$min[1]<-(-rangeX*expandPercent/100)+bbox1$min[1];
-        bbox1$min[2]<-(-rangeY*expandPercent/100)+bbox1$min[2];
-        bbox1$max[1]<-(rangeX*expandPercent/100)+bbox1$max[1];
-        bbox1$max[2]<-(rangeY*expandPercent/100)+bbox1$max[2];
-        bbox1$min;bbox1$max;
-        bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
-        sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
-        print("Creating extended boundary...")
-        extendedShape<-raster::crop(extendedBoundary, bbox1)
-        extendedShape@bbox <- bbox1@bbox
-        extendedBGColor="lightblue1"
-      }else{print("No extended boundary.")}
     }
-
-    if(!is.null(extendedShape)){
-      if(extendedShapeCol %in% names(extendedShape)){
-        underLayer<-metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL, dataPolygon=extendedShape, printFig=F,labelsAutoPlace = F,
-                              fillColumn = extendedShapeCol,labels=extendedLabels, fillPalette = extendedFillColor,legendShow=F,
-                              bgColor = extendedBGColor, frameShow=T,facetLabelBorderLwd=facetLabelBorderLwd,labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,
-                              facetsON=F, figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng)
-        bgColorChosen= extendedBGColor
-      }else{ print(paste("boundaryRegCol provided: ",boundaryRegCol," is not a column in boundaryRegShape.",sep=""))
-        print(paste("OR boundaryRegionsSelect provided: ",boundaryRegionsSelect," is not a region in boundaryRegShape.",sep=""))
-        print(paste("Boundary Shape not subset. Skipping Extension.",sep=""))
-        underLayer=NULL}
-    }
-  }else{
-    innerMargins=c(0.1,0.1,0.1,0.1)
-  }
-
-
-
+  } # Check Scale Range
   #------------------
   # Subset Data
   #------------------
 
-  if(nrow(shapeTbl)>0){
-    if(boundaryRegionsSelect!="region"){
-      if(all(unique(shapeTbl$region)!="region")){
-     if(any(!boundaryRegionsSelect %in% unique(shapeTbl$region))){
-      print(paste("boundaryRegionsSelect: ",boundaryRegionsSelect," not in shapeTbl regions"))}}}}
-
+  if(T){
 
   if(!is.null(shapeTbl)){
     if(nrow(shapeTbl)>0){
-    #shapeTbl<-shapeTbl%>%unique()
-    if(boundaryRegionsSelect != "region"){
-      if(any(boundaryRegionsSelect %in% unique(shapeTbl$region))){
-      shapeTbl <- shapeTbl %>% dplyr::filter(region %in% boundaryRegionsSelect)
-      }}
 
     if(any(paramsSelect!="All")){
       if(any(paramsSelect %in% unique(shapeTbl$param))){
@@ -658,36 +535,80 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # Remove NA's & Keep only Unique Values
   if(!is.null(gridTbl)){
     if(nrow(gridTbl)>0){
-    print("Removing NA's and keeping only unique values in gridTbl...")
+    #print("Removing NA's and keeping only unique values in gridTbl...")
     gridTbl<-gridTbl%>%dplyr::filter(!is.na(value))%>%dplyr::mutate(value = signif(value,10))%>%unique()
-    print("Complete.")
+    #print("Complete.")
     }
   }
   if(!is.null(shapeTbl)){
     if(nrow(shapeTbl)>0){
-    print("Removing NA's and keeping only unique values in shapeTbl...")
+    #print("Removing NA's and keeping only unique values in shapeTbl...")
     shapeTbl<-shapeTbl%>%dplyr::filter(!is.na(value))%>%dplyr::mutate(value = signif(value,10))%>%unique()
-    print("Complete.")}
+    #print("Complete.")
+    }
   }
-
+  } # Subset data
 
   #------------------
   # Compare Scenarios
   #------------------
 
-  if(diffOn != F){
-    if(!is.null(scenRefDiffIndv)){
+  if(T){
+  # Get Params and Scenarios
+  if(!is.null(shapeTbl) & !is.null(gridTbl)){
+    if(nrow(shapeTbl)>0 & nrow(gridTbl)>0){
+      params <- unique(c(unique(shapeTbl$param),unique(gridTbl$param)))
+      scenarios <- unique(c(unique(shapeTbl$scenario),unique(gridTbl$scenario)))
+    }
+  }else{
+    if(!is.null(shapeTbl)){
+      if(nrow(shapeTbl)>0){
+        params <- unique(c(unique(shapeTbl$param)))
+        scenarios <- unique(c(unique(shapeTbl$scenario)))
+      }
+    } else {
+      if(!is.null(gridTbl)){
+        if(nrow(gridTbl)>0){
+          params <- unique(c(unique(gridTbl$param)))
+          scenarios <- unique(c(unique(gridTbl$scenario)))
+        }
+      }
+    }
+  }
+
+    if(!is.null(scenRef)){
+
+      if(!any(scenRef %in% scenarios)){
+        print(paste("scenRef chosen: ", scenRef, " is not in any of the available scenarios: ",sep=""))
+        print(paste(scenarios,collapse=", "))
+        print(paste("Setting scenRef to first scenario: ", scenarios[1],".",sep=""))
+        scenRef <- scenarios[1]
+      }
+
+
+      if(is.null(scenDiff)){
+        scenDiff <- scenarios[!scenarios %in% scenRef]
+        print(paste("Running difference against all available scenarios:",sep=""))
+        print(paste(scenDiff,collapse=", "))
+      }else{
+        if(!any(scenDiff %in% scenarios)){
+          print(paste("None of the scenDiff are in any of the available scenarios: "))
+          print(paste(scenarios[!scenarios %in% scenRef],collapse=", "))
+          print(paste("Skipping Diff.",sep=""))
+        }
+      }
+
 
       shapeTblDiff <- tibble::tibble()
       gridTblDiff <- tibble::tibble()
 
-      for(i in 1:length(unique(scenRefDiffIndv$param))){
+      for(i in 1:length(params)){
 
         NULL -> param_i -> scenRef_i -> scenDiff_i
 
-        param_i <- scenRefDiffIndv$param[[i]];param_i
-        scenRef_i <- scenRefDiffIndv$scenRef[[i]];scenRef_i
-        scenDiff_i <- scenRefDiffIndv$scenDiff[[i]];scenDiff_i
+        param_i <- params[i]
+        scenRef_i <- scenRef
+        scenDiff_i <- scenDiff
 
         if(!is.null(param_i) & !is.null(scenRef_i) & !is.null(scenDiff_i)){
 
@@ -708,14 +629,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
        # Calculate Diff Values
 
       gridTblDiffy<-gridTblDiffx%>%dplyr::filter(param==param_i, scenario %in% c(scenRef_i,scenDiff_i))%>%
-        dplyr::select(-multiFacetCol,-multiFacetRow)%>%
+        dplyr::select(lat,lon,subRegType,param,x,xLabel,vintage,units,aggregate,classPalette,class,scenario,value)%>%
         tidyr::spread(scenario,value)
 
 
       for (scenario_i in unique(gridTblDiffx$scenario)[unique(gridTblDiffx$scenario) %in% scenDiff_i]){
         tbl_temp1 <-gridTblDiffy%>%
           dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
-                        classPalette="pal_div_RdBlu")%>%
+                        classPalette=classPaletteDiff)%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(gridTblDiffx$scenario))))
         tbl_temp1<-tbl_temp1%>%
           tidyr::gather(key=scenario,value=value,
@@ -724,7 +645,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
         tbl_temp2 <-gridTblDiffy%>%
           dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
-                        classPalette="pal_div_RdBlu")%>%
+                        classPalette=classPaletteDiff)%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(gridTblDiffx$scenario))))
         tbl_temp2<-tbl_temp2%>%
           tidyr::gather(key=scenario,value=value,
@@ -732,7 +653,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
           dplyr::filter(!is.na(value))
 
         gridTblDiff<-dplyr::bind_rows(gridTblDiff,tbl_temp1,tbl_temp2)
-      }}}
+      }
+    }
+  }
 
 
   # Compare Shape Data
@@ -746,13 +669,13 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       # Calculate Diff Values
 
       shapeTblDiffy<-shapeTbl%>%dplyr::filter(param==param_i, scenario %in% c(scenRef_i,scenDiff_i))%>%
-        dplyr::select(-multiFacetCol,-multiFacetRow)%>%
+        dplyr::select(region,subRegion,subRegType,param,x,xLabel,vintage,units,aggregate,classPalette,class,scenario,value)%>%
         tidyr::spread(scenario,value);shapeTblDiffy%>%as.data.frame(); names(shapeTblDiffy)
 
       for (scenario_i in unique(shapeTbl$scenario)[(unique(shapeTbl$scenario) %in% scenDiff_i)]){
         tbl_temp1 <-shapeTblDiffy%>%
           dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
-                        classPalette="pal_div_RdBlu")%>%
+                        classPalette=classPaletteDiff)%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(shapeTblDiffx$scenario)[unique(shapeTblDiffx$scenario) %in% c(scenRef_i,scenDiff_i)])))
         tbl_temp1<-tbl_temp1%>%
           tidyr::gather(key=scenario,value=value,
@@ -761,7 +684,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
         tbl_temp2 <-shapeTblDiffy%>%
           dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
-                        classPalette="pal_div_RdBlu")%>%
+                        classPalette=classPaletteDiff)%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(shapeTblDiffx$scenario)[unique(shapeTblDiffx$scenario) %in% c(scenRef_i,scenDiff_i)])))
         tbl_temp2<-tbl_temp2%>%
           tidyr::gather(key=scenario,value=value,
@@ -769,21 +692,30 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
           dplyr::filter(!is.na(value))
 
         shapeTblDiff<-dplyr::bind_rows(shapeTblDiff,tbl_temp1,tbl_temp2)
-      }}}}}}}
-
+      }}}
+        }
+      }
+    }
 
   shapeTbl <- shapeTbl %>% dplyr::bind_rows(shapeTblDiff) %>% unique();
   gridTbl <- gridTbl %>% dplyr::bind_rows(gridTblDiff) %>% unique();
 
+} # Compare Scenarios
 
+
+  #------------------
   # Assign MultiFacet Columns
+  #------------------
+
+  if(T){
+
 
   if(!is.null(shapeTbl)){
     if(nrow(shapeTbl)>0){
     shapeTbl <- shapeTbl %>%
-      dplyr::mutate(multiFacetCol=dplyr::case_when(multiFacetCols!="multiFacetCol"~!!as.name(multiFacetCols),
+      dplyr::mutate(multiFacetCol=dplyr::case_when(multiFacetCol!="multiFacetCol"~multiFacetCol,
                     TRUE~"MultiANone"),
-                    multiFacetRow=dplyr::case_when(multiFacetRows!="multiFacetRow"~!!as.name(multiFacetRows),
+                    multiFacetRow=dplyr::case_when(multiFacetRow!="multiFacetRow"~multiFacetRow,
                                             TRUE~"MultiBNone"))
     shapeTbl<-shapeTbl%>%dplyr::mutate(subRegion=as.character(subRegion))
     shapeTbl<-droplevels(shapeTbl)
@@ -827,233 +759,308 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     }
   }
 
-  # Crop gridTbl data to shape
-  if(!is.null(gridTbl) & !is.null(shape)){
-    if(nrow(gridTbl)>0){
+  } # Assign MultiFacet Columns
 
-      gridTbl <- metis.gridByPoly(gridDataTables = gridTbl,shape=shape,colName=subRegCol)
-
-    }}
-
-  #------------------------------------------------
-  # Subset shapeTbl and gridTbl by the chosen indvidiual, ref and diff scenarios
-  #-----------------------------------------------
-
-  shapeTblNew<- tibble::tibble()
-
-  if(!is.null(scenRefDiffIndv)){
-
-  for(i in 1:length(unique(scenRefDiffIndv$param))){
-
-    NULL -> param_i -> scenRef_i -> scenDiff_i
-
-    param_i <- scenRefDiffIndv$param[[i]];param_i
-    scenRef_i <- scenRefDiffIndv$scenRef[[i]];scenRef_i
-    scenDiff_i <- scenRefDiffIndv$scenDiff[[i]];scenDiff_i
-    scenIndv_i <- scenRefDiffIndv$scenIndv[[i]];scenIndv_i
-
-      shapeTbl_temp <- shapeTbl %>% dplyr::filter(param==param_i & (scenario %in% c(scenRef_i,scenDiff_i,scenIndv_i)))
-      shapeTbl_tempDiffs <- shapeTbl %>% dplyr::filter(param==param_i & (grepl("Diff",scenario)))
-      shapeTblNew <- shapeTblNew %>% dplyr::bind_rows(shapeTbl_temp, shapeTbl_tempDiffs)
-
-  }}else{shapeTblNew <- shapeTbl}
-
-  shapeTbl <- shapeTblNew; unique(shapeTbl%>%dplyr::select(param,scenario));
-  rm(shapeTblNew)
-
-  gridTblNew<- tibble::tibble()
-  if(!is.null(scenRefDiffIndv)){
-    for(i in 1:length(unique(scenRefDiffIndv$param))){
-
-      NULL -> param_i -> scenRef_i -> scenDiff_i
-
-      param_i <- scenRefDiffIndv$param[[i]];param_i
-      scenRef_i <- scenRefDiffIndv$scenRef[[i]];scenRef_i
-      scenDiff_i <- scenRefDiffIndv$scenDiff[[i]];scenDiff_i
-
-        gridTbl_temp <- gridTbl %>% dplyr::filter(param==param_i & (scenario %in% c(scenRef_i,scenDiff_i,scenIndv_i)))
-        gridTbl_tempDiffs <- gridTbl %>% dplyr::filter(param==param_i & (grepl("Diff",scenario)))
-        gridTblNew <- gridTblNew %>% dplyr::bind_rows(gridTbl_temp, gridTbl_tempDiffs)
-
-      }}else{gridTblNew <- gridTbl}
-
-  gridTbl <- gridTblNew; unique(gridTbl%>%dplyr::select(param,scenario));
-  rm(gridTblNew)
-
-  if("scenario" %in% names(shapeTbl)){
-  if(length(unique(shapeTbl$scenario))>0){indvScenariosShape <- unique(shapeTbl$scenario)}else{indvScenariosShape<-NULL}}
-  if("scenario" %in% names(gridTbl)){
-  if(length(unique(gridTbl$scenario))>0){indvScenariosGrid <- unique(gridTbl$scenario)}else{indvScenariosGrid<-NULL}}
-
-  #------------------
-  # Create Folders if needed
-  #------------------
-  if(TRUE){ # to create all folders in one go during testing.
-
-    if(is.null(boundaryRegionsSelect)){boundaryRegionsSelect<-"region"}
-
-    if (!dir.exists(dirOutputsX)){dir.create(dirOutputsX)}
-    if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, sep = ""))){
-      dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, sep = ""))}
-
-    if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",sep = ""))){
-      dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",sep = ""))}
-
-    if(!is.null(gridTbl)){
-      if(nrow(gridTbl)>0){
-
-    if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster",sep = ""))){
-      dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster",sep = ""))}
-
-      for(param_i in unique(gridTbl$param)){
-        if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,sep = ""))){
-          dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,sep = ""))}
-
-
-    if(!is.null(indvScenariosGrid)){
-
-      indvScenarios=indvScenariosGrid
-
-      if(!is.null(gridTbl)){
-        if(any(indvScenarios=="All")){
-          print(paste("indvScenarios set to 'All', running for all scenarios.",sep=""))
-          scenarios <- unique(gridTbl$scenario)} else {
-
-            if(all(indvScenarios %in% unique(gridTbl$scenario))){
-              print(paste("Running for selected indvScenarios: ", paste(indvScenarios,collapse=", "),sep=""))
-              scenarios <- unique((gridTbl%>%dplyr::filter(scenario %in% indvScenarios))$scenario)
-            } else {if(!all(indvScenarios %in% unique(gridTbl$scenario))){
-              print(paste("Running for indvScenarios: ", paste(indvScenarios,collapse=", "), " available in unique gridTbl scenarios : ",
-                          paste(indvScenarios[indvScenarios %in% unique(gridTbl$scenario)],collapse=", "),sep=""))
-              scenarios <- unique((gridTbl%>%dplyr::filter(scenario %in% indvScenarios[indvScenarios %in% unique(gridTbl$scenario)]))$scenario)
-            }
-            }
-          }
-
-        if(multiFacetsOn==T){
-          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/compareMultiFacets",sep = ""))){
-            dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/compareMultiFacets",sep = ""))}}
-
-
-        for (scenario_i in unique((gridTbl%>%dplyr::filter(param==param_i))$scenario)) {
-          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,sep = ""))){
-            dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,sep = ""))}
-
-          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,"/byYear",sep = ""))){
-            dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,"/byYear",sep = ""))}
-
-
-        } # Close for scenario i
-      }
-    }
-      } # Close Parami
-   } # Close if nrow(gridTbl)>0
-      } # Close if !is.null(gridTbl)
-
-
-  if(!is.null(shapeTbl)){
-    if(nrow(shapeTbl)>0){
-
-    for (subRegion_i in unique(shapeTbl$subRegType)) {
-      if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,sep = ""))){
-        dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,sep = ""))} # Close subRegion directory
-    } # Close subRegion
-
-    for(param_i in unique(shapeTbl$param)){
-      if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,sep = ""))){
-        dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,sep = ""))}
-
-    if(!is.null(indvScenariosShape)){
-
-      indvScenarios=indvScenariosShape
-
-
-      if(!is.null(shapeTbl) & nrow(shapeTbl)>0){
-        if(any(indvScenarios=="All")){
-          print(paste("indvScenarios set to 'All', running for all scenarios.",sep=""))
-          scenarios <- unique(shapeTbl$scenario)} else {
-
-            if(all(indvScenarios %in% unique(shapeTbl$scenario))){
-              print(paste("Running for selected indvScenarios: ", paste(indvScenarios,collapse=", "),sep=""))
-              scenarios <- unique((shapeTbl%>%dplyr::filter(scenario %in% indvScenarios))$scenario)
-            } else {if(!all(indvScenarios %in% unique(shapeTbl$scenario))){
-              print(paste("Running for indvScenarios: ", paste(indvScenarios,collapse=", "), " available in unique shapeTbl scenarios : ",
-                          paste(indvScenarios[indvScenarios %in% unique(shapeTbl$scenario)],collapse=", "),sep=""))
-              scenarios <- unique((shapeTbl%>%dplyr::filter(scenario %in% indvScenarios[indvScenarios %in% unique(shapeTbl$scenario)]))$scenario)
-            }
-            }
-          }
-
-        if(multiFacetsOn==T){
-          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))){
-            dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))}
-          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))){
-            dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))}
-          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))){
-            dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))}
-        }
-
-        unique((shapeTbl%>%dplyr::filter(param==param_i))$scenario)
-
-        for (scenario_i in unique((shapeTbl%>%dplyr::filter(param==param_i))$scenario)) {
-          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))){
-            dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/",  scenario_i,sep = ""))}
-
-          if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))){
-            dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))}
-
-
-
-
-        } # Close for scenario i
-      }
-    }
-    } # Close Param
-    }
-  }
-  } # Close if(TRUE)
-
-  #-------------------
-  # Save Map related Data Table
-  #-------------------
-
-  if(nrow(shapeTbl)>0){
-  data.table::fwrite(shapeTbl%>%
-                       tidyr::spread(key="class",value="value"),paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/mapTbl",nameAppend,".csv",sep = ""))
-    print(paste("Map data table written to ",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/mapTbl",nameAppend,".csv",sep = ""))
-  }
 
   # -------------------
   # Create Raster Plots
   # -------------------
 
+  if(T){
+
   if(!is.null(gridTbl)){
     if(nrow(gridTbl)>0){
 
-    if(!is.null(indvScenariosGrid)){
+      gridTblOrig <- gridTbl
 
-      indvScenarios=indvScenariosGrid
 
-      if(indvScenarios=="All"){
-        print(paste("indvScenarios set to 'All', running for all scenarios.",sep=""))
-        scenarios <- unique(gridTbl$scenario)
-        } else {
+      for (scenario_i in unique(gridTblOrig$scenario)){
+        for (param_i in unique(gridTblOrig$param)){
 
-          if(all(indvScenarios %in% unique(gridTbl$scenario))){
-            print(paste("Running for selected indvScenarios: ", paste(indvScenarios,collapse=", "),sep=""))
-            scenarios <- unique((gridTbl%>%dplyr::filter(scenario %in% indvScenarios))$scenario)
-          } else {if(!all(indvScenarios %in% unique(gridTbl$scenario))){
-            print(paste("Running for indvScenarios: ", paste(indvScenarios,collapse=", "), "available in unique gridTbl scenarios : ",
-                        paste(indvScenarios[indvScenarios %in% unique(gridTbl$scenario)],collapse=", "),sep=""))
-            scenarios <- unique((gridTbl%>%dplyr::filter(scenario %in% indvScenarios[indvScenarios %in% unique(gridTbl$scenario)]))$scenario)
-          }
-          }
-        }
+          if(nrow(gridTblOrig%>%dplyr::filter(param==param_i,scenario==scenario_i))>0){
 
-      for (scenario_i in scenarios){
-        for (param_i in unique(gridTbl$param)){
+          gridTbl <- gridTblOrig%>%dplyr::filter(param==param_i,scenario==scenario_i)
+
+          #------------------
+          # Create Grid Table Folders If Needed
+          #------------------
+          if(T){
+
+                if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster",sep = ""))){
+                  dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster",sep = ""))}
+
+                  if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,sep = ""))){
+                    dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,sep = ""))}
+
+                  if(multiFacetsOn==T){
+                    if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/compareMultiFacets",sep = ""))){
+                      dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/compareMultiFacets",sep = ""))}}
+
+                    if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,sep = ""))){
+                      dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,sep = ""))}
+
+                    if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,"/byYear",sep = ""))){
+                      dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/",scenario_i,"/byYear",sep = ""))}
+          } # Create grid table folder if needed
+
+
+          #------------------
+          # Read in shape files
+          #------------------
+
+            if(!is.null(shapeTbl) & nrow(shapeTbl)>0){
+
+              subRegShape <- NULL
+
+              if(all(is.null(subRegShapeOrig) & is.null(subRegShpFileOrig))){
+
+              if(T){ # Telescope out of finest regions to see which shapefile to use.
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS49@data$subRegion%>%unique())){subRegShape <- metis::mapUS49; subRegType_i<-"US49"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS52@data$subRegion%>%unique())){subRegShape <- metis::mapUS52; subRegType_i<-"US52"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMReg32@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMReg32; subRegType_i<-"GCAMReg32"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMReg32US52@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMReg32US52; subRegType_i<-"GCAMReg32US52"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMBasinsUS49@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMBasinsUS49; subRegType_i<-"GCAMBasinsUS49"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMBasinsUS52@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMBasinsUS52; subRegType_i<-"GCAMBasinsUS52"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMBasins@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMBasins; subRegType_i<-"GCAMBasins"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapCountries@data$subRegion%>%unique())){subRegShape <- metis::mapCountries; subRegType_i<-"Countries"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapStates@data$subRegion%>%unique())){subRegShape <- metis::mapStates; subRegType_i<-"States"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS49County@data$subRegion%>%unique())){subRegShape <- metis::mapUS49County; subRegType_i<-"US49County"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS49HUC2@data$subRegion%>%unique())){subRegShape <- metis::mapUS49HUC2; subRegType_i<-"US49HUC2"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS49HUC4@data$subRegion%>%unique())){subRegShape <- metis::mapUS49HUC4; subRegType_i<-"US49HUC4"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS52County@data$subRegion%>%unique())){subRegShape <- metis::mapUS52County; subRegType_i<-"US52County"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS52HUC2@data$subRegion%>%unique())){subRegShape <- metis::mapUS52HUC2; subRegType_i<-"US52HUC2"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS52HUC4@data$subRegion%>%unique())){subRegShape <- metis::mapUS52HUC4; subRegType_i<-"US52HUC4"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMLand@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMLand; subRegType_i<-"GCAMLand"}
+              }#US49
+              }#US52
+              }#GCAMReg32
+              }#GCAM32RegUS52
+              }#GCAMBasinsUS49
+              }#GCAMBasinsUS52
+              }#GCAMBasins
+              }#Countries
+              }#States
+              }#US49County
+              }#US49HUC2
+              }#US49HUC4
+              }#US52County
+              }#US52HUC2
+              }#US52HUC4
+              } # CLose telescoping
+
+
+                runSection = T
+                if(is.null(subRegShape)){
+                  print(paste("For the selected param: ", param_i," and scenario: ", scenario_i,sep=""))
+                  print("None of the pre-loaded shapefiles contain all the subRgions specified in a single shapefile.")
+                  print(paste("subRegions missing from shapefile: ",
+                              paste(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion)[
+                                !unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                                  unique(subRegShape@data$subRegion)
+                              ],collapse=", "),sep=""))
+                  print(paste("Skipping map for param: ", param_i," and scenario: ", scenario_i,sep=""))
+                  print("Please load a subRegShape directly for your region of interest.")
+                  runSection = F
+                }
+
+              } else {
+                if(nrow(shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))>0){
+                  subRegType_i <- unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegType)
+                }else{subRegType_i="subRegion"}
+                subRegShape <- subRegShapeOrig
+              }
+
+              if(runSection){
+
+                if(is.null(boundaryRegShapeOrig)){
+                  if(!is.null(boundaryRegShpFolderOrig) & !is.null(boundaryRegShpFileOrig)){
+                    if(!dir.exists(boundaryRegShpFolderOrig)){
+                      stop("Shapefile folder: ", boundaryRegShpFolderOrig ," is incorrect or doesn't exist.",sep="")}
+                    if(!file.exists(paste(boundaryRegShpFolderOrig,"/",boundaryRegShpFileOrig,".shp",sep=""))){
+                      stop("Shape file: ", paste(boundaryRegShpFolderOrig,"/",boundaryRegShpFileOrig,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
+                    boundaryRegShape=rgdal::readOGR(dsn=boundaryRegShpFolderOrig,layer=boundaryRegShpFileOrig,use_iconv=T,encoding='UTF-8')
+                    print(paste("Sub Reg Shape : ",boundaryRegShpFolderOrig,"/",boundaryRegShpFileOrig,".shp",sep=""))
+                    print(raster::head(boundaryRegShape))
+                  } # if(!is.null(boundaryRegShpFolder) & !is.null(boundaryRegShpFile)){
+                }
+
+
+            if(is.null(subRegShape)){
+              if(!is.null(subRegShpFolderOrig) & !is.null(subRegShpFileOrig)){
+                if(!dir.exists(subRegShpFolderOrig)){
+                  stop("Shapefile folder: ", subRegShpFolderOrig ," is incorrect or doesn't exist.",sep="")}
+                if(!file.exists(paste(subRegShpFolderOrig,"/",subRegShpFileOrig,".shp",sep=""))){
+                  stop("Shape file: ", paste(subRegShpFolderOrig,"/",subRegShpFileOrig,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
+                subRegShape=rgdal::readOGR(dsn=subRegShpFolderOrig,layer=subRegShpFileOrig,use_iconv=T,encoding='UTF-8')
+                print(paste("Sub Reg Shape : ",subRegShpFolderOrig,"/",subRegShpFileOrig,".shp",sep=""))
+                print(raster::head(subRegShape))
+              } # if(!is.null(subRegShpFolder) & !is.null(subRegShpFile)){
+            }
+
+
+            if(is.null(subRegShape)){
+              stop("No valid subregional shape file available")}
+
+            extendedLabels <- T
+
+            if(!is.null(subRegShape)){
+              extendedBGColor <- "white"
+              extendedLabels <- F
+            }
+
+
+            if(!subRegCol %in% names(subRegShape)){stop(paste("SubRegCol: ",subRegCol," not present in subRegShape",sep=""))}
+
+            if(!is.null(subRegShape)){
+              subRegShape@data[[subRegCol]] <- as.character(subRegShape@data[[subRegCol]])
+              if(!all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in% unique(subRegShape@data[[subRegCol]]))){
+                print(paste("Removing subRegions not present in shapefile from datatable: ",
+                            paste(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion)[!unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in% unique(subRegShape@data[[subRegCol]])],collapse=", "),sep=""))
+                shapeTbl <- shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i)%>% dplyr::filter(subRegion %in% unique(subRegShape@data[[subRegCol]]))
+                print(paste("Remaining subRegions in dataTable are: ",paste(unique(shapeTbl$subRegion),collapse=", "),sep=""))}
+            }
+
+            if(!any(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in% unique(subRegShape@data[[subRegCol]]))){
+              print(paste("None of the subRegions in data provided for param: ", param_i,"and scenario: ",scenario_i,
+                          " match subRegions in the shapefile provided or available.",sep=""))
+            }
+
+            subRegShape@data<-subRegShape@data%>%dplyr::mutate(subRegion=get(subRegCol))
+
+            #----------------
+            # Create Boundary and subRegional shapefiles
+            #---------------
+            if(!is.null(boundaryRegShapeOrig) & !is.null(subRegShape)){
+              if(!is.null(boundaryRegionsSelect)){
+                if(any(boundaryRegionsSelect %in% unique(boundaryRegShapeOrig@data[[boundaryRegCol]]))){
+                  boundaryRegShape <- boundaryRegShapeOrig[boundaryRegShapeOrig@data[[boundaryRegCol]] %in% boundaryRegionsSelect,]
+                  boundaryRegShape@data <- droplevels(boundaryRegShape@data)
+                  print("Map cropped to selected boundaryRegShape and regions: ")
+                  print(paste(boundaryRegionsSelect,collapse=", "))
+                  subRegShape <- sp::spTransform(subRegShape,raster::crs(boundaryRegShape))
+                  subRegShape <- raster::crop(subRegShape,boundaryRegShape)
+                  print("Scale will still include all data from original subRegShape extents")
+                } else {print(paste("boundaryRegionsSelect chosen are not available in the boundaryRegShapeFile.",paste(boundaryRegionsSelect,collapse=", "),sep=""))}
+              }else{
+                print("Map cropped to selected boundaryRegShape")
+                print("Scale will still include all data from original subRegShape extents")
+                boundaryRegShape <- sp::spTransform(boundaryRegShape,raster::crs(subRegShape))
+                subRegShape <- raster::crop(subRegShape,boundaryRegShape)
+                subRegShape@data <- droplevels(subRegShape@data)
+              }
+            }
+
+
+            shape<-subRegShape
+
+            if(!subRegCol %in% names(shape)){stop(paste("SubRegCol: ",subRegCol," not present in shape",sep=""))}
+
+            shape@data<-shape@data%>%dplyr::mutate(subRegion=get(subRegCol), subRegion=as.character(subRegion))
+
+
+
+
+            #----------------
+            # Create Boundary Extension
+            #---------------
+
+            bgColorChosen="white"
+
+
+            if(extension==T){
+
+              frameShow=T;facetLabelBorderLwd=0.1;facetBGColor="grey30";facetLabelColor = "white"
+
+              if(is.null(extendedShape)){
+
+                extendedBoundary <- metis::mapCountries
+                bbox1<-as.data.frame(sp::bbox(shape))
+                extendedShapeCol<-subRegCol
+
+                if(!is.null(bbox1)){
+                  bbox1$min;bbox1$max
+                  rangeX<-abs(range(bbox1$min[1],bbox1$max[1])[2]-range(bbox1$min[1],bbox1$max[1])[1])
+                  rangeY<-abs(range(bbox1$min[2],bbox1$max[2])[2]-range(bbox1$min[2],bbox1$max[2])[1])
+                  bbox1$min[1]<-(-rangeX*expandPercent/100)+bbox1$min[1];
+                  bbox1$min[2]<-(-rangeY*expandPercent/100)+bbox1$min[2];
+                  bbox1$max[1]<-(rangeX*expandPercent/100)+bbox1$max[1];
+                  bbox1$max[2]<-(rangeY*expandPercent/100)+bbox1$max[2];
+                  bbox1$min;bbox1$max;
+                  bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
+                  sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
+                  print("Creating extended boundary...")
+                  extendedShape<-raster::crop(extendedBoundary, bbox1)
+                  extendedShape@bbox <- bbox1@bbox
+                  extendedBGColor="lightblue1"
+                }else{print("No extended boundary.")}
+              }
+
+              if(!is.null(extendedShape)){
+                if(extendedShapeCol %in% names(extendedShape)){
+                  underLayer<-metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL, dataPolygon=extendedShape, printFig=F,labelsAutoPlace = F,
+                                        fillColumn = extendedShapeCol,labels=extendedLabels, fillPalette = extendedFillColor,legendShow=F,
+                                        bgColor = extendedBGColor, frameShow=T,facetLabelBorderLwd=facetLabelBorderLwd,labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,
+                                        facetsON=F, figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng)
+                  bgColorChosen= extendedBGColor
+                }
+              }
+            }else{
+              innerMargins=c(0.1,0.1,0.1,0.1)
+            }
+
+          } # Close shapefiles
+
+
+          # Crop gridTbl data to shape
+          if(!is.null(gridTbl) & !is.null(shape)){
+            if(nrow(gridTbl)>0){
+
+              gridTbl <- metis.gridByPoly(gridDataTables = gridTbl,shape=shape,colName=subRegCol)
+
+            }}
+
 
           if(nrow(gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i))>0){
+
+            #-------------------
+            # Save Map related Data Table
+            #-------------------
+
+            if(nrow(gridTbl %>% dplyr::filter(scenario==scenario_i,param==param_i))>0){
+              data.table::fwrite(gridTbl %>% dplyr::filter(scenario==scenario_i,param==param_i)%>%
+                                   dplyr::select(scenario,lat,lon,param,class,x,value,units),
+                                 paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,
+                                       "/","map_","raster_",param_i,"_",scenario_i,nameAppend,".csv",sep = ""))
+              print(paste("Map data table written to ",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,
+                          "/","map_","raster_",param_i,"_",scenario_i,nameAppend,".csv",sep = ""))
+            }
+
+
+
 
             animScaleGrid<-(gridTbl %>% dplyr::filter(scenario==scenario_i,param==param_i) %>%
                               dplyr::filter(!is.na(value),!is.infinite(value),!is.nan(value)))$value
@@ -1160,7 +1167,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           figWidth=figWidth,
                           figHeight=figHeight,
                           pdfpng = pdfpng,
-                          fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
+                          fileName = paste("map_","raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
                           dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep = ""))
 
                 # numeric2Cat_list=numeric2Cat_list
@@ -1189,7 +1196,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 # bgColor = bgColorChosen
                 # figWidth=figWidth
                 # figHeight=figHeight
-                # fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
+                # fileName = paste("map_","raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
                 # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep = "")
 
                 if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
@@ -1224,7 +1231,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           figWidth=figWidth,
                           figHeight=figHeight,
                           pdfpng = pdfpng,
-                          fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
+                          fileName = paste("map_","raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
                           dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep = ""))
 
                 if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
@@ -1261,7 +1268,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           figWidth=figWidth,
                           figHeight=figHeight,
                           pdfpng = pdfpng,
-                          fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
+                          fileName = paste("map_","raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
                           dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep = ""))
 
                 # numeric2Cat_list=numeric2Cat_list
@@ -1289,7 +1296,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 # bgColor = bgColorChosen
                 # figWidth=figWidth
                 # figHeight=figHeight
-                # fileName = paste("map_",folderName,"_raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep="")
+                # fileName = paste("map_","raster_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep="")
                 # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep = "")
 
               } # if nrow(datax) > 1
@@ -1299,14 +1306,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
             if(animateOn==T){
 
-              animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
+              animName<-paste("anim_","raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
               animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep=""),
-                                      pattern = paste(".*",param_i,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
+                                      pattern = paste(".*",param_i,".*",nameAppend,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
               animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
               magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                         animName,sep = ""))
-              print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
-                                                       animName,sep = ""))
+              print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
+                                                       animName,sep = "")))
               fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                    animName,sep = "")
               tempImage<-magick::image_read(fnameTempImage)
@@ -1314,14 +1321,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
               magick::image_write(croppedImage,fnameTempImage)
 
 
-              animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
+              animName<-paste("anim_","raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
               animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep=""),
-                                      pattern = paste(".*",param_i,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
+                                      pattern = paste(".*",param_i,".*",nameAppend,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
               animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
               magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                           animName,sep = ""))
-              print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
-                          animName,sep = ""))
+              print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
+                          animName,sep = "")))
               fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                    animName,sep = "")
               tempImage<-magick::image_read(fnameTempImage)
@@ -1329,14 +1336,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
               magick::image_write(croppedImage,fnameTempImage)
 
 
-              animName<-paste("anim_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
+              animName<-paste("anim_","raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
               animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/byYear",sep=""),
-                                      pattern = paste(".*",param_i,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
+                                      pattern = paste(".*",param_i,".*",nameAppend,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
               animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
               magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                           animName,sep = ""))
-              print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
-                          animName,sep = ""))
+              print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
+                          animName,sep = "")))
               fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,"/",
                                    animName,sep = "")
               tempImage<-magick::image_read(fnameTempImage)
@@ -1434,7 +1441,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           figWidth=figWidth,
                           figHeight=figHeight,
                           pdfpng = pdfpng,
-                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
+                          fileName = paste("map_","raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
                           dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
 
@@ -1463,7 +1470,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 # bgColor = bgColorChosen
                 # figWidth=figWidth
                 # figHeight=figHeight
-                # fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
+                # fileName = paste("map_","raster_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
                 # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = "")
 
 
@@ -1487,7 +1494,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           fillPalette = fillPalette,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
-                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
+                          fileName = paste("map_","raster_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
                           dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
 
@@ -1520,7 +1527,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           fillPalette = fillPalette,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
-                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
+                          fileName = paste("map_","raster_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
                           dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
               } # if(nrow(datax)>1){
@@ -1606,7 +1613,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           fillPalette = fillPalette,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
-                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
+                          fileName = paste("map_","raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
                           dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
                 metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=shape,
@@ -1630,7 +1637,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           fillPalette = fillPalette,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
-                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
+                          fileName = paste("map_","raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
                           dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
 
@@ -1664,7 +1671,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           fillPalette = fillPalette,
                           bgColor = bgColorChosen,
                           figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
-                          fileName = paste("map_",folderName,"_raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
+                          fileName = paste("map_","raster_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
                           dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/raster/",param_i,"/", scenario_i,sep = ""))
 
 
@@ -1672,23 +1679,31 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
             } # If number of classes == 1
 
           } # If nrow greater than 0
+
+
+        }# close run Section
+          }# Close gridTbl nrow > 0
         } # close Params
       } # Close scenario loop
-    } # Close if(indvScenarios==T)
   } # Close if nrow gridTbl < 0
     } # Close if gridTbl is Null
+  } # Close Raster Plots
 
   # -------------------
   # Create Polygon Plots for Each scenario
   # -------------------
 
+  if(T){
+
   if(!is.null(shapeTbl) & nrow(shapeTbl)>0){
+
+    shapeTblOrig <- shapeTbl
+
 
     if(multiFacetsOn==T){
 
       # Only working with data with multiple MultiA or MultiBs
       shapeTblMult <- shapeTblMultiOrig%>%
-        dplyr::filter(param %in% unlist(unique(scenRefDiffIndv$param)))%>%
         dplyr::filter(!(multiFacetCol=="MultiANone" | multiFacetRow=="MultiBNone" | is.na(multiFacetCol) | is.na(multiFacetRow)))
 
       if(multiFacetCols %in% names(shapeTblMult)){shapeTblMult[[multiFacetCols]] <- multiFacetCols}
@@ -1699,26 +1714,278 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
      if(nrow(shapeTblMult)<1){ print(paste("No MultiA's or MultiB's found in shapeTbl, skipping MultiA/MultiB comparison."))}else{
 
-            for (subRegType_i in unique(shapeTblMult$subRegType)){
+
               for (param_i in unique(shapeTblMult$param)){
                 for (class_i in unique(shapeTblMult$class)){
 
-                  if(nrow(shapeTblMult%>%dplyr::filter(subRegType==subRegType_i,class==class_i,param==param_i))>0){
+                  if(nrow(shapeTblMult%>%dplyr::filter(param==param_i,class==class_i))>0){
 
-                    shapeTblMultx<-shapeTblMult%>%dplyr::filter(subRegType==subRegType_i,
-                                                                param==param_i,class==class_i)
+                  shapeTbl <- shapeTblOrig
+
+                  subRegShape <- NULL
+                  subRegType_i<- NULL
+
+                  if(all(is.null(subRegShapeOrig) & is.null(subRegShpFileOrig))){
+
+              if(T){ # Telescope out of finest regions to see which shapefile to use.
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS49@data$subRegion%>%unique())){subRegShape <- metis::mapUS49; subRegType_i<-"US49"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS52@data$subRegion%>%unique())){subRegShape <- metis::mapUS52; subRegType_i<-"US52"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMReg32@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMReg32; subRegType_i<-"GCAMReg32"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMReg32US52@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMReg32US52; subRegType_i<-"GCAMReg32US52"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMBasinsUS49@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMBasinsUS49; subRegType_i<-"GCAMBasinsUS49"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMBasinsUS52@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMBasinsUS52; subRegType_i<-"GCAMBasinsUS52"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMBasins@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMBasins; subRegType_i<-"GCAMBasins"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapCountries@data$subRegion%>%unique())){subRegShape <- metis::mapCountries; subRegType_i<-"Countries"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapStates@data$subRegion%>%unique())){subRegShape <- metis::mapStates; subRegType_i<-"States"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS49County@data$subRegion%>%unique())){subRegShape <- metis::mapUS49County; subRegType_i<-"US49County"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS49HUC2@data$subRegion%>%unique())){subRegShape <- metis::mapUS49HUC2; subRegType_i<-"US49HUC2"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS49HUC4@data$subRegion%>%unique())){subRegShape <- metis::mapUS49HUC4; subRegType_i<-"US49HUC4"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS52County@data$subRegion%>%unique())){subRegShape <- metis::mapUS52County; subRegType_i<-"US52County"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS52HUC2@data$subRegion%>%unique())){subRegShape <- metis::mapUS52HUC2; subRegType_i<-"US52HUC2"} else {
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapUS52HUC4@data$subRegion%>%unique())){subRegShape <- metis::mapUS52HUC4; subRegType_i<-"US52HUC4"} else {
+
+              if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+              metis::mapGCAMLand@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMLand; subRegType_i<-"GCAMLand"}
+              }#US49
+              }#US52
+              }#GCAMReg32
+              }#GCAM32RegUS52
+              }#GCAMBasinsUS49
+              }#GCAMBasinsUS52
+              }#GCAMBasins
+              }#Countries
+              }#States
+              }#US49County
+              }#US49HUC2
+              }#US49HUC4
+              }#US52County
+              }#US52HUC2
+              }#US52HUC4
+              } # CLose telescoping
+
+                    runSection = T
+                    if(is.null(subRegShape)){
+                      print(paste("For the selected param: ", param_i," and scenario: ", scenario_i,sep=""))
+                      print("None of the pre-loaded shapefiles contain all the subRgions specified in a single shapefile.")
+                      print(paste("subRegions specified: ",paste(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion),collapse=", "),sep=""))
+                      print(paste("Skipping map for param: ", param_i," and scenario: ", scenario_i,sep=""))
+                      print("Please load a subRegShape directly for your region of interest.")
+                      runSection = F
+                    }
+
+                  } else {
+                    if(nrow(shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))>0){
+                      subRegType_i <- unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegType)
+                    }else{subRegType_i="subRegion"}
+                    subRegShape <- subRegShapeOrig
+                  }
+
+
+                  if(runSection){
+                    #--------------------------------
+                    # Checking Shapefiles
+                    #--------------------------------
+                    if(T){ # Checking Shapefiles
+
+                      if(is.null(boundaryRegShapeOrig)){
+                        if(!is.null(boundaryRegShpFolderOrig) & !is.null(boundaryRegShpFileOrig)){
+                          if(!dir.exists(boundaryRegShpFolderOrig)){
+                            stop("Shapefile folder: ", boundaryRegShpFolderOrig ," is incorrect or doesn't exist.",sep="")}
+                          if(!file.exists(paste(boundaryRegShpFolderOrig,"/",boundaryRegShpFileOrig,".shp",sep=""))){
+                            stop("Shape file: ", paste(boundaryRegShpFolderOrig,"/",boundaryRegShpFileOrig,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
+                          boundaryRegShape=rgdal::readOGR(dsn=boundaryRegShpFolderOrig,layer=boundaryRegShpFileOrig,use_iconv=T,encoding='UTF-8')
+                          print(paste("Sub Reg Shape : ",boundaryRegShpFolderOrig,"/",boundaryRegShpFileOrig,".shp",sep=""))
+                          print(raster::head(boundaryRegShape))
+                        } # if(!is.null(boundaryRegShpFolder) & !is.null(boundaryRegShpFile)){
+                      }
+
+                  if(is.null(subRegShape)){
+                    if(!is.null(subRegShpFolderOrig) & !is.null(subRegShpFileOrig)){
+                      if(!dir.exists(subRegShpFolderOrig)){
+                        stop("Shapefile folder: ", subRegShpFolderOrig ," is incorrect or doesn't exist.",sep="")}
+                      if(!file.exists(paste(subRegShpFolderOrig,"/",subRegShpFileOrig,".shp",sep=""))){
+                        stop("Shape file: ", paste(subRegShpFolderOrig,"/",subRegShpFileOrig,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
+                      subRegShape=rgdal::readOGR(dsn=subRegShpFolderOrig,layer=subRegShpFileOrig,use_iconv=T,encoding='UTF-8')
+                      print(paste("Sub Reg Shape : ",subRegShpFolderOrig,"/",subRegShpFileOrig,".shp",sep=""))
+                      print(raster::head(subRegShape))
+                    } # if(!is.null(subRegShpFolder) & !is.null(subRegShpFile)){
+                  }
+
+
+                  if(is.null(subRegShape)){
+                    stop("No valid subregional shape file available")}
+
+
+                  extendedLabels <- T
+
+                  if(!is.null(subRegShape)){
+                    extendedBGColor <- "white"
+                    extendedLabels <- F
+                  }
+
+
+                  if(!subRegCol %in% names(subRegShape)){stop(paste("SubRegCol: ",subRegCol," not present in subRegShape",sep=""))}
+
+                   if(!is.null(subRegShape)){
+                    subRegShape@data[[subRegCol]] <- as.character(subRegShape@data[[subRegCol]])
+                    if(!all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in% unique(subRegShape@data[[subRegCol]]))){
+                      print(paste("Removing subRegions not present in shapefile from datatable: ",
+                                  paste(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion)[!unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in% unique(subRegShape@data[[subRegCol]])],collapse=", "),sep=""))
+                      shapeTbl <- shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i)%>% dplyr::filter(subRegion %in% unique(subRegShape@data[[subRegCol]]))
+                      print(paste("Remaining subRegions in dataTable are: ",paste(unique(shapeTbl$subRegion),collapse=", "),sep=""))}
+                  }
+
+                  if(!any(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in% unique(subRegShape@data[[subRegCol]]))){
+                    print(paste("None of the subRegions in data provided for param: ", param_i,
+                                " match subRegions in the shapefile provided or available.",sep=""))
+                  }
+
+                  subRegShape@data<-subRegShape@data%>%dplyr::mutate(subRegion=get(subRegCol))
+
+
+
+                  #----------------
+                  # Create Boundary and subRegional shapefiles
+                  #---------------
+
+
+                  if(!is.null(boundaryRegShapeOrig) & !is.null(subRegShape)){
+                    if(!is.null(boundaryRegionsSelect)){
+                      if(any(boundaryRegionsSelect %in% unique(boundaryRegShapeOrig@data[[boundaryRegCol]]))){
+                        boundaryRegShape <- boundaryRegShapeOrig[boundaryRegShapeOrig@data[[boundaryRegCol]] %in% boundaryRegionsSelect,]
+                        boundaryRegShape@data <- droplevels(boundaryRegShape@data)
+                        print("Map cropped to selected boundaryRegShape and regions: ")
+                        print(paste(boundaryRegionsSelect,collapse=", "))
+                        subRegShape <- sp::spTransform(subRegShape,raster::crs(boundaryRegShape))
+                        subRegShape <- raster::crop(subRegShape,boundaryRegShape)
+                        print("Scale will still include all data from original subRegShape extents")
+                      } else {print(paste("boundaryRegionsSelect chosen are not available in the boundaryRegShapeFile.",paste(boundaryRegionsSelect,collapse=", "),sep=""))}
+                    }else{
+                      print("Map cropped to selected boundaryRegShape")
+                      print("Scale will still include all data from original subRegShape extents")
+                      boundaryRegShape <- sp::spTransform(boundaryRegShape,raster::crs(subRegShape))
+                      subRegShape <- raster::crop(subRegShape,boundaryRegShape)
+                      subRegShape@data <- droplevels(subRegShape@data)
+                    }
+                  }
+
+
+                  shape<-subRegShape
+
+                  if(!subRegCol %in% names(shape)){stop(paste("SubRegCol: ",subRegCol," not present in shape",sep=""))}
+
+                  shape@data<-shape@data%>%dplyr::mutate(subRegion=get(subRegCol), subRegion=as.character(subRegion))
+
+                  #----------------
+                  # Create Boundary Extension
+                  #---------------
+
+                  bgColorChosen="white"
+
+                  if(extension==T){
+
+                    frameShow=T;facetLabelBorderLwd=0.1;facetBGColor="grey30";facetLabelColor = "white"
+
+                    if(is.null(extendedShape)){
+
+                      extendedBoundary <- metis::mapCountries
+                      bbox1<-as.data.frame(sp::bbox(shape))
+                      extendedShapeCol<-subRegCol
+
+
+                      if(!is.null(bbox1)){
+                        bbox1$min;bbox1$max
+                        rangeX<-abs(range(bbox1$min[1],bbox1$max[1])[2]-range(bbox1$min[1],bbox1$max[1])[1])
+                        rangeY<-abs(range(bbox1$min[2],bbox1$max[2])[2]-range(bbox1$min[2],bbox1$max[2])[1])
+                        bbox1$min[1]<-(-rangeX*expandPercent/100)+bbox1$min[1];
+                        bbox1$min[2]<-(-rangeY*expandPercent/100)+bbox1$min[2];
+                        bbox1$max[1]<-(rangeX*expandPercent/100)+bbox1$max[1];
+                        bbox1$max[2]<-(rangeY*expandPercent/100)+bbox1$max[2];
+                        bbox1$min;bbox1$max;
+                        bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
+                        sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
+                        print("Creating extended boundary...")
+                        extendedShape<-raster::crop(extendedBoundary, bbox1)
+                        extendedShape@bbox <- bbox1@bbox
+                        extendedBGColor="lightblue1"
+                      }else{print("No extended boundary.")}
+                    }
+
+                    if(!is.null(extendedShape)){
+                      if(extendedShapeCol %in% names(extendedShape)){
+                        underLayer<-metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL, dataPolygon=extendedShape, printFig=F,labelsAutoPlace = F,
+                                              fillColumn = extendedShapeCol,labels=extendedLabels, fillPalette = extendedFillColor,legendShow=F,
+                                              bgColor = extendedBGColor, frameShow=T,facetLabelBorderLwd=facetLabelBorderLwd,labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,
+                                              facetsON=F, figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng)
+                        bgColorChosen= extendedBGColor
+                      }
+                    }
+                  }else{
+                    innerMargins=c(0.1,0.1,0.1,0.1)
+                  }
+
+                  }
+
+                    if(nrow(shapeTbl)>0){ # nrow shapeTbl after Shapefiles loaded
+
+    #------------------
+    # Create Shape Table Folders If Needed
+    #------------------
+    if(TRUE){
+       if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,sep = ""))){
+          dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,sep = ""))}
+       if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,sep = ""))){
+              dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,sep = ""))}
+       if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,sep = ""))){
+          dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/",  scenario_i,sep = ""))}
+        if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))){
+          dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))}
+      if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets",sep = ""))){
+        dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets",sep = ""))}
+      if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))){
+        dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))}
+      if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))){
+        dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))}
+            }
+
+
+                  #------------------
+                  # Plots
+                  #------------------
+
+
+                  if(nrow(shapeTblMult%>%dplyr::filter(class==class_i,param==param_i))>0){
+
+                    shapeTblMultx<-shapeTblMult%>%dplyr::filter(param==param_i,class==class_i)
 
                     shapeTblMultxScenMultiABRefRef <- shapeTblScenMultiABRef%>%dplyr::filter(!(multiFacetCol=="MultiANone" | multiFacetRow=="MultiBNone" | is.na(multiFacetCol) | is.na(multiFacetRow))) %>%
-                                                  dplyr::filter(subRegType==subRegType_i,
-                                                                param==param_i,class==class_i)
+                                                  dplyr::filter(param==param_i,class==class_i)
 
 
                     if(length(unique(shapeTblMultx$multiFacetCol))+length(unique(shapeTblMultx$multiFacetRow))>1){
 
-
-                    if(boundaryRegionsSelect %in% unique(shapeTblMultxScenMultiABRefRef$region)){
-                      shapeTblMultxScenMultiABRefRef <- shapeTblMultxScenMultiABRefRef %>% dplyr::filter(region==boundaryRegionsSelect)
-                    }
 
                     animScalePoly<-(shapeTblMultxScenMultiABRefRef %>%
                                       dplyr::filter(!is.na(value),!is.infinite(value),!is.nan(value)))$value
@@ -1875,8 +2142,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                 figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                 multiFacetRows="multiFacetRow",
                                 multiFacetCols="multiFacetCol",
-                                fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_RefYears_",class_i,nameAppend,"_MEAN_KMEANS",sep=""),
-                                dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))
+                                fileName = paste("map_",subRegType_i,"_",param_i,"_RefYears_",class_i,nameAppend,"_MEAN_KMEANS",sep=""),
+                                dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets",sep = ""))
 
 
                       # panelLabel=panelLabelMulti
@@ -1905,8 +2172,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       # figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2))
                       # multiFacetRows=multiFacetRows
                       # multiFacetCols=multiFacetCols
-                      # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_MEAN_KMEANS",sep="")
-                      # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = "")
+                      # fileName = paste("map_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_MEAN_KMEANS",sep="")
+                      # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets",sep = "")
 
 
                       metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -1934,8 +2201,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                 figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                 multiFacetRows="multiFacetRow",
                                 multiFacetCols="multiFacetCol",
-                                fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_RefYears_",class_i,nameAppend,"_MEAN_PRETTY",sep=""),
-                                dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))
+                                fileName = paste("map_",subRegType_i,"_",param_i,"_RefYears_",class_i,nameAppend,"_MEAN_PRETTY",sep=""),
+                                dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets",sep = ""))
 
 
                       metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -1962,8 +2229,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                 figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                 multiFacetRows="multiFacetRow",
                                 multiFacetCols="multiFacetCol",
-                                fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_RefYears_",class_i,nameAppend,"_MEAN_FREESCALE",sep=""),
-                                dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets",sep = ""))
+                                fileName = paste("map_",subRegType_i,"_",param_i,"_RefYears_",class_i,nameAppend,"_MEAN_FREESCALE",sep=""),
+                                dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets",sep = ""))
 
 
 
@@ -2068,8 +2335,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                     figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                     multiFacetRows="multiFacetRow",
                                     multiFacetCols="multiFacetCol",
-                                    fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_KMEANS",sep=""),
-                                    dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
+                                    fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_KMEANS",sep=""),
+                                    dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
 
                           ##ZARRAR
                           # numeric2Cat_list=numeric2Cat_list
@@ -2101,8 +2368,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           # figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2))
                           # multiFacetRows=multiFacetRows
                           # multiFacetCols=multiFacetCols
-                          # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_KMEANS",sep="")
-                          # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = "")
+                          # fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_KMEANS",sep="")
+                          # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/byYear",sep = "")
 
 
                           metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -2130,8 +2397,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                     figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                     multiFacetRows="multiFacetRow",
                                     multiFacetCols="multiFacetCol",
-                                    fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_PRETTY",sep=""),
-                                    dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
+                                    fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_PRETTY",sep=""),
+                                    dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
 
 
                           metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelMulti,
@@ -2158,8 +2425,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                     figHeight=figHeight*max(1,min(2,length(unique(mapx@data[[multiFacetRows]]))/2)),
                                     multiFacetRows="multiFacetRow",
                                     multiFacetCols="multiFacetCol",
-                                    fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_FREESCALE",sep=""),
-                                    dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
+                                    fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_FREESCALE",sep=""),
+                                    dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/byYear",sep = ""))
 
 
 
@@ -2170,51 +2437,51 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                     if(animateOn==T){
 
-                      animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_PRETTY.gif",sep="")
-                      animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
-                                              pattern = paste(".*",param_i,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
+                      animName<-paste("anim_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_PRETTY.gif",sep="")
+                      animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
+                                              pattern = paste(".*",param_i,".*",nameAppend,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
                       animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                      magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
                                                   animName,sep = ""))
-                      print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
-                                  animName,sep = ""))
-                      fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
+                                  animName,sep = "")))
+                      fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
                                            animName,sep = "")
                       tempImage<-magick::image_read(fnameTempImage)
                       croppedImage<-magick::image_trim(tempImage,fuzz=0);
                       magick::image_write(croppedImage,fnameTempImage)
 
 
-                      animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_KMEANS.gif",sep="")
-                      animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
-                                              pattern = paste(".*",param_i,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
+                      animName<-paste("anim_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_KMEANS.gif",sep="")
+                      animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
+                                              pattern = paste(".*",param_i,".*",nameAppend,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
                       animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                      magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
                                                   animName,sep = ""))
-                      print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
-                                  animName,sep = ""))
-                      fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
+                                  animName,sep = "")))
+                      fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
                                            animName,sep = "")
                       tempImage<-magick::image_read(fnameTempImage)
                       croppedImage<-magick::image_trim(tempImage,fuzz=0);
                       magick::image_write(croppedImage,fnameTempImage)
 
-                      animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_FREESCALE.gif",sep="")
-                      animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
-                                              pattern = paste(".*",param_i,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
+                      animName<-paste("anim_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_FREESCALE.gif",sep="")
+                      animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/byYear",sep=""),
+                                              pattern = paste(".*",param_i,".*",nameAppend,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);
                       animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                      magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
                                                   animName,sep = ""))
-                      print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
-                                  animName,sep = ""))
-                      fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+                      print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
+                                  animName,sep = "")))
+                      fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
                                            animName,sep = "")
                       tempImage<-magick::image_read(fnameTempImage)
                       croppedImage<-magick::image_trim(tempImage,fuzz=0);
                       magick::image_write(croppedImage,fnameTempImage)
 
 
-                      #unlink(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+                      #unlink(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
                     } # If Animate ON==t
 
 
@@ -2262,7 +2529,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #
 #                       if(any(unique(datax$classPalette) %in% c("pal_wet","pal_hot","pal_green"))){
 #                         datax <- datax %>% dplyr::mutate(classPalette = dplyr::case_when(classPalette=="pal_wet"~"pal_div_wet",
-#                                                                                           classPalette=="pal_hot"~"pal_div_RdBlu",
+#                                                                                           classPalette=="pal_hot"~classPaletteDiff,
 #                                                                                           classPalette=="pal_green"~"pal_div_BrGn",
 #                                                                                           TRUE~classPalette))
 #                       }
@@ -2331,8 +2598,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #                                   multiFacetRows="multiFacetRow",
 #                                   multiFacetCols="multiFacetCol",
 #                                   mapTitleSize=mapTitleSize,
-#                                   fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_DIFF_KMEANS",sep=""),
-#                                   dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
+#                                   fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_DIFF_KMEANS",sep=""),
+#                                   dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
 #
 #
 #
@@ -2362,8 +2629,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #                                   multiFacetRows="multiFacetRow",
 #                                   multiFacetCols="multiFacetCol",
 #                                   mapTitleSize=mapTitleSize,
-#                                   fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_DIFF_PRETTY",sep=""),
-#                                   dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
+#                                   fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_DIFF_PRETTY",sep=""),
+#                                   dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
 #
 #
 #                         metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, mapTitle = mapTitle,panelLabel=panelLabelMulti,
@@ -2391,8 +2658,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #                                   multiFacetRows="multiFacetRow",
 #                                   multiFacetCols="multiFacetCol",
 #                                   mapTitleSize=mapTitleSize,
-#                                   fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_DIFF_FREESCALE",sep=""),
-#                                   dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
+#                                   fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",class_i,nameAppend,"_DIFF_FREESCALE",sep=""),
+#                                   dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/compareYear",sep = ""))
 #
 #
 #
@@ -2404,50 +2671,50 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 #
 #                   if(animateOn==T){
 #
-#                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_DIFF_PRETTY.gif",sep="")
-#                     animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
-#                                             pattern = paste(".*",param_i,".*",class_i,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
+#                     animName<-paste("anim_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_DIFF_PRETTY.gif",sep="")
+#                     animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
+#                                             pattern = paste(".*",param_i,".*",nameAppend,".*",class_i,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
 #                     animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-#                     magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
 #                                                 animName,sep = ""))
-#                     print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
-#                                 animName,sep = ""))
-#                     fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
+#                                 animName,sep = "")))
+#                     fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
 #                                          animName,sep = "")
 #                     tempImage<-magick::image_read(fnameTempImage)
 #                     croppedImage<-magick::image_trim(tempImage,fuzz=0);
 #                     magick::image_write(croppedImage,fnameTempImage)
 #
 #
-#                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_DIFF_KMEANS.gif",sep="")
-#                     animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
-#                                             pattern = paste(".*",param_i,".*",class_i,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
+#                     animName<-paste("anim_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_DIFF_KMEANS.gif",sep="")
+#                     animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
+#                                             pattern = paste(".*",param_i,".*",nameAppend,".*",class_i,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
 #                     animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-#                     magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
 #                                                 animName,sep = ""))
-#                     print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
-#                                 animName,sep = ""))
-#                     fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
+#                                 animName,sep = "")))
+#                     fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
 #                                          animName,sep = "")
 #                     tempImage<-magick::image_read(fnameTempImage)
 #                     croppedImage<-magick::image_trim(tempImage,fuzz=0);
 #                     magick::image_write(croppedImage,fnameTempImage)
 #
-#                     animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_DIFF_FREESCALE.gif",sep="")
-#                     animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
-#                                             pattern = paste(".*",param_i,".*",class_i,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
+#                     animName<-paste("anim_",subRegType_i,"_",param_i,"_",class_i,nameAppend,"_DIFF_FREESCALE.gif",sep="")
+#                     animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/compareYear",sep=""),
+#                                             pattern = paste(".*",param_i,".*",nameAppend,".*",class_i,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
 #                     animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-#                     magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
 #                                                 animName,sep = ""))
-#                     print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
-#                                 animName,sep = ""))
-#                     fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/compareMultiFacets/",
+#                     print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
+#                                 animName,sep = "")))
+#                     fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/compareMultiFacets/",
 #                                          animName,sep = "")
 #                     tempImage<-magick::image_read(fnameTempImage)
 #                     croppedImage<-magick::image_trim(tempImage,fuzz=0);
 #                     magick::image_write(croppedImage,fnameTempImage)
 #
-#                     #unlink(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+#                     #unlink(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
 #                   } # If Animate ON==t
 #
 
@@ -2456,42 +2723,285 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     } # Close nrow>1
                 } # Check if MultiA and MultiBs > 1
                     } # Close nrow shapeTblMult >1
-                  }# Close class
+                  }# Close run section
+                  }# nrow shapeTbl after Shapefiles loaded
+                  } # Close if nrow shapeTblMult nrow >0
+                }# Close class
               } # close Params
-            } # Close subRegType loop
+             # Close subRegType loop
 
        } # Check for multiple MultiA and MultiBS
-
-
       } # Close if(multiFacetsOn==T){
 
-    if(!is.null(indvScenariosShape)){
 
-      indvScenarios=indvScenariosShape
+      for (scenario_i in unique(shapeTblOrig$scenario)){
+          for (param_i in unique(shapeTblOrig$param)){
 
-      if(any(indvScenarios=="All")){
-        print(paste("indvScenarios set to 'All', running for all scenarios.",sep=""))
-        scenarios <- unique(shapeTbl$scenario)
-        } else {
+            subRegShape <- NULL
+            subRegType_i<- NULL
+            runSection = T
 
-          if(all(indvScenarios %in% unique(shapeTbl$scenario))){
-            print(paste("Running for selected indvScenarios: ", paste(indvScenarios,collapse=", "),sep=""))
-            scenarios <- unique((shapeTbl%>%dplyr::filter(scenario %in% indvScenarios))$scenario)
-          } else {if(!all(indvScenarios %in% unique(shapeTbl$scenario))){
-            print(paste("Running for indvScenarios: ", paste(indvScenarios,collapse=", "), " available in unique shapeTbl scenarios : ",
-                        paste(indvScenarios[indvScenarios %in% unique(shapeTbl$scenario)],collapse=", "),sep=""))
-            scenarios <- unique((shapeTbl%>%dplyr::filter(scenario %in% indvScenarios[indvScenarios %in% unique(shapeTbl$scenario)]))$scenario)
-          }
-          }
-        }
+            if(nrow(shapeTblOrig%>%dplyr::filter(param==param_i,scenario==scenario_i))>0){
 
-      for (scenario_i in scenarios){
-        for (subRegType_i in unique(shapeTbl$subRegType)){
-          for (param_i in unique(shapeTbl$param)){
+            shapeTbl <- shapeTblOrig%>%dplyr::filter(param==param_i,scenario==scenario_i)
 
-            if(nrow(shapeTbl%>%dplyr::filter(subRegType==subRegType_i,scenario==scenario_i,param==param_i))>0){
 
-              animScalePoly<-(shapeTbl%>%dplyr::filter(subRegType==subRegType_i,scenario==scenario_i,param==param_i,
+            if(all(is.null(subRegShapeOrig) & is.null(subRegShpFileOrig))){
+
+
+              if(T){ # Telescope out of finest regions to see which shapefile to use.
+
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapUS49@data$subRegion%>%unique())){subRegShape <- metis::mapUS49; subRegType_i<-"US49"} else {
+
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapUS52@data$subRegion%>%unique())){subRegShape <- metis::mapUS52; subRegType_i<-"US52"} else {
+
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  c(metis::mapGCAMReg32@data$subRegion%>%unique(),"Taiwan"))){subRegShape <- metis::mapGCAMReg32; subRegType_i<-"GCAMReg32"} else {
+
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  c(metis::mapGCAMReg32US52@data$subRegion%>%unique(),"Taiwan"))){subRegShape <- metis::mapGCAMReg32US52; subRegType_i<-"GCAMReg32US52"} else {
+
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapGCAMBasinsUS49@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMBasinsUS49; subRegType_i<-"GCAMBasinsUS49"} else {
+
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapGCAMBasinsUS52@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMBasinsUS52; subRegType_i<-"GCAMBasinsUS52"} else {
+
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapGCAMBasins@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMBasins; subRegType_i<-"GCAMBasins"} else {
+
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapCountries@data$subRegion%>%unique())){subRegShape <- metis::mapCountries; subRegType_i<-"Countries"} else {
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapStates@data$subRegion%>%unique())){subRegShape <- metis::mapStates; subRegType_i<-"States"} else {
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapUS49County@data$subRegion%>%unique())){subRegShape <- metis::mapUS49County; subRegType_i<-"US49County"} else {
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapUS49HUC2@data$subRegion%>%unique())){subRegShape <- metis::mapUS49HUC2; subRegType_i<-"US49HUC2"} else {
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapUS49HUC4@data$subRegion%>%unique())){subRegShape <- metis::mapUS49HUC4; subRegType_i<-"US49HUC4"} else {
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapUS52County@data$subRegion%>%unique())){subRegShape <- metis::mapUS52County; subRegType_i<-"US52County"} else {
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapUS52HUC2@data$subRegion%>%unique())){subRegShape <- metis::mapUS52HUC2; subRegType_i<-"US52HUC2"} else {
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapUS52HUC4@data$subRegion%>%unique())){subRegShape <- metis::mapUS52HUC4; subRegType_i<-"US52HUC4"} else {
+                  if(all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in%
+                  metis::mapGCAMLand@data$subRegion%>%unique())){subRegShape <- metis::mapGCAMLand; subRegType_i<-"GCAMLand"}
+                  }#US49
+                  }#US52
+                  }#GCAMReg32
+                  }#GCAM32RegUS52
+                  }#GCAMBasinsUS49
+                  }#GCAMBasinsUS52
+                  }#GCAMBasins
+                  }#Countries
+                  }#States
+                  }#US49County
+                  }#US49HUC2
+                  }#US49HUC4
+                  }#US52County
+                  }#US52HUC2
+                  }#US52HUC4
+                } # CLose telescoping
+
+
+              if(is.null(subRegShape)){
+                print(paste("For the selected param: ", param_i," and scenario: ", scenario_i,sep=""))
+                print("None of the pre-loaded shapefiles contain all the subRgions specified in a single shapefile.")
+                print(paste("subRegions specified: ",paste(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion),collapse=", "),sep=""))
+                print(paste("Skipping map for param: ", param_i," and scenario: ", scenario_i,sep=""))
+                print("Please load a subRegShape directly for your region of interest.")
+                runSection = F
+              }
+
+            } else {
+              if(nrow(shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))>0){
+                subRegType_i <- unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegType)
+              }else{subRegType_i="subRegion"}
+              subRegShape <- subRegShapeOrig
+            }
+
+            if(runSection){
+            #--------------------------------
+              #--------------------------------
+              # Checking Shapefiles
+              #--------------------------------
+              if(T){ # Checking Shapefiles
+
+                if(is.null(boundaryRegShapeOrig)){
+                  if(!is.null(boundaryRegShpFolderOrig) & !is.null(boundaryRegShpFileOrig)){
+                    if(!dir.exists(boundaryRegShpFolderOrig)){
+                      stop("Shapefile folder: ", boundaryRegShpFolderOrig ," is incorrect or doesn't exist.",sep="")}
+                    if(!file.exists(paste(boundaryRegShpFolderOrig,"/",boundaryRegShpFileOrig,".shp",sep=""))){
+                      stop("Shape file: ", paste(boundaryRegShpFolderOrig,"/",boundaryRegShpFileOrig,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
+                    boundaryRegShape=rgdal::readOGR(dsn=boundaryRegShpFolderOrig,layer=boundaryRegShpFileOrig,use_iconv=T,encoding='UTF-8')
+                    print(paste("Sub Reg Shape : ",boundaryRegShpFolderOrig,"/",boundaryRegShpFileOrig,".shp",sep=""))
+                    print(raster::head(boundaryRegShape))
+                  } # if(!is.null(boundaryRegShpFolder) & !is.null(boundaryRegShpFile)){
+                }
+
+
+                if(is.null(subRegShape)){
+                  if(!is.null(subRegShpFolderOrig) & !is.null(subRegShpFileOrig)){
+                    if(!dir.exists(subRegShpFolderOrig)){
+                      stop("Shapefile folder: ", subRegShpFolderOrig ," is incorrect or doesn't exist.",sep="")}
+                    if(!file.exists(paste(subRegShpFolderOrig,"/",subRegShpFileOrig,".shp",sep=""))){
+                      stop("Shape file: ", paste(subRegShpFolderOrig,"/",subRegShpFileOrig,".shp",sep="")," is incorrect or doesn't exist.",sep="")}
+                    subRegShape=rgdal::readOGR(dsn=subRegShpFolderOrig,layer=subRegShpFileOrig,use_iconv=T,encoding='UTF-8')
+                    print(paste("Sub Reg Shape : ",subRegShpFolderOrig,"/",subRegShpFileOrig,".shp",sep=""))
+                    print(raster::head(subRegShape))
+                  } # if(!is.null(subRegShpFolder) & !is.null(subRegShpFile)){
+                }
+
+
+                if(is.null(subRegShape)){
+                  stop("No valid subregional shape file available")}
+
+
+                extendedLabels <- T
+
+                if(!is.null(subRegShape)){
+                  extendedBGColor <- "white"
+                  extendedLabels <- F
+                }
+
+
+                if(!subRegCol %in% names(subRegShape)){stop(paste("SubRegCol: ",subRegCol," not present in subRegShape",sep=""))}
+
+                if(!is.null(subRegShape)){
+                  subRegShape@data[[subRegCol]] <- as.character(subRegShape@data[[subRegCol]])
+                  if(!all(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in% unique(subRegShape@data[[subRegCol]]))){
+                    print(paste("Removing subRegions not present in shapefile from datatable: ",
+                                paste(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion)[!unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in% unique(subRegShape@data[[subRegCol]])],collapse=", "),sep=""))
+                    shapeTbl <- shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i)%>% dplyr::filter(subRegion %in% unique(subRegShape@data[[subRegCol]]))
+                    print(paste("Remaining subRegions in dataTable are: ",paste(unique(shapeTbl$subRegion),collapse=", "),sep=""))}
+                }
+
+                if(!any(unique((shapeTbl%>%dplyr::filter(param==param_i,scenario==scenario_i))$subRegion) %in% unique(subRegShape@data[[subRegCol]]))){
+                  print(paste("None of the subRegions in data provided for param: ", param_i,
+                              " match subRegions in the shapefile provided or available.",sep=""))
+                }
+
+                subRegShape@data<-subRegShape@data%>%dplyr::mutate(subRegion=get(subRegCol))
+
+
+
+                #----------------
+                # Create Boundary and subRegional shapefiles
+                #---------------
+
+                if(!is.null(boundaryRegShapeOrig) & !is.null(subRegShape)){
+                  if(!is.null(boundaryRegionsSelect)){
+                    if(any(boundaryRegionsSelect %in% unique(boundaryRegShapeOrig@data[[boundaryRegCol]]))){
+                      boundaryRegShape <- boundaryRegShapeOrig[boundaryRegShapeOrig@data[[boundaryRegCol]] %in% boundaryRegionsSelect,]
+                      boundaryRegShape@data <- droplevels(boundaryRegShape@data)
+                      print("Map cropped to selected boundaryRegShape and regions: ")
+                      print(paste(boundaryRegionsSelect,collapse=", "))
+                      subRegShape <- sp::spTransform(subRegShape,raster::crs(boundaryRegShape))
+                      subRegShape <- raster::crop(subRegShape,boundaryRegShape)
+                      print("Scale will still include all data from original subRegShape extents")
+                    } else {print(paste("boundaryRegionsSelect chosen are not available in the boundaryRegShapeFile.",paste(boundaryRegionsSelect,collapse=", "),sep=""))}
+                  }else{
+                    print("Map cropped to selected boundaryRegShape")
+                    print("Scale will still include all data from original subRegShape extents")
+                    boundaryRegShape <- sp::spTransform(boundaryRegShape,raster::crs(subRegShape))
+                    subRegShape <- raster::crop(subRegShape,boundaryRegShape)
+                    subRegShape@data <- droplevels(subRegShape@data)
+                  }
+                }
+
+                shape<-subRegShape
+
+                if(!subRegCol %in% names(shape)){stop(paste("SubRegCol: ",subRegCol," not present in shape",sep=""))}
+
+                shape@data<-shape@data%>%dplyr::mutate(subRegion=get(subRegCol), subRegion=as.character(subRegion))
+
+                #----------------
+                # Create Boundary Extension
+                #---------------
+
+                bgColorChosen="white"
+
+                if(extension==T){
+
+                  frameShow=T;facetLabelBorderLwd=0.1;facetBGColor="grey30";facetLabelColor = "white"
+
+                  if(is.null(extendedShape)){
+
+                    extendedBoundary <- metis::mapCountries
+                    bbox1<-as.data.frame(sp::bbox(shape))
+                    extendedShapeCol<-subRegCol
+
+
+                    if(!is.null(bbox1)){
+                      bbox1$min;bbox1$max
+                      rangeX<-abs(range(bbox1$min[1],bbox1$max[1])[2]-range(bbox1$min[1],bbox1$max[1])[1])
+                      rangeY<-abs(range(bbox1$min[2],bbox1$max[2])[2]-range(bbox1$min[2],bbox1$max[2])[1])
+                      bbox1$min[1]<-(-rangeX*expandPercent/100)+bbox1$min[1];
+                      bbox1$min[2]<-(-rangeY*expandPercent/100)+bbox1$min[2];
+                      bbox1$max[1]<-(rangeX*expandPercent/100)+bbox1$max[1];
+                      bbox1$max[2]<-(rangeY*expandPercent/100)+bbox1$max[2];
+                      bbox1$min;bbox1$max;
+                      bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
+                      sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
+                      print("Creating extended boundary...")
+                      extendedShape<-raster::crop(extendedBoundary, bbox1)
+                      extendedShape@bbox <- bbox1@bbox
+                      extendedBGColor="lightblue1"
+                    }else{print("No extended boundary.")}
+                  }
+
+                  if(!is.null(extendedShape)){
+                    if(extendedShapeCol %in% names(extendedShape)){
+                      underLayer<-metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,fillcolorNA=fillcolorNA,fillshowNA=fillshowNA,fillcolorNULL=fillcolorNULL, dataPolygon=extendedShape, printFig=F,labelsAutoPlace = F,
+                                            fillColumn = extendedShapeCol,labels=extendedLabels, fillPalette = extendedFillColor,legendShow=F,
+                                            bgColor = extendedBGColor, frameShow=T,facetLabelBorderLwd=facetLabelBorderLwd,labelsSize=extdendedLabelSize, labelsColor=extendedLabelsColor,
+                                            facetsON=F, figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng)
+                      bgColorChosen= extendedBGColor
+                    }
+                  }
+                }else{
+                  innerMargins=c(0.1,0.1,0.1,0.1)
+                }
+
+              }
+
+
+            if(nrow(shapeTbl)>0){ # nrow shapeTbl after Shapefiles loaded
+              #------------------
+              # Create Polygon Folders If Needed
+              #------------------
+              if(TRUE){
+                if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,sep = ""))){
+                  dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,sep = ""))}
+                if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,sep = ""))){
+                  dir.create(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,sep = ""))}
+                if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,sep = ""))){
+                  dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/",  scenario_i,sep = ""))}
+                if (!dir.exists(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))){
+                  dir.create(paste(dirOutputsX, "/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))}
+              }
+
+
+              #-------------------
+              # Save Map related Data Table
+              #-------------------
+
+              if(nrow(shapeTbl%>%dplyr::filter(scenario==scenario_i,param==param_i))>0){
+                data.table::fwrite(shapeTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)%>%
+                                     dplyr::select(scenario,subRegion,param,class,x, units,value),
+                                   paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,
+                                         "/","map_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,".csv",sep = ""))
+                print(paste("Map data table written to ",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,
+                            "/","map_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,".csv",sep = ""))
+              }
+
+
+
+              animScalePoly<-(shapeTbl%>%dplyr::filter(scenario==scenario_i,param==param_i,
                                                        !is.na(value),!is.infinite(value), !is.nan(value)))$value
 
 
@@ -2530,14 +3040,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
               # Figure 1 : each param: If class > 1 { (Map x Class) x Selected Years}
 
-              shapeTblx<-shapeTbl%>%dplyr::filter(scenario==scenario_i,subRegType==subRegType_i,
+              shapeTblx<-shapeTbl%>%dplyr::filter(scenario==scenario_i,
                                                   param==param_i)
-
-
-              if(boundaryRegionsSelect %in% unique(shapeTblx$region)){
-                shapeTblx <- shapeTblx %>% dplyr::filter(region==boundaryRegionsSelect)
-              }
-
 
 
               for (x_i in unique(shapeTbl$x)){
@@ -2608,39 +3112,40 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             bgColor = bgColorChosen,
                             figWidth=figWidth,
                             figHeight=figHeight, pdfpng = pdfpng,
-                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
-#
-#                   legendSingleColorOn=legendSingleColorOn
-#                   legendSingleValue=legendSingleValue
-#                   legendSingleColor=legendSingleColor
-#                   numeric2Cat_list=numeric2Cat_list
-#                   catParam=param_i
-#                   panelLabel=panelLabelAnimated
-#                   underLayer=underLayer
-#                   dataPolygon=mapx
-#                   fillColumn = names(mapx@data%>%dplyr::select(-subRegion))
-#                   mapTitle=paste(param_i," ",scenario_i,sep="") , legendShow = T
-#                   legendOutside = legendOutsideAnimated
-#                   facetFreeScale = F
-#                   frameShow = frameShow
-#                   labels=labels
-#                   labelsSize = labelsSize
-#                   legendTitleSize = legendTitleSizeAnim
-#                   legendTextSize = legendTextSizeAnim
-#                   legendTitle =legendTitleAnimated
-#                   legendStyle=legendStyleAnim
-#                   legendBreaks = animKmeanBreaksPoly
-#                   legendFixedBreaks=legendFixedBreaks
-#                   legendDigits = animLegendDigits
-#                   legendOutsidePosition = legendOutsidePosition
-#                   legendPosition = legendAnimatedPosition
-#                   fillPalette = fillPalette
-#                   bgColor = bgColorChosen
-#                   figWidth=figWidth
-#                   figHeight=figHeight
-#                   fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-#                   dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
+                            fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
+
+                  # legendSingleColorOn=legendSingleColorOn
+                  # legendSingleValue=legendSingleValue
+                  # legendSingleColor=legendSingleColor
+                  # numeric2Cat_list=numeric2Cat_list
+                  # catParam=param_i
+                  # panelLabel=panelLabelAnimated
+                  # underLayer=underLayer
+                  # dataPolygon=mapx
+                  # fillColumn = names(mapx@data%>%dplyr::select(-subRegion))
+                  # mapTitle=paste(param_i," ",scenario_i,sep="")
+                  # legendShow = T
+                  # legendOutside = legendOutsideAnimated
+                  # facetFreeScale = F
+                  # frameShow = frameShow
+                  # labels=labels
+                  # labelsSize = labelsSize
+                  # legendTitleSize = legendTitleSizeAnim
+                  # legendTextSize = legendTextSizeAnim
+                  # legendTitle =legendTitleAnimated
+                  # legendStyle=legendStyleAnim
+                  # legendBreaks = animKmeanBreaksPoly
+                  # legendFixedBreaks=legendFixedBreaks
+                  # legendDigits = animLegendDigits
+                  # legendOutsidePosition = legendOutsidePosition
+                  # legendPosition = legendAnimatedPosition
+                  # fillPalette = fillPalette
+                  # bgColor = bgColorChosen
+                  # figWidth=figWidth
+                  # figHeight=figHeight
+                  # fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
+                  # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
 
                   metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, panelLabel=panelLabelAnimated,
                             underLayer=underLayer,  dataPolygon=mapx,
@@ -2664,8 +3169,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             bgColor = bgColorChosen,
                             figWidth=figWidth,
                             figHeight=figHeight, pdfpng = pdfpng,
-                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
+                            fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
 #
                   # numeric2Cat_list=numeric2Cat_list
                   # catParam=param_i
@@ -2693,8 +3198,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # figWidth=figWidth
                   # figHeight=figHeight
                   # pdfpng = pdfpng
-                  # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep="")
-                  # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
+                  # fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_PRETTY",sep="")
+                  # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
 
                   if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
                   if(length(names(mapx@data))==countCheck){
@@ -2728,8 +3233,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             bgColor = bgColorChosen,
                             figWidth=figWidth,
                             figHeight=figHeight, pdfpng = pdfpng,
-                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
+                            fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep = ""))
 
                   # innerMargins=innerMargins
                   # legendDigitsOverride=legendDigitsOverride
@@ -2768,8 +3273,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # figWidth=figWidth
                   # figHeight=figHeight
                   # pdfpng = pdfpng
-                  # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep="")
-                  # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
+                  # fileName = paste("map_",subRegType_i,"_",param_i,"_",x_i,"_",scenario_i,nameAppend,"_FREESCALE",sep="")
+                  # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep = "")
 
 
                 }# if(nrow(datax)>1){
@@ -2779,16 +3284,16 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
               if(animateOn==T){
 
-                animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
-                animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
-                                        pattern = paste(".*",param_i,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
+                animName<-paste("anim_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY.gif",sep="")
+                animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
+                                        pattern = paste(".*",param_i,".*",nameAppend,".*PRETTY", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
                 print(animFiles)
                 animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/",
                                             animName,sep = ""))
-                print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
-                            animName,sep = ""))
-                fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/",
+                            animName,sep = "")))
+                fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/",
                                      animName,sep = "")
                 tempImage<-magick::image_read(fnameTempImage)
                 croppedImage<-magick::image_trim(tempImage,fuzz=0);
@@ -2796,37 +3301,37 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
 
-                animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
-                animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
-                                        pattern = paste(".*",param_i,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
+                animName<-paste("anim_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS.gif",sep="")
+                animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
+                                        pattern = paste(".*",param_i,".*",nameAppend,".*KMEANS", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
                 animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/",
                                             animName,sep = ""))
-                print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
-                            animName,sep = ""))
-                fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/",
+                            animName,sep = "")))
+                fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/",
                                      animName,sep = "")
                 tempImage<-magick::image_read(fnameTempImage)
                 croppedImage<-magick::image_trim(tempImage,fuzz=0);
                 magick::image_write(croppedImage,fnameTempImage)
 
 
-                animName<-paste("anim_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
-                animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
-                                        pattern = paste(".*",param_i,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
+                animName<-paste("anim_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE.gif",sep="")
+                animFiles <- list.files(path = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear",sep=""),
+                                        pattern = paste(".*",param_i,".*",nameAppend,".*FREESCALE", ".", pdfpng,sep=""), full.names=T,ignore.case = T, include.dirs = T);animFiles
                 animation <- magick::image_animate(magick::image_join(lapply(animFiles, magick::image_read)),fps=fps)
-                magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                magick::image_write(animation,paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/",
                                             animName,sep = ""))
-                print(paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
-                            animName,sep = ""))
-                fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/",
+                print(gsub("//","/",paste("animation saved in :",dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/",
+                            animName,sep = "")))
+                fnameTempImage=paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/",
                                      animName,sep = "")
                 tempImage<-magick::image_read(fnameTempImage)
                 croppedImage<-magick::image_trim(tempImage,fuzz=0);
                 magick::image_write(croppedImage,fnameTempImage)
 
 
-                #unlink(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
+                #unlink(paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,"/byYear/animate_",param_i,sep = ""), recursive = TRUE) #-------------- cleaning up plots and temporary variables
               } # If Animate ON==t
 
 
@@ -2834,11 +3339,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
               # Figure 2 : each param: If class ==1 { Map x years}
               #-----------------------------
 
-              checkTbl<-shapeTbl%>%dplyr::filter(scenario==scenario_i,subRegType==subRegType_i,param==param_i)
-
-              if(boundaryRegionsSelect %in% unique(checkTbl$region)){
-                checkTbl <- checkTbl %>% dplyr::filter(region==boundaryRegionsSelect)
-              }
+              checkTbl<-shapeTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)
 
 
               checkTbl<-droplevels(checkTbl)
@@ -2846,11 +3347,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                 rm(checkTbl)
 
-                datax<-shapeTbl%>%dplyr::filter(scenario==scenario_i,subRegType==subRegType_i,param==param_i)
+                datax<-shapeTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)
 
-                if(boundaryRegionsSelect %in% unique(datax$region)){
-                  datax <- datax %>% dplyr::filter(region==boundaryRegionsSelect)
-                }
 
                 if(nrow(datax)>1){
                   legendTitle<-paste(unique(datax$units),sep="")
@@ -2925,8 +3423,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             legendPosition = NULL,
                             fillPalette = fillPalette,
                             bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
-                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                            fileName = paste("map_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep=""),
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,sep = ""))
 
                   # numeric2Cat_list=numeric2Cat_list
                   # catParam=param_i
@@ -2952,8 +3450,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # bgColor = bgColorChosen
                   # figWidth=figWidth
                   # figHeight=figHeight
-                  # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
-                  # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = "")
+                  # fileName = paste("map_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_KMEANS",sep="")
+                  # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,sep = "")
 
                   metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                             fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
@@ -2973,8 +3471,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             legendPosition = NULL,
                             fillPalette = fillPalette,
                             bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
-                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                            fileName = paste("map_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_PRETTY",sep=""),
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,sep = ""))
 
 
                   if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
@@ -3004,18 +3502,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                             legendPosition = legendPosition,
                             fillPalette = fillPalette,
                             bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
-                            fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
-                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                            fileName = paste("map_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_FREESCALE",sep=""),
+                            dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,sep = ""))
 
                   # Animate 2 : each param: If class == 1 { (Map x Anim Years}
 
                   # Calculate Mean
 
-                  datax<-shapeTbl%>%dplyr::filter(scenario==scenario_i,subRegType==subRegType_i,param==param_i)
-
-                  if(boundaryRegionsSelect %in% unique(datax$region)){
-                    datax <- datax %>% dplyr::filter(region==boundaryRegionsSelect)
-                  }
+                  datax<-shapeTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)
 
                   if(nrow(datax)>1){
                     legendTitle<-paste(unique(datax$units),sep="")
@@ -3094,8 +3588,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                               legendPosition = legendPositionS,
                               fillPalette = fillPalette,
                               bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
-                              fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
-                              dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                              fileName = paste("map_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep=""),
+                              dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,sep = ""))
 
                     # numeric2Cat_list=numeric2Cat_list; catParam=param_i; underLayer=underLayer; dataPolygon=mapx;
                     # fillColumn = names(mapx@data%>%dplyr::select(-subRegion))
@@ -3117,8 +3611,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     # legendPosition = legendPositionS;
                     # fillPalette = fillPalette;
                     # bgColor = bgColorChosen;figWidth=figWidth;figHeight=figHeight; pdfpng = pdfpng
-                    # fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep="")
-                    # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = "")
+                    # fileName = paste("map_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_KMEANS",sep="")
+                    # dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,sep = "")
 
                     metis.map(innerMargins=innerMargins, legendDigitsOverride=legendDigitsOverride,facetLabelSize=facetLabelSize,mapTitleOn=mapTitleOn, facetCols=facetCols,numeric2Cat_list=numeric2Cat_list, catParam=param_i, underLayer=underLayer,  dataPolygon=mapx,
                               fillColumn = names(mapx@data%>%dplyr::select(-subRegion)),
@@ -3140,8 +3634,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                               legendPosition = legendPositionS,
                               fillPalette = fillPalette,
                               bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
-                              fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
-                              dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                              fileName = paste("map_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_PRETTY",sep=""),
+                              dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,sep = ""))
 
                     if("subRegion" %in% names(mapx@data)){countCheck=2}else{countCheck=1}
                     if(length(names(mapx@data))==countCheck){
@@ -3172,8 +3666,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                               legendPosition = legendPositionS,
                               fillPalette = fillPalette,
                               bgColor = bgColorChosen,figWidth=figWidth,figHeight=figHeight, pdfpng = pdfpng,
-                              fileName = paste("map_",folderName,"_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
-                              dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegion_i,"/",param_i,"/", scenario_i,sep = ""))
+                              fileName = paste("map_",subRegType_i,"_",param_i,"_",scenario_i,nameAppend,"_MEAN_FREESCALE",sep=""),
+                              dirOutputs = paste(dirOutputsX,"/",folderName,dirNameAppend, "/Maps/",subRegType_i,"/",param_i,"/", scenario_i,sep = ""))
 
 
                     # Animate 2 : each param: If class == 1 { (Map x Anim Years}
@@ -3181,10 +3675,20 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   }  #if(nrow(datax)>1){
                 }  #if(nrow(datax)>1){
               } # If number of classes == 1
-            } # If nrow greater than 0
+
+
+               # If nrow greater than 0
+
+          }# nrow shapeTbl after Shapefiles loaded
+            }# Close Run Section
+            }# If shapeTbl rows >0
           } # close Params
-        } # Close subRegType loop
+
       } # Close scenario loop
-    } # Close if(indvScenarios=T)
+
   } # Close if shapeTbl is NUll
+  } # Close create polygon plots
+
+  print("metis.mapsProcess run completed.")
+
 } # close function

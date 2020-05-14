@@ -20,7 +20,8 @@
 #' \item conv1975USDperGJ22017USDperMBTU,
 #' \item convertGgTgMTC,
 #' \item GWP,
-#' \item US52=US52}
+#' \item US52=US52,
+#' \item US49=US49}
 #' @keywords assumptions
 #' @return A list of assumptions
 #' @export
@@ -110,6 +111,15 @@ metis.assumptions <- function() {
             "NV","NY","OH","OK","OR","PA","PR","RI","SC","SD","TN",
             "TX","UT","VA","VT","WA","WI","WV","WY")
 
+  # GCAM USA 49. Excludes Alaska, Hawaii and Puerto Rico. Includes DC.
+  US49 <- c("AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA",
+            "IA","ID","IL","IN","KS","KY","LA","MA","MD","ME",
+            "MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM",
+            "NV","NY","OH","OK","OR","PA","RI","SC","SD","TN",
+            "TX","UT","VA","VT","WA","WI","WV","WY")
+
+
+
 
   return(list(
          GCAMbaseYear=GCAMbaseYear,
@@ -128,5 +138,6 @@ metis.assumptions <- function() {
          conv1975USDperGJ22017USDperMBTU=conv1975USDperGJ22017USDperMBTU,
          convertGgTgMTC=convertGgTgMTC,
          GWP=GWP,
-         US52=US52))
+         US52=US52,
+         US49=US49))
 }

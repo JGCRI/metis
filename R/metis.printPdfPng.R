@@ -32,7 +32,7 @@ metis.printPdfPng <- function(figure = NULL,
       grDevices::pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
       print(figure)
       grDevices::dev.off()
-      print(paste("Figure saved as: ",dir,"/",filename,".pdf", sep=""))
+      print(gsub("//","/",paste("Figure saved as: ",dir,"/",filename,".pdf", sep="")))
     }
     if(pdfpng=='png'){
       if(transparent){
@@ -46,7 +46,8 @@ metis.printPdfPng <- function(figure = NULL,
       tempImage<-magick::image_read(fnameTempImage)
       croppedImage<-magick::image_trim(tempImage,fuzz=0)
       magick::image_write(croppedImage,fnameTempImage)
-      print(paste("Figure saved as: ",dir,"/",filename,".png", sep=""))}
+      print(gsub("//","/",paste("Figure saved as: ",dir,"/",filename,".png", sep="")))
+      }
     if(pdfpng=='both'){
       grDevices::pdf(paste(dir,"/",filename,".pdf",sep=""),width=figWidth,height=figHeight)
       print(figure)
@@ -62,8 +63,8 @@ metis.printPdfPng <- function(figure = NULL,
       tempImage<-magick::image_read(fnameTempImage)
       croppedImage<-magick::image_trim(tempImage,fuzz=0)
       magick::image_write(croppedImage,fnameTempImage)
-      print(paste("Figure saved as: ",dir,"/",filename,".png", sep=""))
-      print(paste("Figure saved as: ",dir,"/",filename,".pdf", sep=""))
+      print(gsub("//","/",paste("Figure saved as: ",dir,"/",filename,".png", sep="")))
+      print(gsub("//","/",paste("Figure saved as: ",dir,"/",filename,".pdf", sep="")))
     }
     }
 }

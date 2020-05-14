@@ -12,13 +12,13 @@ metis.map(
   shpFile = NULL,
   fillPalette = "Spectral",
   borderColor = "gray20",
-  lwd = 1,
+  lwd = 0.1,
   lty = 1,
   bgColor = "white",
   frameShow = F,
   fillColumn = NULL,
   labels = F,
-  labelsSize = 1.2,
+  labelsSize = 1,
   labelsColor = "black",
   labelsAutoPlace = F,
   figWidth = 9,
@@ -26,8 +26,8 @@ metis.map(
   legendWidth = -1,
   legendShow = F,
   legendOutside = F,
-  legendTextSize = 1,
-  legendTitleSize = 2,
+  legendTextSize = 0.6,
+  legendTitleSize = 1,
   legendOutsidePosition = NULL,
   legendPosition = NULL,
   legendDigits = NULL,
@@ -47,7 +47,7 @@ metis.map(
   facetCols = 4,
   facetBGColor = NA,
   facetLabelColor = "black",
-  facetLabelSize = 1.5,
+  facetLabelSize = 1,
   facetLabelBorderLwd = NA_real_,
   alpha = 1,
   fillcolorNA = "gray",
@@ -59,7 +59,7 @@ metis.map(
   multiFacetCols = NULL,
   mapTitleOn = T,
   mapTitle = NULL,
-  mapTitleSize = 1,
+  mapTitleSize = 0.5,
   numeric2Cat_list = NULL,
   catParam = NULL,
   innerMargins = c(0, 0, 0, 0),
@@ -88,7 +88,7 @@ metis.map(
 
 \item{borderColor}{Default = "gray20",}
 
-\item{lwd}{Default = 1,}
+\item{lwd}{Default = 0.1,}
 
 \item{lty}{Default = 1,}
 
@@ -160,7 +160,7 @@ metis.map(
 
 \item{facetLabelSize}{Default = 1.5,}
 
-\item{facetLabelBorderLwd}{Default=NA,}
+\item{facetLabelBorderLwd}{Default=NA_real_,}
 
 \item{alpha}{Default = 1}
 

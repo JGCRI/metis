@@ -3,8 +3,7 @@
 \docType{data}
 \name{mapIntersectGCAMBasinCountry}
 \alias{mapIntersectGCAMBasinCountry}
-\title{Intersection of GCAM Basins and countries
-Intersection of GCAM Basins and countries.}
+\title{Intersection of GCAM Basins and countries.}
 \format{
 R tibble
 }
@@ -15,7 +14,6 @@ JGCRI
 mapIntersectGCAMBasinCountry
 }
 \description{
-Intersection of GCAM Basins and countries
 Intersection of GCAM Basins and countries.
 }
 \examples{

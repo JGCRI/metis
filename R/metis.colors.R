@@ -11,7 +11,9 @@
 #' \item "pal_hot"
 #' \item "pal_wet"
 #' \item "pal_div_wet"
+#' \item "pal_div_BlRd"
 #' \item "pal_div_RdBl"
+#' \item "pal_div_BrGr"
 #' \item "pal_div_GrBr"
 #' \item "pal_div_BluRd"
 #' \item "pal_div_RdBlu"
@@ -227,15 +229,12 @@ metis.colors <- function(palx=NULL) {
       print(a)
     }}
 
-    metisPalettes <-list(pal_metis=pal_metis,pal_16 = pal_16,
-                         pal_Basic = pal_Basic, pal_hot = pal_hot,
-                         pal_wet=pal_wet,
-                         pal_seq=pal_seq,
-                         pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,
-                         pal_div_GrBr=pal_div_GrBr,pal_div_BluRd=pal_div_BluRd,
-                         pal_div_RdBlu=pal_div_RdBlu, pal_green=pal_green,
-                         pal_div_BrGn=pal_div_BrGn,pal_div_BlRd=pal_div_BlRd,pal_sankey=pal_sankey,
-                         pal_spectral=pal_spectral, pal_ScarcityCat=pal_ScarcityCat)
+    metisPalettes <-list(pal_metis=pal_metis,pal_16 = pal_16,al_seq=pal_seq,pal_Basic = pal_Basic,
+                         pal_hot = pal_hot,pal_green=pal_green,pal_wet=pal_wet,
+                         pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,pal_div_BlRd=pal_div_BlRd,
+                         pal_div_GrBr=pal_div_GrBr,pal_div_BrGn=pal_div_BrGn,
+                         pal_div_BluRd=pal_div_BluRd,pal_div_RdBlu=pal_div_RdBlu,
+                         pal_sankey=pal_sankey,pal_spectral=pal_spectral, pal_ScarcityCat=pal_ScarcityCat)
 
     invisible(metisPalettes)
 }
