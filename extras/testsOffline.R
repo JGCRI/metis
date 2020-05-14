@@ -86,13 +86,6 @@ if(!exists("mapGCAMReg32")){
                   subRegion=gsub("-","_",subRegion))%>%
     dplyr::select(-ID,-GRIDCODE,-GCAM_region_ID,-reg32_id)
   mapx@data <- droplevels(mapx@data)
-  # Add Taiwan
-  # a <- metis::mapCountries
-  # a <- a[a$subRegion %in% "Taiwan",];
-  # a@data <- droplevels(a@data)
-  # b <- mapx
-  # a <- sp::spTransform(a,raster::crs(b))
-  # mapx1 <- raster::union(a,b)
   format(object.size(mapx), units="Mb")
   #mapx<-as(simplify_shape(mapx, fact = 0.05),Class="Spatial")
   #format(object.size(mapx), units="Mb")
@@ -122,21 +115,21 @@ if(!exists("mapGCAMBasins")){
   # Changes to make to GCAMdata in metis.readgcam()
   #   - Replace all "-" with "_"
 
-  # dataGCAM<-metis.readgcam (#gcamdatabase = "C:/Z/gcam-v5.2-Windows-Release-Package/output/example",
-  #                          dataProjFile = "C:/Z/projects/metis/dataFiles/examples/example.proj")
-  #
-  # df <- dataGCAM$data
-  # head(df); unique(df$subRegion); unique(df$param)
-  # df%>%filter(subRegion=="Cauvery")%>%as.data.frame()%>%head()
-  # gcamBasins <- as.character(unique((df%>%dplyr::filter(param=="watSupRunoffBasin"))$subRegion)); gcamBasins
-  #
-  # examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
-  # examplePolyFile<-paste("Global235_CLM_final_5arcmin_multipart",sep="")
-  # x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
-  # head(x@data); names(x@data)
-  #
-  # gcamMapBasins <- as.character(unique(x@data$basin_name)); gcamMapBasins
-  # basins2Change <- gcamBasins[!gcamBasins %in% gcamMapBasins]%>%sort(); basins2Change
+  dataGCAM<-metis.readgcam (#gcamdatabase = "C:/Z/gcam-v5.2-Windows-Release-Package/output/example",
+                           dataProjFile = "C:/Z/projects/metis/dataFiles/examples/example.proj")
+
+  df <- dataGCAM$data
+  head(df); unique(df$subRegion); unique(df$param)
+  df%>%filter(subRegion=="Cauvery")%>%as.data.frame()%>%head()
+  gcamBasins <- as.character(unique((df%>%dplyr::filter(param=="watSupRunoffBasin"))$subRegion)); gcamBasins
+
+  examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
+  examplePolyFile<-paste("Global235_CLM_final_5arcmin_multipart",sep="")
+  x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
+  head(x@data); names(x@data)
+
+  gcamMapBasins <- as.character(unique(x@data$basin_name)); gcamMapBasins
+  basins2Change <- gcamBasins[!gcamBasins %in% gcamMapBasins]%>%sort(); basins2Change
   # data.table::fwrite(as.data.frame(gcamBasins)%>%arrange(gcamBasins),"gcamBasins.csv")
   # data.table::fwrite(as.data.frame(gcamMapBasins)%>%arrange(gcamMapBasins),"gcamMapBasins.csv")
   # data.table::fwrite(as.data.frame(basins2Change)%>%arrange(basins2Change),"basins2Change.csv")
@@ -157,8 +150,9 @@ if(!exists("mapGCAMBasins")){
                                       subRegion=="Hong_(Red_River)"~"Hong_Red_River",
                                       TRUE~subRegion))
 
-  # gcamMapBasinsNew <- as.character(unique(mapx@data$subRegion)); gcamMapBasinsNew
-  # basins2Change1 <- gcamBasins[!gcamBasins %in% gcamMapBasinsNew]%>%sort(); basins2Change1
+  gcamBasinsNew <- gsub("-","_",gcamBasins)
+  gcamMapBasinsNew <- as.character(unique(mapx@data$subRegion)); gcamMapBasinsNew
+  basins2Change1 <- gcamBasinsNew[!gcamBasinsNew %in% gcamMapBasinsNew]%>%sort(); basins2Change1
 
 
   format(object.size(mapx), units="Mb")
@@ -714,32 +708,13 @@ if(!exists("grid050")){
 
 
 #-------------------
-# Example Data
+# Save Data Files
 #-------------------
 
 # Example .proj file
-#projFile <-"C:/Z/projects/metisGCAMUSA/metisOutputs/readGCAM/exampleGCAMproj.proj"
-metis.readgcam(gcamdatabase = "C:/Z/projects/metis/dataFiles/gcam/example_GCAM52release_SSP3SSP5",
-               paramsSelect =c("elecByTechTWh", "pop","watWithdrawBySec","watSupRunoffBasin",
-                                   "landAlloc","agProdByCrop"),
-               dataProjFile = "exampleGCAM52releaseSSP3SSP5.proj",saveData = F,reReadData = T)
-projFile <-"C:/Z/projects/metis/dataFiles/examples/exampleGCAM52releaseSSP3SSP5.proj"
+projFile <-"C:/Z/projects/metisGCAMUSA/metisOutputs/readGCAM/exampleGCAMproj.proj"
 exampleGCAMproj <- rgcam::loadProject(projFile)
 use_data(exampleGCAMproj, overwrite=T)
-
-# Examples .metisMapProcess
-dataGCAM<-metis.readgcam (dataProjFile = exampleGCAMproj,
-                          paramsSelect =c("elecByTechTWh", "pop","watWithdrawBySec","watSupRunoffBasin",
-                                          "landAlloc","agProdByCrop"),saveData = F)
-df <- dataGCAM$data;unique(df$scenario); unique(df$param);
-exampleMapDataParam <- dataGCAM$dataAggParam
-exampleMapDataClass <- dataGCAM$dataAggClass1
-use_data(exampleMapDataParam, overwrite=T)
-use_data(exampleMapDataClass, overwrite=T)
-
-#-------------------
-# Data
-#-------------------
 
 # Metis XMl Query Files
 xmlFilePath = paste(getwd(),"/dataFiles/gcam/metisQueries.xml",sep="")

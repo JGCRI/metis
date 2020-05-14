@@ -3,8 +3,7 @@
 \docType{data}
 \name{mapIntersectGCAMBasin32Reg}
 \alias{mapIntersectGCAMBasin32Reg}
-\title{Intersection of GCAM Basins and GCAM 32 Regions
-Intersection of GCAM Basins and GCAM 32 Regions.}
+\title{Intersection of GCAM Basins and GCAM 32 Regions.}
 \format{
 R tibble
 }
@@ -15,7 +14,6 @@ JGCRI
 mapIntersectGCAMBasin32Reg
 }
 \description{
-Intersection of GCAM Basins and GCAM 32 Regions
 Intersection of GCAM Basins and GCAM 32 Regions.
 }
 \examples{

@@ -6,35 +6,6 @@
 # Install necessary packages
 #----------------------------
 
-# Devtools
-# ---------
-# For updated instructions and additional operating systems see:
-# https://www.rstudio.com/products/rpackages/devtools/
-# https://johnmuschelli.com/neuroc/installing_devtools/index.html
-# Windows: no additional steps
-# UBUNTU: sudo apt-get install build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev
-
-# GDAL
-# --------
-# For updated instructions and additional operating systems see:
-# https://github.com/r-spatial/sf/
-# https://gdal.org/download.html
-# Windows: no additional steps
-# UBUNTU:
-# sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-# sudo apt-get update
-# sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev
-# MacOS (Using homebrew):
-# brew install pkg-config
-# brew install gdal
-
-# Image Magick
-# -------------
-# For updated instructions and additional operating systems see:
-# https://cran.r-project.org/web/packages/magick/vignettes/intro.html
-# Windows: no additional steps
-# UBUNTU: sudo apt-get install libmagick++-dev
-# MacOS (Using Homebrew): brew install imagemagick@6
 
 if("devtools" %in% rownames(installed.packages()) == F){install.packages("devtools")}; library(devtools)
 # install_github(repo="JGCRI/metis"); library(metis); .rs.restartR()

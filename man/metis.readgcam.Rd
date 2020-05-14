@@ -102,7 +102,8 @@ Or pick an individual param from the list:
 }
 \value{
 A list with the scenarios in the gcam database, queries in the queryxml file and a
-tibble with gcam data formatted for metis charts.
+tibble with gcam data formatted for metis charts aggregated to different categories.
+These include data, dataAggParam, dataAggClass1, dataAggClass2.
 }
 \description{
 This function connects to a gcamdatabase and uses a query file to

@@ -11,7 +11,7 @@ metis.mapsProcess(
   folderName = "",
   xRange = "All",
   labels = F,
-  labelsSize = 1.2,
+  labelsSize = 1,
   subRegShape = NULL,
   subRegShpFolder = NULL,
   subRegShpFile = NULL,
@@ -22,13 +22,14 @@ metis.mapsProcess(
   legendOutsidePosition = NULL,
   legendPosition = NULL,
   legendFixedBreaks = 5,
-  legendTitleSizeO = 2,
-  legendTextSizeO = 1,
-  legendTitleSizeI = 1.5,
-  legendTextSizeI = 1,
+  legendTitleSizeO = 1,
+  legendTextSizeO = 0.6,
+  legendTitleSizeI = 1,
+  legendTextSizeI = 0.6,
   animateOn = T,
   fps = 1,
-  scenRefDiffIndv = NULL,
+  scenRef = NULL,
+  scenDiff = NULL,
   extension = F,
   boundaryRegShape = NULL,
   boundaryRegShpFolder = NULL,
@@ -63,10 +64,10 @@ metis.mapsProcess(
   mapTitleSize = 0.5,
   facetBGColor = NA,
   facetLabelColor = "black",
-  facetLabelSize = 1.5,
+  facetLabelSize = 1,
   facetLabelSizeMultiAB = 1,
+  facetLabelBorderLwd = NA_real_,
   numeric2Cat_list = NULL,
-  diffOn = F,
   frameShow = F,
   pdfpng = "png",
   fillcolorNA = "gray",
@@ -78,7 +79,9 @@ metis.mapsProcess(
   facetCols = 4,
   mapTitleOn = T,
   innerMargins = c(0, 0, 0, 0),
-  legendDigitsOverride = NULL
+  legendDigitsOverride = NULL,
+  classPalette = NULL,
+  classPaletteDiff = "pal_div_RdBl"
 )
 }
 \arguments{
@@ -128,7 +131,9 @@ metis.mapsProcess(
 
 \item{fps}{Default = 1,}
 
-\item{scenRefDiffIndv}{Default = NULL}
+\item{scenRef}{Reference Scenario. Default = NULL}
+
+\item{scenDiff}{Scenarios to Diff. Default = NULL}
 
 \item{extension}{Default =F,}
 
@@ -202,9 +207,9 @@ metis.mapsProcess(
 
 \item{facetLabelSizeMultiAB}{Default =1}
 
-\item{numeric2Cat_list}{Default=NULL,}
+\item{facetLabelBorderLwd}{Default=NA_real_,}
 
-\item{diffOn}{Default = F. Whether to calculate diff values between scenarios.}
+\item{numeric2Cat_list}{Default=NULL,}
 
 \item{frameShow}{Default = T. Whether to plot frame around maps and facets.}
 
@@ -229,6 +234,10 @@ metis.mapsProcess(
 \item{innerMargins}{Default =c(0,0,0,0) # bottom, left, top, right}
 
 \item{legendDigitsOverride}{Default=NULL}
+
+\item{classPalette}{Default = NULL}
+
+\item{classPaletteDiff}{Default = "pal_div_RdBl"}
 }
 \value{
 Returns the formatted data used to produce chart

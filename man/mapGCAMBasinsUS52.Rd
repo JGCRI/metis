@@ -6,21 +6,33 @@
 \title{GCAM Basins cropped to US52}
 \format{
 A SpatialPolygonsDataFrame
+
+R tibble
 }
 \source{
 Created from metis maps
+
+JGCRI
 }
 \usage{
+mapGCAMBasinsUS52
+
 mapGCAMBasinsUS52
 }
 \description{
 GCAM Basins cropped to US52
+
+Cropped of GCAM Basins and US52
 }
 \examples{
 \dontrun{
  library(sp); library(metis)
  sp::plot(mapGCAMBasinsUS52)
  head(mapGCAMBasinsUS52@data)
+}
+\dontrun{
+library(metis)
+head(mapGCAMBasinsUS52)
 }
 }
 \keyword{datasets}

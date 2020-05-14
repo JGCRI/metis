@@ -31,7 +31,8 @@ List of Assumptions
 \item conv1975USDperGJ22017USDperMBTU,
 \item convertGgTgMTC,
 \item GWP,
-\item US52=US52}
+\item US52=US52,
+\item US49=US49}
 }
 \examples{
 library(metis)
