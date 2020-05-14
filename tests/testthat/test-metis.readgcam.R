@@ -10,7 +10,7 @@ test_that("metis.readgcam reads data from .proj file for regionsSelect='Colombia
                            regionsSelect = "Colombia",
                            saveData = F)
   tVal <- nrow(dataGCAM$data>0)
- expect_equal(0, tVal)
+ expect_gt(tVal,0)
 
 })
 
@@ -21,7 +21,7 @@ test_that("metis.readgcam reads data from .proj file for paramsSelect=c('energy'
                            paramsSelect = c("energy","water"),
                            saveData = F)
   tVal <- nrow(dataGCAM$data>0)
-  expect_equal(0, tVal)
+  expect_gt(tVal,0)
 
 })
 
