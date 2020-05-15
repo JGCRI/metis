@@ -82,6 +82,7 @@
 #' @param innerMargins Default =c(0,0,0,0) # bottom, left, top, right
 #' @param classPalette Default = NULL
 #' @param classPaletteDiff Default = "pal_div_RdBl"
+#' @return A list with the gridTbl and shapeTbl used to plot the data if any.
 #' @export
 
 
@@ -261,6 +262,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   boundaryRegShapeOrig <- boundaryRegShape
   boundaryRegShpFileOrig <- boundaryRegShpFile
   boundaryRegShpFolderOrig <- boundaryRegShpFolder
+  animateOnOrig <- animateOn
 
   dirOutputsX <- dirOutputs;
 
@@ -772,6 +774,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     if(nrow(gridTbl)>0){
 
       gridTblOrig <- gridTbl
+
+      if(length(unique(gridTblOrig$x))>0){animateOn=F}
 
 
       for (scenario_i in unique(gridTblOrig$scenario)){
@@ -1686,6 +1690,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
         } # close Params
       } # Close scenario loop
   } # Close if nrow gridTbl < 0
+
+    animateOn <- animateOnOrig
+
     } # Close if gridTbl is Null
   } # Close Raster Plots
 
@@ -1696,6 +1703,17 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   if(T){
 
   if(!is.null(shapeTbl) & nrow(shapeTbl)>0){
+
+    if(length(unique(shapeTbl$x))>0){animateOn=F}
+
+    # Mutate shapeTbl data from GCAM to match shapefile subRegions
+    if(all(is.null(subRegShapeOrig) & is.null(subRegShpFileOrig))){
+      shapeTbl <- shapeTbl %>%
+        dplyr::mutate(subRegion=gsub("-","_",subRegion),
+                      subRegion=gsub("_Basin","",subRegion)
+        )
+
+    }
 
     shapeTblOrig <- shapeTbl
 
@@ -3687,8 +3705,13 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       } # Close scenario loop
 
   } # Close if shapeTbl is NUll
+
+    animateOn=animateOnOrig
+
   } # Close create polygon plots
 
   print("metis.mapsProcess run completed.")
+  return(list(gridTbl=gridTbl,
+              shapeTbl=shapeTbl))
 
 } # close function
