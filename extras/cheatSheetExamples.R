@@ -21,12 +21,16 @@ data = metis::exampleMapDataParam %>%
         dplyr::filter(param %in% c("elecByTechTWh","agProdByCrop",
                                    "watSupRunoffBasin"))
 metis.mapsProcess(polygonDataTables=data,
-                  xRange=c(2010,2020,2030))
-
-data = metis::exampleMapDataClass %>%
-  dplyr::filter(param %in% c("watWithdrawBySec"))
-metis.mapsProcess(polygonDataTables=data,
                   xRange=c(2010,2020,2030),
-                  scenRef="SSP3", # For Diff maps
-                  nameAppend="class")
+                  scenRef="SSP3")
+
+#--------------------
+# Extended metis.mapsProcess examples
+
+data = data.frame(subRegion=c("CA","TX","AZ"),
+                  value=c(1,3,5))
+metis.mapsProcess(polygonDataTables=data)
+
+
+
 

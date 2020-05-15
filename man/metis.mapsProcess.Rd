@@ -241,6 +241,8 @@ metis.mapsProcess(
 }
 \value{
 Returns the formatted data used to produce chart
+
+A list with the gridTbl and shapeTbl used to plot the data if any.
 }
 \description{
 This function produce different kinds of maps for the metis package.
