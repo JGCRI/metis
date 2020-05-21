@@ -30,7 +30,8 @@ metis.prepGrid(
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
   folderName = NULL,
   saveFormat = "rds",
-  filterYears = NULL
+  filterYears = NULL,
+  diagnosticsOn = F
 )
 }
 \arguments{
@@ -83,6 +84,8 @@ metis.prepGrid(
 \item{saveFormat}{Default="rds". Choose between "rds" (Native R much faster) or "csv" or "both".}
 
 \item{filterYears}{Default=seq(1980,2100,by=5)}
+
+\item{diagnosticsOn}{Default =F}
 }
 \value{
 A table with data by polygon ID for each shapefile provided

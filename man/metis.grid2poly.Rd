@@ -24,6 +24,7 @@ metis.grid2poly(
   xanthosFilesScarcity = NULL,
   calculatePolyScarcity = F,
   calculatePolyScarcityOnly = F,
+  printGridOverlay = F,
   saveFiles = T
 )
 }
@@ -65,6 +66,8 @@ metis.grid2poly(
 \item{calculatePolyScarcity}{Default = F}
 
 \item{calculatePolyScarcityOnly}{Default = F}
+
+\item{printGridOverlay}{Default = F}
 
 \item{saveFiles}{Default =T}
 }

@@ -313,7 +313,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<param\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(param=as.character(param),param=dplyr::case_when(is.na(param)~"param",TRUE~param))}
     if(!any(grepl("\\<params\\>",names(data),ignore.case = T))){}else{
-      data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<param\\>",names(data),ignore.case = T)])[1])
+      data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<params\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(param=as.character(param),param=dplyr::case_when(is.na(param)~"params",TRUE~param))}
     if(!any(grepl("\\<multiFacetCol\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(multiFacetCol="multiFacetCol")}else{
       data <- data %>% dplyr::rename(!!"multiFacetCol" := (names(data)[grepl("\\<multiFacetCol\\>",names(data),ignore.case = T)])[1])
@@ -775,7 +775,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
       gridTblOrig <- gridTbl
 
-      if(length(unique(gridTblOrig$x))>0){animateOn=F}
+      if(!length(unique(gridTblOrig$x))>1){animateOn=F}
 
 
       for (scenario_i in unique(gridTblOrig$scenario)){
@@ -1540,6 +1540,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
               datax<-gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)
 
+              if(length(unique(datax$x))>1){
+
               if(nrow(datax)>1){
                 legendTitle<-unique(datax$units)
                 fillPalette<-as.character(unique(datax$classPalette))
@@ -1680,6 +1682,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
               } # if(nrow(datax)>1){
+            }# If no multiple years
             } # If number of classes == 1
 
           } # If nrow greater than 0
@@ -1704,7 +1707,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
   if(!is.null(shapeTbl) & nrow(shapeTbl)>0){
 
-    if(length(unique(shapeTbl$x))>0){animateOn=F}
+    if(!length(unique(shapeTbl$x))>1){animateOn=F}
 
     # Mutate shapeTbl data from GCAM to match shapefile subRegions
     if(all(is.null(subRegShapeOrig) & is.null(subRegShpFileOrig))){
@@ -2058,6 +2061,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                     datax <- shapeTblMultxScenMultiABRefRef %>% dplyr::filter(x %in% chosenRefMeanYearsX)
                     minX<-min(datax$x);maxX<-max(datax$x)
+
+                    if(length(unique(datax$x))>1){
 
                     if(nrow(datax)>1){
                       legendTitle<-unique(datax$units)
@@ -2739,6 +2744,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
                     } # Close nrow>1
+                    } # If no multiple years
                 } # Check if MultiA and MultiBs > 1
                     } # Close nrow shapeTblMult >1
                   }# Close run section
@@ -3529,6 +3535,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                   datax<-shapeTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)
 
+                  if(length(unique(datax$x))>1){
+
                   if(nrow(datax)>1){
                     legendTitle<-paste(unique(datax$units),sep="")
                     fillPalette<-as.character(unique(datax$classPalette))
@@ -3691,6 +3699,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     # Animate 2 : each param: If class == 1 { (Map x Anim Years}
 
                   }  #if(nrow(datax)>1){
+                  } # If no multiple years
                 }  #if(nrow(datax)>1){
               } # If number of classes == 1
 

@@ -24,6 +24,7 @@
 #' @param calculatePolyScarcity Default = F
 #' @param calculatePolyScarcityOnly Default = F
 #' @param saveFiles Default =T
+#' @param printGridOverlay Default = F
 #' @export
 
 metis.grid2poly<- function(gridFiles=NULL,
@@ -45,6 +46,7 @@ metis.grid2poly<- function(gridFiles=NULL,
                            xanthosFilesScarcity=NULL,
                            calculatePolyScarcity=F,
                            calculatePolyScarcityOnly=F,
+                           printGridOverlay =F,
                            saveFiles=T) {
 
   # grid=NULL
@@ -302,6 +304,7 @@ for(grid_i in gridFiles){
 
           if(is.null(gridPolyLoop)){
 
+            if(printGridOverlay){
             if(!file.exists(paste(dirX,"/subBasin_map_GridSize.png",sep=""))){
             print("Printing Grid overlay...")
             spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
@@ -329,6 +332,7 @@ for(grid_i in gridFiles){
                                             fillPalette = "white",alpha=0,facetsON=F,
                                             labels=F,printFig = F),facetsON=F)
             }
+            } # Close if printGridOverlay
           }
           gridPolyLoop=1; # To prevent gridded map being produced multiple times
 
