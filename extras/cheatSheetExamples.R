@@ -27,9 +27,11 @@ metis.mapsProcess(polygonDataTables=data,
 #--------------------
 # Extended metis.mapsProcess examples
 
-data = data.frame(subRegion=c("CA","TX","AZ"),
-                  value=c(1,3,5))
-metis.mapsProcess(polygonDataTables=data)
+data = data.frame(subRegion=c("FL","FL","ID","ID","MO","MO"),
+                  x=c(2050,2100,2050,2100,2050,2100),
+                  value=c(1,3,5,2,3,4))
+metis.mapsProcess(polygonDataTables=data,
+                  folderName = "cheatsheet")
 
 
 

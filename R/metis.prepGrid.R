@@ -26,6 +26,7 @@
 #' @param xanthosFilesScarcity Default=NULL,
 #' @param saveFormat Default="rds". Choose between "rds" (Native R much faster) or "csv" or "both".
 #' @param filterYears Default=seq(1980,2100,by=5)
+#' @param diagnosticsOn Default =F
 #' @return A table with data by polygon ID for each shapefile provided
 #' @keywords gcam, gcam database, query
 #' @export
@@ -54,11 +55,10 @@ metis.prepGrid<- function(demeterFolders=NULL,
                         dirOutputs=paste(getwd(),"/outputs",sep=""),
                         folderName=NULL,
                         saveFormat="rds",
-                        filterYears=NULL
+                        filterYears=NULL,
+                        diagnosticsOn=F
                         ){
 
-  #  saveRDatasingle=F
-  # folderName=NULL
   # demeterFolders=NULL
   # demeterScenarios=NULL
   # demeterTimesteps=seq(from=2005,to=2100,by=5)
@@ -67,12 +67,13 @@ metis.prepGrid<- function(demeterFolders=NULL,
   # tethysScenarios=NULL
   # tethysUnits=NULL
   # tethysFiles=c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal")
-  # copySingleTethysScenbyXanthos=NULL
   # xanthosFiles=NULL
   # xanthosScenarios=NULL
   # xanthosScenarioAssign=NULL
   # xanthosCoordinatesPath=NULL
   # xanthosGridAreaHecsPath=NULL
+  # tethysFilesScarcity=NULL
+  # xanthosFilesScarcity=NULL
   # spanLowess=0.25
   # popFolder=NULL
   # popFiles=NULL
@@ -80,10 +81,11 @@ metis.prepGrid<- function(demeterFolders=NULL,
   # biaFiles=NULL
   # popUnits=NULL
   # dirOutputs=paste(getwd(),"/outputs",sep="")
-  # reReadData=1
-  # gridMetisData=paste(getwd(),"/outputs/prepGrid/gridMetis.RData", sep = "")
-  # sqliteUSE = F
-  # sqliteDBNamePath = paste(getwd(),"/outputs/prepGrid/gridMetis.sqlite", sep = "")
+  # folderName=NULL
+  # saveFormat="rds"
+  # filterYears=NULL
+  # diagnosticsOn=F
+
 
 #----------------
 # Initialize variables by setting to NULL
@@ -136,10 +138,12 @@ if (!dir.exists(paste(dirOutputs, "/prepGrid", sep = ""))){
       dir.create(paste(dirOutputs, "/prepGrid/",folderName, sep = ""))}
   if (!dir.exists(paste(dirOutputs, "/prepGrid/",folderName,"/diagnostics",sep=""))){
     dir.create(paste(dirOutputs, "/prepGrid/",folderName,"/diagnostics",sep=""))}
+  dirDiagnostic = paste(dirOutputs, "/prepGrid/",folderName,"/diagnostics",sep="")
   dir=paste(dirOutputs, "/prepGrid/",folderName,sep="")
   }else{if (!dir.exists(paste(dirOutputs, "/prepGrid/diagnostics",sep=""))){
     dir.create(paste(dirOutputs, "/prepGrid/diagnostics",sep=""))}
-    dir=paste(dirOutputs, "/prepGrid",sep="")}
+    dir=paste(dirOutputs, "/prepGrid",sep="")
+    dirDiagnostic = paste(dirOutputs, "/prepGrid/diagnostics",sep="")}
 
 
 #------------------
@@ -459,7 +463,7 @@ if(!file.exists(paste(xanthosFilesScen$file[i],sep=""))){
           gridx<-dplyr::bind_cols(xanthosCoords,gridx)}
 
         if(grepl("pm_abcd_mrtm",xanthosFile_i)){
-        xanthosScenario<-sub("^pm_abcd_mrtm_", "", xanthosFile_i);xanthosScenario
+        xanthosScenario<-sub("^.*pm_abcd_mrtm_", "", xanthosFile_i);xanthosScenario
         xanthosScenario<-sub("\\_[0-9].*", "", xanthosScenario);xanthosScenario
         xanthosGCM<-sub("_.*","",xanthosScenario); xanthosGCM
         xanthosRCP<-sub(".*_","",xanthosScenario); xanthosRCP}else{
@@ -510,6 +514,8 @@ if(!file.exists(paste(xanthosFilesScen$file[i],sep=""))){
           dplyr::mutate(lowess = stats::lowess(y=value, x=x, f=spanLowess )$y)
         print(paste("Lowess dplyr::filter applied.", sep=""))
 
+
+        if(diagnosticsOn){ # Close Diagnostics
         for(j in c(1,5,40,100,149,180)){
         gridC<-gridx[(gridx$lat==unique(gridx$lat)[j] & gridx$lon==unique(gridx$lon)[j]),]
         fname=paste(unique(gridC$scenario),"_",unique(gridC$param),
@@ -523,8 +529,9 @@ if(!file.exists(paste(xanthosFilesScen$file[i],sep=""))){
         graphics::lines(gridC$x,gridC$lowess,type="l",col="red")
         diagnosticFig <- grDevices::recordPlot()
         metis.printPdfPng(figure=diagnosticFig,
-                          dir=paste(dir, "/diagnostics",sep=""),filename=fname,figWidth=9,figHeight=7,pdfpng="png")
+                          dir=dirDiagnostic,filename=fname,figWidth=9,figHeight=7,pdfpng="png")
         }
+      } # Close Diagnostic
 
         gridx<-gridx%>%dplyr::mutate(value=lowess,region="region")%>%dplyr::select(-lowess)
 
@@ -535,6 +542,7 @@ if(!file.exists(paste(xanthosFilesScen$file[i],sep=""))){
 
         if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
+        if(nrow(gridx>0)){
         x10Chunks <- split(unique(gridx$x), ceiling(seq_along(unique(gridx$x))/25))
 
         for(j in 1:length(x10Chunks)){
@@ -557,11 +565,13 @@ if(!file.exists(paste(xanthosFilesScen$file[i],sep=""))){
           print(paste("Saving file as: ",dir,"/xanthos_",xanthosFilesScen$scenario[i],"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
         }
         }
+
         paramScenarios <- paramScenarios%>%
           dplyr::bind_rows(gridx[1,]%>%dplyr::select(param,scenario)%>%unique()) %>%
           dplyr::ungroup()%>%
           dplyr::select(param,scenario)%>%
           unique();paramScenarios
+        }else{"No data for Xanthos for chosen parameters. (Check filterYears)."}
         rm(gridx)
 
       } # Close if xanthos file exists
