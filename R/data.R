@@ -216,31 +216,6 @@
 #' }
 "mapGCAMBasins"
 
-#' GCAM Basins cropped to US52
-#'
-#' @source Created from metis maps
-#' @format A SpatialPolygonsDataFrame
-#' @examples
-#' \dontrun{
-#'  library(sp); library(metis)
-#'  sp::plot(mapGCAMBasinsUS52)
-#'  head(mapGCAMBasinsUS52@data)
-#' }
-"mapGCAMBasinsUS52"
-
-#' GCAM Basins cropped to US49
-#'
-#' @source Created from metis maps.
-#' @format A SpatialPolygonsDataFrame
-#' @examples
-#' \dontrun{
-#'  library(sp); library(metis)
-#'  sp::plot(mapGCAMBasinsUS49)
-#'  head(mapGCAMBasinsUS49@data)
-#' }
-"mapGCAMBasinsUS49"
-
-
 #' GCAM Land
 #'
 #' @source From the moirai project.
@@ -470,6 +445,30 @@
 #' }
 "mapGCAMBasinsUS49"
 
+#' GCAM Land cropped to US52
+#'
+#' @source Created from metis maps
+#' @format A SpatialPolygonsDataFrame
+#' @examples
+#' \dontrun{
+#'  library(sp); library(metis)
+#'  sp::plot(mapGCAMLandUS52)
+#'  head(mapGCAMLandUS52@data)
+#' }
+"mapGCAMLandUS52"
+
+#' GCAM Land cropped to US49
+#'
+#' @source Created from metis maps.
+#' @format A SpatialPolygonsDataFrame
+#' @examples
+#' \dontrun{
+#'  library(sp); library(metis)
+#'  sp::plot(mapGCAMLandUS49)
+#'  head(mapGCAMLandUS49@data)
+#' }
+"mapGCAMLandUS49"
+
 
 #--------------------
 # Mergers
@@ -484,6 +483,17 @@
 #' head(mapGCAMReg32US52)
 #' }
 "mapGCAMReg32US52"
+
+
+#' Merge of Countries and US52
+#' @source JGCRI
+#' @format R tibble
+#' @examples
+#' \dontrun{
+#' library(metis)
+#' head(mapCountriesUS52)
+#' }
+"mapCountriesUS52"
 
 #--------------------
 # Intersections

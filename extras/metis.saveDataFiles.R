@@ -2,6 +2,8 @@
 library(tibble);library(dplyr);library(rgdal);library(devtools);library(metis); library(rmapshaper); library(tmaptools)
 library(rgeos); library(rgcam)
 
+redoMaps = F
+
 # Current Data
 #data(package="metis")
 
@@ -11,7 +13,7 @@ library(rgeos); library(rgcam)
 
 # Worldmap countries
 #-------------------
-if(!exists("mapCountries")){
+if(redoMaps){
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
   examplePolyFile<-paste("ne_10m_admin_0_countries",sep="")
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -37,7 +39,7 @@ if(!exists("mapCountries")){
 
 # Worldmap states
 #-------------------
-if(!exists("mapStates")){
+if(redoMaps){
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/naturalEarth",sep="")
   examplePolyFile<-paste("ne_10m_admin_1_states_provinces",sep="")
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -67,7 +69,7 @@ if(!exists("mapStates")){
 
 # GCAM 32 Regions
 #------------------
-if(!exists("mapGCAMReg32")){
+if(redoMaps){
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
   examplePolyFile<-paste("region32_0p5deg",sep="")
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -107,7 +109,7 @@ if(!exists("mapGCAMReg32")){
 
 # GCAM Basins
 #------------------
-if(!exists("mapGCAMBasins")){
+if(redoMaps){
 
   # Get list of basins from a GCAM database
   # Compare with existing shape file
@@ -168,7 +170,6 @@ if(!exists("mapGCAMBasins")){
   # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F, fileName="factp1")
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
-
   mapGCAMBasins <- mapx
   use_data(mapGCAMBasins, overwrite=T)
 }
@@ -176,7 +177,7 @@ if(!exists("mapGCAMBasins")){
 
 # GCAM Land
 #------------------
-if(!exists("mapGCAMLand")){
+if(redoMaps){
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/gcam",sep="")
   examplePolyFile<-paste("region32glu_moirai_out_vect",sep="")
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -220,7 +221,7 @@ if(!exists("mapGCAMLand")){
 
 # HydroSheds Level 1
 #-------------------
-if(!exists("mapHydroShed1")){
+if(redoMaps){
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/subbasin_hydrobasin",sep="")
   examplePolyFile<-paste("hydrobasins_level_1",sep="")
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -252,7 +253,7 @@ if(!exists("mapHydroShed1")){
 }
 
 # HydroSheds Level 2#-------------------
-if(!exists("mapHydroShed2")){
+if(redoMaps){
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/subbasin_hydrobasin",sep="")
   examplePolyFile<-paste("hydrobasins_level_2",sep="")
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -284,7 +285,7 @@ if(!exists("mapHydroShed2")){
 
 # HydroSheds Level 3
 #-------------------
-if(!exists("mapHydroShed3")){
+if(redoMaps){
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/subbasin_hydrobasin",sep="")
   examplePolyFile<-paste("hydrobasins_level_3",sep="")
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -316,7 +317,7 @@ if(!exists("mapHydroShed3")){
 
 # # HydroSheds Level 4
 # #-------------------
-# if(!exists("mapHydroShed4")){
+# if(redoMaps){
 # examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/subbasin_hydrobasin",sep="")
 # examplePolyFile<-paste("hydrobasins_level_4",sep="")
 # x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -352,7 +353,7 @@ if(!exists("mapHydroShed3")){
 # USGS HUC Levels
 # US52 HUC 2
 #-------------------
-if(!exists("mapUS52HUC2")){
+if(redoMaps){
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/USA/WBD_LatestVersion/wbdhu2_a_us_september2019",sep="")
   examplePolyFile<-paste("WBDHU2",sep="")
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -365,8 +366,13 @@ if(!exists("mapUS52HUC2")){
   format(object.size(mapx), units="Mb")
   mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
   format(object.size(mapx), units="Mb")
-  #sp::plot(mapx)
-  #metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F)
+  m1 <- mapx
+  m2 <- metis::mapUS52
+  m2 <- sp::spTransform(m2,raster::crs(m1))
+  mapx<-raster::crop(m1,m2)
+  mapx@data <- mapx@data%>%droplevels()
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapUS52HUC2 <- mapx
@@ -375,15 +381,19 @@ if(!exists("mapUS52HUC2")){
 
 # US49 HUC 2
 #-------------------
-if(!exists("mapUS49HUC2")){
-  mapx <- mapUS52HUC2[!grepl("19|20|21|22",mapUS52HUC2$subRegion),]
+if(redoMaps){
+  mapx <- mapUS52HUC2
+  m1 <- mapx
+  m2 <- metis::mapUS49
+  m2 <- sp::spTransform(m2,raster::crs(m1))
+  mapx<-raster::crop(m1,m2)
   mapx@data <- mapx@data%>%droplevels()
   head(mapx@data); mapx@data%>%distinct(subRegionAlt)%>%arrange(subRegionAlt)
   format(object.size(mapx), units="Mb")
   # mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
   # format(object.size(mapx), units="Mb")
-  #sp::plot(mapx)
-  #metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F, fileName = "HUC2")
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F, fileName = "HUC2")
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapUS49HUC2 <- mapx
@@ -392,7 +402,7 @@ if(!exists("mapUS49HUC2")){
 
 # US52 HUC 4
 #-------------------
-if(!exists("mapUS52HUC4")){
+if(redoMaps){
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/USA/WBD_LatestVersion/wbdhu4_a_us_september2019",sep="")
   examplePolyFile<-paste("WBDHU4",sep="")
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -405,104 +415,40 @@ if(!exists("mapUS52HUC4")){
   format(object.size(mapx), units="Mb")
   mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
   format(object.size(mapx), units="Mb")
-  #sp::plot(mapx)
-  #metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapUS52HUC4 <- mapx
+  m1 <- mapx
+  m2 <- metis::mapUS52
+  m2 <- sp::spTransform(m2,raster::crs(m1))
+  mapx<-raster::crop(m1,m2)
+  mapx@data <- mapx@data%>%droplevels()
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   use_data(mapUS52HUC4, overwrite=T)
 }
 
 # US49 HUC 4
 #-------------------
-if(!exists("mapUS49HUC4")){
-  mapx <- mapUS52HUC4[!grepl("PR|HI|AK|CN|AS|GU|MP",mapUS52HUC4$STATES),]
+if(redoMaps){
+  mapx <- mapUS52HUC4
+  m1 <- mapx
+  m2 <- metis::mapUS49
+  m2 <- sp::spTransform(m2,raster::crs(m1))
+  mapx<-raster::crop(m1,m2)
   mapx@data <- mapx@data%>%droplevels()
   head(mapx@data); mapx@data%>%distinct(subRegionAlt)%>%arrange(subRegionAlt)
   format(object.size(mapx), units="Mb")
   #mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
   #format(object.size(mapx), units="Mb")
-  #sp::plot(mapx)
-  #metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F, fileName = "HUC4")
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapUS49HUC4 <- mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F, fileName = "HUC4")
   use_data(mapUS49HUC4, overwrite=T)
 }
 
-# # US52 HUC 6
-# #-------------------
-# if(!exists("mapUS52HUC6")){
-# examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/USA/WBD_LatestVersion/wbdhu6_a_us_september2019",sep="")
-# examplePolyFile<-paste("WBDHU6",sep="")
-# x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
-# head(x@data); names(x@data)
-# mapx <- x
-# mapx@data <- mapx@data %>%
-#   dplyr::select(subRegion=HUC6, subRegionAlt=NAME,STATES) %>%
-#   dplyr::mutate(region="USA",subRegionType="basin", source="https://water.usgs.gov/GIS/huc.html")
-# head(mapx@data); mapx@data%>%distinct(subRegionAlt)%>%arrange(subRegionAlt)
-# format(object.size(mapx), units="Mb")
-# # mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
-# # format(object.size(mapx), units="Mb")
-# #sp::plot(mapx)
-# #metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-# mapUS52HUC6 <- mapx
-# use_data(mapUS52HUC6, overwrite=T)
-# }
-#
-# # US49 HUC 6
-# #-------------------
-# if(!exists("mapUS49HUC6")){
-# mapx <- mapUS52HUC6[(!mapUS52HUC6$subRegionAlt %in% c("Alaska Region","Hawaii Region","Caribbean Region",
-#                                                       "South Pacific Region")),]
-# mapx@data <- mapx@data%>%droplevels()
-# head(mapx@data); mapx@data%>%distinct(subRegionAlt)%>%arrange(subRegionAlt)
-# #format(object.size(mapx), units="Mb")
-# # mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
-# # format(object.size(mapx), units="Mb")
-# #sp::plot(mapx)
-# #metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F, fileName = "HUC2")
-# mapUS49HUC6 <- mapx
-# use_data(mapUS49HUC6, overwrite=T)
-# }
-#
-# # US52 HUC 8
-# #-------------------
-# if(!exists("mapUS52HUC8")){
-# examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/USA/WBD_LatestVersion/wbdhu8_a_us_september2019",sep="")
-# examplePolyFile<-paste("WBDHU8",sep="")
-# x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
-# head(x@data); names(x@data)
-# mapx <- x
-# mapx@data <- mapx@data %>%
-#   dplyr::select(subRegion=HUC8, subRegionAlt=NAME,STATES) %>%
-#   dplyr::mutate(region="USA",subRegionType="basin", source="https://water.usgs.gov/GIS/huc.html")
-# head(mapx@data); mapx@data%>%distinct(subRegionAlt)%>%arrange(subRegionAlt)
-# format(object.size(mapx), units="Mb")
-# # mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
-# # format(object.size(mapx), units="Mb")
-# #sp::plot(mapx)
-# #metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-# mapUS52HUC8 <- mapx
-# use_data(mapUS52HUC8, overwrite=T)
-# }
-#
-# # US49 HUC 8
-# #-------------------
-# if(!exists("mapUS49HUC8")){
-# mapx <- mapUS52HUC8[(!mapUS52HUC8$subRegionAlt %in% c("Alaska Region","Hawaii Region","Caribbean Region",
-#                                                       "South Pacific Region")),]
-# mapx@data <- mapx@data%>%droplevels()
-# head(mapx@data); mapx@data%>%distinct(subRegionAlt)%>%arrange(subRegionAlt)
-# #format(object.size(mapx), units="Mb")
-# # mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
-# # format(object.size(mapx), units="Mb")
-# #sp::plot(mapx)
-# #metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F, fileName = "HUC2")
-# mapUS49HUC8 <- mapx
-# use_data(mapUS49HUC8, overwrite=T)
-# }
 
 #-----------------
 # US Maps ( 52 State, 49 State, Counties, Regions, Grid Regions)
@@ -510,7 +456,7 @@ if(!exists("mapUS49HUC4")){
 
 # US 52 (including Alaska, Hawaii and Puerto Rico)
 #-------------------
-if(!exists("mapUS52")){
+if(redoMaps){
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/USA/cb_2018_us_state_20m",sep="")
   examplePolyFile<-paste("cb_2018_us_state_20m",sep="")
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -520,30 +466,30 @@ if(!exists("mapUS52")){
     dplyr::select(subRegion=STUSPS,subRegionAlt=NAME, STATEFP) %>%
     dplyr::mutate(region="USA",subRegionType="state", source="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html")
   head(mapx@data); unique(mapx$subRegion)
-  # sp::plot(mapx)
-  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapUS52 <- mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   use_data(mapUS52, overwrite=T)
 }
 
 # US 49 (Excluding Alsaka, Hawaii and Puerto Rico)
 #-------------------
-if(!exists("mapUS49")){
+if(redoMaps){
   mapx <- mapUS52[(mapUS52$region=="USA" & !mapUS52$subRegion %in% c("AK","HI","PR")),]
   mapx@data <- mapx@data%>%droplevels()
   head(mapx@data); nrow(mapx); mapx@data%>%distinct(subRegion)
-  # sp::plot(mapx)
-  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapUS49<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   use_data(mapUS49, overwrite=T)
 }
 
 
 # US 52 Counties
 #-------------------
-if(!exists("mapUS52County")){
+if(redoMaps){
   examplePolyFolder<-paste(getwd(),"/dataFiles/gis/metis/USA/cb_2018_us_county_20m",sep="")
   examplePolyFile<-paste("cb_2018_us_county_20m",sep="")
   x=rgdal::readOGR(dsn=examplePolyFolder,layer=examplePolyFile,use_iconv=T,encoding='UTF-8')
@@ -554,11 +500,11 @@ if(!exists("mapUS52County")){
     dplyr::mutate(region="USA",subRegionType="county", source="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html") %>%
     dplyr::left_join(mapUS52@data%>%dplyr::select(STATEFP,STATECODE=subRegion, STATENAME=subRegionAlt))
   head(mapx@data); unique(mapx$subRegion)
-  # sp::plot(mapx)
-  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapUS52County <- mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   use_data(mapUS52County, overwrite=T)
 }
 
@@ -566,15 +512,15 @@ if(!exists("mapUS52County")){
 
 # US 49 Counties
 #-------------------
-if(!exists("mapUS49County")){
+if(redoMaps){
   mapx <- mapUS52County[(!mapUS52County$STATECODE %in% c("AK","HI","PR")),]
   mapx@data <- mapx@data%>%droplevels()
   head(mapx@data); nrow(mapx); mapx@data%>%distinct(subRegion)
-  # sp::plot(mapx)
-  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapUS49County<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   use_data(mapUS49County, overwrite=T)
 }
 
@@ -582,8 +528,8 @@ if(!exists("mapUS49County")){
 # Merge
 #-------------------
 
-# Intersection of GCAM Basins and Countries
-if(!exists("mapGCAMReg32US52")){
+# Merge US52 with GCAM Regs
+if(redoMaps){
   m1 <- mapGCAMReg32
   m2 <- mapUS52
   m2 <- sp::spTransform(m2,raster::crs(m1))
@@ -602,12 +548,41 @@ if(!exists("mapGCAMReg32US52")){
                   subRegionAlt=as.integer(subRegionAlt)) %>%
     dplyr::select(region,subRegion,subRegionType)
   head(mapx@data)
-  # sp::plot(mapx)
-  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapGCAMReg32US52<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   use_data(mapGCAMReg32US52, overwrite=T)
+}
+
+
+# Merge US52 with Countries file
+if(redoMaps){
+  m1 <- mapCountries
+  m2 <- mapUS52
+  m2 <- sp::spTransform(m2,raster::crs(m1))
+  mapx<-raster::union(m1,m2)
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(region="World",
+                  subRegionType="CountriesUS52",
+                  subRegion.2=as.character(subRegion.2),
+                  subRegion.1=as.character(subRegion.1),
+                  subRegionAlt.1=as.numeric(subRegionAlt.1),
+                  subRegionAlt.2=as.numeric(subRegionAlt.2),
+                  subRegion=case_when(subRegion.2 %in% metis::metis.assumptions()$US52~subRegion.2,
+                                      TRUE~subRegion.1),
+                  subRegionAlt=case_when(subRegion.2 %in% metis::metis.assumptions()$US52~1,
+                                         TRUE~subRegionAlt.1),
+                  subRegionAlt=as.integer(subRegionAlt)) %>%
+    dplyr::select(region,subRegion,subRegionType)
+  head(mapx@data)
+  mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
+  format(object.size(mapx), units="Mb")
+  mapCountriesUS52<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  use_data(mapCountriesUS52, overwrite=T)
 }
 
 
@@ -615,7 +590,7 @@ if(!exists("mapGCAMReg32US52")){
 #-------------------
 
 # Intersection of GCAM Basins and Countries
-if(!exists("mapIntersectGCAMBasinCountry")){
+if(redoMaps){
   m1 <- mapGCAMBasins
   m2 <- mapCountries
   m2 <- sp::spTransform(m2,raster::crs(m1))
@@ -633,16 +608,16 @@ if(!exists("mapIntersectGCAMBasinCountry")){
                   subRegionType_Country=subRegionType.2) %>%
     dplyr::select(-region.1,-region.2, -POP_EST)
   head(mapx@data)
-  # sp::plot(mapx)
-  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapIntersectGCAMBasinCountry<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   use_data(mapIntersectGCAMBasinCountry, overwrite=T)
 }
 
 # Intersection of GCAM Basins and 32 GCAM Regions
-if(!exists("mapIntersectGCAMBasin32Reg")){
+if(redoMaps){
   m1 <- mapGCAMBasins
   m2 <- mapGCAMReg32
   m2 <- sp::spTransform(m2,raster::crs(m1))
@@ -660,41 +635,75 @@ if(!exists("mapIntersectGCAMBasin32Reg")){
                   subRegionType_GCAMReg32=subRegionType.2) %>%
     dplyr::select(-region.1,-region.2)
   head(mapx@data)
-  # sp::plot(mapx)
-  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapIntersectGCAMBasin32Reg<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   use_data(mapIntersectGCAMBasin32Reg, overwrite=T)
 }
 
-# Intersection of GCAM Basins and US 52
-if(!exists("mapGCAMBasinsUS52")){
+
+# Cropped Files
+#------------------------------
+
+# Cropped GCAM Basins and US 52
+if(redoMaps){
   m1 <- metis::mapGCAMBasins
   m2 <- metis::mapUS52
   m2 <- sp::spTransform(m2,raster::crs(m1))
   mapx<-raster::crop(m1,m2)
-  # sp::plot(mapx)
-  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapGCAMBasinsUS52<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   use_data(mapGCAMBasinsUS52, overwrite=T)
 }
 
-# Intersection of GCAM Basins and US 49 States
-if(!exists("mapGCAMBasinsUS49")){
+# Cropped GCAM Basins and US 49 States
+if(redoMaps){
   m1 <- metis::mapGCAMBasins
   m2 <- metis::mapUS49
   m2 <- sp::spTransform(m2,raster::crs(m1))
   mapx<-raster::crop(m1,m2)
   head(mapx@data)
-  # sp::plot(mapx)
-  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapGCAMBasinsUS49<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
   use_data(mapGCAMBasinsUS49, overwrite=T)
+}
+
+
+# Cropped GCAM Land and US 52
+if(redoMaps){
+  m1 <- metis::mapGCAMLand
+  m2 <- metis::mapUS52
+  m2 <- sp::spTransform(m2,raster::crs(m1))
+  mapx<-raster::crop(m1,m2)
+  mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
+  format(object.size(mapx), units="Mb")
+  mapGCAMLandUS52<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  use_data(mapGCAMLandUS52, overwrite=T)
+}
+
+# Cropped GCAM Land and US 49 States
+if(redoMaps){
+  m1 <- metis::mapGCAMLand
+  m2 <- metis::mapUS49
+  m2 <- sp::spTransform(m2,raster::crs(m1))
+  mapx<-raster::crop(m1,m2)
+  head(mapx@data)
+  mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
+  format(object.size(mapx), units="Mb")
+  mapGCAMLandUS49<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  use_data(mapGCAMLandUS49, overwrite=T)
 }
 
 
