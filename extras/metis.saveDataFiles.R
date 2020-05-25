@@ -190,7 +190,15 @@ if(redoMaps){
                   source="https://confluence.pnnl.gov/confluence/display/JGCRI/GCAM+Shape+Files",
                   region = "World",
                   region=gsub("-","_",region),
-                  subRegion=gsub("-","_",subRegion))%>%
+                  subRegion=gsub("-","_",subRegion),
+                  subRegion=gsub("_Basin","",subRegion),
+                  subRegion=gsub("Rfo","Rio",subRegion),
+                  subRegion=gsub("-","_",subRegion),
+                  subRegion=case_when(subRegion=="HamuniMashkel"~"Hamun_i_Mashkel",
+                                      subRegion=="Yucat_µ„ön_Peninsula"~"Yucatan_Peninsula",
+                                      subRegion=="Rh(ne"~"Rhone",
+                                      subRegion=="Hong_(Red_River)"~"Hong_Red_River",
+                                      TRUE~subRegion))%>%
     dplyr::left_join(idMapping%>%
                        dplyr::select(reg32_name=region, reg32_id=GCAM_region_ID)%>%
                        unique())
@@ -198,8 +206,8 @@ if(redoMaps){
   format(object.size(mapx), units="Mb")
   #mapx<-as(simplify_shape(mapx, fact = 0.05),Class="Spatial")
   #format(object.size(mapx), units="Mb")
-  #sp::plot(mapx)
-  # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F, fileName="factp1")
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F, fileName="factp1")
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapGCAMLand <- mapx
