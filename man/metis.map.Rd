@@ -6,6 +6,7 @@
 \usage{
 metis.map(
   dataPolygon = NULL,
+  fillColumn = NULL,
   dataGrid = NULL,
   dataRaster = NULL,
   shpFolder = NULL,
@@ -16,7 +17,6 @@ metis.map(
   lty = 1,
   bgColor = "white",
   frameShow = F,
-  fillColumn = NULL,
   labels = F,
   labelsSize = 1,
   labelsColor = "black",
@@ -53,11 +53,11 @@ metis.map(
   fillcolorNA = "gray",
   fillshowNA = NA,
   fillcolorNULL = "gray",
-  facetsON = T,
+  facetsOn = F,
   panelLabel = NULL,
   multiFacetRows = NULL,
   multiFacetCols = NULL,
-  mapTitleOn = T,
+  mapTitleOn = F,
   mapTitle = NULL,
   mapTitleSize = 0.5,
   numeric2Cat_list = NULL,
@@ -75,6 +75,8 @@ metis.map(
 }
 \arguments{
 \item{dataPolygon}{Default = NULL,}
+
+\item{fillColumn}{Default = NULL, # Or give column data with}
 
 \item{dataGrid}{Default = NULL,}
 
@@ -95,8 +97,6 @@ metis.map(
 \item{bgColor}{Default = "white",}
 
 \item{frameShow}{Default = F,}
-
-\item{fillColumn}{Default = NULL, # Or give column data with}
 
 \item{labels}{Default = F,}
 
@@ -170,7 +170,7 @@ metis.map(
 
 \item{fillcolorNULL}{Default =NULL}
 
-\item{facetsON}{Default =F,}
+\item{facetsOn}{Default =F,}
 
 \item{panelLabel}{Default = NULL,}
 

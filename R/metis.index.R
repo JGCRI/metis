@@ -216,7 +216,7 @@ print(paste("Starting metis.index.R...",sep=""))
 
   cols <- c("subRegion","scenario","subRegType",colIndex,colValue,"x");cols
   colsNoVal <- c("subRegion","scenario",colIndex,"subRegType","x"); colsNoVal
-  datax <- datax %>% dplyr::select(dplyr::all_of(cols))
+  datax <- datax %>% dplyr::select(tidyselect::all_of(cols))
 
    for(numerator_i in numerators){
       for(denominator_i in denominators){

@@ -51,7 +51,7 @@
 #' @param fillcolorNA Default =NULL
 #' @param fillcolorNULL Default =NULL
 #' @param fillshowNA Default =NA
-#' @param facetsON Default =F,
+#' @param facetsOn Default =F,
 #' @param panelLabel Default = NULL,
 #' @param multiFacetRows Default=NULL,
 #' @param multiFacetCols Default=NULL,
@@ -74,6 +74,7 @@
 #' @export
 
 metis.map<-function(dataPolygon=NULL,
+                  fillColumn=NULL, # Or give column data with
                   dataGrid=NULL,
                   dataRaster=NULL,
                   shpFolder=NULL,
@@ -84,7 +85,6 @@ metis.map<-function(dataPolygon=NULL,
                   lty=1,
                   bgColor="white",
                   frameShow=F,
-                  fillColumn=NULL, # Or give column data with
                   labels=F,
                   labelsSize=1.0,
                   labelsColor="black",
@@ -121,11 +121,11 @@ metis.map<-function(dataPolygon=NULL,
                   fillcolorNA="gray",
                   fillshowNA=NA,
                   fillcolorNULL="gray",
-                  facetsON=T,
+                  facetsOn=F,
                   panelLabel=NULL,
                   multiFacetRows=NULL,
                   multiFacetCols=NULL,
-                  mapTitleOn=T,
+                  mapTitleOn=F,
                   mapTitle=NULL,
                   mapTitleSize=0.5,
                   numeric2Cat_list=NULL,
@@ -187,7 +187,7 @@ metis.map<-function(dataPolygon=NULL,
   # facetLabelSize=1.5
   # alpha=1
   # fillcolorNA=NULL
-  # facetsON=T
+  # facetsOn=T
   # panelLabel=NULL
   # multiFacetRows=NULL
   # multiFacetCols=NULL
@@ -219,6 +219,7 @@ NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette->legendS
 legendTitle=gsub(" ","\n",legendTitle)
 suppressMessages(tmap::tmap_mode(mode = c("plot")))
 tmap::tmap_options(max.categories=10000)
+
 
 fillPaletteOrig <- fillPalette
 
@@ -568,6 +569,11 @@ if(!is.null(shape)){
   if(class(shape)!="tmap"){
   if(nrow(shape@data)>0){
     shape@data[mapply(is.infinite, shape@data)] <- NA
+    if(is.null(fillColumn)){
+      if("subRegion" %in% names(shape@data)){
+        fillColumn = "subRegion"
+        }
+      }
     }
    }# If not tmap
   }
@@ -589,7 +595,7 @@ if(!is.null(raster)){
 
   if(!is.null(raster)){checkFacets=length(names(raster))}
 
-  if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn) & facetsON==T){
+  if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn) & facetsOn==T){
     map<- map + tmap::tm_facets(free.scales.fill=facetFreeScale,
                           nrow=facetRows,
                           ncol=min(facetCols,length(fillColumn))) +
@@ -856,7 +862,7 @@ if(!is.null(multiFacetRows) & !is.null(multiFacetCols)){
 } # Close multiFacetCols
 
 if(is.null(multiFacetRows) & is.null(multiFacetCols)){
-if(facetsON==T){
+if(facetsOn==T){
 if(is.null(raster)){if(!is.null(shape)){checkFacets=length(names(shape))-1}
 if(!is.null(checkFacets) & checkFacets>1 & !is.null(fillColumn)){
   map<- map + tmap::tm_facets(free.scales.fill=facetFreeScale,
@@ -914,6 +920,7 @@ if(!is.null(dataGrid)){
   }
 }
 }; map
+
 if(mapTitleOn==T){
 if(!is.null(mapTitle)){map<- map + tmap::tm_layout(main.title = mapTitle, main.title.size = mapTitleSize)}}
 
