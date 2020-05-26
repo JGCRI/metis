@@ -5,6 +5,8 @@ library(rgcam)
 
 test_that("metis.readgcam reads data from .proj file for regionsSelect='Colombia'", {
 
+  testthat::skip_on_cran(); testthat::skip_on_travis()
+
   dataGCAM<-metis.readgcam(reReadData = F,
                            dataProjFile = metis::exampleGCAMproj,
                            regionsSelect = "Colombia",
@@ -15,6 +17,8 @@ test_that("metis.readgcam reads data from .proj file for regionsSelect='Colombia
 })
 
 test_that("metis.readgcam reads data from .proj file for paramsSelect=c('energy')", {
+
+  testthat::skip_on_cran(); testthat::skip_on_travis()
 
   dataGCAM<-metis.readgcam(reReadData = F,
                            dataProjFile = metis::exampleGCAMproj,
