@@ -4,11 +4,6 @@ language: R
 cache: false
 dist: xenial
 
-script:
-    - |
-    R CMD build --no-build-vignettes.
-    travis_wait 40 R CMD check --no--vignettes metis*tar.gz
-
 r_github_packages:
   - r-spatial/lwgeom
   
