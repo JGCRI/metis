@@ -322,15 +322,15 @@ for(grid_i in gridFiles){
             metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(subRegType,"_map_GridSize_Labels",nameAppend,sep=""),
                       dirOutputs = dirX,
                       overLayer = metis.map(labelsSize=labelsSize, dataPolygon=shape,fillColumn = subRegCol,
-                                            fillPalette = "white",alpha=0,facetsON=F,
-                                            labels=T,printFig=F),facetsON=F)
+                                            fillPalette = "white",alpha=0,facetsOn=F,
+                                            labels=T,printFig=F),facetsOn=F)
 
             print("Printing Grid overlay with Labels...")
             metis.map(labelsSize=labelsSize, dataPolygon=rcropPx,fileName = paste(subRegType,"_map_GridSize",nameAppend,sep=""),
                       dirOutputs = dirX,
                       overLayer = metis.map(labelsSize=labelsSize, dataPolygon=shape,fillColumn = subRegCol,
-                                            fillPalette = "white",alpha=0,facetsON=F,
-                                            labels=F,printFig = F),facetsON=F)
+                                            fillPalette = "white",alpha=0,facetsOn=F,
+                                            labels=F,printFig = F),facetsOn=F)
             }
             } # Close if printGridOverlay
           }

@@ -50,7 +50,7 @@ metis.mapsProcess(
   figHeight = 7,
   scaleRange = NULL,
   paramsSelect = "All",
-  multiFacetsOn = F,
+  multifacetsOn = F,
   multiFacetCols = "multiFacetCol",
   multiFacetRows = "multiFacetRow",
   legendOutsideMulti = T,
@@ -171,11 +171,11 @@ metis.mapsProcess(
 
 \item{figHeight}{Default =7}
 
-\item{scaleRange}{Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.}
+\item{scaleRange}{Default NULL. Dataframe with columns param, maxScale, minScale or a vector with max and min eg. c(0,100)}
 
 \item{paramsSelect}{Default ="All"}
 
-\item{multiFacetsOn}{Default = F,}
+\item{multifacetsOn}{Default = F,}
 
 \item{multiFacetCols}{Default ="multiFacetRow",}
 
