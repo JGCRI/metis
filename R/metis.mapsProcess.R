@@ -2245,10 +2245,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                         bgColorChosen= extendedBGColor
                       }
                     }
-                  }else{
-                    innerMargins=c(0.1,0.1,0.1,0.1)
                   }
-
                   }
 
                     if(nrow(shapeTbl)>0){ # nrow shapeTbl after Shapefiles loaded
@@ -3227,10 +3224,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       bgColorChosen= extendedBGColor
                     }
                   }
-                }else{
-                  innerMargins=c(0.1,0.1,0.1,0.1)
                 }
-
               }
 
 
