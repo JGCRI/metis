@@ -49,6 +49,8 @@ metis.mapsProcess(
   figWidth = 6,
   figHeight = 7,
   scaleRange = NULL,
+  scaleRangeDiffAbs = NULL,
+  scaleRangeDiffPrcnt = NULL,
   paramsSelect = "All",
   multifacetsOn = F,
   multiFacetCols = "multiFacetCol",
@@ -81,7 +83,7 @@ metis.mapsProcess(
   innerMargins = c(0, 0, 0, 0),
   legendDigitsOverride = NULL,
   classPalette = NULL,
-  classPaletteDiff = "pal_div_RdBl"
+  classPaletteDiff = "pal_div_BrGn"
 )
 }
 \arguments{
@@ -171,7 +173,11 @@ metis.mapsProcess(
 
 \item{figHeight}{Default =7}
 
-\item{scaleRange}{Default NULL. Dataframe with columns param, maxScale, minScale or a vector with max and min eg. c(0,100)}
+\item{scaleRange}{Default NULL. A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min}
+
+\item{scaleRangeDiffAbs}{Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min}
+
+\item{scaleRangeDiffPrcnt}{Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min}
 
 \item{paramsSelect}{Default ="All"}
 
@@ -237,7 +243,7 @@ metis.mapsProcess(
 
 \item{classPalette}{Default = NULL}
 
-\item{classPaletteDiff}{Default = "pal_div_RdBl"}
+\item{classPaletteDiff}{Default = "pal_div_BrGn"}
 }
 \value{
 Returns the formatted data used to produce chart

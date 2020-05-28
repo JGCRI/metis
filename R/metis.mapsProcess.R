@@ -47,7 +47,9 @@
 #' @param projX Default = projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
 #' @param figWidth Default =9
 #' @param figHeight Default =7
-#' @param scaleRange Default NULL. Dataframe with columns param, maxScale, minScale or a vector with max and min eg. c(0,100)
+#' @param scaleRange Default NULL. A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min
+#' @param scaleRangeDiffAbs Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min
+#' @param scaleRangeDiffPrcnt Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min
 #' @param multifacetsOn Default = F,
 #' @param multiFacetCols Default ="multiFacetRow",
 #' @param multiFacetRows Default ="multiFacetCol",
@@ -81,7 +83,7 @@
 #' @param legendDigitsOverride Default=NULL
 #' @param innerMargins Default =c(0,0,0,0) # bottom, left, top, right
 #' @param classPalette Default = NULL
-#' @param classPaletteDiff Default = "pal_div_RdBl"
+#' @param classPaletteDiff Default = "pal_div_BrGn"
 #' @return A list with the gridTbl and shapeTbl used to plot the data if any.
 #' @export
 
@@ -130,6 +132,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            figWidth=6,
                            figHeight=7,
                            scaleRange=NULL,
+                           scaleRangeDiffAbs=NULL,
+                           scaleRangeDiffPrcnt=NULL,
                            paramsSelect="All",
                            multifacetsOn=F,
                            multiFacetCols="multiFacetCol",
@@ -162,7 +166,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            innerMargins=c(0,0,0,0), # bottom, left, top, right
                            legendDigitsOverride=NULL,
                            classPalette = NULL,
-                           classPaletteDiff = "pal_div_RdBl"
+                           classPaletteDiff = "pal_div_BrGn"
                            ){
 
   # polygonDataTables=NULL
@@ -209,6 +213,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # figWidth=6
   # figHeight=7
   # scaleRange=NULL
+  # scaleRangeDiffAbs=NULL
+  # scaleRangeDiffPrcnt=NULL
   # paramsSelect="All"
   # multifacetsOn=F
   # multiFacetCols="multiFacetCol"
@@ -241,7 +247,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # innerMargins=c(0,0,0,0) # bottom, left, top, right
   # legendDigitsOverride=NULL
   # classPalette = NULL
-  # classPaletteDiff = "pal_div_RdBl"
+  # classPaletteDiff = "pal_div_BrGn"
 
 
   #------------------
@@ -253,7 +259,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     x->year->gridID->underLayer->maxScale->minScale->
     valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX->shapeTblScenMultiABRef->
     shapeTblDiff -> gridTblDiff -> shapeTblMultiOrig->countCheck-> multiFacetCol -> multiFacetRow->classPaletteOrig->
-      xLabel->vintage->aggregate->query->subRegNotInShape ->gridTblOrig -> shapeTblOrig -> subRegionAlt -> subRegion1
+      xLabel->vintage->aggregate->query->subRegNotInShape ->gridTblOrig -> shapeTblOrig -> subRegionAlt -> subRegion1 ->
+      paramsGrid -> paramsShape -> scaleRange_i
 
   tibble::tibble() -> gridTblReturn -> shapeTblReturn
 
@@ -281,6 +288,26 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # -----------------
 
   if(T){
+
+    addMissingScale<-function(data){
+      if(!any(grepl("\\<param\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(param="param")}else{
+        data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<param\\>",names(data),ignore.case = T)])[1])
+        data<-data%>%dplyr::mutate(param=as.character(param),param=dplyr::case_when(is.na(param)~"param",TRUE~param))}
+      if(!any(grepl("\\<params\\>",names(data),ignore.case = T))){}else{
+        data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<params\\>",names(data),ignore.case = T)])[1])
+        data<-data%>%dplyr::mutate(param=as.character(param),param=dplyr::case_when(is.na(param)~"params",TRUE~param))}
+      if(!any(grepl("max",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(maxScale=NA_real_)}else{
+        data <- data %>% dplyr::rename(!!"maxScale" := (names(data)[grepl("max",names(data),ignore.case = T)])[1])
+        data<-data %>%dplyr::mutate(maxScale=as.numeric(maxScale))
+        data<-data %>%dplyr::mutate(maxScale=dplyr::case_when(is.na(maxScale)~NA_real_,TRUE~maxScale))}
+      if(!any(grepl("min",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(minScale=NA_real_)}else{
+        data <- data %>% dplyr::rename(!!"minScale" := (names(data)[grepl("min",names(data),ignore.case = T)])[1])
+        data<-data %>%dplyr::mutate(minScale=as.numeric(minScale))
+        data<-data %>%dplyr::mutate(minScale=dplyr::case_when(is.na(minScale)~NA_real_,TRUE~minScale))}
+      data = data %>% dplyr::select(param,maxScale,minScale)
+       return(data)
+    }
+
   addMissing<-function(data){
     if(!any(grepl("\\<scenario\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenario="scenario")}else{
       data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenario\\>",names(data),ignore.case = T)])[1])
@@ -323,8 +350,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     if(!any(grepl("\\<multiFacetRow\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(multiFacetRow="multiFacetRow")}else{
       data <- data %>% dplyr::rename(!!"multiFacetRow" := (names(data)[grepl("\\<multiFacetRow\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(multiFacetRow=dplyr::case_when(is.na(multiFacetRow)~"multiFacetRow",TRUE~multiFacetRow))}
-     return(data)
+    return(data)
   }
+
+
 
   if(is.null(gridDataTables) & is.null(polygonDataTables)){
     stop ("Both gridDataTables and polygonDataTables are Null. Need to provide atleast one of the two.")
@@ -848,20 +877,6 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
   } # Read in SHape Tables
 
-  #----------------
-  # Check scaleRanges
-  #---------------
-
-  if(T){
-  scaleRange[is.na(scaleRange)]<-NA_real_
-  scaleRange[scaleRange=="NA"]<-NA_real_
-  if(!all(c("param","maxScale","minScale") %in% names(scaleRange))){
-    paste("Incorrect column names for scaleRange: ",names(scaleRange),". Should include param, maxScale, minscale.")
-    paste("Setting scaleRange to NULL.")
-    scaleRange=NULL
-    }
-  } # Check Scale Range
-
 
   #------------------
   # Subset Data
@@ -1020,21 +1035,21 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
       for (scenario_i in unique(gridTblDiffx$scenario)[unique(gridTblDiffx$scenario) %in% scenDiff_i]){
         tbl_temp1 <-gridTblDiffy%>%
-          dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
+          dplyr::mutate(!!paste("DiffAbs_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
                         classPalette=classPaletteDiff)%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(gridTblDiffx$scenario))))
         tbl_temp1<-tbl_temp1%>%
           tidyr::gather(key=scenario,value=value,
-                        -c(names(tbl_temp1)[!names(tbl_temp1) %in% paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep="")]))%>%
+                        -c(names(tbl_temp1)[!names(tbl_temp1) %in% paste("DiffAbs_",scenario_i,"_",scenRef_i,sep="")]))%>%
           dplyr::filter(!is.na(value))
 
         tbl_temp2 <-gridTblDiffy%>%
-          dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
+          dplyr::mutate(!!paste("DiffPrcnt_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
                         classPalette=classPaletteDiff)%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(gridTblDiffx$scenario))))
         tbl_temp2<-tbl_temp2%>%
           tidyr::gather(key=scenario,value=value,
-                        -c(names(tbl_temp2)[!names(tbl_temp2) %in% paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep="")]))%>%
+                        -c(names(tbl_temp2)[!names(tbl_temp2) %in% paste("DiffPrcnt_",scenario_i,"_",scenRef_i,sep="")]))%>%
           dplyr::filter(!is.na(value))
 
         gridTblDiff<-dplyr::bind_rows(gridTblDiff,tbl_temp1,tbl_temp2)
@@ -1059,21 +1074,21 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
       for (scenario_i in unique(shapeTbl$scenario)[(unique(shapeTbl$scenario) %in% scenDiff_i)]){
         tbl_temp1 <-shapeTblDiffy%>%
-          dplyr::mutate(!!paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
+          dplyr::mutate(!!paste("DiffAbs_",scenario_i,"_",scenRef_i,sep=""):=get(scenario_i)-get(scenRef_i),
                         classPalette=classPaletteDiff)%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(shapeTblDiffx$scenario)[unique(shapeTblDiffx$scenario) %in% c(scenRef_i,scenDiff_i)])))
         tbl_temp1<-tbl_temp1%>%
           tidyr::gather(key=scenario,value=value,
-                        -c(names(tbl_temp1)[!names(tbl_temp1) %in% paste("Diff_ABS_",scenario_i,"_",scenRef_i,sep="")]))%>%
+                        -c(names(tbl_temp1)[!names(tbl_temp1) %in% paste("DiffAbs_",scenario_i,"_",scenRef_i,sep="")]))%>%
           dplyr::filter(!is.na(value))
 
         tbl_temp2 <-shapeTblDiffy%>%
-          dplyr::mutate(!!paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
+          dplyr::mutate(!!paste("DiffPrcnt_",scenario_i,"_",scenRef_i,sep=""):=((get(scenario_i)-get(scenRef_i))*100/get(scenRef_i)),
                         classPalette=classPaletteDiff)%>%
           dplyr::select(-dplyr::one_of(as.vector(unique(shapeTblDiffx$scenario)[unique(shapeTblDiffx$scenario) %in% c(scenRef_i,scenDiff_i)])))
         tbl_temp2<-tbl_temp2%>%
           tidyr::gather(key=scenario,value=value,
-                        -c(names(tbl_temp2)[!names(tbl_temp2) %in% paste("Diff_PRCNT_",scenario_i,"_",scenRef_i,sep="")]))%>%
+                        -c(names(tbl_temp2)[!names(tbl_temp2) %in% paste("DiffPrcnt_",scenario_i,"_",scenRef_i,sep="")]))%>%
           dplyr::filter(!is.na(value))
 
         shapeTblDiff<-dplyr::bind_rows(shapeTblDiff,tbl_temp1,tbl_temp2)
@@ -1146,6 +1161,89 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
   } # Assign MultiFacet Columns
 
+
+  #----------------
+  # Check scaleRanges
+  #---------------
+
+  if(T){
+
+    if(!is.null(scaleRange)){
+
+      # Get list of params in grid or shape data
+      if(!is.null(gridTbl)){if(nrow(gridTbl)>0){paramsGrid <- unique(gridTbl$param)}}
+      if(!is.null(shapeTbl)){if(nrow(shapeTbl)>0){paramsShape <- unique(shapeTbl$param)}}
+      paramsRange <- unique(c(paramsGrid,paramsShape)); paramsRange
+
+      # Scale Range
+      scaleRange[is.na(scaleRange)]<-NA_real_
+      scaleRange[scaleRange=="NA"]<-NA_real_
+      # If scale range is a vector of two numbers set as limits for all params
+      if(is.numeric(scaleRange) & length(scaleRange)==2){
+        scaleRange = data.frame(param=paramsRange,maxScale=max(scaleRange),minScale=min(scaleRange))
+      } else {
+        # Else format the scaleRange data frame as needed
+        if(!is.null(nrow(scaleRange))){
+          scaleRange = addMissingScale(scaleRange)
+          if(!any(unique(scaleRange$param) %in% paramsRange)){
+            print(paste("None of the params in scaleRange: ",
+                        paste(unique(scaleRange$param),collapse=", "),sep=""))
+            print("are present in the data params:")
+            print(paste(paramsRange,collapse=", "))
+            print("Setting scaleRange to NULL")
+            scaleRange=NULL
+          }
+        }else{scaleRange=NULL}
+      }
+    }
+
+      # Scale Range Diff Abs
+    if(!is.null(scaleRangeDiffAbs)){
+
+      scaleRangeDiffAbs[is.na(scaleRangeDiffAbs)]<-NA_real_
+      scaleRangeDiffAbs[scaleRangeDiffAbs=="NA"]<-NA_real_
+      # If scale range is a vector of two numbers set as limits for all params
+      if(is.numeric(scaleRangeDiffAbs) & length(scaleRangeDiffAbs)==2){
+        scaleRangeDiffAbs = data.frame(param=paramsRange,maxScale=max(scaleRangeDiffAbs),minScale=min(scaleRangeDiffAbs))
+      } else {
+        if(!is.null(nrow(scaleRangeDiffAbs))){
+          scaleRangeDiffAbs = addMissingScale(scaleRangeDiffAbs)
+          if(!any(unique(scaleRangeDiffAbs$param) %in% paramsRange)){
+            print(paste("None of the params in scaleRangeDiffAbs: ",
+                        paste(unique(scaleRangeDiffAbs$param),collapse=", "),sep=""))
+            print("are present in the data params:")
+            print(paste(paramsRange,collapse=", "))
+            print("Setting scaleRangeDiffAbs to NULL")
+            scaleRangeDiffAbs=NULL
+          }
+        }else{scaleRangeDiffAbs=NULL}
+      }
+    }
+
+    if(!is.null(scaleRangeDiffPrcnt)){
+      # Scale Range Diff Prcnt
+      scaleRangeDiffPrcnt[is.na(scaleRangeDiffPrcnt)]<-NA_real_
+      scaleRangeDiffPrcnt[scaleRangeDiffPrcnt=="NA"]<-NA_real_
+      # If scale range is a vector of two numbers set as limits for all params
+      if(is.numeric(scaleRangeDiffPrcnt) & length(scaleRangeDiffPrcnt)==2){
+        scaleRangeDiffPrcnt = data.frame(param=paramsRange,maxScale=max(scaleRangeDiffPrcnt),minScale=min(scaleRangeDiffPrcnt))
+      } else {
+        # Else format the scaleRangeDiffPrcnt data frame as needed
+        if(!is.null(nrow(scaleRangeDiffPrcnt))){
+          scaleRangeDiffPrcnt = addMissingScale(scaleRangeDiffPrcnt)
+          if(!any(unique(scaleRangeDiffPrcnt$param) %in% paramsRange)){
+            print(paste("None of the params in scaleRangeDiffPrcnt: ",
+                        paste(unique(scaleRangeDiffPrcnt$param),collapse=", "),sep=""))
+            print("are present in the data params:")
+            print(paste(paramsRange,collapse=", "))
+            print("Setting scaleRangeDiffPrcnt to NULL")
+            scaleRangeDiffPrcnt=NULL
+            }
+        }else{scaleRangeDiffPrcnt=NULL}
+      }
+
+  } # Close Check Scale Range
+}
 
   # -------------------
   # Create Raster Plots
@@ -1393,17 +1491,24 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
             animScaleGrid<-(gridTbl %>% dplyr::filter(scenario==scenario_i,param==param_i) %>%
                               dplyr::filter(!is.na(value),!is.infinite(value),!is.nan(value)))$value
 
-            if(!is.null(scaleRange)){
-               if(any(param_i %in% unique(scaleRange$param))){
-              if(max(animScaleGrid) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
-                animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
-                  animScaleGrid <- c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
-                    animScaleGrid[animScaleGrid<(scaleRange %>% dplyr::filter(param==param_i))$maxScale])
+            # Choose correct scaleRange
+            if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
+              if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                scaleRange_i=scaleRange
+              }
+            }
+
+            if(!is.null(scaleRange_i)){
+               if(any(param_i %in% unique(scaleRange_i$param))){
+              if(max(animScaleGrid) < (scaleRange_i %>% dplyr::filter(param==param_i))$maxScale){
+                animScaleGrid<-c(animScaleGrid,(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale)} else {
+                  animScaleGrid <- c((scaleRange_i %>% dplyr::filter(param==param_i))$maxScale,
+                    animScaleGrid[animScaleGrid<(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale])
                 }
-              if(min(animScaleGrid) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
-                animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                  animScaleGrid <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
-                                      animScaleGrid[animScaleGrid>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
+              if(min(animScaleGrid) > (scaleRange_i %>% dplyr::filter(param==param_i))$minScale){
+                animScaleGrid<-c(animScaleGrid,(scaleRange_i %>% dplyr::filter(param==param_i))$minScale)} else {
+                  animScaleGrid <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$minScale,
+                                      animScaleGrid[animScaleGrid>(scaleRange_i %>% dplyr::filter(param==param_i))$minScale])
                 }
               }
             }
@@ -1690,7 +1795,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
             checkTbl<-gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)
             checkTbl<-droplevels(checkTbl)
 
-            if(length(unique(checkTbl$class))==1){
+            if(length(unique(checkTbl$class))==1 & length(unique(checkTbl$x))>1){
               rm(checkTbl)
 
               datax<-gridTbl%>%dplyr::filter(scenario==scenario_i,param==param_i)
@@ -1702,17 +1807,25 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                 animScaleGrid<-datax$value
 
-                if(!is.null(scaleRange)){
-                   if(any(param_i %in% unique(scaleRange$param))){
-                    if(max(animScaleGrid) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
-                      animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
-                        animScaleGrid <- c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
-                                           animScaleGrid[animScaleGrid<(scaleRange %>% dplyr::filter(param==param_i))$maxScale])
+                # Choose correct scaleRange
+                if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
+                  if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                    scaleRange_i=scaleRange
+                  }
+                }
+
+
+                if(!is.null(scaleRange_i)){
+                   if(any(param_i %in% unique(scaleRange_i$param))){
+                    if(max(animScaleGrid) < (scaleRange_i %>% dplyr::filter(param==param_i))$maxScale){
+                      animScaleGrid<-c(animScaleGrid,(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale)} else {
+                        animScaleGrid <- c((scaleRange_i %>% dplyr::filter(param==param_i))$maxScale,
+                                           animScaleGrid[animScaleGrid<(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale])
                       }
-                    if(min(animScaleGrid) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
-                      animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                        animScaleGrid <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
-                                            animScaleGrid[animScaleGrid>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
+                    if(min(animScaleGrid) > (scaleRange_i %>% dplyr::filter(param==param_i))$minScale){
+                      animScaleGrid<-c(animScaleGrid,(scaleRange_i %>% dplyr::filter(param==param_i))$minScale)} else {
+                        animScaleGrid <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$minScale,
+                                            animScaleGrid[animScaleGrid>(scaleRange_i %>% dplyr::filter(param==param_i))$minScale])
                       }
                   }
                 }
@@ -1879,17 +1992,24 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                   animScaleGrid<-datax[[meanCol]];animScaleGrid
 
-                  if(!is.null(scaleRange)){
-                     if(any(param_i %in% unique(scaleRange$param))){
-                      if(max(animScaleGrid) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
-                        animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
-                          animScaleGrid <- c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
-                                             animScaleGrid[animScaleGrid<(scaleRange %>% dplyr::filter(param==param_i))$maxScale])
+                  # Choose correct scaleRange
+                  if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
+                    if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                      scaleRange_i=scaleRange
+                    }
+                  }
+
+                  if(!is.null(scaleRange_i)){
+                     if(any(param_i %in% unique(scaleRange_i$param))){
+                      if(max(animScaleGrid) < (scaleRange_i %>% dplyr::filter(param==param_i))$maxScale){
+                        animScaleGrid<-c(animScaleGrid,(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale)} else {
+                          animScaleGrid <- c((scaleRange_i %>% dplyr::filter(param==param_i))$maxScale,
+                                             animScaleGrid[animScaleGrid<(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale])
                         }
-                      if(min(animScaleGrid) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
-                        animScaleGrid<-c(animScaleGrid,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                          animScaleGrid <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
-                                              animScaleGrid[animScaleGrid>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
+                      if(min(animScaleGrid) > (scaleRange_i %>% dplyr::filter(param==param_i))$minScale){
+                        animScaleGrid<-c(animScaleGrid,(scaleRange_i %>% dplyr::filter(param==param_i))$minScale)} else {
+                          animScaleGrid <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$minScale,
+                                              animScaleGrid[animScaleGrid>(scaleRange_i %>% dplyr::filter(param==param_i))$minScale])
                         }
                     }
                   }
@@ -2290,18 +2410,24 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     animScalePoly<-(shapeTblMultxScenMultiABRefRef %>%
                                       dplyr::filter(!is.na(value),!is.infinite(value),!is.nan(value)))$value
 
+                    # Choose correct scaleRange
+                    if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
+                      if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                        scaleRange_i=scaleRange
+                      }
+                    }
 
-                    if(!is.null(scaleRange)){
-                       if(any(param_i %in% unique(scaleRange$param))){
-                      if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
-                        animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
-                        animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
-                                            animScalePoly[animScalePoly<(scaleRange %>% dplyr::filter(param==param_i))$maxScale])
+                    if(!is.null(scaleRange_i)){
+                       if(any(param_i %in% unique(scaleRange_i$param))){
+                      if(max(animScalePoly) < (scaleRange_i %>% dplyr::filter(param==param_i))$maxScale){
+                        animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale)} else {
+                        animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$maxScale,
+                                            animScalePoly[animScalePoly<(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale])
                         }
-                      if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
-                        animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                          animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
-                                              animScalePoly[animScalePoly>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
+                      if(min(animScalePoly) > (scaleRange_i %>% dplyr::filter(param==param_i))$minScale){
+                        animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$minScale)} else {
+                          animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$minScale,
+                                              animScalePoly[animScalePoly>(scaleRange_i %>% dplyr::filter(param==param_i))$minScale])
                         }
                       }
                       }
@@ -2360,18 +2486,24 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                       animScalePoly<-datax[[meanCol]]; animScalePoly
 
+                      # Choose correct scaleRange
+                      if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
+                        if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                          scaleRange_i=scaleRange
+                        }
+                      }
 
-                      if(!is.null(scaleRange)){
-                         if(any(param_i %in% unique(scaleRange$param))){
-                          if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
-                            animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
-                              animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
-                                                  animScalePoly[animScalePoly<(scaleRange %>% dplyr::filter(param==param_i))$maxScale])
+                      if(!is.null(scaleRange_i)){
+                         if(any(param_i %in% unique(scaleRange_i$param))){
+                          if(max(animScalePoly) < (scaleRange_i %>% dplyr::filter(param==param_i))$maxScale){
+                            animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale)} else {
+                              animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$maxScale,
+                                                  animScalePoly[animScalePoly<(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale])
                             }
-                          if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
-                            animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                              animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
-                                                  animScalePoly[animScalePoly>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
+                          if(min(animScalePoly) > (scaleRange_i %>% dplyr::filter(param==param_i))$minScale){
+                            animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$minScale)} else {
+                              animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$minScale,
+                                                  animScalePoly[animScalePoly>(scaleRange_i %>% dplyr::filter(param==param_i))$minScale])
                             }
                         }
                       }
@@ -2791,17 +2923,26 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       # TODO Diff multi plots
 #
 #                     animScalePoly<-shapeTblMultxDiff$valueDiff
-#                     if(!is.null(scaleRange)){
-#                        if(any(param_i %in% unique(scaleRange$param))){
-#                       if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
-#                         animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
-#                           animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
-#                                               animScalePoly[animScalePoly<(scaleRange %>% dplyr::filter(param==param_i))$maxScale])
+
+                      # # Choose correct scaleRange
+                      # if(grepl("DiffPrcnt",param_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
+                      #   if(grepl("DiffAbs",param_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                      #     scaleRange_i=scaleRange
+                      #   }
+                      # }
+
+
+#                     if(!is.null(scaleRange_i)){
+#                        if(any(param_i %in% unique(scaleRange_i$param))){
+#                       if(max(animScalePoly) < (scaleRange_i %>% dplyr::filter(param==param_i))$maxScale){
+#                         animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale)} else {
+#                           animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$maxScale,
+#                                               animScalePoly[animScalePoly<(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale])
 #                         }
-#                       if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
-#                         animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-#                           animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
-#                                               animScalePoly[animScalePoly>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
+#                       if(min(animScalePoly) > (scaleRange_i %>% dplyr::filter(param==param_i))$minScale){
+#                         animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$minScale)} else {
+#                           animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$minScale,
+#                                               animScalePoly[animScalePoly>(scaleRange_i %>% dplyr::filter(param==param_i))$minScale])
 #                         }
 #                     }}
 #                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
@@ -3262,18 +3403,24 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
               animScalePoly<-(shapeTbl%>%dplyr::filter(scenario==scenario_i,param==param_i,
                                                        !is.na(value),!is.infinite(value), !is.nan(value)))$value
 
+              # Choose correct scaleRange
+              if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
+                if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                  scaleRange_i=scaleRange
+                }
+              }
 
-              if(!is.null(scaleRange)){
-                if(any(param_i %in% unique(scaleRange$param))){
-                if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
-                  animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
-                    animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
-                                        animScalePoly[animScalePoly<(scaleRange %>% dplyr::filter(param==param_i))$maxScale])
+              if(!is.null(scaleRange_i)){
+                if(any(param_i %in% unique(scaleRange_i$param))){
+                if(max(animScalePoly) < (scaleRange_i %>% dplyr::filter(param==param_i))$maxScale){
+                  animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale)} else {
+                    animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$maxScale,
+                                        animScalePoly[animScalePoly<(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale])
                   }
-                if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
-                  animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                    animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
-                                        animScalePoly[animScalePoly>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
+                if(min(animScalePoly) > (scaleRange_i %>% dplyr::filter(param==param_i))$minScale){
+                  animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$minScale)} else {
+                    animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$minScale,
+                                        animScalePoly[animScalePoly>(scaleRange_i %>% dplyr::filter(param==param_i))$minScale])
                   }
               }}
               animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
@@ -3601,7 +3748,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
               checkTbl<-droplevels(checkTbl)
-              if(length(unique(checkTbl$class))==1){
+              if(length(unique(checkTbl$class))==1 & length(unique(checkTbl$x))>1){
 
                 rm(checkTbl)
 
@@ -3614,17 +3761,24 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                   animScalePoly<-datax$value
 
-                  if(!is.null(scaleRange)){
-                     if(any(param_i %in% unique(scaleRange$param))){
-                      if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
-                        animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
-                          animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
-                                              animScalePoly[animScalePoly<(scaleRange %>% dplyr::filter(param==param_i))$maxScale])
+                  # Choose correct scaleRange
+                  if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
+                    if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                      scaleRange_i=scaleRange
+                    }
+                  }
+
+                  if(!is.null(scaleRange_i)){
+                     if(any(param_i %in% unique(scaleRange_i$param))){
+                      if(max(animScalePoly) < (scaleRange_i %>% dplyr::filter(param==param_i))$maxScale){
+                        animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale)} else {
+                          animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$maxScale,
+                                              animScalePoly[animScalePoly<(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale])
                         }
-                      if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
-                        animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                          animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
-                                              animScalePoly[animScalePoly>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
+                      if(min(animScalePoly) > (scaleRange_i %>% dplyr::filter(param==param_i))$minScale){
+                        animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$minScale)} else {
+                          animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$minScale,
+                                              animScalePoly[animScalePoly>(scaleRange_i %>% dplyr::filter(param==param_i))$minScale])
                         }
                     }}
                   animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
@@ -3784,17 +3938,17 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                     animScalePoly<-datax[[meanCol]]
 
-                    if(!is.null(scaleRange)){
-                       if(any(param_i %in% unique(scaleRange$param))){
-                        if(max(animScalePoly) < (scaleRange %>% dplyr::filter(param==param_i))$maxScale){
-                          animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$maxScale)} else {
-                            animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$maxScale,
-                                                animScalePoly[animScalePoly<(scaleRange %>% dplyr::filter(param==param_i))$maxScale])
+                    if(!is.null(scaleRange_i)){
+                       if(any(param_i %in% unique(scaleRange_i$param))){
+                        if(max(animScalePoly) < (scaleRange_i %>% dplyr::filter(param==param_i))$maxScale){
+                          animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale)} else {
+                            animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$maxScale,
+                                                animScalePoly[animScalePoly<(scaleRange_i %>% dplyr::filter(param==param_i))$maxScale])
                           }
-                        if(min(animScalePoly) > (scaleRange %>% dplyr::filter(param==param_i))$minScale){
-                          animScalePoly<-c(animScalePoly,(scaleRange %>% dplyr::filter(param==param_i))$minScale)} else {
-                            animScalePoly <-  c((scaleRange %>% dplyr::filter(param==param_i))$minScale,
-                                                animScalePoly[animScalePoly>(scaleRange %>% dplyr::filter(param==param_i))$minScale])
+                        if(min(animScalePoly) > (scaleRange_i %>% dplyr::filter(param==param_i))$minScale){
+                          animScalePoly<-c(animScalePoly,(scaleRange_i %>% dplyr::filter(param==param_i))$minScale)} else {
+                            animScalePoly <-  c((scaleRange_i %>% dplyr::filter(param==param_i))$minScale,
+                                                animScalePoly[animScalePoly>(scaleRange_i %>% dplyr::filter(param==param_i))$minScale])
                           }
                       }}
                     animPrettyBreaksPoly<-scales::pretty_breaks(n=legendFixedBreaks)(animScalePoly)
