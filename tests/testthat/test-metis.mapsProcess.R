@@ -317,7 +317,7 @@ test_that("metis.mapsProcess uses scaleRange vectors correctly for multi scenari
                     value=c(10,33,20,65))
   mapx <- metis.mapsProcess(polygonDataTables=data,scenRef="Ref",folderName = "scaleRangeVec",
                             scaleRange=c(0,100),
-                            scaleRangeDiffAbs = c(5,30),
+                            scaleRangeDiffAbs = c(5,70),
                             scaleRangeDiffPrcnt = c(100,300)); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
@@ -336,7 +336,7 @@ test_that("metis.mapsProcess uses scaleRange vectors correctly for multi scenari
                     value=c(10,33,20,65))
   mapx <- metis.mapsProcess(polygonDataTables=data,scenRef="Ref",folderName = "scaleRangeDataFrame",
                             scaleRange=data.frame(param="param",min=0,max=100),
-                            scaleRangeDiffAbs = data.frame(param="param",min=5,max=50),
+                            scaleRangeDiffAbs = data.frame(param="param",min=5,max=70),
                             scaleRangeDiffPrcnt = data.frame(param="paramx",min=100,max=250)); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2

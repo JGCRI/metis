@@ -33,6 +33,12 @@ data = data.frame(subRegion=c("FL","FL","ID","ID","MO","MO"),
 metis.mapsProcess(polygonDataTables=data,
                   folderName = "cheatsheet")
 
+data = data.frame(subRegion=c("India","India","China","China","Pakistan","Pakistan"),
+                  x=c(2050,2100,2050,2100,2050,2100),
+                  value=c(1,3,5,2,3,4))
+metis.mapsProcess(polygonDataTables=data,
+                  folderName = "cheatsheet", boundaryRegionsSelect = c("India","China","Pakistan"))
+
 
 
 

@@ -713,16 +713,15 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
     if(!is.null(subRegShapeTelx) & nrow(dataTbl)>0){
-    subRegx <- subRegShapeTelx$subRegion%>%unique()%>%as.character()
+    subRegx <- data.frame(subRegion=tolower(subRegShapeTelx@data$subRegion%>%unique()%>%as.character()),
+                          subRegionShape=subRegShapeTelx@data$subRegion%>%unique()%>%as.character()); subRegx
     dataTblTel <- dataTbl %>%
       dplyr::mutate(
-        subRegion = as.character(subRegion),
-        subRegion = dplyr::case_when((((subRegion%>%tolower()) %in% (subRegx%>%tolower())) &
-                                          !(subRegion %in% subRegx))~
-                                            as.character(subRegx[(subRegx%>%tolower()) %in% (subRegion%>%tolower())]%>%
-                                            unique()),
-                                         TRUE~subRegion),
-        subRegType=subRegShapeTypeTelx); dataTblTel
+        subRegion = tolower(as.character(subRegion)),
+        subRegType=subRegShapeTypeTelx)%>%
+      dplyr::left_join(subRegx,by="subRegion")%>%
+      dplyr::mutate(subRegion=subRegionShape)%>%
+      dplyr::select(-subRegionShape); dataTblTel
     }
 
     if(is.null(dataTblTel)){
