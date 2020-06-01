@@ -8,11 +8,13 @@
 
 <title>metis.boundaries — metis.boundaries • metis</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -36,11 +38,10 @@
 
 
 
-<meta property="og:title" content="metis.boundaries — metis.boundaries" />
 
+<meta property="og:title" content="metis.boundaries — metis.boundaries" />
 <meta property="og:description" content="This function takes a .csv file with gridded lat, long data and aggregates
 the data by spatial boundaries given different shapefiles." />
-
 
 
 
@@ -95,12 +96,14 @@ the data by spatial boundaries given different shapefiles." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/metis.vignette.html">SRN Vignette</a>
+      <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -122,33 +125,55 @@ the data by spatial boundaries given different shapefiles." />
     </div>
 
     <div class="ref-description">
-    
     <p>This function takes a .csv file with gridded lat, long data and aggregates
 the data by spatial boundaries given different shapefiles.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>metis.boundaries</span>(<span class='kw'>boundaryRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>boundaryRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>boundaryRegShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>boundaryRegCol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>boundaryRegionsSelect</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>subRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subRegShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subRegCol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>subRegCol1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subRegionsSelect</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>subRegType</span> <span class='kw'>=</span> <span class='st'>"subRegType"</span>, <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>,
-  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>), <span class='kw'>regionName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>expandPercentWidth</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>expandPercentHeight</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>expandPercentWidthOV</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>expandPercentHeightOV</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>overlapShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>overlapShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>overlapShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>labelsSize</span> <span class='kw'>=</span> <span class='fl'>1.2</span>, <span class='kw'>fillcolorNA</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>metis.boundaries</span>(
+  <span class='kw'>boundaryRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>boundaryRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>boundaryRegShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>boundaryRegCol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>boundaryRegionsSelect</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegCol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegCol1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegionsSelect</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegType</span> <span class='kw'>=</span> <span class='st'>"subRegType"</span>,
+  <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
+  <span class='kw'>regionName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>expandPercentWidth</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>expandPercentHeight</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>expandPercentWidthOV</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>expandPercentHeightOV</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>overlapShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>overlapShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>overlapShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>labelsSize</span> <span class='kw'>=</span> <span class='fl'>1.2</span>,
+  <span class='kw'>fillcolorNA</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>projX</span> <span class='kw'>=</span> <span class='st'>"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"</span>,
-  <span class='kw'>extendedFillColor</span> <span class='kw'>=</span> <span class='st'>"grey75"</span>, <span class='kw'>extendedBGColor</span> <span class='kw'>=</span> <span class='st'>"lightblue1"</span>,
-  <span class='kw'>extendedHighLightColor</span> <span class='kw'>=</span> <span class='st'>"cornsilk1"</span>, <span class='kw'>extendedLabelsColor</span> <span class='kw'>=</span> <span class='st'>"grey30"</span>,
-  <span class='kw'>extdendedLabelSize</span> <span class='kw'>=</span> <span class='fl'>0.7</span>, <span class='kw'>extension</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>fillPalette</span> <span class='kw'>=</span> <span class='st'>"Spectral"</span>,
-  <span class='kw'>cropSubShape2Bound</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>grids</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>innerMargins</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>,
-  <span class='fl'>0.1</span>, <span class='fl'>0.2</span>), <span class='kw'>outerMargins</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.01</span>, <span class='fl'>0.01</span>, <span class='fl'>0.01</span>),
-  <span class='kw'>compassScale</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>scalePos</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"right"</span>, <span class='st'>"bottom"</span>),
-  <span class='kw'>compassPos</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"left"</span>, <span class='st'>"bottom"</span>), <span class='kw'>extendedBoundary</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>extendedBoundaryOV</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+  <span class='kw'>extendedFillColor</span> <span class='kw'>=</span> <span class='st'>"grey75"</span>,
+  <span class='kw'>extendedBGColor</span> <span class='kw'>=</span> <span class='st'>"lightblue1"</span>,
+  <span class='kw'>extendedHighLightColor</span> <span class='kw'>=</span> <span class='st'>"cornsilk1"</span>,
+  <span class='kw'>extendedLabelsColor</span> <span class='kw'>=</span> <span class='st'>"grey30"</span>,
+  <span class='kw'>extdendedLabelSize</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
+  <span class='kw'>extension</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>fillPalette</span> <span class='kw'>=</span> <span class='st'>"Spectral"</span>,
+  <span class='kw'>cropSubShape2Bound</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>grids</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>innerMargins</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.1</span>, <span class='fl'>0.2</span>),
+  <span class='kw'>outerMargins</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.01</span>, <span class='fl'>0.01</span>, <span class='fl'>0.01</span>),
+  <span class='kw'>compassScale</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>scalePos</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"right"</span>, <span class='st'>"bottom"</span>),
+  <span class='kw'>compassPos</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"left"</span>, <span class='st'>"bottom"</span>),
+  <span class='kw'>extendedBoundary</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>extendedBoundaryOV</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -323,11 +348,10 @@ paste(getwd(),"/dataFiles/grids/emptyGrids/grid_050.csv",sep=""))
 This may happen in the case of disputed boundaries.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A table with data by polygon ID for each shapefile provided</p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

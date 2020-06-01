@@ -8,11 +8,13 @@
 
 <title>metis.grid2poly — metis.grid2poly • metis</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -36,11 +38,10 @@
 
 
 
-<meta property="og:title" content="metis.grid2poly — metis.grid2poly" />
 
+<meta property="og:title" content="metis.grid2poly — metis.grid2poly" />
 <meta property="og:description" content="This function takes a .csv file with gridded lat, long data and aggregates
 the data by spatial boundaries given different shapefiles." />
-
 
 
 
@@ -95,12 +96,14 @@ the data by spatial boundaries given different shapefiles." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/metis.vignette.html">SRN Vignette</a>
+      <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -122,22 +125,34 @@ the data by spatial boundaries given different shapefiles." />
     </div>
 
     <div class="ref-description">
-    
     <p>This function takes a .csv file with gridded lat, long data and aggregates
 the data by spatial boundaries given different shapefiles.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>metis.grid2poly</span>(<span class='kw'>gridFiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>regionName</span> <span class='kw'>=</span> <span class='st'>"region"</span>,
-  <span class='kw'>subRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subRegShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>subRegCol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subRegType</span> <span class='kw'>=</span> <span class='st'>"subRegType"</span>, <span class='kw'>aggType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>), <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>labelsSize</span> <span class='kw'>=</span> <span class='fl'>1.2</span>, <span class='kw'>paramsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
-  <span class='kw'>scenariosSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>, <span class='kw'>paramScenariosFixed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysFilesScarcity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xanthosFilesScarcity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>calculatePolyScarcity</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>calculatePolyScarcityOnly</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>saveFiles</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>metis.grid2poly</span>(
+  <span class='kw'>gridFiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>regionName</span> <span class='kw'>=</span> <span class='st'>"region"</span>,
+  <span class='kw'>subRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegCol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegType</span> <span class='kw'>=</span> <span class='st'>"subRegType"</span>,
+  <span class='kw'>aggType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
+  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>labelsSize</span> <span class='kw'>=</span> <span class='fl'>1.2</span>,
+  <span class='kw'>paramsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
+  <span class='kw'>scenariosSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
+  <span class='kw'>paramScenariosFixed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>tethysFilesScarcity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xanthosFilesScarcity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>calculatePolyScarcity</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>calculatePolyScarcityOnly</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>printGridOverlay</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>saveFiles</span> <span class='kw'>=</span> <span class='no'>T</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -218,15 +233,18 @@ the data by spatial boundaries given different shapefiles.</p>
       <td><p>Default = F</p></td>
     </tr>
     <tr>
+      <th>printGridOverlay</th>
+      <td><p>Default = F</p></td>
+    </tr>
+    <tr>
       <th>saveFiles</th>
       <td><p>Default =T</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A table with data by polygon ID for each shapefile provided</p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -8,11 +8,13 @@
 
 <title>metis.gridByPoly — metis.gridByPoly • metis</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -36,10 +38,9 @@
 
 
 
+
 <meta property="og:title" content="metis.gridByPoly — metis.gridByPoly" />
-
 <meta property="og:description" content="This function finds the grids located within a given shapefiles regions" />
-
 
 
 
@@ -94,12 +95,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/metis.vignette.html">SRN Vignette</a>
+      <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -121,17 +124,21 @@
     </div>
 
     <div class="ref-description">
-    
     <p>This function finds the grids located within a given shapefiles regions</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>metis.gridByPoly</span>(<span class='kw'>gridDataTables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>shapeFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shapeFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>colName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>metis.gridByPoly</span>(
+  <span class='kw'>gridDataTables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>shapeFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>shapeFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>colName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
-  <span class='kw'>fname</span> <span class='kw'>=</span> <span class='st'>"gridByPoly"</span>, <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='st'>"folderNameDefault"</span>,
-  <span class='kw'>saveFile</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
-    
+  <span class='kw'>fname</span> <span class='kw'>=</span> <span class='st'>"gridByPoly"</span>,
+  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='st'>"folderNameDefault"</span>,
+  <span class='kw'>saveFile</span> <span class='kw'>=</span> <span class='no'>F</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -172,11 +179,10 @@
       <td><p>Default = F. If want csv output then change to T</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Prints out graphic</p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
