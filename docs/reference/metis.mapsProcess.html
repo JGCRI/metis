@@ -8,11 +8,13 @@
 
 <title>metis.mapsProcess — metis.mapsProcess • metis</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -36,11 +38,10 @@
 
 
 
-<meta property="og:title" content="metis.mapsProcess — metis.mapsProcess" />
 
+<meta property="og:title" content="metis.mapsProcess — metis.mapsProcess" />
 <meta property="og:description" content="This function produce different kinds of maps for the metis package.
 Each figure is accompanied with a csv table." />
-
 
 
 
@@ -95,12 +96,14 @@ Each figure is accompanied with a csv table." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/metis.vignette.html">SRN Vignette</a>
+      <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -122,45 +125,92 @@ Each figure is accompanied with a csv table." />
     </div>
 
     <div class="ref-description">
-    
     <p>This function produce different kinds of maps for the metis package.
 Each figure is accompanied with a csv table.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>metis.mapsProcess</span>(<span class='kw'>polygonDataTables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gridDataTables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>metis.mapsProcess</span>(
+  <span class='kw'>polygonDataTables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>gridDataTables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
-  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='st'>"folderNameDefault"</span>, <span class='kw'>xRange</span> <span class='kw'>=</span> <span class='st'>"All"</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>labelsSize</span> <span class='kw'>=</span> <span class='fl'>1.2</span>, <span class='kw'>subRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>subRegShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subRegCol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dirNameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>legendOutsideSingle</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>legendOutsidePosition</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>legendPosition</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>legendFixedBreaks</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>legendTitleSizeO</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>legendTextSizeO</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>legendTitleSizeI</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>legendTextSizeI</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>animateOn</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>fps</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>scenRefDiffIndv</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>extension</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>boundaryRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>boundaryRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>boundaryRegShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>boundaryRegCol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>boundaryRegionsSelect</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>extendedLabels</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>extendedFillColor</span> <span class='kw'>=</span> <span class='st'>"grey75"</span>, <span class='kw'>extendedBGColor</span> <span class='kw'>=</span> <span class='st'>"lightblue1"</span>,
-  <span class='kw'>extendedHighLightColor</span> <span class='kw'>=</span> <span class='st'>"cornsilk1"</span>, <span class='kw'>extendedLabelsColor</span> <span class='kw'>=</span> <span class='st'>"grey30"</span>,
-  <span class='kw'>extdendedLabelSize</span> <span class='kw'>=</span> <span class='fl'>0.7</span>, <span class='kw'>extendedShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>extendedShapeCol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>expandPercent</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>xRange</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
+  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>labelsSize</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>subRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subRegCol</span> <span class='kw'>=</span> <span class='st'>"subRegion"</span>,
+  <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>legendOutsideSingle</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>legendOutsidePosition</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>legendPosition</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>legendFixedBreaks</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>legendTitleSizeO</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>legendTextSizeO</span> <span class='kw'>=</span> <span class='fl'>0.6</span>,
+  <span class='kw'>legendTitleSizeI</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>legendTextSizeI</span> <span class='kw'>=</span> <span class='fl'>0.6</span>,
+  <span class='kw'>animateOn</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>fps</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>scenRef</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>scenDiff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>extension</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>boundaryRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>boundaryRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>boundaryRegShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>boundaryRegCol</span> <span class='kw'>=</span> <span class='st'>"subRegion"</span>,
+  <span class='kw'>boundaryRegionsSelect</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>cropToBoundary</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>extendedLabels</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>extendedFillColor</span> <span class='kw'>=</span> <span class='st'>"grey75"</span>,
+  <span class='kw'>extendedBGColor</span> <span class='kw'>=</span> <span class='st'>"lightblue1"</span>,
+  <span class='kw'>extendedHighLightColor</span> <span class='kw'>=</span> <span class='st'>"cornsilk1"</span>,
+  <span class='kw'>extendedLabelsColor</span> <span class='kw'>=</span> <span class='st'>"grey30"</span>,
+  <span class='kw'>extdendedLabelSize</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
+  <span class='kw'>extendedShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>extendedShapeCol</span> <span class='kw'>=</span> <span class='st'>"subRegion"</span>,
+  <span class='kw'>expandPercent</span> <span class='kw'>=</span> <span class='fl'>3</span>,
   <span class='kw'>projX</span> <span class='kw'>=</span> <span class='st'>"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"</span>,
-  <span class='kw'>figWidth</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>figHeight</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>scaleRange</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>paramsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>, <span class='kw'>multiFacetsOn</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>multiFacetCols</span> <span class='kw'>=</span> <span class='st'>"multiFacetCol"</span>, <span class='kw'>multiFacetRows</span> <span class='kw'>=</span> <span class='st'>"multiFacetRow"</span>,
-  <span class='kw'>legendOutsideMulti</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>legendPositionMulti</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>legendTitleSizeMulti</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>legendTextSizeAnim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>legendTextSizeMulti</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>refMultiA</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>refMultiB</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>chosenRefMeanYears</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mapTitleSize</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>facetLabelSize</span> <span class='kw'>=</span> <span class='fl'>2.5</span>, <span class='kw'>facetLabelSizeMultiAB</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>numeric2Cat_list</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>diffOn</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>frameShow</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>pdfpng</span> <span class='kw'>=</span> <span class='st'>"png"</span>, <span class='kw'>fillcolorNA</span> <span class='kw'>=</span> <span class='st'>"gray"</span>, <span class='kw'>fillshowNA</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>fillcolorNULL</span> <span class='kw'>=</span> <span class='st'>"gray"</span>, <span class='kw'>legendSingleColorOn</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>legendSingleValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>legendSingleColor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>facetCols</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>mapTitleOn</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>innerMargins</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>),
-  <span class='kw'>legendDigitsOverride</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+  <span class='kw'>figWidth</span> <span class='kw'>=</span> <span class='fl'>6</span>,
+  <span class='kw'>figHeight</span> <span class='kw'>=</span> <span class='fl'>7</span>,
+  <span class='kw'>scaleRange</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>scaleRangeDiffAbs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>scaleRangeDiffPrcnt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>paramsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
+  <span class='kw'>multifacetsOn</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>multiFacetCols</span> <span class='kw'>=</span> <span class='st'>"multiFacetCol"</span>,
+  <span class='kw'>multiFacetRows</span> <span class='kw'>=</span> <span class='st'>"multiFacetRow"</span>,
+  <span class='kw'>legendOutsideMulti</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>legendPositionMulti</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>legendTitleSizeMulti</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>legendTextSizeAnim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>legendTextSizeMulti</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>refMultiA</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>refMultiB</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>chosenRefMeanYears</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>mapTitleSize</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>facetBGColor</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>facetLabelColor</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>facetLabelSize</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>facetLabelSizeMultiAB</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>facetLabelBorderLwd</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>,
+  <span class='kw'>numeric2Cat_list</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>frameShow</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>pdfpng</span> <span class='kw'>=</span> <span class='st'>"png"</span>,
+  <span class='kw'>fillcolorNA</span> <span class='kw'>=</span> <span class='st'>"gray"</span>,
+  <span class='kw'>fillshowNA</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>fillcolorNULL</span> <span class='kw'>=</span> <span class='st'>"gray"</span>,
+  <span class='kw'>legendSingleColorOn</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>legendSingleValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>legendSingleColor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
+  <span class='kw'>facetCols</span> <span class='kw'>=</span> <span class='fl'>4</span>,
+  <span class='kw'>mapTitleOn</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>innerMargins</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>),
+  <span class='kw'>legendDigitsOverride</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>classPalette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>classPaletteDiff</span> <span class='kw'>=</span> <span class='st'>"pal_div_BluRd"</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -206,11 +256,7 @@ Each figure is accompanied with a csv table.</p>
     </tr>
     <tr>
       <th>subRegCol</th>
-      <td><p>Default ="NAME_1",</p></td>
-    </tr>
-    <tr>
-      <th>dirNameAppend</th>
-      <td><p>Default =""</p></td>
+      <td><p>Default ="subRegion",</p></td>
     </tr>
     <tr>
       <th>nameAppend</th>
@@ -257,8 +303,12 @@ Each figure is accompanied with a csv table.</p>
       <td><p>Default = 1,</p></td>
     </tr>
     <tr>
-      <th>scenRefDiffIndv</th>
-      <td><p>Default = NULL</p></td>
+      <th>scenRef</th>
+      <td><p>Reference Scenario. Default = NULL</p></td>
+    </tr>
+    <tr>
+      <th>scenDiff</th>
+      <td><p>Scenarios to Diff. Default = NULL</p></td>
     </tr>
     <tr>
       <th>extension</th>
@@ -283,6 +333,10 @@ Each figure is accompanied with a csv table.</p>
     <tr>
       <th>boundaryRegionsSelect</th>
       <td><p>Default = NULL,</p></td>
+    </tr>
+    <tr>
+      <th>cropToBoundary</th>
+      <td><p>Default = T</p></td>
     </tr>
     <tr>
       <th>extendedLabels</th>
@@ -318,7 +372,7 @@ Each figure is accompanied with a csv table.</p>
     </tr>
     <tr>
       <th>expandPercent</th>
-      <td><p>Default =2</p></td>
+      <td><p>Default =3</p></td>
     </tr>
     <tr>
       <th>projX</th>
@@ -334,14 +388,22 @@ Each figure is accompanied with a csv table.</p>
     </tr>
     <tr>
       <th>scaleRange</th>
-      <td><p>Default NULL. Dataframe with columns param, maxScale, minScale to indicate maximum and minumum values for a parameter scale.</p></td>
+      <td><p>Default NULL. A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min</p></td>
+    </tr>
+    <tr>
+      <th>scaleRangeDiffAbs</th>
+      <td><p>Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min</p></td>
+    </tr>
+    <tr>
+      <th>scaleRangeDiffPrcnt</th>
+      <td><p>Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min</p></td>
     </tr>
     <tr>
       <th>paramsSelect</th>
       <td><p>Default ="All"</p></td>
     </tr>
     <tr>
-      <th>multiFacetsOn</th>
+      <th>multifacetsOn</th>
       <td><p>Default = F,</p></td>
     </tr>
     <tr>
@@ -389,6 +451,14 @@ Each figure is accompanied with a csv table.</p>
       <td><p>Default=0.5</p></td>
     </tr>
     <tr>
+      <th>facetBGColor</th>
+      <td><p>Default = NA</p></td>
+    </tr>
+    <tr>
+      <th>facetLabelColor</th>
+      <td><p>Default = Black</p></td>
+    </tr>
+    <tr>
       <th>facetLabelSize</th>
       <td><p>Default =2.5</p></td>
     </tr>
@@ -397,12 +467,12 @@ Each figure is accompanied with a csv table.</p>
       <td><p>Default =1</p></td>
     </tr>
     <tr>
-      <th>numeric2Cat_list</th>
-      <td><p>Default=NULL,</p></td>
+      <th>facetLabelBorderLwd</th>
+      <td><p>Default=NA_real_,</p></td>
     </tr>
     <tr>
-      <th>diffOn</th>
-      <td><p>Default = F. Whether to calculate diff values between scenarios.</p></td>
+      <th>numeric2Cat_list</th>
+      <td><p>Default=NULL,</p></td>
     </tr>
     <tr>
       <th>frameShow</th>
@@ -452,12 +522,20 @@ Each figure is accompanied with a csv table.</p>
       <th>legendDigitsOverride</th>
       <td><p>Default=NULL</p></td>
     </tr>
+    <tr>
+      <th>classPalette</th>
+      <td><p>Default = NULL</p></td>
+    </tr>
+    <tr>
+      <th>classPaletteDiff</th>
+      <td><p>Default = "pal_div_BrGn"</p></td>
+    </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Returns the formatted data used to produce chart</p>
-    
+<p>A list with the gridTbl and shapeTbl used to plot the data if any.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

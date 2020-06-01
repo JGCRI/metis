@@ -8,11 +8,13 @@
 
 <title>metis.colors — metis.colors • metis</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -36,11 +38,10 @@
 
 
 
-<meta property="og:title" content="metis.colors — metis.colors" />
 
+<meta property="og:title" content="metis.colors — metis.colors" />
 <meta property="og:description" content="This function loads various color palettes used previously in GCAM
 as well as new palettes for Metis modeling to the global environment" />
-
 
 
 
@@ -95,12 +96,14 @@ as well as new palettes for Metis modeling to the global environment" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/metis.vignette.html">SRN Vignette</a>
+      <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -122,14 +125,12 @@ as well as new palettes for Metis modeling to the global environment" />
     </div>
 
     <div class="ref-description">
-    
     <p>This function loads various color palettes used previously in GCAM
 as well as new palettes for Metis modeling to the global environment</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>metis.colors</span>(<span class='kw'>palx</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -138,11 +139,10 @@ as well as new palettes for Metis modeling to the global environment</p>
       <td><p>Palette name to view the palette colors. Eg. metis.colors("pal_Basic")</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list of color palettes.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>List of Color Palettes</p><ul>
@@ -152,8 +152,10 @@ as well as new palettes for Metis modeling to the global environment</p>
 <li><p>"pal_hot"</p></li>
 <li><p>"pal_wet"</p></li>
 <li><p>"pal_div_wet"</p></li>
+<li><p>"pal_div_BlRd"</p></li>
 <li><p>"pal_div_RdBl"</p></li>
-<li><p>"pal_div_GrBr"</p></li>
+<li><p>"pal_div_BrGn"</p></li>
+<li><p>"pal_div_GnBr"</p></li>
 <li><p>"pal_div_BluRd"</p></li>
 <li><p>"pal_div_RdBlu"</p></li>
 <li><p>"pal_green"</p></li>
@@ -164,7 +166,6 @@ as well as new palettes for Metis modeling to the global environment</p>
 <li><p>"pal_ScarcityCat"</p></li>
 </ul>
 
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>metis</span>)

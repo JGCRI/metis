@@ -54,9 +54,12 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/metis.vignette.html">SRN Vignette</a>
+      <a href="articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -73,33 +76,11 @@
   <div class="contents col-md-9">
 
 <hr>
-<p>title: ‘Metis 1.0.0’ tags:</p>
-<ul>
-<li>sub-region</li>
-<li>nexus</li>
-<li>water</li>
-<li>energy</li>
-<li>land authors:</li>
-<li>name: Zarrar Khan affiliation: “1” # (Multiple affiliations must be quoted)</li>
-<li>name: Thomas Bernard Wild affiliation: “1,2”</li>
-<li>name: Chris Vernon affiliation: “1”</li>
-<li>name: Mohamad Hejazi affiliation: “1,2”</li>
-<li>name: Leon Clarke affiliation: “1,2”</li>
-<li>name: Fernando Miralles affiliation: “1,2”</li>
-<li>name: Andy miller affiliation: “3”</li>
-<li>name: Fekadu Moreda affiliation: “4”</li>
-<li>name: Raul Castillo Munoz affiliation: “5”</li>
-<li>name: Julia Lacas Bereslawski affiliation: “6”</li>
-<li>name: Micaela Suriano affiliation: “7” affiliations:</li>
-<li>name: Joint Global Change Research institute, Pacific Northwest National Laboratory (PNNL), College Park, MD 20740, USA index: 1</li>
-<li>name: Earth System Science Interdisciplinary Center (ESSIC), University of Maryland, College Park, MD 20740, USA index: 2</li>
-<li>name: National Peace Corps Association, Washington, DC 20036, USA index: 3</li>
-<li>name: Research Triangle Institute (RTI), Research Triangle Park, NC, 27709-2194, USA index: 4</li>
-<li>name: Inter-American Development Bank (IDB), Washington, D.C. 20577, USA index: 5</li>
-<li>name: Independent Consultant for the Inter-American Development Bank, Washington, D.C. 20577, USA index: 6</li>
-<li>name: Instituto Nacional del Agua (INA), Buenos Aires, Argentina index: 7 date: 10 August 2019 —</li>
-</ul>
-<!-- badges: start --><p><a href="https://travis-ci.org/JGCRI/metis"><img src="https://travis-ci.org/JGCRI/metis.svg?branch=master" alt="Travis build status"></a> <!-- badges: end --></p>
+<div id="title-metis" class="section level2">
+<h2 class="hasAnchor">
+<a href="#title-metis" class="anchor"></a>title: ‘Metis’</h2>
+<!-- badges: start -->
+
 <p align="center">
 <img src="READMEfigs/metisHeaderThin.PNG"></p>
 <p align="center">
@@ -108,6 +89,7 @@
 <img src="READMEfigs/metisHeaderThick.PNG"></p>
 <!-- ------------------------>
 <!-- ------------------------>
+</div>
 <div id="contents" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#contents" class="anchor"></a><a name="Contents"></a>Contents</h1></div>
@@ -267,8 +249,8 @@ git clone https://github.com/JGCRI/metis.git
 <span class="co"># MacOS (Using Homebrew): brew install imagemagick@6</span>
 
 <span class="kw">if</span>(<span class="st">"devtools"</span> <span class="kw">%in%</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()) <span class="kw">==</span> <span class="no">F</span>){<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)}; <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">devtools</span>)
-<span class="kw">if</span>(<span class="st">"rgcam"</span> <span class="kw">%in%</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()) <span class="kw">==</span> <span class="no">F</span>){<span class="fu"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_github</a></span>(<span class="kw">repo</span><span class="kw">=</span><span class="st">"JGCRI/rgcam"</span>)}; <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgcam</span>)
-<span class="kw">if</span>(<span class="st">"metis"</span> <span class="kw">%in%</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()) <span class="kw">==</span> <span class="no">F</span>){<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/devtools/man/install.html">install</a></span>()}; <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<span class="kw">if</span>(<span class="st">"rgcam"</span> <span class="kw">%in%</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()) <span class="kw">==</span> <span class="no">F</span>){<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="kw">repo</span><span class="kw">=</span><span class="st">"JGCRI/rgcam"</span>)}; <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgcam</span>)
+<span class="kw">if</span>(<span class="st">"metis"</span> <span class="kw">%in%</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()) <span class="kw">==</span> <span class="no">F</span>){<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/install.html">install</a></span>()}; <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggalluvial</span>);<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tibble</span>);<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>);<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgdal</span>)</pre></div>
 <details><summary>Click here to expand for further details, code and example figures.</summary><p>
 </p>
@@ -689,7 +671,7 @@ git clone https://github.com/JGCRI/metis.git
    <span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.exists</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">"/outputs"</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">""</span>))){<span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">"/outputs"</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">""</span>))}
    <span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.exists</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">"/outputs/Charts"</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">""</span>))){<span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">"/outputs/Charts"</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">""</span>))}
    <span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.exists</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">"/outputs/Charts/metisExample"</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">""</span>))){<span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">"/outputs/Charts/metisExample"</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">""</span>))}
-   <span class="kw pkg">data.table</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fwrite.html">fwrite</a></span>(<span class="no">localData</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">"/outputs/Charts/metisExample/example_localFile.csv"</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">""</span>),<span class="kw">row.names</span> <span class="kw">=</span> <span class="no">F</span>)
+   <span class="kw pkg">data.table</span><span class="kw ns">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fwrite.html">fwrite</a></span>(<span class="no">localData</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">"/outputs/Charts/metisExample/example_localFile.csv"</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">""</span>),<span class="kw">row.names</span> <span class="kw">=</span> <span class="no">F</span>)
    <span class="no">dataTables_i</span> <span class="kw">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">"/outputs/Charts/metisExample/example_localFile.csv"</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">""</span>))
 
 <span class="co"># Can also add data .csv outputs from metis.readgcam.R which are autmatically saved in</span>
@@ -772,7 +754,7 @@ git clone https://github.com/JGCRI/metis.git
   <span class="co"># Crop the shapefile to desired boundary by subsetting</span>
   <span class="no">exampleNE1Cropped</span> <span class="kw">=</span> <span class="no">exampleNE1</span>[<span class="no">exampleNE1</span>$<span class="no">admin</span><span class="kw">==</span><span class="st">"Peru"</span>,]
   <span class="no">exampleNE1Cropped</span>@<span class="kw">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html">droplevels</a></span>(<span class="no">exampleNE1Cropped</span>@<span class="kw">data</span>)
-  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">exampleNE1Cropped</span>)
+  <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">exampleNE1Cropped</span>)
   <span class="fu"><a href="reference/metis.map.html">metis.map</a></span>(<span class="kw">dataPolygon</span><span class="kw">=</span><span class="no">exampleNE1Cropped</span>,<span class="kw">fillColumn</span> <span class="kw">=</span> <span class="no">colName_i</span>,<span class="kw">labels</span><span class="kw">=</span><span class="no">T</span> ,<span class="kw">printFig</span><span class="kw">=</span><span class="no">T</span>,<span class="kw">facetsON</span><span class="kw">=</span><span class="no">F</span>,
             <span class="kw">labelsAutoPlace</span> <span class="kw">=</span> <span class="no">F</span>, <span class="kw">folderName</span><span class="kw">=</span><span class="st">"metisExample"</span>)
 
@@ -1329,7 +1311,13 @@ git clone https://github.com/JGCRI/metis.git
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.org/JGCRI/metis"><img src="https://travis-ci.org/JGCRI/metis.svg?branch=master" alt="Travis build status"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 

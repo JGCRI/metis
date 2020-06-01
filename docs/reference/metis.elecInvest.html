@@ -8,11 +8,13 @@
 
 <title>metis.elecInvest — metis.elecInvest • metis</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -36,10 +38,9 @@
 
 
 
+
 <meta property="og:title" content="metis.elecInvest — metis.elecInvest" />
-
 <meta property="og:description" content="Function that calculates electricity subsector investment requirements from a given GCAM run." />
-
 
 
 
@@ -94,12 +95,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/metis.vignette.html">SRN Vignette</a>
+      <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -121,14 +124,16 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Function that calculates electricity subsector investment requirements from a given GCAM run.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>metis.elecInvest</span>(<span class='no'>elec_gen_vintage</span>, <span class='no'>world_regions</span>, <span class='kw'>start_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>,
-  <span class='kw'>end_year</span> <span class='kw'>=</span> <span class='fl'>2050</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>metis.elecInvest</span>(
+  <span class='no'>elec_gen_vintage</span>,
+  <span class='no'>world_regions</span>,
+  <span class='kw'>start_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>,
+  <span class='kw'>end_year</span> <span class='kw'>=</span> <span class='fl'>2050</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -149,11 +154,10 @@
       <td><p>end_year of time frame of interest for analysis</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Returns data in a form required by metislreadgcam.R</p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

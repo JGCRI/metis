@@ -8,11 +8,13 @@
 
 <title>metis.chartsProcess — metis.chartsProcess • metis</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -36,8 +38,8 @@
 
 
 
-<meta property="og:title" content="metis.chartsProcess — metis.chartsProcess" />
 
+<meta property="og:title" content="metis.chartsProcess — metis.chartsProcess" />
 <meta property="og:description" content="This function produces charts given any number of tables in the metis format.
 The metis.chart() function produces charts for each region nd scenario.
 If there are more than one scenario then the function also produces a folder for diffplots.
@@ -45,7 +47,6 @@ The input tables should be .csv files with the following columns:
 scenario, region, sources, param, x, xLabel, vintage, class1, class2, units, value, aggregate,
 classLabel1,classPalette1,classLabel2,classPalette2. Running the metis.readgcam automatically produces
 An empty template with these columns for the relevant parameters. Each column is defined below:" />
-
 
 
 
@@ -100,12 +101,14 @@ An empty template with these columns for the relevant parameters. Each column is
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/metis.vignette.html">SRN Vignette</a>
+      <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -127,7 +130,6 @@ An empty template with these columns for the relevant parameters. Each column is
     </div>
 
     <div class="ref-description">
-    
     <p>This function produces charts given any number of tables in the metis format.
 The metis.chart() function produces charts for each region nd scenario.
 If there are more than one scenario then the function also produces a folder for diffplots.
@@ -135,35 +137,71 @@ The input tables should be .csv files with the following columns:
 scenario, region, sources, param, x, xLabel, vintage, class1, class2, units, value, aggregate,
 classLabel1,classPalette1,classLabel2,classPalette2. Running the metis.readgcam automatically produces
 An empty template with these columns for the relevant parameters. Each column is defined below:</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>metis.chartsProcess</span>(<span class='kw'>dataTables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rTable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>scenRef</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>), <span class='kw'>pdfpng</span> <span class='kw'>=</span> <span class='st'>"png"</span>,
-  <span class='kw'>xRange</span> <span class='kw'>=</span> <span class='st'>"All"</span>, <span class='kw'>xCompare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"2015"</span>, <span class='st'>"2030"</span>, <span class='st'>"2050"</span>, <span class='st'>"2100"</span>),
-  <span class='kw'>paramsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>, <span class='kw'>regionsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>, <span class='kw'>xData</span> <span class='kw'>=</span> <span class='st'>"x"</span>,
-  <span class='kw'>yData</span> <span class='kw'>=</span> <span class='st'>"value"</span>, <span class='kw'>xLabel</span> <span class='kw'>=</span> <span class='st'>"xLabel"</span>, <span class='kw'>yLabel</span> <span class='kw'>=</span> <span class='st'>"units"</span>,
-  <span class='kw'>aggregate</span> <span class='kw'>=</span> <span class='st'>"sum"</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"class"</span>, <span class='kw'>classPalette</span> <span class='kw'>=</span> <span class='st'>"pal_metis"</span>,
-  <span class='kw'>regionCompare</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>regionCompareOnly</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>scenarioCompareOnly</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>useNewLabels</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>sizeBarLines</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>sizeLines</span> <span class='kw'>=</span> <span class='fl'>1.5</span>,
-  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='st'>"folderNameDefault"</span>, <span class='kw'>facetBGColor</span> <span class='kw'>=</span> <span class='st'>"grey30"</span>,
-  <span class='kw'>facetBorderColor</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>facetLabelColor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>facetLabelSize</span> <span class='kw'>=</span> <span class='fl'>24</span>, <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>scensSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
-  <span class='kw'>xOrder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>colOrder1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>colOrderName1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>colOrder2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>colOrderName2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>scaleRange</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xScenCompFacetLabelSize</span> <span class='kw'>=</span> <span class='fl'>35</span>, <span class='kw'>legendPosition</span> <span class='kw'>=</span> <span class='st'>"right"</span>,
-  <span class='kw'>figWidth</span> <span class='kw'>=</span> <span class='fl'>13</span>, <span class='kw'>figHeight</span> <span class='kw'>=</span> <span class='fl'>9</span>, <span class='kw'>pointsOn</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>multiPlotOn</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>multiPlotFigsOnly</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>multiPlotFigLabels</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>multiPlotAllYears</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>mp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>paramSet</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"energy"</span>),
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"water"</span>)), <span class='kw'>param</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"elecCapByFuel"</span>, <span class='st'>"elecByTechTWh"</span>),
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"watWithdrawBySec"</span>, <span class='st'>"watConsumBySec"</span>)), <span class='kw'>nColMax</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>))),
-  <span class='kw'>facetCols</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>diffText</span> <span class='kw'>=</span> <span class='st'>"_diff"</span>, <span class='kw'>diffPrcntText</span> <span class='kw'>=</span> <span class='st'>"_diff_prcnt"</span>,
-  <span class='kw'>theme_custom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panelBGcolor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>plotBGcolor</span> <span class='kw'>=</span> <span class='st'>"transparent"</span>, <span class='kw'>legendBGcolor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>yMinDefault</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>yMaxDefault</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>yMaxDiffAbsDefault</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>yMinDiffAbsDefault</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>yMaxDiffPrcntDefault</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>yMinDiffPrcntDefault</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>metis.chartsProcess</span>(
+  <span class='kw'>dataTables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>rTable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>scenRef</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
+  <span class='kw'>pdfpng</span> <span class='kw'>=</span> <span class='st'>"png"</span>,
+  <span class='kw'>xRange</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
+  <span class='kw'>xCompare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"2015"</span>, <span class='st'>"2030"</span>, <span class='st'>"2050"</span>, <span class='st'>"2100"</span>),
+  <span class='kw'>paramsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
+  <span class='kw'>regionsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
+  <span class='kw'>xData</span> <span class='kw'>=</span> <span class='st'>"x"</span>,
+  <span class='kw'>yData</span> <span class='kw'>=</span> <span class='st'>"value"</span>,
+  <span class='kw'>xLabel</span> <span class='kw'>=</span> <span class='st'>"xLabel"</span>,
+  <span class='kw'>yLabel</span> <span class='kw'>=</span> <span class='st'>"units"</span>,
+  <span class='kw'>aggregate</span> <span class='kw'>=</span> <span class='st'>"sum"</span>,
+  <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"class"</span>,
+  <span class='kw'>classPalette</span> <span class='kw'>=</span> <span class='st'>"pal_metis"</span>,
+  <span class='kw'>regionCompare</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>regionCompareOnly</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>scenarioCompareOnly</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>useNewLabels</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>sizeBarLines</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>sizeLines</span> <span class='kw'>=</span> <span class='fl'>1.5</span>,
+  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='st'>"folderNameDefault"</span>,
+  <span class='kw'>facetBGColor</span> <span class='kw'>=</span> <span class='st'>"grey30"</span>,
+  <span class='kw'>facetBorderColor</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>facetLabelColor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
+  <span class='kw'>facetLabelSize</span> <span class='kw'>=</span> <span class='fl'>24</span>,
+  <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>scensSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
+  <span class='kw'>xOrder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>colOrder1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>colOrderName1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>colOrder2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>colOrderName2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>scaleRange</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xScenCompFacetLabelSize</span> <span class='kw'>=</span> <span class='fl'>35</span>,
+  <span class='kw'>legendPosition</span> <span class='kw'>=</span> <span class='st'>"right"</span>,
+  <span class='kw'>figWidth</span> <span class='kw'>=</span> <span class='fl'>13</span>,
+  <span class='kw'>figHeight</span> <span class='kw'>=</span> <span class='fl'>9</span>,
+  <span class='kw'>pointsOn</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>multiPlotOn</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>multiPlotFigsOnly</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>multiPlotFigLabels</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>multiPlotAllYears</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>mp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>paramSet</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"energy"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"water"</span>)), <span class='kw'>param</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"elecCapByFuel"</span>,
+    <span class='st'>"elecByTechTWh"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"watWithdrawBySec"</span>, <span class='st'>"watConsumBySec"</span>)), <span class='kw'>nColMax</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>),
+    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>))),
+  <span class='kw'>facetCols</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>diffText</span> <span class='kw'>=</span> <span class='st'>"_diff"</span>,
+  <span class='kw'>diffPrcntText</span> <span class='kw'>=</span> <span class='st'>"_diff_prcnt"</span>,
+  <span class='kw'>theme_custom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>panelBGcolor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>plotBGcolor</span> <span class='kw'>=</span> <span class='st'>"transparent"</span>,
+  <span class='kw'>legendBGcolor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>yMinDefault</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>yMaxDefault</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>yMaxDiffAbsDefault</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>yMinDiffAbsDefault</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>yMaxDiffPrcntDefault</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>yMinDiffPrcntDefault</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -432,11 +470,10 @@ c(# energy
       <td><p>Default = NULL</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Produces charts in output folder and also returns combined table in metis format.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>List of Assumptions</p><ul>
@@ -458,7 +495,6 @@ c(# energy
 <li><p>classPalette2: An R or metis.colors() palette. Can leave the default as "pal_16".</p></li>
 </ul>
 
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

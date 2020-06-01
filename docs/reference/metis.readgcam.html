@@ -8,11 +8,13 @@
 
 <title>metis.readgcam — metis.readgcam • metis</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -36,11 +38,10 @@
 
 
 
-<meta property="og:title" content="metis.readgcam — metis.readgcam" />
 
+<meta property="og:title" content="metis.readgcam — metis.readgcam" />
 <meta property="og:description" content="This function connects to a gcamdatabase and uses a query file to
 out results into a table ready for plotting." />
-
 
 
 
@@ -95,12 +96,14 @@ out results into a table ready for plotting." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/metis.vignette.html">SRN Vignette</a>
+      <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -122,44 +125,43 @@ out results into a table ready for plotting." />
     </div>
 
     <div class="ref-description">
-    
     <p>This function connects to a gcamdatabase and uses a query file to
 out results into a table ready for plotting.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>metis.readgcam</span>(<span class='kw'>gcamdatabasePath</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gcamdatabaseName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>queryxml</span> <span class='kw'>=</span> <span class='st'>"metisQueries.xml"</span>, <span class='kw'>queryPath</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(),
-  <span class='st'>"/dataFiles/gcam"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>), <span class='kw'>scenOrigNames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>scenNewNames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reReadData</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>dataProj</span> <span class='kw'>=</span> <span class='st'>"dataProj.proj"</span>,
-  <span class='kw'>dataProjPath</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
+    <pre class="usage"><span class='fu'>metis.readgcam</span>(
+  <span class='kw'>gcamdatabase</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>queryFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>dataProjFile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs/dataProj.proj"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
+  <span class='kw'>scenOrigNames</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
+  <span class='kw'>scenNewNames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>reReadData</span> <span class='kw'>=</span> <span class='no'>T</span>,
   <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
-  <span class='kw'>regionsSelect</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>queriesSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>, <span class='kw'>paramsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
-  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
-    
+  <span class='kw'>regionsSelect</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>paramsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
+  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>saveData</span> <span class='kw'>=</span> <span class='no'>T</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>gcamdatabasePath</th>
-      <td><p>Path to gcam database folder</p></td>
+      <th>gcamdatabase</th>
+      <td><p>Default = NULL. Full path to GCAM database folder.</p></td>
     </tr>
     <tr>
-      <th>gcamdatabaseName</th>
-      <td><p>Name of gcam database</p></td>
+      <th>queryFile</th>
+      <td><p>Defualt = NULL. When NULL metis loads pre-saved xml file metis::xmlMetisQueries</p></td>
     </tr>
     <tr>
-      <th>queryxml</th>
-      <td><p>Name of the query.xml file. By default it is "metisQueries.xml"</p></td>
-    </tr>
-    <tr>
-      <th>queryPath</th>
-      <td><p>Folder that contains the query.xml file.By default it is
-the same folder as specified by gcamdatabasePath</p></td>
+      <th>dataProjFile</th>
+      <td><p>Default = NULL. Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.</p></td>
     </tr>
     <tr>
       <th>scenOrigNames</th>
-      <td><p>Original Scenarios names in GCAM database in a string vector.
+      <td><p>Default = "All". Original Scenarios names in GCAM database in a string vector.
 For example c('scenario1','scenario2).</p></td>
     </tr>
     <tr>
@@ -175,85 +177,24 @@ with full path is provided otherwise it will search for a dataProj.proj file in 
 folder which may have been created from an old run.</p></td>
     </tr>
     <tr>
-      <th>dataProj</th>
-      <td><p>Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.</p></td>
-    </tr>
-    <tr>
-      <th>dataProjPath</th>
-      <td><p>Folder that contains the dataProj or where it will be produced.
-By default it is the same folder as specified by gcamdatabasePath</p></td>
-    </tr>
-    <tr>
       <th>dirOutputs</th>
       <td><p>Full path to directory for outputs</p></td>
     </tr>
     <tr>
       <th>regionsSelect</th>
-      <td><p>The regions to analyze in a vector. Example c('Colombia','Argentina'). Full list:
-c(USA, Africa_Eastern, Africa_Northern, Africa_Southern, Africa_Western, Australia_NZ, Brazil, Canada
+      <td><p>The regions to analyze in a vector. Example c('Colombia','Argentina'). Full list:</p>
+<p>USA, Africa_Eastern, Africa_Northern, Africa_Southern, Africa_Western, Australia_NZ, Brazil, Canada
 Central America and Caribbean, Central Asia, China, EU-12, EU-15, Europe_Eastern, Europe_Non_EU,
 European Free Trade Association, India, Indonesia, Japan, Mexico, Middle East, Pakistan, Russia,
 South Africa, South America_Northern, South America_Southern, South Asia, South Korea, Southeast Asia,</p></td>
     </tr>
     <tr>
-      <th>queriesSelect</th>
-      <td><p>Default = "All". Predetermined subsets or a vector of queries to read from the queryxml for example
-predetermined subsets would be c('water','energy') or
-selection of queries would be c("Total final energy by aggregate end-use sector", "Population by region").
-The queries must be availble in the queryxml file.
-Queryset names include: c("water", "energy", "land", "emissions", "ag", "socioecon", "transport")
-Current list of queries for each set include:
-water</p><ul>
-<li><p>"water withdrawals by crop"</p></li>
-<li><p>"water withdrawals by water mapping source"</p></li>
-<li><p>"water consumption by water mapping source"</p></li>
-<li><p>"water withdrawals by sector"</p></li>
-<li><p>"water consumption by sector"</p></li>
-<li><p>"biophysical water demand by crop type and land region"</p></li>
-<li><p>"Basin level available runoff"</p></li>
-<li><p>"water withdrawals by state, sector, basin (includes desal)"</p></li>
-<li><p>"water consumption by state, sector, basin (includes desal)"</p></li>
-</ul><p>energy</p><ul>
-<li><p>"primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS"</p></li>
-<li><p>"Final energy by detailed end-use sector and fuel"</p></li>
-<li><p>"total final energy by aggregate sector"</p></li>
-<li><p>"refined liquids production by subsector"</p></li>
-<li><p>"building final energy by fuel"</p></li>
-<li><p>"industry final energy by fuel"</p></li>
-<li><p>"building final energy by subsector"</p></li>
-<li><p>"transport final energy by fuel"</p></li>
-<li><p>"transport final energy by mode and fuel"</p></li>
-</ul><p>electricity</p><ul>
-<li><p>"elec gen by gen tech USA"</p></li>
-<li><p>"elec gen by gen tech cogen USA"</p></li>
-<li><p>"elec gen by gen tech and cooling tech"</p></li>
-<li><p>"Electricity generation by aggregate technology"</p></li>
-</ul><p>land</p><ul>
-<li><p>"land allocation by crop and water source",</p></li>
-<li><p>"aggregated land allocation",</p></li>
-<li><p>"land allocation by crop"</p></li>
-</ul><p>emissions</p><ul>
-<li><p>"nonCO2 emissions by resource production",</p></li>
-<li><p>"nonCO2 emissions by sector"</p></li>
-<li><p>"Land Use Change Emission (future)"</p></li>
-<li><p>"CO2 emissions by sector (no bio)"</p></li>
-<li><p>"CO2 emissions by sector"</p></li>
-</ul><p>ag</p><ul>
-<li><p>"Ag Production by Crop Type"</p></li>
-<li><p>"ag production by tech"</p></li>
-</ul><p>socioecon</p><ul>
-<li><p>"GDP MER by region"</p></li>
-<li><p>"GDP per capita MER by region"</p></li>
-<li><p>"Population by region"</p></li>
-</ul><p>transport</p><ul>
-<li><p>"transport service output by mode"</p></li>
-<li><p>"transport service output by tech (new)"</p></li>
-</ul></td>
-    </tr>
-    <tr>
       <th>paramsSelect</th>
-      <td><p>Default = "All". If desired dplyr::select a subset of paramaters to analyze from the full list of parameters:
-c(# Energy
+      <td><p>Default = "All".</p>
+<p>Choose "All" or paramSet from "energy", "electricity", "transport",
+"water" , "socioecon" ,"ag" , "livestock" ,"land"  ,"emissions".</p>
+<p>Or pick an individual param from the list:</p>
+<p># energy
 "energyPrimaryByFuelEJ","energyPrimaryRefLiqProdEJ",
 "energyFinalConsumBySecEJ","energyFinalByFuelBySectorEJ","energyFinalSubsecByFuelTranspEJ",
 "energyFinalSubsecByFuelBuildEJ", "energyFinalSubsecByFuelIndusEJ","energyFinalSubsecBySectorBuildEJ",
@@ -262,27 +203,29 @@ c(# Energy
 "energyFinalSubsecByFuelBuildMTOE", "energyFinalSubsecByFuelIndusMTOE","energyFinalSubsecBySectorBuildMTOE",
 "energyPrimaryByFuelTWh","energyPrimaryRefLiqProdTWh",
 "energyFinalConsumBySecTWh","energyFinalbyFuelTWh","energyFinalSubsecByFuelTranspTWh",
-"energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",
-# Electricity
+"energyFinalSubsecByFuelBuildTWh", "energyFinalSubsecByFuelIndusTWh","energyFinalSubsecBySectorBuildTWh",</p>
+<p># electricity
 "elecByTechTWh","elecCapByFuel","elecFinalBySecTWh","elecFinalByFuelTWh",
-"elecNewCapCost","elecNewCapGW","elecAnnualRetPrematureCost","elecAnnualRetPrematureGW","elecCumCapCost","elecCumCapGW","elecCumRetPrematureCost","elecCumRetPrematureGW",
-# Transport
-"transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",
-# Water
-"watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",
-# Socio-economics
-"gdpPerCapita", "gdp", "gdpGrowthRate", "pop",
-"livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral","livestock_MeatDairybyTechImports", "livestock_MeatDairybySubsector",
-#Land use
-"landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",# Emissions
+"elecNewCapCost","elecNewCapGW","elecAnnualRetPrematureCost","elecAnnualRetPrematureGW","elecCumCapCost","elecCumCapGW","elecCumRetPrematureCost","elecCumRetPrematureGW",</p>
+<p># transport
+"transportPassengerVMTByMode", "transportFreightVMTByMode", "transportPassengerVMTByFuel", "transportFreightVMTByFuel",</p>
+<p># water
+"watConsumBySec", "watWithdrawBySec", "watWithdrawByCrop", "watBioPhysCons", "watIrrWithdrawBasin","watIrrConsBasin",</p>
+<p># socioecon
+"gdpPerCapita", "gdp", "gdpGrowthRate", "pop",</p>
+<p># ag
+ "agProdbyIrrRfd", "agProdBiomass", "agProdForest","agProdByCrop",</p>
+<p># livestock
+"livestock_MeatDairybyTechMixed","livestock_MeatDairybyTechPastoral","livestock_MeatDairybyTechImports", "livestock_MeatDairybySubsector",</p>
+<p># land
+"landIrrRfd", "landIrrCrop","landRfdCrop", "landAlloc","landAllocByCrop",</p>
+<p># emissions
 "emissLUC", "emissNonCO2BySectorGWPAR5","emissNonCO2BySectorGTPAR5","emissNonCO2BySectorOrigUnits",
 "emissNonCO2ByResProdGWPAR5", "emissBySectorGWPAR5FFI","emissMethaneBySourceGWPAR5",
 "emissByGasGWPAR5FFI", "emissByGasGWPAR5LUC", "emissBySectorGWPAR5LUC",
 "emissNonCO2ByResProdGTPAR5", "emissBySectorGTPAR5FFI","emissMethaneBySourceGTPAR5",
 "emissByGasGTPAR5FFI", "emissByGasGTPAR5LUC","emissBySectorGTPAR5LUC",
-"emissCO2BySectorNoBio"
-#' @return A list with the scenarios in the gcam database, queries in the queryxml file and a
-tibble with gcam data formatted for metis charts.</p></td>
+"emissCO2BySectorNoBio"</p></td>
     </tr>
     <tr>
       <th>folderName</th>
@@ -292,8 +235,17 @@ tibble with gcam data formatted for metis charts.</p></td>
       <th>nameAppend</th>
       <td><p>Default="". Name to append to saved files.</p></td>
     </tr>
+    <tr>
+      <th>saveData</th>
+      <td><p>Default = "T". Set to F if do not want to save any data to file.</p></td>
+    </tr>
     </table>
-    
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A list with the scenarios in the gcam database, queries in the queryxml file and a
+tibble with gcam data formatted for metis charts aggregated to different categories.
+These include data, dataAggParam, dataAggClass1, dataAggClass2.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
