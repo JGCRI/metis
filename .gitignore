@@ -20,3 +20,4 @@ outputs
 **/papers/**/*.doc
 **/papers/**/*.docx
 **/papers/**/*.html
+inst/doc

@@ -106,7 +106,7 @@ test_that("metis.mapsProcess finds correct map for US52 Counties", {
 
 })
 
-test_that("metis.mapsProcess finds correct map for US52 + GCAM Region", {
+test_that("metis.mapsProcess finds correct map for US52 + Country", {
 
   testthat::skip_on_cran(); testthat::skip_on_travis()
 
@@ -116,22 +116,22 @@ test_that("metis.mapsProcess finds correct map for US52 + GCAM Region", {
   mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
-  testthat::expect_match(tVal1,"^GCAM32US52$")
+  testthat::expect_match(tVal1,"^countriesUS52$")
   testthat::expect_equal(tVal2,2)
 
 })
 
-test_that("metis.mapsProcess finds correct map for US52 + Other Country", {
+test_that("metis.mapsProcess finds correct map for US52 + GCAM 32", {
 
   testthat::skip_on_cran(); testthat::skip_on_travis()
 
-  data = data.frame(subRegion=c("FL","Afghanistan"),
+  data = data.frame(subRegion=c("FL","EU-12"),
                     x=c(2050),
                     value=c(1,3))
   mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
-  testthat::expect_match(tVal1,"^countriesUS52$")
+  testthat::expect_match(tVal1,"^GCAM32US52$")
   testthat::expect_equal(tVal2,2)
 
 })

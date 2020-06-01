@@ -1,5 +1,5 @@
 
-library(tibble);library(dplyr);library(rgdal);library(devtools);library(metis); library(rmapshaper); library(tmaptools)
+library(tibble);library(dplyr);library(rgdal);library(devtools);library(metis); library(tmaptools)
 library(rgeos); library(rgcam)
 
 redoMaps = F
