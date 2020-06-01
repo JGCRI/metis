@@ -29,16 +29,18 @@ metis.mapsProcess(polygonDataTables=data,
 
 data = data.frame(subRegion=c("FL","FL","ID","ID","MO","MO"),
                   x=c(2050,2100,2050,2100,2050,2100),
-                  value=c(1,3,5,2,3,4))
-metis.mapsProcess(polygonDataTables=data,
-                  folderName = "cheatsheet")
+                  value=c(-10,0,10,-2,3,14))
+metis.mapsProcess(polygonDataTables=data,folderName = "cheatsheet",
+                  extension=F)
 
-data = data.frame(subRegion=c("India","India","China","China","Pakistan","Pakistan"),
+data = data.frame(subRegion=c("India","India","China","China","EU-15","EU-15"),
                   x=c(2050,2100,2050,2100,2050,2100),
                   value=c(1,3,5,2,3,4))
-metis.mapsProcess(polygonDataTables=data,
-                  folderName = "cheatsheet", boundaryRegionsSelect = c("India","China","Pakistan"))
+metis.mapsProcess(polygonDataTables=data, folderName = "cheatsheet",
+                  extension=T)
 
 
+India, China, AK
+India, China, EU-12
 
 

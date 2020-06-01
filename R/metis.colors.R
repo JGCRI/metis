@@ -77,8 +77,8 @@ metis.colors <- function(palx=NULL) {
     pal_div_RdBl <- c('#67001f','#b2182b','#d6604d','#f4a582','#fddbc7','white','#e0e0e0','#bababa','#878787','#4d4d4d','#1a1a1a')
     pal_div_BrGn <- c('#543005','#8c510a','#bf812d','#dfc27d','#f6e8c3','white','#c7eae5','#80cdc1','#35978f','#01665e','#003c30')
     pal_div_GnBr <- rev(pal_div_BrGn)
-    pal_div_BluRd <- c("#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#f7f7f7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061")
-    pal_div_RdBlu <- rev(pal_div_BluRd)
+    pal_div_RdBlu <- c("#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#f7f7f7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061")
+    pal_div_BluRd <- rev(pal_div_RdBlu)
 
     pal_seq <- c('lemonchiffon1','burlywood1','orange1','red1','purple4','black')
 

@@ -1,8 +1,0 @@
----
-title: "SRN Vignette"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{SRN Vignette}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
----

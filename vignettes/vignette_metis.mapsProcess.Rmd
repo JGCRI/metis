@@ -1,0 +1,43 @@
+---
+title: "metis.mapsProcess"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{metis.mapsProcess}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+<!-- ----------------------------------------->
+# <a name="Contents"></a>Contents
+<!-- ----------------------------------------->
+
+- [Introduction](#Introduction)
+
+<!-- ----------------------------------------->
+# <a name="Introduction"></a>Introduction
+<!-- ----------------------------------------->
+
+[Back to Contents](#Contents)
+
+Introduction to the metis.mapsProcess() function.
+
+```{r, eval=F}
+library(metis)
+
+data = data.frame(subRegion=c("FL","FL","ID","ID","MO","MO"),
+                  x=c(2050,2100,2050,2100,2050,2100),
+                  value=c(-10,0,10,-2,3,14))
+metis.mapsProcess(polygonDataTables=data,
+                  folderName = "vignetteMapsProcess")
+```
+
+
+
