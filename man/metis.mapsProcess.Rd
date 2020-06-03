@@ -16,7 +16,6 @@ metis.mapsProcess(
   subRegShpFolder = NULL,
   subRegShpFile = NULL,
   subRegCol = "subRegion",
-  dirNameAppend = "",
   nameAppend = "",
   legendOutsideSingle = T,
   legendOutsidePosition = NULL,
@@ -36,19 +35,22 @@ metis.mapsProcess(
   boundaryRegShpFile = NULL,
   boundaryRegCol = "subRegion",
   boundaryRegionsSelect = NULL,
-  extendedLabels = T,
+  cropToBoundary = T,
+  extendedLabels = F,
   extendedFillColor = "grey75",
   extendedBGColor = "lightblue1",
   extendedHighLightColor = "cornsilk1",
   extendedLabelsColor = "grey30",
-  extdendedLabelSize = 0.7,
+  extdendedLabelSize = 0.4,
   extendedShape = NULL,
-  extendedShapeCol = NULL,
+  extendedShapeCol = "subRegion",
   expandPercent = 3,
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 6,
   figHeight = 7,
   scaleRange = NULL,
+  scaleRangeDiffAbs = NULL,
+  scaleRangeDiffPrcnt = NULL,
   paramsSelect = "All",
   multifacetsOn = F,
   multiFacetCols = "multiFacetCol",
@@ -73,7 +75,7 @@ metis.mapsProcess(
   fillcolorNA = "gray",
   fillshowNA = NA,
   fillcolorNULL = "gray",
-  legendSingleColorOn = T,
+  legendSingleColorOn = F,
   legendSingleValue = NULL,
   legendSingleColor = "white",
   facetCols = 4,
@@ -81,7 +83,7 @@ metis.mapsProcess(
   innerMargins = c(0, 0, 0, 0),
   legendDigitsOverride = NULL,
   classPalette = NULL,
-  classPaletteDiff = "pal_div_RdBl"
+  classPaletteDiff = "pal_div_BluRd"
 )
 }
 \arguments{
@@ -106,8 +108,6 @@ metis.mapsProcess(
 \item{subRegShpFile}{Default = paste("gadm36_1",sep=""),}
 
 \item{subRegCol}{Default ="subRegion",}
-
-\item{dirNameAppend}{Default =""}
 
 \item{nameAppend}{Default =""}
 
@@ -147,6 +147,8 @@ metis.mapsProcess(
 
 \item{boundaryRegionsSelect}{Default = NULL,}
 
+\item{cropToBoundary}{Default = T}
+
 \item{extendedLabels}{Default = T}
 
 \item{extendedFillColor}{Default ="grey75",}
@@ -163,7 +165,7 @@ metis.mapsProcess(
 
 \item{extendedShapeCol}{Default =NULL,}
 
-\item{expandPercent}{Default =2}
+\item{expandPercent}{Default =3}
 
 \item{projX}{Default = projX="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"}
 
@@ -171,7 +173,11 @@ metis.mapsProcess(
 
 \item{figHeight}{Default =7}
 
-\item{scaleRange}{Default NULL. Dataframe with columns param, maxScale, minScale or a vector with max and min eg. c(0,100)}
+\item{scaleRange}{Default NULL. A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min}
+
+\item{scaleRangeDiffAbs}{Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min}
+
+\item{scaleRangeDiffPrcnt}{Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min}
 
 \item{paramsSelect}{Default ="All"}
 
@@ -237,7 +243,7 @@ metis.mapsProcess(
 
 \item{classPalette}{Default = NULL}
 
-\item{classPaletteDiff}{Default = "pal_div_RdBl"}
+\item{classPaletteDiff}{Default = "pal_div_BrGn"}
 }
 \value{
 Returns the formatted data used to produce chart
