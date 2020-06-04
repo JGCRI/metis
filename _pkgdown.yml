@@ -4,22 +4,22 @@ navbar:
   type: inverse
   left:
     - icon: fa-home
-      href: https://github.com/JGCRI/metis/docs/index.html
+      href: index.html
     - text: "Guides"
       icon: fas fa-book
       menu:
       -  text: metis.readgcam
-         href: https://github.com/JGCRI/metis/docs/articles/vignette_metis.readgcam.html
+         href: articles/vignette_metis.readgcam.html
       -  text: metis.mapsProcess
-         href: https://github.com/JGCRI/metis/docs/articles/vignette_metis.mapsProcess.html
+         href: articles/vignette_metis.mapsProcess.html
       -  text: colors, maps and params
-         href: https://github.com/JGCRI/metis/docs/articles/vignette_colorsMapsParams.html
+         href: articles/vignette_colorsMapsParams.html
     - icon: fa-file-code-o
       text: "Reference"
-      href: https://github.com/JGCRI/metis/reference/index.html
+      href: reference/index.html
     - icon: fa-newspaper-o
       text: "News"
-      href: https://github.com/JGCRI/metis/docs/news/index.html
+      href: news/index.html
     - text: cheatsheet
       href: https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf
 toc:
