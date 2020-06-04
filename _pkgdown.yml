@@ -1,7 +1,5 @@
 title: Metis
-template:
-  params:
-    ganalytics: UA-84499524-2
+
 navbar:
   type: inverse
   left:
@@ -11,17 +9,17 @@ navbar:
       icon: fas fa-book
       menu:
       -  text: metis.readgcam
-         href: vignette_metis.readgcam.html
+         href: articles/vignette_metis.readgcam.html
       -  text: metis.mapsProcess
-         href: vignette_metis.mapsProcess.html
+         href: articles/vignette_metis.mapsProcess.html
       -  text: colors, maps and params
-         href: vignette_colorsMapsParams.html
+         href: articles/vignette_colorsMapsParams.html
     - icon: fa-file-code-o
       text: "Reference"
-      href: index.html
+      href: reference/index.html
     - icon: fa-newspaper-o
       text: "News"
-      href: index.html
+      href: news/index.html
     - text: cheatsheet
       href: https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf
 toc:
