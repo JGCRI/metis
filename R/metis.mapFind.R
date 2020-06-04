@@ -49,10 +49,12 @@ metis.mapFind <- function(dataTbl){ # Telescope out of finest regions to see whi
     subRegStatesnotUS52 <- tolower(mapStatesx@data$subRegion[!mapStatesx@data$subRegion %in% metis::mapUS52@data$subRegion]%>%unique()%>%as.character%>%sort())
     subRegUS49County <- tolower(metis::mapUS49County@data$subRegion%>%unique()%>%as.character%>%sort())
     subRegUS52CountynotUS49 <- tolower(metis::mapUS52County@data$subRegion[!metis::mapUS52County@data$subRegion %in% metis::mapUS49County@data$subRegion]%>%unique()%>%as.character%>%sort())
+    subRegGCAMBasins <- tolower(metis::mapGCAMBasins@data$subRegion%>%unique()%>%as.character%>%sort())
     subRegGCAMBasinsUS49 <- tolower(metis::mapGCAMBasinsUS49@data$subRegion%>%unique()%>%as.character%>%sort())
     subRegGCAMBasinsUS52 <- tolower(metis::mapGCAMBasinsUS52@data$subRegion%>%unique()%>%as.character%>%sort())
     subRegGCAMBasinsUS52not49 <- tolower(metis::mapGCAMBasinsUS52@data$subRegion[!metis::mapGCAMBasinsUS52@data$subRegion %in% metis::mapGCAMBasinsUS49@data$subRegion]%>%unique()%>%as.character%>%sort())
     subRegGCAMBasinsnotUS52 <- tolower(metis::mapGCAMBasins@data$subRegion[!metis::mapGCAMBasins@data$subRegion%in% metis::mapGCAMBasinsUS52@data$subRegion]%>%unique()%>%as.character%>%sort())
+    subRegGCAMLand <- tolower(metis::mapGCAMLand@data$subRegion%>%unique()%>%as.character%>%sort())
     subRegGCAMLandUS49 <- tolower(metis::mapGCAMLandUS49@data$subRegion%>%unique()%>%as.character%>%sort())
     subRegGCAMLandUS52 <- tolower(metis::mapGCAMLandUS52@data$subRegion%>%unique()%>%as.character%>%sort())
     subRegGCAMLandUS52not49 <- tolower(metis::mapGCAMLandUS52@data$subRegion[!metis::mapGCAMLandUS52@data$subRegion %in% metis::mapGCAMLandUS49@data$subRegion]%>%unique()%>%as.character%>%sort())
@@ -73,10 +75,12 @@ metis.mapFind <- function(dataTbl){ # Telescope out of finest regions to see whi
     subRegStatesnotUS52Alt <- tolower(mapStatesx@data$subRegionAlt[!mapStatesx@data$subRegionAlt %in% metis::mapUS52@data$subRegionAlt]%>%unique()%>%as.character%>%sort())
     subRegUS49CountyAlt <- tolower(metis::mapUS49County@data$subRegionAlt%>%unique()%>%as.character%>%sort())
     subRegUS52CountynotUS49Alt <- tolower(metis::mapUS52County@data$subRegionAlt[!metis::mapUS52County@data$subRegionAlt %in% metis::mapUS49County@data$subRegionAlt]%>%unique()%>%as.character%>%sort())
+    subRegGCAMBasinsAlt <- tolower(metis::mapGCAMBasins@data$subRegionAlt%>%unique()%>%as.character%>%sort())
     subRegGCAMBasinsUS49Alt <- tolower(metis::mapGCAMBasinsUS49@data$subRegionAlt%>%unique()%>%as.character%>%sort())
     subRegGCAMBasinsUS52Alt <- tolower(metis::mapGCAMBasinsUS52@data$subRegionAlt%>%unique()%>%as.character%>%sort())
     subRegGCAMBasinsUS52not49Alt <- tolower(metis::mapGCAMBasinsUS52@data$subRegionAlt[!metis::mapGCAMBasinsUS52@data$subRegionAlt %in% metis::mapGCAMBasinsUS49@data$subRegionAlt]%>%unique()%>%as.character%>%sort())
     subRegGCAMBasinsnotUS52Alt <- tolower(metis::mapGCAMBasins@data$subRegionAlt[!metis::mapGCAMBasins@data$subRegionAlt%in% metis::mapGCAMBasinsUS52@data$subRegionAlt]%>%unique()%>%as.character%>%sort())
+    subRegGCAMLandAlt <- tolower(metis::mapGCAMLand@data$subRegionAlt%>%unique()%>%as.character%>%sort())
     subRegGCAMLandUS49Alt <- tolower(metis::mapGCAMLandUS49@data$subRegionAlt%>%unique()%>%as.character%>%sort())
     subRegGCAMLandUS52Alt <- tolower(metis::mapGCAMLandUS52@data$subRegionAlt%>%unique()%>%as.character%>%sort())
     subRegGCAMLandUS52not49Alt <- tolower(metis::mapGCAMLandUS52@data$subRegionAlt[!metis::mapGCAMLandUS52@data$subRegionAlt %in% metis::mapGCAMLandUS49@data$subRegionAlt]%>%unique()%>%as.character%>%sort())
@@ -208,53 +212,7 @@ metis.mapFind <- function(dataTbl){ # Telescope out of finest regions to see whi
      } # Close US49
 
 
-  # Land
-  if(any(subRegShapeTbl %in% subRegGCAMLandUS49) & !any(subRegShapeTbl %in% subRegGCAMLandUS52not49) &
-     !any(subRegShapeTbl %in% subRegGCAMLandnotUS52)){
-    subRegShapeFoundx <- metis::mapGCAMLandUS49; subRegShapeTypeFoundx<-"GCAMLandUS49";
-    subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
-
-      if(any(subRegShapeTbl %in% subRegGCAMLandUS52) &
-         !any(subRegShapeTbl %in% subRegGCAMLandnotUS52)){
-        subRegShapeFoundx <- metis::mapGCAMLandUS52; subRegShapeTypeFoundx<-"GCAMLandUS52";
-        subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
-
-          if(any(subRegShapeTbl %in% subRegGCAMLandUS52) &
-             any(subRegShapeTbl %in% subRegGCAMLandnotUS52)){
-            subRegShapeFoundx <- metis::mapGCAMLand; subRegShapeTypeFoundx<-"GCAMLand";
-            subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
-
-
-              # Alternate Land
-              if(any(subRegShapeTbl %in% subRegGCAMLandUS49Alt) & !any(subRegShapeTbl %in% subRegGCAMLandUS52not49Alt) &
-                 !any(subRegShapeTbl %in% subRegGCAMLandnotUS52Alt)){
-                subRegShapeFoundx <- metis::mapGCAMLandUS49; subRegShapeFoundx@data<-subRegShapeFoundx@data%>%dplyr::mutate(subRegion=subRegionAlt); subRegShapeTypeFoundx<-"GCAMLandUS49";
-                subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
-
-                  if(any(subRegShapeTbl %in% subRegGCAMLandUS52Alt) &
-                     !any(subRegShapeTbl %in% subRegGCAMLandnotUS52Alt)){
-                    subRegShapeFoundx <- metis::mapGCAMLandUS52; subRegShapeFoundx@data<-subRegShapeFoundx@data%>%dplyr::mutate(subRegion=subRegionAlt); subRegShapeTypeFoundx<-"GCAMLandUS52";
-                    subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
-
-                      if(any(subRegShapeTbl %in% subRegGCAMLandUS52Alt) &
-                         any(subRegShapeTbl %in% subRegGCAMLandnotUS52Alt)){
-                        subRegShapeFoundx <- metis::mapGCAMLand; subRegShapeFoundx@data<-subRegShapeFoundx@data%>%dplyr::mutate(subRegion=subRegionAlt); subRegShapeTypeFoundx<-"GCAMLand";
-                        subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
-
-
-                        } # Close Land
-                    } # Close US52Alt Land
-                } # Close US49Alt Land
-
-
-
-            } # Close Land
-        } # Close US52 Land
-    } # Close US49 Land
-
-
-
-
+  if(is.null(subRegShapeTypeFoundx)){
   # Basins
   if(any(subRegShapeTbl %in% subRegGCAMBasinsUS49) & !any(subRegShapeTbl %in% subRegGCAMBasinsUS52not49) &
      !any(subRegShapeTbl %in% subRegGCAMBasinsnotUS52)){
@@ -266,8 +224,7 @@ metis.mapFind <- function(dataTbl){ # Telescope out of finest regions to see whi
         subRegShapeFoundx <- metis::mapGCAMBasinsUS52; subRegShapeTypeFoundx<-"GCAMBasinsUS52";
         subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
 
-          if(any(subRegShapeTbl %in% subRegGCAMBasinsUS52) &
-             any(subRegShapeTbl %in% subRegGCAMBasinsnotUS52)){
+          if(any(subRegShapeTbl %in% subRegGCAMBasins)){
             subRegShapeFoundx <- metis::mapGCAMBasins; subRegShapeTypeFoundx<-"GCAMBasins";
             subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
 
@@ -282,8 +239,7 @@ metis.mapFind <- function(dataTbl){ # Telescope out of finest regions to see whi
                     subRegShapeFoundx <- metis::mapGCAMBasinsUS52; subRegShapeFoundx@data<-subRegShapeFoundx@data%>%dplyr::mutate(subRegion=subRegionAlt); subRegShapeTypeFoundx<-"GCAMBasinsUS52";
                     subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
 
-                      if(any(subRegShapeTbl %in% subRegGCAMBasinsUS52Alt) &
-                         any(subRegShapeTbl %in% subRegGCAMBasinsnotUS52Alt)){
+                      if(any(subRegShapeTbl %in% subRegGCAMBasins)){
                         subRegShapeFoundx <- metis::mapGCAMBasins; subRegShapeFoundx@data<-subRegShapeFoundx@data%>%dplyr::mutate(subRegion=subRegionAlt); subRegShapeTypeFoundx<-"GCAMBasins";
                         subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
 
@@ -296,9 +252,54 @@ metis.mapFind <- function(dataTbl){ # Telescope out of finest regions to see whi
             } # Close Basins
         } # Close US52 Basins
     } # Close US49 Basins
+} # Is null
+
+
+  if(is.null(subRegShapeTypeFoundx)){
+    # Land
+    if(any(subRegShapeTbl %in% subRegGCAMLandUS49) & !any(subRegShapeTbl %in% subRegGCAMLandUS52not49) &
+       !any(subRegShapeTbl %in% subRegGCAMLandnotUS52)){
+      subRegShapeFoundx <- metis::mapGCAMLandUS49; subRegShapeTypeFoundx<-"GCAMLandUS49";
+      subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
+
+        if(any(subRegShapeTbl %in% subRegGCAMLandUS52) &
+           !any(subRegShapeTbl %in% subRegGCAMLandnotUS52)){
+          subRegShapeFoundx <- metis::mapGCAMLandUS52; subRegShapeTypeFoundx<-"GCAMLandUS52";
+          subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
+
+            if(any(subRegShapeTbl %in% subRegGCAMLand)){
+              subRegShapeFoundx <- metis::mapGCAMLand; subRegShapeTypeFoundx<-"GCAMLand";
+              subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
+
+
+                # Alternate Land
+                if(any(subRegShapeTbl %in% subRegGCAMLandUS49Alt) & !any(subRegShapeTbl %in% subRegGCAMLandUS52not49Alt) &
+                   !any(subRegShapeTbl %in% subRegGCAMLandnotUS52Alt)){
+                  subRegShapeFoundx <- metis::mapGCAMLandUS49; subRegShapeFoundx@data<-subRegShapeFoundx@data%>%dplyr::mutate(subRegion=subRegionAlt); subRegShapeTypeFoundx<-"GCAMLandUS49";
+                  subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
+
+                    if(any(subRegShapeTbl %in% subRegGCAMLandUS52Alt) &
+                       !any(subRegShapeTbl %in% subRegGCAMLandnotUS52Alt)){
+                      subRegShapeFoundx <- metis::mapGCAMLandUS52; subRegShapeFoundx@data<-subRegShapeFoundx@data%>%dplyr::mutate(subRegion=subRegionAlt); subRegShapeTypeFoundx<-"GCAMLandUS52";
+                      subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
+
+                        if(any(subRegShapeTbl %in% subRegGCAMLand)){
+                          subRegShapeFoundx <- metis::mapGCAMLand; subRegShapeFoundx@data<-subRegShapeFoundx@data%>%dplyr::mutate(subRegion=subRegionAlt); subRegShapeTypeFoundx<-"GCAMLand";
+                          subRegNotInShapeFoundx=subRegShapeTblOrig[!subRegShapeTbl %in% tolower(subRegShapeFoundx@data$subRegion%>%unique())]} else {
+
+
+                          } # Close Land
+                      } # Close US52Alt Land
+                  } # Close US49Alt Land
+              } # Close Land
+          } # Close US52 Land
+      } # Close US49 Land
+  } # If null
 
 
 
+
+  if(is.null(subRegShapeTypeFoundx)){
   # HUC
   if(any(subRegShapeTbl %in% subRegUS49HUC4) & !any(subRegShapeTbl %in% subRegUS52HUC4notUS49)){
     subRegShapeFoundx <- metis::mapUS49HUC4; subRegShapeTypeFoundx<-"US49HUC4";
@@ -342,6 +343,7 @@ metis.mapFind <- function(dataTbl){ # Telescope out of finest regions to see whi
             } # Close US49 HUC2
         } # Close US52 HUC4
     } # Close US49 HUC4
+  } # Is null
 
 
   if(!is.null(subRegNotInShapeFoundx)){

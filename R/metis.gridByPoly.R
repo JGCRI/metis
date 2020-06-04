@@ -2,7 +2,7 @@
 #'
 #' This function finds the grids located within a given shapefiles regions
 #'
-#' @param gridDataTables Default = NULL. Full path to grid file.
+#' @param gridTable Default = NULL. Full path to grid file.
 #' @param shape Default = NULL,
 #' @param shapeFolder Default = NULL,
 #' @param shapeFile Default = NULL,
@@ -19,7 +19,7 @@
 # Print to PDF or PNG
 #-------------
 
-metis.gridByPoly <- function(gridDataTables = NULL,
+metis.gridByPoly <- function(gridTable = NULL,
                               shape = NULL,
                               shapeFolder = NULL,
                               shapeFile = NULL,
@@ -29,7 +29,7 @@ metis.gridByPoly <- function(gridDataTables = NULL,
                               folderName="folderNameDefault",
                               saveFile = F){
 
-  # gridDataTables = NULL
+  # gridTable = NULL
   # shape = NULL
   # colName = NULL
   # shapeFolder = NULL
@@ -72,18 +72,18 @@ metis.gridByPoly <- function(gridDataTables = NULL,
 
 # Prepare grid
 
-  if(!is.null(gridDataTables)){
+  if(!is.null(gridTable)){
 
-    if(all(!class(gridDataTables) %in% c("tbl_df","tbl","data.frame"))){
+    if(all(!class(gridTable) %in% c("tbl_df","tbl","data.frame"))){
 
-      for(grid_i in gridDataTables){
+      for(grid_i in gridTable){
         if(file.exists(grid_i)){
           gridxNew<-data.table::fread(paste(grid_i),encoding="Latin-1")%>%tibble::as_tibble()
           gridx<-dplyr::bind_rows(gridx,gridxNew)
           rm(gridxNew)
         } else {stop(paste(grid_i," does not exist"))}
       }
-    }else{gridx<-gridDataTables}
+    }else{gridx<-gridTable}
 
   }else{stop("Must provide a gridDataTable.")}
 

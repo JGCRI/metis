@@ -5,8 +5,8 @@
 \title{metis.mapsProcess}
 \usage{
 metis.mapsProcess(
-  polygonDataTables = NULL,
-  gridDataTables = NULL,
+  polygonTable = NULL,
+  gridTable = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
   folderName = "",
   xRange = "All",
@@ -16,6 +16,7 @@ metis.mapsProcess(
   subRegShpFolder = NULL,
   subRegShpFile = NULL,
   subRegCol = "subRegion",
+  subRegType = NULL,
   nameAppend = "",
   legendOutsideSingle = T,
   legendOutsidePosition = NULL,
@@ -35,7 +36,7 @@ metis.mapsProcess(
   boundaryRegShpFile = NULL,
   boundaryRegCol = "subRegion",
   boundaryRegionsSelect = NULL,
-  cropToBoundary = T,
+  cropToBoundary = F,
   extendedLabels = F,
   extendedFillColor = "grey75",
   extendedBGColor = "lightblue1",
@@ -75,7 +76,7 @@ metis.mapsProcess(
   fillcolorNA = "gray",
   fillshowNA = NA,
   fillcolorNULL = "gray",
-  legendSingleColorOn = F,
+  legendSingleColorOn = NULL,
   legendSingleValue = NULL,
   legendSingleColor = "white",
   facetCols = 4,
@@ -87,9 +88,9 @@ metis.mapsProcess(
 )
 }
 \arguments{
-\item{polygonDataTables}{Default = NULL,}
+\item{polygonTable}{Default = NULL,}
 
-\item{gridDataTables}{Default = NULL,}
+\item{gridTable}{Default = NULL,}
 
 \item{dirOutputs}{Default = paste(getwd(),"/outputs",sep=""),}
 
@@ -108,6 +109,8 @@ metis.mapsProcess(
 \item{subRegShpFile}{Default = paste("gadm36_1",sep=""),}
 
 \item{subRegCol}{Default ="subRegion",}
+
+\item{subRegType}{Default =NULL}
 
 \item{nameAppend}{Default =""}
 

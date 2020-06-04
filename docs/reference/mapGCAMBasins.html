@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GCAM Basins — mapGCAMBasins • metis</title>
+<title>GCAM Basins — mapGCAMBasins • Metis</title>
 
 
 <!-- jquery -->
@@ -55,13 +55,23 @@
 <![endif]-->
 
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-84499524-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-84499524-2');
+</script>
+
 
   </head>
 
   <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
@@ -71,7 +81,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">metis</a>
+        <a class="navbar-link" href="../index.html">Metis</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
@@ -80,31 +90,55 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    <span class="fas fa fas fa-book"></span>
+     
+    Guides
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/vignette_metis.readgcam.html">metis.readgcam</a>
+    </li>
+    <li>
       <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
+    </li>
+    <li>
+      <a href="../articles/vignette_colorsMapsParams.html">colors, maps and params</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../reference/index.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    Reference
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
+     
+    News
+  </a>
+</li>
+<li>
+  <a href="https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf">cheatsheet</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/JGCRI/metis/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -119,7 +153,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>GCAM Basins</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/JGCRI/metis/blob/master/R/data.R'><code>R/data.R</code></a></small>
     <div class="hidden name"><code>mapGCAMBasins.Rd</code></div>
     </div>
 
@@ -154,7 +188,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Zarrar Khan.</p>
+  <p>Developed by Zarrar Khan, Tom Wild, Chris Vernon.</p>
 </div>
 
 <div class="pkgdown">
