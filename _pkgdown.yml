@@ -4,7 +4,7 @@ navbar:
   type: inverse
   left:
     - icon: fa-home
-      href: index.html
+      href: https://github.com/JGCRI/metis/docs/index.html
     - text: "Guides"
       icon: fas fa-book
       menu:
