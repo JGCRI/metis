@@ -30,7 +30,7 @@ if(redoMaps){
   mapx<-as(simplify_shape(mapx, fact = 0.1),Class="Spatial")
   format(object.size(mapx), units="Mb")
   #sp::plot(mapx)
-  #metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  #metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
   mapCountries <- mapx
@@ -53,7 +53,7 @@ if(redoMaps){
   mapx <- mapx[!grepl("Antarctica",mapx$region),]
   mapx@data <- mapx@data%>%droplevels()
   format(object.size(mapx), units="Mb")
-  mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
+  mapx<-as(simplify_shape(mapx, fact = 0.05),Class="Spatial")
   format(object.size(mapx), units="Mb")
   # sp::plot(mapx)
   # metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F, fileName="factp1")
@@ -379,10 +379,33 @@ if(redoMaps){
   m2 <- sp::spTransform(m2,raster::crs(m1))
   mapx<-raster::crop(m1,m2)
   mapx@data <- mapx@data%>%droplevels()
-  sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
+  # mapx <- metis::mapUS52HUC2
+  # Crop Eastern edge of Alaska
+  # Check US49 and US52 Limits:
+  # as.data.frame(sp::bbox(mapUS49))
+  # x (bbox1$min) east limit for US49 is -66.94989
+  # Check limit for Puerto Rico
+  # mapxPR = mapx[mapx@data$subRegion=="PR",]
+  # mapxPR@data <- droplevels(mapxPR@data)
+  # as.data.frame(sp::bbox(mapxPR))
+  # x (bbox1$min) east limit for US49 is -65.22157
+  # Set limit to -65
+  bbox1<-as.data.frame(sp::bbox(mapx)); bbox1
+  bbox1$min;bbox1$max
+  bbox1$min[1]<-bbox1$min[1]
+  bbox1$max[1]<--65
+  bbox1$min;bbox1$max;
+  bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
+  as.data.frame(sp::bbox(bbox1))
+  sp::proj4string(bbox1)<-sp::proj4string(mapx) # ASSIGN COORDINATE SYSTEM
+  mapx<-raster::crop(mapx, bbox1)
+  mapx@bbox <- bbox1@bbox
+  mapx@data <- droplevels(mapx@data)
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F)
+  #---------------------
   mapUS52HUC2 <- mapx
   use_data(mapUS52HUC2, overwrite=T)
 }
@@ -431,8 +454,37 @@ if(redoMaps){
   m2 <- sp::spTransform(m2,raster::crs(m1))
   mapx<-raster::crop(m1,m2)
   mapx@data <- mapx@data%>%droplevels()
+  # mapx <- metis::mapUS52HUC4
+  # Crop Eastern edge of Alaska
+  # Check US49 and US52 Limits:
+  # as.data.frame(sp::bbox(mapUS49))
+  # x (bbox1$min) east limit for US49 is -66.94989
+  # Check limit for Puerto Rico
+  # mapxPR = mapx[mapx@data$subRegion=="PR",]
+  # mapxPR@data <- droplevels(mapxPR@data)
+  # as.data.frame(sp::bbox(mapxPR))
+  # x (bbox1$min) east limit for US49 is -65.22157
+  # Set limit to -65
+  bbox1<-as.data.frame(sp::bbox(mapx)); bbox1
+  bbox1$min;bbox1$max
+  bbox1$min[1]<-bbox1$min[1]
+  bbox1$max[1]<--65
+  bbox1$min;bbox1$max;
+  bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
+  as.data.frame(sp::bbox(bbox1))
+  sp::proj4string(bbox1)<-sp::proj4string(mapx) # ASSIGN COORDINATE SYSTEM
+  mapx<-raster::crop(mapx, bbox1)
+  mapx@bbox <- bbox1@bbox
+  mapx@data <- droplevels(mapx@data)
+  m1 <- mapx
+  m2 <- mapUS52
+  m2 <- sp::spTransform(m2,raster::crs(m1))
+  mapx<-raster::crop(m1,m2)
+  mapx@data <- mapx@data%>%droplevels()
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F)
+  #---------------------
+  mapUS52HUC4 <- mapx
   use_data(mapUS52HUC4, overwrite=T)
 }
 
@@ -476,11 +528,35 @@ if(redoMaps){
   head(mapx@data); unique(mapx$subRegion)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
-  mapUS52 <- mapx
+  # mapx <- metis::mapUS52
+  # Crop Eastern edge of Alaska
+  # Check US49 and US52 Limits:
+  # as.data.frame(sp::bbox(mapUS49))
+  # x (bbox1$min) east limit for US49 is -66.94989
+  # Check limit for Puerto Rico
+  # mapxPR = mapx[mapx@data$subRegion=="PR",]
+  # mapxPR@data <- droplevels(mapxPR@data)
+  # as.data.frame(sp::bbox(mapxPR))
+  # x (bbox1$min) east limit for US49 is -65.22157
+  # Set limit to -65
+  bbox1<-as.data.frame(sp::bbox(mapx)); bbox1
+  bbox1$min;bbox1$max
+  bbox1$min[1]<-bbox1$min[1]
+  bbox1$max[1]<--65
+  bbox1$min;bbox1$max;
+  bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
+  as.data.frame(sp::bbox(bbox1))
+  sp::proj4string(bbox1)<-sp::proj4string(mapx) # ASSIGN COORDINATE SYSTEM
+  mapx<-raster::crop(mapx, bbox1)
+  mapx@bbox <- bbox1@bbox
+  mapx@data <- droplevels(mapx@data)
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F)
+  #---------------------
+  mapUS52 <- mapx
   use_data(mapUS52, overwrite=T)
 }
+
 
 # US 49 (Excluding Alsaka, Hawaii and Puerto Rico)
 #-------------------
@@ -490,7 +566,7 @@ if(redoMaps){
   head(mapx@data); nrow(mapx); mapx@data%>%distinct(subRegion)
   mapUS49<-mapx
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   use_data(mapUS49, overwrite=T)
 }
 
@@ -510,9 +586,35 @@ if(redoMaps){
   head(mapx@data); unique(mapx$subRegion)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
-  mapUS52County <- mapx
+  # mapx <- metis::mapUS52county
+  # Crop Eastern edge of Alaska
+  # Check US49 and US52 Limits:
+  # as.data.frame(sp::bbox(mapUS49))
+  # x (bbox1$min) east limit for US49 is -66.94989
+  # Check limit for Puerto Rico
+  # mapxPR = mapx[mapx@data$subRegion=="PR",]
+  # mapxPR@data <- droplevels(mapxPR@data)
+  # as.data.frame(sp::bbox(mapxPR))
+  # x (bbox1$min) east limit for US49 is -65.22157
+  # Set limit to -65
+  bbox1<-as.data.frame(sp::bbox(mapx)); bbox1
+  bbox1$min;bbox1$max
+  bbox1$min[1]<-bbox1$min[1]
+  bbox1$max[1]<--65
+  bbox1$min;bbox1$max;
+  bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
+  as.data.frame(sp::bbox(bbox1))
+  sp::proj4string(bbox1)<-sp::proj4string(mapx) # ASSIGN COORDINATE SYSTEM
+  mapx<-raster::crop(mapx, bbox1)
+  mapx@bbox <- bbox1@bbox
+  mapx@data <- droplevels(mapx@data)
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(COUNTYCODE=subRegionAlt,
+                  subRegionAlt=paste(subRegion,STATECODE,sep="_")); mapx@data
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F)
+  #---------------------
+  mapUS52County <- mapx
   use_data(mapUS52County, overwrite=T)
 }
 
@@ -528,7 +630,7 @@ if(redoMaps){
   format(object.size(mapx), units="Mb")
   mapUS49County<-mapx
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   use_data(mapUS49County, overwrite=T)
 }
 
@@ -560,7 +662,7 @@ if(redoMaps){
   format(object.size(mapx), units="Mb")
   mapGCAMReg32US52<-mapx
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   use_data(mapGCAMReg32US52, overwrite=T)
 }
 
@@ -589,7 +691,7 @@ if(redoMaps){
   format(object.size(mapx), units="Mb")
   mapCountriesUS52<-mapx
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   use_data(mapCountriesUS52, overwrite=T)
 }
 
@@ -620,7 +722,7 @@ if(redoMaps){
   format(object.size(mapx), units="Mb")
   mapIntersectGCAMBasinCountry<-mapx
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   use_data(mapIntersectGCAMBasinCountry, overwrite=T)
 }
 
@@ -647,7 +749,7 @@ if(redoMaps){
   format(object.size(mapx), units="Mb")
   mapIntersectGCAMBasin32Reg<-mapx
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   use_data(mapIntersectGCAMBasin32Reg, overwrite=T)
 }
 
@@ -665,7 +767,7 @@ if(redoMaps){
   format(object.size(mapx), units="Mb")
   mapGCAMBasinsUS52<-mapx
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   use_data(mapGCAMBasinsUS52, overwrite=T)
 }
 
@@ -680,7 +782,7 @@ if(redoMaps){
   format(object.size(mapx), units="Mb")
   mapGCAMBasinsUS49<-mapx
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   use_data(mapGCAMBasinsUS49, overwrite=T)
 }
 
@@ -695,7 +797,7 @@ if(redoMaps){
   format(object.size(mapx), units="Mb")
   mapGCAMLandUS52<-mapx
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   use_data(mapGCAMLandUS52, overwrite=T)
 }
 
@@ -710,7 +812,7 @@ if(redoMaps){
   format(object.size(mapx), units="Mb")
   mapGCAMLandUS49<-mapx
   sp::plot(mapx)
-  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   use_data(mapGCAMLandUS49, overwrite=T)
 }
 
@@ -832,32 +934,32 @@ if(F){
   # Plotting
   #-------------
   # World
-  metis.map(dataPolygon=metis::mapCountries,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapStates,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=metis::mapCountries,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapStates,fillColumn = "subRegion",labels=F,printFig=F)
 
   # GCAM
-  metis.map(dataPolygon=metis::mapGCAMReg32,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapGCAMBasins,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapGCAMLand,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=metis::mapGCAMReg32,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapGCAMBasins,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapGCAMLand,fillColumn = "subRegion",labels=F,printFig=F)
   # US
-  metis.map(dataPolygon=metis::mapUS52,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapUS52County,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapUS49,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapUS49County,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=metis::mapUS52,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapUS52County,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapUS49,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapUS49County,fillColumn = "subRegion",labels=F,printFig=F)
   # HydroSheds
-  metis.map(dataPolygon=metis::mapHydroShed1,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapHydroShed2,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapHydroShed3,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=metis::mapHydroShed1,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapHydroShed2,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapHydroShed3,fillColumn = "subRegion",labels=F,printFig=F)
   # USGS HUC
-  metis.map(dataPolygon=metis::mapUS52HUC2,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapUS52HUC4,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapUS49HUC2,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapUS49HUC4,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=metis::mapUS52HUC2,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapUS52HUC4,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapUS49HUC2,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapUS49HUC4,fillColumn = "subRegion",labels=F,printFig=F)
   # Merge
-  metis.map(dataPolygon=metis::mapGCAMReg32US52,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=metis::mapGCAMReg32US52,fillColumn = "subRegion",labels=F,printFig=F)
   # Intersections
-  metis.map(dataPolygon=metis::mapIntersectGCAMBasin32Reg,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
-  metis.map(dataPolygon=metis::mapIntersectGCAMBasinCountry,fillColumn = "subRegion",labels=F,printFig=F, facetsON=F)
+  metis.map(dataPolygon=metis::mapIntersectGCAMBasin32Reg,fillColumn = "subRegion",labels=F,printFig=F)
+  metis.map(dataPolygon=metis::mapIntersectGCAMBasinCountry,fillColumn = "subRegion",labels=F,printFig=F)
   # Grids
   metis::grid025
   metis::grid050

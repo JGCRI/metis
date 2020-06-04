@@ -229,12 +229,12 @@ metis.bia<- function(biaInputsFolder = "NA",
   listOfGridCells$gridlon<-round(listOfGridCells$gridlon, digits = 10)
 
   # For GCAM USA replace region and region_code with State names and codes
-  gridUS52 <- metis::metis.gridByPoly(gridDataTables =gridChosen,
+  gridUS52 <- metis::metis.gridByPoly(gridTable =gridChosen,
                                       shape = metis::mapUS52,
                                       colName = "subRegion",
                                       saveFile = F)
 
-  # gridDataTables =gridChosen
+  # gridTable =gridChosen
   # shape = metis::mapUS52
   # colName = "subRegion"
   # saveFile = F

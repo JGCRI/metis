@@ -73,7 +73,7 @@ metis.grid2poly<- function(gridFiles=NULL,
   #----------------
 
   NULL->subRegAreaSum->areaPrcnt->weight->ID->subRegion->region->scenario->
-    param->shpRegCol->subReg->griddataTables->tbl->key->value->.->classPalette->lat->lon->overlapShape->
+    param->shpRegCol->subReg->gridTable->tbl->key->value->.->classPalette->lat->lon->overlapShape->
     gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis -> template_subRegional_mapping -> scenarioGCM ->
     scenarioRCP -> class2 -> scenarioPolicy -> valueTethys -> valueXanthos -> scenarioSSP -> gridCellArea ->
     gridCellAreaRatio -> area -> areaPrcnt -> scenarioMultiA -> scenarioMultiB->nrowOrig->nrowNew
@@ -266,9 +266,9 @@ for(grid_i in gridFiles){
 
           print(paste("Cropping grid to shape file for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
 
-         gridCropped<-tibble::as_tibble(metis.gridByPoly(gridDataTables=gridx%>%dplyr::ungroup(),
+         gridCropped<-tibble::as_tibble(metis.gridByPoly(gridTable=gridx%>%dplyr::ungroup(),
                                                                           shape=shape,colName=subRegCol))
-         # gridDataTables=gridx%>%dplyr::ungroup();shape=shape;colName=subRegCol
+         # gridTable=gridx%>%dplyr::ungroup();shape=shape;colName=subRegCol
 
          print(paste("Grid cropped.",sep=""))
 

@@ -229,7 +229,7 @@ metis.colors <- function(palx=NULL) {
       print(a)
     }}
 
-    metisPalettes <-list(pal_metis=pal_metis,pal_16 = pal_16,al_seq=pal_seq,pal_Basic = pal_Basic,
+    metisPalettes <-list(pal_metis=pal_metis,pal_16 = pal_16,pal_seq=pal_seq,pal_Basic = pal_Basic,
                          pal_hot = pal_hot,pal_green=pal_green,pal_wet=pal_wet,
                          pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,pal_div_BlRd=pal_div_BlRd,
                          pal_div_GnBr=pal_div_GnBr,pal_div_BrGn=pal_div_BrGn,

@@ -8,7 +8,7 @@ test_that("metis.mapsProcess finds correct map for US49 States", {
   data = data.frame(subRegion=c("FL","ID"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^US49$")
@@ -23,7 +23,7 @@ test_that("metis.mapsProcess finds correct map for US49 States Full Names", {
   data = data.frame(subRegion=c("FlorIDa","IDaho"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^US49$")
@@ -38,7 +38,7 @@ test_that("metis.mapsProcess finds correct map for US49 States ignroing case.", 
   data = data.frame(subRegion=c("fl","iD"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^US49$")
@@ -53,7 +53,7 @@ test_that("metis.mapsProcess finds correct map for US49 States unknown regions."
   data = data.frame(subRegion=c("fl","AlienPlanet"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^US49$")
@@ -68,7 +68,7 @@ test_that("metis.mapsProcess finds correct map for US52 States", {
   data = data.frame(subRegion=c("FL","AK"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^US52$")
@@ -83,7 +83,7 @@ test_that("metis.mapsProcess finds correct map for US49 Counties", {
   data = data.frame(subRegion=c("manatee","macon"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^US49County$")
@@ -98,7 +98,7 @@ test_that("metis.mapsProcess finds correct map for US52 Counties", {
   data = data.frame(subRegion=c("manatee","yauco"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^US52County$")
@@ -113,7 +113,7 @@ test_that("metis.mapsProcess finds correct map for US52 + Country", {
   data = data.frame(subRegion=c("FL","Pakistan"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^countriesUS52$")
@@ -128,7 +128,7 @@ test_that("metis.mapsProcess finds correct map for US52 + GCAM 32", {
   data = data.frame(subRegion=c("FL","EU-12"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^GCAM32US52$")
@@ -143,7 +143,7 @@ test_that("metis.mapsProcess finds correct map for State other than US52", {
   data = data.frame(subRegion=c("FL","Punjab"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^states$")
@@ -158,7 +158,7 @@ test_that("metis.mapsProcess finds correct map for State Full Name other than US
   data = data.frame(subRegion=c("florida","Punjab"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^states$")
@@ -173,7 +173,7 @@ test_that("metis.mapsProcess finds correct map for GCAM Basin in US49 only", {
   data = data.frame(subRegion=c("Fraser","Baja_California"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^GCAMBasinsUS49$")
@@ -185,10 +185,10 @@ test_that("metis.mapsProcess finds correct map for GCAM Basin in US52 only", {
 
   testthat::skip_on_cran(); testthat::skip_on_travis()
 
-  data = data.frame(subRegion=c("Fraser","hawaii"),
+  data = data.frame(subRegion=c("Fraser","Pacific_and_Arctic_Coast"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^GCAMBasinsUS52$")
@@ -203,7 +203,7 @@ test_that("metis.mapsProcess finds correct map for GCAM Basin Global", {
   data = data.frame(subRegion=c("Fraser","Indus"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^GCAMBasins$")
@@ -218,7 +218,7 @@ test_that("metis.mapsProcess finds correct map for GCAM Land in US49 only", {
   data = data.frame(subRegion=c("Fraser","Great_Lakes"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^GCAMBasinsUS49$")
@@ -226,14 +226,14 @@ test_that("metis.mapsProcess finds correct map for GCAM Land in US49 only", {
 
 })
 
-test_that("metis.mapsProcess finds correct map for GCAM Basin in US52 only", {
+test_that("metis.mapsProcess finds correct map for GCAM Land in US52 only", {
 
   testthat::skip_on_cran(); testthat::skip_on_travis()
 
-  data = data.frame(subRegion=c("Caribbean","Hawaii"),
+  data = data.frame(subRegion=c("Caribbean","Pacific_and_Arctic_Coast"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^GCAMBasinsUS52$")
@@ -248,7 +248,7 @@ test_that("metis.mapsProcess finds correct map for GCAM Basin Global", {
   data = data.frame(subRegion=c("Fraser","Indus"),
                     x=c(2050),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^GCAMBasins$")
@@ -263,7 +263,7 @@ test_that("metis.mapsProcess plots multiple years and creates animations", {
   data = data.frame(subRegion=c("TX","TX","TX"),
                     x=c(2020,2030,2040),
                     value=c(1,3,5))
-  mapx <- metis.mapsProcess(polygonDataTables=data,folderName = "multiyear"); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data,folderName = "multiyear"); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^US49$")
@@ -279,7 +279,7 @@ test_that("metis.mapsProcess plots multiple scenarios and creates diff plots", {
                     x=c(2050,2050),
                     scenario=c("Ref","Scen1"),
                     value=c(1,3))
-  mapx <- metis.mapsProcess(polygonDataTables=data,scenRef="Ref",folderName = "multiScen"); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data,scenRef="Ref",folderName = "multiScen"); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   tVal3 <- length(unique(mapx$shapeTbl$scenario)[grepl("Diff",unique(mapx$shapeTbl$scenario))])
@@ -298,7 +298,7 @@ test_that("metis.mapsProcess plots multi-facets for multi-classes", {
                     x=c(2030,2030,2050,2050),
                     class=c("classA","classB","classA","classB"),
                     value=c(1,3,2,5))
-  mapx <- metis.mapsProcess(polygonDataTables=data, folderName = "multiClass"); mapx$shapeTbl
+  mapx <- metis.mapsProcess(polygonTable=data, folderName = "multiClass"); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
   testthat::expect_match(tVal1,"^US49$")
@@ -315,7 +315,7 @@ test_that("metis.mapsProcess uses scaleRange vectors correctly for multi scenari
                     x=c(2050,2050,2050,2050),
                     scenario=c("Ref","Scen1","Ref","Scen1"),
                     value=c(10,33,20,65))
-  mapx <- metis.mapsProcess(polygonDataTables=data,scenRef="Ref",folderName = "scaleRangeVec",
+  mapx <- metis.mapsProcess(polygonTable=data,scenRef="Ref",folderName = "scaleRangeVec",
                             scaleRange=c(0,100),
                             scaleRangeDiffAbs = c(5,70),
                             scaleRangeDiffPrcnt = c(100,300)); mapx$shapeTbl
@@ -334,16 +334,44 @@ test_that("metis.mapsProcess uses scaleRange vectors correctly for multi scenari
                     x=c(2050,2050,2050,2050),
                     scenario=c("Ref","Scen1","Ref","Scen1"),
                     value=c(10,33,20,65))
-  mapx <- metis.mapsProcess(polygonDataTables=data,scenRef="Ref",folderName = "scaleRangeDataFrame",
+  mapx <- metis.mapsProcess(polygonTable=data,scenRef="Ref",folderName = "scaleRangeDataFrame",
                             scaleRange=data.frame(param="param",min=0,max=100),
                             scaleRangeDiffAbs = data.frame(param="param",min=5,max=70),
                             scaleRangeDiffPrcnt = data.frame(param="paramx",min=100,max=250)); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
-  tVal3 <- length(unique(mapx$shapeTbl$scenario)[grepl("Diff",unique(mapx$shapeTbl$scenario))])
   testthat::expect_match(tVal1,"^US49$")
   testthat::expect_equal(tVal2,8)
 
 })
+
+test_that("metis.mapsProcess runs with extension and cropToBoundary=T", {
+
+  testthat::skip_on_cran(); testthat::skip_on_travis()
+
+  data = data.frame(subRegion = c("India","China"), value = c(32,54))
+  mapx <-metis.mapsProcess(polygonTable = data,folderName="extensionCropToBoundaryT",
+                           extension = T, cropToBoundary = T);mapx$shapeTbl
+  tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
+  tVal2 <- nrow(mapx$shapeTbl);tVal2
+  testthat::expect_match(tVal1,"^countries$")
+  testthat::expect_equal(tVal2,2)
+
+})
+
+test_that("metis.mapsProcess runs with extension and cropToBoundary=F", {
+
+  testthat::skip_on_cran(); testthat::skip_on_travis()
+
+  data = data.frame(subRegion = c("India","China"), value = c(32,54))
+  mapx <-metis.mapsProcess(polygonTable = data,folderName="extensionCropToBoundaryF",
+                    extension = T);mapx$shapeTbl
+  tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
+  tVal2 <- nrow(mapx$shapeTbl);tVal2
+  testthat::expect_match(tVal1,"^countries$")
+  testthat::expect_equal(tVal2,2)
+
+})
+
 
 

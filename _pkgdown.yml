@@ -1,1 +1,28 @@
-destination: docs
+title: Metis
+template:
+  params:
+    ganalytics: UA-84499524-2
+navbar:
+  type: inverse
+  left:
+    - icon: fa-home
+      href: index.html
+    - text: "Guides"
+      icon: fas fa-book
+      menu:
+      -  text: metis.readgcam
+         href: articles/vignette_metis.readgcam.html
+      -  text: metis.mapsProcess
+         href: articles/vignette_metis.mapsProcess.html
+      -  text: colors, maps and params
+         href: articles/vignette_colorsMapsParams.html
+    - icon: fa-file-code-o
+      text: "Reference"
+      href: reference/index.html
+    - icon: fa-newspaper-o
+      text: "News"
+      href: news/index.html
+    - text: cheatsheet
+      href: https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf
+toc:
+  depth: 2

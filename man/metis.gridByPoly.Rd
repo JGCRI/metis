@@ -5,7 +5,7 @@
 \title{metis.gridByPoly}
 \usage{
 metis.gridByPoly(
-  gridDataTables = NULL,
+  gridTable = NULL,
   shape = NULL,
   shapeFolder = NULL,
   shapeFile = NULL,
@@ -17,7 +17,7 @@ metis.gridByPoly(
 )
 }
 \arguments{
-\item{gridDataTables}{Default = NULL. Full path to grid file.}
+\item{gridTable}{Default = NULL. Full path to grid file.}
 
 \item{shape}{Default = NULL,}
 

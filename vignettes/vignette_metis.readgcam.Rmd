@@ -1,0 +1,57 @@
+---
+title: "metis.readgcam"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{metis.readgcam}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+<!-------------------------->
+<!-------------------------->
+# Key Links
+<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+
+- Github: https://github.com/JGCRI/metis
+- Webpage: https://jgcri.github.io/metis/
+- Cheatsheet: https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf
+
+
+
+<!-------------------------->
+<!-------------------------->
+# Folder Structure
+<p align="center"> <img src="vignettefigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+
+<p align="center"> <img src="vignettefigs/readGCAM_structure.PNG"></p>
+<p align="center"> metis.mapsProcess() Folder structure </p>
+
+
+
+<!-------------------------->
+<!-------------------------->
+# Read GCAM Data
+<p align="center"> <img src="vignettefigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+
+For a full list of available params for this function please see [colors, maps and params](https://jgcri.github.io/metis/articles/vignette_colorsMapsParams/#params-1.html)
+
+```{r, eval=F}
+library(metis)
+
+
+dataGCAM <- metis.readgcam (
+       #gcamdatabase = “Path_to_GCAMdatabase”,
+       dataProjFile = metis::exampleGCAMProj)
+
+df <- dataGCAM$data
+dfParam <- dataGCAM$dataAggParam
+dfClass1 <- dataGCAM$dataAggClass1
+```  
+

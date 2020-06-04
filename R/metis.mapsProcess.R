@@ -5,8 +5,8 @@
 #'
 #' @keywords charts, diffplots
 #' @return Returns the formatted data used to produce chart
-#' @param polygonDataTables Default = NULL,
-#' @param gridDataTables Default = NULL,
+#' @param polygonTable Default = NULL,
+#' @param gridTable Default = NULL,
 #' @param dirOutputs Default = paste(getwd(),"/outputs",sep=""),
 #' @param folderName Default ="folderNameDefault",
 #' @param xRange Default ="All",
@@ -17,6 +17,7 @@
 #' @param subRegShpFolder Default = paste(getwd(),"/dataFiles/gis/admin_gadm36",sep=""),
 #' @param subRegShpFile Default = paste("gadm36_1",sep=""),
 #' @param subRegCol Default ="subRegion",
+#' @param subRegType Default =NULL
 #' @param nameAppend Default =""
 #' @param legendOutsideSingle Default =F, Single plots by default have legends inside. This can be moved out if wanted.
 #' @param legendOutsidePosition Default = NULL, # "right","left","top","bottom", "center"
@@ -88,8 +89,8 @@
 #' @export
 
 
-metis.mapsProcess<-function(polygonDataTables=NULL,
-                           gridDataTables=NULL,
+metis.mapsProcess<-function(polygonTable=NULL,
+                           gridTable=NULL,
                            dirOutputs=paste(getwd(),"/outputs",sep=""),
                            folderName="",
                            xRange="All",
@@ -99,6 +100,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            subRegShpFolder=NULL,
                            subRegShpFile=NULL,
                            subRegCol="subRegion",
+                           subRegType =NULL,
                            nameAppend="",
                            legendOutsideSingle=T,
                            legendOutsidePosition=NULL,
@@ -118,7 +120,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            boundaryRegShpFile=NULL,
                            boundaryRegCol="subRegion",
                            boundaryRegionsSelect=NULL,
-                           cropToBoundary=T,
+                           cropToBoundary=F,
                            extendedLabels =F,
                            extendedFillColor="grey75",
                            extendedBGColor="lightblue1",
@@ -158,7 +160,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            fillcolorNA="gray",
                            fillshowNA=NA,
                            fillcolorNULL="gray",
-                           legendSingleColorOn=F,
+                           legendSingleColorOn=NULL,
                            legendSingleValue=NULL,
                            legendSingleColor="white",
                            facetCols=4,
@@ -169,8 +171,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                            classPaletteDiff = "pal_div_BluRd"
                            ){
 
-  # polygonDataTables=NULL
-  # gridDataTables=NULL
+  # polygonTable=NULL
+  # gridTable=NULL
   # dirOutputs=paste(getwd(),"/outputs",sep="")
   # folderName=""
   # xRange="All"
@@ -247,15 +249,16 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   # legendDigitsOverride=NULL
   # classPalette = NULL
   # classPaletteDiff = "pal_div_BrGn"
-  # cropToBoundary=T
+  # cropToBoundary=F
 
+  print("Starting metis.mapsProcess...")
 
   #------------------
   # Initialize variables to remove binding errors
   # -----------------
 
   if(T){
-  NULL->lat->lon->param->region->scenario->subRegion->subRegType -> value ->
+  NULL->lat->lon->param->region->scenario->subRegion->value ->
     x->year->gridID->underLayer->maxScale->minScale->
     valueDiff->rowid->catParam->include->Var1->Var2->Var3->maxX->minX->shapeTblScenMultiABRef->
     shapeTblDiff -> gridTblDiff -> shapeTblMultiOrig->countCheck-> multiFacetCol -> multiFacetRow->classPaletteOrig->
@@ -274,6 +277,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   boundaryRegShpFileOrig <- boundaryRegShpFile
   boundaryRegShpFolderOrig <- boundaryRegShpFolder
   animateOnOrig <- animateOn
+  legendSingleColorOnOrig <- legendSingleColorOn
+  if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=F}
 
 
   dirOutputsX <- dirOutputs;
@@ -320,6 +325,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       data<-data%>%dplyr::mutate(scenario=as.character(scenario),scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
     if(!"x"%in%names(data)){if("year"%in%names(data)){
       data<-data%>%dplyr::mutate(x=year)}else{data<-data%>%dplyr::mutate(x="x")}}
+    if(any(grepl("\\<subregion\\>",names(data),ignore.case = T))){
+      data <- data %>% dplyr::rename(!!"subRegion" := (names(data)[grepl("\\<subregion\\>",names(data),ignore.case = T)])[1])}
     if(!any(grepl("\\<subregtype\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(subRegType="subRegType")}else{
       data <- data %>% dplyr::rename(!!"subRegType" := (names(data)[grepl("\\<subregtype\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(subRegType=as.character(subRegType),subRegType=dplyr::case_when(is.na(subRegType)~"subRegType",TRUE~subRegType))}
@@ -358,24 +365,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
 
-  if(is.null(gridDataTables) & is.null(polygonDataTables)){
-    stop ("Both gridDataTables and polygonDataTables are Null. Need to provide atleast one of the two.")
+  if(is.null(gridTable) & is.null(polygonTable)){
+    stop ("Both gridTable and polygonTable are Null. Need to provide atleast one of the two.")
   }
 
-
-  # Auto Map finding function
-  #------------------------
-
-  # Renaming subregions in mapStates so that states with USPS can be plotted with states with full names in other countries
-  mapStatesx <- metis::mapStates
-  mapStatesx@data <- mapStatesx@data %>%
-    dplyr::mutate(
-      subRegionAlt = as.character(subRegionAlt),
-      subRegion = as.character(subRegion),
-      subRegion1=subRegionAlt,subRegionAlt=subRegion, subRegion=subRegion1,
-      subRegion=dplyr::case_when(region !="USA"~ subRegionAlt,
-                                                TRUE~subRegion))%>%
-    dplyr::select(-subRegion1);
 
   } # Close custom functions
 
@@ -403,11 +396,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   gridTbl<-tibble::tibble()
 
 
-  if(!is.null(gridDataTables)){
+  if(!is.null(gridTable)){
 
-    if(all(!class(gridDataTables) %in% c("tbl_df","tbl","data.frame"))){
+    if(all(!class(gridTable) %in% c("tbl_df","tbl","data.frame"))){
 
-      for(grid_i in gridDataTables){
+      for(grid_i in gridTable){
         if(file.exists(grid_i)){
           gridTblNew<-data.table::fread(paste(grid_i),encoding="Latin-1")%>%tibble::as_tibble()
           gridTbl<-dplyr::bind_rows(gridTbl,gridTblNew)
@@ -422,9 +415,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
           gridTbl<-gridTbl%>%dplyr::left_join(map,by=c("param","units","class"))
         }}
 
-    }else{gridTbl<-gridDataTables}
+    }else{gridTbl<-gridTable}
 
-  }else{gridTbl=gridDataTables}
+  }else{gridTbl=gridTable}
 
 
   if(!is.null(gridTbl)){
@@ -481,11 +474,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
   shapeTbl<-tibble::tibble()
 
-  if(!is.null(polygonDataTables)){
+  if(!is.null(polygonTable)){
 
-    if(all(!class(polygonDataTables) %in% c("tbl_df","tbl","data.frame"))){
-      if(class(polygonDataTables)!="character"){stop("polygonDataTables neither .csv file path nor dataframe or tibble")}
-      for(i in polygonDataTables){
+    if(all(!class(polygonTable) %in% c("tbl_df","tbl","data.frame"))){
+      if(class(polygonTable)!="character"){stop("polygonTable neither .csv file path nor dataframe or tibble")}
+      for(i in polygonTable){
         if(file.exists(i)){
           shapeTblNew<-data.table::fread(paste(i),encoding="Latin-1")%>%tibble::as_tibble()
 
@@ -498,12 +491,12 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
           shapeTbl<-dplyr::bind_rows(shapeTbl,shapeTblNew)
 
-          if(!"subRegion" %in% names(shapeTbl)){stop(paste("SubRegCol: subRegion not present in polygonDataTables ",i,sep=""))}
+          if(!"subRegion" %in% names(shapeTbl)){stop(paste("Column subRegion not present in polygonTable ",i,sep=""))}
 
         } else {stop(paste(i," does not exist"))}
       }
 
-    }else{shapeTbl<-polygonDataTables}}
+    }else{shapeTbl<-polygonTable}}
 
 
   if(!is.null(shapeTbl)){
@@ -531,7 +524,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                                                          classPalette=="pal_metis"~"pal_hot",
                                                                          classPalette=="pal_16"~"pal_hot",
                                                                          TRUE~classPalette),
-                                            subRegion=as.character(subRegion))
+                                            !!subRegCol:=as.character(get(subRegCol)))
       }
 
 
@@ -559,8 +552,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
       # Mutate shapeTbl data from GCAM to match shapefile subRegions
         shapeTbl <- shapeTbl %>%
-          dplyr::mutate(subRegion=gsub("-","_",subRegion),
-                        subRegion=gsub("_Basin","",subRegion))
+          dplyr::mutate(!!subRegCol:=gsub("-","_",get(subRegCol)),
+                        !!subRegCol:=gsub("_Basin","",get(subRegCol)))
 
     if(any(paramsSelect!="All")){
       if(any(paramsSelect %in% unique(shapeTbl$param))){
@@ -793,7 +786,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     TRUE~"MultiANone"),
                     multiFacetRow=dplyr::case_when(multiFacetRow!="multiFacetRow"~multiFacetRow,
                                             TRUE~"MultiBNone"))
-    shapeTbl<-shapeTbl%>%dplyr::mutate(subRegion=as.character(subRegion))
+    shapeTbl<-shapeTbl%>%dplyr::mutate(!!subRegCol:=as.character(get(subRegCol)))
     shapeTbl<-droplevels(shapeTbl)
     }
   }
@@ -806,7 +799,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                               TRUE~"MultiANone"),
                       multiFacetRow=dplyr::case_when(multiFacetRows!="multiFacetRow"~!!as.name(multiFacetRows),
                                               TRUE~"MultiBNone"))
-      shapeTblScenMultiABRef<-shapeTblScenMultiABRef%>%dplyr::mutate(subRegion=as.character(subRegion))
+      shapeTblScenMultiABRef<-shapeTblScenMultiABRef%>%dplyr::mutate(!!subRegCol:=as.character(get(subRegCol)))
       shapeTblScenMultiABRef<-droplevels(shapeTblScenMultiABRef)
     }
   }
@@ -819,7 +812,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                                               TRUE~"MultiANone"),
                       multiFacetRow=dplyr::case_when(multiFacetRows!="multiFacetRow"~!!as.name(multiFacetRows),
                                               TRUE~"MultiBNone"))
-      shapeTblMultiOrig<-shapeTblMultiOrig%>%dplyr::mutate(subRegion=as.character(subRegion))
+      shapeTblMultiOrig<-shapeTblMultiOrig%>%dplyr::mutate(!!subRegCol:=as.character(get(subRegCol)))
       shapeTblMultiOrig<-droplevels(shapeTblMultiOrig)
     }
   }
@@ -923,7 +916,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
   #--------------------
-  # Assign Boundary Regions Select to zoom to relevant regions
+  # Crop To Boundary
   #--------------------
 
   if(cropToBoundary){
@@ -935,6 +928,25 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
       }
     }
   }
+
+  #------------------
+  # Rename SubRegions and SubRegtype
+  #------------------
+
+  if(T){
+    if(!is.null(shapeTbl)){
+      if(nrow(shapeTbl)>0){
+        if(!is.null(subRegCol)){
+        shapeTbl <- shapeTbl %>% dplyr::rename(subRegion=as.name(subRegCol))
+        }
+        if(!is.null(subRegType)){
+          shapeTbl <- shapeTbl %>% dplyr::mutate(subRegType=!!subRegType)
+        }
+
+      }
+    }
+  }
+
 
   # -------------------
   # Create Raster Plots
@@ -1026,7 +1038,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     # If only boundary regionsSelect have been chosen then try and find a shapefile with those regions
                     if(!is.null(boundaryRegionsSelect)){
                       mapFound <- metis.mapFind(data.frame(subRegion=boundaryRegionsSelect))
-                      boundaryRegShapeOrig <- mapFound$subRegShapeFound
+                      boundaryRegShape <- mapFound$subRegShapeFound
+                      boundaryRegionsSelect <- unique(mapFound$dataTblFound$subRegion)
+                    }else{
+                      mapFound <- metis.mapFind(data.frame(subRegion=unique(shapeTbl$subRegion)))
+                      boundaryRegShape <- mapFound$subRegShapeFound
                     }
                   }
                 }
@@ -1069,10 +1085,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
             #----------------
             # Create Boundary and subRegional shapefiles
             #---------------
-            if(!is.null(boundaryRegShapeOrig) & !is.null(subRegShape)){
+            if(!is.null(boundaryRegShape) & !is.null(subRegShape)){
               if(!is.null(boundaryRegionsSelect)){
-                if(any(boundaryRegionsSelect %in% unique(boundaryRegShapeOrig@data[[boundaryRegCol]]))){
-                  boundaryRegShapeLimits <- boundaryRegShapeOrig[boundaryRegShapeOrig@data[[boundaryRegCol]] %in% boundaryRegionsSelect,]
+                if(any(boundaryRegionsSelect %in% unique(boundaryRegShape@data[[boundaryRegCol]]))){
+                  boundaryRegShapeLimits <- boundaryRegShape[boundaryRegShape@data[[boundaryRegCol]] %in% boundaryRegionsSelect,]
                   boundaryRegShapeLimits@data <- droplevels(boundaryRegShapeLimits@data)
                   bbox1<-as.data.frame(sp::bbox(boundaryRegShapeLimits))
                   bbox1$min;bbox1$max
@@ -1085,8 +1101,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   bbox1$min;bbox1$max;
                   bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
                   sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
-                  boundaryRegShapeOrig <- sp::spTransform(boundaryRegShapeOrig,sp::CRS(projX))
-                  boundaryRegShape<-raster::crop(boundaryRegShapeOrig, bbox1)
+                  boundaryRegShape <- sp::spTransform(boundaryRegShape,sp::CRS(projX))
+                  boundaryRegShape<-raster::crop(boundaryRegShape, bbox1)
                   boundaryRegShape@bbox <- bbox1@bbox
                   boundaryRegShape@data <- droplevels(boundaryRegShape@data)
                   print("Map cropped to regions with data. To plot full map extent set crop2Boundary = F.")
@@ -1097,8 +1113,6 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 } else {
                   print(paste("boundaryRegionsSelect chosen are not available in the boundaryRegShapeFile.",paste(boundaryRegionsSelect,collapse=", "),sep=""))}
               }else{
-                print("Map cropped to selected boundaryRegShape")
-                print("Scale will still include all data from original subRegShape extents")
                 boundaryRegShape <- sp::spTransform(boundaryRegShape,raster::crs(subRegShape))
                 subRegShape <- raster::crop(subRegShape,boundaryRegShape)
                 subRegShape@data <- droplevels(subRegShape@data)
@@ -1133,14 +1147,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   bbox1$min;bbox1$max
                   rangeX<-abs(range(bbox1$min[1],bbox1$max[1])[2]-range(bbox1$min[1],bbox1$max[1])[1])
                   rangeY<-abs(range(bbox1$min[2],bbox1$max[2])[2]-range(bbox1$min[2],bbox1$max[2])[1])
-                  bbox1$min[1]<-min(180,max(-180,(-rangeX*expandPercent/100)+bbox1$min[1]));
-                  bbox1$min[2]<-min(90,max(-90,(-rangeY*expandPercent/100)+bbox1$min[2]));
-                  bbox1$max[1]<-max(-180,min(180,(rangeX*expandPercent/100)+bbox1$max[1]));
-                  bbox1$max[2]<-max(-90,min(90,(rangeY*expandPercent/100)+bbox1$max[2]));
+                  bbox1$min[1]<-min(180,max(-180,(-rangeX*expandPercent_i/100)+bbox1$min[1]));
+                  bbox1$min[2]<-min(90,max(-90,(-rangeY*expandPercent_i/100)+bbox1$min[2]));
+                  bbox1$max[1]<-max(-180,min(180,(rangeX*expandPercent_i/100)+bbox1$max[1]));
+                  bbox1$max[2]<-max(-90,min(90,(rangeY*expandPercent_i/100)+bbox1$max[2]));
                   bbox1$min;bbox1$max;
                   bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
                   sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
-                  boundaryRegShapeOrig <- sp::spTransform(boundaryRegShapeOrig,sp::CRS(projX))
+                  boundaryRegShape <- sp::spTransform(boundaryRegShape,sp::CRS(projX))
                   print("Creating extended boundary...")
                   extendedShape<-raster::crop(extendedBoundary, bbox1)
                   extendedShape@bbox <- bbox1@bbox
@@ -1166,7 +1180,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
           if(!is.null(gridTbl) & !is.null(shape)){
             if(nrow(gridTbl)>0){
 
-              gridTbl <- metis.gridByPoly(gridDataTables = gridTbl,shape=shape,colName=subRegCol)
+              gridTbl <- metis.gridByPoly(gridTable = gridTbl,shape=shape,colName=subRegCol)
 
             }}
 
@@ -1198,6 +1212,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 scaleRange_i=scaleRange
               }
             }
+
+            if(is.null(legendSingleColorOnOrig)){
+              if(min(range(gridTbl$value))<0 & max(range(gridTbl$value))>0){
+                legendSingleColorOn=T}}else{legendSingleColorOn=legendSingleColorOnOrig}
 
             if(!is.null(scaleRange_i)){
                if(any(param_i %in% unique(scaleRange_i$param))){
@@ -1515,6 +1533,9 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   }
                 }
 
+                if(is.null(legendSingleColorOnOrig)){
+                  if(min(range(datax$value))<0 & max(range(datax$value))>0){
+                    legendSingleColorOn=T}}else{legendSingleColorOn=legendSingleColorOnOrig}
 
                 if(!is.null(scaleRange_i)){
                    if(any(param_i %in% unique(scaleRange_i$param))){
@@ -1699,6 +1720,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       scaleRange_i=scaleRange
                     }
                   }
+
+                  if(is.null(legendSingleColorOnOrig)){
+                    if(min(range(datax$value))<0 & max(range(datax$value))>0){
+                      legendSingleColorOn=T}}else{legendSingleColorOn=legendSingleColorOnOrig}
 
                   if(!is.null(scaleRange_i)){
                      if(any(param_i %in% unique(scaleRange_i$param))){
@@ -1940,7 +1965,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                          # If only boundary regionsSelect have been chosen then try and find a shapefile with those regions
                           if(!is.null(boundaryRegionsSelect)){
                             mapFound <- metis.mapFind(data.frame(subRegion=boundaryRegionsSelect))
-                            boundaryRegShapeOrig <- mapFound$subRegShapeFound
+                            boundaryRegShape <- mapFound$subRegShapeFound
+                            boundaryRegionsSelect <- unique(mapFound$dataTblFound$subRegion)
+                          }else{
+                            mapFound <- metis.mapFind(data.frame(subRegion=unique(shapeTbl$subRegion)))
+                            boundaryRegShape <- mapFound$subRegShapeFound
                           }
                         }
                       }
@@ -1986,11 +2015,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # Create Boundary and subRegional shapefiles
                   #---------------
 
-
-                  if(!is.null(boundaryRegShapeOrig) & !is.null(subRegShape)){
+                  if(!is.null(boundaryRegShape) & !is.null(subRegShape)){
                     if(!is.null(boundaryRegionsSelect)){
-                      if(any(boundaryRegionsSelect %in% unique(boundaryRegShapeOrig@data[[boundaryRegCol]]))){
-                        boundaryRegShapeLimits <- boundaryRegShapeOrig[boundaryRegShapeOrig@data[[boundaryRegCol]] %in% boundaryRegionsSelect,]
+                      if(any(boundaryRegionsSelect %in% unique(boundaryRegShape@data[[boundaryRegCol]]))){
+                        boundaryRegShapeLimits <- boundaryRegShape[boundaryRegShape@data[[boundaryRegCol]] %in% boundaryRegionsSelect,]
                         boundaryRegShapeLimits@data <- droplevels(boundaryRegShapeLimits@data)
                         bbox1<-as.data.frame(sp::bbox(boundaryRegShapeLimits))
                         bbox1$min;bbox1$max
@@ -2003,8 +2031,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                         bbox1$min;bbox1$max;
                         bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
                         sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
-                        boundaryRegShapeOrig <- sp::spTransform(boundaryRegShapeOrig,sp::CRS(projX))
-                        boundaryRegShape<-raster::crop(boundaryRegShapeOrig, bbox1)
+                        boundaryRegShape <- sp::spTransform(boundaryRegShape,sp::CRS(projX))
+                        boundaryRegShape<-raster::crop(boundaryRegShape, bbox1)
                         boundaryRegShape@bbox <- bbox1@bbox
                         boundaryRegShape@data <- droplevels(boundaryRegShape@data)
                         print("Map cropped to regions with data. To plot full map extent set crop2Boundary = F.")
@@ -2015,8 +2043,6 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
                       } else {print(paste("boundaryRegionsSelect chosen are not available in the boundaryRegShapeFile.",paste(boundaryRegionsSelect,collapse=", "),sep=""))}
                     }else{
-                      print("Map cropped to selected boundaryRegShape")
-                      print("Scale will still include all data from original subRegShape extents")
                       boundaryRegShape <- sp::spTransform(boundaryRegShape,raster::crs(subRegShape))
                       subRegShape <- raster::crop(subRegShape,boundaryRegShape)
                       subRegShape@data <- droplevels(subRegShape@data)
@@ -2051,14 +2077,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                         bbox1$min;bbox1$max
                         rangeX<-abs(range(bbox1$min[1],bbox1$max[1])[2]-range(bbox1$min[1],bbox1$max[1])[1])
                         rangeY<-abs(range(bbox1$min[2],bbox1$max[2])[2]-range(bbox1$min[2],bbox1$max[2])[1])
-                        bbox1$min[1]<-min(180,max(-180,(-rangeX*expandPercent/100)+bbox1$min[1]));
-                        bbox1$min[2]<-min(90,max(-90,(-rangeY*expandPercent/100)+bbox1$min[2]));
-                        bbox1$max[1]<-max(-180,min(180,(rangeX*expandPercent/100)+bbox1$max[1]));
-                        bbox1$max[2]<-max(-90,min(90,(rangeY*expandPercent/100)+bbox1$max[2]));
+                        bbox1$min[1]<-min(180,max(-180,(-rangeX*expandPercent_i/100)+bbox1$min[1]));
+                        bbox1$min[2]<-min(90,max(-90,(-rangeY*expandPercent_i/100)+bbox1$min[2]));
+                        bbox1$max[1]<-max(-180,min(180,(rangeX*expandPercent_i/100)+bbox1$max[1]));
+                        bbox1$max[2]<-max(-90,min(90,(rangeY*expandPercent_i/100)+bbox1$max[2]));
                         bbox1$min;bbox1$max;
                         bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
                         sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
-                        boundaryRegShapeOrig <- sp::spTransform(boundaryRegShapeOrig,sp::CRS(projX))
+                        boundaryRegShape <- sp::spTransform(boundaryRegShape,sp::CRS(projX))
                         print("Creating extended boundary...")
                         extendedShape<-raster::crop(extendedBoundary, bbox1)
                         extendedShape@bbox <- bbox1@bbox
@@ -2127,6 +2153,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                         scaleRange_i=scaleRange
                       }
                     }
+
+                    if(is.null(legendSingleColorOnOrig)){
+                      if(min(range(shapeTblMultxScenMultiABRefRef$value))<0 & max(range(shapeTblMultxScenMultiABRefRef$value))>0){
+                        legendSingleColorOn=T}}else{legendSingleColorOn=legendSingleColorOnOrig}
+
 
                     if(!is.null(scaleRange_i)){
                        if(any(param_i %in% unique(scaleRange_i$param))){
@@ -2203,6 +2234,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                           scaleRange_i=scaleRange
                         }
                       }
+
+                      if(is.null(legendSingleColorOnOrig)){
+                      if(min(range(ScenMultiABRefcomb$value))<0 & max(range(ScenMultiABRefcomb$value))>0){
+                        legendSingleColorOn=T}}else{legendSingleColorOn=legendSingleColorOnOrig}
 
                       if(!is.null(scaleRange_i)){
                          if(any(param_i %in% unique(scaleRange_i$param))){
@@ -2642,6 +2677,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       #   }
                       # }
 
+                      # if(is.null(legendSingleColorOnOrig)){
+                      #   if(min(range(shapeTblMultxDiff$value))<0 & max(range(shapeTblMultxDiff$value))>0){
+                      #     legendSingleColorOn=T}}else{legendSingleColorOn=legendSingleColorOnOrig}
+
 
 #                     if(!is.null(scaleRange_i)){
 #                        if(any(param_i %in% unique(scaleRange_i$param))){
@@ -2957,9 +2996,13 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   # If only boundary regionsSelect have been chosen then try and find a shapefile with those regions
                   if(!is.null(boundaryRegionsSelect)){
                     mapFound <- metis.mapFind(data.frame(subRegion=boundaryRegionsSelect))
-                    boundaryRegShapeOrig <- mapFound$subRegShapeFound
+                    boundaryRegShape <- mapFound$subRegShapeFound
+                    boundaryRegionsSelect <- unique(mapFound$dataTblFound$subRegion)
                     print(paste("Boundary region shape automatically set to: ",
                                 mapFound$subRegShapeTypeFound, sep=""))
+                  }else{
+                    mapFound <- metis.mapFind(data.frame(subRegion=unique(shapeTbl$subRegion)))
+                    boundaryRegShape <- mapFound$subRegShapeFound
                   }
                 }
                 }
@@ -3005,10 +3048,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 # Create Boundary and subRegional shapefiles
                 #---------------
 
-                if(!is.null(boundaryRegShapeOrig) & !is.null(subRegShape)){
+                if(!is.null(boundaryRegShape) & !is.null(subRegShape)){
                   if(!is.null(boundaryRegionsSelect)){
-                    if(any(boundaryRegionsSelect %in% unique(boundaryRegShapeOrig@data[[boundaryRegCol]]))){
-                      boundaryRegShapeLimits <- boundaryRegShapeOrig[boundaryRegShapeOrig@data[[boundaryRegCol]] %in% boundaryRegionsSelect,]
+                    if(any(boundaryRegionsSelect %in% unique(boundaryRegShape@data[[boundaryRegCol]]))){
+                      boundaryRegShapeLimits <- boundaryRegShape[boundaryRegShape@data[[boundaryRegCol]] %in% boundaryRegionsSelect,]
                       boundaryRegShapeLimits@data <- droplevels(boundaryRegShapeLimits@data)
                       bbox1<-as.data.frame(sp::bbox(boundaryRegShapeLimits))
                       bbox1$min;bbox1$max
@@ -3021,8 +3064,8 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       bbox1$min;bbox1$max;
                       bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
                       sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
-                      boundaryRegShapeOrig <- sp::spTransform(boundaryRegShapeOrig,sp::CRS(projX))
-                      boundaryRegShape<-raster::crop(boundaryRegShapeOrig, bbox1)
+                      boundaryRegShape <- sp::spTransform(boundaryRegShape,sp::CRS(projX))
+                      boundaryRegShape<-raster::crop(boundaryRegShape, bbox1)
                       boundaryRegShape@bbox <- bbox1@bbox
                       boundaryRegShape@data <- droplevels(boundaryRegShape@data)
                       print("Map cropped to regions with data. To plot full map extent set crop2Boundary = F.")
@@ -3033,8 +3076,6 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     } else {
                       print(paste("boundaryRegionsSelect chosen are not available in the boundaryRegShapeFile.",paste(boundaryRegionsSelect,collapse=", "),sep=""))}
                   }else{
-                    print("Map cropped to selected boundaryRegShape")
-                    print("Scale will still include all data from original subRegShape extents")
                     boundaryRegShape <- sp::spTransform(boundaryRegShape,raster::crs(subRegShape))
                     subRegShape <- raster::crop(subRegShape,boundaryRegShape)
                     subRegShape@data <- droplevels(subRegShape@data)
@@ -3067,14 +3108,14 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                       bbox1$min;bbox1$max
                       rangeX<-abs(range(bbox1$min[1],bbox1$max[1])[2]-range(bbox1$min[1],bbox1$max[1])[1])
                       rangeY<-abs(range(bbox1$min[2],bbox1$max[2])[2]-range(bbox1$min[2],bbox1$max[2])[1])
-                      bbox1$min[1]<-min(180,max(-180,(-rangeX*expandPercent/100)+bbox1$min[1]));
-                      bbox1$min[2]<-min(90,max(-90,(-rangeY*expandPercent/100)+bbox1$min[2]));
-                      bbox1$max[1]<-max(-180,min(180,(rangeX*expandPercent/100)+bbox1$max[1]));
-                      bbox1$max[2]<-max(-90,min(90,(rangeY*expandPercent/100)+bbox1$max[2]));
+                      bbox1$min[1]<-min(180,max(-180,(-rangeX*expandPercent_i/100)+bbox1$min[1]));
+                      bbox1$min[2]<-min(90,max(-90,(-rangeY*expandPercent_i/100)+bbox1$min[2]));
+                      bbox1$max[1]<-max(-180,min(180,(rangeX*expandPercent_i/100)+bbox1$max[1]));
+                      bbox1$max[2]<-max(-90,min(90,(rangeY*expandPercent_i/100)+bbox1$max[2]));
                       bbox1$min;bbox1$max;
                       bbox1<-methods::as(raster::extent(as.vector(t(bbox1))), "SpatialPolygons")
                       sp::proj4string(bbox1)<-sp::CRS(projX) # ASSIGN COORDINATE SYSTEM
-                      boundaryRegShapeOrig <- sp::spTransform(boundaryRegShapeOrig,sp::CRS(projX))
+                      boundaryRegShape <- sp::spTransform(boundaryRegShape,sp::CRS(projX))
                       print("Creating extended boundary...")
                       extendedShape<-raster::crop(extendedBoundary, bbox1)
                       extendedShape@bbox <- bbox1@bbox
@@ -3137,6 +3178,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                 }
               }
 
+              if(is.null(legendSingleColorOnOrig)){
+                if(min(range(shapeTbl$value))<0 & max(range(shapeTbl$value))>0){
+                  legendSingleColorOn=T}}else{legendSingleColorOn=legendSingleColorOnOrig}
+
+
               if(!is.null(scaleRange_i)){
                 if(any(param_i %in% unique(scaleRange_i$param))){
                 if(max(animScalePoly) < (scaleRange_i %>% dplyr::filter(param==param_i))$maxScale){
@@ -3185,8 +3231,7 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                   fillPalette<-as.character(unique(datax$classPalette))
 
                   datax<-datax%>%dplyr::select(subRegion,class,value)%>%
-                    dplyr::distinct(subRegion,class,.keep_all = TRUE) %>%
-                    tidyr::spread(key=class,value=value)
+                   tidyr::spread(key=class,value=value)
 
 #                   # Add in any missing subRegions to datax
 #                   datax1<-expand.grid(unique(shape@data$subRegion)[!unique(shape@data$subRegion) %in% unique(datax$subRegion)]) %>%
@@ -3495,6 +3540,10 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
                     }
                   }
 
+                  if(is.null(legendSingleColorOnOrig)){
+                    if(min(range(datax$value))<0 & max(range(datax$value))>0){
+                      legendSingleColorOn=T}}else{legendSingleColorOn=legendSingleColorOnOrig}
+
                   if(!is.null(scaleRange_i)){
                      if(any(param_i %in% unique(scaleRange_i$param))){
                       if(max(animScalePoly) < (scaleRange_i %>% dplyr::filter(param==param_i))$maxScale){
@@ -3529,7 +3578,6 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
 
 
                   datax<-datax%>%dplyr::select(subRegion,x,value)%>%
-                    dplyr::distinct(subRegion,x,.keep_all = TRUE) %>%
                     tidyr::spread(key=x,value=value)
 
                   # # Add in any missing subRegions to datax
@@ -3835,7 +3883,6 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
   } # Close if shapeTbl is Null
   } # Close create polygon plots
 
-  print("metis.mapsProcess run completed.")
 
   if(!is.null(gridTblReturn)){
     for(c_i in c("group","query","mapPalette")){
@@ -3853,7 +3900,11 @@ metis.mapsProcess<-function(polygonDataTables=NULL,
     }
   }
 
-  return(list(gridTbl=gridTblReturn,
-              shapeTbl=shapeTblReturn))
+  listx <-list(gridTbl=gridTblReturn,
+               shapeTbl=shapeTblReturn)
+
+  print("metis.mapsProcess run completed.")
+
+  invisible(listx)
 
 } # close function

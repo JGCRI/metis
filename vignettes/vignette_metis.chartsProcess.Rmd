@@ -1,0 +1,11 @@
+---
+title: "metis.chartsProcess"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{metis.chartsProcess}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+# Structure
