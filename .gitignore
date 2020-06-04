@@ -1,5 +1,4 @@
 Meta
-doc
 .Rproj.user
 .Rhistory
 .RData
@@ -20,5 +19,5 @@ outputs
 **/papers/**/*.doc
 **/papers/**/*.docx
 **/papers/**/*.html
-inst/doc
-docs
+
+
