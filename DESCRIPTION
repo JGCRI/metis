@@ -3,7 +3,7 @@ Title: Multi-Scale Multi-Sector Analysis
 Version: 1.0.0
 Authors@R: c(person("Zarrar", "Khan", email = "zarrar.khan@pnnl.gov", role = c("aut", "cre"),
 		   comment = c(ORCID ="0000-0002-8147-8553")),
-		   person("Tom", "Wild", role = c("aut")),
+		   person("Tom", "Wild", role = c("aut"),comment = c(ORCID ="0000-0002-8147-8553")),
 		   person("Chris", "Vernon", role = c("aut")))
 Description: Package to process water-energy-land nexus data to different sub-regional levels.
 URL: https://github.com/JGCRI/metis

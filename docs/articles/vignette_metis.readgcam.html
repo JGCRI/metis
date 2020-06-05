@@ -152,17 +152,51 @@ metis.mapsProcess() Folder structure
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
-<p>For a full list of available params for this function please see <a href="https://jgcri.github.io/metis/articles/vignette_colorsMapsParams/#params-1.html">colors, maps and params</a></p>
+<p>For a full list of available params for this function please see <a href="https://jgcri.github.io/metis/articles/vignette_colorsMapsParams/#params-1.html">colors, maps and params</a>. <code>metis.readGCAM</code> will return a list containing:</p>
+<ul>
+<li>data: a dataframe with the original data</li>
+<li>dataAggParam: a dataframe with the data aggregated to the parameter</li>
+<li>dataAggClass1: a dataframe with the data aggregated to class 1</li>
+<li>dataAggclass2: a dataframe with the data aggregated to class 2</li>
+<li>scenarios: A list of the scenarios</li>
+<li>queries: A list of the queries used to extract the data</li>
+</ul>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 
 <span class="no">dataGCAM</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/metis.readgcam.html">metis.readgcam</a></span> (
        <span class="co">#gcamdatabase = “Path_to_GCAMdatabase”,</span>
-       <span class="kw">dataProjFile</span> <span class="kw">=</span> <span class="kw pkg">metis</span><span class="kw ns">::</span><span class="no">exampleGCAMProj</span>)
+       <span class="kw">dataProjFile</span> <span class="kw">=</span> <span class="kw pkg">metis</span><span class="kw ns">::</span><span class="no"><a href="../reference/exampleGCAMproj.html">exampleGCAMproj</a></span>)
 
-<span class="no">df</span> <span class="kw">&lt;-</span> <span class="no">dataGCAM</span>$<span class="no">data</span>
-<span class="no">dfParam</span> <span class="kw">&lt;-</span> <span class="no">dataGCAM</span>$<span class="no">dataAggParam</span>
-<span class="no">dfClass1</span> <span class="kw">&lt;-</span> <span class="no">dataGCAM</span>$<span class="no">dataAggClass1</span></pre></body></html></div>
+<span class="no">df</span> <span class="kw">&lt;-</span> <span class="no">dataGCAM</span>$<span class="no">data</span>; <span class="no">df</span>
+<span class="no">dfParam</span> <span class="kw">&lt;-</span> <span class="no">dataGCAM</span>$<span class="no">dataAggParam</span>; <span class="no">dfParam</span>
+<span class="no">dfClass1</span> <span class="kw">&lt;-</span> <span class="no">dataGCAM</span>$<span class="no">dataAggClass1</span>; <span class="no">dfClass1</span>
+<span class="no">dfClass2</span> <span class="kw">&lt;-</span> <span class="no">dataGCAM</span>$<span class="no">dataAggClass1</span>; <span class="no">dfClass2</span></pre></body></html></div>
+<!-------------------------->
+<!-------------------------->
+</div>
+<div id="read-subset-gcam-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#read-subset-gcam-data" class="anchor"></a>Read &amp; Subset GCAM data</h1>
+<p align="center">
+<img src="vignetteFigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+
+
+<span class="no">dataGCAMsub</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/metis.readgcam.html">metis.readgcam</a></span> (
+                 <span class="co">#gcamdatabase = “Path_to_GCAMdatabase”,</span>
+                 <span class="kw">dataProjFile</span> <span class="kw">=</span> <span class="kw pkg">metis</span><span class="kw ns">::</span><span class="no"><a href="../reference/exampleGCAMproj.html">exampleGCAMproj</a></span>,
+                 <span class="kw">scenOrigNames</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"GCAM_SSP5"</span>,<span class="st">"GCAM_SSP3"</span>),
+                 <span class="kw">scenNewNames</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SSP5"</span>,<span class="st">"SSP3"</span>),
+                 <span class="kw">paramsSelect</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"socioecon"</span>, <span class="st">"elecByTechTWh"</span>,<span class="st">"watWithdrawBySec"</span>),  <span class="co"># From Param list ?metis.readgcam</span>
+                 <span class="kw">regionsSelect</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"China"</span>,<span class="st">"India"</span>,<span class="st">"Pakistan"</span>))
+
+<span class="no">df</span> <span class="kw">&lt;-</span> <span class="no">dataGCAMsub</span>$<span class="no">data</span>; <span class="no">df</span>
+<span class="no">dfParam</span> <span class="kw">&lt;-</span> <span class="no">dataGCAMsub</span>$<span class="no">dataAggParam</span>; <span class="no">dfParam</span>
+<span class="no">dfClass1</span> <span class="kw">&lt;-</span> <span class="no">dataGCAMsub</span>$<span class="no">dataAggClass1</span>; <span class="no">dfClass1</span>
+<span class="no">dfClass2</span> <span class="kw">&lt;-</span> <span class="no">dataGCAMsub</span>$<span class="no">dataAggClass1</span>; <span class="no">dfClass2</span></pre></body></html></div>
 </div>
   </div>
 

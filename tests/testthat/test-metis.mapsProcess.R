@@ -131,7 +131,7 @@ test_that("metis.mapsProcess finds correct map for US52 + GCAM 32", {
   mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
-  testthat::expect_match(tVal1,"^GCAM32US52$")
+  testthat::expect_match(tVal1,"^GCAMReg32US52$")
   testthat::expect_equal(tVal2,2)
 
 })
@@ -206,7 +206,7 @@ test_that("metis.mapsProcess finds correct map for GCAM Basin Global", {
   mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
-  testthat::expect_match(tVal1,"^GCAMBasins$")
+  testthat::expect_match(tVal1,"^GCAMBasin$")
   testthat::expect_equal(tVal2,2)
 
 })
@@ -251,7 +251,7 @@ test_that("metis.mapsProcess finds correct map for GCAM Basin Global", {
   mapx <- metis.mapsProcess(polygonTable=data); mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
-  testthat::expect_match(tVal1,"^GCAMBasins$")
+  testthat::expect_match(tVal1,"^GCAMBasin$")
   testthat::expect_equal(tVal2,2)
 
 })
@@ -354,7 +354,7 @@ test_that("metis.mapsProcess runs with extension and cropToBoundary=T", {
                            extension = T, cropToBoundary = T);mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
-  testthat::expect_match(tVal1,"^countries$")
+  testthat::expect_match(tVal1,"^country$")
   testthat::expect_equal(tVal2,2)
 
 })
@@ -368,7 +368,7 @@ test_that("metis.mapsProcess runs with extension and cropToBoundary=F", {
                     extension = T);mapx$shapeTbl
   tVal1 <- unique(mapx$shapeTbl$subRegType); tVal1
   tVal2 <- nrow(mapx$shapeTbl);tVal2
-  testthat::expect_match(tVal1,"^countries$")
+  testthat::expect_match(tVal1,"^country$")
   testthat::expect_equal(tVal2,2)
 
 })
