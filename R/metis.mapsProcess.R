@@ -240,7 +240,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
   # fillcolorNA="gray"
   # fillshowNA=NA
   # fillcolorNULL="gray"
-  # legendSingleColorOn=T
+  # legendSingleColorOn=NULL
   # legendSingleValue=NULL
   # legendSingleColor="white"
   # facetCols=4
@@ -250,11 +250,12 @@ metis.mapsProcess<-function(polygonTable=NULL,
   # classPalette = NULL
   # classPaletteDiff = "pal_div_BrGn"
   # cropToBoundary=F
+  # subRegType = NULL
 
   print("Starting metis.mapsProcess...")
 
   #------------------
-  # Initialize variables to remove binding errors
+  # Initialize variables
   # -----------------
 
   if(T){
@@ -290,6 +291,17 @@ metis.mapsProcess<-function(polygonTable=NULL,
   if(legendOutsideMulti==T){if(is.null(legendTitleSizeMulti)){legendTitleSizeMulti=legendTitleSizeO;legendTextSizeMulti=legendTextSizeO;legendPositionMulti=NULL}}
   if(legendOutsideMulti==F){if(is.null(legendTitleSizeMulti)){legendTitleSizeMulti=legendTitleSizeI;legendTextSizeMulti=legendTextSizeI;legendPositionMulti=legendPosition}}
 }
+
+
+  if(!is.null(subRegShapeOrig)){
+    if(is.null(subRegType)){
+      if(class(subRegShapeOrig)=="SpatialPolygonsDataFrame"){
+        if(any("subRegionType" %in% names(subRegShapeOrig@data))){
+          subRegType = unique(subRegShapeOrig@data$subRegionType)
+        }
+      }
+    }
+  }; subRegType
 
   #------------------
   # Function for adding any missing columns if needed
@@ -440,7 +452,6 @@ metis.mapsProcess<-function(polygonTable=NULL,
 
 
       if(is.null(classPaletteOrig)){gridTbl <- gridTbl %>% dplyr::mutate(classPalette=classPaletteDiff)}
-      legendSingleColorOn=T
 
     } else {
 
@@ -516,7 +527,6 @@ metis.mapsProcess<-function(polygonTable=NULL,
                                                subRegion=as.character(subRegion))
 
         if(is.null(classPaletteOrig)){shapeTbl <- shapeTbl %>% dplyr::mutate(classPalette=classPaletteDiff)}
-        legendSingleColorOn=T
 
       } else {
 
@@ -550,7 +560,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
   if(!is.null(shapeTbl)){
     if(nrow(shapeTbl)>0){
 
-      # Mutate shapeTbl data from GCAM to match shapefile subRegions
+      # dplyr::mutate shapeTbl data from GCAM to match shapefile subRegions
         shapeTbl <- shapeTbl %>%
           dplyr::mutate(!!subRegCol:=gsub("-","_",get(subRegCol)),
                         !!subRegCol:=gsub("_Basin","",get(subRegCol)))
@@ -1207,8 +1217,15 @@ metis.mapsProcess<-function(polygonTable=NULL,
                               dplyr::filter(!is.na(value),!is.infinite(value),!is.nan(value)))$value
 
             # Choose correct scaleRange
-            if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
-              if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+            if(grepl("DiffPrcnt",scenario_i)){
+              scaleRange_i=scaleRangeDiffPrcnt
+              gridTbl <- gridTbl %>% dplyr::mutate(units="Percent")
+              if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+            }else{
+              if(grepl("DiffAbs",scenario_i)){
+                scaleRange_i=scaleRangeDiffAbs
+                if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+              }else{
                 scaleRange_i=scaleRange
               }
             }
@@ -1527,8 +1544,15 @@ metis.mapsProcess<-function(polygonTable=NULL,
                 animScaleGrid<-datax$value
 
                 # Choose correct scaleRange
-                if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
-                  if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                if(grepl("DiffPrcnt",scenario_i)){
+                  scaleRange_i=scaleRangeDiffPrcnt
+                  datax <- datax %>% dplyr::mutate(units="Percent")
+                  if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                }else{
+                  if(grepl("DiffAbs",scenario_i)){
+                    scaleRange_i=scaleRangeDiffAbs
+                    if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                  }else{
                     scaleRange_i=scaleRange
                   }
                 }
@@ -1715,8 +1739,15 @@ metis.mapsProcess<-function(polygonTable=NULL,
                   animScaleGrid<-datax[[meanCol]];animScaleGrid
 
                   # Choose correct scaleRange
-                  if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
-                    if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                  if(grepl("DiffPrcnt",scenario_i)){
+                    scaleRange_i=scaleRangeDiffPrcnt
+                    datax <- datax %>% dplyr::mutate(units="Percent")
+                    if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                  }else{
+                    if(grepl("DiffAbs",scenario_i)){
+                      scaleRange_i=scaleRangeDiffAbs
+                      if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                    }else{
                       scaleRange_i=scaleRange
                     }
                   }
@@ -2148,8 +2179,15 @@ metis.mapsProcess<-function(polygonTable=NULL,
                                       dplyr::filter(!is.na(value),!is.infinite(value),!is.nan(value)))$value
 
                     # Choose correct scaleRange
-                    if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
-                      if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                    if(grepl("DiffPrcnt",scenario_i)){
+                      scaleRange_i=scaleRangeDiffPrcnt
+                      shapeTblMultxScenMultiABRefRef <- shapeTblMultxScenMultiABRefRef %>% dplyr::mutate(units="Percent")
+                      if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                    }else{
+                      if(grepl("DiffAbs",scenario_i)){
+                        scaleRange_i=scaleRangeDiffAbs
+                        if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                      }else{
                         scaleRange_i=scaleRange
                       }
                     }
@@ -2229,8 +2267,15 @@ metis.mapsProcess<-function(polygonTable=NULL,
                       animScalePoly<-datax[[meanCol]]; animScalePoly
 
                       # Choose correct scaleRange
-                      if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
-                        if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                      if(grepl("DiffPrcnt",scenario_i)){
+                        scaleRange_i=scaleRangeDiffPrcnt
+                        ScenMultiABRefcomb <- ScenMultiABRefcomb %>% dplyr::mutate(units="Percent")
+                        if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                      }else{
+                        if(grepl("DiffAbs",scenario_i)){
+                          scaleRange_i=scaleRangeDiffAbs
+                          if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                        }else{
                           scaleRange_i=scaleRange
                         }
                       }
@@ -2671,8 +2716,16 @@ metis.mapsProcess<-function(polygonTable=NULL,
 #                     animScalePoly<-shapeTblMultxDiff$valueDiff
 
                       # # Choose correct scaleRange
-                      # if(grepl("DiffPrcnt",param_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
-                      #   if(grepl("DiffAbs",param_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                      # if(grepl("DiffPrcnt",scenario_i)){
+                      #   scaleRange_i=scaleRangeDiffPrcnt
+                      #  shapeTblMultxDiff <- shapeTblMultxDiff %>% dplyr::mutate(units="Percent")
+
+                      #   if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                      # }else{
+                      #   if(grepl("DiffAbs",scenario_i)){
+                      #     scaleRange_i=scaleRangeDiffAbs
+                      #     if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                      #   }else{
                       #     scaleRange_i=scaleRange
                       #   }
                       # }
@@ -3172,10 +3225,17 @@ metis.mapsProcess<-function(polygonTable=NULL,
                                                        !is.na(value),!is.infinite(value), !is.nan(value)))$value
 
               # Choose correct scaleRange
-              if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
-                if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+              if(grepl("DiffPrcnt",scenario_i)){
+                scaleRange_i=scaleRangeDiffPrcnt
+                shapeTbl <- shapeTbl %>% dplyr::mutate(units="Percent")
+                if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+              }else{
+                if(grepl("DiffAbs",scenario_i)){
+                  scaleRange_i=scaleRangeDiffAbs
+                  if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                }else{
                   scaleRange_i=scaleRange
-                }
+                  }
               }
 
               if(is.null(legendSingleColorOnOrig)){
@@ -3534,8 +3594,15 @@ metis.mapsProcess<-function(polygonTable=NULL,
                   animScalePoly<-datax$value
 
                   # Choose correct scaleRange
-                  if(grepl("DiffPrcnt",scenario_i)){scaleRange_i=scaleRangeDiffPrcnt}else{
-                    if(grepl("DiffAbs",scenario_i)){scaleRange_i=scaleRangeDiffAbs}else{
+                  if(grepl("DiffPrcnt",scenario_i)){
+                    scaleRange_i=scaleRangeDiffPrcnt
+                    datax <- datax %>% dplyr::mutate(units="Percent")
+                    if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                  }else{
+                    if(grepl("DiffAbs",scenario_i)){
+                      scaleRange_i=scaleRangeDiffAbs
+                      if(is.null(legendSingleColorOnOrig)){legendSingleColorOn=T}else{legendSingleColorOn=legendSingleColorOnOrig}
+                    }else{
                       scaleRange_i=scaleRange
                     }
                   }

@@ -3,12 +3,10 @@
 \docType{package}
 \name{metis}
 \alias{metis}
-\title{metis: Sub-Regional nexus Package}
+\title{metis}
 \description{
-The Metis package provides
+\itemize{
+\item Github: https://github.com/JGCRI/metis
+\item Webpage: https://jgcri.github.io/metis/
+\item Cheatsheet: https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf}
 }
-\section{Metis functions}{
-
-The Metis functions ...
-}
-

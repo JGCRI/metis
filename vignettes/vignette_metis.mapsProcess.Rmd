@@ -45,7 +45,7 @@ vignette: >
 
 <!-------------------------->
 <!-------------------------->
-# Pre-loaded Maps
+# Pre-loaded Maps Auto
 <p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
@@ -61,7 +61,7 @@ metis::metis.map(mapUS49, labels=T)
 ```
 
 <p align="center" style="font-size:18px;"> *Example View of Pre-loaded Map for US49* </p>
-<p align="center"> <img src="vignetteFigs/mapsProcess_mapExUS49.PNG"></p>
+<p align="center"> <img src="vignetteFigs/map.PNG"></p>
 
 
 <!-------------------------->
@@ -205,6 +205,41 @@ metis.mapsProcess(polygonTable=data,
 <p align="center" style="font-size:18px;"> *World States* </p>
 <p align="center"> <img src="vignetteFigs/mapsProcess_worldStates.PNG"></p>
 
+
+<!-------------------------->
+<!-------------------------->
+# Pre-loaded Maps Selected
+<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+
+Sometimes subRegions can be present on multiple maps. Fo example "Colombia", China" and "India" are all members of `metis::mapGCAMReg32` as well as `metis::mapCountries`. If a user knows which map they want to plot their data on they should specify the map in the `subRegShape` argument.
+
+
+```{r, eval=F}
+library(metis)
+
+data = data.frame(subRegion=c("Colombia","China","India"),
+                  x=c(2050,2050,2050),
+                  value=c(5,10,15))
+
+# Auto selection by metis will choose metis::mapCountries
+metis.mapsProcess(polygonTable=data,
+                  folderName = "vignetteChooseMap",
+                  mapTitleOn = F)
+
+# User can specify that they want to plot this data on metis::mapGCAMReg32
+metis.mapsProcess(polygonTable=data,
+                  subRegShape = metis::mapGCAMReg32,
+                  folderName = "vignetteChooseMap",
+                  nameAppend = "Chosen",
+                  mapTitleOn = F)
+
+```
+
+<p align="center" style="font-size:18px;"> *Select Pre-Loaded Map* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_selectMap.PNG"></p>
+
 <!-------------------------->
 <!-------------------------->
 # Plot data on Custom Shapefiles
@@ -278,6 +313,11 @@ data = data.frame(
 metis.mapsProcess(polygonTable = data, mapTitleOn=F, folderName = "vignetteMaps", 
                   cropToBoundary =T,
                   extension = T, nameAppend="Extended")
+
+# Can increase the extnded boundaries by using expandPercent
+metis.mapsProcess(polygonTable = data, mapTitleOn=F, folderName = "vignetteMaps", 
+                  cropToBoundary =T,
+                  extension = T, nameAppend="Extended10", expandPercent = 50)
 ```
 
 <p align="center" style="font-size:18px;"> *Extended Background* </p>
@@ -310,7 +350,7 @@ metis.mapsProcess(polygonTable = data, folderName ="multiScenario",
 <p align="center"> <img src="vignetteFigs/mapsProcess_multiScenario.PNG"></p>
 
 <p align="center" style="font-size:18px;"> *Multi-scenario Folders* </p>
-<p align="center"> <img src="vignetteFigs/mapsProcess_multiScenarioFolders.PNG"></p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_multiScenarioStructure.PNG"></p>
 
 
 
@@ -373,7 +413,7 @@ metis.mapsProcess(polygonTable = data, folderName ="colorPalettes",
 
 <!-------------------------->
 <!-------------------------->
-# Multi-Year
+# Multi-Year & Animations
 <p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
@@ -435,3 +475,78 @@ metis.mapsProcess(polygonTable = data, folderName ="multiClass",
 <p align="center" style="font-size:18px;"> *Multi-class* </p>
 <p align="center"> <img src="vignetteFigs/mapsProcess_multiClass.PNG"></p>
 
+
+
+<!-------------------------->
+<!-------------------------->
+# GCAM Results
+<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+
+GCAM results can be read using [metis.readgcam](https://jgcri.github.io/metis/articles/vignette_metis.readgcam.html) to get the data directly into the format ready for mapping. In this example the preloaded GCAM output `metis::exampleGCAMproj` is used to extract data for chosen parameters from the [parameter list](https://jgcri.github.io/metis/articles/vignette_colorsMapsParams.html#params-1). USers can provided a path to their gcam database folder.
+
+**Note: The exampleGCAMproj comes with only a few parameters: "elecByTechTWh","pop","watWithdrawBySec","watSupRunoffBasin","landAlloc" and "agProdByCrop"**
+
+
+```{r, eval=F}
+library(metis)
+
+# Read in data from the example Proj file
+data <- metis.readgcam (
+           #gcamdatabase = “Path_to_GCAMdatabase”,
+           dataProjFile = metis::exampleGCAMproj,
+           scenOrigNames = c("GCAM_SSP5","GCAM_SSP3"),
+           scenNewNames = c("SSP5","SSP3"),
+           paramsSelect = c("landAlloc", "elecByTechTWh","watSupRunoffBasin","pop"),  # From Param list ?metis.readgcam
+           regionsSelect = c("India","China","Pakistan"))
+
+df <- data$data; df
+dfParam <- data$dataAggParam; dfParam
+dfClass1 <- data$dataAggClass1; dfClass1
+dfClass2 <- data$dataAggClass1; dfClass2
+
+# Plot data aggregated by param
+metis.mapsProcess(polygonTable = dfParam, folderName ="GCAMbyParam", 
+                  cropToBoundary=T, extension = T, xRange = c(2010,2020,2030,2040),
+                  scenRef="SSP3", scaleRange = data.frame(param=c("landAlloc", "elecByTechTWh","watSupRunoffBasin","pop"),
+                                                          min = c(0,0,0,0),
+                                                          max = c(10000,15000,2000,2000)))
+
+# polygonTable = dfParam; folderName ="GCAMbyParam";
+#                   cropToBoundary=T; extension = T; xRange = c(2010,2020,2030,2040);
+#                   scenRef="SSP3"; scaleRange = data.frame(param=c("landAlloc", "elecByTechTWh","watSupRunoffBasin","pop"),
+#                                                           min = c(0,0,0,0),
+#                                                           max = c(10000,15000,2000,2000))
+
+# Plot data aggregated by Class1
+metis.mapsProcess(polygonTable = dfClass1, folderName ="GCAMbyClass", 
+                  cropToBoundary=T, extension = T, xRange = c(2010,2020,2030,2040),
+                  scenRef="SSP3")
+```
+
+
+<p align="center" style="font-size:18px;"> *GCAM Outputs Folder Structure* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_GCAMMapsStructure.PNG"></p>
+
+
+<p align="center" style="font-size:18px;"> *GCAM Maps by Param (Selected)* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_GCAMMapsParam.PNG"></p>
+
+<p align="center" style="font-size:18px;"> *GCAM Maps by Param Animations (Selected)* </p>
+Pop |  Electricity (TWh)
+:-------------------------:|:-------------------------:
+![](vignetteFigs/anim_country_pop_SSP5_KMEANS.gif)  |  ![](vignetteFigs/anim_country_elecByTechTWh_SSP5_KMEANS.gif)  
+
+Land Allocation |  Water Withdrawals
+:-------------------------:|:-------------------------:
+![](vignetteFigs/anim_country_landAlloc_SSP5_KMEANS.gif)  |  ![](vignetteFigs/anim_GCAMBasin_watSupRunoffBasin_SSP5_KMEANS.gif)  
+
+
+<p align="center" style="font-size:18px;"> *GCAM Maps by Class (Selected)* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_GCAMMapsClass.PNG"></p>
+
+<p align="center" style="font-size:18px;"> *GCAM Maps by Class Animations (Selected)* </p>
+Electricity (TWh) | Land Allocation
+:-------------------------:|:-------------------------:
+![](vignetteFigs/anim_country_elecByTechTWh_SSP5_KMEANS_class.gif)  |  ![](vignetteFigs/anim_country_landAlloc_SSP5_KMEANS_class.gif)  

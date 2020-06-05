@@ -237,7 +237,7 @@ if(redoMaps){
   mapx <- x
   mapx@data <- mapx@data %>%
     dplyr::select(subRegion=HYBAS_ID) %>%
-    dplyr::mutate(region="World",subRegionType="basin", subRegionAlt=subRegion,source="https://www.naturalearthdata.com/downloads/")
+    dplyr::mutate(region="World",subRegionType="hydroshed1", subRegionAlt=subRegion,source="https://www.naturalearthdata.com/downloads/")
   head(mapx@data); mapx@data%>%distinct(region)%>%arrange(region)
   format(object.size(mapx), units="Mb")
   a<-tmaptools::simplify_shape(mapx, fact = 0.01)
@@ -269,7 +269,7 @@ if(redoMaps){
   mapx <- x
   mapx@data <- mapx@data %>%
     dplyr::select(subRegion=HYBAS_ID, SUB_AREA) %>%
-    dplyr::mutate(region="World",subRegionType="basin", subRegionAlt=subRegion,source="https://www.naturalearthdata.com/downloads/")
+    dplyr::mutate(region="World",subRegionType="hydroshed2", subRegionAlt=subRegion,source="https://www.naturalearthdata.com/downloads/")
   head(mapx@data); mapx@data%>%distinct(region)%>%arrange(region)
   a<-tmaptools::simplify_shape(mapx, fact = 0.01)
   mapx <- as(sf::st_collection_extract(x = st_geometry(a),
@@ -301,7 +301,7 @@ if(redoMaps){
   mapx <- x
   mapx@data <- mapx@data %>%
     dplyr::select(subRegion=HYBAS_ID, SUB_AREA) %>%
-    dplyr::mutate(region="World",subRegionType="basin", subRegionAlt=subRegion,source="https://www.naturalearthdata.com/downloads/")
+    dplyr::mutate(region="World",subRegionType="hydroshed3", subRegionAlt=subRegion,source="https://www.naturalearthdata.com/downloads/")
   head(mapx@data); mapx@data%>%distinct(region)%>%arrange(region)
   a<-tmaptools::simplify_shape(mapx, fact = 0.01)
   mapx <- as(sf::st_collection_extract(x = st_geometry(a),
@@ -333,7 +333,7 @@ if(redoMaps){
 # mapx <- x
 # mapx@data <- mapx@data %>%
 #   dplyr::select(subRegion=HYBAS_ID, SUB_AREA) %>%
-#   dplyr::mutate(region="World",subRegionType="basin", subRegionAlt=subRegion,source="https://www.naturalearthdata.com/downloads/")
+#   dplyr::mutate(region="World",subRegionType="hydroshed4", subRegionAlt=subRegion,source="https://www.naturalearthdata.com/downloads/")
 # head(mapx@data); mapx@data%>%distinct(region)%>%arrange(region)
 # a<-tmaptools::simplify_shape(mapx, fact = 0.01)
 # mapx <- as(sf::st_collection_extract(x = st_geometry(a),
@@ -369,7 +369,7 @@ if(redoMaps){
   mapx <- x
   mapx@data <- mapx@data %>%
     dplyr::select(subRegion=HUC2, subRegionAlt=NAME,STATES) %>%
-    dplyr::mutate(region="USA",subRegionType="basin", source="https://water.usgs.gov/GIS/huc.html")
+    dplyr::mutate(region="USA",subRegionType="US52HUC2", source="https://water.usgs.gov/GIS/huc.html")
   head(mapx@data); mapx@data%>%distinct(subRegionAlt)%>%arrange(subRegionAlt)
   format(object.size(mapx), units="Mb")
   mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
@@ -427,6 +427,7 @@ if(redoMaps){
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F, fileName = "HUC2")
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
+  mapx@data <- mapx@data%>%dplyr::mutate(subRegionType="US49HUC2")
   mapUS49HUC2 <- mapx
   use_data(mapUS49HUC2, overwrite=T)
 }
@@ -441,7 +442,7 @@ if(redoMaps){
   mapx <- x
   mapx@data <- mapx@data %>%
     dplyr::select(subRegion=HUC4, subRegionAlt=NAME,STATES) %>%
-    dplyr::mutate(region="USA",subRegionType="basin", source="https://water.usgs.gov/GIS/huc.html")
+    dplyr::mutate(region="USA",subRegionType="US52HUC4", source="https://water.usgs.gov/GIS/huc.html")
   head(mapx@data); mapx@data%>%distinct(subRegionAlt)%>%arrange(subRegionAlt)
   format(object.size(mapx), units="Mb")
   mapx<-as(simplify_shape(mapx, fact = 0.01),Class="Spatial")
@@ -503,9 +504,10 @@ if(redoMaps){
   #format(object.size(mapx), units="Mb")
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
-  mapUS49HUC4 <- mapx
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F, facetsON=F, fileName = "HUC4")
+  mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="US49HUC4")
+  mapUS49HUC4 <- mapx
   use_data(mapUS49HUC4, overwrite=T)
 }
 
@@ -524,7 +526,7 @@ if(redoMaps){
   mapx <- x
   mapx@data <- mapx@data %>%
     dplyr::select(subRegion=STUSPS,subRegionAlt=NAME, STATEFP) %>%
-    dplyr::mutate(region="USA",subRegionType="state", source="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html")
+    dplyr::mutate(region="USA",subRegionType="US52", source="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html")
   head(mapx@data); unique(mapx$subRegion)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
@@ -564,9 +566,10 @@ if(redoMaps){
   mapx <- mapUS52[(mapUS52$region=="USA" & !mapUS52$subRegion %in% c("AK","HI","PR")),]
   mapx@data <- mapx@data%>%droplevels()
   head(mapx@data); nrow(mapx); mapx@data%>%distinct(subRegion)
-  mapUS49<-mapx
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
+  mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="US49")
+  mapUS49<-mapx
   use_data(mapUS49, overwrite=T)
 }
 
@@ -581,7 +584,7 @@ if(redoMaps){
   mapx <- x
   mapx@data <- mapx@data %>%
     dplyr::select(subRegion=NAME,subRegionAlt=COUNTYFP,STATEFP) %>%
-    dplyr::mutate(region="USA",subRegionType="county", source="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html") %>%
+    dplyr::mutate(region="USA",subRegionType="US52county", source="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html") %>%
     dplyr::left_join(mapUS52@data%>%dplyr::select(STATEFP,STATECODE=subRegion, STATENAME=subRegionAlt))
   head(mapx@data); unique(mapx$subRegion)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
@@ -628,9 +631,10 @@ if(redoMaps){
   head(mapx@data); nrow(mapx); mapx@data%>%distinct(subRegion)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
-  mapUS49County<-mapx
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
+  mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="US49County")
+  mapUS49County<-mapx
   use_data(mapUS49County, overwrite=T)
 }
 
@@ -675,7 +679,7 @@ if(redoMaps){
   mapx<-raster::union(m1,m2)
   mapx@data <- mapx@data %>%
     dplyr::mutate(region="World",
-                  subRegionType="CountriesUS52",
+                  subRegionType="countriesUS52",
                   subRegion.2=as.character(subRegion.2),
                   subRegion.1=as.character(subRegion.1),
                   subRegionAlt.1=as.numeric(subRegionAlt.1),
@@ -765,9 +769,10 @@ if(redoMaps){
   mapx<-raster::crop(m1,m2)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
-  mapGCAMBasinsUS52<-mapx
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
+  mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="GCAMBasinsUS52")
+  mapGCAMBasinsUS52<-mapx
   use_data(mapGCAMBasinsUS52, overwrite=T)
 }
 
@@ -780,9 +785,10 @@ if(redoMaps){
   head(mapx@data)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
-  mapGCAMBasinsUS49<-mapx
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
+  mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="GCAMBasinsUS49")
+  mapGCAMBasinsUS49<-mapx
   use_data(mapGCAMBasinsUS49, overwrite=T)
 }
 
@@ -795,9 +801,10 @@ if(redoMaps){
   mapx<-raster::crop(m1,m2)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
-  mapGCAMLandUS52<-mapx
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
+  mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="GCAMLandUS52")
+  mapGCAMLandUS52<-mapx
   use_data(mapGCAMLandUS52, overwrite=T)
 }
 
@@ -810,9 +817,10 @@ if(redoMaps){
   head(mapx@data)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
-  mapGCAMLandUS49<-mapx
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
+  mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="GCAMLandUS49")
+  mapGCAMLandUS49<-mapx
   use_data(mapGCAMLandUS49, overwrite=T)
 }
 
@@ -838,11 +846,11 @@ if(!exists("grid050")){
 
 # Example .proj file
 #projFile <-"C:/Z/projects/metisGCAMUSA/metisOutputs/readGCAM/exampleGCAMproj.proj"
-metis.readgcam(gcamdatabase = "C:/Z/projects/metis/dataFiles/gcam/example_GCAM52release_SSP3SSP5",
+metis.readgcam(gcamdatabase = "C:/Z/projects/gcam-v5.2-Windows-Release-Package/output/exampleSSP2050",
                paramsSelect =c("elecByTechTWh", "pop","watWithdrawBySec","watSupRunoffBasin",
                                    "landAlloc","agProdByCrop"),
-               dataProjFile = "exampleGCAM52releaseSSP3SSP5.proj",saveData = F,reReadData = T)
-projFile <-"C:/Z/projects/metis/dataFiles/examples/exampleGCAM52releaseSSP3SSP5.proj"
+               dataProjFile = "exampleGCAM52releaseSSP3SSP52050.proj",saveData = F,reReadData = T)
+projFile <-"C:/Z/projects/metis/dataFiles/examples/exampleGCAM52releaseSSP3SSP52050.proj"
 exampleGCAMproj <- rgcam::loadProject(projFile)
 use_data(exampleGCAMproj, overwrite=T)
 

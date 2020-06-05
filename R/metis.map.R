@@ -214,11 +214,12 @@ metis.map<-function(dataPolygon=NULL,
 # Initialize variables to remove binding errors if needed
 # -----------------
 
-NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette->legendSinglecolorOn->legendLabelsX
+NULL->raster->shape->map->checkFacets->catBreaks->catLabels->catPalette->legendSinglecolorOn->legendLabelsX->singleValLoc
 
 legendTitle=gsub(" ","\n",legendTitle)
 suppressMessages(tmap::tmap_mode(mode = c("plot")))
 tmap::tmap_options(max.categories=10000)
+legendBreaks<-sort(legendBreaks)
 
 
 fillPaletteOrig <- fillPalette
@@ -651,66 +652,100 @@ if(is.null(legendBreaks)){
   if(is.null(catPalette)){
   if(!is.null(legendDigits)){
   if(legendSingleColorOn){
+    if(length(legendBreaks)>1){
 
-    # For Testing
-    # legendBreaks=seq(from=0,to=2,by=0.5)
-    # legendSingleValue=1
+    #For Testing
+    # legendBreaks=seq(from=-1,to=1,by=0.1); legendBreaks
+    # legendBreaks = 0
+    # legendBreaks=seq(from=0,to=45,by=5); legendBreaks
+    # legendBreaks=seq(from=0,to=-45,by=-5); legendBreaks
+    # legendBreaks=c(-423.55000,-91.93533,-26.20000,-21.14700); legendBreaks
+    # legendBreaks=c(-5,16,300,320); legendBreaks
+    #legendBreaks=c(-1000,-400,-300,-200,-100,0); legendBreaks
+    # legendBreaks=c(-1,0,2,31,73,92); legendBreaks
+    # legendBreaks=c(0,-4,-12,-20); legendBreaks
+    # legendBreaks <- sort(legendBreaks)
+    # legendSingleValue=NULL
     # legendSingleColor="white"
     # legendSingleColorOn=T
     # legendDigits=1
-    # fillPaletteOrig="pal_div_RdBlu"
+    # fillPaletteOrig="pal_div_BluRd"
     # fillPalette=metis.colors()[[fillPaletteOrig]]
 
-    legendBreaksX <- legendBreaks; legendBreaksX
-
-    # New Breaks
-    if(is.null(legendSingleValue)){
-      if(min(legendBreaksX)*max(legendBreaksX)<=0){legendSingleValuex=0}else{
-        legendSingleValuex=floor(min(legendBreaksX))}
-    }else{legendSingleValuex=legendSingleValue}
-
-
-  # Find location of single value provided.
-  if(min(legendBreaksX)>=legendSingleValuex){
-  singlevalLoc<-match(min(legendBreaksX[legendBreaksX>=legendSingleValuex]),legendBreaksX)}else{
-    if(max(legendBreaksX)<=legendSingleValuex){
-      singlevalLoc<-match(max(legendBreaksX[legendBreaksX<=legendSingleValuex]),legendBreaksX)
-    }else{
-      singlevalLoc<-match(max(legendBreaksX[legendBreaksX<legendSingleValuex]),legendBreaksX)+1
-    }
-  };singlevalLoc
-
+ # Test Palette
+if(T){
   # Legend Labels
-  a<-c()
-  if(length(legendBreaksX)>1){
-  for(i in 1:(length(legendBreaksX)-1)){
-    if(i!=1){lower<-upperLast}else{lower <- round(legendBreaksX[i],(legendDigits))};lower
-    upper <- round(legendBreaksX[i+1],legendDigits); upper
-    countDig <- 1
-    while(upper==lower & countDig<6){upper <- round(legendBreaksX[i+1],(legendDigits+countDig)); countDig=countDig+1};upper
-    upperLast <- upper; upperLast
-    a[i]=paste(lower," to ",upper,sep="")};a
+  if(T){
 
-  if(min(legendBreaksX)>=legendSingleValuex){
-    legendLabelsX=c(a)
-    legendLabelsX<-c(paste(legendSingleValuex,sep=""),
-                    legendLabelsX[(singlevalLoc):length(legendLabelsX)])
+  legendBreaksX <- legendBreaks; legendBreaksX
+
+  # New Breaks
+  if(is.null(legendSingleValue)){
+    if(max(legendBreaksX)<0){
+      legendSingleValueX=ceiling(max(legendBreaksX))
     }else{
-      if(max(legendBreaksX)<=legendSingleValuex){
-        legendLabelsX=c(a)
-        legendLabelsX<-c(legendLabelsX[1:(singlevalLoc-1)],
-                        paste(legendSingleValuex,sep=""))
+    if(min(legendBreaksX)>0){
+      legendSingleValueX=floor(min(legendBreaksX))
+    }else{
+      legendSingleValueX=0
+    }
+      }
+   }else{legendSingleValueX=legendSingleValue}; legendSingleValueX
+
+
+# Place Single Value in Legend Breaks if not present
+  if(!legendSingleValueX %in% legendBreaksX){
+    if(min(legendBreaksX)>legendSingleValueX){
+      legendBreaksX <- c(legendSingleValueX,legendBreaksX)
       }else{
-        legendLabelsX=c(a)
-        legendLabelsX<-c(legendLabelsX[1:(singlevalLoc-1)],
-                        paste(legendSingleValuex,sep=""),
-                        legendLabelsX[(singlevalLoc):length(legendLabelsX)])
-      }}; legendLabelsX
-  }
+      if(max(legendBreaksX)<legendSingleValueX){
+        legendBreaksX <- c(legendBreaksX,legendSingleValueX)
+      }else{
+        if(max(legendBreaksX)==legendSingleValueX | min(legendBreaksX)==legendSingleValueX){
+          legendBreaksX <- legendBreaksX
+        }else{
+       legendBreaksX <- c(legendBreaksX[1:match(max(legendBreaksX[legendBreaksX<0]),legendBreaksX)],
+                           legendSingleValueX,
+                           legendBreaksX[(match(max(legendBreaksX[legendBreaksX<0]),legendBreaksX)+1):(length(legendBreaksX))])
+        }
+      }
+      }
+    }
+  singleValLoc <- max(match(legendSingleValueX,legendBreaksX),1); singleValLoc; legendBreaksX
+
+# Legend Labels
+a<-c()
+if(length(legendBreaksX)>1){
+for(i in 1:(length(legendBreaksX)-1)){
+  if(i!=1){lower<-upperLast}else{lower <- round(legendBreaksX[i],(legendDigits))};lower
+  upper <- round(legendBreaksX[i+1],legendDigits); upper
+  countDig <- 1
+  while(upper==lower & countDig<6){upper <- round(legendBreaksX[i+1],(legendDigits+countDig)); countDig=countDig+1};upper
+  upperLast <- upper; upperLast
+  a[i]=paste(format(lower,big.mark = ",")," to ",format(upper,big.mark = ","),sep="")
+  };a
+
+# Add in the single Value
+if(min(legendBreaksX)>=legendSingleValueX){
+  legendLabelsX=c(a)
+  legendLabelsX<-c(paste(legendSingleValueX,sep=""),
+                  legendLabelsX)
+  }else{
+    if(max(legendBreaksX)<=legendSingleValueX){
+      legendLabelsX=c(a)
+      legendLabelsX<-c(legendLabelsX,paste(legendSingleValueX,sep=""))
+    }else{
+      legendLabelsX=c(a)
+      legendLabelsX<-c(legendLabelsX[1:max((singleValLoc-1),1)],
+                      paste(legendSingleValueX,sep=""),
+                      legendLabelsX[(singleValLoc):length(legendLabelsX)])
+    }}; legendLabelsX
+}
+  } # Legend Labels
 
   # Fill palette
   if(T){
-
+    # Split Palettes into halves (to split diverging palettes when range is only one side of 0)
     graphics::pie(rep(1,length(fillPalette)),label=names(fillPalette),col=fillPalette);fillPalette
     fillColUp<-fillPalette[(round(length(fillPalette)/2,0)+2):length(fillPalette)];fillColUp
     fillColUp <- grDevices::colorRampPalette(c("white",fillColUp))(11)[-1];fillColUp
@@ -719,90 +754,108 @@ if(is.null(legendBreaks)){
     fillColDown <- grDevices::colorRampPalette(c("white",fillColDown))(11)[-1];fillColDown
     graphics::pie(rep(1,length(fillColDown)),label=names(fillColDown),col=fillColDown)
 
-    if(max(legendBreaksX)<=legendSingleValuex){
+    # If all less than single color chosen then colDown, if vice versa then colUp else full palette
+    if(max(legendBreaksX)<=legendSingleValueX){
       if(any(grepl("diff|div|ratio",fillPaletteOrig,ignore.case=T))){
-        fillPaletteX<-grDevices::colorRampPalette(fillColDown)(length(legendLabelsX))
+        fillPaletteX<-rev(grDevices::colorRampPalette(fillColDown)(length(legendLabelsX)-1))
       }else{
-        fillPaletteX<-grDevices::colorRampPalette(fillPalette)(length(legendLabelsX))
+        fillPaletteX<-rev(grDevices::colorRampPalette(fillPalette[-1])(length(legendLabelsX)-1))
       }
       }else{
-      if(min(legendBreaksX)>=legendSingleValuex){
+      if(min(legendBreaksX)>=legendSingleValueX){
         if(any(grepl("diff|div|ratio",fillPaletteOrig,ignore.case=T))){
-          fillPaletteX<-grDevices::colorRampPalette(fillColUp)(length(legendLabelsX))
+          fillPaletteX<-grDevices::colorRampPalette(fillColUp)(length(legendLabelsX)-1)
         }else{
-        fillPaletteX<-grDevices::colorRampPalette(fillPalette)(length(legendLabelsX))
+        fillPaletteX<-grDevices::colorRampPalette(fillPalette[-1])(length(legendLabelsX)-1)
         }
         }else{
-        if(singlevalLoc==length(legendLabelsX)){fillPaletteXUp<-c()}else{
-          fillPaletteXUp <- grDevices::colorRampPalette(fillColUp)(round((length(legendLabelsX)-singlevalLoc),0))};fillPaletteXUp
-        if(singlevalLoc==1){fillPaletteXDown<-c()}else{
-          fillPaletteXDown <- rev(grDevices::colorRampPalette(fillColDown)(singlevalLoc))};fillPaletteXDown
+        if(singleValLoc==length(legendLabelsX)){fillPaletteXUp<-c()}else{
+          fillPaletteXUp <- grDevices::colorRampPalette(fillColUp)(round((length(legendLabelsX)-singleValLoc),0))};fillPaletteXUp
+        if(singleValLoc==1){fillPaletteXDown<-c()}else{
+          fillPaletteXDown <- rev(grDevices::colorRampPalette(fillColDown)(singleValLoc))};fillPaletteXDown
         fillPaletteX <-c(fillPaletteXDown,fillPaletteXUp)
       }
       }
 
+    # Visualize Palette
     if(length(fillPaletteX)>0){
     graphics::pie(rep(1,length(fillPaletteX)),label=names(fillPaletteX),col=fillPaletteX)}
 
-   if(min(legendBreaksX)>=legendSingleValuex){
+   # Add in the singleColor
+   if(min(legendBreaksX)>=legendSingleValueX){
      fillPaletteX<-c(paste(legendSingleColor,sep=""),
-                    fillPaletteX[(singlevalLoc):length(fillPaletteX)])
+                    fillPaletteX)
+      }else{
+        if(max(legendBreaksX)<=legendSingleValueX){
+          fillPaletteX<-c(fillPaletteX,paste(legendSingleColor,sep=""))
+        }else{
+          fillPaletteX<-c(fillPaletteX[1:(singleValLoc-1)],
+                          paste(legendSingleColor,sep=""),
+                          fillPaletteX[(singleValLoc+1):length(fillPaletteX)])
+        }
+      }
+
+    fillPaletteX;graphics::pie(rep(1,length(fillPaletteX)),label=1:length(fillPaletteX),col=fillPaletteX)
+
+    }
+
+  length(fillPaletteX); length(legendLabelsX)
+
+
+  # Add in Label for single Color
+  if(T){
+  if(legendSingleValueX %in% legendBreaksX){
+    if(max(legendBreaksX)==legendSingleValueX){
+    legendAdder = -(legendSingleValueX+(legendBreaksX[length(legendBreaksX)]-legendBreaksX[length(legendBreaksX)-1])/1000)}else{
+      legendAdder = (legendSingleValueX+(legendBreaksX[singleValLoc+1]-legendBreaksX[singleValLoc])/1000)
+    }
+  }else{legendAdder=NULL}; legendAdder
+
+  if(min(legendBreaksX)>legendSingleValueX){
+    legendBreaksX<- sort(c(legendSingleValueX[!legendSingleValueX %in% legendBreaksX],
+                     legendBreaksX[singleValLoc:length(legendBreaksX)]))
   }else{
-    if(max(legendBreaksX)<=legendSingleValuex){
-      fillPaletteX<-c(fillPaletteX[1:(singlevalLoc-1)],
-                      paste(legendSingleColor,sep=""))
+    if(max(legendBreaksX)<legendSingleValueX){
+      legendBreaksX<- sort(c(legendBreaksX[1:(singleValLoc)],
+                       legendSingleValueX[!legendSingleValueX %in% legendBreaksX]))
     }else{
-      fillPaletteX<-c(fillPaletteX[1:(singlevalLoc-1)],
-                      paste(legendSingleColor,sep=""),
-                      fillPaletteX[(singlevalLoc+1):length(fillPaletteX)])
-    }
-  };fillPaletteX;graphics::pie(rep(1,length(fillPaletteX)),label=legendLabelsX,col=fillPaletteX)
-    }
-
-
-  if(legendSingleValuex %in% legendBreaksX){
-    if(max(legendBreaksX)==legendSingleValuex){
-    legendAdder = (legendSingleValuex+(legendBreaksX[singlevalLoc]-legendBreaksX[singlevalLoc-1])/1000)}else{
-      legendAdder = (legendSingleValuex+(legendBreaksX[singlevalLoc+1]-legendBreaksX[singlevalLoc])/1000)
-    }
-
-  }else{legendAdder=NULL}
-
-  if(min(legendBreaksX)>legendSingleValuex){
-    legendBreaksX<- sort(c(legendSingleValuex[!legendSingleValuex %in% legendBreaksX],
-                     legendBreaksX[singlevalLoc:length(legendBreaksX)]))
-  }else{
-    if(max(legendBreaksX)<legendSingleValuex){
-      legendBreaksX<- sort(c(legendBreaksX[1:(singlevalLoc)],
-                       legendSingleValuex[!legendSingleValuex %in% legendBreaksX]))
-    }else{
-      if(min(legendBreaksX)==legendSingleValuex){
-      legendBreaksX<- sort(c(legendSingleValuex,
+      if(min(legendBreaksX)==legendSingleValueX){
+      legendBreaksX<- sort(c(legendSingleValueX,
                              legendAdder,
-                        legendBreaksX[(singlevalLoc+1):length(legendBreaksX)]))
+                        legendBreaksX[(singleValLoc+1):length(legendBreaksX)]))
     }else{
-      if(max(legendBreaksX)==legendSingleValuex){
-        legendBreaksX<- sort(c(legendBreaksX[1:(singlevalLoc)],
-                           legendSingleValuex[!legendSingleValuex %in% legendBreaksX],
+      if(max(legendBreaksX)==legendSingleValueX){
+        legendBreaksX<- sort(c(legendBreaksX[1:(singleValLoc)],
+                           legendSingleValueX[!legendSingleValueX %in% legendBreaksX],
                            legendAdder))
       }else{
-        legendBreaksX<- sort(c(legendBreaksX[1:(singlevalLoc-1)],
-                       legendSingleValuex[!legendSingleValuex %in% legendBreaksX],
+        legendBreaksX<- sort(c(legendBreaksX[1:(singleValLoc-1)],
+                       legendSingleValueX[!legendSingleValueX %in% legendBreaksX],
                        legendAdder,
-                       legendBreaksX[(singlevalLoc):length(legendBreaksX)]))
+                       legendBreaksX[(singleValLoc):length(legendBreaksX)]))
     }}}};legendBreaksX
+  }
 
   legendFixedBreaksX = length(legendBreaksX)
   length(legendBreaksX);length(legendLabelsX);legendBreaksX;legendLabelsX
 
-if(length(legendBreaksX)-1!=length(legendLabelsX)){
-  # print("Length of legend breaks must be length of legend labels +1. Skipping setting singleValeColor.")
-  legendFixedBreaksX=legendFixedBreaks
-  legendBreaksX=legendBreaks
-  legendLabelsX=NULL
-  fillPaletteX=fillPalette
-  }
-  } else{
+  # Assign new Labels to Palette
+  if(length(fillPaletteX)>0){
+    if(length(fillPaletteX)==length(legendLabelsX)){
+      names(fillPaletteX)<-legendLabelsX
+    }else{
+      fillPaletteX=fillPalette
+    }
+    graphics::pie(rep(1,length(fillPaletteX)),label=names(fillPaletteX),col=fillPaletteX)
+    }else{fillPaletteX=fillPalette}
+} # Test Palette
+
+  }else{
+    legendFixedBreaksX=1
+    legendBreaksX=legendBreaks
+    legendLabelsX=NULL
+    fillPaletteX=fillPalette
+  }} else{
     legendFixedBreaksX=legendFixedBreaks
     legendBreaksX=legendBreaks
     legendLabelsX=NULL

@@ -106,7 +106,7 @@ metis::metis.map(mapUS49, labels=T)
 ```
 
 <p align="center" style="font-size:18px;"> *Example View of Pre-loaded Map for US49* </p>
-<p align="center"> <img src="vignetteFigs/mapsProcess_mapExUS49.PNG"></p>
+<p align="center"> <img src="vignetteFigs/map.PNG"></p>
 
 <!-------------------------->
 <!-------------------------->

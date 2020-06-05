@@ -25,3 +25,4 @@
 metisCheatsheet.pdf
 ^\.github$
 ^_config.yml$
+^articles$

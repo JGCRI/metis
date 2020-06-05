@@ -22,5 +22,25 @@ navbar:
       href: news/index.html
     - text: cheatsheet
       href: https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf
+      
+reference:
+- title: "Functions"
+- contents: 
+  - starts_with("metis.")
+  - xmlMetisQueries
+- title: "Pre-loaded Data"
+- contents:
+  - starts_with("data_")
+- title: "Pre-loaded Maps"
+- contents:
+  - starts_with("map")
+  - starts_with("grid")
+- title: "Example Files"
+- contents:
+  - starts_with("example")
+- title: "Package File"
+- contents:
+  - metis
+
 toc:
   depth: 2

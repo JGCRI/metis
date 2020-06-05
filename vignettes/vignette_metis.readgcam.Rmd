@@ -19,8 +19,6 @@ vignette: >
 - Webpage: https://jgcri.github.io/metis/
 - Cheatsheet: https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf
 
-
-
 <!-------------------------->
 <!-------------------------->
 # Folder Structure
@@ -32,7 +30,6 @@ vignette: >
 <p align="center"> metis.mapsProcess() Folder structure </p>
 
 
-
 <!-------------------------->
 <!-------------------------->
 # Read GCAM Data
@@ -40,7 +37,15 @@ vignette: >
 <!-------------------------->
 <!-------------------------->
 
-For a full list of available params for this function please see [colors, maps and params](https://jgcri.github.io/metis/articles/vignette_colorsMapsParams/#params-1.html)
+For a full list of available params for this function please see [colors, maps and params](https://jgcri.github.io/metis/articles/vignette_colorsMapsParams/#params-1.html). `metis.readGCAM` will return a list containing: 
+
+- data: a dataframe with the original data
+- dataAggParam: a dataframe with the data aggregated to the parameter
+- dataAggClass1: a dataframe with the data aggregated to class 1
+- dataAggclass2: a dataframe with the data aggregated to class 2
+- scenarios: A list of the scenarios
+- queries: A list of the queries used to extract the data
+
 
 ```{r, eval=F}
 library(metis)
@@ -48,10 +53,37 @@ library(metis)
 
 dataGCAM <- metis.readgcam (
        #gcamdatabase = “Path_to_GCAMdatabase”,
-       dataProjFile = metis::exampleGCAMProj)
+       dataProjFile = metis::exampleGCAMproj)
 
-df <- dataGCAM$data
-dfParam <- dataGCAM$dataAggParam
-dfClass1 <- dataGCAM$dataAggClass1
+df <- dataGCAM$data; df
+dfParam <- dataGCAM$dataAggParam; dfParam
+dfClass1 <- dataGCAM$dataAggClass1; dfClass1
+dfClass2 <- dataGCAM$dataAggClass1; dfClass2
+```  
+
+<!-------------------------->
+<!-------------------------->
+# Read & Subset GCAM data
+<p align="center"> <img src="vignettefigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+
+
+```{r, eval=F}
+library(metis)
+
+
+dataGCAMsub <- metis.readgcam (
+                 #gcamdatabase = “Path_to_GCAMdatabase”,
+                 dataProjFile = metis::exampleGCAMproj,
+                 scenOrigNames = c("GCAM_SSP5","GCAM_SSP3"),
+                 scenNewNames = c("SSP5","SSP3"),
+                 paramsSelect = c("socioecon", "elecByTechTWh","watWithdrawBySec"),  # From Param list ?metis.readgcam
+                 regionsSelect = c("China","India","Pakistan"))
+
+df <- dataGCAMsub$data; df
+dfParam <- dataGCAMsub$dataAggParam; dfParam
+dfClass1 <- dataGCAMsub$dataAggClass1; dfClass1
+dfClass2 <- dataGCAMsub$dataAggClass1; dfClass2
 ```  
 
