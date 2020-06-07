@@ -4,6 +4,9 @@ language: R
 cache: false
 dist: xenial
 
+r_check_args: "--no-build-vignettes --ignore-vignettes"
+r_build_args: "--no-build-vignettes --ignore-vignettes"
+
 r_github_packages:
   - r-spatial/lwgeom
   
