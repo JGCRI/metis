@@ -153,28 +153,26 @@ the data by spatial boundaries given different shapefiles." />
 the data by spatial boundaries given different shapefiles.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metis.grid2poly</span>(
-  <span class='kw'>gridFiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>regionName</span> <span class='kw'>=</span> <span class='st'>"region"</span>,
-  <span class='kw'>subRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>subRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>subRegShpFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>subRegCol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>subRegType</span> <span class='kw'>=</span> <span class='st'>"subRegType"</span>,
-  <span class='kw'>aggType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
-  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>labelsSize</span> <span class='kw'>=</span> <span class='fl'>1.2</span>,
-  <span class='kw'>paramsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
-  <span class='kw'>scenariosSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
-  <span class='kw'>paramScenariosFixed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysFilesScarcity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xanthosFilesScarcity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>calculatePolyScarcity</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>calculatePolyScarcityOnly</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>printGridOverlay</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>saveFiles</span> <span class='kw'>=</span> <span class='no'>T</span>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/metis/man/metis.grid2poly.html'>metis.grid2poly</a></span>(
+  gridFiles = <span class='kw'>NULL</span>,
+  regionName = <span class='st'>"region"</span>,
+  subRegShape = <span class='kw'>NULL</span>,
+  subRegShpFolder = <span class='kw'>NULL</span>,
+  subRegShpFile = <span class='kw'>NULL</span>,
+  subRegCol = <span class='kw'>NULL</span>,
+  subRegType = <span class='st'>"subRegType"</span>,
+  aggType = <span class='kw'>NULL</span>,
+  dirOutputs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, sep = <span class='st'>""</span>),
+  folderName = <span class='kw'>NULL</span>,
+  nameAppend = <span class='st'>""</span>,
+  labelsSize = <span class='fl'>1.2</span>,
+  paramsSelect = <span class='st'>"All"</span>,
+  scenariosSelect = <span class='st'>"All"</span>,
+  paramScenariosFixed = <span class='kw'>NULL</span>,
+  tethysFilesScarcity = <span class='kw'>NULL</span>,
+  xanthosFilesScarcity = <span class='kw'>NULL</span>,
+  printGridOverlay = <span class='kw'>F</span>,
+  saveFiles = <span class='kw'>T</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -247,14 +245,6 @@ the data by spatial boundaries given different shapefiles.</p>
     <tr>
       <th>xanthosFilesScarcity</th>
       <td><p>Default =NULL</p></td>
-    </tr>
-    <tr>
-      <th>calculatePolyScarcity</th>
-      <td><p>Default = F</p></td>
-    </tr>
-    <tr>
-      <th>calculatePolyScarcityOnly</th>
-      <td><p>Default = F</p></td>
     </tr>
     <tr>
       <th>printGridOverlay</th>

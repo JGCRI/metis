@@ -151,16 +151,17 @@
     <p>This function finds the grids located within a given shapefiles regions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metis.gridByPoly</span>(
-  <span class='kw'>gridTable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>shapeFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>shapeFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>colName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
-  <span class='kw'>fname</span> <span class='kw'>=</span> <span class='st'>"gridByPoly"</span>,
-  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='st'>"folderNameDefault"</span>,
-  <span class='kw'>saveFile</span> <span class='kw'>=</span> <span class='no'>F</span>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/metis/man/metis.gridByPoly.html'>metis.gridByPoly</a></span>(
+  gridTable = <span class='kw'>NULL</span>,
+  shape = <span class='kw'>NULL</span>,
+  shapeFolder = <span class='kw'>NULL</span>,
+  shapeFile = <span class='kw'>NULL</span>,
+  colName = <span class='kw'>NULL</span>,
+  dirOutputs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, sep = <span class='st'>""</span>),
+  fname = <span class='st'>"gridByPoly"</span>,
+  folderName = <span class='kw'>NULL</span>,
+  saveFile = <span class='kw'>F</span>,
+  printFig = <span class='kw'>F</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -201,6 +202,10 @@
     <tr>
       <th>saveFile</th>
       <td><p>Default = F. If want csv output then change to T</p></td>
+    </tr>
+    <tr>
+      <th>printFig</th>
+      <td><p>Default = F. If grid overlap with shape is wanted</p></td>
     </tr>
     </table>
 

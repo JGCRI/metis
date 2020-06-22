@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>data_A23.globaltech_retirement — data_A23.globaltech_retirement • Metis</title>
+<title>metis.downscale — metis.downscale • Metis</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="data_A23.globaltech_retirement — data_A23.globaltech_retirement" />
-<meta property="og:description" content="data_A23.globaltech_retirement" />
+<meta property="og:title" content="metis.downscale — metis.downscale" />
+<meta property="og:description" content="This function downscales data by subregion by given gridded data" />
 
 
 
@@ -142,30 +142,92 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>data_A23.globaltech_retirement</h1>
-    <small class="dont-index">Source: <a href='https://github.com/JGCRI/metis/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>data_A23.globaltech_retirement.Rd</code></div>
+    <h1>metis.downscale</h1>
+    <small class="dont-index">Source: <a href='https://github.com/JGCRI/metis/blob/master/R/metis.downscale.R'><code>R/metis.downscale.R</code></a></small>
+    <div class="hidden name"><code>metis.downscale.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>data_A23.globaltech_retirement</p>
+    <p>This function downscales data by subregion by given gridded data</p>
     </div>
 
-    <pre class="usage"><span class='kw'>data_A23.globaltech_retirement</span></pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/metis/man/metis.downscale.html'>metis.downscale</a></span>(
+  polygonTable = <span class='kw'>NULL</span>,
+  gridTable = <span class='kw'>NULL</span>,
+  downscaleRes = <span class='st'>"grid050"</span>,
+  shape = <span class='kw'>NULL</span>,
+  shapeFolder = <span class='kw'>NULL</span>,
+  shapeFile = <span class='kw'>NULL</span>,
+  colName = <span class='st'>"subRegion"</span>,
+  dirOutputs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, sep = <span class='st'>""</span>),
+  fname = <span class='st'>"downscale"</span>,
+  nameAppend = <span class='kw'>NULL</span>,
+  folderName = <span class='kw'>NULL</span>,
+  saveFile = <span class='kw'>T</span>,
+  printFig = <span class='kw'>F</span>
+)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>polygonTable</th>
+      <td><p>Default = NULL,</p></td>
+    </tr>
+    <tr>
+      <th>gridTable</th>
+      <td><p>Default = NULL. Full path to grid file or R tibble or for pre-loaded data one of "pop".</p></td>
+    </tr>
+    <tr>
+      <th>downscaleRes</th>
+      <td><p>Default = grid050. Can Choose grid025 or provide a dataframe with equally spaced lat and lon.</p></td>
+    </tr>
+    <tr>
+      <th>shape</th>
+      <td><p>Default = NULL,</p></td>
+    </tr>
+    <tr>
+      <th>shapeFolder</th>
+      <td><p>Default = NULL,</p></td>
+    </tr>
+    <tr>
+      <th>shapeFile</th>
+      <td><p>Default = NULL,</p></td>
+    </tr>
+    <tr>
+      <th>colName</th>
+      <td><p>Default = "subRegion",</p></td>
+    </tr>
+    <tr>
+      <th>dirOutputs</th>
+      <td><p>Default = paste(getwd(),"/outputs",sep=""),</p></td>
+    </tr>
+    <tr>
+      <th>fname</th>
+      <td><p>Default = "gridByPoly"</p></td>
+    </tr>
+    <tr>
+      <th>nameAppend</th>
+      <td><p>Default = NULL</p></td>
+    </tr>
+    <tr>
+      <th>folderName</th>
+      <td><p>Default = NULL</p></td>
+    </tr>
+    <tr>
+      <th>saveFile</th>
+      <td><p>Default = F. If want csv output then change to T</p></td>
+    </tr>
+    <tr>
+      <th>printFig</th>
+      <td><p>Default = F. If grid overlap with shape is wanted</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>.csv</p>
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+    <p>Prints out graphic</p>
 
-    <p>paste(getwd(),"/dataFiles/gcam/investCalcs/A23.globaltech_retirement.csv",sep="")</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
- <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/JGCRI/metis'>metis</a></span>);
- <span class='kw'>metis</span>::<span class='kw'><a href='https://rdrr.io/pkg/metis/man/data_A23.globaltech_retirement.html'>data_A23.globaltech_retirement</a></span>
-}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

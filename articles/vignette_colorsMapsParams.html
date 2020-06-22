@@ -98,7 +98,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="vignette_colorsMapsParams_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>metisColorsMapsParams</h1>
@@ -157,12 +157,14 @@
 <li>pal_ScarcityCat</li>
 </ul>
 <p>The following commands can be used to view the list of metis palettes as well as to visualize a particular palette and get a list of its colors:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/JGCRI/metis">metis</a></span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span>()) <span class="co"># View all palettes</span>
 <span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span>(<span class="st">"pal_hot"</span>)
 <span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span>(<span class="st">"pal_div_BrGn"</span>)
-<span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span>(<span class="st">"pal_ScarcityCat"</span>)</pre></body></html></div>
+<span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span>(<span class="st">"pal_ScarcityCat"</span>)
+</pre></div>
 <p align="center" style="font-size:18px;">
 <em>Color Palettes</em>
 </p>
@@ -205,10 +207,12 @@
 <li>mapUS52HUC4: USGS Hydrological Unit Code (HUC)</li>
 </ul>
 <p>The following commands can be used to view a particular map and the data contained in the shape file:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/JGCRI/metis">metis</a></span>)
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">mapUS49</span>@<span class="kw">data</span>) <span class="co"># To View data in shapefile</span>
-<span class="kw pkg">metis</span><span class="kw ns">::</span><span class="fu"><a href="../reference/metis.map.html">metis.map</a></span>(<span class="no">mapUS49</span>, <span class="kw">labels</span><span class="kw">=</span><span class="no">T</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">mapUS49</span><span class="op">@</span>data) <span class="co"># To View data in shapefile</span>
+<span class="kw">metis</span>::<span class="fu"><a href="../reference/metis.map.html">metis.map</a></span>(<span class="kw">mapUS49</span>, labels=<span class="kw">T</span>)
+</pre></div>
 <p align="center" style="font-size:18px;">
 <em>Example View of Pre-loaded Map for US49</em>
 </p>
@@ -225,9 +229,11 @@
 <!-------------------------->
 <!-------------------------->
 <p>The following command will provide an updated list of params and paramSets to be used in <a href="https://jgcri.github.io/metis/articles/vignette_metis.readgcam.html">metis.readgcam</a>.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>); <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/JGCRI/metis">metis</a></span>); <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
 
-<span class="fu"><a href="../reference/metis.mappings.html">metis.mappings</a></span>()$<span class="no">mapParamQuery</span><span class="kw">%&gt;%</span><span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(-<span class="no">query</span>,-<span class="no">mapPalette</span>)</pre></body></html></div>
+<span class="fu"><a href="../reference/metis.mappings.html">metis.mappings</a></span>()<span class="op">$</span><span class="kw">mapParamQuery</span><span class="op">%&gt;%</span><span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="op">-</span><span class="kw">query</span>,<span class="op">-</span><span class="kw">mapPalette</span>)
+</pre></div>
 <p align="center" style="font-size:18px;">
 <em>List of key Params for readGCAM</em>
 </p>

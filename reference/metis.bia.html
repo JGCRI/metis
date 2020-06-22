@@ -151,51 +151,25 @@
     <p>This function downscales GCAM electricity generation and installed capacity onto a grid, based on WRI PowerWatch dataset of present capacity</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metis.bia</span>(
-  <span class='kw'>biaInputsFolder</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
-  <span class='kw'>biaInputsFiles</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
-  <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
-  <span class='kw'>reReadData</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>regionsSelect</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>regionsSelectDiagnostic</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dataProj</span> <span class='kw'>=</span> <span class='st'>"dataProj.proj"</span>,
-  <span class='kw'>dataProjPath</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>scenOrigNames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>scenNewNames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>gcamdatabasePath</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
-  <span class='kw'>gcamdatabaseName</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
-  <span class='kw'>queryxml</span> <span class='kw'>=</span> <span class='st'>"metisQueries.xml"</span>,
-  <span class='kw'>queryPath</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/dataFiles/gcam"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
-  <span class='kw'>queriesSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
-  <span class='kw'>paramsSelect</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"elecByTech"</span>, <span class='st'>"elecCapBySubsector"</span>),
-  <span class='kw'>gridChoice</span> <span class='kw'>=</span> <span class='st'>"grid_050"</span>,
-  <span class='kw'>diagnosticsON</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>subsectorNAdistribute</span> <span class='kw'>=</span> <span class='st'>"even"</span>,
-  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/metis/man/metis.bia.html'>metis.bia</a></span>(
+  dirOutputs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, sep = <span class='st'>""</span>),
+  regionsSelect = <span class='kw'>NULL</span>,
+  regionsSelectDiagnostic = <span class='kw'>NULL</span>,
+  dataProjFile = <span class='st'>"dataProj.proj"</span>,
+  gcamdatabase = <span class='kw'>NULL</span>,
+  gridChoice = <span class='st'>"grid_050"</span>,
+  diagnosticsON = <span class='kw'>F</span>,
+  subsectorNAdistribute = <span class='st'>"even"</span>,
+  folderName = <span class='kw'>NULL</span>,
+  nameAppend = <span class='st'>""</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>biaInputsFolder</th>
-      <td><p>Bia Inputs Folder Path</p></td>
-    </tr>
-    <tr>
-      <th>biaInputsFiles</th>
-      <td><p>Bia Inputs Folder Path</p></td>
-    </tr>
-    <tr>
       <th>dirOutputs</th>
       <td><p>Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.</p></td>
-    </tr>
-    <tr>
-      <th>reReadData</th>
-      <td><p>Default = 1. will read the GCAM data base and create a queryData.proj file
-in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
-with full path is provided otherwise it will search for a dataProj.proj file in the existing
-folder which may have been created from an old run.</p></td>
     </tr>
     <tr>
       <th>regionsSelect</th>
@@ -206,47 +180,12 @@ folder which may have been created from an old run.</p></td>
       <td><p>Default = NULL (sets to regionsSelect). Choose the regions to run diagnostics.</p></td>
     </tr>
     <tr>
-      <th>dataProj</th>
+      <th>dataProjFile</th>
       <td><p>Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.</p></td>
     </tr>
     <tr>
-      <th>dataProjPath</th>
-      <td><p>Default = NULL. Folder that contains the dataProj or where it will be produced.</p></td>
-    </tr>
-    <tr>
-      <th>scenOrigNames</th>
-      <td><p>Original Scenarios names in GCAM database in a string vector.
-For example c('scenario1','scenario2).</p></td>
-    </tr>
-    <tr>
-      <th>scenNewNames</th>
-      <td><p>New Names which may be shorter and more useful for figures etc.
-Default will use Original Names. For example c('scenario1','scenario2)</p></td>
-    </tr>
-    <tr>
-      <th>gcamdatabasePath</th>
-      <td><p>Path to gcam database folder</p></td>
-    </tr>
-    <tr>
-      <th>gcamdatabaseName</th>
-      <td><p>Name of gcam database</p></td>
-    </tr>
-    <tr>
-      <th>queryxml</th>
-      <td><p>Full path to query.xml file</p></td>
-    </tr>
-    <tr>
-      <th>queryPath</th>
-      <td><p>Folder that contains the query.xml file.By default it is
-the same folder as specified by gcamdatabasePath</p></td>
-    </tr>
-    <tr>
-      <th>queriesSelect</th>
-      <td><p>Default = "All". Vector of queries to read from the queryxml for example</p></td>
-    </tr>
-    <tr>
-      <th>paramsSelect</th>
-      <td><p>Default = c("elecByTech", "elecCapBySubsector") . Vector of parameters to be read from the GCAM database</p></td>
+      <th>gcamdatabase</th>
+      <td><p>Default NULL. Full path to gcamdatabase.</p></td>
     </tr>
     <tr>
       <th>gridChoice</th>

@@ -151,34 +151,36 @@
     <p>This function prepares gridded data for use with other metis modules.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metis.prepGrid</span>(
-  <span class='kw'>demeterFolders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>demeterScenarios</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>demeterTimesteps</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>2005</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>2100</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>5</span>),
-  <span class='kw'>demeterUnits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysFolders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysScenarios</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysUnits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysFiles</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"wddom"</span>, <span class='st'>"wdelec"</span>, <span class='st'>"wdirr"</span>, <span class='st'>"wdliv"</span>, <span class='st'>"wdmfg"</span>, <span class='st'>"wdmin"</span>, <span class='st'>"wdnonag"</span>,
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/metis/man/metis.prepGrid.html'>metis.prepGrid</a></span>(
+  demeterFolders = <span class='kw'>NULL</span>,
+  demeterScenarios = <span class='kw'>NULL</span>,
+  demeterTimesteps = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(from = <span class='fl'>2005</span>, to = <span class='fl'>2100</span>, by = <span class='fl'>5</span>),
+  demeterUnits = <span class='kw'>NULL</span>,
+  tethysFolders = <span class='kw'>NULL</span>,
+  tethysScenarios = <span class='kw'>NULL</span>,
+  tethysUnits = <span class='kw'>NULL</span>,
+  tethysFiles = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"wddom"</span>, <span class='st'>"wdelec"</span>, <span class='st'>"wdirr"</span>, <span class='st'>"wdliv"</span>, <span class='st'>"wdmfg"</span>, <span class='st'>"wdmin"</span>, <span class='st'>"wdnonag"</span>,
     <span class='st'>"wdtotal"</span>),
-  <span class='kw'>xanthosFiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xanthosScenarios</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xanthosScenarioAssign</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xanthosCoordinatesPath</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xanthosGridAreaHecsPath</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysFilesScarcity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xanthosFilesScarcity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>spanLowess</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
-  <span class='kw'>popFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>popFiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>biaFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>biaFiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>popUnits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
-  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>saveFormat</span> <span class='kw'>=</span> <span class='st'>"rds"</span>,
-  <span class='kw'>filterYears</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>diagnosticsOn</span> <span class='kw'>=</span> <span class='no'>F</span>
+  xanthosFiles = <span class='kw'>NULL</span>,
+  xanthosScenarios = <span class='kw'>NULL</span>,
+  xanthosScenarioAssign = <span class='kw'>NULL</span>,
+  xanthosCoordinatesPath = <span class='kw'>NULL</span>,
+  xanthosGridAreaHecsPath = <span class='kw'>NULL</span>,
+  tethysFilesScarcity = <span class='kw'>NULL</span>,
+  xanthosFilesScarcity = <span class='kw'>NULL</span>,
+  spanLowess = <span class='fl'>0.25</span>,
+  popFolder = <span class='kw'>NULL</span>,
+  popFiles = <span class='kw'>NULL</span>,
+  biaFolder = <span class='kw'>NULL</span>,
+  biaFiles = <span class='kw'>NULL</span>,
+  downscaleFolder = <span class='kw'>NULL</span>,
+  downscaleFiles = <span class='kw'>NULL</span>,
+  popUnits = <span class='kw'>NULL</span>,
+  dirOutputs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, sep = <span class='st'>""</span>),
+  folderName = <span class='kw'>NULL</span>,
+  saveFormat = <span class='st'>"rds"</span>,
+  filterYears = <span class='kw'>NULL</span>,
+  diagnosticsOn = <span class='kw'>F</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -262,6 +264,14 @@
     </tr>
     <tr>
       <th>biaFiles</th>
+      <td><p>Default = &lt;-"grid_bia_map"</p></td>
+    </tr>
+    <tr>
+      <th>downscaleFolder</th>
+      <td><p>Default = &lt;-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")</p></td>
+    </tr>
+    <tr>
+      <th>downscaleFiles</th>
       <td><p>Default = &lt;-"grid_bia_map"</p></td>
     </tr>
     <tr>
