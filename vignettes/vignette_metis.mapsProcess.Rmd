@@ -389,6 +389,8 @@ metis.mapsProcess(polygonTable = data, folderName ="scaleRange",
 <!-------------------------->
 <!-------------------------->
 
+Can use any [R color palette](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf) or choose from a list of metis color palettes at [colors, maps and params](https://jgcri.github.io/metis/articles/vignette_colorsMapsParams.html#color-palettes-1).
+
 ```{r, eval=F}
 library(metis)
 data = data.frame(subRegion = c("Austria","Spain", "Italy", "Germany","Greece",

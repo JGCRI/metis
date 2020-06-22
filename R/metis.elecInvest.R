@@ -29,7 +29,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
   # Mapping files
 
   years_mapping <- (data.frame(year=c(rep("final-calibration-year",1),rep("initial-future-year",18)),
-                              vintage=c(metis.assumptions()$GCAMbaseYear,seq(metis.assumptions()$GCAMbaseYear+5,2100,by=5))))%>%
+                              vintage=c(metis.assumptions("GCAMbaseYear"),seq(metis.assumptions("GCAMbaseYear")+5,2100,by=5))))%>%
     dplyr::mutate(year=as.character(year));years_mapping
 
   cap_cost_tech <- metis::data_cap_cost_tech
@@ -131,7 +131,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     tidyr::separate(temp, c("temp", "vintage"), sep = "=") %>%
     dplyr::select(-temp) %>%
     dplyr::mutate(vintage = as.numeric(vintage)) %>%
-    dplyr::filter(region %in% world_regions, Year <= end_year, vintage >= metis.assumptions()$GCAMbaseYear, vintage <= end_year, Year >= vintage) -> elec_vintage
+    dplyr::filter(region %in% world_regions, Year <= end_year, vintage >= metis.assumptions("GCAMbaseYear"), vintage <= end_year, Year >= vintage) -> elec_vintage
 
   # Calculate additions by vintage
   elec_vintage %>%
@@ -278,12 +278,12 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::left_join(cap_cost %>%
                 dplyr::select(-sector.name, -input.capital, -fixed.charge.rate),
               by = c("subsector" = "subsector.name", "technology", "Year" = "year")) %>%
-    dplyr::mutate(add_GW = (add_adj * metis.assumptions()$convEJ2GWh) / (8760 * capacity.factor),
+    dplyr::mutate(add_GW = (add_adj * metis.assumptions("convEJ2GWh")) / (8760 * capacity.factor),
            Units = "GW") -> elec_add_GW
 
   # Calculate final capital investments in billion 2010 USD
   elec_add_GW %>%
-    dplyr::mutate(cap_invest = (add_GW * metis.assumptions()$convGW_kW * capital.overnight * metis.assumptions()$convUSD_1975_2010) / 1e9,
+    dplyr::mutate(cap_invest = (add_GW * metis.assumptions("convGW_kW") * capital.overnight * metis.assumptions("convUSD_1975_2010")) / 1e9,
            Units = "billion 2010 USD") -> elec_add_cap_invest
 
   # Calculate final premature retirements in GW
@@ -294,7 +294,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
                 dplyr::select(-sector.name, -input.capital, -fixed.charge.rate),
               by = c("subsector" = "subsector.name", "technology", "vintage" = "year")) %>%
     dplyr::mutate(capital.overnight = dplyr::if_else(vintage == 2010, capital.overnight * .5, capital.overnight * 1),
-           early_ret_GW = (early_ret * metis.assumptions()$convEJ2GWh) / (8760 * capacity.factor),
+           early_ret_GW = (early_ret * metis.assumptions("convEJ2GWh")) / (8760 * capacity.factor),
            Units = "GW") -> elec_ret_GW
 
   # Calculate unrecovered capital costs of prematurely retired assets
@@ -305,7 +305,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
                 dplyr::select(technology, year, lifetime),
               by = c("technology", "year")) %>%
     dplyr::mutate(dep_factor = 1 - ((Year - vintage) / lifetime),
-           unrec_cap = (early_ret_GW * metis.assumptions()$convGW_kW * capital.overnight * dep_factor * metis.assumptions()$convUSD_1975_2010) / 1e9,
+           unrec_cap = (early_ret_GW * metis.assumptions("convGW_kW") * capital.overnight * dep_factor * metis.assumptions("convUSD_1975_2010")) / 1e9,
            Units = "billion 2010 USD") -> elec_ret_cap_cost
 
   # ============================================================================
@@ -317,7 +317,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::summarise(cap_invest = sum(cap_invest,na.rm=T)) %>%
     dplyr::ungroup() %>%
     dplyr::filter(Year >= start_year) %>%
-    dplyr::mutate(cap_invest=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,cap_invest))%>%
+    dplyr::mutate(cap_invest=dplyr::if_else(Year==metis.assumptions("GCAMbaseYear"),0,cap_invest))%>%
     tidyr::spread(Year, cap_invest) %>%
     dplyr::mutate_all(~replace(., is.na(.), 0))%>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
@@ -333,7 +333,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::mutate(cap_invest = cumsum(cap_invest)) %>%
     dplyr::ungroup()%>%
     dplyr::filter(Year >= start_year) %>%
-    dplyr::mutate(cap_invest=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,cap_invest))%>%
+    dplyr::mutate(cap_invest=dplyr::if_else(Year==metis.assumptions("GCAMbaseYear"),0,cap_invest))%>%
     tidyr::spread(Year, cap_invest) %>%
     dplyr::mutate_all(~replace(., is.na(.), 0))%>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
@@ -374,7 +374,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::ungroup() %>%
     dplyr::mutate(unrec_cap = unrec_cap * -1) %>%
     dplyr::filter(Year >= start_year) %>%
-    dplyr::mutate(unrec_cap=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,unrec_cap))%>%
+    dplyr::mutate(unrec_cap=dplyr::if_else(Year==metis.assumptions("GCAMbaseYear"),0,unrec_cap))%>%
     tidyr::spread(Year, unrec_cap) %>%
     dplyr::mutate_all(~replace(., is.na(.), 0)) %>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%
@@ -391,7 +391,7 @@ metis.elecInvest <- function(elec_gen_vintage, world_regions, start_year=2010, e
     dplyr::ungroup()%>%
     dplyr::mutate(unrec_cap = unrec_cap * -1) %>%
     dplyr::filter(Year >= start_year) %>%
-    dplyr::mutate(unrec_cap=dplyr::if_else(Year==metis.assumptions()$GCAMbaseYear,0,unrec_cap))%>%
+    dplyr::mutate(unrec_cap=dplyr::if_else(Year==metis.assumptions("GCAMbaseYear"),0,unrec_cap))%>%
     tidyr::spread(Year, unrec_cap) %>%
     dplyr::mutate_all(~replace(., is.na(.), 0)) %>%
     dplyr::mutate(agg_tech = factor(agg_tech, levels = tech_order)) %>%

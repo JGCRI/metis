@@ -52,7 +52,7 @@ metis.hydroInvest <- function(addition_costs, start_year=2010){
 
   hydro_GW_inc <- hydro_energy_inc %>%
     tidyr::gather(key="year",value="value",-Units,-scenario,-region,-agg_tech) %>%
-    dplyr::mutate(value=value*metis.assumptions()$convEJ2GWh*(1/(8760 *  metis.assumptions()$hydro_cap_fact)),
+    dplyr::mutate(value=value*metis.assumptions("convEJ2GWh")*(1/(8760 *  metis.assumptions("hydro_cap_fact"))),
                   Units="GW")%>%
     tidyr::spread(key="year",value="value")%>%
     dplyr::ungroup(); hydro_GW_inc
@@ -72,7 +72,7 @@ metis.hydroInvest <- function(addition_costs, start_year=2010){
   hydro_cost_inc <- hydro_GW_inc %>%
     tidyr::gather(key="year",value="value",-Units,-scenario,-region,-agg_tech) %>%
     dplyr::ungroup()%>%
-    dplyr::mutate(value=value*metis.assumptions()$hydro_cost_GW,
+    dplyr::mutate(value=value*metis.assumptions("hydro_cost_GW"),
                   Units = 'billion 2010 USD',
                   value = dplyr::if_else(value<=0,0,value)) %>%
     tidyr::spread(key="year",value="value") %>%

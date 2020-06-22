@@ -22,8 +22,6 @@ metis.grid2poly(
   paramScenariosFixed = NULL,
   tethysFilesScarcity = NULL,
   xanthosFilesScarcity = NULL,
-  calculatePolyScarcity = F,
-  calculatePolyScarcityOnly = F,
   printGridOverlay = F,
   saveFiles = T
 )
@@ -62,10 +60,6 @@ metis.grid2poly(
 \item{tethysFilesScarcity}{Default =NULL,}
 
 \item{xanthosFilesScarcity}{Default =NULL}
-
-\item{calculatePolyScarcity}{Default = F}
-
-\item{calculatePolyScarcityOnly}{Default = F}
 
 \item{printGridOverlay}{Default = F}
 

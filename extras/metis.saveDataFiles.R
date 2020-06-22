@@ -7,6 +7,30 @@ redoMaps = F
 # Current Data
 #data(package="metis")
 
+
+#-----------------
+# Gridded Population Data
+#-----------------
+
+# Data from Tethys FOlder
+# Original data from https://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-count-rev11/data-download#
+# Center for International Earth Science Information Network (CIESIN) - Columbia University. 2016.
+# Gridded Population of the World, Version 4 (GPWv4): Population Count. NASA Socioeconomic Data and Applications Center (SEDAC),
+# Palisades, NY. DOI: http://dx.doi.org/10.7927/H4X63JVC
+# https://github.com/JGCRI/tethys
+#-------------------
+if(redoMaps){
+  dfpop <- data.table::fread("C:/Z/projects/downscaling/tethys/example/Input/harmonized_inputs/GPW_population.csv"); dfpop
+  names(dfpop) <- gsub("X","",names(dfpop)); dfpop
+  dfcoords <- data.table::fread("C:/Z/projects/downscaling/tethys/example/Input/coordinates.csv"); dfcoords
+  nrow(dfcoords); nrow(dfpop)
+  dfx <- dfcoords %>%
+    dplyr::select(lon=V2,lat=V3) %>%
+    dplyr::bind_cols(dfpop); dfx
+  grid_pop_GPWv4To2015 <- dfx
+  use_data(grid_pop_GPWv4To2015, overwrite=T)
+}
+
 #-----------------
 # World Maps (Countries, States)
 #-----------------

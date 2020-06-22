@@ -26,6 +26,8 @@ metis.prepGrid(
   popFiles = NULL,
   biaFolder = NULL,
   biaFiles = NULL,
+  downscaleFolder = NULL,
+  downscaleFiles = NULL,
   popUnits = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
   folderName = NULL,
@@ -74,6 +76,10 @@ metis.prepGrid(
 \item{biaFolder}{Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")}
 
 \item{biaFiles}{Default = <-"grid_bia_map"}
+
+\item{downscaleFolder}{Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")}
+
+\item{downscaleFiles}{Default = <-"grid_bia_map"}
 
 \item{popUnits}{Default = <-"person"}
 

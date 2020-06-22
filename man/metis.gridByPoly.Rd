@@ -12,8 +12,9 @@ metis.gridByPoly(
   colName = NULL,
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
   fname = "gridByPoly",
-  folderName = "folderNameDefault",
-  saveFile = F
+  folderName = NULL,
+  saveFile = F,
+  printFig = F
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ metis.gridByPoly(
 \item{folderName}{Default ="folderNameDefault",}
 
 \item{saveFile}{Default = F. If want csv output then change to T}
+
+\item{printFig}{Default = F. If grid overlap with shape is wanted}
 }
 \value{
 Prints out graphic
