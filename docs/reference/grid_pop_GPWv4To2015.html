@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>metis.bia — metis.bia • Metis</title>
+<title>Gridded Population of the World, Version 4 (GPWv4)
+https://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-count-rev11/data-download# — grid_pop_GPWv4To2015 • Metis</title>
 
 
 <!-- jquery -->
@@ -39,8 +40,10 @@
 
 
 
-<meta property="og:title" content="metis.bia — metis.bia" />
-<meta property="og:description" content="This function downscales GCAM electricity generation and installed capacity onto a grid, based on WRI PowerWatch dataset of present capacity" />
+<meta property="og:title" content="Gridded Population of the World, Version 4 (GPWv4)
+https://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-count-rev11/data-download# — grid_pop_GPWv4To2015" />
+<meta property="og:description" content="Gridded Population of the World, Version 4 (GPWv4)
+https://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-count-rev11/data-download#" />
 
 
 
@@ -142,77 +145,32 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>metis.bia</h1>
-    <small class="dont-index">Source: <a href='https://github.com/JGCRI/metis/blob/master/R/metis.bia.R'><code>R/metis.bia.R</code></a></small>
-    <div class="hidden name"><code>metis.bia.Rd</code></div>
+    <h1>Gridded Population of the World, Version 4 (GPWv4)
+https://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-count-rev11/data-download#</h1>
+    <small class="dont-index">Source: <a href='https://github.com/JGCRI/metis/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>grid_pop_GPWv4To2015.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function downscales GCAM electricity generation and installed capacity onto a grid, based on WRI PowerWatch dataset of present capacity</p>
+    <p>Gridded Population of the World, Version 4 (GPWv4)
+https://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-count-rev11/data-download#</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metis.bia</span>(
-  <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
-  <span class='kw'>regionsSelect</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>regionsSelectDiagnostic</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dataProjFile</span> <span class='kw'>=</span> <span class='st'>"dataProj.proj"</span>,
-  <span class='kw'>gcamdatabase</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>gridChoice</span> <span class='kw'>=</span> <span class='st'>"grid_050"</span>,
-  <span class='kw'>diagnosticsON</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>subsectorNAdistribute</span> <span class='kw'>=</span> <span class='st'>"even"</span>,
-  <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='st'>""</span>
-)</pre>
+    <pre class="usage"><span class='no'>grid_pop_GPWv4To2015</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>dirOutputs</th>
-      <td><p>Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.</p></td>
-    </tr>
-    <tr>
-      <th>regionsSelect</th>
-      <td><p>The regions to analyze in a vector. Example c('Colombia','Argentina')</p></td>
-    </tr>
-    <tr>
-      <th>regionsSelectDiagnostic</th>
-      <td><p>Default = NULL (sets to regionsSelect). Choose the regions to run diagnostics.</p></td>
-    </tr>
-    <tr>
-      <th>dataProjFile</th>
-      <td><p>Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.</p></td>
-    </tr>
-    <tr>
-      <th>gcamdatabase</th>
-      <td><p>Default NULL. Full path to gcamdatabase.</p></td>
-    </tr>
-    <tr>
-      <th>gridChoice</th>
-      <td><p>Default = "grid_050" . Choice of whether to use 50 km x 50 km grid cells ("grid_050") or 25 km x 25 km ("grid_025").</p></td>
-    </tr>
-    <tr>
-      <th>diagnosticsON</th>
-      <td><p>Default = T.</p></td>
-    </tr>
-    <tr>
-      <th>subsectorNAdistribute</th>
-      <td><p>Default = "even". Choose "even" for even distribution or "totalOther" to distribute based on sum of all other subsectors..</p></td>
-    </tr>
-    <tr>
-      <th>folderName</th>
-      <td><p>Default = NULL,</p></td>
-    </tr>
-    <tr>
-      <th>nameAppend</th>
-      <td><p>Default=""</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A tibble with GCAM electricity generation distributed on a grid for selected regions</p>
+    <p>R tibble</p>
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
+    <p>SEDAC, https://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-count-rev11/data-download#</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>metis</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>data_pop_GPWv4To2015</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
