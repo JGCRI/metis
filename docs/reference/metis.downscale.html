@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>metis.prepGrid — metis.prepGrid • Metis</title>
+<title>metis.downscale — metis.downscale • Metis</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="metis.prepGrid — metis.prepGrid" />
-<meta property="og:description" content="This function prepares gridded data for use with other metis modules." />
+<meta property="og:title" content="metis.downscale — metis.downscale" />
+<meta property="og:description" content="This function downscales data by subregion by given gridded data" />
 
 
 
@@ -142,167 +142,91 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>metis.prepGrid</h1>
-    <small class="dont-index">Source: <a href='https://github.com/JGCRI/metis/blob/master/R/metis.prepGrid.R'><code>R/metis.prepGrid.R</code></a></small>
-    <div class="hidden name"><code>metis.prepGrid.Rd</code></div>
+    <h1>metis.downscale</h1>
+    <small class="dont-index">Source: <a href='https://github.com/JGCRI/metis/blob/master/R/metis.downscale.R'><code>R/metis.downscale.R</code></a></small>
+    <div class="hidden name"><code>metis.downscale.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function prepares gridded data for use with other metis modules.</p>
+    <p>This function downscales data by subregion by given gridded data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metis.prepGrid</span>(
-  <span class='kw'>demeterFolders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>demeterScenarios</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>demeterTimesteps</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>2005</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>2100</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>5</span>),
-  <span class='kw'>demeterUnits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysFolders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysScenarios</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysUnits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysFiles</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"wddom"</span>, <span class='st'>"wdelec"</span>, <span class='st'>"wdirr"</span>, <span class='st'>"wdliv"</span>, <span class='st'>"wdmfg"</span>, <span class='st'>"wdmin"</span>, <span class='st'>"wdnonag"</span>,
-    <span class='st'>"wdtotal"</span>),
-  <span class='kw'>xanthosFiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xanthosScenarios</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xanthosScenarioAssign</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xanthosCoordinatesPath</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xanthosGridAreaHecsPath</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tethysFilesScarcity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xanthosFilesScarcity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>spanLowess</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
-  <span class='kw'>popFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>popFiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>biaFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>biaFiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>downscaleFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>downscaleFiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>popUnits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>metis.downscale</span>(
+  <span class='kw'>polygonTable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>gridTable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>downscaleRes</span> <span class='kw'>=</span> <span class='st'>"grid050"</span>,
+  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>shapeFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>shapeFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>colName</span> <span class='kw'>=</span> <span class='st'>"subRegion"</span>,
   <span class='kw'>dirOutputs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
+  <span class='kw'>fname</span> <span class='kw'>=</span> <span class='st'>"downscale"</span>,
+  <span class='kw'>nameAppend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>folderName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>saveFormat</span> <span class='kw'>=</span> <span class='st'>"rds"</span>,
-  <span class='kw'>filterYears</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>diagnosticsOn</span> <span class='kw'>=</span> <span class='no'>F</span>
+  <span class='kw'>saveFile</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>printFig</span> <span class='kw'>=</span> <span class='no'>F</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>demeterFolders</th>
-      <td><p>Full path to demeter outputs</p></td>
+      <th>polygonTable</th>
+      <td><p>Default = NULL,</p></td>
     </tr>
     <tr>
-      <th>demeterScenarios</th>
-      <td><p>Name of demeter scenario</p></td>
+      <th>gridTable</th>
+      <td><p>Default = NULL. Full path to grid file or R tibble or for pre-loaded data one of "pop".</p></td>
     </tr>
     <tr>
-      <th>demeterTimesteps</th>
-      <td><p>Default is seq(from=2005,to=2100,by=5)</p></td>
+      <th>downscaleRes</th>
+      <td><p>Default = grid050. Can Choose grid025 or provide a dataframe with equally spaced lat and lon.</p></td>
     </tr>
     <tr>
-      <th>demeterUnits</th>
-      <td><p>No Default</p></td>
+      <th>shape</th>
+      <td><p>Default = NULL,</p></td>
     </tr>
     <tr>
-      <th>tethysFolders</th>
-      <td><p>Folder for tethys results</p></td>
+      <th>shapeFolder</th>
+      <td><p>Default = NULL,</p></td>
     </tr>
     <tr>
-      <th>tethysScenarios</th>
-      <td><p>Scenario name for tethys run</p></td>
+      <th>shapeFile</th>
+      <td><p>Default = NULL,</p></td>
     </tr>
     <tr>
-      <th>tethysUnits</th>
-      <td><p>No Default</p></td>
-    </tr>
-    <tr>
-      <th>tethysFiles</th>
-      <td><p>Default =c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal"),</p></td>
-    </tr>
-    <tr>
-      <th>xanthosFiles</th>
-      <td><p>Xanthos Files to Read</p></td>
-    </tr>
-    <tr>
-      <th>xanthosScenarios</th>
-      <td><p>Default=NULL,</p></td>
-    </tr>
-    <tr>
-      <th>xanthosScenarioAssign</th>
-      <td><p>Default NULL. Scenario name if testing single scenario.</p></td>
-    </tr>
-    <tr>
-      <th>xanthosCoordinatesPath</th>
-      <td><p>paste(getwd(),"/dataFiles/grids/xanthosCoords/coordinates.csv",sep="")</p></td>
-    </tr>
-    <tr>
-      <th>xanthosGridAreaHecsPath</th>
-      <td><p>=paste(getwd(),"/dataFiles/grids/xanthosRunsChris/reference/Grid_Areas_ID.csv",sep=""),</p></td>
-    </tr>
-    <tr>
-      <th>tethysFilesScarcity</th>
-      <td><p>Default=NULL,</p></td>
-    </tr>
-    <tr>
-      <th>xanthosFilesScarcity</th>
-      <td><p>Default=NULL,</p></td>
-    </tr>
-    <tr>
-      <th>spanLowess</th>
-      <td><p>Default = 0.25</p></td>
-    </tr>
-    <tr>
-      <th>popFolder</th>
-      <td><p>Default = &lt;-paste(getwd(),"/dataFiles/grids/griddedIDsPop/",sep="")</p></td>
-    </tr>
-    <tr>
-      <th>popFiles</th>
-      <td><p>Default = &lt;-"grid_pop_map"</p></td>
-    </tr>
-    <tr>
-      <th>biaFolder</th>
-      <td><p>Default = &lt;-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")</p></td>
-    </tr>
-    <tr>
-      <th>biaFiles</th>
-      <td><p>Default = &lt;-"grid_bia_map"</p></td>
-    </tr>
-    <tr>
-      <th>downscaleFolder</th>
-      <td><p>Default = &lt;-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")</p></td>
-    </tr>
-    <tr>
-      <th>downscaleFiles</th>
-      <td><p>Default = &lt;-"grid_bia_map"</p></td>
-    </tr>
-    <tr>
-      <th>popUnits</th>
-      <td><p>Default = &lt;-"person"</p></td>
+      <th>colName</th>
+      <td><p>Default = "subRegion",</p></td>
     </tr>
     <tr>
       <th>dirOutputs</th>
-      <td><p>Default =paste(getwd(),"/outputs",sep=""),</p></td>
+      <td><p>Default = paste(getwd(),"/outputs",sep=""),</p></td>
+    </tr>
+    <tr>
+      <th>fname</th>
+      <td><p>Default = "gridByPoly"</p></td>
+    </tr>
+    <tr>
+      <th>nameAppend</th>
+      <td><p>Default = NULL</p></td>
     </tr>
     <tr>
       <th>folderName</th>
-      <td><p>Default=NULL</p></td>
+      <td><p>Default = NULL</p></td>
     </tr>
     <tr>
-      <th>saveFormat</th>
-      <td><p>Default="rds". Choose between "rds" (Native R much faster) or "csv" or "both".</p></td>
+      <th>saveFile</th>
+      <td><p>Default = F. If want csv output then change to T</p></td>
     </tr>
     <tr>
-      <th>filterYears</th>
-      <td><p>Default=seq(1980,2100,by=5)</p></td>
-    </tr>
-    <tr>
-      <th>diagnosticsOn</th>
-      <td><p>Default =F</p></td>
+      <th>printFig</th>
+      <td><p>Default = F. If grid overlap with shape is wanted</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A table with data by polygon ID for each shapefile provided</p>
+    <p>Prints out graphic</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
