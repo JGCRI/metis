@@ -50,7 +50,7 @@ vignette: >
 <!-------------------------->
 <!-------------------------->
 
-Metis comes with a set of preloaded maps. A full list of metis maps are available at [colors, maps and params](https://jgcri.github.io/metis/articles/vignette_colorsMapsParams/#maps-1.html). The pre-loaded maps all come with each polygon labelled in a **subRegion** column. For each map the data contained in the shapefile and the map itself can be viewed as follows:
+Metis comes with a set of preloaded maps. A full list of metis maps is available at [colors, maps and params](https://jgcri.github.io/metis/articles/vignette_colorsMapsParams/#maps-1.html). The pre-loaded maps all come with each polygon labelled in a **subRegion** column. For each map the data contained in the shapefile and the map itself can be viewed as follows:
 
 ```{r, eval=F}
 library(metis)
@@ -304,7 +304,7 @@ metis.mapsProcess(polygonTable = data, mapTitleOn = F, folderName = "vignetteMap
 <!-------------------------->
 <!-------------------------->
 
-By turning on **extension** a bacground layer will be added to any shape map.
+By turning on **extension** a background layer will be added to any shape map.
 
 ```{r, eval=F}
 library(metis)
@@ -380,8 +380,6 @@ metis.mapsProcess(polygonTable = data, folderName ="scaleRange",
 <p align="center"> <img src="vignetteFigs/mapsProcess_scaleRange.PNG"></p>
 
 
-
-
 <!-------------------------->
 <!-------------------------->
 # Color Palettes
@@ -408,9 +406,6 @@ metis.mapsProcess(polygonTable = data, folderName ="colorPalettes",
 
 <p align="center" style="font-size:18px;"> *Color Palettes* </p>
 <p align="center"> <img src="vignetteFigs/mapsProcess_colorPalettes.PNG"></p>
-
-
-
 
 
 <!-------------------------->
