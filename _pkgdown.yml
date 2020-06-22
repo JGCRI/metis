@@ -31,7 +31,7 @@ reference:
 - title: "Pre-loaded Data"
 - contents:
   - starts_with("data_")
-- title: "Pre-loaded Maps"
+- title: "Pre-loaded Maps and Grids"
 - contents:
   - starts_with("map")
   - starts_with("grid")

@@ -4,15 +4,10 @@
 \alias{metis.assumptions}
 \title{metis.assumptions}
 \usage{
-metis.assumptions()
+metis.assumptions(name = NULL)
 }
-\value{
-A list of assumptions
-}
-\description{
-This function loads holds the different assumptions used throughout the metis package.
-}
-\details{
+\arguments{
+\item{name}{Default=NULL. Name of assumption object.
 List of Assumptions
 \itemize{
 \item GCAMbaseYear,
@@ -31,12 +26,18 @@ List of Assumptions
 \item conv1975USDperGJ22017USDperMBTU,
 \item convertGgTgMTC,
 \item GWP,
-\item US52=US52,
-\item US49=US49}
+\item US52,
+\item US49,
+\item countryToGCAMReg32}}
+}
+\value{
+A list of assumptions
+}
+\description{
+This function loads holds the different assumptions used throughout the metis package.
 }
 \examples{
 library(metis)
-a<-metis.assumptions()
-a # will give full list of assumptions
+a<-metis.assumptions("US49")
 }
 \keyword{assumptions}

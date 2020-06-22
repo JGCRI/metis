@@ -11,6 +11,7 @@
 #' @param fname Default = "gridByPoly"
 #' @param folderName Default ="folderNameDefault",
 #' @param saveFile Default = F. If want csv output then change to T
+#' @param printFig Default = F. If grid overlap with shape is wanted
 #' @keywords grid, shape, polygon
 #' @return Prints out graphic
 #' @export
@@ -26,18 +27,20 @@ metis.gridByPoly <- function(gridTable = NULL,
                               colName = NULL,
                               dirOutputs = paste(getwd(),"/outputs",sep=""),
                               fname = "gridByPoly",
-                              folderName="folderNameDefault",
-                              saveFile = F){
-
-  # gridTable = NULL
-  # shape = NULL
-  # colName = NULL
-  # shapeFolder = NULL
-  # shapeFile = NULL
-  # dirOutputs = paste(getwd(),"/outputs",sep="")
-  # fname = "gridByPoly"
-  # folderName="folderNameDefault"
-  # saveFile = F
+                              folderName=NULL,
+                              saveFile = F,
+                              printFig = F){
+#
+# gridTable = NULL
+# shape = NULL
+# colName = NULL
+# shapeFolder = NULL
+# shapeFile = NULL
+# dirOutputs = paste(getwd(),"/outputs",sep="")
+# fname = "gridByPoly"
+# folderName="folderNameDefault"
+# saveFile = F
+# printFig =F
 
   print(paste("Starting metis.gridByPoly.R...",sep=""))
 
@@ -90,47 +93,49 @@ metis.gridByPoly <- function(gridTable = NULL,
   if(!is.null(gridx)){
     names2Remove <- c(colName,"gridCellArea","subRegAreaSum","gridCellAreaRatio")[
       c(colName,"gridCellArea","subRegAreaSum","gridCellAreaRatio") %in% names(gridx)]; names2Remove
-    gridx<-gridx%>%dplyr::select(-names2Remove)}
+    gridx<-gridx%>%dplyr::select(-tidyselect::all_of(names2Remove))}
 
 
   if(is.null(colName)){stop("Must provide correct colName from shapeFile data.")} else{
     if(!colName %in% names(shape@data)){stop("Must provide correct colName from shapeFile data.")}}
 
   if(is.null(gridx)){stop("Must provide gridfile csv with lat and lon.")}else {
-    if(!any(c("lat","lon") %in% names(gridx))){stop("Must provide gridfile csv with lat and lon.")}
+    if(!any(c("lat","lon") %in% names(gridx))){stop("Must provide gridfile csv with lat and lon or x and y")}
   }
 
 
-  # Convert to Spatial Point Data Frames
-  spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
+  # Extract the gridcells by polygon
+  # Create a raster from the grid file
+  spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx%>%dplyr::select(lat,lon))
   sp::gridded(spdf)<-TRUE
-
-  r<-raster::stack(spdf)
-  raster::projection(r)<-sp::proj4string(shape)
-  shape_ras <- raster::rasterize(shape, r[[1]], getCover=TRUE)
-  shape_ras[shape_ras==0] <- NA
-  r<-raster::mask(r,shape_ras)
-
-  rCrop <- r
-  rCropP<-raster::rasterToPolygons(rCrop)
+  r<-raster::stack(spdf); r
+  # Crop to the shape boundary
+  rCrop <- raster::crop(r,shape); rCrop
+  # Create a polygon
+  rCropP <- raster::rasterToPolygons(rCrop); rCropP
   sp::proj4string(rCropP)<-sp::proj4string(shape)
-  rcropPx<-raster::intersect(shape,rCropP)
+  # Intersect with the shape
+  print(paste("Intersecting raster with shape...",sep=""))
+  rCropPx <- raster::intersect(shape,rCropP); rCropPx
+  print(paste("Done.",sep=""))
 
-  rcropPx@data$area<-raster::area(rcropPx)
+  rCropPx@data$area<-raster::area(rCropPx)
   s1<-shape
   s1$subRegAreaSum<-raster::area(shape);
-  s1<-s1@data%>%dplyr::select( colName,subRegAreaSum);
-  if(c("subRegAreaSum") %in% names(rcropPx@data)){rcropPx@data<-rcropPx@data%>%dplyr::select(-subRegAreaSum)}
-  rcropPx@data<-dplyr::left_join(rcropPx@data,s1,by= colName)
-  rcropPx@data$areaRatio<-rcropPx@data$area/rcropPx@data$subRegAreaSum;
+  s1<-s1@data%>%dplyr::select(!!colName,"subRegAreaSum");
+  if(c("subRegAreaSum") %in% names(rCropPx@data)){rCropPx@data<-rCropPx@data%>%dplyr::select(-subRegAreaSum)}
+  rCropPx@data<-dplyr::left_join(rCropPx@data,s1,by= colName)
+  rCropPx@data$areaRatio<-rCropPx@data$area/rCropPx@data$subRegAreaSum;
 
 # Subset gridded data
-gridByPoly<-rcropPx@data%>%dplyr::select(lat,lon,colName,gridCellArea=area,subRegAreaSum,gridCellAreaRatio=areaRatio)%>%
-  dplyr::left_join(gridx, by=c("lat","lon"))%>%
+gridByPoly<-rCropPx@data%>%dplyr::select(lat,lon,colName,gridCellArea=area,subRegAreaSum,gridCellAreaRatio=areaRatio)%>%
+    dplyr::mutate(lat=round(lat,4),lon=round(lon,4))%>%
+  dplyr::left_join(gridx %>% dplyr::mutate(lat=round(lat,4),lon=round(lon,4)), by=c("lat","lon"))%>%
   unique()%>%
   tibble::rowid_to_column(var = "GridByPolyID")
 
-  nrowOrig = nrow(gridByPoly)
+
+nrowOrig = nrow(gridByPoly)
 # If multiple regions cut across same grid cells may get duplicate id's
 # In this case choose grid cell with larger area
   gridByPoly <- gridByPoly%>%
@@ -140,18 +145,16 @@ gridByPoly<-rcropPx@data%>%dplyr::select(lat,lon,colName,gridCellArea=area,subRe
     dplyr::filter(gridCellArea==maxAreaDuplicates)%>%
     dplyr::ungroup()%>%
     dplyr::select(-maxAreaDuplicates)
-
   if(nrow(gridByPoly)<nrowOrig){print("Multiple shapes overlapped same grid cell. Grid cell assigned to shape with most area in cell.")}
- # Check for duplicates
- #  gridByPoly%>%dplyr::filter(id %in% gridByPoly$id[duplicated(gridByPoly$id)])%>%arrange(id)
 
 # Save Data
+print(paste("Saving data...",sep=""))
 if(saveFile){
 fname<-gsub(".csv","",fname)
 fname<- paste(dir,"/",fname,".csv",sep="")
 data.table::fwrite(gridByPoly, file = fname,row.names = F)
 print(paste("File saved as ",fname,sep=""))}
-
+if(printFig){metis::metis.printPdfPng(figure=rCropPx, dir=dir,filename = fname)}
 print(paste("metis.gridByPoly.R run complete.",sep=""))
 
 invisible(gridByPoly)

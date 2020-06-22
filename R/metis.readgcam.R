@@ -144,7 +144,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
       queriesSelectx <-  NULL
       print(paste("Params in metisQueries.xml include: ",paste(as.vector(unlist(unique(paramQueryMap$param))),collapse=", "),".",sep=""))
       print("")
-      print(paste("Chosen paramsSelect: ",paste(paramsSelect,collapse=", "),".",sep=""))
+      print(paste("None of the chosen paramsSelect are available in metis params: ",paste(paramsSelect,collapse=", "),".",sep=""))
       stop("None of the params chosen are available.")
       }
   }}else{
@@ -343,10 +343,12 @@ metis.readgcam <- function(gcamdatabase = NULL,
     }
 
     # Check for gcamdatbasePath and gcamdatabasename
+    if(!is.null(gcamdatabase)){
     if(is.null(gcamdatabasePath) | is.null(gcamdatabaseName)){
       stop(gsub("//","/",paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep="")))}
     if(!file.exists(gsub("//","/",paste(gcamdatabasePath, "/", gcamdatabaseName, sep = "")))){
       stop(gsub("//","/",paste("GCAM database: ", gcamdatabasePath,"/",gcamdatabaseName," is incorrect or doesn't exist.",sep="")))}
+    }
 
     # Get names of scenarios in database
     # Save Message from rgcam::localDBConn to a text file and then extract names
@@ -843,7 +845,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
                       origUnits = Units,
                       origX = year, subRegion=region,
                       scenario = scenNewNames,
-                      value = value * metis.assumptions()$convEJ2TWh,
+                      value = value * metis.assumptions("convEJ2TWh"),
                       units = "Final Electricity by Sector (TWh)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
@@ -901,7 +903,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
                       origUnits = Units,
                       origX = year, subRegion=region,
                       scenario = scenNewNames,
-                      value = value * metis.assumptions()$convEJ2TWh,
+                      value = value * metis.assumptions("convEJ2TWh"),
                       units = "Final Electricity by Fuel (TWh)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
@@ -1041,7 +1043,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
       }
       if (nrow(tbl)>0) {
       tbl <- tbl %>%
-        dplyr::filter(region %in% metis.assumptions()$US52)%>%
+        dplyr::filter(region %in% metis.assumptions("US52"))%>%
         dplyr::filter(!sector %in% "industrial energy use")
       }
       tblUSA <- tbl %>%
@@ -1055,7 +1057,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
                       origUnits = Units,
                       origX = year, subRegion=region,
                       scenario = scenNewNames,
-                      value = value * metis.assumptions()$convEJ2TWh,
+                      value = value * metis.assumptions("convEJ2TWh"),
                       units = "Electricity Generation by Fuel (TWh)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
@@ -1082,7 +1084,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
       }
       if (nrow(tbl)>0) {
         tbl <- tbl %>%
-          dplyr::filter(region %in% metis.assumptions()$US52)
+          dplyr::filter(region %in% metis.assumptions("US52"))
       }
       tblUSACogen <- tbl %>%
         dplyr::filter(scenario %in% scenOrigNames)%>%
@@ -1095,7 +1097,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
                       origUnits = Units,
                       origX = year, subRegion=region,
                       scenario = scenNewNames,
-                      value = value * metis.assumptions()$convEJ2TWh,
+                      value = value * metis.assumptions("convEJ2TWh"),
                       units = "Electricity Generation by Fuel (TWh)",
                       vintage = paste("Vint_", year, sep = ""),
                       x = year,
@@ -1119,7 +1121,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
         if (!is.null(regionsSelect)) {
           tbl <- tbl %>%
             dplyr::filter(region %in% regionsSelect) %>%
-            dplyr::filter(!region %in% metis.assumptions()$US52)
+            dplyr::filter(!region %in% metis.assumptions("US52"))
         }
         tblGCAMReg <- tbl %>%
           dplyr::filter(scenario %in% scenOrigNames)%>%
@@ -1132,7 +1134,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
                         origUnits = Units,
                         origX = year, subRegion=region,
                         scenario = scenNewNames,
-                        value = value * metis.assumptions()$convEJ2TWh,
+                        value = value * metis.assumptions("convEJ2TWh"),
                         units = "Electricity Generation by Fuel (TWh)",
                         vintage = paste("Vint_", year, sep = ""),
                         x = year,
@@ -1234,7 +1236,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
 
       counter <- 0
       # NEW--must do loop throug scenarios due to current design of script
-      start_year_i = max(min(unique(tbl$year)),metis.assumptions()$GCAMbaseYear)
+      start_year_i = max(min(unique(tbl$year)),metis.assumptions("GCAMbaseYear"))
       end_year_i = max(unique(tbl$year))
       temp_list = list()
       for (scen in scenarios){
@@ -1616,7 +1618,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if(nrow(tbl)>0){
         # If GCAM USA then remove "USA" region and use states
-        if(any(metis.assumptions()$US52 %in% unique(tbl$region))){
+        if(any(metis.assumptions("US52") %in% unique(tbl$region))){
           tbl <- tbl %>% dplyr::filter(region!="USA") # Remove region USA and use states instead
         }
       }
@@ -1675,7 +1677,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if(nrow(tbl)>0){
         # If GCAM USA then remove "USA" region and use states
-        if(any(metis.assumptions()$US52 %in% unique(tbl$region))){
+        if(any(metis.assumptions("US52") %in% unique(tbl$region))){
           tbl <- tbl %>% dplyr::filter(region!="USA") # Remove region USA and use states instead
         }
       }
@@ -1735,15 +1737,15 @@ metis.readgcam <- function(gcamdatabase = NULL,
       # Need to add in conveyance losses for USA when running GCAM USA
       # gcamusa.CONVEYANCE_LOSSES <- 0.829937455747218 from constants.R
       if(nrow(tbl)>0){
-        if(any(unique(tbl$region) %in% metis.assumptions()$US52)){
+        if(any(unique(tbl$region) %in% metis.assumptions("US52"))){
           tbl <- tbl %>%
             dplyr::mutate(value = dplyr::case_when(region=="USA"~value/0.829937455747218,
                                             TRUE~value)) %>%
-            dplyr::filter(!region %in% metis.assumptions()$US52)
+            dplyr::filter(!region %in% metis.assumptions("US52"))
         }
       }
       if (!is.null(regionsSelect)) {
-        if(any(regionsSelect %in% metis.assumptions()$US52)){
+        if(any(regionsSelect %in% metis.assumptions("US52"))){
           tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect,"USA"))
         } else {
           tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect))
@@ -2754,7 +2756,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
         tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
       }
       tbl <- tbl %>%
-        dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
+        dplyr::left_join(metis.assumptions("convertGgTgMTC"),by="Units") %>%
         dplyr::mutate(origValue=value,value=value*Convert*44/12,
                       origUnits=Units,units="Emissions LUC - (MTCO2eq)")%>%
         dplyr::filter(scenario %in% scenOrigNames)%>%
@@ -2804,7 +2806,7 @@ paramx <- "emissCO2BySectorNoBio"
       }
     #emiss_sector_mapping <- read.csv(CO2mappingFile, skip=1)
     tbl <- tbl %>%
-      dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
+      dplyr::left_join(metis.assumptions("convertGgTgMTC"),by="Units") %>%
       dplyr::mutate(origValue=value,value=value*Convert*44/12,
                     origUnits=Units,units="CO2 Emissions by Sector (MTCO2eq)")%>%
       dplyr::mutate(
@@ -3077,8 +3079,8 @@ paramx <- "emissCO2BySectorNoBio"
           class2=dplyr::if_else(class2=="biomass","Crops",class2),
           class2=gsub("backup\\_electricity","Electricity",class2),
           class2=gsub("csp\\_backup","Electricity",class2))%>%
-        dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class1=ghg),by="class1")%>%
-        dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
+        dplyr::left_join(metis.assumptions("GWP")%>%dplyr::rename(class1=ghg),by="class1")%>%
+        dplyr::left_join(metis.assumptions("convertGgTgMTC"),by="Units") %>%
         #dplyr::filter(!class1=='CO2') %>%
         dplyr::mutate(origValue=value,
                       value=value*GWPAR5*Convert,
@@ -3231,8 +3233,8 @@ paramx <- "emissCO2BySectorNoBio"
           class1=dplyr::if_else(class1=="biomass","Crops",class1),
           class1=gsub("backup\\_electricity","Electricity",class1),
           class1=gsub("csp\\_backup","Electricity",class1))%>%
-        dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class2=ghg),by="class2")%>%
-        dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
+        dplyr::left_join(metis.assumptions("GWP")%>%dplyr::rename(class2=ghg),by="class2")%>%
+        dplyr::left_join(metis.assumptions("convertGgTgMTC"),by="Units") %>%
         dplyr::mutate(origValue=value,
                       value=value*GWPAR5*Convert,
                       origUnits=Units,
@@ -3396,8 +3398,8 @@ paramx <- "emissCO2BySectorNoBio"
           class2=dplyr::if_else(class2=="biomass","Crops",class2),
           class2=gsub("backup\\_electricity","Electricity",class2),
           class2=gsub("csp\\_backup","Electricity",class2))%>%
-        dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class1=ghg),by="class1")%>%
-        dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
+        dplyr::left_join(metis.assumptions("GWP")%>%dplyr::rename(class1=ghg),by="class1")%>%
+        dplyr::left_join(metis.assumptions("convertGgTgMTC"),by="Units") %>%
         dplyr::filter(!class1=='CO2') %>%
         dplyr::mutate(origValue=value,
                       value=value*GWPAR5*Convert,
@@ -3717,8 +3719,8 @@ paramx <- "emissBySectorGWPAR5FFI"
           class2=dplyr::if_else(class2=="biomass","Crops",class2),
           class2=gsub("backup\\_electricity","Electricity",class2),
           class2=gsub("csp\\_backup","Electricity",class2))%>%
-        dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class1=ghg),by="class1")%>%
-        dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
+        dplyr::left_join(metis.assumptions("GWP")%>%dplyr::rename(class1=ghg),by="class1")%>%
+        dplyr::left_join(metis.assumptions("convertGgTgMTC"),by="Units") %>%
         dplyr::mutate(origValue=value,
                       value=dplyr::case_when(!is.na(GTPAR5) ~ value*GTPAR5*Convert,
                                              TRUE ~  value*GWPAR5*Convert),
@@ -3870,8 +3872,8 @@ paramx <- "emissBySectorGWPAR5FFI"
           class1=dplyr::if_else(class1=="biomass","Crops",class1),
           class1=gsub("backup\\_electricity","Electricity",class1),
           class1=gsub("csp\\_backup","Electricity",class1))%>%
-        dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class2=ghg),by="class2")%>%
-        dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
+        dplyr::left_join(metis.assumptions("GWP")%>%dplyr::rename(class2=ghg),by="class2")%>%
+        dplyr::left_join(metis.assumptions("convertGgTgMTC"),by="Units") %>%
         dplyr::mutate(origValue=value,
                       value=dplyr::case_when(!is.na(GTPAR5) ~ value*GTPAR5*Convert,
                                              TRUE ~  value*GWPAR5*Convert),
@@ -4036,8 +4038,8 @@ paramx <- "emissBySectorGWPAR5FFI"
           class2=dplyr::if_else(class2=="biomass","Crops",class2),
           class2=gsub("backup\\_electricity","Electricity",class2),
           class2=gsub("csp\\_backup","Electricity",class2))%>%
-        dplyr::left_join(metis.assumptions()$GWP%>%dplyr::rename(class1=ghg),by="class1")%>%
-        dplyr::left_join(metis.assumptions()$convertGgTgMTC,by="Units") %>%
+        dplyr::left_join(metis.assumptions("GWP")%>%dplyr::rename(class1=ghg),by="class1")%>%
+        dplyr::left_join(metis.assumptions("convertGgTgMTC"),by="Units") %>%
         dplyr::filter(!class1=='CO2') %>%
         dplyr::mutate(origValue=value,
                       value=dplyr::case_when(!is.na(GTPAR5) ~ value*GTPAR5*Convert,
@@ -4821,12 +4823,12 @@ paramx <- "emissBySectorGWPAR5FFI"
   # unit Conversions
   # -----------
   dataxEJtoMTOE <- datax %>% dplyr::filter(grepl("(EJ)",units)) %>%
-    dplyr::mutate(value=value*metis.assumptions()$convEJ2MTOE,
+    dplyr::mutate(value=value*metis.assumptions("convEJ2MTOE"),
                   units = gsub("\\(EJ\\)","(Mtoe)",units),
                   param = gsub("EJ","MTOE",param))
 
   dataxEJtoTWh <- datax %>% dplyr::filter(grepl("(EJ)",units)) %>%
-    dplyr::mutate(value=value*metis.assumptions()$convEJ2TWh,
+    dplyr::mutate(value=value*metis.assumptions("convEJ2TWh"),
                   units = gsub("\\(EJ\\)","(TWh)",units),
                   param = gsub("EJ","TWh",param))
 

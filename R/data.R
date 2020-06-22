@@ -421,6 +421,18 @@
 "grid050"
 
 
+#' Gridded Population of the World, Version 4 (GPWv4)
+#' https://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-count-rev11/data-download#
+#' @source SEDAC, https://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-count-rev11/data-download#
+#' @format R tibble
+#' @examples
+#' \dontrun{
+#' library(metis)
+#' head(data_pop_GPWv4To2015)
+#' }
+"grid_pop_GPWv4To2015"
+
+
 #--------------------
 # Cropped
 #--------------------

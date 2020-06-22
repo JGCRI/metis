@@ -5,22 +5,11 @@
 \title{metis.bia}
 \usage{
 metis.bia(
-  biaInputsFolder = "NA",
-  biaInputsFiles = "NA",
   dirOutputs = paste(getwd(), "/outputs", sep = ""),
-  reReadData = 1,
   regionsSelect = NULL,
   regionsSelectDiagnostic = NULL,
-  dataProj = "dataProj.proj",
-  dataProjPath = NULL,
-  scenOrigNames = NULL,
-  scenNewNames = NULL,
-  gcamdatabasePath = "NA",
-  gcamdatabaseName = "NA",
-  queryxml = "metisQueries.xml",
-  queryPath = paste(getwd(), "/dataFiles/gcam", sep = ""),
-  queriesSelect = "All",
-  paramsSelect = c("elecByTech", "elecCapBySubsector"),
+  dataProjFile = "dataProj.proj",
+  gcamdatabase = NULL,
   gridChoice = "grid_050",
   diagnosticsON = F,
   subsectorNAdistribute = "even",
@@ -29,43 +18,15 @@ metis.bia(
 )
 }
 \arguments{
-\item{biaInputsFolder}{Bia Inputs Folder Path}
-
-\item{biaInputsFiles}{Bia Inputs Folder Path}
-
 \item{dirOutputs}{Default=paste(getwd(),"/outputs",sep  Default=""). Location for outputs.}
-
-\item{reReadData}{Default = 1. will read the GCAM data base and create a queryData.proj file
-in the same folder as the GCAM database. If FALSE will load a '.proj' file if a file
-with full path is provided otherwise it will search for a dataProj.proj file in the existing
-folder which may have been created from an old run.}
 
 \item{regionsSelect}{The regions to analyze in a vector. Example c('Colombia','Argentina')}
 
 \item{regionsSelectDiagnostic}{Default = NULL (sets to regionsSelect). Choose the regions to run diagnostics.}
 
-\item{dataProj}{Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.}
+\item{dataProjFile}{Optional. A default 'dataProj.proj' is produced if no .Proj file is specified.}
 
-\item{dataProjPath}{Default = NULL. Folder that contains the dataProj or where it will be produced.}
-
-\item{scenOrigNames}{Original Scenarios names in GCAM database in a string vector.
-For example c('scenario1','scenario2).}
-
-\item{scenNewNames}{New Names which may be shorter and more useful for figures etc.
-Default will use Original Names. For example c('scenario1','scenario2)}
-
-\item{gcamdatabasePath}{Path to gcam database folder}
-
-\item{gcamdatabaseName}{Name of gcam database}
-
-\item{queryxml}{Full path to query.xml file}
-
-\item{queryPath}{Folder that contains the query.xml file.By default it is
-the same folder as specified by gcamdatabasePath}
-
-\item{queriesSelect}{Default = "All". Vector of queries to read from the queryxml for example}
-
-\item{paramsSelect}{Default = c("elecByTech", "elecCapBySubsector") . Vector of parameters to be read from the GCAM database}
+\item{gcamdatabase}{Default NULL. Full path to gcamdatabase.}
 
 \item{gridChoice}{Default = "grid_050" . Choice of whether to use 50 km x 50 km grid cells ("grid_050") or 25 km x 25 km ("grid_025").}
 

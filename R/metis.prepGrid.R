@@ -18,6 +18,8 @@
 #' @param popFiles Default = <-"grid_pop_map"
 #' @param biaFolder Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")
 #' @param biaFiles Default = <-"grid_bia_map"
+#' @param downscaleFolder Default = <-paste(getwd(),"/dataFiles/grids/griddedIDsbia/",sep="")
+#' @param downscaleFiles Default = <-"grid_bia_map"
 #' @param popUnits Default = <-"person"
 #' @param dirOutputs Default =paste(getwd(),"/outputs",sep=""),
 #' @param spanLowess Default = 0.25
@@ -51,6 +53,8 @@ metis.prepGrid<- function(demeterFolders=NULL,
                         popFiles=NULL,
                         biaFolder=NULL,
                         biaFiles=NULL,
+                        downscaleFolder=NULL,
+                        downscaleFiles=NULL,
                         popUnits=NULL,
                         dirOutputs=paste(getwd(),"/outputs",sep=""),
                         folderName=NULL,
@@ -586,7 +590,7 @@ if(!file.exists(paste(xanthosFilesScen$file[i],sep=""))){
 # Prepare Gridded Scarcity
 #---------------
 
-if(T){
+if(F){
 # Read in Tethys and Xanthos Data
   # List files in dir
   #tethysFilesScarcity=NULL;xanthosFilesScarcity=NULL
@@ -767,7 +771,6 @@ if(!dir.exists(popFolder)){
 
 if(!is.null(biaFolder)){
 if(!dir.exists(biaFolder)){
-
   print(paste("bia folder: ", biaFolder ," is incorrect or doesn't exist.",sep=""))
   print(paste("Skipping bia runs",sep=""))
   }else {
@@ -785,21 +788,17 @@ if(!dir.exists(biaFolder)){
 
         gridx<-data.table::fread(paste(biaFolder,"/",biaFile_i,sep=""),encoding="Latin-1")%>%
           tibble::as_tibble()%>%
-          dplyr::select(-value, -origValue)%>%
           dplyr::mutate(aggType = "vol")%>%
-          dplyr::rename(lat = gridlat, lon = gridlon, class = class1, value = valueDistrib, origValue = origValueDistrib) %>%
-          dplyr::select(-gridCellPercentage,-region_32_code,-ctry_name,-ctry_code, -aggregate, -dplyr::contains("orig"),-gridID)
-        gridx$x<-as.numeric(gridx$x)
-
-        colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
-                                                        "param","units","aggType","classPalette","class","x","value")]
-        gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
+          dplyr::select("lon","lat","region","scenario",
+                                         "param","units","aggType","class","x","value") %>%
+          dplyr::ungroup()
         gridx<-addMissing(gridx); gridx
 
         if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
         print("File read.")
 
+        biaFile_i <- gsub(".rds","",gsub(".csv","",biaFile_i))
 
         if(saveFormat=="rds"){
           saveRDS(gridx,paste(dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
@@ -817,7 +816,7 @@ if(!dir.exists(biaFolder)){
         }
 
         paramScenarios <- paramScenarios%>%
-            dplyr::bind_rows(gridx[1,]%>%dplyr::select(param,scenario)%>%unique()) %>%
+            dplyr::bind_rows(gridx%>%dplyr::select(param,scenario)%>%unique()) %>%
             dplyr::ungroup()%>%
             dplyr::select(param,scenario)%>%
             unique();paramScenarios
@@ -843,9 +842,64 @@ if(!dir.exists(biaFolder)){
 #----------------
 # Prepare gridded Electricity Demands
 #---------------
-# WRI database + GCAM Elec demands
-# Distribute electric demands by population percentage
 
+if(!is.null(downscaleFolder)){
+  if(!dir.exists(downscaleFolder)){
+    print(paste("Downscale folder: ", downscaleFolder ," is incorrect or doesn't exist.",sep=""))
+    print(paste("Skipping downscale runs",sep=""))
+  }else {
+
+    for(downscaleFile_i in downscaleFiles){
+
+      downscaleFile_i=gsub(".csv","",downscaleFile_i)
+      if(!grepl(".csv",downscaleFile_i)){downscaleFile_i=paste(downscaleFile_i,".csv",sep="")}
+
+      if(!file.exists(paste(downscaleFolder,"/",downscaleFile_i,sep=""))){
+        print(paste("downscale file: ", downscaleFolder,"/",downscaleFile_i," is incorrect or doesn't exist.",sep=""))
+        print(paste("Skipping file: ",downscaleFolder,"/",downscaleFile_i,sep=""))
+      }else{
+        print(paste("Reading downscale data file: ",downscaleFile_i,"...",sep=""))
+
+        gridx<-data.table::fread(paste(downscaleFolder,"/",downscaleFile_i,sep=""),encoding="Latin-1")%>%
+          tibble::as_tibble()%>%
+          dplyr::mutate(aggType = "vol")%>%
+          dplyr::select("lon","lat","region","scenario",
+                        "param","units","aggType","class","x","value") %>%
+          dplyr::ungroup()
+        gridx<-addMissing(gridx); gridx
+
+        if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
+
+        print("File read.")
+
+        downscaleFile_i <- gsub(".rds","",gsub(".csv","",downscaleFile_i))
+
+        if(saveFormat=="rds"){
+          saveRDS(gridx,paste(dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+          print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+        }
+        if(saveFormat=="csv"){
+          data.table::fwrite(gridx,paste(dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+          print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+        }
+        if(saveFormat=="both"){
+          saveRDS(gridx,paste(dir,"/downscale_",downscaleFile_i,".rds",sep=""))
+          data.table::fwrite(gridx,paste(dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+          print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
+          print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+        }
+
+        paramScenarios <- paramScenarios%>%
+          dplyr::bind_rows(gridx%>%dplyr::select(param,scenario)%>%unique()) %>%
+          dplyr::ungroup()%>%
+          dplyr::select(param,scenario)%>%
+          unique();paramScenarios
+        rm(gridx)
+
+      } # Close if downscale file exists
+    } # close downscale file loops
+  } # Close downscale folder
+} # Close if downscaleFolder is null
 
 
 # Test Unique Values
@@ -856,10 +910,9 @@ if(!dir.exists(biaFolder)){
 # Save RData and csv.
 #----------------
 
-print("Saving paramScenarios to: ")
+print(paste("Saving paramScenarios list to: ", dir,"/paramScenarios.csv",sep=""))
 data.table::fwrite(paramScenarios %>% dplyr::select(param,scenario) %>% unique(),paste(dir,"/paramScenarios.csv",sep=""))
 print(paramScenarios)
-
 
 return(paramScenarios)
 

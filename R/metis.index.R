@@ -67,10 +67,13 @@ print(paste("Starting metis.index.R...",sep=""))
 #---------------
 
   if(saveFile){
-  if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
-  if (!dir.exists(paste(dirOutputs,"/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/",folderName,sep = ""))}
-  if (!dir.exists(paste(dirOutputs,"/",folderName, "/Index/", sep = ""))){dir.create(paste(dirOutputs, "/",folderName, "/Index/", sep = ""))}
-    dir = gsub("//","/",paste(dirOutputs,"/",folderName, "/Index/",sep = ""))
+
+    indexFolder <- gsub(" ","",paste("index",nameAppend,sep=""))
+
+    if (!dir.exists(dirOutputs)){dir.create(dirOutputs)}
+    if (!dir.exists(paste(dirOutputs,"/",folderName, sep = ""))){dir.create(paste(dirOutputs, "/",folderName,sep = ""))}
+    if (!dir.exists(paste(dirOutputs,"/",folderName, "/",indexFolder,"/", sep = ""))){dir.create(paste(dirOutputs, "/",folderName, "/",indexFolder,"/", sep = ""))}
+    dir = paste(dirOutputs,"/",folderName, "/",indexFolder,"/",sep = "")
   }
 
 #------------------
@@ -148,8 +151,6 @@ print(paste("Starting metis.index.R...",sep=""))
   }else{
     if(!colValue %in% names(datax)){stop(paste("colValue provided: ",colValue," does not exist in datax.",sep=""))}
   }
-
-
 
   # Check if numerators provided exist in datax colIndex
   #--------------------------------------------------------------------
@@ -235,10 +236,11 @@ print(paste("Starting metis.index.R...",sep=""))
                   scenarioD = scenario)%>%
     dplyr::select(-!!colIndex); dataxDenominator
 
-  if(!any(unique(dataxDenominator$x)) %in% unique(dataxNumerator$x)){
+  if(!any(unique(dataxDenominator$x) %in% unique(dataxNumerator$x))){
       print("None of the years for the numerator and denominator selected match so can't compute an index.")
-      print("Taking the mean of selected denominator years and setting to numerator years.")
-      if(is.null(meanYearsDenominator)){meanYearsDenominator="All"}
+      if(is.null(meanYearsDenominator)){
+        print("Taking the mean of selected denominator years and setting to numerator years.")
+        meanYearsDenominator="All"}
   }
 
   if(any(meanYearsDenominator=="All")){
