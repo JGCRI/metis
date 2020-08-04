@@ -94,7 +94,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
 
 
   # gcamdatabase = NULL
-  # queryFile = paste(getwd(),"/dataFiles/gcam/metisQueries.xml",sep="")
+  # queryFile = NULL
   # dataProjFile = paste(getwd(), "/outputs/dataProj.proj", sep = "")
   # scenOrigNames = "All"
   # scenNewNames = NULL
@@ -104,8 +104,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
   # paramsSelect="All"
   # folderName=NULL
   # nameAppend=""
-  # saveData=T
-
+  # saveData = T
 
   #----------------
   # Initialize variables by setting to NULL
@@ -119,7 +118,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
     class_temp -> resource -> subRegAreaSum -> subsector->tblFinalNrgIntlAvShipMod -> 'transportation' ->
     'International Aviation' -> 'International Ship' -> 'International Aviation oil' -> 'a oil' ->
     'International Ship oil' -> 'International Aviation liquids' -> liquids -> 'International Ship liquids'->crop->
-    paramsSelectAll -> dataTemplate->tblFinalNrgIntlAvShip->datax->group->basin->subRegion->query
+    paramsSelectAll -> dataTemplate->tblFinalNrgIntlAvShip->datax->group->basin->subRegion->query->subresource
 
 
 #---------------------
@@ -517,12 +516,15 @@ metis.readgcam <- function(gcamdatabase = NULL,
                       x = year,
                       xLabel = "Year",
                       aggregate = "sum",
-                      class1 = sector,
+                      class1 = dplyr::case_when(
+                        grepl("building|comm|resid",sector)~"building",
+                        grepl("industry",sector)~"industry",
+                        grepl("transport",sector)~"transport"),
                       classLabel1 = "Sector",
                       classPalette1 = "pal_metis",
-                      class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2")%>%
+                      class2 = sector,
+                      classLabel2 = "Subsector",
+                      classPalette2 = "pal_metis")%>%
         dplyr::select(scenario, region, subRegion,    param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -573,6 +575,10 @@ metis.readgcam <- function(gcamdatabase = NULL,
         }
 
       tblMod <- tblMod %>%
+        dplyr::mutate(class2 = dplyr::case_when(grepl("comm|resid|building",class1)~"building",
+                                         grepl("industry",class1)~"industry",
+                                         grepl("transport",class1)~"transport",
+                                         TRUE~class2)) %>%
         dplyr::select(scenario, region, subRegion,    param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -930,7 +936,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
   paramx<-"energyPrimaryByFuelEJ"
   # primary energy consumption by region (direct equivalent)
   if(paramx %in% paramsSelectx){
-    queryx <- "primary energy consumption by region (direct equivalent) ORDERED SUBSECTORS"
+    queryx <- "primary energy consumption by region (direct equivalent)"
     if (queryx %in% queriesx) {
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if (!is.null(regionsSelect)) {
@@ -1165,6 +1171,8 @@ metis.readgcam <- function(gcamdatabase = NULL,
 
       if(nrow(tbl)>0){
       tbl <- tbl %>%
+        dplyr::mutate(class1=dplyr::case_when(class1=="rooftop_pv"~"solar",
+                                              TRUE~class1))%>%
         dplyr::select(scenario, region, subRegion,    param, sources, class1, class2, x, xLabel, vintage, units, value,
                       aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
                       origScen, origQuery, origValue, origUnits, origX)%>%
@@ -1629,6 +1637,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
         dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(sector=dplyr::case_when(
+          grepl("desalination",technology,ignore.case=T)~"desalination",
           sector=="water_td_an_C"~"animal",
           sector=="water_td_dom_C"~"domestic",
           sector=="water_td_elec_C"~"electric",
@@ -1688,6 +1697,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
         dplyr::filter(scenario %in% scenOrigNames)%>%
         dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
         dplyr::mutate(sector=dplyr::case_when(
+          grepl("desalination",technology,ignore.case=T)~"desalination",
           sector=="water_td_an_W"~"livestock",
           sector=="water_td_dom_W"~"municipal",
           sector=="water_td_elec_W"~"electricity",
@@ -1974,6 +1984,56 @@ metis.readgcam <- function(gcamdatabase = NULL,
       # if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }}
 
+
+  paramx <- "waterWithdrawROGW"
+  if(paramx %in% paramsSelectx){
+    # water consumption by water mapping source
+    queryx <- "Water withdrawals by water source (runoff vs. groundwater)"
+    if (queryx %in% queriesx) {
+      tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
+      if (!is.null(regionsSelect)) {
+        if(any(regionsSelect %in% metis.assumptions("US52"))){
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect,"USA"))
+        } else {
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect))
+        }
+      }
+      tbl <- tbl %>%
+        dplyr::mutate(subRegion=gsub(" ","_",gsub("\\_.*","",resource)))%>%
+        dplyr::select(-resource)%>%
+        dplyr::filter(scenario %in% scenOrigNames)%>%
+        dplyr::left_join(tibble::tibble(scenOrigNames, scenNewNames), by = c(scenario = "scenOrigNames")) %>%
+        dplyr::mutate(param = "waterWithdrawROGW",
+                      sources = "Sources",
+                      origScen = scenario,
+                      origQuery = queryx,
+                      origValue = value,
+                      origUnits = Units,
+                      origX = year,
+                      scenario = scenNewNames,
+                      value = value,
+                      units = "km3",
+                      vintage = paste("Vint_", year, sep = ""),
+                      x = year,
+                      xLabel = "Year",
+                      aggregate = "sum",
+                      class1=subresource,
+                      classLabel1 = "source",
+                      classPalette1 = "pal_metis",
+                      class2 = "class2",
+                      classLabel2 = "classLabel2",
+                      classPalette2 = "pal_metis") %>%
+        dplyr::select(scenario, region, subRegion,    param, sources, class1, class2, x, xLabel, vintage, units, value,
+                      aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                      origScen, origQuery, origValue, origUnits, origX)%>%
+        dplyr::group_by(scenario, region, subRegion,    param, sources, class1, class2, x, xLabel, vintage, units,
+                        aggregate, classLabel1, classPalette1,classLabel2, classPalette2,
+                        origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
+        dplyr::filter(!is.na(value))
+      datax <- dplyr::bind_rows(datax, tbl)
+    } else {
+      # if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
+    }}
 
   paramx <- "gdpPerCapita"
   if(paramx  %in% paramsSelectx){
@@ -2331,7 +2391,11 @@ metis.readgcam <- function(gcamdatabase = NULL,
     if (queryx %in% queriesx) {
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if (!is.null(regionsSelect)) {
-        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+        if(any(regionsSelect %in% metis.assumptions("US52"))){
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect,"USA"))
+        } else {
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect))
+        }
       }
       tbl <- tbl %>%
         dplyr::filter(Units=="Mt")%>%
@@ -2342,7 +2406,8 @@ metis.readgcam <- function(gcamdatabase = NULL,
                       origScen = scenario,
                       origQuery = queryx,
                       origUnits = Units,
-                      origX = year, subRegion=region,
+                      origX = year,
+                      subRegion=gsub(".*_","",subsector),
                       origValue = value,
                       scenario = scenNewNames,
                       value = value,
@@ -2375,11 +2440,15 @@ metis.readgcam <- function(gcamdatabase = NULL,
   paramx <- "agProdBiomass"
   if(paramx %in% paramsSelectx){
     # Ag Production by Crop Type Biomass EJ
-    queryx <- "Ag Production by Crop Type"
+    queryx <- "ag production by tech"
     if (queryx %in% queriesx) {
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if (!is.null(regionsSelect)) {
-        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+        if(any(regionsSelect %in% metis.assumptions("US52"))){
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect,"USA"))
+        } else {
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect))
+        }
       }
       tbl <- tbl %>%
         dplyr::filter(Units=="EJ",sector==output)%>%
@@ -2391,7 +2460,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year, subRegion=region,
+                      origX = year,
                       scenario = scenNewNames,
                       units = "Biomass Production (Mt)",
                       vintage = paste("Vint_", year, sep = ""),
@@ -2401,9 +2470,11 @@ metis.readgcam <- function(gcamdatabase = NULL,
                       class1 = sector,
                       classLabel1 = "Crop",
                       classPalette1 = "pal_metis",
-                      class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2")%>%
+                      subRegion=gsub(".*_","",subsector),
+                      class2 = gsub("_.*RFD","_RFD",technology),
+                      class2 = gsub("_.*IRR","_IRR",class2),
+                      classLabel2 = "Detail",
+                      classPalette2 = "pal_metis")%>%
         dplyr::select(origScen,origQuery, origValue, origUnits, origX, region, subRegion,    param, scenario,
                       value, units, vintage, x, xLabel, aggregate, class1, classLabel1, classPalette1,
                       class2, classLabel2, classPalette2)%>%dplyr::filter(!is.na(value))
@@ -2415,11 +2486,15 @@ metis.readgcam <- function(gcamdatabase = NULL,
   paramx <- "agProdForest"
   if(paramx %in% paramsSelectx){
     # Ag Production by Crop Type Forest
-    queryx <- "Ag Production by Crop Type"
+    queryx <- "ag production by tech"
     if (queryx %in% queriesx) {
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if (!is.null(regionsSelect)) {
-        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+        if(any(regionsSelect %in% metis.assumptions("US52"))){
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect,"USA"))
+        } else {
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect))
+        }
       }
       tbl <- tbl %>%
         dplyr::filter(Units=="billion m3",sector==output)%>%
@@ -2431,7 +2506,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year, subRegion=region,
+                      origX = year,
                       scenario = scenNewNames,
                       value = value,
                       units = "Ag Production (billion m3)",
@@ -2456,11 +2531,15 @@ metis.readgcam <- function(gcamdatabase = NULL,
   paramx <- "agProdByCrop"
   if(paramx %in% paramsSelectx){
     # Ag Production by Crop Type
-    queryx <- "Ag Production by Crop Type"
+    queryx <- "ag production by tech"
     if (queryx %in% queriesx) {
       tbl <- rgcam::getQuery(dataProjLoaded, queryx)  # Tibble
       if (!is.null(regionsSelect)) {
-        tbl <- tbl %>% dplyr::filter(region %in% regionsSelect)
+        if(any(regionsSelect %in% metis.assumptions("US52"))){
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect,"USA"))
+        } else {
+          tbl <- tbl %>% dplyr::filter(region %in% c(regionsSelect))
+        }
       }
       tbl <- tbl %>%
         dplyr::filter(Units=="Mt",sector==output, sector!="Pasture")%>%
@@ -2472,7 +2551,7 @@ metis.readgcam <- function(gcamdatabase = NULL,
                       origQuery = queryx,
                       origValue = value,
                       origUnits = Units,
-                      origX = year, subRegion=region,
+                      origX = year,
                       scenario = scenNewNames,
                       value = value,
                       units = "Ag Production (Mt)",
@@ -2483,9 +2562,11 @@ metis.readgcam <- function(gcamdatabase = NULL,
                       class1 = sector,
                       classLabel1 = "Crop",
                       classPalette1 = "pal_metis",
-                      class2 = "class2",
-                      classLabel2 = "classLabel2",
-                      classPalette2 = "classPalette2")%>%
+                      subRegion=gsub(".*_","",subsector),
+                      class2 = gsub("_.*RFD","_RFD",technology),
+                      class2 = gsub("_.*IRR","_IRR",class2),
+                      classLabel2 = "Detail",
+                      classPalette2 = "pal_metis")%>%
         dplyr::select(origScen,origQuery, origValue, origUnits, origX, region, subRegion,    param, scenario,
                       value, units, vintage, x, xLabel, aggregate, class1, classLabel1, classPalette1,
                       class2, classLabel2, classPalette2)%>%dplyr::filter(!is.na(value))

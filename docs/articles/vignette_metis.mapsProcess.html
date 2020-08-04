@@ -98,7 +98,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="vignette_metis.mapsProcess_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>metis.mapsProcess</h1>
@@ -228,7 +228,6 @@
 <div id="us-49-counties" class="section level2">
 <h2 class="hasAnchor">
 <a href="#us-49-counties" class="anchor"></a>US 49 Counties</h2>
-<p>When county data is provided. Several counties have the same name so it may be necessary to identify the correct data using the <strong>subRegionAlt</strong> column which contains <strong>county_state</strong> combination. This can be viewed in the shapefile data as <code>metis::mapUS49County@data</code>. In the example below there are 8 Orange counties, 9 Putnam counties and 3 Ellis counties. By using the county_state combination we can be more specific.We also use the argument <strong>nameAppend</strong> to append a name to the modified files.</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapUS49County</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check subRegion Names</span>
@@ -368,7 +367,7 @@
 <span class="no">customShape</span> <span class="kw">&lt;-</span> <span class="no">customShape</span>[<span class="no">customShape</span>@<span class="kw">data</span>$<span class="no">region</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Colombia"</span>),] <span class="co"># Subset the shapefile to Peru</span>
 <span class="no">customShape</span>@<span class="kw">data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html">droplevels</a></span>(<span class="no">customShape</span>@<span class="kw">data</span>)
 <span class="fu"><a href="../reference/metis.map.html">metis.map</a></span>(<span class="no">customShape</span>,<span class="kw">labels</span><span class="kw">=</span><span class="no">T</span>) <span class="co"># View custom shape</span>
-<span class="no">customShape</span>@<span class="kw">data</span> <span class="kw">&lt;-</span> <span class="no">customShape</span>@<span class="kw">data</span> <span class="kw">%&gt;%</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="kw">states</span><span class="kw">=</span><span class="no">subRegion</span>) <span class="co"># Lets assume the subRegion column was called "states"</span>
+<span class="no">customShape</span>@<span class="kw">data</span> <span class="kw">&lt;-</span> <span class="no">customShape</span>@<span class="kw">data</span> <span class="kw">%&gt;%</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span>(<span class="kw">states</span><span class="kw">=</span><span class="no">subRegion</span>) <span class="co"># Lets assume the subRegion column was called "states"</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">customShape</span>@<span class="kw">data</span>) <span class="co"># review data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">customShape</span>@<span class="kw">data</span>$<span class="no">states</span>) <span class="co"># Get a list of the unique subRegions</span>
 
@@ -509,8 +508,9 @@
                   <span class="kw">scenario</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,
                                <span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>),
                   <span class="kw">year</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">2010</span>,<span class="fl">10</span>),
-                  <span class="kw">value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">32</span>, <span class="fl">38</span>, <span class="fl">54</span>, <span class="fl">63</span>, <span class="fl">24</span>,
-                            <span class="fl">37</span>, <span class="fl">53</span>, <span class="fl">23</span>, <span class="fl">12</span>, <span class="fl">45</span>))
+                  <span class="kw">value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>,<span class="fl">1</span>,
+                            <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>),
+                  <span class="kw">classPalette</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"red"</span>,<span class="st">"green"</span>))
 <span class="fu"><a href="../reference/metis.mapsProcess.html">metis.mapsProcess</a></span>(<span class="kw">polygonTable</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">folderName</span> <span class="kw">=</span><span class="st">"colorPalettes"</span>,
                   <span class="kw">cropToBoundary</span><span class="kw">=</span><span class="no">T</span>, <span class="kw">extension</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">scenRef</span><span class="kw">=</span><span class="st">"scen1"</span>,
                   <span class="kw">classPalette</span> <span class="kw">=</span> <span class="st">"pal_wet"</span>, <span class="kw">classPaletteDiff</span> <span class="kw">=</span> <span class="st">"pal_div_BrGn"</span>)</pre></body></html></div>

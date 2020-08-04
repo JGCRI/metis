@@ -487,7 +487,6 @@ if(!is.null(raster)){
 
       if(is.numeric(raster@data[[fillColumn_i]])){
 
-        legendStyleOrig <- legendStyle; legendBreaksOrig <- legendBreaks;
         legendStyle <- "cat"
         legendBreaks <- NULL
 
@@ -498,10 +497,11 @@ if(!is.null(raster)){
 
 
       if(any(unique(raster@data[[fillColumn_i]]) %in% names(fillPalette))){
+        fillPalette<-fillPalette[1:min(length(catPalette),
+                                       length(fillPalette))]
         raster@data %>%
           dplyr::mutate(!!fillColumn_i := factor(raster@data[[fillColumn_i]],
-                                                 levels = names(fillPalette)[1:max(length(unique(raster@data[[fillColumn_i]])),
-                                                                                    length(names(fillPalette)))]))->
+                                                 levels = names(fillPalette)))->
           raster@data
       } else { raster@data %>%
           dplyr::mutate(!!fillColumn_i := as.factor(raster@data[[fillColumn_i]])) -> raster@data}
@@ -531,18 +531,16 @@ if(!is.null(shape)){
           shape@data[[fillColumn_i]] <- cut( shape@data[[fillColumn_i]],
                                               breaks=catBreaks,
                                               labels=catLabels)
-        } else {
-          legendStyleOrig -> legendStyle
-          legendBreaksOrig -> legendBreaks;
         }
 
-
         if(any(unique(shape@data[[fillColumn_i]]) %in% names(fillPalette))){
+          fillPalette<-fillPalette[1:min(length(catPalette),
+                                                length(fillPalette))]
           shape@data %>%
             dplyr::mutate(!!fillColumn_i := factor(shape@data[[fillColumn_i]],
-                                                   levels = names(fillPalette)[1:max(length(unique(shape@data[[fillColumn_i]])),
-                                                                                     length(names(fillPalette)))])) ->
+                                                   levels = names(fillPalette))) ->
             shape@data
+
         } else { shape@data %>%
             dplyr::mutate(!!fillColumn_i := as.factor(shape@data[[fillColumn_i]])) -> shape@data}
       }

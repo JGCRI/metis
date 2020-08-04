@@ -433,7 +433,8 @@ metis.downscale <- function(  polygonTable=NULL,
     dplyr::left_join(shapeTbl %>% dplyr::mutate(x=as.character(x)),by=c("subRegion","x")) %>%
     dplyr::mutate(valuePoly=value,
                   value=value*ratio) %>%
-    dplyr::filter(!is.na(value))
+    dplyr::filter(!is.na(value),
+                  value!=0)
   downscaled
 
   # Check

@@ -73,18 +73,39 @@ metis.grid2poly<- function(gridFiles=NULL,
     param->shpRegCol->subReg->gridTable->tbl->key->value->.->classPalette->lat->lon->overlapShape->
     gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis -> template_subRegional_mapping -> scenarioGCM ->
     scenarioRCP -> class2 -> scenarioPolicy -> valueTethys -> valueXanthos -> scenarioSSP -> gridCellArea ->
-    gridCellAreaRatio -> area -> areaPrcnt -> scenarioMultiA -> scenarioMultiB->nrowOrig->nrowNew
+    gridCellAreaRatio -> area -> areaPrcnt -> scenarioMultiA -> scenarioMultiB->nrowOrig->nrowNew -> year
 
   #------------------
   # Function for adding any missing columns if needed
   # -----------------
 
   addMissing<-function(data){
-    if(!"scenario"%in%names(data)){data<-data%>%dplyr::mutate(scenario="scenario")}
-    if(!"param"%in%names(data)){data<-data%>%dplyr::mutate(param="param")}
-    if(!"x"%in%names(data)){data<-data%>%dplyr::mutate(x="x")}
+    if(!any(grepl("\\<region\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(region="region")}else{
+      data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<region\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(region=as.character(region),region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
+    if(!any(grepl("\\<regions\\>",names(data),ignore.case = T))){}else{
+      data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<regions\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(region=as.character(region),region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
+    if(!any(grepl("\\<scenario\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(scenario="scenario")}else{
+      data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenario\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(scenario=as.character(scenario),scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
+    if(!any(grepl("\\<scenarios\\>",names(data),ignore.case = T))){}else{
+      data <- data %>% dplyr::rename(!!"scenario" := (names(data)[grepl("\\<scenarios\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(scenario=as.character(scenario),scenario=dplyr::case_when(is.na(scenario)~"scenario",TRUE~scenario))}
+    if(!"x"%in%names(data)){if("year"%in%names(data)){
+      data<-data%>%dplyr::mutate(x=year)}else{data<-data%>%dplyr::mutate(x="x")}}
+    if(!any(grepl("\\<class\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(class="class")}else{
+      data <- data %>% dplyr::rename(!!"class" := (names(data)[grepl("\\<class\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(class=as.character(class),class=dplyr::case_when(is.na(class)~"class",TRUE~class))}
+    if(!any(grepl("\\<param\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(param="param")}else{
+      data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<param\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(param=as.character(param),param=dplyr::case_when(is.na(param)~"param",TRUE~param))}
+    if(!any(grepl("\\<params\\>",names(data),ignore.case = T))){}else{
+      data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<params\\>",names(data),ignore.case = T)])[1])
+      data<-data%>%dplyr::mutate(param=as.character(param),param=dplyr::case_when(is.na(param)~"params",TRUE~param))}
     return(data)
   }
+
 
   #----------------
   # Load Shapefile and save boundary maps
@@ -168,9 +189,9 @@ metis.grid2poly<- function(gridFiles=NULL,
 
       if(nrow(grid)>0){
 
-        grid<-grid%>%addMissing()%>%tibble::as_tibble()%>%unique(); grid
+        grid<-grid%>%addMissing()%>%tibble::as_tibble()%>%dplyr::distinct(); grid
 
-        paramScenarios <- grid%>%dplyr::select("param","scenario")%>%unique(); paramScenarios
+        paramScenarios <- grid%>%dplyr::select("param","scenario")%>%dplyr::distinct(); paramScenarios
 
         if(!is.null(paramScenariosFixed)){
           for(row_i in 1:nrow(paramScenariosFixed)){
@@ -189,7 +210,12 @@ metis.grid2poly<- function(gridFiles=NULL,
         print("Subsetting params and scenarios...")
         if(!any(grepl("all",paramsSelect,ignore.case = T))){params=params[params %in% paramsSelect]}
         if(!any(grepl("all",scenariosSelect,ignore.case = T))){scenarios=scenarios[scenarios %in% scenariosSelect]}
-
+        paramScenarios = paramScenarios %>%
+          dplyr::filter(scenario %in% scenarios,
+                        param %in% params)
+        print("SubSet paramScenarios: ")
+        print(paramScenarios)
+        scenarios; params; paramScenarios
 
         # Check Scenarios
         if(!is.null(paramScenarios)){
@@ -199,7 +225,8 @@ metis.grid2poly<- function(gridFiles=NULL,
               paramScenarios <- paramScenarios %>% dplyr::filter(!is.na(scenario))
               print(paramScenarios)
             }
-          }}
+          }
+          }
 
       }else{
         stop(paste("Grid file ",grid," does not exist",sep=""))
@@ -209,19 +236,20 @@ metis.grid2poly<- function(gridFiles=NULL,
 
     if(!is.null(grid)){
 
-      if(!is.null(paramScenarios)){
+      if(is.null(paramScenarios)){
         if(all(c("param","scenario") %in% names(grid))){
           paramScenarios <- tibble::tibble()
           for(param_i in unique(grid$param)){
             paramScenarios <- paramScenarios %>%
               dplyr::bind_rows(grid %>% dplyr::filter(param==param_i)%>%
                                  dplyr::select("param","scenario")%>%
-                                 unique())
+                                 dplyr::distinct())
           }
         }
-      }else{paramScenarios <- tibble::tibble(param="param", scenario="scenario")}; paramScenarios
+      }; paramScenarios
 
 
+      if(nrow(paramScenarios)>0){
       for(row_i in 1:nrow(paramScenarios)){
 
         param_i <- paramScenarios[row_i,]$param; param_i
@@ -235,7 +263,7 @@ metis.grid2poly<- function(gridFiles=NULL,
           print(paste("Starting aggregation for grid: ", grid_i," and param: ",param_i," and scenario: ",scenario_i,"...",sep=""))
 
           # Subset to keep only required columns
-          cols2Remove <-names(gridx)[names(gridx) %in% c("subRegion",subRegCol,"gridCellArea","subRegAreaSum","gridCellAreaRatio")]
+          cols2Remove <-names(gridx)[names(gridx) %in% c("subRegion","region",subRegCol,"gridCellArea","subRegAreaSum","gridCellAreaRatio")]
           gridx <- gridx %>% dplyr::select(-tidyselect::all_of(cols2Remove))
 
           if(!"aggType" %in% names(gridx)){
@@ -265,8 +293,6 @@ metis.grid2poly<- function(gridFiles=NULL,
           }
           print("Grid Columns set.")
 
-
-
           for (aggType_i in unique(gridx$aggType)){
 
             if(!unique(gridx$aggType) %in% c("depth","vol")){stop("Incorrect aggType in grid file")}
@@ -281,7 +307,7 @@ metis.grid2poly<- function(gridFiles=NULL,
             if(nrowOrig!=nrowNew){print("WARNING: Multiple lat/lon data had same attributes and were combined.")}
             print("Columns united.")
 
-            gridx<-gridx%>%unique()%>%tidyr::spread(key=key,value=value)
+            gridx<-gridx%>%dplyr::distinct()%>%tidyr::spread(key=key,value=value)
 
             print(paste("Cropping grid to shape file for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
 
@@ -293,12 +319,18 @@ metis.grid2poly<- function(gridFiles=NULL,
 
             if(nrow(gridCropped)>0){
 
-              gridCroppedX<-tidyr::gather(gridCropped,key=key,value=value,-c(!!subRegCol,"gridCellArea","subRegAreaSum",
-                                                                             "gridCellAreaRatio","lat","lon"))%>%
-                tidyr::separate(col="key",into=namesGrid[!namesGrid %in% c("lat","lon","value")],sep="_")%>%
-                unique()%>%dplyr::ungroup()%>%
-                dplyr::rename(subRegion=subRegCol)%>%
-                dplyr::filter(!is.na(value))
+              gridCroppedX1<-tidyr::gather(gridCropped,key=key,value=value,-c(!!subRegCol,"gridCellArea","subRegAreaSum",
+                                                                             "gridCellAreaRatio","lat","lon","GridByPolyID"))%>%
+                dplyr::filter(!is.na(value),value!=0)
+              print("Splitting original column names for each grid cell...")
+              newCols <- stringi::stri_split_regex(gridCroppedX1$key,"_",simplify=TRUE)%>%as.data.frame()
+              names(newCols)<-namesGrid[!namesGrid %in% c("lat","lon","value")]
+              gridCroppedX <- dplyr::bind_cols(gridCroppedX1%>%dplyr::select(-key), newCols)%>%
+                dplyr::ungroup()%>%
+                dplyr::distinct()%>%
+                dplyr::rename(subRegion=!!subRegCol)%>%
+                dplyr::filter(!is.na(value),value!=0)
+              print("Original columns split.")
 
               for(colx in names(gridCroppedX)){
                 if(is.character(gridCroppedX[[colx]])){
@@ -386,8 +418,16 @@ metis.grid2poly<- function(gridFiles=NULL,
               print("Aggregation complete.")
             }
 
-            polyData<-tidyr::gather(polyDatax,key=key,value=value,-(subRegCol))%>%
-              tidyr::separate(col="key",into=namesGrid[!namesGrid %in% c("lat","lon","value")],sep="_")%>%dplyr::ungroup()
+            polyDataX1<-tidyr::gather(polyDatax,key=key,value=value,-(subRegCol))%>%
+              dplyr::filter(value!=0,!is.na(value))
+            print("Splitting original column names...")
+            newCols <- stringi::stri_split_regex(polyDataX1$key,"_",simplify=TRUE)%>%as.data.frame()
+            names(newCols)<-namesGrid[!namesGrid %in% c("lat","lon","value")]
+            polyData <- dplyr::bind_cols(polyDataX1%>%dplyr::select(-key), newCols)%>%
+              dplyr::ungroup()%>%
+              dplyr::distinct()%>%
+              dplyr::filter(!is.na(value),value!=0)
+            print("Original columns split.")
 
             for(colx in names(polyData)){
               if(is.character(polyData[[colx]])){
@@ -407,6 +447,9 @@ metis.grid2poly<- function(gridFiles=NULL,
               dplyr::mutate(subRegType=subRegType)%>%
               dplyr::rename(subRegion:= !!paste(subRegCol))
 
+          #..................
+          # Modifying final poly file
+          #...................
 
             if("x" %in% names(polyData)){
               polyData <- polyData%>%
@@ -432,7 +475,7 @@ metis.grid2poly<- function(gridFiles=NULL,
             template_subRegional_mapping <- template_subRegional_mapping %>%
               dplyr::bind_rows(poly %>%
               dplyr::select(c("param","units","class","classPalette")[c("param","units","class","classPalette") %in% names(poly)])%>%
-                dplyr::ungroup()%>%unique())%>%unique()
+                dplyr::ungroup()%>%dplyr::distinct())%>%dplyr::distinct()
             poly_fname<-paste(dirX, "/poly_subregionalTemplate.csv", sep = "")
             if(saveFiles){
               data.table::fwrite(template_subRegional_mapping,
@@ -448,6 +491,7 @@ metis.grid2poly<- function(gridFiles=NULL,
         } # Close loop for param_i and scenario_i
 
       print(paste("Aggregation for all scenarios and params complete."))
+      }else{print("None of the selected params and scenarios were found in the grid file. Skipping...")}
 
 
 

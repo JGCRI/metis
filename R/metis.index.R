@@ -1,19 +1,19 @@
 #' metis.index
 #'
-#' This function finds the grids located within a given shapefiles regions
+#' This function calculates indices based on a given numerator and denominator
 #'
 #' @param data Default = NULL. Full path to grid file.
 #' @param colIndex Default = NULL,
 #' @param colValue Default = NULL,
 #' @param numerators Default = NULL,
-#' @param denominators Default = NULL,
+#' @param denominators Default = NULL, (Choose 1 to use Numerator Value)
 #' @param scenariosSelect Default = NULL,
 #' @param indexName Default = "index",
 #' @param nameAppend Default = ""
 #' @param meanYearsDenominator Default = NULL,
 #' @param dirOutputs Default = paste(getwd(),"/outputs",sep=""),
-#' @param fname Default = "gridByPoly"
-#' @param folderName Default ="folderNameDefault",
+#' @param fname Default = "index"
+#' @param folderName Default = NULL,
 #' @param saveFile Default = F. If want csv output then change to T
 #' @keywords grid, shape, polygon
 #' @return dataframe with index
@@ -172,6 +172,18 @@ print(paste("Starting metis.index.R...",sep=""))
 
   # Check if denominators provided exist in datax colIndex
   #--------------------------------------------------------------------
+  if(any(c(1,"one") %in% denominators)){ # In order to use numerator value as is
+    dataxD <- datax %>%
+      dplyr::filter(datax[[colIndex]] %in% numerators) %>%
+      dplyr::select(-dplyr::all_of(c(colValue,colIndex))) %>%
+      unique() %>%
+      dplyr::mutate(!!colIndex:="one",
+                    !!colValue:=1)
+    datax <- datax %>%
+      dplyr::bind_rows(dataxD)
+    denominators <- unique(c("one",denominators))
+  }
+
   if(!any(denominators %in% unique(datax[[colIndex]]))){
     stop(print(paste("None of the chosen denominators: ", paste(denominators,collapse=", "),
                      " exist in the colIndex: ", colIndex,sep="")))
@@ -216,7 +228,6 @@ print(paste("Starting metis.index.R...",sep=""))
 #---------------
 
   cols <- c("subRegion","scenario","subRegType",colIndex,colValue,"x");cols
-  colsNoVal <- c("subRegion","scenario",colIndex,"subRegType","x"); colsNoVal
   datax <- datax %>% dplyr::select(tidyselect::all_of(cols))
 
    for(numerator_i in numerators){
@@ -269,14 +280,13 @@ print(paste("Starting metis.index.R...",sep=""))
 
   datax1 <- dataxNumerator %>%
     dplyr::left_join(dataxDenominator)%>%
-    dplyr::mutate(scenario=paste(scenarioN,scenarioD,sep="_"))%>%
+    dplyr::mutate(scenario=dplyr::case_when(denominator_i!="one"~paste(scenarioN,scenarioD,sep="_"),
+                                     TRUE~scenarioN))%>%
     dplyr::select(-scenarioD,-scenarioN)%>%
-    dplyr::mutate(!!indexName := dplyr::case_when(denominator_i==0~NA_real_,
+    dplyr::mutate(!!colValue := dplyr::case_when(denominator_i==0~NA_real_,
                                            TRUE~!!as.name(numerator_i)/!!as.name(denominator_i)),
                   param=indexName)%>%
-    dplyr::select(-!!denominator_i,-!!numerator_i)%>%
-    dplyr::rename(!!colValue:=!!as.name(indexName)); datax1
-
+    dplyr::select(-!!denominator_i,-!!numerator_i); datax1
 
       }
     }

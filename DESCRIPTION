@@ -12,7 +12,7 @@ Depends: R (>= 2.10)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Imports: 
 	raster (>= 2.7.15),
 	ggpubr (>= 0.2.3),
@@ -23,6 +23,7 @@ Imports:
 	dplyr (>= 0.7.7), 
 	tmap (>= 2.1.1),
 	ggplot2 (>= 3.1.0), 
+	stringi (>= 1.4.6),
 	scales (>= 0.5.0), 
 	utils (>= 3.5.0),
 	tidyr (>= 0.8.1), 
@@ -49,4 +50,3 @@ Remotes: github::JGCRI/rgcam
 VignetteBuilder: knitr
 Suggests: 
     rmarkdown
-

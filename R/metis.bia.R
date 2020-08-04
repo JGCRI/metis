@@ -149,7 +149,7 @@ metis.bia<- function(dirOutputs=paste(getwd(),"/outputs",sep=""),
   if(T){
 
   # Loading a list that gives which of the 32 regions each country is in
-  ctor<-metis.assumptions("countryToGCAMReg32") %>%
+  ctor<-metis.mappings("countryToGCAMReg32") %>%
     tibble::as_tibble()%>%
     dplyr::mutate(country_long=ctry_name)
 
@@ -647,7 +647,7 @@ metis.bia<- function(dirOutputs=paste(getwd(),"/outputs",sep=""),
                  paste(regionsSelectDiagnostic,collapse=", "),sep=""))
 
 
-     ctr<-metis.assumptions("countryToGCAMReg32")%>%
+     ctr<-metis.mappings("countryToGCAMReg32")%>%
        dplyr::mutate(country_long=ctry_name)
 
      gWRI<-data.table::fread(paste(

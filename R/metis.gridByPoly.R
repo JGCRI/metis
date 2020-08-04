@@ -131,7 +131,7 @@ metis.gridByPoly <- function(gridTable = NULL,
 gridByPoly<-rCropPx@data%>%dplyr::select(lat,lon,colName,gridCellArea=area,subRegAreaSum,gridCellAreaRatio=areaRatio)%>%
     dplyr::mutate(lat=round(lat,4),lon=round(lon,4))%>%
   dplyr::left_join(gridx %>% dplyr::mutate(lat=round(lat,4),lon=round(lon,4)), by=c("lat","lon"))%>%
-  unique()%>%
+  dplyr::distinct()%>%
   tibble::rowid_to_column(var = "GridByPolyID")
 
 

@@ -246,7 +246,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   NULL->scenario->value->x->region->param->origValue->origScen->origQuery->year->
   origUnits->origX->sources->vintage->class1->classLabel1->classPalette1->yMax_i->yMin_i->
   class2->classLabel2->classPalette2->i->j->k->figWMult->classLabel1x ->classLabel2x-> classPalette1x-> classPalette2x->
-  nScen->paramSet->multiPlot->plot->scen->lastrow->param
+  nScen->paramSet->multiPlot->plot->scen->lastrow->param->subRegion
 
   aggregate_i <- aggregate
 
@@ -271,6 +271,12 @@ addMissing<-function(data){
   if(!any(grepl("\\<regions\\>",names(data),ignore.case = T))){}else{
     data <- data %>% dplyr::rename(!!"region" := (names(data)[grepl("\\<regions\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(region=dplyr::case_when(is.na(region)~"region",TRUE~region))}
+  if(!any(grepl("\\<subRegion\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(subRegion="subRegion")}else{
+    data <- data %>% dplyr::rename(!!"subRegion" := (names(data)[grepl("\\<subRegion\\>",names(data),ignore.case = T)])[1])
+    data<-data%>%dplyr::mutate(subRegion=dplyr::case_when(is.na(subRegion)~"subRegion",TRUE~subRegion))}
+  if(!any(grepl("\\<subRegions\\>",names(data),ignore.case = T))){}else{
+    data <- data %>% dplyr::rename(!!"subRegion" := (names(data)[grepl("\\<subRegions\\>",names(data),ignore.case = T)])[1])
+    data<-data%>%dplyr::mutate(subRegion=dplyr::case_when(is.na(subRegion)~"subRegion",TRUE~subRegion))}
   if(!any(grepl("\\<param\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(param="param")}else{
     data <- data %>% dplyr::rename(!!"param" := (names(data)[grepl("\\<param\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(param=dplyr::case_when(is.na(param)~"param",TRUE~param))}
@@ -546,7 +552,22 @@ if(regionCompareOnly!=1){
 #------------------
 # Tables
 #------------------
-  tbl <- tbl %>% unique()
+tbl <- tbl %>% unique()
+
+# Aggregate across subRegions
+tblAggsums<-tbl%>%
+    dplyr::mutate(scenario=as.character(scenario))%>%
+    dplyr::filter(aggregate=="sum")%>%
+    dplyr::select(-subRegion)%>%
+    dplyr::group_by_at(dplyr::vars(-value, -origValue))%>%
+    dplyr::summarize_at(c("value","origValue"),list(~sum(.)))
+tblAggmeans<-tbl%>%
+    dplyr::mutate(scenario=as.character(scenario))%>%
+    dplyr::filter(aggregate=="mean")%>%
+  dplyr::select(-subRegion)%>%
+  dplyr::group_by_at(dplyr::vars(-value, -origValue))%>%
+  dplyr::summarize_at(c("value","origValue"),list(~mean(.)))
+tbl <-dplyr::bind_rows(tblAggsums,tblAggmeans)%>%dplyr::ungroup()
 
 # Aggregate across classes
 tblAggsums<-tbl%>%

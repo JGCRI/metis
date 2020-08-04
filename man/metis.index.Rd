@@ -29,7 +29,7 @@ metis.index(
 
 \item{numerators}{Default = NULL,}
 
-\item{denominators}{Default = NULL,}
+\item{denominators}{Default = NULL, (Choose 1 to use Numerator Value)}
 
 \item{meanYearsDenominator}{Default = NULL,}
 
@@ -39,11 +39,11 @@ metis.index(
 
 \item{dirOutputs}{Default = paste(getwd(),"/outputs",sep=""),}
 
-\item{fname}{Default = "gridByPoly"}
+\item{fname}{Default = "index"}
 
 \item{nameAppend}{Default = ""}
 
-\item{folderName}{Default ="folderNameDefault",}
+\item{folderName}{Default = NULL,}
 
 \item{saveFile}{Default = F. If want csv output then change to T}
 }
@@ -51,7 +51,7 @@ metis.index(
 dataframe with index
 }
 \description{
-This function finds the grids located within a given shapefiles regions
+This function calculates indices based on a given numerator and denominator
 }
 \keyword{grid,}
 \keyword{polygon}

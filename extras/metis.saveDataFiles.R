@@ -637,7 +637,9 @@ if(redoMaps){
   mapx@data <- droplevels(mapx@data)
   mapx@data <- mapx@data %>%
     dplyr::mutate(COUNTYCODE=subRegionAlt,
-                  subRegionAlt=paste(subRegion,STATECODE,sep="_")); mapx@data
+                  subRegionAlt=paste(subRegion,STATECODE,sep="_"))%>%
+    dplyr::rename(subRegion=subRegionAlt,
+                  subRegionAlt=subRegion); mapx@data
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F)
   #---------------------
@@ -657,7 +659,9 @@ if(redoMaps){
   format(object.size(mapx), units="Mb")
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
-  mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="US49County")
+  mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="US49County")%>%
+    dplyr::rename(subRegion=subRegionAlt,
+                  subRegionAlt=subRegion)
   mapUS49County<-mapx
   use_data(mapUS49County, overwrite=T)
 }

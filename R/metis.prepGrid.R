@@ -303,14 +303,15 @@ if(!dir.exists(paste(tethysFolderScen$folder[i],sep=""))){
 
         if(grepl("km3",tethysFile_i) | grepl("km3",tethysUnits)){
           print(paste("Based on tethys file name: ", tethysFile_i, " or given tethys units: ", tethysUnits," data is in km3. Converting to mm...", sep=""))
-          gridx<-gridx/(xanthosGridArea$Area_km2/1000000)
-          gridx[gridx<0]=0
-          gridx<-dplyr::bind_cols(xanthosCoords,gridx)
+          gridx[,3:ncol(gridx)]<-gridx[,3:ncol(gridx)]/(xanthosGridArea$Area_km2/1000000)
+          gridx[,3:ncol(gridx)][gridx[,3:ncol(gridx)]<0]=0
+          #gridx<-dplyr::bind_cols(xanthosCoords,gridx)
           tethysUnits="Water Withdrawals (mm)"
           print(paste("km3 data converted to mm.", sep=""))
         }else{
           print(paste("Based on tethys file name: ", tethysFile_i, " or given tethys units: ", tethysUnits," data is in mm. Using mm.", sep=""))
-          gridx<-dplyr::bind_cols(xanthosCoords,gridx)}
+          #gridx<-dplyr::bind_cols(xanthosCoords,gridx)
+          }
 
         if(grepl("mm",tethysUnits)){aggType="depth"}else{aggType="vol"}
         gridx<-gridx%>%dplyr::select(-dplyr::contains("Unit"))
@@ -800,19 +801,27 @@ if(!dir.exists(biaFolder)){
 
         biaFile_i <- gsub(".rds","",gsub(".csv","",biaFile_i))
 
-        if(saveFormat=="rds"){
-          saveRDS(gridx,paste(dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
-          print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
-        }
-        if(saveFormat=="csv"){
-          data.table::fwrite(gridx,paste(dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
-          print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
-        }
-        if(saveFormat=="both"){
-          saveRDS(gridx,paste(dir,"/bia_",biaFile_i,".rds",sep=""))
-          data.table::fwrite(gridx,paste(dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
-          print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
-          print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+        x10Chunks <- split(unique(gridx$x), ceiling(seq_along(unique(gridx$x))/25))
+
+        for(j in 1:length(x10Chunks)){
+
+          x_temp <-x10Chunks[[j]]
+          gridxSub <- gridx%>%dplyr::filter(x %in% x_temp)
+
+          if(saveFormat=="rds"){
+            saveRDS(gridxSub,paste(dir,"/bia_",biaFile_i,"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+            print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+          }
+          if(saveFormat=="csv"){
+            data.table::fwrite(gridxSub,paste(dir,"/bia_",biaFile_i,"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+            print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+          }
+          if(saveFormat=="both"){
+            saveRDS(gridxSub,paste(dir,"/bia_",biaFile_i,"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+            data.table::fwrite(gridxSub,paste(dir,"/bia_",biaFile_i,"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+            print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+            print(paste("Saving file as: ",dir,"/bia_",biaFile_i,"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+          }
         }
 
         paramScenarios <- paramScenarios%>%
@@ -874,22 +883,30 @@ if(!is.null(downscaleFolder)){
 
         downscaleFile_i <- gsub(".rds","",gsub(".csv","",downscaleFile_i))
 
-        if(saveFormat=="rds"){
-          saveRDS(gridx,paste(dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
-          print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
-        }
-        if(saveFormat=="csv"){
-          data.table::fwrite(gridx,paste(dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
-          print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
-        }
-        if(saveFormat=="both"){
-          saveRDS(gridx,paste(dir,"/downscale_",downscaleFile_i,".rds",sep=""))
-          data.table::fwrite(gridx,paste(dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
-          print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".rds",sep=""))
-          print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(gridx$x),"to",max(gridx$x),".csv",sep=""))
+        x10Chunks <- split(unique(gridx$x), ceiling(seq_along(unique(gridx$x))/25))
+
+        for(j in 1:length(x10Chunks)){
+
+          x_temp <-x10Chunks[[j]]
+          gridxSub <- gridx%>%dplyr::filter(x %in% x_temp)
+
+          if(saveFormat=="rds"){
+            saveRDS(gridxSub,paste(dir,"/downscale_",downscaleFile_i,"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+            print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+          }
+          if(saveFormat=="csv"){
+            data.table::fwrite(gridxSub,paste(dir,"/downscale_",downscaleFile_i,"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+            print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+          }
+          if(saveFormat=="both"){
+            saveRDS(gridxSub,paste(dir,"/downscale_",downscaleFile_i,"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+            data.table::fwrite(gridxSub,paste(dir,"/downscale_",downscaleFile_i,"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+            print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(x_temp),"to",max(x_temp),".rds",sep=""))
+            print(paste("Saving file as: ",dir,"/downscale_",downscaleFile_i,"_",min(x_temp),"to",max(x_temp),".csv",sep=""))
+          }
         }
 
-        paramScenarios <- paramScenarios%>%
+          paramScenarios <- paramScenarios%>%
           dplyr::bind_rows(gridx%>%dplyr::select(param,scenario)%>%unique()) %>%
           dplyr::ungroup()%>%
           dplyr::select(param,scenario)%>%
