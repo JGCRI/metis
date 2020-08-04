@@ -4,12 +4,16 @@ language: R
 cache: false
 dist: xenial
 
+repos: 
+  CRAN: https://cran.rstudio.com
+  rforge: http://R-Forge.R-project.org
+
 r_check_args: "--no-build-vignettes --ignore-vignettes"
 r_build_args: "--no-build-vignettes --ignore-vignettes"
 
 r_github_packages:
   - r-spatial/lwgeom
-  
+    
 r_packages:
   - sp
   - rgdal
