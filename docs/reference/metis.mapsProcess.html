@@ -177,8 +177,6 @@ Each figure is accompanied with a csv table.</p>
   <span class='kw'>legendTextSizeI</span> <span class='kw'>=</span> <span class='fl'>0.6</span>,
   <span class='kw'>animateOn</span> <span class='kw'>=</span> <span class='no'>T</span>,
   <span class='kw'>fps</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>scenRef</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>scenDiff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>extension</span> <span class='kw'>=</span> <span class='no'>F</span>,
   <span class='kw'>boundaryRegShape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>boundaryRegShpFolder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -198,9 +196,15 @@ Each figure is accompanied with a csv table.</p>
   <span class='kw'>projX</span> <span class='kw'>=</span> <span class='st'>"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"</span>,
   <span class='kw'>figWidth</span> <span class='kw'>=</span> <span class='fl'>6</span>,
   <span class='kw'>figHeight</span> <span class='kw'>=</span> <span class='fl'>7</span>,
+  <span class='kw'>scenRef</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>scenDiff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>scaleRange</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>scaleRangeDiffAbs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>scaleRangeDiffPrcnt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xRef</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xDiff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>scaleRangeDiffxAbs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>scaleRangeDiffxPrcnt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>paramsSelect</span> <span class='kw'>=</span> <span class='st'>"All"</span>,
   <span class='kw'>multifacetsOn</span> <span class='kw'>=</span> <span class='no'>F</span>,
   <span class='kw'>multiFacetCols</span> <span class='kw'>=</span> <span class='st'>"multiFacetCol"</span>,
@@ -332,14 +336,6 @@ Each figure is accompanied with a csv table.</p>
       <td><p>Default = 1,</p></td>
     </tr>
     <tr>
-      <th>scenRef</th>
-      <td><p>Reference Scenario. Default = NULL</p></td>
-    </tr>
-    <tr>
-      <th>scenDiff</th>
-      <td><p>Scenarios to Diff. Default = NULL</p></td>
-    </tr>
-    <tr>
       <th>extension</th>
       <td><p>Default =F,</p></td>
     </tr>
@@ -416,6 +412,14 @@ Each figure is accompanied with a csv table.</p>
       <td><p>Default =7</p></td>
     </tr>
     <tr>
+      <th>scenRef</th>
+      <td><p>Reference Scenario. Default = NULL</p></td>
+    </tr>
+    <tr>
+      <th>scenDiff</th>
+      <td><p>Scenarios to Diff. Default = NULL</p></td>
+    </tr>
+    <tr>
       <th>scaleRange</th>
       <td><p>Default NULL. A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min</p></td>
     </tr>
@@ -425,6 +429,22 @@ Each figure is accompanied with a csv table.</p>
     </tr>
     <tr>
       <th>scaleRangeDiffPrcnt</th>
+      <td><p>Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min</p></td>
+    </tr>
+    <tr>
+      <th>xRef</th>
+      <td><p>Reference year. Default = NULL</p></td>
+    </tr>
+    <tr>
+      <th>xDiff</th>
+      <td><p>years to Diff. Default = NULL</p></td>
+    </tr>
+    <tr>
+      <th>scaleRangeDiffxAbs</th>
+      <td><p>Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min</p></td>
+    </tr>
+    <tr>
+      <th>scaleRangeDiffxPrcnt</th>
       <td><p>Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min</p></td>
     </tr>
     <tr>

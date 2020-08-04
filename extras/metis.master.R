@@ -764,3 +764,29 @@ if(T){
   print(metisTests)
   if(any(grepl("Failed",metisTests$Test))){"Some metis tests failed. Please check the relevant section."} else {"All metis tests passed without issues."}
 }
+
+
+# Numeric2Cat
+numeric2Cat_param <- list("griddedScarcity","polygonScarcity")
+numeric2Cat_breaks <- list(c(-Inf, 0.1, 0.2, 0.4,Inf),c(-Inf, 0.1, 0.2, 0.4,Inf))
+numeric2Cat_labels <- list(c("None (0<WSI<0.1)","Low (0.1<WSI<0.2)","Moderate (0.2<WSI<0.4)","Severe (WSI>0.4)"),
+                           c("None (0<WSI<0.1)","Low (0.1<WSI<0.2)","Moderate (0.2<WSI<0.4)","Severe (WSI>0.4)"))
+numeric2Cat_palette <- list(c("pal_ScarcityCat"),
+                            #c("c('None (0<WSI<0.1)'='black','Low (0.1<WSI<0.2)'='blue','Moderate (0.2<WSI<0.4)'='purple','Severe (WSI>0.4)'='yellow')"),
+                            c("pal_ScarcityCat")) # Can be a custom scale or an R brewer paletter or a metis.pal
+numeric2Cat_legendTextSize <- list(c(0.7),c(0.7))
+numeric2Cat_list <-list(numeric2Cat_param=numeric2Cat_param,
+                        numeric2Cat_breaks=numeric2Cat_breaks,
+                        numeric2Cat_labels=numeric2Cat_labels,
+                        numeric2Cat_palette=numeric2Cat_palette,
+                        numeric2Cat_legendTextSize=numeric2Cat_legendTextSize)
+
+numeric2Cat_param <- list("param")
+numeric2Cat_breaks <- list(c(-Inf, 0.1,1.1,2.1,Inf))
+numeric2Cat_labels <- list(c("0","1","2","3"))
+numeric2Cat_palette <- list(c("0"="red","1"="blue","2"="green"))
+numeric2Cat_list <-list(numeric2Cat_param=numeric2Cat_param,
+                        numeric2Cat_breaks=numeric2Cat_breaks,
+                        numeric2Cat_labels=numeric2Cat_labels,
+                        numeric2Cat_palette=numeric2Cat_palette,
+                        numeric2Cat_legendTextSize=numeric2Cat_legendTextSize)

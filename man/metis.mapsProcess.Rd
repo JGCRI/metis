@@ -28,8 +28,6 @@ metis.mapsProcess(
   legendTextSizeI = 0.6,
   animateOn = T,
   fps = 1,
-  scenRef = NULL,
-  scenDiff = NULL,
   extension = F,
   boundaryRegShape = NULL,
   boundaryRegShpFolder = NULL,
@@ -49,9 +47,15 @@ metis.mapsProcess(
   projX = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
   figWidth = 6,
   figHeight = 7,
+  scenRef = NULL,
+  scenDiff = NULL,
   scaleRange = NULL,
   scaleRangeDiffAbs = NULL,
   scaleRangeDiffPrcnt = NULL,
+  xRef = NULL,
+  xDiff = NULL,
+  scaleRangeDiffxAbs = NULL,
+  scaleRangeDiffxPrcnt = NULL,
   paramsSelect = "All",
   multifacetsOn = F,
   multiFacetCols = "multiFacetCol",
@@ -134,10 +138,6 @@ metis.mapsProcess(
 
 \item{fps}{Default = 1,}
 
-\item{scenRef}{Reference Scenario. Default = NULL}
-
-\item{scenDiff}{Scenarios to Diff. Default = NULL}
-
 \item{extension}{Default =F,}
 
 \item{boundaryRegShape}{Default = NULL,}
@@ -176,11 +176,23 @@ metis.mapsProcess(
 
 \item{figHeight}{Default =7}
 
+\item{scenRef}{Reference Scenario. Default = NULL}
+
+\item{scenDiff}{Scenarios to Diff. Default = NULL}
+
 \item{scaleRange}{Default NULL. A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min}
 
 \item{scaleRangeDiffAbs}{Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min}
 
 \item{scaleRangeDiffPrcnt}{Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min}
+
+\item{xRef}{Reference year. Default = NULL}
+
+\item{xDiff}{years to Diff. Default = NULL}
+
+\item{scaleRangeDiffxAbs}{Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min}
+
+\item{scaleRangeDiffxPrcnt}{Default =NULL, A vector with c(max,min) (Applied to all params) or a dataframe with cols param, max, min}
 
 \item{paramsSelect}{Default ="All"}
 

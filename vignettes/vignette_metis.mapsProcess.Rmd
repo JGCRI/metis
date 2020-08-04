@@ -112,8 +112,6 @@ metis.mapsProcess(polygonTable=data,
 
 ## US 49 Counties
 
-When county data is provided. Several counties have the same name so it may be necessary to identify the correct data using the **subRegionAlt** column which contains **county_state** combination. This can be viewed in the shapefile data as `metis::mapUS49County@data`. In the example below there are 8 Orange counties, 9 Putnam counties and 3 Ellis counties. By using the county_state combination we can be more specific.We also use the argument **nameAppend** to append a name to the modified files.
-
 ```{r, eval=F}
 library(metis)
 
@@ -401,6 +399,7 @@ data = data.frame(subRegion = c("Austria","Spain", "Italy", "Germany","Greece",
 metis.mapsProcess(polygonTable = data, folderName ="colorPalettes", 
                   cropToBoundary=T, extension = T, scenRef="scen1",
                   classPalette = "pal_wet", classPaletteDiff = "pal_div_BrGn")
+
 ```
 
 

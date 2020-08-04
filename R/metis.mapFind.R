@@ -14,22 +14,49 @@
 
 metis.mapFind <- function(dataTbl) {
 
-    #------------------------------------------------------
-    # Initialize
-    #-----------------------------------------------------
+  #......................................................
+  # Initialize
+  #.....................................................
 
     if(T){
     NULL -> subRegShapeFoundx -> subRegShapeTypeFoundx -> subRegNotInShapeFoundx ->
       dataTblFound -> subRegionShapex -> mapStatesx -> subRegionAlt -> subRegion -> mapFindx -> subRegion1 ->
-        subRegNum
+        subRegNum-> subRegionMetis}
+
+  #......................................................
+  # Check columns and map subRegions to metis shape regions
+  #.....................................................
+
+  if(T){
+
+    # Check dataTbl to make sure basic columns are available
+    addMissing<-function(data){
+      if(any(grepl("\\<subregion\\>",names(data),ignore.case = T))){
+        data <- data %>% dplyr::rename(!!"subRegion" := (names(data)[grepl("\\<subregion\\>",names(data),ignore.case = T)])[1])}
+      if(any(grepl("\\<subregions\\>",names(data),ignore.case = T))){
+        data <- data %>% dplyr::rename(!!"subRegion" := (names(data)[grepl("\\<subregions\\>",names(data),ignore.case = T)])[1])}
+    return(data)
+      }
+    dataTbl <- addMissing(dataTbl)
+
+    if(!all(c("subRegion") %in% names(dataTbl))){stop("dataTbl must have subRegion columns.")}
 
     subRegShapeTblOrig <- unique(dataTbl$subRegion)
-    subRegShapeTbl <- gsub("-", "_", tolower(unique(dataTbl$subRegion)))
-    }
 
-    #-----------------------------------------------------
+    # Map subRegions to metis regions
+    dataTbl <- dataTbl %>%
+      dplyr::left_join(metis.mappings("subRegionMap"),by="subRegion")%>%
+      dplyr::mutate(subRegion=dplyr::case_when(!is.na(subRegionMetis)~subRegionMetis,
+                                        TRUE~subRegion))%>%
+      dplyr::select(-subRegionMetis)
+
+    subRegShapeTbl <- gsub("-", "_", tolower(unique(dataTbl$subRegion)))
+
+  }
+
+    #.....................................................
     # Load Pre-built map regions
-    #------------------------------------------------------
+    #......................................................
 
     if (T) {
       # Renaming subregions in mapStates so that states with USPS can be plotted with states with full names in other countries
@@ -174,9 +201,9 @@ metis.mapFind <- function(dataTbl) {
                   sort())
       }
 
-    #-----------------------------------------------------
+    #.....................................................
     # Assign map which has the most subRegions associated with it.
-    #-----------------------------------------------------
+    #.....................................................
 
     if (T) {
       mapRegList <- list(
@@ -221,9 +248,9 @@ metis.mapFind <- function(dataTbl) {
       )
     }
 
-    #-----------------------------------------------------
+    #.....................................................
     # Find how many regions in the datatbl belong to different maps
-    #-----------------------------------------------------
+    #.....................................................
 
     if (T) {
 
@@ -243,9 +270,9 @@ metis.mapFind <- function(dataTbl) {
       mapReg
     }
 
-    #-----------------------------------------------------
+    #.....................................................
     # Use pre ranked maps
-    #-----------------------------------------------------
+    #.....................................................
 
     if (T) {
       mapRanked <- tibble::tribble(
@@ -293,9 +320,9 @@ metis.mapFind <- function(dataTbl) {
       mapRanked %>% dplyr::arrange(rank)
     }
 
-    #-----------------------------------------------------
+    #.....................................................
     # Choose maps with highest number of regions and if more than one then attach rank and choose highest rnank(lowest rank number)
-    #-----------------------------------------------------
+    #.....................................................
 
     if (T) {
       mapMax <- mapReg %>%
@@ -315,9 +342,9 @@ metis.mapFind <- function(dataTbl) {
       subRegChosen
     }
 
-    #-----------------------------------------------------
+    #.....................................................
     # Assign map
-    #-----------------------------------------------------
+    #.....................................................
 
     if (T) {
       if (subRegChosen == "subRegUS49") {
@@ -688,9 +715,9 @@ metis.mapFind <- function(dataTbl) {
 
     }
 
-    #-----------------------------------------------------
+    #.....................................................
     # Check if no subregions in pre-loaded maps
-    #-----------------------------------------------------
+    #.....................................................
 
     if(T){
     if (!is.null(subRegNotInShapeFoundx)) {
@@ -704,9 +731,9 @@ metis.mapFind <- function(dataTbl) {
     }
     }
 
-    #-----------------------------------------------------
+    #.....................................................
     # Re-assign subRegion names based on data in maps
-    #-----------------------------------------------------
+    #.....................................................
 
     if(T){
     if (!is.null(subRegShapeFoundx) & nrow(dataTbl) > 0) {
@@ -737,9 +764,9 @@ metis.mapFind <- function(dataTbl) {
     }
 
 
-    #-----------------------------------------------------
+    #.....................................................
     # If no data found
-    #-----------------------------------------------------
+    #.....................................................
 
     if(T){
     if (is.null(dataTblFound)) {
@@ -754,9 +781,9 @@ metis.mapFind <- function(dataTbl) {
     }
     }
 
-    #-----------------------------------------------------
+    #.....................................................
     # Return Map
-    #-----------------------------------------------------
+    #.....................................................
 
     mapFindx <- list(
       dataTblFound = dataTblFound,

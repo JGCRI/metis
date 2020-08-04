@@ -4,7 +4,12 @@
 \alias{metis.mappings}
 \title{metis.mappings}
 \usage{
-metis.mappings()
+metis.mappings(name = NULL)
+}
+\arguments{
+\item{name}{Default=NULL. Name of assumption object.
+\itemize{
+\item mapParamQuery}}
 }
 \value{
 A list of assumptions
@@ -14,8 +19,6 @@ This function has all the mappings used to convert between different categories
 }
 \details{
 List of Mappings
-\itemize{
-\item mapParamQuery}
 }
 \examples{
 library(metis)

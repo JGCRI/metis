@@ -151,24 +151,31 @@
     <p>This function has all the mappings used to convert between different categories</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metis.mappings</span>()</pre>
+    <pre class="usage"><span class='fu'>metis.mappings</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>name</th>
+      <td><p>Default=NULL. Name of assumption object.</p><ul>
+<li><p>mapParamQuery</p></li>
+</ul></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list of assumptions</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>List of Mappings</p><ul>
-<li><p>mapParamQuery</p></li>
-</ul>
-
+    <p>List of Mappings</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>metis</span>)
 <span class='no'>a</span><span class='kw'>&lt;-</span><span class='fu'>metis.mappings</span>()
 <span class='no'>a</span> <span class='co'># will give full list of mappings</span></div><div class='output co'>#&gt; $mapParamQuery
-#&gt; <span style='color: #555555;'># A tibble: 84 x 4</span><span>
+#&gt; <span style='color: #555555;'># A tibble: 85 x 4</span><span>
 #&gt;    group  param                            query     mapPalette
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                            </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     
 #&gt; </span><span style='color: #555555;'> 1</span><span> energy energyPrimaryByFuelEJ            </span><span style='color: #555555;'>&lt;chr [1]&gt;</span><span> pal_hot   
@@ -181,7 +188,39 @@
 #&gt; </span><span style='color: #555555;'> 8</span><span> energy energyFinalSubsecBySectorBuildEJ </span><span style='color: #555555;'>&lt;chr [1]&gt;</span><span> pal_hot   
 #&gt; </span><span style='color: #555555;'> 9</span><span> energy energyFinalConsumByIntlShpAvEJ   </span><span style='color: #555555;'>&lt;chr [1]&gt;</span><span> pal_hot   
 #&gt; </span><span style='color: #555555;'>10</span><span> energy energyPrimaryByFuelMTOE          </span><span style='color: #555555;'>&lt;chr [1]&gt;</span><span> pal_hot   
-#&gt; </span><span style='color: #555555;'># ... with 74 more rows</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 75 more rows</span><span>
+#&gt; 
+#&gt; $countryToGCAMReg32
+#&gt; </span><span style='color: #555555;'># A tibble: 288 x 4</span><span>
+#&gt;    region_code ctry_code region         ctry_name      
+#&gt;          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          
+#&gt; </span><span style='color: #555555;'> 1</span><span>          29       238 Southeast Asia Fiji           
+#&gt; </span><span style='color: #555555;'> 2</span><span>          23       103 Russia         Russia         
+#&gt; </span><span style='color: #555555;'> 3</span><span>          13        17 EU-15          Wallis &amp; Futuna
+#&gt; </span><span style='color: #555555;'> 4</span><span>           6       223 Australia_NZ   New Zealand    
+#&gt; </span><span style='color: #555555;'> 5</span><span>           1       150 USA            United States  
+#&gt; </span><span style='color: #555555;'> 6</span><span>          29        40 Southeast Asia Midway Is.     
+#&gt; </span><span style='color: #555555;'> 7</span><span>          29        16 Southeast Asia Tonga          
+#&gt; </span><span style='color: #555555;'> 8</span><span>          29        38 Southeast Asia Kiribati       
+#&gt; </span><span style='color: #555555;'> 9</span><span>          29        14 Southeast Asia Samoa          
+#&gt; </span><span style='color: #555555;'>10</span><span>          29        15 Southeast Asia Tokelau        
+#&gt; </span><span style='color: #555555;'># ... with 278 more rows</span><span>
+#&gt; 
+#&gt; $subRegionMap
+#&gt; </span><span style='color: #555555;'># A tibble: 22 x 2</span><span>
+#&gt;    subRegion  subRegionMetis         
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                  
+#&gt; </span><span style='color: #555555;'> 1</span><span> ArkWhtRedR Arkansas_White_Red     
+#&gt; </span><span style='color: #555555;'> 2</span><span> California California_River       
+#&gt; </span><span style='color: #555555;'> 3</span><span> Caribbean  Caribbean              
+#&gt; </span><span style='color: #555555;'> 4</span><span> FraserR    Fraser                 
+#&gt; </span><span style='color: #555555;'> 5</span><span> GreatBasin Great                  
+#&gt; </span><span style='color: #555555;'> 6</span><span> GreatLakes Great_Lakes            
+#&gt; </span><span style='color: #555555;'> 7</span><span> MexCstNW   Mexico_Northwest_Coast 
+#&gt; </span><span style='color: #555555;'> 8</span><span> MissouriR  Missouri_River         
+#&gt; </span><span style='color: #555555;'> 9</span><span> MissppRN   Upper_Mississippi      
+#&gt; </span><span style='color: #555555;'>10</span><span> MissppRS   Lower_Mississippi_River
+#&gt; </span><span style='color: #555555;'># ... with 12 more rows</span><span>
 #&gt; </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
