@@ -537,6 +537,8 @@ for(scenario_i in scenarios){
 #----------------------------------------------------------
 
       if(!is.null(ioTable0i)){
+       if(nrow(ioTable0i)>0){
+
 
             # Get totals as supplied
             ioTable0i_totals <- ioTable0i %>%
@@ -566,6 +568,7 @@ for(scenario_i in scenarios){
               tidyr::spread(sumType,value) %>%
               dplyr::mutate(remainder=totalsAll-totalsSubSectorOther); ioTable0i_Remainder %>% as.data.frame()
 
+            if(nrow(ioTable0i_Remainder)>0){
             ioTable0i_Remainder1 <- ioTable0i_Remainder %>%
               dplyr::mutate(otherAdjustedSupply = dplyr::case_when(remainder>0 ~ remainder,
                                                      TRUE~0),
@@ -588,16 +591,18 @@ for(scenario_i in scenarios){
               dplyr::filter(!grepl("_all",supplySubSector)) %>%
               dplyr::bind_rows(ioTable0i_Remainder2) %>%
               dplyr::bind_rows(ioTable0i_Remainder3); ioTable0i %>% as.data.frame() %>% dplyr::arrange(supplySector)
+            }
 
 
-          }
+      }
+            }
 
 #-----------------------------------------------------------
 # Fill out missing data using default supplySubSector_default0i
 #----------------------------------------------------------
 
 # Add in all supplysubSectors and fill out missing values with NAs
-
+      if(nrow(ioTable0i)>0){
 ioTable0i_completeNA <- ioTable0i %>%
         tidyr::complete(supplySubSector=unique(c(supplySubSector_default0i$supplySubSector,ioTable0i$supplySubSector))) %>%
         dplyr::mutate(region = region_i,
@@ -964,7 +969,7 @@ A_Output = A_Output %>% dplyr::bind_rows(Aorg %>% tibble::as_tibble() %>% dplyr:
 L_Output = L_Output %>% dplyr::bind_rows(Lorg %>% tibble::as_tibble() %>% dplyr::mutate(region=region_i,scenario=scenario_i,x=year_i,subRegion=subRegion_i)); L_Output
 ioTbl_Output = ioTbl_Output %>% dplyr::bind_rows(ioTable_complete %>% tibble::as_tibble() %>% dplyr::mutate(region=region_i,scenario=scenario_i,x=year_i,subRegion=subRegion_i)); ioTbl_Output %>% as.data.frame()
 
-
+} # Close if nrow(ioTable) == 0
     } # close loop region
     } # Close loop scenario
   } # close loop subRegion

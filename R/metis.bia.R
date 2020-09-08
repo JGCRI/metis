@@ -188,6 +188,7 @@ metis.bia<- function(dirOutputs=paste(getwd(),"/outputs",sep=""),
   lonranked<-listOfGridCells$gridlon[sort.list(listOfGridCells$gridlon)]%>%
     unique()
 
+  # Understand the characteristcs of the chosen grid (Used to certify that grid is equally spaced)
   # This assumes equally spaced grids by degree.
   gridDimlat<-min(abs(latranked[2:length(latranked)]-latranked[1:length(latranked)-1]))
   gridDimlon<-min(abs(lonranked[2:length(lonranked)]-lonranked[1:length(lonranked)-1]))
@@ -205,6 +206,7 @@ metis.bia<- function(dirOutputs=paste(getwd(),"/outputs",sep=""),
   }
 
 
+  # Check the grid is regularly spaced
   if(!(sum(round(latranked, digits = 4) %in% round(seq(latmin,latmax,length.out = (round((latmax-latmin)/gridDimlat)+1)),digits = 4))==length(latranked))){
     stop(paste("grid file ", gridChoice, " does not contain the centers of regurlarly-spaced lat lon grid cells.",sep=""))}
 
@@ -283,7 +285,7 @@ metis.bia<- function(dirOutputs=paste(getwd(),"/outputs",sep=""),
       #  dplyr::select(country_long,estimated_generation_gwh)%>%dplyr::group_by(country_long)%>%
       #  dplyr::summarize(valSumTWh=sum(estimated_generation_gwh/1000,na.rm=T))
 
-      # Re-organizing dataset and
+      # Re-organizing dataset and shifting lat/lon locations into equally spaced grids
       gridWRI<-gridWRI%>%dplyr::mutate(lat=latitude,
                                        lon=longitude,
                                        param="biaElecGen",
@@ -293,6 +295,7 @@ metis.bia<- function(dirOutputs=paste(getwd(),"/outputs",sep=""),
                                        class1=primary_fuel,
                                        value=capacity_mw/1000,
                                        x=NA,
+                                       # Shift lat/lon to center of chosenGrid centers
                                        gridlat = round(gridDimlat*round(latitude*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat, digits = 10),
                                        gridlon = round(gridDimlon*round(longitude*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon, digits = 10))%>%
         tibble::as_tibble()%>%
@@ -301,6 +304,31 @@ metis.bia<- function(dirOutputs=paste(getwd(),"/outputs",sep=""),
             "region_code","ctry_code",  "region",     "ctry_name",  "lat",
             "lon",        "param",      "units",      "aggType",    "classPalette",
             "class1",     "value",      "x", "gridlat",    "gridlon" )
+
+      # Alternate option (a2) compared to current (a1) to match latitude and longitude into correct regular grids but takes longer
+      # gridDimlat = 0.5
+      # gridShiftlat = -0.25
+      # latranked=c(-1.25,-0.75,-0.25,0.25,0.75,1.25)
+      # latitude = c(-1.5,-1,-0.5,0,0.5,1,1.5)
+      # a1 <- round(gridDimlat*round(latitude/gridDimlat-gridShiftlat/gridDimlat)+gridShiftlat, digits = 10);a1
+      # a2 <- sapply(latitude, function(latitude) latranked[which.min(abs(latranked-latitude))]);a2
+
+      # Alternate option (a2) compared to current (a1) to match latitude and longitude into correct regular grids but takes longer
+      # start.time1=Sys.time()
+      # a1 <- gridWRI %>% select(latitude,longitude) %>%
+      #                    mutate( gridlat = round(gridDimlat*round(latitude*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat, digits = 10),
+      #                    gridlon = round(gridDimlon*round(longitude*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon, digits = 10))%>%as.data.frame()
+      # end.time1=Sys.time()
+      #
+      # start.time2=Sys.time()
+      # a2 <- gridWRI %>% select(latitude,longitude)
+      # a2$gridlat <- sapply(a2$latitude, function(latitude) latranked[which.min(abs(latranked-latitude))])
+      # a2$gridlon <- sapply(a2$longitude, function(longitude) lonranked[which.min(abs(lonranked-longitude))])
+      # end.time2=Sys.time()
+      # end.time1-start.time1; end.time2-start.time2
+      # a1;a2%>%as.data.frame()
+      # a1$gridlat[!a1$gridlat %in% a2$gridlat]
+      # a1$gridlon[!a1$gridlon %in% a2$gridlon]
 
             # Check gridWRI cap
             # gridWRI%>%filter(ctry_name=="United States")%>%

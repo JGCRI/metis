@@ -35,6 +35,7 @@ List of Color Palettes
 \item "pal_div_BrGn"
 \item "pal_div_BlRd"
 \item "pal_sankey"
+\item "pal_sankey_alpha"
 \item "pal_spectral"
 \item "pal_ScarcityCat"}
 }

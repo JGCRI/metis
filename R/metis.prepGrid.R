@@ -4,6 +4,7 @@
 #' @param demeterFolders Full path to demeter outputs
 #' @param demeterScenarios Name of demeter scenario
 #' @param demeterTimesteps Default is seq(from=2005,to=2100,by=5)
+#' @param demeterAggType Default is "depth" which goes with fraction. If sqkm then use "vol".
 #' @param tethysFolders Folder for tethys results
 #' @param tethysScenarios Scenario name for tethys run
 #' @param tethysFiles Default =c("wddom","wdelec","wdirr","wdliv","wdmfg","wdmin","wdnonag","wdtotal"),
@@ -37,6 +38,7 @@ metis.prepGrid<- function(demeterFolders=NULL,
                         demeterScenarios=NULL,
                         demeterTimesteps=seq(from=2005,to=2100,by=5),
                         demeterUnits=NULL,
+                        demeterAggType="depth",
                         tethysFolders=NULL,
                         tethysScenarios=NULL,
                         tethysUnits=NULL,
@@ -184,27 +186,29 @@ if(!file.exists(paste(demeterFolderScen$folder[i],"/landcover_",timestepx,"_time
 }else{
   print(paste("Reading demeter data file: ",demeterFolderScen$folder[i],"/landcover_",timestepx,"_timestep.csv...",sep=""))
 gridx<-data.table::fread(paste(demeterFolderScen$folder[i],"/landcover_",timestepx,"_timestep.csv",sep=""),encoding="Latin-1")%>%
-  tibble::as_tibble()%>%
+  tibble::as_tibble()
+
+idName <- c("aez_id","basin_id")[c("aez_id","basin_id") %in% names(gridx)]; idName
+
+gridx<- gridx %>%
   dplyr::mutate(lat=latitude,lon=longitude,
                 scenarioMultiA=NA,
                 scenarioMultiB=NA,
          scenario=demeterFolderScen$scenario[i],
          param="demeterLandUse",
          units=demeterUnits,
-         aggType="depth",
+         aggType=demeterAggType,
          x=timestepx,
          classPalette="pal_green",
          region="region")%>%
-  dplyr::select(-aez_id,-region_id,-longitude,-latitude)%>%
+  dplyr::select(-dplyr::all_of(idName),-region_id,-longitude,-latitude)%>%
   tidyr::gather(key="class",value="value",-c("lat","lon","region","scenario","scenarioMultiA","scenarioMultiB","aggType","param","units","x","classPalette"))
 print("File read.")
 
 colsSelect <- names(gridx)[names(gridx) %in% c( "lon","lat","region","scenarioMultiA","scenarioMultiB","scenario",
                                                 "param","units","aggType","classPalette","class","x","value")]
-gridx <- gridx %>% dplyr::select(colsSelect) %>% dplyr::ungroup()
+gridx <- gridx %>% dplyr::select(dplyr::all_of(colsSelect)) %>% dplyr::ungroup()
 gridx<-addMissing(gridx); gridx
-
-if(!is.null(filterYears)){gridx <- gridx %>% dplyr::filter(x %in% filterYears)}
 
 if(saveFormat=="rds"){
   saveRDS(gridx,paste(dir,"/demeter_",demeterFolderScen$scenario[i],"_",timestepx,".rds",sep=""))

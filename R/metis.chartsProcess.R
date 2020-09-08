@@ -320,7 +320,7 @@ addMissing<-function(data){
                                                          TRUE~aggregate))}
   if(!any(grepl("\\<class1\\>",names(data),ignore.case = T))){
     if(!any(grepl("\\<class\\>",names(data),ignore.case = T))){
-    data<-data%>%dplyr::rename(class1="class1")}else{data<-data%>%dplyr::mutate(class1=class)}}else{
+    data<-data%>%dplyr::mutate(class1="class1")}else{data<-data%>%dplyr::mutate(class1=class)}}else{
       data <- data %>% dplyr::rename(!!"class1" := (names(data)[grepl("\\<class1\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(class1=dplyr::case_when(is.na(class1)~"class1",TRUE~class1))}
   if(!any(grepl("\\<classlabel1\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(classLabel1="classLabel1")}else{

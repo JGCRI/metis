@@ -531,6 +531,24 @@
 #' }
 "mapIntersectGCAMBasin32Reg"
 
+#' Intersection of GCAM Basins and US 52 Regions.
+#' @source JGCRI
+#' @format R tibble
+#' @examples
+#' \dontrun{
+#' library(metis)
+#' head(mapIntersectGCAMBasinUS52)
+#' }
+"mapIntersectGCAMBasinUS52"
 
 
+#' Intersection of GCAM Basins and US 52 County Regions.
+#' @source JGCRI
+#' @format R tibble
+#' @examples
+#' \dontrun{
+#' library(metis)
+#' head(mapIntersectGCAMBasinUS52County)
+#' }
+"mapIntersectGCAMBasinUS52County"
 
