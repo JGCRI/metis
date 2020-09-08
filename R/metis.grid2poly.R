@@ -486,7 +486,7 @@ metis.grid2poly<- function(gridFiles=NULL,
 
         NULL -> gridx -> spdf -> r -> rcrop -> rcropP -> rcropPx -> w -> gridCroppedX->
           x1  -> polyData -> polyx -> dfx
-        rm(gridx,spdf,r,rcrop,rcropP,rcropPx,w,gridCroppedX, x1, polyData, polyx, dfx); gc()
+        rm(gridx,spdf,r,rcrop,rcropP,rcropPx,w,gridCroppedX, x1, polyData, polyx, dfx);gc()
 
         } # Close loop for param_i and scenario_i
 

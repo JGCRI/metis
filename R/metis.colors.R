@@ -21,6 +21,7 @@
 #' \item "pal_div_BrGn"
 #' \item "pal_div_BlRd"
 #' \item "pal_sankey"
+#' \item "pal_sankey_alpha"
 #' \item "pal_spectral"
 #' \item "pal_ScarcityCat"}
 #' @param palx Palette name to view the palette colors. Eg. metis.colors("pal_Basic")
@@ -211,10 +212,14 @@ metis.colors <- function(palx=NULL) {
                     AGRI = "forestgreen", agri = "forestgreen", irri = "forestgreen", IRRI = "forestgreen", IRRIGATION = "forestgreen",
                     irrigation = "forestgreen",
                     LIVESTOCK="goldenrod2", Livestock="goldenrod2",livestock="goldenrod2",
-                    Electricity = "red", ELECTRICITY = "red", elec = "red", ELEC = "red", Elec = "red", E = "red",
+                    electricity = "red", Electricity = "red", ELECTRICITY = "red", elec = "red", ELEC = "red", Elec = "red", E = "red",
                     Energy = "darkorange3", ENERGY = "darkorange3", nrg = "darkorange3", NRG = "darkorange3", Nrg = "darkorange3", En = "darkorange3",
                     W = "dodgerblue4", Water = "dodgerblue4", WATER = "dodgerblue4", water = "dodgerblue4", WAT = "dodgerblue4", Wat = "dodgerblue4",
-                    wat = "dodgerblue4"); pal_sankey
+                    wat = "dodgerblue4",
+                    primary="goldenrod3", Primary="goldenrod3",PRIMARY="goldenrod3",
+                    other="gray",Other="gray",OTHER="gray"); pal_sankey
+
+    pal_sankey_alpha <- add.alpha(pal_sankey,0.7); pal_sankey_alpha
 
     pal_ScarcityCat <- c("None (0<WSI<0.1)" = "#3288BD",
                          "Low (0.1<WSI<0.2)" = "#ABDDA4",
@@ -234,7 +239,8 @@ metis.colors <- function(palx=NULL) {
                          pal_div_wet=pal_div_wet,pal_div_RdBl=pal_div_RdBl,pal_div_BlRd=pal_div_BlRd,
                          pal_div_GnBr=pal_div_GnBr,pal_div_BrGn=pal_div_BrGn,
                          pal_div_BluRd=pal_div_BluRd,pal_div_RdBlu=pal_div_RdBlu,
-                         pal_sankey=pal_sankey,pal_spectral=pal_spectral, pal_ScarcityCat=pal_ScarcityCat)
+                         pal_sankey=pal_sankey,pal_sankey_alpha=pal_sankey_alpha,
+                         pal_spectral=pal_spectral, pal_ScarcityCat=pal_ScarcityCat)
 
     invisible(metisPalettes)
 }

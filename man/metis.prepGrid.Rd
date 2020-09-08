@@ -9,6 +9,7 @@ metis.prepGrid(
   demeterScenarios = NULL,
   demeterTimesteps = seq(from = 2005, to = 2100, by = 5),
   demeterUnits = NULL,
+  demeterAggType = "depth",
   tethysFolders = NULL,
   tethysScenarios = NULL,
   tethysUnits = NULL,
@@ -44,6 +45,8 @@ metis.prepGrid(
 \item{demeterTimesteps}{Default is seq(from=2005,to=2100,by=5)}
 
 \item{demeterUnits}{No Default}
+
+\item{demeterAggType}{Default is "depth" which goes with fraction. If sqkm then use "vol".}
 
 \item{tethysFolders}{Folder for tethys results}
 

@@ -1132,7 +1132,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
     if(!is.null(shapeTbl)){
       if(nrow(shapeTbl)>0){
         if(!is.null(subRegCol)){
-        shapeTbl <- shapeTbl %>% dplyr::rename(subRegion=as.name(subRegCol))
+        shapeTbl <- shapeTbl %>% dplyr::rename(subRegion=!!as.name(subRegCol))
         }
         if(!is.null(subRegType)){
           shapeTbl <- shapeTbl %>% dplyr::mutate(subRegType=!!subRegType)

@@ -49,7 +49,8 @@ if(redoMaps){
                   subRegion = as.character(subRegion),
                   subRegion=if_else(subRegion=="United States of America","USA",subRegion))
   mapx <- mapx[!grepl("Antarctica",mapx$subRegion),]
-  mapx@data <- mapx@data%>%droplevels()
+  mapx@data <- mapx@data%>%droplevels()%>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   format(object.size(mapx), units="Mb")
   mapx<-as(simplify_shape(mapx, fact = 0.1),Class="Spatial")
   format(object.size(mapx), units="Mb")
@@ -75,7 +76,8 @@ if(redoMaps){
                   region = as.character(region),
                   region=if_else(region=="United States of America","USA",region))
   mapx <- mapx[!grepl("Antarctica",mapx$region),]
-  mapx@data <- mapx@data%>%droplevels()
+  mapx@data <- mapx@data%>%droplevels()%>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   format(object.size(mapx), units="Mb")
   mapx<-as(simplify_shape(mapx, fact = 0.05),Class="Spatial")
   format(object.size(mapx), units="Mb")
@@ -111,7 +113,8 @@ if(redoMaps){
                   region=gsub("-","_",region),
                   subRegion=gsub("-","_",subRegion))%>%
     dplyr::select(-ID,-GRIDCODE,-GCAM_region_ID,-reg32_id)
-  mapx@data <- droplevels(mapx@data)
+  mapx@data <- droplevels(mapx@data)%>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   # Add Taiwan
   # a <- metis::mapCountries
   # a <- a[a$subRegion %in% "Taiwan",];
@@ -182,11 +185,10 @@ if(redoMaps){
                                       subRegion=="Rh(ne"~"Rhone",
                                       subRegion=="Hong_(Red_River)"~"Hong_Red_River",
                                       TRUE~subRegion))
-
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   # gcamMapBasinsNew <- as.character(unique(mapx@data$subRegion)); gcamMapBasinsNew
   # basins2Change1 <- gcamBasins[!gcamBasins %in% gcamMapBasinsNew]%>%sort(); basins2Change1
-
-
   format(object.size(mapx), units="Mb")
   #mapx<-as(simplify_shape(mapx, fact = 0.05),Class="Spatial")
   #format(object.size(mapx), units="Mb")
@@ -226,6 +228,8 @@ if(redoMaps){
     dplyr::left_join(idMapping%>%
                        dplyr::select(reg32_name=region, reg32_id=GCAM_region_ID)%>%
                        unique())
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   head(mapx@data)
   format(object.size(mapx), units="Mb")
   #mapx<-as(simplify_shape(mapx, fact = 0.05),Class="Spatial")
@@ -576,6 +580,8 @@ if(redoMaps){
   mapx<-raster::crop(mapx, bbox1)
   mapx@bbox <- bbox1@bbox
   mapx@data <- droplevels(mapx@data)
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F)
   #---------------------
@@ -593,6 +599,8 @@ if(redoMaps){
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="US49")
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   mapUS49<-mapx
   use_data(mapUS49, overwrite=T)
 }
@@ -640,6 +648,8 @@ if(redoMaps){
                   subRegionAlt=paste(subRegion,STATECODE,sep="_"))%>%
     dplyr::rename(subRegion=subRegionAlt,
                   subRegionAlt=subRegion); mapx@data
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=T,printFig=F)
   #---------------------
@@ -662,6 +672,8 @@ if(redoMaps){
   mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="US49County")%>%
     dplyr::rename(subRegion=subRegionAlt,
                   subRegionAlt=subRegion)
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   mapUS49County<-mapx
   use_data(mapUS49County, overwrite=T)
 }
@@ -689,6 +701,8 @@ if(redoMaps){
                                          TRUE~subRegionAlt.1),
                   subRegionAlt=as.integer(subRegionAlt)) %>%
     dplyr::select(region,subRegion,subRegionType)
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   head(mapx@data)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
@@ -718,6 +732,8 @@ if(redoMaps){
                                          TRUE~subRegionAlt.1),
                   subRegionAlt=as.integer(subRegionAlt)) %>%
     dplyr::select(region,subRegion,subRegionType)
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   head(mapx@data)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
@@ -748,7 +764,12 @@ if(redoMaps){
                   subRegionAlt_Country=subRegionAlt.2,
                   subRegionType_GCAMBasin=subRegionType.1,
                   subRegionType_Country=subRegionType.2) %>%
-    dplyr::select(-region.1,-region.2, -POP_EST)
+    dplyr::select(-region.1,-region.2, -POP_EST) %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000) %>%
+    dplyr::group_by(subRegion_Country) %>%
+    dplyr::mutate(areaSubRegion_Country = sum(area_sqkm),
+                  ratioAreaIntersect = round((area_sqkm/areaSubRegion_Country),4))%>%
+    dplyr::ungroup()
   head(mapx@data)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
@@ -775,7 +796,12 @@ if(redoMaps){
                   subRegionAlt_GCAMreg32=subRegionAlt.2,
                   subRegionType_GCAMBasin=subRegionType.1,
                   subRegionType_GCAMReg32=subRegionType.2) %>%
-    dplyr::select(-region.1,-region.2)
+    dplyr::select(-region.1,-region.2) %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000) %>%
+    dplyr::group_by(subRegion_GCAMReg32) %>%
+    dplyr::mutate(areaSubRegion_GCAMReg32 = sum(area_sqkm),
+                  ratioAreaIntersect = round((area_sqkm/areaSubRegion_GCAMReg32),4))%>%
+    dplyr::ungroup()
   head(mapx@data)
   mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
   format(object.size(mapx), units="Mb")
@@ -783,6 +809,70 @@ if(redoMaps){
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   use_data(mapIntersectGCAMBasin32Reg, overwrite=T)
+}
+
+# Intersection of GCAM Basins and US 52 States
+if(redoMaps){
+  m1 <- mapGCAMBasins
+  m2 <- mapUS52
+  m2 <- sp::spTransform(m2,raster::crs(m1))
+  mapx<-raster::intersect(m1,m2)
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(subRegion=paste(subRegion.1,subRegion.2,sep="_X_"),
+                  region=region.1,
+                  subRegionAlt=paste(subRegionAlt.1,subRegionAlt.2,sep="_X_"),
+                  subRegionType=paste(subRegionType.1,subRegionType.2,sep="_X_")) %>%
+    dplyr::rename(subRegion_GCAMBasin=subRegion.1,
+                  subRegion_US52=subRegion.2,
+                  subRegionAlt_GCAMBasin=subRegionAlt.1,
+                  subRegionAlt_US52=subRegionAlt.2,
+                  subRegionType_GCAMBasin=subRegionType.1,
+                  subRegionType_US52=subRegionType.2) %>%
+    dplyr::select(-region.1,-region.2, -STATEFP) %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000) %>%
+    dplyr::group_by(subRegion_US52) %>%
+    dplyr::mutate(areaSubRegion_US52 = sum(area_sqkm),
+                  ratioAreaIntersect = round((area_sqkm/areaSubRegion_US52),4))%>%
+    dplyr::ungroup()
+  head(mapx@data)
+  mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
+  format(object.size(mapx), units="Mb")
+  mapIntersectGCAMBasinUS52<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
+  use_data(mapIntersectGCAMBasinUS52, overwrite=T)
+}
+
+# Intersection of GCAM Basins and US 52 County
+if(redoMaps){
+  m1 <- mapGCAMBasins
+  m2 <- mapUS52County
+  m2 <- sp::spTransform(m2,raster::crs(m1))
+  mapx<-raster::intersect(m1,m2)
+  mapx@data <- mapx@data %>%
+    dplyr::mutate(subRegion=paste(subRegion.1,subRegion.2,sep="_X_"),
+                  region=region.1,
+                  subRegionAlt=paste(subRegionAlt.1,subRegionAlt.2,sep="_X_"),
+                  subRegionType=paste(subRegionType.1,subRegionType.2,sep="_X_")) %>%
+    dplyr::rename(subRegion_GCAMBasin=subRegion.1,
+                  subRegion_US52County=subRegion.2,
+                  subRegionAlt_GCAMBasin=subRegionAlt.1,
+                  subRegionAlt_US52County=subRegionAlt.2,
+                  subRegionType_GCAMBasin=subRegionType.1,
+                  subRegionType_US52County=subRegionType.2) %>%
+    dplyr::select(-region.1,-region.2, -STATEFP) %>%
+    dplyr::mutate(area_sqkm=raster::area(mapx)/1000000) %>%
+    dplyr::group_by(subRegion_US52County) %>%
+    dplyr::mutate(areaSubRegion_US52County = sum(area_sqkm),
+                  ratioAreaIntersect = round((area_sqkm/areaSubRegion_US52County),4))%>%
+    dplyr::ungroup()
+  head(mapx@data)
+  mapx<-rgeos::gBuffer(mapx, byid=TRUE, width=0)
+  format(object.size(mapx), units="Mb")
+  mapIntersectGCAMBasinUS52County<-mapx
+  sp::plot(mapx)
+  metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
+  use_data(mapIntersectGCAMBasinUS52County, overwrite=T)
 }
 
 
@@ -800,6 +890,7 @@ if(redoMaps){
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="GCAMBasinsUS52")
+  mapx@data <- mapx@data %>% dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   mapGCAMBasinsUS52<-mapx
   use_data(mapGCAMBasinsUS52, overwrite=T)
 }
@@ -816,6 +907,7 @@ if(redoMaps){
   sp::plot(mapx)
   metis.map(dataPolygon=mapx,fillColumn = "subRegion",labels=F,printFig=F)
   mapx@data<-mapx@data%>%dplyr::mutate(subRegionType="GCAMBasinsUS49")
+  mapx@data <- mapx@data %>% dplyr::mutate(area_sqkm=raster::area(mapx)/1000000)
   mapGCAMBasinsUS49<-mapx
   use_data(mapGCAMBasinsUS49, overwrite=T)
 }

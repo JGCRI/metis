@@ -191,6 +191,7 @@ metis.chart<-function(data,
 # -----------------
 
 NULL -> value -> tempName -> sankeyHjustCheck -> value1 -> levelsOn -> theme_customX
+requireNamespace("ggalluvial", quietly = TRUE)
 StatStratum <- ggalluvial::StatStratum # This is done so that ggplot2 recognizes stat stratum
 
 

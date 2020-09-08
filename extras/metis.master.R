@@ -790,3 +790,29 @@ numeric2Cat_list <-list(numeric2Cat_param=numeric2Cat_param,
                         numeric2Cat_labels=numeric2Cat_labels,
                         numeric2Cat_palette=numeric2Cat_palette,
                         numeric2Cat_legendTextSize=numeric2Cat_legendTextSize)
+
+numeric2Cat_param <- list("param")
+numeric2Cat_breaks <- list(c(-Inf, 0.1,1.1,2.1,3.1,4.1,5.1,10.1,Inf))
+numeric2Cat_labels <- list(c("0","1","2","3","4","5","10",">10"))
+numeric2Cat_palette <- list(c("0"="green","1"="#fee5d9","2"="#fcbba1",
+                              "3"="#fc9272","4"="#fb6a4a","5"="#de2d26",
+                              "10"="#a50f15",">10"="black"))
+numeric2Cat_legendTextSize <- list(c(0.7),c(0.7))
+numeric2Cat_list <-list(numeric2Cat_param=numeric2Cat_param,
+                        numeric2Cat_breaks=numeric2Cat_breaks,
+                        numeric2Cat_labels=numeric2Cat_labels,
+                        numeric2Cat_palette=numeric2Cat_palette,
+                        numeric2Cat_legendTextSize=numeric2Cat_legendTextSize); numeric2Cat_list
+
+data = data.frame(subRegion=c("Negro","La_plata","Great","New_England","Indus","Zambezi"),
+                  x=c(2050,2050,2050,2050,2050,2050),
+                  value=c(0,1,3,20,2,1))
+metis.mapsProcess(polygonTable=data,
+                  folderName = "DroughtEmulationValidation",
+                  mapTitleOn = F,
+                  numeric2Cat_list=numeric2Cat_list)  # "GnYlRd"  #  classPalette = pal_pass_fail,
+
+# polygonTable=data
+# folderName = "DroughtEmulationValidation"
+# mapTitleOn = F
+# numeric2Cat_list=numeric2Cat_list
