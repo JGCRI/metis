@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="metis.index — metis.index" />
-<meta property="og:description" content="This function finds the grids located within a given shapefiles regions" />
+<meta property="og:description" content="This function calculates indices based on a given numerator and denominator" />
 
 
 
@@ -148,10 +148,10 @@
     </div>
 
     <div class="ref-description">
-    <p>This function finds the grids located within a given shapefiles regions</p>
+    <p>This function calculates indices based on a given numerator and denominator</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/metis/man/metis.index.html'>metis.index</a></span>(
+    <pre class="usage"><span class='fu'>metis.index</span>(
   data = <span class='kw'>NULL</span>,
   colIndex = <span class='kw'>NULL</span>,
   colValue = <span class='kw'>NULL</span>,
@@ -188,7 +188,7 @@
     </tr>
     <tr>
       <th>denominators</th>
-      <td><p>Default = NULL,</p></td>
+      <td><p>Default = NULL, (Choose 1 to use Numerator Value)</p></td>
     </tr>
     <tr>
       <th>meanYearsDenominator</th>
@@ -208,7 +208,7 @@
     </tr>
     <tr>
       <th>fname</th>
-      <td><p>Default = "gridByPoly"</p></td>
+      <td><p>Default = "index"</p></td>
     </tr>
     <tr>
       <th>nameAppend</th>
@@ -216,7 +216,7 @@
     </tr>
     <tr>
       <th>folderName</th>
-      <td><p>Default ="folderNameDefault",</p></td>
+      <td><p>Default = NULL,</p></td>
     </tr>
     <tr>
       <th>saveFile</th>
@@ -243,7 +243,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
 </div>
 
       </footer>

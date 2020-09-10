@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>data_capfactors — data_capfactors • Metis</title>
+<title>metis.ic — metis.ic • Metis</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="data_capfactors — data_capfactors" />
-<meta property="og:description" content="data_capfactors" />
+<meta property="og:title" content="metis.ic — metis.ic" />
+<meta property="og:description" content="This function calculates an interconnectivity index (ic)." />
 
 
 
@@ -142,31 +142,72 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>data_capfactors</h1>
-    <small class="dont-index">Source: <a href='https://github.com/JGCRI/metis/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>data_capfactors.Rd</code></div>
+    <h1>metis.ic</h1>
+    <small class="dont-index">Source: <a href='https://github.com/JGCRI/metis/blob/master/R/metis.ic.R'><code>R/metis.ic.R</code></a></small>
+    <div class="hidden name"><code>metis.ic.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>data_capfactors</p>
+    <p>This function calculates an interconnectivity index (ic).</p>
     </div>
 
-    <pre class="usage"><span class='kw'>data_capfactors</span></pre>
+    <pre class="usage"><span class='fu'>metis.ic</span>(
+  data = <span class='kw'>NULL</span>,
+  icSectors = <span class='kw'>NULL</span>,
+  icColors = <span class='kw'>NULL</span>,
+  dirOutputs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, sep = <span class='st'>""</span>),
+  fname = <span class='st'>"ic"</span>,
+  nameAppend = <span class='st'>""</span>,
+  folderName = <span class='kw'>NULL</span>,
+  saveFile = <span class='kw'>F</span>,
+  printFig = <span class='kw'>F</span>
+)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>Default = NULL. Matrix with rows showing from and cols to. Or dataframe with from, to and value.</p></td>
+    </tr>
+    <tr>
+      <th>icSectors</th>
+      <td><p>Default = NULL,</p></td>
+    </tr>
+    <tr>
+      <th>icColors</th>
+      <td><p>Default = NULL,</p></td>
+    </tr>
+    <tr>
+      <th>dirOutputs</th>
+      <td><p>Default = paste(getwd(),"/outputs",sep=""),</p></td>
+    </tr>
+    <tr>
+      <th>fname</th>
+      <td><p>Default = "ic"</p></td>
+    </tr>
+    <tr>
+      <th>nameAppend</th>
+      <td><p>Default = ""</p></td>
+    </tr>
+    <tr>
+      <th>folderName</th>
+      <td><p>Default = NULL,</p></td>
+    </tr>
+    <tr>
+      <th>saveFile</th>
+      <td><p>Default = F. If want csv output then change to T</p></td>
+    </tr>
+    <tr>
+      <th>printFig</th>
+      <td><p>Default = F.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>.csv</p>
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+    <p>dataframe with index</p>
 
-    <p>paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep="")</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
- <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/JGCRI/metis'>metis</a></span>);
- <span class='kw'>metis</span>::<span class='kw'>data_capfactors</span>
-}
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
