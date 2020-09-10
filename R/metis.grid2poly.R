@@ -73,7 +73,8 @@ metis.grid2poly<- function(gridFiles=NULL,
     param->shpRegCol->subReg->gridTable->tbl->key->value->.->classPalette->lat->lon->overlapShape->
     gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis -> template_subRegional_mapping -> scenarioGCM ->
     scenarioRCP -> class2 -> scenarioPolicy -> valueTethys -> valueXanthos -> scenarioSSP -> gridCellArea ->
-    gridCellAreaRatio -> area -> areaPrcnt -> scenarioMultiA -> scenarioMultiB->nrowOrig->nrowNew -> year
+    gridCellAreaRatio -> area -> areaPrcnt -> scenarioMultiA -> scenarioMultiB->nrowOrig->nrowNew -> year ->
+    id-> Var1->Var2
 
   #------------------
   # Function for adding any missing columns if needed
@@ -360,6 +361,60 @@ metis.grid2poly<- function(gridFiles=NULL,
               if(printGridOverlay){
               if(!file.exists(paste(dirX,"/subBasin_map_GridSize.png",sep=""))){
               print("Printing Grid overlay...")
+              # Check if Irregular grid then shift onto regular grid
+              if(T){
+                # Assume regular grid is centered at 0 and the lat determines dimension for both lat and lon
+                lat_diff <- unique(round(diff(unique(sort(gridx$lat))),4)); lat_diff[!lat_diff %in% 0]
+                lon_diff <- unique(round(diff(unique(sort(gridx$lon))),4)); lon_diff[!lon_diff %in% 0]
+                if(length(lat_diff[!lat_diff %in% 0])>1 | length(lon_diff[!lon_diff %in% 0])>1){
+
+                  # Grid Shift
+                  dimGridLat <- round(min(lat_diff[!lat_diff %in% 0]),4); dimGridLat
+                  lat=c(seq(from=(0+dimGridLat/2),to=85,by=dimGridLat),
+                        seq(from=(0-dimGridLat/2),to=-56,by=-dimGridLat))
+                  lon=c(seq(from=(0+dimGridLat/2),to=180,by=dimGridLat),
+                        seq(from=(0-dimGridLat/2),to=-180,by=-dimGridLat))
+
+                  grid00833X <- tibble::as_tibble(expand.grid(lat,lon)) %>%
+                    dplyr::rename(lat=Var1,lon=Var2) %>%
+                    dplyr::mutate(id=dplyr::n())
+
+                  listOfGridCells <- grid00833X
+
+                  listOfGridCells <- listOfGridCells %>%
+                    dplyr::rename(
+                      gridlat = lat,
+                      gridlon = lon,
+                      gridID = id)
+
+                  latmin<-min(listOfGridCells$gridlat); latmin
+                  latmax<-max(listOfGridCells$gridlat); latmax
+                  lonmin<-min(listOfGridCells$gridlon); lonmin
+                  lonmax<-max(listOfGridCells$gridlon); lonmax
+
+                  latranked<-listOfGridCells$gridlat[sort.list(listOfGridCells$gridlat)]%>%
+                    unique()
+                  lonranked<-listOfGridCells$gridlon[sort.list(listOfGridCells$gridlon)]%>%
+                    unique()
+
+                  # Understand the characteristcs of the chosen grid (Used to certify that grid is equally spaced)
+                  # This assumes equally spaced grids by degree.
+                  gridDimlat<-min(abs(latranked[2:length(latranked)]-latranked[1:length(latranked)-1])); gridDimlat
+                  gridDimlon<-min(abs(lonranked[2:length(lonranked)]-lonranked[1:length(lonranked)-1])); gridDimlon
+                  gridShiftlat<-latranked[sort.list(abs(latranked))][1]; gridShiftlat  # The latitude of the center of the grid cells closest to the equator
+                  gridShiftlon<-lonranked[sort.list(abs(lonranked))][1]; gridShiftlon  # The longitude of the center of the grid cells closest to prime meridian, Greenwich Meridian
+                  listOfGridCells$gridlat<-round(listOfGridCells$gridlat, digits = 10)
+                  listOfGridCells$gridlon<-round(listOfGridCells$gridlon, digits = 10)
+
+                  # Re-organizing dataset and shifting lat/lon locations into equally spaced grids
+                  gridx<-gridx%>%
+                    dplyr::mutate(lat = round(gridDimlat*round(lat*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat, digits = 10),
+                                  lon = round(gridDimlon*round(lon*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon, digits = 10)) %>%
+                    tidyr::complete(lat=latranked,lon=lonranked,fill=list(value=0));gridx
+                }
+                lat_diff <- unique(round(diff(unique(sort(gridx$lat))),4)); lat_diff[!lat_diff %in% 0]
+                lon_diff <- unique(round(diff(unique(sort(gridx$lon))),4)); lon_diff[!lon_diff %in% 0]
+              }
               spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
               sp::gridded(spdf)<-TRUE
               r<-(raster::stack(spdf))[[1]]
@@ -392,6 +447,61 @@ metis.grid2poly<- function(gridFiles=NULL,
             if(aggType_i=="vol"){
               print(paste("Aggregating volume for parameter ", param_i," and scenario: ",scenario_i,"...",sep=""))
               # Convert to Spatial Point Data Frames
+
+              # Check if Irregular grid then shift onto regular grid
+              if(T){
+              # Assume regular grid is centered at 0 and the lat determines dimension for both lat and lon
+              lat_diff <- unique(round(diff(unique(sort(gridx$lat))),4)); lat_diff[!lat_diff %in% 0]
+              lon_diff <- unique(round(diff(unique(sort(gridx$lon))),4)); lon_diff[!lon_diff %in% 0]
+              if(length(lat_diff[!lat_diff %in% 0])>1 | length(lon_diff[!lon_diff %in% 0])>1){
+
+                # Grid Shift
+                dimGridLat <- round(min(lat_diff[!lat_diff %in% 0]),4); dimGridLat
+                lat=c(seq(from=(0+dimGridLat/2),to=85,by=dimGridLat),
+                      seq(from=(0-dimGridLat/2),to=-56,by=-dimGridLat))
+                lon=c(seq(from=(0+dimGridLat/2),to=180,by=dimGridLat),
+                      seq(from=(0-dimGridLat/2),to=-180,by=-dimGridLat))
+
+                grid00833X <- tibble::as_tibble(expand.grid(lat,lon)) %>%
+                  dplyr::rename(lat=Var1,lon=Var2) %>%
+                  dplyr::mutate(id=dplyr::n())
+
+                listOfGridCells <- grid00833X
+
+                listOfGridCells <- listOfGridCells %>%
+                  dplyr::rename(
+                    gridlat = lat,
+                    gridlon = lon,
+                    gridID = id)
+
+                latmin<-min(listOfGridCells$gridlat); latmin
+                latmax<-max(listOfGridCells$gridlat); latmax
+                lonmin<-min(listOfGridCells$gridlon); lonmin
+                lonmax<-max(listOfGridCells$gridlon); lonmax
+
+                latranked<-listOfGridCells$gridlat[sort.list(listOfGridCells$gridlat)]%>%
+                  unique()
+                lonranked<-listOfGridCells$gridlon[sort.list(listOfGridCells$gridlon)]%>%
+                  unique()
+
+                # Understand the characteristcs of the chosen grid (Used to certify that grid is equally spaced)
+                # This assumes equally spaced grids by degree.
+                gridDimlat<-min(abs(latranked[2:length(latranked)]-latranked[1:length(latranked)-1])); gridDimlat
+                gridDimlon<-min(abs(lonranked[2:length(lonranked)]-lonranked[1:length(lonranked)-1])); gridDimlon
+                gridShiftlat<-latranked[sort.list(abs(latranked))][1]; gridShiftlat  # The latitude of the center of the grid cells closest to the equator
+                gridShiftlon<-lonranked[sort.list(abs(lonranked))][1]; gridShiftlon  # The longitude of the center of the grid cells closest to prime meridian, Greenwich Meridian
+                listOfGridCells$gridlat<-round(listOfGridCells$gridlat, digits = 10)
+                listOfGridCells$gridlon<-round(listOfGridCells$gridlon, digits = 10)
+
+                # Re-organizing dataset and shifting lat/lon locations into equally spaced grids
+                gridx<-gridx%>%
+                  dplyr::mutate(lat = round(gridDimlat*round(lat*(1/gridDimlat)-(gridShiftlat/gridDimlat))+gridShiftlat, digits = 10),
+                                lon = round(gridDimlon*round(lon*(1/gridDimlon)-(gridShiftlon/gridDimlon))+gridShiftlon, digits = 10)) %>%
+                  tidyr::complete(lat=latranked,lon=lonranked,fill=list(value=0));gridx
+              }
+              lat_diff <- unique(round(diff(unique(sort(gridx$lat))),4)); lat_diff[!lat_diff %in% 0]
+              lon_diff <- unique(round(diff(unique(sort(gridx$lon))),4)); lon_diff[!lon_diff %in% 0]
+              }
               spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx)
               sp::gridded(spdf)<-TRUE
               rGrid<-raster::stack(spdf)
@@ -420,7 +530,7 @@ metis.grid2poly<- function(gridFiles=NULL,
               print("Aggregation complete.")
             }
 
-            polyDataX1<-tidyr::gather(polyDatax,key=key,value=value,-(subRegCol))%>%
+            polyDataX1<-tidyr::gather(polyDatax,key=key,value=value,-(all_of(subRegCol)))%>%
               dplyr::filter(value!=0,!is.na(value))
             print("Splitting original column names...")
             newCols <- stringi::stri_split_regex(polyDataX1$key,"_",simplify=TRUE)%>%as.data.frame()

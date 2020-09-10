@@ -161,7 +161,6 @@ metis.gridByPoly <- function(gridTable = NULL,
   lat_diff <- unique(round(diff(unique(sort(gridx$lat))),4)); lat_diff[!lat_diff %in% 0]
   lon_diff <- unique(round(diff(unique(sort(gridx$lon))),4)); lon_diff[!lon_diff %in% 0]
 
-
   spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx%>%dplyr::select(lat,lon))
   #pointsx <- sp::points2grid(points=spdf, tolerance=0., round); pointsx
   #spdf <- sp::SpatialPixelsDataFrame(points=pointsx,data=gridx%>%dplyr::select(lat,lon))
