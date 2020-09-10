@@ -530,7 +530,7 @@ metis.grid2poly<- function(gridFiles=NULL,
               print("Aggregation complete.")
             }
 
-            polyDataX1<-tidyr::gather(polyDatax,key=key,value=value,-(all_of(subRegCol)))%>%
+            polyDataX1<-tidyr::gather(polyDatax,key=key,value=value,-(tidyselect::all_of(subRegCol)))%>%
               dplyr::filter(value!=0,!is.na(value))
             print("Splitting original column names...")
             newCols <- stringi::stri_split_regex(polyDataX1$key,"_",simplify=TRUE)%>%as.data.frame()
