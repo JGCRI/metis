@@ -156,8 +156,10 @@ metis.grid2poly<- function(gridFiles=NULL,
  gridCount=0;
 
   for(grid_i in gridFiles){
+
     if(gridCount==0){ # In case a R tbl is provided directly then no need to loop through files
-    if(any(class(gridFiles)=="character")){
+
+      if(any(class(gridFiles)=="character")){
        print(paste("Reading grid file: ", grid_i,sep=""))
         if(grepl(".csv",grid_i)){
           grid<-data.table::fread(grid_i,encoding="Latin-1")
