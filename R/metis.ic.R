@@ -241,7 +241,7 @@ print(paste("Starting metis.ic.R...",sep=""))
      dplyr::left_join(datax_ic_spread) %>%
      dplyr::mutate(ic = (ic_sec*2 + ic_spread)/3); datax_ic_all
 
-   groupCols <- (names(datax_ic_all)[!names(datax_ic_all) %in% c(icSectors,"ic","ic_sec","ic_spread","other","from")]); groupCols
+   groupCols <- (names(datax_ic_all)[!names(datax_ic_all) %in% c(icSectors,"ic","ic_sec","ic_spread","other","from","units")]); groupCols
    datax_ic <- datax_ic_all %>%
      dplyr::group_by_at(groupCols) %>%
      dplyr::summarize_at(c("ic","ic_sec","ic_spread"),~mean(.,na.rm=T)); datax_ic
