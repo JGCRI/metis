@@ -180,6 +180,7 @@ metis.grid2poly<- function(gridFiles=NULL,
           }}else{
           if(any(class(gridFiles) %in% c("tbl_df","tbl","data.frame"))){
            grid = gridFiles
+           grid_i="gridFile"
            gridCount=1;
            if(!all(c("lat","lon","value") %in% names(grid))){
              missingCols = c("lat","lon","value")[!c("lat","lon","value") %in% names(grid)]
@@ -438,9 +439,13 @@ metis.grid2poly<- function(gridFiles=NULL,
                                      dplyr::select(names(gridCropped)[!names(gridCropped) %in% c(
                                        names(shape),"lat","lon","gridCellArea","subRegAreaSum","gridCellAreaRatio")]),
                                     gridCropped%>%dplyr::select(gridCellAreaRatio),SIMPLIFY=FALSE))%>%
-                dplyr::bind_cols(gridCropped%>%dplyr::select( subRegCol))%>%tibble::as_tibble();
+                dplyr::bind_cols(gridCropped%>%dplyr::select( subRegCol))%>%
+                dplyr::select(-GridByPolyID)%>%tibble::as_tibble();
 
-             polyDatax<-x%>%dplyr::group_by(.dots = list(subRegCol))%>% dplyr::summarise_all(list(~sum(.,na.rm=T)))%>%dplyr::ungroup()
+             polyDatax<-x %>%
+                dplyr::group_by(.dots = list(subRegCol))%>%
+                dplyr::summarise_all(list(~sum(.,na.rm=T)))%>%
+                dplyr::ungroup()
               print("Aggregation complete.")
             }
 
@@ -453,6 +458,13 @@ metis.grid2poly<- function(gridFiles=NULL,
               # Assume regular grid is centered at 0 and the lat determines dimension for both lat and lon
               lat_diff <- unique(round(diff(unique(sort(gridx$lat))),4)); lat_diff[!lat_diff %in% 0]
               lon_diff <- unique(round(diff(unique(sort(gridx$lon))),4)); lon_diff[!lon_diff %in% 0]
+
+              if(length(lat_diff)==0 & length(lon_diff)==0){stop("grid cell spacing is 0. Check input grid data")}
+              if(length(lat_diff)==0 & length(lon_diff)!=0){print(paste("Lat spacing is 0. Setting to lon spacing: ",lon_diff,sep=""));
+                lat_diff<-lon_diff}
+              if(length(lat_diff)!=0 & length(lon_diff)==0){print(paste("Lon spacing is 0. Setting to lat spacing: ",lat_diff,sep=""));
+                lon_diff=lat_diff}
+
               if(length(lat_diff[!lat_diff %in% 0])>1 | length(lon_diff[!lon_diff %in% 0])>1){
 
                 # Grid Shift
