@@ -112,6 +112,12 @@ metis.gridByPoly <- function(gridTable = NULL,
   # Assum regular grid is centered at 0 and the lat determines dimension for both lat and lon
   lat_diff <- unique(round(diff(unique(sort(gridx$lat))),4)); lat_diff[!lat_diff %in% 0]
   lon_diff <- unique(round(diff(unique(sort(gridx$lon))),4)); lon_diff[!lon_diff %in% 0]
+  if(length(lat_diff)==0 & length(lon_diff)==0){stop("grid cell spacing is 0. Check input grid data")}
+  if(length(lat_diff)==0 & length(lon_diff)!=0){print(paste("Lat spacing is 0. Setting to lon spacing: ",lon_diff,sep=""));
+                                lat_diff<-lon_diff}
+  if(length(lat_diff)!=0 & length(lon_diff)==0){print(paste("Lon spacing is 0. Setting to lat spacing: ",lat_diff,sep=""));
+    lon_diff=lat_diff}
+
   if(length(lat_diff[!lat_diff %in% 0])>1 | length(lon_diff[!lon_diff %in% 0])>1){
 
     # Grid Shift
@@ -161,6 +167,13 @@ metis.gridByPoly <- function(gridTable = NULL,
   lat_diff <- unique(round(diff(unique(sort(gridx$lat))),4)); lat_diff[!lat_diff %in% 0]
   lon_diff <- unique(round(diff(unique(sort(gridx$lon))),4)); lon_diff[!lon_diff %in% 0]
 
+  if(length(lat_diff)==0 & length(lon_diff)==0){stop("grid cell spacing is 0. Check input grid data")}
+  if(length(lat_diff)==0 & length(lon_diff)!=0){print(paste("Lat spacing is 0. Setting to lon spacing: ",lon_diff,sep=""));
+    lat_diff<-lon_diff}
+  if(length(lat_diff)!=0 & length(lon_diff)==0){print(paste("Lon spacing is 0. Setting to lat spacing: ",lat_diff,sep=""));
+    lon_diff=lat_diff}
+
+
   spdf = sp::SpatialPointsDataFrame(sp::SpatialPoints(coords=(cbind(gridx$lon,gridx$lat))),data=gridx%>%dplyr::select(lat,lon))
   #pointsx <- sp::points2grid(points=spdf, tolerance=0., round); pointsx
   #spdf <- sp::SpatialPixelsDataFrame(points=pointsx,data=gridx%>%dplyr::select(lat,lon))
@@ -174,6 +187,7 @@ metis.gridByPoly <- function(gridTable = NULL,
   # Intersect with the shape
   print(paste("Intersecting raster with shape...",sep=""))
   rCropPx <- raster::intersect(shape,rCropP); rCropPx
+  if(is.null(rCropPx)){stop("No intersection between grid and shape provided.")}
   print(paste("Done.",sep=""))
 
   rCropPx@data$area<-raster::area(rCropPx)

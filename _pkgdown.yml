@@ -12,6 +12,8 @@ navbar:
          href: articles/vignette_metis.readgcam.html
       -  text: metis.mapsProcess
          href: articles/vignette_metis.mapsProcess.html
+      -  text: metis.grid2poly
+         href: articles/vignette_metis.grid2poly.html
       -  text: colors, maps and params
          href: articles/vignette_colorsMapsParams.html
     - icon: fa-file-code-o

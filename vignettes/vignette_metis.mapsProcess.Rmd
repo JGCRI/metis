@@ -232,34 +232,70 @@ metis.mapsProcess(polygonTable=data,
 <!-------------------------->
 <!-------------------------->
 
-Users can provide metis.mapsProcess custom shapefiles for their own data if needed. The example below shows how to create a custom shapefile and then plot data on it. For this example we will assume the user wants to plot data for the different states in Colombia.
+Users can provide metis.mapsProcess custom shapefiles for their own data if needed. The example below shows how to create a custom shapefile and then plot data on it. 
+
+## Subset existing shape
 
 ```{r, eval=F}
 library(metis); library(rgdal)
 
-customShape <- metis::mapStates # Read in World States shape file
-customShape <- customShape[customShape@data$region %in% c("Colombia"),] # Subset the shapefile to Colombia
-customShape@data <- droplevels(customShape@data)
-metis.map(customShape,labels=T) # View custom shape
-customShape@data <- customShape@data %>% dplyr::rename(states=subRegion) # Lets assume the subRegion column was called "states"
-head(customShape@data) # review data
-unique(customShape@data$states) # Get a list of the unique subRegions
+shapeSubset <- metis::mapStates # Read in World States shape file
+shapeSubset <- shapeSubset[shapeSubset@data$region %in% c("Colombia"),] # Subset the shapefile to Colombia
+shapeSubset@data <- droplevels(shapeSubset@data)
+shapeSubset@data <- shapeSubset@data %>% dplyr::rename(states=subRegion) # Lets assume the subRegion column was called "states"
+metis.map(shapeSubset,fillCol="states") # View custom shape
+head(shapeSubset@data) # review data
+unique(shapeSubset@data$states) # Get a list of the unique subRegions
 
-# Create a dataframe with data for some of the states
+# Plot data on subset
 data = data.frame(states=c("Cauca","Valle del Cauca","Antioquia","Córdoba","Bolívar","Atlántico"),
                   x=c(2050,2050,2050,2050,2050,2050),
                   value=c(5,10,15,34,2,7))
 metis.mapsProcess(polygonTable=data,
-                  subRegShape = customShape,
+                  subRegShape = shapeSubset,
                   subRegCol = "states",
-                  subRegType = "states",
-                  folderName = "vignetteMaps_customShape",
+                  subRegType = "ColombiaStates",
+                  folderName = "vignetteMaps_shapeSubset",
                   mapTitleOn = F)
 
 ```
 
-<p align="center" style="font-size:18px;"> *Custom Shape* </p>
-<p align="center"> <img src="vignetteFigs/mapsProcess_customShape.PNG"></p>
+
+<p align="center" style="font-size:18px;"> *Shape subset* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_shapeSubset.PNG"></p>
+
+## Crop a shape to another shape
+
+For example if someone wants to analyze counties in Texas.
+
+```{r, eval=F}
+library(metis); library(raster)
+
+shapeSubRegions <- metis::mapUS49County
+shapeCropTo <- metis::mapUS49
+shapeCropTo <- shapeCropTo[shapeCropTo@data$subRegion %in% c("TX"),]
+shapeCropTo@data <- droplevels(shapeCropTo@data)
+shapeCrop<- sp::spTransform(shapeCropTo,raster::crs(shapeSubRegions))
+shapeCrop <-raster::crop(shapeSubRegions,shapeCropTo)
+shapeCrop@data <- shapeCrop@data%>%dplyr::select(subRegion)
+shapeCrop$subRegion%>%unique() # Check subRegion names
+metis.map(shapeCrop)
+
+# Plot data on subset
+data = data.frame(county=c("Wise_TX","Scurry_TX","Kendall_TX","Frio_TX","Hunt_TX","Austin_TX"),
+                  x=c(2050,2050,2050,2050,2050,2050),
+                  value=c(5,10,15,34,2,7))
+metis.mapsProcess(polygonTable=data,
+                  subRegShape = shapeCrop,
+                  subRegCol = "county",
+                  subRegType = "TexasCounties",
+                  folderName = "vignetteMaps_shapeCrop",
+                  mapTitleOn = F)
+
+```
+
+<p align="center" style="font-size:18px;"> *Shape Crop* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_shapeCrop.PNG"></p>
 
 <!-------------------------->
 <!-------------------------->

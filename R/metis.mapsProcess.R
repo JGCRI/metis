@@ -284,6 +284,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
   tibble::tibble() -> gridTblReturn -> shapeTblReturn
 
   classPaletteOrig <- classPalette
+  subRegColOrig <- subRegCol
   subRegShapeOrig <- subRegShape
   subRegShpFileOrig <- subRegShpFile
   subRegShpFolderOrig <- subRegShpFolder
@@ -1266,7 +1267,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
             if(is.null(subRegShape)){
               stop("No valid subregional shape file available")}
 
-            if(!subRegCol %in% names(subRegShape)){stop(paste("SubRegCol: ",subRegCol," not present in subRegShape",sep=""))}
+            if(!subRegCol %in% names(subRegShape)){stop(paste("subRegCol: ",subRegColOrig," not present in subRegShape",sep=""))}
 
             if(!is.null(subRegShape)){
               subRegShape@data[[subRegCol]] <- as.character(subRegShape@data[[subRegCol]])
@@ -1323,7 +1324,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
 
             shape<-subRegShape
 
-            if(!subRegCol %in% names(shape)){stop(paste("SubRegCol: ",subRegCol," not present in shape",sep=""))}
+            if(!subRegCol %in% names(shape)){stop(paste("subRegCol: ",subRegColOrig," not present in shape",sep=""))}
 
             shape@data<-shape@data%>%dplyr::mutate(subRegion=get(subRegCol), subRegion=as.character(subRegion))
 
@@ -2238,7 +2239,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
                     stop("No valid subregional shape file available")}
 
 
-                  if(!subRegCol %in% names(subRegShape)){stop(paste("SubRegCol: ",subRegCol," not present in subRegShape",sep=""))}
+                  if(!subRegCol %in% names(subRegShape)){stop(paste("subRegCol: ",subRegColOrig," not present in subRegShape",sep=""))}
 
                    if(!is.null(subRegShape)){
                     subRegShape@data[[subRegCol]] <- as.character(subRegShape@data[[subRegCol]])
@@ -2299,7 +2300,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
 
                   shape<-subRegShape
 
-                  if(!subRegCol %in% names(shape)){stop(paste("SubRegCol: ",subRegCol," not present in shape",sep=""))}
+                  if(!subRegCol %in% names(shape)){stop(paste("subRegCol: ",subRegColOrig," not present in shape",sep=""))}
 
                   shape@data<-shape@data%>%dplyr::mutate(subRegion=get(subRegCol), subRegion=as.character(subRegion))
 
@@ -3271,6 +3272,11 @@ metis.mapsProcess<-function(polygonTable=NULL,
               subRegShape <- subRegShapeOrig
             }
 
+            if(subRegColOrig %in% names(subRegShape@data)){
+              subRegShape@data <- subRegShape@data %>%
+                dplyr::rename(subRegion=!!as.name(subRegColOrig))
+            }
+
             if(runSection){
 
               #--------------------------------
@@ -3296,8 +3302,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
                     print(paste("Boundary region shape automatically set to: ",
                                 mapFound$subRegShapeTypeFound, sep=""))
                   }else{
-                    mapFound <- metis.mapFind(data.frame(subRegion=unique(shapeTbl$subRegion)))
-                    boundaryRegShape <- mapFound$subRegShapeFound
+                   boundaryRegShape <- subRegShape
                   }
                 }
                 }
@@ -3319,7 +3324,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
                 if(is.null(subRegShape)){
                   stop("No valid subregional shape file available")}
 
-                if(!subRegCol %in% names(subRegShape)){stop(paste("SubRegCol: ",subRegCol," not present in subRegShape",sep=""))}
+                if(!subRegCol %in% names(subRegShape)){stop(paste("subRegCol: ",subRegColOrig," not present in subRegShape",sep=""))}
 
                 if(!is.null(subRegShape)){
                   subRegShape@data[[subRegCol]] <- as.character(subRegShape@data[[subRegCol]])
@@ -3379,7 +3384,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
 
                 shape<-subRegShape
 
-                if(!subRegCol %in% names(shape)){stop(paste("SubRegCol: ",subRegCol," not present in shape",sep=""))}
+                if(!subRegCol %in% names(shape)){stop(paste("subRegCol: ",subRegColOrig," not present in shape",sep=""))}
 
                 shape@data<-shape@data%>%dplyr::mutate(subRegion=get(subRegCol), subRegion=as.character(subRegion))
 

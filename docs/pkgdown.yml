@@ -4,7 +4,8 @@ pkgdown_sha: ~
 articles:
   vignette_colorsMapsParams: vignette_colorsMapsParams.html
   vignette_metis.chartsProcess: vignette_metis.chartsProcess.html
+  vignette_metis.grid2poly: vignette_metis.grid2poly.html
   vignette_metis.mapsProcess: vignette_metis.mapsProcess.html
   vignette_metis.readgcam: vignette_metis.readgcam.html
-last_built: 2020-10-14T13:38Z
+last_built: 2020-10-14T20:55Z
 
