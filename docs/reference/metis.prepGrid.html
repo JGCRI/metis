@@ -156,6 +156,7 @@
   <span class='kw'>demeterScenarios</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>demeterTimesteps</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>2005</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>2100</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>5</span>),
   <span class='kw'>demeterUnits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>demeterAggType</span> <span class='kw'>=</span> <span class='st'>"depth"</span>,
   <span class='kw'>tethysFolders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>tethysScenarios</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>tethysUnits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -201,6 +202,10 @@
     <tr>
       <th>demeterUnits</th>
       <td><p>No Default</p></td>
+    </tr>
+    <tr>
+      <th>demeterAggType</th>
+      <td><p>Default is "depth" which goes with fraction. If sqkm then use "vol".</p></td>
     </tr>
     <tr>
       <th>tethysFolders</th>
