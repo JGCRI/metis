@@ -127,6 +127,7 @@ print(paste("Starting metis.ic.R...",sep=""))
 
   for (sec_i in unique(c(unique(datax$to),unique(datax$from)))){
     datax <- datax %>%
+      dplyr::filter(from!=to)%>%
       dplyr::bind_rows(datax[1,] %>%
                          dplyr::mutate(from=sec_i,to=sec_i,value=NA))%>%
       dplyr::distinct()
@@ -186,9 +187,10 @@ print(paste("Starting metis.ic.R...",sep=""))
      dplyr::filter(from %in% c(icSectors)); dataxSpread
 
    colsTemp <- names(dataxSpread)[!names(dataxSpread) %in% c(icSectors,non_icSectors)]; colsTemp
+   colsSum <- names(dataxSpread)[names(dataxSpread) %in% c(icSectors,non_icSectors)];colsSum
    datax_comb <- dataxSpread %>%
-     dplyr::mutate(sumTotal = raster::rowSums(.[c(icSectors,non_icSectors)],na.rm=T)) %>%
-     dplyr::mutate_at(c(icSectors,non_icSectors),list(~(./sumTotal)))%>%
+     dplyr::mutate(sumTotal = raster::rowSums(.[colsSum],na.rm=T)) %>%
+     dplyr::mutate_at(colsSum,list(~(./sumTotal)))%>%
      dplyr::select(-sumTotal) %>%
      tidyr::gather(key="to",value="value",-colsTemp); datax_comb
 
@@ -239,7 +241,10 @@ print(paste("Starting metis.ic.R...",sep=""))
    datax_ic_all <- dataxSpread %>%
      dplyr::left_join(datax_ic_sec) %>%
      dplyr::left_join(datax_ic_spread) %>%
-     dplyr::mutate(ic = (ic_sec*2 + ic_spread)/3); datax_ic_all
+     dplyr::mutate(ic = (ic_sec*2 + ic_spread)/3,
+                   ic = ifelse(is.nan(ic),0,ic),
+                   ic_sec = ifelse(is.nan(ic_sec),0,ic_sec),
+                   ic_spread = ifelse(is.nan(ic_spread),0,ic_spread),); datax_ic_all
 
    groupCols <- (names(datax_ic_all)[!names(datax_ic_all) %in% c(icSectors,"ic","ic_sec","ic_spread","other","from","units")]); groupCols
    datax_ic <- datax_ic_all %>%
@@ -388,8 +393,8 @@ print(paste("Starting metis.ic.R...",sep=""))
          print(paste("File saved as:",sep=""))
          print(gsub("//","/",paste(dir,"/",subRegType_i,subRegion_i,scenario_i,x_i,"_",rank_print_file,"_chord.png",sep="")))
 
-         sectorToOrder = c("water","electricity","ag","primary",unique(df_i$to)[!unique(df_i$to) %in% c("water","electricity","ag","primary")])
-         sectorFromOrder = c("water","electricity","ag","primary",unique(df_i$from)[!unique(df_i$from) %in% c("water","electricity","ag","primary")])
+         sectorToOrder = c(icSectors,unique(df_i$to)[!unique(df_i$to) %in% icSectors])
+         sectorFromOrder = c(icSectors,unique(df_i$from)[!unique(df_i$from) %in% icSectors])
          sectorToOrder
          sectorFromOrder
 
@@ -399,7 +404,7 @@ print(paste("Starting metis.ic.R...",sep=""))
            #labs(title="title") +
            geom_point(data=df_i%>%dplyr::filter(from!="other"),aes(col=from, size=value, alpha=value)) +
            scale_color_manual(values=colorsSector, guide="none") +
-           scale_alpha(range=c(0,1), guide="none") +
+           scale_alpha(guide="none") +
            geom_text(aes(label=round(value,2)),col="black", size = 4) +
            coord_fixed(ratio = 1) + xlab(NULL) + ylab(NULL) +
            scale_x_discrete(limits = sectorToOrder,position="top") +

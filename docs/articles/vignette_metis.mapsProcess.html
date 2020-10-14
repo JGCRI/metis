@@ -130,9 +130,9 @@
 </ul>
 <!--------------------------><!-------------------------->
 </div>
-<div id="folder-structure" class="section level1">
+<div id="folder-structure-inputs" class="section level1">
 <h1 class="hasAnchor">
-<a href="#folder-structure" class="anchor"></a>Folder Structure</h1>
+<a href="#folder-structure-inputs" class="anchor"></a>Folder Structure &amp; Inputs</h1>
 <p align="center">
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
@@ -142,16 +142,6 @@
 </p>
 <p align="center">
 <img src="vignetteFigs/mapsProcess_structure.PNG"></p>
-<!-------------------------->
-<!-------------------------->
-</div>
-<div id="key-inputs" class="section level1">
-<h1 class="hasAnchor">
-<a href="#key-inputs" class="anchor"></a>Key Inputs</h1>
-<p align="center">
-<img src="vignetteFigs/metisHeaderThick.PNG"></p>
-<!-------------------------->
-<!-------------------------->
 <p align="center" style="font-size:18px;">
 <em>Key inputs</em>
 </p>
@@ -160,9 +150,9 @@
 <!-------------------------->
 <!-------------------------->
 </div>
-<div id="pre-loaded-maps-auto" class="section level1">
+<div id="maps-available" class="section level1">
 <h1 class="hasAnchor">
-<a href="#pre-loaded-maps-auto" class="anchor"></a>Pre-loaded Maps Auto</h1>
+<a href="#maps-available" class="anchor"></a>Maps Available</h1>
 <p align="center">
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
@@ -180,17 +170,20 @@
 <!-------------------------->
 <!-------------------------->
 </div>
-<div id="plot-data-on-pre-loaded-maps" class="section level1">
+<div id="plot-data-on-maps" class="section level1">
 <h1 class="hasAnchor">
-<a href="#plot-data-on-pre-loaded-maps" class="anchor"></a>Plot data on Pre-loaded Maps</h1>
+<a href="#plot-data-on-maps" class="anchor"></a>Plot Data on Maps</h1>
 <p align="center">
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
-<p><code>metis.mapsProcess</code> will search through the list of <a href="https://jgcri.github.io/metis/articles/vignette_colorsMapsParams.html">pre-loaded metis maps</a> to see if it can find the “subRegions” provided in the data and then plot the data on those maps. Some examples are provided below:</p>
-<div id="us-49" class="section level2">
+<div id="auto-map-find" class="section level2">
 <h2 class="hasAnchor">
-<a href="#us-49" class="anchor"></a>US 49</h2>
+<a href="#auto-map-find" class="anchor"></a>Auto Map Find</h2>
+<p><code>metis.mapsProcess</code> will search through the list of <a href="https://jgcri.github.io/metis/articles/vignette_colorsMapsParams.html">pre-loaded metis maps</a> to see if it can find the “subRegions” provided in the data and then plot the data on those maps. Some examples are provided below:</p>
+<div id="us-49" class="section level3">
+<h3 class="hasAnchor">
+<a href="#us-49" class="anchor"></a>US 49</h3>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"CA"</span>,<span class="st">"FL"</span>,<span class="st">"ID"</span>,<span class="st">"MO"</span>,<span class="st">"TX"</span>,<span class="st">"WY"</span>),
@@ -209,9 +202,9 @@
 <p align="center">
 <img src="vignetteFigs/mapsProcess_US49Structure.PNG"></p>
 </div>
-<div id="us-52" class="section level2">
-<h2 class="hasAnchor">
-<a href="#us-52" class="anchor"></a>US 52</h2>
+<div id="us-52" class="section level3">
+<h3 class="hasAnchor">
+<a href="#us-52" class="anchor"></a>US 52</h3>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AK"</span>,<span class="st">"FL"</span>,<span class="st">"ID"</span>,<span class="st">"MO"</span>,<span class="st">"TX"</span>,<span class="st">"WY"</span>),
@@ -225,9 +218,9 @@
 <p align="center">
 <img src="vignetteFigs/mapsProcess_US52.PNG"></p>
 </div>
-<div id="us-49-counties" class="section level2">
-<h2 class="hasAnchor">
-<a href="#us-49-counties" class="anchor"></a>US 49 Counties</h2>
+<div id="us-49-counties" class="section level3">
+<h3 class="hasAnchor">
+<a href="#us-49-counties" class="anchor"></a>US 49 Counties</h3>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapUS49County</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check subRegion Names</span>
@@ -245,9 +238,9 @@
 <p align="center">
 <img src="vignetteFigs/mapsProcess_US49Counties.PNG"></p>
 </div>
-<div id="gcam-32-regions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#gcam-32-regions" class="anchor"></a>GCAM 32 Regions</h2>
+<div id="gcam-32-regions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#gcam-32-regions" class="anchor"></a>GCAM 32 Regions</h3>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapGCAMBasins</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check Available Regions</span>
@@ -263,9 +256,9 @@
 <p align="center">
 <img src="vignetteFigs/mapsProcess_GCAM32.PNG"></p>
 </div>
-<div id="gcam-basins" class="section level2">
-<h2 class="hasAnchor">
-<a href="#gcam-basins" class="anchor"></a>GCAM Basins</h2>
+<div id="gcam-basins" class="section level3">
+<h3 class="hasAnchor">
+<a href="#gcam-basins" class="anchor"></a>GCAM Basins</h3>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapGCAMBasins</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check Available Regions</span>
@@ -281,9 +274,9 @@
 <p align="center">
 <img src="vignetteFigs/mapsProcess_GCAMBasins.PNG"></p>
 </div>
-<div id="world-countries" class="section level2">
-<h2 class="hasAnchor">
-<a href="#world-countries" class="anchor"></a>World Countries</h2>
+<div id="world-countries" class="section level3">
+<h3 class="hasAnchor">
+<a href="#world-countries" class="anchor"></a>World Countries</h3>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapCountries</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check Available Regions</span>
@@ -299,9 +292,9 @@
 <p align="center">
 <img src="vignetteFigs/mapsProcess_worldCountries.PNG"></p>
 </div>
-<div id="world-states" class="section level2">
-<h2 class="hasAnchor">
-<a href="#world-states" class="anchor"></a>World States</h2>
+<div id="world-states" class="section level3">
+<h3 class="hasAnchor">
+<a href="#world-states" class="anchor"></a>World States</h3>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapStates</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check Available Regions</span>
@@ -316,18 +309,12 @@
 </p>
 <p align="center">
 <img src="vignetteFigs/mapsProcess_worldStates.PNG"></p>
-<!-------------------------->
-<!-------------------------->
 </div>
 </div>
-<div id="pre-loaded-maps-selected" class="section level1">
-<h1 class="hasAnchor">
-<a href="#pre-loaded-maps-selected" class="anchor"></a>Pre-loaded Maps Selected</h1>
-<p align="center">
-<img src="vignetteFigs/metisHeaderThick.PNG"></p>
-<!-------------------------->
-<!-------------------------->
-<p>Sometimes subRegions can be present on multiple maps. Fo example “Colombia”, China" and “India” are all members of <code><a href="../reference/mapGCAMReg32.html">metis::mapGCAMReg32</a></code> as well as <code><a href="../reference/mapCountries.html">metis::mapCountries</a></code>. If a user knows which map they want to plot their data on they should specify the map in the <code>subRegShape</code> argument.</p>
+<div id="select-map" class="section level2">
+<h2 class="hasAnchor">
+<a href="#select-map" class="anchor"></a>Select Map</h2>
+<p>Sometimes subRegions can be present on multiple maps. For example “Colombia”, China" and “India” are all members of <code><a href="../reference/mapGCAMReg32.html">metis::mapGCAMReg32</a></code> as well as <code><a href="../reference/mapCountries.html">metis::mapCountries</a></code>. If a user knows which map they want to plot their data on they should specify the map in the <code>subRegShape</code> argument.</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Colombia"</span>,<span class="st">"China"</span>,<span class="st">"India"</span>),
@@ -353,9 +340,10 @@
 <!-------------------------->
 <!-------------------------->
 </div>
-<div id="plot-data-on-custom-shapefiles" class="section level1">
+</div>
+<div id="create-custom-map-shape" class="section level1">
 <h1 class="hasAnchor">
-<a href="#plot-data-on-custom-shapefiles" class="anchor"></a>Plot data on Custom Shapefiles</h1>
+<a href="#create-custom-map-shape" class="anchor"></a>Create Custom Map Shape</h1>
 <p align="center">
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
@@ -364,7 +352,7 @@
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>); <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgdal</span>)
 
 <span class="no">customShape</span> <span class="kw">&lt;-</span> <span class="kw pkg">metis</span><span class="kw ns">::</span><span class="no"><a href="../reference/mapStates.html">mapStates</a></span> <span class="co"># Read in World States shape file</span>
-<span class="no">customShape</span> <span class="kw">&lt;-</span> <span class="no">customShape</span>[<span class="no">customShape</span>@<span class="kw">data</span>$<span class="no">region</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Colombia"</span>),] <span class="co"># Subset the shapefile to Peru</span>
+<span class="no">customShape</span> <span class="kw">&lt;-</span> <span class="no">customShape</span>[<span class="no">customShape</span>@<span class="kw">data</span>$<span class="no">region</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Colombia"</span>),] <span class="co"># Subset the shapefile to Colombia</span>
 <span class="no">customShape</span>@<span class="kw">data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html">droplevels</a></span>(<span class="no">customShape</span>@<span class="kw">data</span>)
 <span class="fu"><a href="../reference/metis.map.html">metis.map</a></span>(<span class="no">customShape</span>,<span class="kw">labels</span><span class="kw">=</span><span class="no">T</span>) <span class="co"># View custom shape</span>
 <span class="no">customShape</span>@<span class="kw">data</span> <span class="kw">&lt;-</span> <span class="no">customShape</span>@<span class="kw">data</span> <span class="kw">%&gt;%</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span>(<span class="kw">states</span><span class="kw">=</span><span class="no">subRegion</span>) <span class="co"># Lets assume the subRegion column was called "states"</span>
@@ -410,9 +398,9 @@
 <!-------------------------->
 <!-------------------------->
 </div>
-<div id="extended-background" class="section level1">
+<div id="plot-background" class="section level1">
 <h1 class="hasAnchor">
-<a href="#extended-background" class="anchor"></a>Extended Background</h1>
+<a href="#plot-background" class="anchor"></a>Plot Background</h1>
 <p align="center">
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->

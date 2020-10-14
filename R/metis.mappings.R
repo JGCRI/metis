@@ -101,6 +101,10 @@ metis.mappings <- function(name=NULL) {
     "land","landRfdCrop", "land allocation by crop and water source","pal_green",
     "land","landAlloc", "aggregated land allocation","pal_green",
     "land","landAllocByCrop", "land allocation by crop","pal_green",
+    "land","landAllocDetail","detailed land allocation","pal_green",
+    # General
+    "general","inputs", "inputs by tech","pal_hot",
+    "general","outputs", "outputs by tech","pal_hot",
     # Emissions
     "emissions","emissNonCO2BySectorGWPAR5", "nonCO2 emissions by sector","pal_hot",
     "emissions","emissNonCO2BySectorGTPAR5", "nonCO2 emissions by sector","pal_hot",

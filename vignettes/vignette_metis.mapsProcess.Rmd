@@ -21,23 +21,13 @@ vignette: >
 
 <!-------------------------->
 <!-------------------------->
-# Folder Structure
+# Folder Structure & Inputs
 <p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
-
 
 <p align="center" style="font-size:18px;"> *Folder structure* </p>
 <p align="center"> <img src="vignetteFigs/mapsProcess_structure.PNG"></p>
-
-
-
-<!-------------------------->
-<!-------------------------->
-# Key Inputs
-<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
-<!-------------------------->
-<!-------------------------->
 
 <p align="center" style="font-size:18px;"> *Key inputs* </p>
 <p align="center"> <img src="vignetteFigs/mapsProcess_inputs.PNG"></p>
@@ -45,7 +35,7 @@ vignette: >
 
 <!-------------------------->
 <!-------------------------->
-# Pre-loaded Maps Auto
+# Maps Available
 <p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
@@ -66,14 +56,16 @@ metis::metis.map(mapUS49, labels=T)
 
 <!-------------------------->
 <!-------------------------->
-# Plot data on Pre-loaded Maps
+# Plot Data on Maps
 <p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
 
+## Auto Map Find
+
 `metis.mapsProcess` will search through the list of [pre-loaded metis maps](https://jgcri.github.io/metis/articles/vignette_colorsMapsParams.html) to see if it can find the "subRegions" provided in the data and then plot the data on those maps. Some examples are provided below:
 
-## US 49
+### US 49
 
 ```{r, eval=F}
 library(metis)
@@ -92,7 +84,7 @@ metis.mapsProcess(polygonTable=data,
 <p align="center"> <img src="vignetteFigs/mapsProcess_US49Structure.PNG"></p>
 
 
-## US 52
+### US 52
 
 ```{r, eval=F}
 library(metis)
@@ -110,7 +102,7 @@ metis.mapsProcess(polygonTable=data,
 <p align="center"> <img src="vignetteFigs/mapsProcess_US52.PNG"></p>
 
 
-## US 49 Counties
+### US 49 Counties
 
 ```{r, eval=F}
 library(metis)
@@ -131,7 +123,7 @@ metis.mapsProcess(polygonTable=data,
 <p align="center"> <img src="vignetteFigs/mapsProcess_US49Counties.PNG"></p>
 
 
-## GCAM 32 Regions
+### GCAM 32 Regions
 
 
 ```{r, eval=F}
@@ -149,7 +141,7 @@ metis.mapsProcess(polygonTable=data,
 <p align="center" style="font-size:18px;"> *GCAM 32 Regions* </p>
 <p align="center"> <img src="vignetteFigs/mapsProcess_GCAM32.PNG"></p>
 
-## GCAM Basins
+### GCAM Basins
 
 ```{r, eval=F}
 library(metis)
@@ -167,7 +159,7 @@ metis.mapsProcess(polygonTable=data,
 <p align="center"> <img src="vignetteFigs/mapsProcess_GCAMBasins.PNG"></p>
 
 
-## World Countries
+### World Countries
 
 
 ```{r, eval=F}
@@ -185,7 +177,7 @@ metis.mapsProcess(polygonTable=data,
 <p align="center" style="font-size:18px;"> *World Countries* </p>
 <p align="center"> <img src="vignetteFigs/mapsProcess_worldCountries.PNG"></p>
 
-## World States
+### World States
 
 
 ```{r, eval=F}
@@ -204,14 +196,9 @@ metis.mapsProcess(polygonTable=data,
 <p align="center"> <img src="vignetteFigs/mapsProcess_worldStates.PNG"></p>
 
 
-<!-------------------------->
-<!-------------------------->
-# Pre-loaded Maps Selected
-<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
-<!-------------------------->
-<!-------------------------->
+## Select Map
 
-Sometimes subRegions can be present on multiple maps. Fo example "Colombia", China" and "India" are all members of `metis::mapGCAMReg32` as well as `metis::mapCountries`. If a user knows which map they want to plot their data on they should specify the map in the `subRegShape` argument.
+Sometimes subRegions can be present on multiple maps. For example "Colombia", China" and "India" are all members of `metis::mapGCAMReg32` as well as `metis::mapCountries`. If a user knows which map they want to plot their data on they should specify the map in the `subRegShape` argument.
 
 
 ```{r, eval=F}
@@ -240,7 +227,7 @@ metis.mapsProcess(polygonTable=data,
 
 <!-------------------------->
 <!-------------------------->
-# Plot data on Custom Shapefiles
+# Create Custom Map Shape
 <p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
@@ -251,7 +238,7 @@ Users can provide metis.mapsProcess custom shapefiles for their own data if need
 library(metis); library(rgdal)
 
 customShape <- metis::mapStates # Read in World States shape file
-customShape <- customShape[customShape@data$region %in% c("Colombia"),] # Subset the shapefile to Peru
+customShape <- customShape[customShape@data$region %in% c("Colombia"),] # Subset the shapefile to Colombia
 customShape@data <- droplevels(customShape@data)
 metis.map(customShape,labels=T) # View custom shape
 customShape@data <- customShape@data %>% dplyr::rename(states=subRegion) # Lets assume the subRegion column was called "states"
@@ -297,7 +284,7 @@ metis.mapsProcess(polygonTable = data, mapTitleOn = F, folderName = "vignetteMap
 
 <!-------------------------->
 <!-------------------------->
-# Extended Background
+# Plot Background
 <p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
