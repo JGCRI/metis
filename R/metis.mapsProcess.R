@@ -523,11 +523,16 @@ metis.mapsProcess<-function(polygonTable=NULL,
         } else {stop(paste(i," does not exist"))}
       }
 
-    }else{shapeTbl<-polygonTable}}
+    }else{shapeTbl<-polygonTable}
+    }
 
 
   if(!is.null(shapeTbl)){
     if(nrow(shapeTbl)>0){
+
+      if(!subRegCol %in% names(shapeTbl)){
+        stop("Please rename polygon column in data 'subRegion' or provide a subRegCol name.")
+      }
 
       # Add missing columns
       shapeTbl<-addMissing(shapeTbl)
@@ -540,7 +545,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
                                                                              classPalette=="pal_metis"~classPaletteDiff,
                                                                              classPalette=="pal_16"~classPaletteDiff,
                                                                              TRUE~classPalette),
-                                               subRegion=as.character(subRegion))
+                                               !!subRegCol:=as.character(get(subRegCol)))
 
         if(is.null(classPaletteOrig)){shapeTbl <- shapeTbl %>% dplyr::mutate(classPalette=classPaletteDiff)}
 
@@ -635,12 +640,13 @@ metis.mapsProcess<-function(polygonTable=NULL,
     #print("Complete.")
     }
   }
+
   if(!is.null(shapeTbl)){
     if(nrow(shapeTbl)>0){
     #print("Removing NA's and keeping only unique values in shapeTbl...")
     shapeTbl<-shapeTbl%>%
       dplyr::filter(!is.na(value))%>%
-      dplyr::filter(!is.na(subRegion))%>%
+      dplyr::filter(!is.na(!!subRegCol))%>%
       dplyr::mutate(value = signif(value,10))%>%
       dplyr::ungroup()%>%
       dplyr::distinct()
@@ -1133,6 +1139,7 @@ metis.mapsProcess<-function(polygonTable=NULL,
       if(nrow(shapeTbl)>0){
         if(!is.null(subRegCol)){
         shapeTbl <- shapeTbl %>% dplyr::rename(subRegion=!!as.name(subRegCol))
+        subRegCol <- "subRegion"
         }
         if(!is.null(subRegType)){
           shapeTbl <- shapeTbl %>% dplyr::mutate(subRegType=!!subRegType)
