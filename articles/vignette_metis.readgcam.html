@@ -59,6 +59,9 @@
       <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
     <li>
+      <a href="../articles/vignette_metis.grid2poly.html">metis.grid2poly</a>
+    </li>
+    <li>
       <a href="../articles/vignette_colorsMapsParams.html">colors, maps and params</a>
     </li>
   </ul>
@@ -98,7 +101,8 @@
 
       
 
-      </header><script src="vignette_metis.readgcam_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="vignette_metis.readgcam_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="vignette_metis.readgcam_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="vignette_metis.readgcam_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>metis.readgcam</h1>
@@ -162,18 +166,17 @@ metis.mapsProcess() Folder structure
 <li>queries: A list of the queries used to extract the data</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/JGCRI/metis">metis</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis">metis</a></span><span class="op">)</span>
 
 
-<span class="kw">dataGCAM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metis.readgcam.html">metis.readgcam</a></span> (
+<span class="va">dataGCAM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metis.readgcam.html">metis.readgcam</a></span> <span class="op">(</span>
        <span class="co">#gcamdatabase = “Path_to_GCAMdatabase”,</span>
-       dataProjFile = <span class="kw">metis</span>::<span class="kw"><a href="../reference/exampleGCAMproj.html">exampleGCAMproj</a></span>)
+       dataProjFile <span class="op">=</span> <span class="fu">metis</span><span class="fu">::</span><span class="va"><a href="../reference/exampleGCAMproj.html">exampleGCAMproj</a></span><span class="op">)</span>
 
-<span class="kw">df</span> <span class="op">&lt;-</span> <span class="kw">dataGCAM</span><span class="op">$</span><span class="kw">data</span>; <span class="kw">df</span>
-<span class="kw">dfParam</span> <span class="op">&lt;-</span> <span class="kw">dataGCAM</span><span class="op">$</span><span class="kw">dataAggParam</span>; <span class="kw">dfParam</span>
-<span class="kw">dfClass1</span> <span class="op">&lt;-</span> <span class="kw">dataGCAM</span><span class="op">$</span><span class="kw">dataAggClass1</span>; <span class="kw">dfClass1</span>
-<span class="kw">dfClass2</span> <span class="op">&lt;-</span> <span class="kw">dataGCAM</span><span class="op">$</span><span class="kw">dataAggClass1</span>; <span class="kw">dfClass2</span>
-</pre></div>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="va">dataGCAM</span><span class="op">$</span><span class="va">data</span>; <span class="va">df</span>
+<span class="va">dfParam</span> <span class="op">&lt;-</span> <span class="va">dataGCAM</span><span class="op">$</span><span class="va">dataAggParam</span>; <span class="va">dfParam</span>
+<span class="va">dfClass1</span> <span class="op">&lt;-</span> <span class="va">dataGCAM</span><span class="op">$</span><span class="va">dataAggClass1</span>; <span class="va">dfClass1</span>
+<span class="va">dfClass2</span> <span class="op">&lt;-</span> <span class="va">dataGCAM</span><span class="op">$</span><span class="va">dataAggClass1</span>; <span class="va">dfClass2</span></pre></div>
 <!-------------------------->
 <!-------------------------->
 </div>
@@ -185,22 +188,21 @@ metis.mapsProcess() Folder structure
 <!-------------------------->
 <!-------------------------->
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/JGCRI/metis">metis</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis">metis</a></span><span class="op">)</span>
 
 
-<span class="kw">dataGCAMsub</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metis.readgcam.html">metis.readgcam</a></span> (
+<span class="va">dataGCAMsub</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metis.readgcam.html">metis.readgcam</a></span> <span class="op">(</span>
                  <span class="co">#gcamdatabase = “Path_to_GCAMdatabase”,</span>
-                 dataProjFile = <span class="kw">metis</span>::<span class="kw"><a href="../reference/exampleGCAMproj.html">exampleGCAMproj</a></span>,
-                 scenOrigNames = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"GCAM_SSP5"</span>,<span class="st">"GCAM_SSP3"</span>),
-                 scenNewNames = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SSP5"</span>,<span class="st">"SSP3"</span>),
-                 paramsSelect = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"socioecon"</span>, <span class="st">"elecByTechTWh"</span>,<span class="st">"watWithdrawBySec"</span>),  <span class="co"># From Param list ?metis.readgcam</span>
-                 regionsSelect = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"China"</span>,<span class="st">"India"</span>,<span class="st">"Pakistan"</span>))
+                 dataProjFile <span class="op">=</span> <span class="fu">metis</span><span class="fu">::</span><span class="va"><a href="../reference/exampleGCAMproj.html">exampleGCAMproj</a></span>,
+                 scenOrigNames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GCAM_SSP5"</span>,<span class="st">"GCAM_SSP3"</span><span class="op">)</span>,
+                 scenNewNames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SSP5"</span>,<span class="st">"SSP3"</span><span class="op">)</span>,
+                 paramsSelect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"socioecon"</span>, <span class="st">"elecByTechTWh"</span>,<span class="st">"watWithdrawBySec"</span><span class="op">)</span>,  <span class="co"># From Param list ?metis.readgcam</span>
+                 regionsSelect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"China"</span>,<span class="st">"India"</span>,<span class="st">"Pakistan"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="kw">df</span> <span class="op">&lt;-</span> <span class="kw">dataGCAMsub</span><span class="op">$</span><span class="kw">data</span>; <span class="kw">df</span>
-<span class="kw">dfParam</span> <span class="op">&lt;-</span> <span class="kw">dataGCAMsub</span><span class="op">$</span><span class="kw">dataAggParam</span>; <span class="kw">dfParam</span>
-<span class="kw">dfClass1</span> <span class="op">&lt;-</span> <span class="kw">dataGCAMsub</span><span class="op">$</span><span class="kw">dataAggClass1</span>; <span class="kw">dfClass1</span>
-<span class="kw">dfClass2</span> <span class="op">&lt;-</span> <span class="kw">dataGCAMsub</span><span class="op">$</span><span class="kw">dataAggClass1</span>; <span class="kw">dfClass2</span>
-</pre></div>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="va">dataGCAMsub</span><span class="op">$</span><span class="va">data</span>; <span class="va">df</span>
+<span class="va">dfParam</span> <span class="op">&lt;-</span> <span class="va">dataGCAMsub</span><span class="op">$</span><span class="va">dataAggParam</span>; <span class="va">dfParam</span>
+<span class="va">dfClass1</span> <span class="op">&lt;-</span> <span class="va">dataGCAMsub</span><span class="op">$</span><span class="va">dataAggClass1</span>; <span class="va">dfClass1</span>
+<span class="va">dfClass2</span> <span class="op">&lt;-</span> <span class="va">dataGCAMsub</span><span class="op">$</span><span class="va">dataAggClass1</span>; <span class="va">dfClass2</span></pre></div>
 </div>
   </div>
 
@@ -219,7 +221,7 @@ metis.mapsProcess() Folder structure
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

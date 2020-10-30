@@ -59,6 +59,9 @@
       <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
     <li>
+      <a href="../articles/vignette_metis.grid2poly.html">metis.grid2poly</a>
+    </li>
+    <li>
       <a href="../articles/vignette_colorsMapsParams.html">colors, maps and params</a>
     </li>
   </ul>
@@ -98,7 +101,8 @@
 
       
 
-      </header><script src="vignette_colorsMapsParams_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="vignette_colorsMapsParams_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="vignette_colorsMapsParams_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="vignette_colorsMapsParams_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>metisColorsMapsParams</h1>
@@ -158,13 +162,12 @@
 </ul>
 <p>The following commands can be used to view the list of metis palettes as well as to visualize a particular palette and get a list of its colors:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/JGCRI/metis">metis</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis">metis</a></span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span>()) <span class="co"># View all palettes</span>
-<span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span>(<span class="st">"pal_hot"</span>)
-<span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span>(<span class="st">"pal_div_BrGn"</span>)
-<span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span>(<span class="st">"pal_ScarcityCat"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># View all palettes</span>
+<span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span><span class="op">(</span><span class="st">"pal_hot"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span><span class="op">(</span><span class="st">"pal_div_BrGn"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span><span class="op">(</span><span class="st">"pal_ScarcityCat"</span><span class="op">)</span></pre></div>
 <p align="center" style="font-size:18px;">
 <em>Color Palettes</em>
 </p>
@@ -203,16 +206,17 @@
 <li>mapUS49HUC4: USGS Hydrological Unit Code (HUC)</li>
 <li>mapUS52: US 52 States Includes Alaska, Hawaii and Puerto Rico as well as DC.</li>
 <li>mapUS52County: US 52 Counties Includes Alaska, Hawaii and Puerto Rico as well as DC.</li>
+<li>mapUS52Compact: US 52 States with Alaska, Hawaii and Puerto Rico repositioned for compact US map.</li>
+<li>mapUS52CountyCompact: US 52 Counties with Alaska, Hawaii and Puerto Rico repositioned for compact US County map.</li>
 <li>mapUS52HUC2: USGS Hydrological Unit Code (HUC)</li>
 <li>mapUS52HUC4: USGS Hydrological Unit Code (HUC)</li>
 </ul>
 <p>The following commands can be used to view a particular map and the data contained in the shape file:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/JGCRI/metis">metis</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis">metis</a></span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">mapUS49</span><span class="op">@</span>data) <span class="co"># To View data in shapefile</span>
-<span class="kw">metis</span>::<span class="fu"><a href="../reference/metis.map.html">metis.map</a></span>(<span class="kw">mapUS49</span>, labels=<span class="kw">T</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mapUS49</span><span class="op">@</span><span class="va">data</span><span class="op">)</span> <span class="co"># To View data in shapefile</span>
+<span class="fu">metis</span><span class="fu">::</span><span class="fu"><a href="../reference/metis.map.html">metis.map</a></span><span class="op">(</span><span class="va">mapUS49</span>, labels<span class="op">=</span><span class="cn">T</span><span class="op">)</span></pre></div>
 <p align="center" style="font-size:18px;">
 <em>Example View of Pre-loaded Map for US49</em>
 </p>
@@ -230,10 +234,9 @@
 <!-------------------------->
 <p>The following command will provide an updated list of params and paramSets to be used in <a href="https://jgcri.github.io/metis/articles/vignette_metis.readgcam.html">metis.readgcam</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/JGCRI/metis">metis</a></span>); <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis">metis</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/metis.mappings.html">metis.mappings</a></span>()<span class="op">$</span><span class="kw">mapParamQuery</span><span class="op">%&gt;%</span><span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="op">-</span><span class="kw">query</span>,<span class="op">-</span><span class="kw">mapPalette</span>)
-</pre></div>
+<span class="fu"><a href="../reference/metis.mappings.html">metis.mappings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">mapParamQuery</span><span class="op">%&gt;%</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">query</span>,<span class="op">-</span><span class="va">mapPalette</span><span class="op">)</span></pre></div>
 <p align="center" style="font-size:18px;">
 <em>List of key Params for readGCAM</em>
 </p>
@@ -257,7 +260,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

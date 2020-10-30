@@ -101,6 +101,9 @@ the data by spatial boundaries given different shapefiles." />
       <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
     <li>
+      <a href="../articles/vignette_metis.grid2poly.html">metis.grid2poly</a>
+    </li>
+    <li>
       <a href="../articles/vignette_colorsMapsParams.html">colors, maps and params</a>
     </li>
   </ul>
@@ -153,50 +156,50 @@ the data by spatial boundaries given different shapefiles." />
 the data by spatial boundaries given different shapefiles.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metis.boundaries</span>(
-  boundaryRegShape = <span class='kw'>NULL</span>,
-  boundaryRegShpFolder = <span class='kw'>NULL</span>,
-  boundaryRegShpFile = <span class='kw'>NULL</span>,
-  boundaryRegCol = <span class='kw'>NULL</span>,
-  boundaryRegionsSelect = <span class='kw'>NULL</span>,
-  subRegShape = <span class='kw'>NULL</span>,
-  subRegShpFolder = <span class='kw'>NULL</span>,
-  subRegShpFile = <span class='kw'>NULL</span>,
-  subRegCol = <span class='kw'>NULL</span>,
-  subRegCol1 = <span class='kw'>NULL</span>,
-  subRegionsSelect = <span class='kw'>NULL</span>,
-  subRegType = <span class='st'>"subRegType"</span>,
-  dirOutputs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, sep = <span class='st'>""</span>),
-  regionName = <span class='kw'>NULL</span>,
-  folderName = <span class='kw'>NULL</span>,
-  nameAppend = <span class='st'>""</span>,
-  expandPercentWidth = <span class='fl'>2</span>,
-  expandPercentHeight = <span class='fl'>2</span>,
-  expandPercentWidthOV = <span class='fl'>2</span>,
-  expandPercentHeightOV = <span class='fl'>2</span>,
-  overlapShape = <span class='kw'>NULL</span>,
-  overlapShpFolder = <span class='kw'>NULL</span>,
-  overlapShpFile = <span class='kw'>NULL</span>,
-  labelsSize = <span class='fl'>1.2</span>,
-  fillcolorNA = <span class='kw'>NULL</span>,
-  projX = <span class='st'>"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"</span>,
-  extendedFillColor = <span class='st'>"grey75"</span>,
-  extendedBGColor = <span class='st'>"lightblue1"</span>,
-  extendedHighLightColor = <span class='st'>"cornsilk1"</span>,
-  extendedLabelsColor = <span class='st'>"grey30"</span>,
-  extdendedLabelSize = <span class='fl'>0.7</span>,
-  extension = <span class='kw'>T</span>,
-  fillPalette = <span class='st'>"Spectral"</span>,
-  cropSubShape2Bound = <span class='kw'>T</span>,
-  grids = <span class='kw'>NULL</span>,
-  innerMargins = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.1</span>, <span class='fl'>0.2</span>),
-  outerMargins = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.01</span>, <span class='fl'>0.01</span>, <span class='fl'>0.01</span>),
-  compassScale = <span class='kw'>T</span>,
-  scalePos = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"right"</span>, <span class='st'>"bottom"</span>),
-  compassPos = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"left"</span>, <span class='st'>"bottom"</span>),
-  extendedBoundary = <span class='kw'>NULL</span>,
-  extendedBoundaryOV = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>metis.boundaries</span><span class='op'>(</span>
+  boundaryRegShape <span class='op'>=</span> <span class='cn'>NULL</span>,
+  boundaryRegShpFolder <span class='op'>=</span> <span class='cn'>NULL</span>,
+  boundaryRegShpFile <span class='op'>=</span> <span class='cn'>NULL</span>,
+  boundaryRegCol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  boundaryRegionsSelect <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subRegShape <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subRegShpFolder <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subRegShpFile <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subRegCol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subRegCol1 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subRegionsSelect <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subRegType <span class='op'>=</span> <span class='st'>"subRegType"</span>,
+  dirOutputs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/outputs"</span>, sep <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>,
+  regionName <span class='op'>=</span> <span class='cn'>NULL</span>,
+  folderName <span class='op'>=</span> <span class='cn'>NULL</span>,
+  nameAppend <span class='op'>=</span> <span class='st'>""</span>,
+  expandPercentWidth <span class='op'>=</span> <span class='fl'>2</span>,
+  expandPercentHeight <span class='op'>=</span> <span class='fl'>2</span>,
+  expandPercentWidthOV <span class='op'>=</span> <span class='fl'>2</span>,
+  expandPercentHeightOV <span class='op'>=</span> <span class='fl'>2</span>,
+  overlapShape <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overlapShpFolder <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overlapShpFile <span class='op'>=</span> <span class='cn'>NULL</span>,
+  labelsSize <span class='op'>=</span> <span class='fl'>1.2</span>,
+  fillcolorNA <span class='op'>=</span> <span class='cn'>NULL</span>,
+  projX <span class='op'>=</span> <span class='st'>"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"</span>,
+  extendedFillColor <span class='op'>=</span> <span class='st'>"grey75"</span>,
+  extendedBGColor <span class='op'>=</span> <span class='st'>"lightblue1"</span>,
+  extendedHighLightColor <span class='op'>=</span> <span class='st'>"cornsilk1"</span>,
+  extendedLabelsColor <span class='op'>=</span> <span class='st'>"grey30"</span>,
+  extdendedLabelSize <span class='op'>=</span> <span class='fl'>0.7</span>,
+  extension <span class='op'>=</span> <span class='cn'>T</span>,
+  fillPalette <span class='op'>=</span> <span class='st'>"Spectral"</span>,
+  cropSubShape2Bound <span class='op'>=</span> <span class='cn'>T</span>,
+  grids <span class='op'>=</span> <span class='cn'>NULL</span>,
+  innerMargins <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.1</span>, <span class='fl'>0.2</span><span class='op'>)</span>,
+  outerMargins <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.01</span>, <span class='fl'>0.01</span>, <span class='fl'>0.01</span>, <span class='fl'>0.01</span><span class='op'>)</span>,
+  compassScale <span class='op'>=</span> <span class='cn'>T</span>,
+  scalePos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"right"</span>, <span class='st'>"bottom"</span><span class='op'>)</span>,
+  compassPos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"left"</span>, <span class='st'>"bottom"</span><span class='op'>)</span>,
+  extendedBoundary <span class='op'>=</span> <span class='cn'>NULL</span>,
+  extendedBoundaryOV <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -392,7 +395,7 @@ This may happen in the case of disputed boundaries.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

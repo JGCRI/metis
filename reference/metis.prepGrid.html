@@ -100,6 +100,9 @@
       <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
     <li>
+      <a href="../articles/vignette_metis.grid2poly.html">metis.grid2poly</a>
+    </li>
+    <li>
       <a href="../articles/vignette_colorsMapsParams.html">colors, maps and params</a>
     </li>
   </ul>
@@ -151,38 +154,38 @@
     <p>This function prepares gridded data for use with other metis modules.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metis.prepGrid</span>(
-  demeterFolders = <span class='kw'>NULL</span>,
-  demeterScenarios = <span class='kw'>NULL</span>,
-  demeterTimesteps = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(from = <span class='fl'>2005</span>, to = <span class='fl'>2100</span>, by = <span class='fl'>5</span>),
-  demeterUnits = <span class='kw'>NULL</span>,
-  demeterAggType = <span class='st'>"depth"</span>,
-  tethysFolders = <span class='kw'>NULL</span>,
-  tethysScenarios = <span class='kw'>NULL</span>,
-  tethysUnits = <span class='kw'>NULL</span>,
-  tethysFiles = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"wddom"</span>, <span class='st'>"wdelec"</span>, <span class='st'>"wdirr"</span>, <span class='st'>"wdliv"</span>, <span class='st'>"wdmfg"</span>, <span class='st'>"wdmin"</span>, <span class='st'>"wdnonag"</span>,
-    <span class='st'>"wdtotal"</span>),
-  xanthosFiles = <span class='kw'>NULL</span>,
-  xanthosScenarios = <span class='kw'>NULL</span>,
-  xanthosScenarioAssign = <span class='kw'>NULL</span>,
-  xanthosCoordinatesPath = <span class='kw'>NULL</span>,
-  xanthosGridAreaHecsPath = <span class='kw'>NULL</span>,
-  tethysFilesScarcity = <span class='kw'>NULL</span>,
-  xanthosFilesScarcity = <span class='kw'>NULL</span>,
-  spanLowess = <span class='fl'>0.25</span>,
-  popFolder = <span class='kw'>NULL</span>,
-  popFiles = <span class='kw'>NULL</span>,
-  biaFolder = <span class='kw'>NULL</span>,
-  biaFiles = <span class='kw'>NULL</span>,
-  downscaleFolder = <span class='kw'>NULL</span>,
-  downscaleFiles = <span class='kw'>NULL</span>,
-  popUnits = <span class='kw'>NULL</span>,
-  dirOutputs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, sep = <span class='st'>""</span>),
-  folderName = <span class='kw'>NULL</span>,
-  saveFormat = <span class='st'>"rds"</span>,
-  filterYears = <span class='kw'>NULL</span>,
-  diagnosticsOn = <span class='kw'>F</span>
-)</pre>
+    <pre class="usage"><span class='fu'>metis.prepGrid</span><span class='op'>(</span>
+  demeterFolders <span class='op'>=</span> <span class='cn'>NULL</span>,
+  demeterScenarios <span class='op'>=</span> <span class='cn'>NULL</span>,
+  demeterTimesteps <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span>from <span class='op'>=</span> <span class='fl'>2005</span>, to <span class='op'>=</span> <span class='fl'>2100</span>, by <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
+  demeterUnits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  demeterAggType <span class='op'>=</span> <span class='st'>"depth"</span>,
+  tethysFolders <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tethysScenarios <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tethysUnits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tethysFiles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"wddom"</span>, <span class='st'>"wdelec"</span>, <span class='st'>"wdirr"</span>, <span class='st'>"wdliv"</span>, <span class='st'>"wdmfg"</span>, <span class='st'>"wdmin"</span>, <span class='st'>"wdnonag"</span>,
+    <span class='st'>"wdtotal"</span><span class='op'>)</span>,
+  xanthosFiles <span class='op'>=</span> <span class='cn'>NULL</span>,
+  xanthosScenarios <span class='op'>=</span> <span class='cn'>NULL</span>,
+  xanthosScenarioAssign <span class='op'>=</span> <span class='cn'>NULL</span>,
+  xanthosCoordinatesPath <span class='op'>=</span> <span class='cn'>NULL</span>,
+  xanthosGridAreaHecsPath <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tethysFilesScarcity <span class='op'>=</span> <span class='cn'>NULL</span>,
+  xanthosFilesScarcity <span class='op'>=</span> <span class='cn'>NULL</span>,
+  spanLowess <span class='op'>=</span> <span class='fl'>0.25</span>,
+  popFolder <span class='op'>=</span> <span class='cn'>NULL</span>,
+  popFiles <span class='op'>=</span> <span class='cn'>NULL</span>,
+  biaFolder <span class='op'>=</span> <span class='cn'>NULL</span>,
+  biaFiles <span class='op'>=</span> <span class='cn'>NULL</span>,
+  downscaleFolder <span class='op'>=</span> <span class='cn'>NULL</span>,
+  downscaleFiles <span class='op'>=</span> <span class='cn'>NULL</span>,
+  popUnits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  dirOutputs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/outputs"</span>, sep <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>,
+  folderName <span class='op'>=</span> <span class='cn'>NULL</span>,
+  saveFormat <span class='op'>=</span> <span class='st'>"rds"</span>,
+  filterYears <span class='op'>=</span> <span class='cn'>NULL</span>,
+  diagnosticsOn <span class='op'>=</span> <span class='cn'>F</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -324,7 +327,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

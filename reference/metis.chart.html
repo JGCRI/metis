@@ -101,6 +101,9 @@ iIt requires a table in the Metis format. Each figure is accompanied with a csv 
       <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
     <li>
+      <a href="../articles/vignette_metis.grid2poly.html">metis.grid2poly</a>
+    </li>
+    <li>
       <a href="../articles/vignette_colorsMapsParams.html">colors, maps and params</a>
     </li>
   </ul>
@@ -153,71 +156,71 @@ iIt requires a table in the Metis format. Each figure is accompanied with a csv 
 iIt requires a table in the Metis format. Each figure is accompanied with a csv table.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metis.chart</span>(
-  <span class='kw'>data</span>,
-  dataNorm = <span class='kw'>NULL</span>,
-  chartType = <span class='st'>"bar"</span>,
-  position = <span class='st'>"stack"</span>,
-  xData = <span class='st'>"x"</span>,
-  yData = <span class='st'>"value"</span>,
-  class = <span class='st'>"class1"</span>,
-  group = <span class='st'>"scenario"</span>,
-  classPalette = <span class='st'>"classPalette1"</span>,
-  classLabel = <span class='st'>"classLabel1"</span>,
-  color = <span class='kw'>NULL</span>,
-  xLabel = <span class='st'>"xLabel"</span>,
-  yLabel = <span class='st'>"yLabel"</span>,
-  facet_rows = <span class='kw'>NULL</span>,
-  facet_columns = <span class='kw'>NULL</span>,
-  ncolrow = <span class='fl'>6</span>,
-  facetBGColor = <span class='st'>"grey30"</span>,
-  facetBorderColor = <span class='st'>"black"</span>,
-  facetLabelColor = <span class='st'>"white"</span>,
-  facetLabelSize = <span class='fl'>24</span>,
-  scales = <span class='st'>"fixed"</span>,
-  useNewLabels = <span class='fl'>0</span>,
-  units = <span class='st'>"units"</span>,
-  xBreaksMaj = <span class='fl'>10</span>,
-  xBreaksMin = <span class='fl'>5</span>,
-  yBreaksMajn = <span class='fl'>5</span>,
-  yBreaksMinn = <span class='fl'>10</span>,
-  sizeBarLines = <span class='fl'>0.5</span>,
-  sizeLines = <span class='fl'>1.5</span>,
-  yMax = <span class='kw'>NULL</span>,
-  yMin = <span class='kw'>NULL</span>,
-  sectorToOrder = <span class='kw'>NULL</span>,
-  sectorFromOrder = <span class='kw'>NULL</span>,
-  removeCols = <span class='kw'>NULL</span>,
-  bubbleSize = <span class='fl'>10</span>,
-  sankeyAxis1 = <span class='kw'>NULL</span>,
-  sankeyAxis2 = <span class='kw'>NULL</span>,
-  sankeyAxis1Label = <span class='st'>"axis1Label"</span>,
-  sankeyAxis2Label = <span class='st'>"axis2Label"</span>,
-  sankeyGroupColor = <span class='kw'>NULL</span>,
-  printFig = <span class='kw'>T</span>,
-  fileName = <span class='st'>"chart"</span>,
-  title = <span class='kw'>NULL</span>,
-  dirOutputs = <span class='kw'>NULL</span>,
-  folderName = <span class='kw'>NULL</span>,
-  figWidth = <span class='fl'>13</span>,
-  figHeight = <span class='fl'>9</span>,
-  pdfpng = <span class='st'>"png"</span>,
-  sankeyLabelsOn = <span class='fl'>1</span>,
-  xOrder = <span class='kw'>NULL</span>,
-  colOrder1 = <span class='kw'>NULL</span>,
-  colOrderName1 = <span class='kw'>NULL</span>,
-  colOrder2 = <span class='kw'>NULL</span>,
-  colOrderName2 = <span class='kw'>NULL</span>,
-  pointsOn = <span class='fl'>1</span>,
-  pointsSize = <span class='fl'>4</span>,
-  paletteRev = <span class='kw'>T</span>,
-  forceFacets = <span class='kw'>F</span>,
-  legendPosition = <span class='st'>"right"</span>,
-  theme_custom = <span class='kw'>NULL</span>,
-  panelBGcolor = <span class='kw'>NULL</span>,
-  plotBGcolor = <span class='st'>"transparent"</span>,
-  legendBGcolor = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>metis.chart</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  dataNorm <span class='op'>=</span> <span class='cn'>NULL</span>,
+  chartType <span class='op'>=</span> <span class='st'>"bar"</span>,
+  position <span class='op'>=</span> <span class='st'>"stack"</span>,
+  xData <span class='op'>=</span> <span class='st'>"x"</span>,
+  yData <span class='op'>=</span> <span class='st'>"value"</span>,
+  class <span class='op'>=</span> <span class='st'>"class1"</span>,
+  group <span class='op'>=</span> <span class='st'>"scenario"</span>,
+  classPalette <span class='op'>=</span> <span class='st'>"classPalette1"</span>,
+  classLabel <span class='op'>=</span> <span class='st'>"classLabel1"</span>,
+  color <span class='op'>=</span> <span class='cn'>NULL</span>,
+  xLabel <span class='op'>=</span> <span class='st'>"xLabel"</span>,
+  yLabel <span class='op'>=</span> <span class='st'>"yLabel"</span>,
+  facet_rows <span class='op'>=</span> <span class='cn'>NULL</span>,
+  facet_columns <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ncolrow <span class='op'>=</span> <span class='fl'>6</span>,
+  facetBGColor <span class='op'>=</span> <span class='st'>"grey30"</span>,
+  facetBorderColor <span class='op'>=</span> <span class='st'>"black"</span>,
+  facetLabelColor <span class='op'>=</span> <span class='st'>"white"</span>,
+  facetLabelSize <span class='op'>=</span> <span class='fl'>24</span>,
+  scales <span class='op'>=</span> <span class='st'>"fixed"</span>,
+  useNewLabels <span class='op'>=</span> <span class='fl'>0</span>,
+  units <span class='op'>=</span> <span class='st'>"units"</span>,
+  xBreaksMaj <span class='op'>=</span> <span class='fl'>10</span>,
+  xBreaksMin <span class='op'>=</span> <span class='fl'>5</span>,
+  yBreaksMajn <span class='op'>=</span> <span class='fl'>5</span>,
+  yBreaksMinn <span class='op'>=</span> <span class='fl'>10</span>,
+  sizeBarLines <span class='op'>=</span> <span class='fl'>0.5</span>,
+  sizeLines <span class='op'>=</span> <span class='fl'>1.5</span>,
+  yMax <span class='op'>=</span> <span class='cn'>NULL</span>,
+  yMin <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sectorToOrder <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sectorFromOrder <span class='op'>=</span> <span class='cn'>NULL</span>,
+  removeCols <span class='op'>=</span> <span class='cn'>NULL</span>,
+  bubbleSize <span class='op'>=</span> <span class='fl'>10</span>,
+  sankeyAxis1 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sankeyAxis2 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sankeyAxis1Label <span class='op'>=</span> <span class='st'>"axis1Label"</span>,
+  sankeyAxis2Label <span class='op'>=</span> <span class='st'>"axis2Label"</span>,
+  sankeyGroupColor <span class='op'>=</span> <span class='cn'>NULL</span>,
+  printFig <span class='op'>=</span> <span class='cn'>T</span>,
+  fileName <span class='op'>=</span> <span class='st'>"chart"</span>,
+  title <span class='op'>=</span> <span class='cn'>NULL</span>,
+  dirOutputs <span class='op'>=</span> <span class='cn'>NULL</span>,
+  folderName <span class='op'>=</span> <span class='cn'>NULL</span>,
+  figWidth <span class='op'>=</span> <span class='fl'>13</span>,
+  figHeight <span class='op'>=</span> <span class='fl'>9</span>,
+  pdfpng <span class='op'>=</span> <span class='st'>"png"</span>,
+  sankeyLabelsOn <span class='op'>=</span> <span class='fl'>1</span>,
+  xOrder <span class='op'>=</span> <span class='cn'>NULL</span>,
+  colOrder1 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  colOrderName1 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  colOrder2 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  colOrderName2 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pointsOn <span class='op'>=</span> <span class='fl'>1</span>,
+  pointsSize <span class='op'>=</span> <span class='fl'>4</span>,
+  paletteRev <span class='op'>=</span> <span class='cn'>T</span>,
+  forceFacets <span class='op'>=</span> <span class='cn'>F</span>,
+  legendPosition <span class='op'>=</span> <span class='st'>"right"</span>,
+  theme_custom <span class='op'>=</span> <span class='cn'>NULL</span>,
+  panelBGcolor <span class='op'>=</span> <span class='cn'>NULL</span>,
+  plotBGcolor <span class='op'>=</span> <span class='st'>"transparent"</span>,
+  legendBGcolor <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -495,7 +498,7 @@ iIt requires a table in the Metis format. Each figure is accompanied with a csv 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

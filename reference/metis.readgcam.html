@@ -101,6 +101,9 @@ out results into a table ready for plotting." />
       <a href="../articles/vignette_metis.mapsProcess.html">metis.mapsProcess</a>
     </li>
     <li>
+      <a href="../articles/vignette_metis.grid2poly.html">metis.grid2poly</a>
+    </li>
+    <li>
       <a href="../articles/vignette_colorsMapsParams.html">colors, maps and params</a>
     </li>
   </ul>
@@ -153,20 +156,20 @@ out results into a table ready for plotting." />
 out results into a table ready for plotting.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metis.readgcam</span>(
-  gcamdatabase = <span class='kw'>NULL</span>,
-  queryFile = <span class='kw'>NULL</span>,
-  dataProjFile = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs/dataProj.proj"</span>, sep = <span class='st'>""</span>),
-  scenOrigNames = <span class='st'>"All"</span>,
-  scenNewNames = <span class='kw'>NULL</span>,
-  reReadData = <span class='kw'>T</span>,
-  dirOutputs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"/outputs"</span>, sep = <span class='st'>""</span>),
-  regionsSelect = <span class='kw'>NULL</span>,
-  paramsSelect = <span class='st'>"All"</span>,
-  folderName = <span class='kw'>NULL</span>,
-  nameAppend = <span class='st'>""</span>,
-  saveData = <span class='kw'>T</span>
-)</pre>
+    <pre class="usage"><span class='fu'>metis.readgcam</span><span class='op'>(</span>
+  gcamdatabase <span class='op'>=</span> <span class='cn'>NULL</span>,
+  queryFile <span class='op'>=</span> <span class='cn'>NULL</span>,
+  dataProjFile <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/outputs/dataProj.proj"</span>, sep <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>,
+  scenOrigNames <span class='op'>=</span> <span class='st'>"All"</span>,
+  scenNewNames <span class='op'>=</span> <span class='cn'>NULL</span>,
+  reReadData <span class='op'>=</span> <span class='cn'>T</span>,
+  dirOutputs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/outputs"</span>, sep <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>,
+  regionsSelect <span class='op'>=</span> <span class='cn'>NULL</span>,
+  paramsSelect <span class='op'>=</span> <span class='st'>"All"</span>,
+  folderName <span class='op'>=</span> <span class='cn'>NULL</span>,
+  nameAppend <span class='op'>=</span> <span class='st'>""</span>,
+  saveData <span class='op'>=</span> <span class='cn'>T</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -286,7 +289,7 @@ These include data, dataAggParam, dataAggClass1, dataAggClass2.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
