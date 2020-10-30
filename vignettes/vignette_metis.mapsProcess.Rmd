@@ -101,7 +101,6 @@ metis.mapsProcess(polygonTable=data,
 <p align="center" style="font-size:18px;"> *US52* </p>
 <p align="center"> <img src="vignetteFigs/mapsProcess_US52.PNG"></p>
 
-
 ### US 49 Counties
 
 ```{r, eval=F}
@@ -122,6 +121,25 @@ metis.mapsProcess(polygonTable=data,
 <p align="center" style="font-size:18px;"> *US49 Counties* </p>
 <p align="center"> <img src="vignetteFigs/mapsProcess_US49Counties.PNG"></p>
 
+### US 52 Counties
+
+```{r, eval=F}
+library(metis)
+
+unique(mapUS52County@data$subRegion) # Check subRegion Names
+unique(mapUS52County@data$subRegionAlt) # Check Alternate names
+data = data.frame(subRegion=c("Aleutians West_AK","Sabana Grande_PR","Kalawao_HI","Orange_IN","Putnam_FL","Ellis_KS"),
+                  x=c(2050,2050,2050,2050,2050,2050),
+                  value=c(5,10,15,34,2,7))
+metis.mapsProcess(polygonTable=data,
+                  folderName = "vignetteMaps",
+                  nameAppend = "_Alt",
+                  mapTitleOn = F)
+```
+
+
+<p align="center" style="font-size:18px;"> *US52 Counties* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_US52Counties.PNG"></p>
 
 ### GCAM 32 Regions
 
@@ -224,6 +242,46 @@ metis.mapsProcess(polygonTable=data,
 
 <p align="center" style="font-size:18px;"> *Select Pre-Loaded Map* </p>
 <p align="center"> <img src="vignetteFigs/mapsProcess_selectMap.PNG"></p>
+
+
+
+## US 52 Compact
+
+```{r, eval=F}
+library(metis)
+
+data = data.frame(subRegion=c("AK","HI","PR","MO","TX","WY"),
+                  x=c(2050,2050,2050,2050,2050,2050),
+                  value=c(5,10,15,34,2,7))
+metis.mapsProcess(polygonTable=data,
+                  subRegShape=metis::mapUS52Compact,
+                  folderName = "vignetteMaps", mapTitleOn = F)
+```
+
+<p align="center" style="font-size:18px;"> *US52Compact* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_US52Compact.PNG"></p>
+
+## US 52 Counties Compact
+
+```{r, eval=F}
+library(metis)
+
+unique(mapUS52CountyCompact@data$subRegion) # Check subRegion Names
+unique(mapUS52CountyCompact@data$subRegionAlt) # Check Alternate names
+data = data.frame(subRegion=c("Aleutians West_AK","Sabana Grande_PR","Kalawao_HI","Orange_IN","Putnam_FL","Ellis_KS"),
+                  x=c(2050,2050,2050,2050,2050,2050),
+                  value=c(5,10,15,34,2,7))
+metis.mapsProcess(polygonTable=data,
+                  subRegShape=metis::mapUS52CountyCompact,
+                  folderName = "vignetteMaps",
+                  nameAppend = "_Alt",
+                  mapTitleOn = F)
+```
+
+<p align="center" style="font-size:18px;"> *US52 Counties Compact* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_US52CountiesCompact.PNG"></p>
+
+
 
 <!-------------------------->
 <!-------------------------->

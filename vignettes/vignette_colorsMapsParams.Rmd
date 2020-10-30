@@ -91,6 +91,8 @@ metis.colors("pal_ScarcityCat")
 - mapUS49HUC4:                            USGS Hydrological Unit Code (HUC)
 - mapUS52:                                US 52 States Includes Alaska, Hawaii and Puerto Rico as well as DC.
 - mapUS52County:                          US 52 Counties Includes Alaska, Hawaii and Puerto Rico as well as DC.
+- mapUS52Compact:                                US 52 States with Alaska, Hawaii and Puerto Rico repositioned for compact US map.
+- mapUS52CountyCompact:                          US 52 Counties with Alaska, Hawaii and Puerto Rico repositioned for compact US County map.
 - mapUS52HUC2:                            USGS Hydrological Unit Code (HUC)
 - mapUS52HUC4:                            USGS Hydrological Unit Code (HUC)
 

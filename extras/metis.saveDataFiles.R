@@ -1,6 +1,6 @@
 
 library(tibble);library(dplyr);library(rgdal);library(devtools);library(metis); library(tmaptools)
-library(rgeos); library(rgcam)
+library(rgeos); library(rgcam); library(maptools)
 
 redoMaps = F
 
@@ -590,6 +590,54 @@ if(redoMaps){
 }
 
 
+# US 52 with Alaska (AK), Hawaii (HI) and Puerto Rico (PR) shrunken and shifted
+#-------------------
+if(redoMaps){
+us <-metis::mapUS52
+# convert it to Albers equal area
+us_aea <- spTransform(us, CRS("+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs"))
+us_aea@data$id <- rownames(us_aea@data)
+# Extract polygon ID's
+pid <- sapply(slot(us_aea, "polygons"), function(x) slot(x, "ID")); pid
+# Create dataframe with correct rownames
+p.df <- data.frame( us_aea@data,ID=1:length(us_aea), row.names = pid); p.df
+# Try coersion again and check class
+us_aea <- SpatialPolygonsDataFrame(us_aea, p.df); us_aea
+# extract, then rotate, shrink & move alaska (and reset projection)
+# need to use state IDs via # https://www.census.gov/geo/reference/ansi_statetables.html
+alaska <- us_aea[us_aea$STATEFP=="02",]
+alaska <- elide(alaska, rotate=-50)
+alaska <- elide(alaska, scale=max(apply(bbox(alaska), 1, diff)) / 2.3)
+alaska <- elide(alaska, shift=c(-2100000, -2500000))
+proj4string(alaska) <- proj4string(us_aea)
+metis::metis.map(alaska)
+# extract, then rotate & shift hawaii
+hawaii <- us_aea[us_aea$STATEFP=="15",]
+hawaii <- elide(hawaii, rotate=-35)
+hawaii <- elide(hawaii, shift=c(5400000, -1400000))
+proj4string(hawaii) <- proj4string(us_aea)
+metis::metis.map(hawaii)
+# extract, then rotate & shift Puerto Rico
+pr <- us_aea[us_aea$STATEFP=="72",]
+#pr <- elide(pr, rotate=-35)
+pr <- elide(pr, shift=c(-2500000,0))
+proj4string(pr) <- proj4string(us_aea);
+metis::metis.map(pr)
+# remove old states and put new ones back in; note the different order
+# we're also removing puerto rico in this example but you can move it
+# between texas and florida via similar methods to the ones we just used
+mapUS52Compact <- us_aea[!us_aea$STATEFP %in% c("02", "15", "72"),]
+mapUS52Compact <- rbind(mapUS52Compact, alaska, hawaii, pr)
+mapUS52Compact<-spTransform(mapUS52Compact, CRS(proj4string(mapUS52)))
+proj4string(mapUS52Compact)<-proj4string(mapUS52)
+proj4string(mapUS52Compact)
+mapUS52Compact@data <- mapUS52Compact@data %>% dplyr::mutate(subRegionType="US52Compact")
+metis.map(mapUS52Compact, labels=T)
+#---------------------
+use_data(mapUS52Compact, overwrite=T)
+}
+
+
 # US 49 (Excluding Alsaka, Hawaii and Puerto Rico)
 #-------------------
 if(redoMaps){
@@ -657,7 +705,52 @@ if(redoMaps){
   use_data(mapUS52County, overwrite=T)
 }
 
-
+# US 52 Counties with Alaska (AK), Hawaii (HI) and Puerto Rico (PR) shrunken and shifted
+#-------------------
+if(redoMaps){
+  us <-metis::mapUS52County
+  # convert it to Albers equal area
+  us_aea <- spTransform(us, CRS("+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs"))
+  us_aea@data$id <- rownames(us_aea@data)
+  # Extract polygon ID's
+  pid <- sapply(slot(us_aea, "polygons"), function(x) slot(x, "ID")); pid
+  # Create dataframe with correct rownames
+  p.df <- data.frame( us_aea@data,ID=1:length(us_aea), row.names = pid); p.df
+  # Try coersion again and check class
+  us_aea <- SpatialPolygonsDataFrame(us_aea, p.df); us_aea
+  # extract, then rotate, shrink & move alaska (and reset projection)
+  # need to use state IDs via # https://www.census.gov/geo/reference/ansi_statetables.html
+  alaska <- us_aea[us_aea$STATENAME=="Alaska",]
+  alaska <- elide(alaska, rotate=-50)
+  alaska <- elide(alaska, scale=max(apply(bbox(alaska), 1, diff)) / 2.3)
+  alaska <- elide(alaska, shift=c(-2100000, -2500000))
+  proj4string(alaska) <- proj4string(us_aea)
+  metis::metis.map(alaska)
+  # extract, then rotate & shift hawaii
+  hawaii <- us_aea[us_aea$STATENAME=="Hawaii",]
+  hawaii <- elide(hawaii, rotate=-35)
+  hawaii <- elide(hawaii, shift=c(5400000, -1400000))
+  proj4string(hawaii) <- proj4string(us_aea)
+  metis::metis.map(hawaii)
+  # extract, then rotate & shift Puerto Rico
+  pr <- us_aea[us_aea$STATENAME=="Puerto Rico",]
+  #pr <- elide(pr, rotate=-35)
+  pr <- elide(pr, shift=c(-2500000,0))
+  proj4string(pr) <- proj4string(us_aea);
+  metis::metis.map(pr)
+  # remove old states and put new ones back in; note the different order
+  # we're also removing puerto rico in this example but you can move it
+  # between texas and florida via similar methods to the ones we just used
+  mapUS52CountyCompact <- us_aea[!us_aea$STATENAME %in% c("Alaska", "Hawaii", "Puerto Rico"),]
+  mapUS52CountyCompact <- rbind(mapUS52CountyCompact, alaska, hawaii, pr)
+  mapUS52CountyCompact<-spTransform(mapUS52CountyCompact, CRS(proj4string(mapUS52)))
+  proj4string(mapUS52CountyCompact)<-proj4string(mapUS52)
+  proj4string(mapUS52CountyCompact)
+  mapUS52CountyCompact@data <- mapUS52CountyCompact@data %>% dplyr::mutate(subRegionType="US52CountyCompact")
+  metis.map(mapUS52CountyCompact)
+  #---------------------
+  use_data(mapUS52CountyCompact, overwrite=T)
+}
 
 # US 49 Counties
 #-------------------

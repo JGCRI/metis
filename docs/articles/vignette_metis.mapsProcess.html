@@ -241,10 +241,30 @@
 <p align="center">
 <img src="vignetteFigs/mapsProcess_US49Counties.PNG"></p>
 </div>
+<div id="us-52-counties" class="section level3">
+<h3 class="hasAnchor">
+<a href="#us-52-counties" class="anchor"></a>US 52 Counties</h3>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+
+<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapUS52County</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check subRegion Names</span>
+<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapUS52County</span>@<span class="kw">data</span>$<span class="no">subRegionAlt</span>) <span class="co"># Check Alternate names</span>
+<span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Aleutians West_AK"</span>,<span class="st">"Sabana Grande_PR"</span>,<span class="st">"Kalawao_HI"</span>,<span class="st">"Orange_IN"</span>,<span class="st">"Putnam_FL"</span>,<span class="st">"Ellis_KS"</span>),
+                  <span class="kw">x</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>),
+                  <span class="kw">value</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5</span>,<span class="fl">10</span>,<span class="fl">15</span>,<span class="fl">34</span>,<span class="fl">2</span>,<span class="fl">7</span>))
+<span class="fu"><a href="../reference/metis.mapsProcess.html">metis.mapsProcess</a></span>(<span class="kw">polygonTable</span><span class="kw">=</span><span class="no">data</span>,
+                  <span class="kw">folderName</span> <span class="kw">=</span> <span class="st">"vignetteMaps"</span>,
+                  <span class="kw">nameAppend</span> <span class="kw">=</span> <span class="st">"_Alt"</span>,
+                  <span class="kw">mapTitleOn</span> <span class="kw">=</span> <span class="no">F</span>)</pre></body></html></div>
+<p align="center" style="font-size:18px;">
+<em>US52 Counties</em>
+</p>
+<p align="center">
+<img src="vignetteFigs/mapsProcess_US52Counties.PNG"></p>
+</div>
 <div id="gcam-32-regions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#gcam-32-regions" class="anchor"></a>GCAM 32 Regions</h3>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapGCAMBasins</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check Available Regions</span>
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Colombia"</span>,<span class="st">"China"</span>,<span class="st">"EU-12"</span>,<span class="st">"Pakistan"</span>,<span class="st">"Middle East"</span>,<span class="st">"Japan"</span>),
@@ -262,7 +282,7 @@
 <div id="gcam-basins" class="section level3">
 <h3 class="hasAnchor">
 <a href="#gcam-basins" class="anchor"></a>GCAM Basins</h3>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapGCAMBasins</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check Available Regions</span>
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Negro"</span>,<span class="st">"La_plata"</span>,<span class="st">"Great"</span>,<span class="st">"New_England"</span>,<span class="st">"Indus"</span>,<span class="st">"Zambezi"</span>),
@@ -280,7 +300,7 @@
 <div id="world-countries" class="section level3">
 <h3 class="hasAnchor">
 <a href="#world-countries" class="anchor"></a>World Countries</h3>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapCountries</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check Available Regions</span>
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Colombia"</span>,<span class="st">"China"</span>,<span class="st">"India"</span>,<span class="st">"Spain"</span>,<span class="st">"Ghana"</span>,<span class="st">"Iran"</span>),
@@ -298,7 +318,7 @@
 <div id="world-states" class="section level3">
 <h3 class="hasAnchor">
 <a href="#world-states" class="anchor"></a>World States</h3>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapStates</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check Available Regions</span>
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Punjab"</span>,<span class="st">"FL"</span>,<span class="st">"TX"</span>,<span class="st">"Faryab"</span>,<span class="st">"Assam"</span>,<span class="st">"Lac"</span>),
@@ -318,7 +338,7 @@
 <h2 class="hasAnchor">
 <a href="#select-map" class="anchor"></a>Select Map</h2>
 <p>Sometimes subRegions can be present on multiple maps. For example “Colombia”, China" and “India” are all members of <code><a href="../reference/mapGCAMReg32.html">metis::mapGCAMReg32</a></code> as well as <code><a href="../reference/mapCountries.html">metis::mapCountries</a></code>. If a user knows which map they want to plot their data on they should specify the map in the <code>subRegShape</code> argument.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Colombia"</span>,<span class="st">"China"</span>,<span class="st">"India"</span>),
                   <span class="kw">x</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>),
@@ -340,6 +360,44 @@
 </p>
 <p align="center">
 <img src="vignetteFigs/mapsProcess_selectMap.PNG"></p>
+</div>
+<div id="us-52-compact" class="section level2">
+<h2 class="hasAnchor">
+<a href="#us-52-compact" class="anchor"></a>US 52 Compact</h2>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+
+<span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AK"</span>,<span class="st">"HI"</span>,<span class="st">"PR"</span>,<span class="st">"MO"</span>,<span class="st">"TX"</span>,<span class="st">"WY"</span>),
+                  <span class="kw">x</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>),
+                  <span class="kw">value</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5</span>,<span class="fl">10</span>,<span class="fl">15</span>,<span class="fl">34</span>,<span class="fl">2</span>,<span class="fl">7</span>))
+<span class="fu"><a href="../reference/metis.mapsProcess.html">metis.mapsProcess</a></span>(<span class="kw">polygonTable</span><span class="kw">=</span><span class="no">data</span>,
+                  <span class="kw">subRegShape</span><span class="kw">=</span><span class="kw pkg">metis</span><span class="kw ns">::</span><span class="no">mapUS52Compact</span>,
+                  <span class="kw">folderName</span> <span class="kw">=</span> <span class="st">"vignetteMaps"</span>, <span class="kw">mapTitleOn</span> <span class="kw">=</span> <span class="no">F</span>)</pre></body></html></div>
+<p align="center" style="font-size:18px;">
+<em>US52Compact</em>
+</p>
+<p align="center">
+<img src="vignetteFigs/mapsProcess_US52Compact.PNG"></p>
+</div>
+<div id="us-52-counties-compact" class="section level2">
+<h2 class="hasAnchor">
+<a href="#us-52-counties-compact" class="anchor"></a>US 52 Counties Compact</h2>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+
+<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapUS52CountyCompact</span>@<span class="kw">data</span>$<span class="no">subRegion</span>) <span class="co"># Check subRegion Names</span>
+<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">mapUS52CountyCompact</span>@<span class="kw">data</span>$<span class="no">subRegionAlt</span>) <span class="co"># Check Alternate names</span>
+<span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Aleutians West_AK"</span>,<span class="st">"Sabana Grande_PR"</span>,<span class="st">"Kalawao_HI"</span>,<span class="st">"Orange_IN"</span>,<span class="st">"Putnam_FL"</span>,<span class="st">"Ellis_KS"</span>),
+                  <span class="kw">x</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>,<span class="fl">2050</span>),
+                  <span class="kw">value</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5</span>,<span class="fl">10</span>,<span class="fl">15</span>,<span class="fl">34</span>,<span class="fl">2</span>,<span class="fl">7</span>))
+<span class="fu"><a href="../reference/metis.mapsProcess.html">metis.mapsProcess</a></span>(<span class="kw">polygonTable</span><span class="kw">=</span><span class="no">data</span>,
+                  <span class="kw">subRegShape</span><span class="kw">=</span><span class="kw pkg">metis</span><span class="kw ns">::</span><span class="no">mapUS52CountyCompact</span>,
+                  <span class="kw">folderName</span> <span class="kw">=</span> <span class="st">"vignetteMaps"</span>,
+                  <span class="kw">nameAppend</span> <span class="kw">=</span> <span class="st">"_Alt"</span>,
+                  <span class="kw">mapTitleOn</span> <span class="kw">=</span> <span class="no">F</span>)</pre></body></html></div>
+<p align="center" style="font-size:18px;">
+<em>US52 Counties Compact</em>
+</p>
+<p align="center">
+<img src="vignetteFigs/mapsProcess_US52CountiesCompact.PNG"></p>
 <!-------------------------->
 <!-------------------------->
 </div>
@@ -355,7 +413,7 @@
 <div id="subset-existing-shape" class="section level2">
 <h2 class="hasAnchor">
 <a href="#subset-existing-shape" class="anchor"></a>Subset existing shape</h2>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>); <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgdal</span>)
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>); <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgdal</span>)
 
 <span class="no">shapeSubset</span> <span class="kw">&lt;-</span> <span class="kw pkg">metis</span><span class="kw ns">::</span><span class="no"><a href="../reference/mapStates.html">mapStates</a></span> <span class="co"># Read in World States shape file</span>
 <span class="no">shapeSubset</span> <span class="kw">&lt;-</span> <span class="no">shapeSubset</span>[<span class="no">shapeSubset</span>@<span class="kw">data</span>$<span class="no">region</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Colombia"</span>),] <span class="co"># Subset the shapefile to Colombia</span>
@@ -385,7 +443,7 @@
 <h2 class="hasAnchor">
 <a href="#crop-a-shape-to-another-shape" class="anchor"></a>Crop a shape to another shape</h2>
 <p>For example if someone wants to analyze counties in Texas.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>); <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">raster</span>)
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>); <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">raster</span>)
 
 <span class="no">shapeSubRegions</span> <span class="kw">&lt;-</span> <span class="kw pkg">metis</span><span class="kw ns">::</span><span class="no"><a href="../reference/mapUS49County.html">mapUS49County</a></span>
 <span class="no">shapeCropTo</span> <span class="kw">&lt;-</span> <span class="kw pkg">metis</span><span class="kw ns">::</span><span class="no"><a href="../reference/mapUS49.html">mapUS49</a></span>
@@ -424,7 +482,7 @@
 <!-------------------------->
 <!-------------------------->
 <p>By setting the <strong>cropToBoundary</strong> argument to <strong>T</strong> the function will crop your map to the regions with data provided. This is particularly helpful for data plotted on the world maps as shown in the example below:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"India"</span>,<span class="st">"China"</span>), <span class="kw">year</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2010</span>,<span class="fl">2010</span>),<span class="kw">value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">32</span>,<span class="fl">54</span>))
 <span class="fu"><a href="../reference/metis.mapsProcess.html">metis.mapsProcess</a></span>(<span class="kw">polygonTable</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">mapTitleOn</span> <span class="kw">=</span> <span class="no">F</span>, <span class="kw">folderName</span> <span class="kw">=</span> <span class="st">"vignetteMaps"</span>, <span class="kw">cropToBoundary</span><span class="kw">=</span><span class="no">F</span>, )
 <span class="fu"><a href="../reference/metis.mapsProcess.html">metis.mapsProcess</a></span>(<span class="kw">polygonTable</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">mapTitleOn</span> <span class="kw">=</span> <span class="no">F</span>, <span class="kw">folderName</span> <span class="kw">=</span> <span class="st">"vignetteMaps"</span>, <span class="kw">cropToBoundary</span><span class="kw">=</span><span class="no">T</span>,
@@ -445,7 +503,7 @@
 <!-------------------------->
 <!-------------------------->
 <p>By turning on <strong>extension</strong> a background layer will be added to any shape map.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
   <span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"India"</span>,<span class="st">"China"</span>), <span class="kw">year</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2010</span>,<span class="fl">2010</span>), <span class="kw">value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">32</span>,<span class="fl">54</span>))
 <span class="fu"><a href="../reference/metis.mapsProcess.html">metis.mapsProcess</a></span>(<span class="kw">polygonTable</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">mapTitleOn</span><span class="kw">=</span><span class="no">F</span>, <span class="kw">folderName</span> <span class="kw">=</span> <span class="st">"vignetteMaps"</span>,
@@ -472,7 +530,7 @@
 <!-------------------------->
 <!-------------------------->
 <p>With multiple scenarios assigning a <strong>scenRef</strong> calculates the absolute and percentage difference between the different scenarios and stores them in corresponding folders.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>),
                   <span class="kw">scenario</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,
@@ -502,7 +560,7 @@
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>),
                   <span class="kw">scenario</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,
@@ -529,7 +587,7 @@
 <!-------------------------->
 <!-------------------------->
 <p>Can use any <a href="https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf">R color palette</a> or choose from a list of metis color palettes at <a href="https://jgcri.github.io/metis/articles/vignette_colorsMapsParams.html#color-palettes-1">colors, maps and params</a>.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>),
                   <span class="kw">scenario</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,
@@ -555,7 +613,7 @@
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
@@ -590,7 +648,7 @@
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
@@ -623,7 +681,7 @@
 <!-------------------------->
 <p>GCAM results can be read using <a href="https://jgcri.github.io/metis/articles/vignette_metis.readgcam.html">metis.readgcam</a> to get the data directly into the format ready for mapping. In this example the preloaded GCAM output <code><a href="../reference/exampleGCAMproj.html">metis::exampleGCAMproj</a></code> is used to extract data for chosen parameters from the <a href="https://jgcri.github.io/metis/articles/vignette_colorsMapsParams.html#params-1">parameter list</a>. USers can provided a path to their gcam database folder.</p>
 <p><strong>Note: The exampleGCAMproj comes with only a few parameters: “elecByTechTWh”,“pop”,“watWithdrawBySec”,“watSupRunoffBasin”,“landAlloc” and “agProdByCrop”</strong></p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 
 <span class="co"># Read in data from the example Proj file</span>
 <span class="no">data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/metis.readgcam.html">metis.readgcam</a></span> (
