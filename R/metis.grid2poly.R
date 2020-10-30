@@ -74,7 +74,7 @@ metis.grid2poly<- function(gridFiles=NULL,
     gridPolyLoop->dbHead->paramsSub->sqlGrid->gridMetis -> template_subRegional_mapping -> scenarioGCM ->
     scenarioRCP -> class2 -> scenarioPolicy -> valueTethys -> valueXanthos -> scenarioSSP -> gridCellArea ->
     gridCellAreaRatio -> area -> areaPrcnt -> scenarioMultiA -> scenarioMultiB->nrowOrig->nrowNew -> year ->
-    id-> Var1->Var2
+    id-> Var1->Var2-> GridByPolyID
 
   #------------------
   # Function for adding any missing columns if needed

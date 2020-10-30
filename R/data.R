@@ -363,6 +363,18 @@
 #' }
 "mapUS52"
 
+#' US 52 States Compact
+#' Includes Alaska, Hawaii and Puerto Rico as well as DC (Re-positioned)
+#' @source US Census bureau. \url{https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html}
+#' @format A SpatialPolygonsDataFrame
+#' @examples
+#' \dontrun{
+#'  library(sp); library(metis)
+#'  sp::plot(mapUS52Compact)
+#'  head(mapUS52Compact@data)
+#' }
+"mapUS52Compact"
+
 #' US 49 States
 #' Excludes Alaska, Hawaii and Puerto Rico. Includes DC.
 #' @source Made with Natural Earth. \url{http://www5.statcan.gc.ca/cansim/}
@@ -386,6 +398,18 @@
 #'  head(mapUS52County@data)
 #' }
 "mapUS52County"
+
+#' US 52 Counties Compact
+#' Includes Alaska, Hawaii and Puerto Rico as well as DC (Repositioned)
+#' @source US Census bureau. \url{https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html}
+#' @format A SpatialPolygonsDataFrame
+#' @examples
+#' \dontrun{
+#'  library(sp); library(metis)
+#'  sp::plot(mapUS52CountyCompact)
+#'  head(mapUS52CountyCompact@data)
+#' }
+"mapUS52CountyCompact"
 
 #' US 49 States
 #' Excludes Alaska, Hawaii and Puerto Rico. Includes DC.
