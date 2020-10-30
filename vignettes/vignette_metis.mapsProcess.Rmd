@@ -404,37 +404,6 @@ metis.mapsProcess(polygonTable = data, mapTitleOn=F, folderName = "vignetteMaps"
 
 <!-------------------------->
 <!-------------------------->
-# Multi-Scenario Diff plots
-<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
-<!-------------------------->
-<!-------------------------->
-
-With multiple scenarios assigning a **scenRef** calculates the absolute and percentage difference between the different scenarios and stores them in corresponding folders.
-
-```{r, eval=F}
-library(metis)
-data = data.frame(subRegion = c("Austria","Spain", "Italy", "Germany","Greece",
-                                "Austria","Spain", "Italy", "Germany","Greece"),
-                  scenario = c("scen1","scen1","scen1","scen1","scen1",
-                               "scen2","scen2","scen2","scen2","scen2"),
-                  year = rep(2010,10),
-                  value = c(32, 38, 54, 63, 24,
-                            37, 53, 23, 12, 45))
-metis.mapsProcess(polygonTable = data, folderName ="multiScenario", 
-                  cropToBoundary=T, extension = T, scenRef="scen1")
-```
-
-
-<p align="center" style="font-size:18px;"> *Multi-scenario* </p>
-<p align="center"> <img src="vignetteFigs/mapsProcess_multiScenario.PNG"></p>
-
-<p align="center" style="font-size:18px;"> *Multi-scenario Folders* </p>
-<p align="center"> <img src="vignetteFigs/mapsProcess_multiScenarioStructure.PNG"></p>
-
-
-
-<!-------------------------->
-<!-------------------------->
 # Scale Range
 <p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
@@ -553,6 +522,69 @@ metis.mapsProcess(polygonTable = data, folderName ="multiClass",
 <p align="center"> <img src="vignetteFigs/mapsProcess_multiClass.PNG"></p>
 
 
+<!-------------------------->
+<!-------------------------->
+# Multi-Scenario Diff plots
+<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+
+With multiple scenarios assigning a **scenRef** calculates the absolute and percentage difference between the different scenarios and stores them in corresponding folders.
+
+```{r, eval=F}
+library(metis)
+data = data.frame(subRegion = c("Austria","Spain", "Italy", "Germany","Greece",
+                                "Austria","Spain", "Italy", "Germany","Greece",
+                                "Austria","Spain", "Italy", "Germany","Greece"),
+                  scenario = c("scen1","scen1","scen1","scen1","scen1",
+                               "scen2","scen2","scen2","scen2","scen2",
+                               "scen3","scen3","scen3","scen3","scen3"),
+                  year = rep(2010,15),
+                  value = c(32, 38, 54, 63, 24,
+                            37, 53, 23, 12, 45,
+                            40, 44, 12, 30, 99))
+metis.mapsProcess(polygonTable = data, folderName ="multiScenario", 
+                  cropToBoundary=T, extension = T, scenRef="scen1", scenDiff=c("scen3"))
+```
+
+
+<p align="center" style="font-size:18px;"> *Multi-Scenario Diff* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_multiScenario.PNG"></p>
+
+<p align="center" style="font-size:18px;"> *Multi-Scenario Diff Folders* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_multiScenarioStructure.PNG"></p>
+
+
+<!-------------------------->
+<!-------------------------->
+# Multi-Year Diff plots
+<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+
+With multiple years assigning a **xRef** calculates the absolute and percentage difference between the different years and stores them in corresponding folders.
+
+```{r, eval=F}
+library(metis)
+data = data.frame(subRegion = c("Austria","Spain", "Italy", "Germany","Greece",
+                                "Austria","Spain", "Italy", "Germany","Greece",
+                                "Austria","Spain", "Italy", "Germany","Greece"),
+                  year = c(rep(2010,5),rep(2020,5),rep(2030,5)),
+                  value = c(32, 38, 54, 63, 24,
+                            37, 53, 23, 12, 45,
+                            40, 45, 12, 50, 63))
+metis.mapsProcess(polygonTable = data, folderName ="multiYear", 
+                  cropToBoundary=T, extension = T, xRef=2010, xDiff = c(2020))
+```
+
+
+<p align="center" style="font-size:18px;"> *Multi-Year Diff* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_multiYear.PNG"></p>
+
+<p align="center" style="font-size:18px;"> *Multi-Year Diff Folders* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_multiYearStructure.PNG"></p>
+
+
 
 <!-------------------------->
 <!-------------------------->
@@ -589,12 +621,6 @@ metis.mapsProcess(polygonTable = dfParam, folderName ="GCAMbyParam",
                   scenRef="SSP3", scaleRange = data.frame(param=c("landAlloc", "elecByTechTWh","watSupRunoffBasin","pop"),
                                                           min = c(0,0,0,0),
                                                           max = c(10000,15000,2000,2000)))
-
-# polygonTable = dfParam; folderName ="GCAMbyParam";
-#                   cropToBoundary=T; extension = T; xRange = c(2010,2020,2030,2040);
-#                   scenRef="SSP3"; scaleRange = data.frame(param=c("landAlloc", "elecByTechTWh","watSupRunoffBasin","pop"),
-#                                                           min = c(0,0,0,0),
-#                                                           max = c(10000,15000,2000,2000))
 
 # Plot data aggregated by Class1
 metis.mapsProcess(polygonTable = dfClass1, folderName ="GCAMbyClass", 
