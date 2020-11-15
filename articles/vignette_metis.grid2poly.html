@@ -101,8 +101,7 @@
 
       
 
-      </header><script src="vignette_metis.grid2poly_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="vignette_metis.grid2poly_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="vignette_metis.grid2poly_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="vignette_metis.grid2poly_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>metis.grid2poly</h1>
@@ -177,8 +176,8 @@
 <!-------------------------->
 <!-------------------------->
 <p>If data is in multiple columns please convert to the long format and label the different categories in the “class” column as shown in the example below for the “value1” and “value2” columns.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis">metis</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis">metis</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
 
 <span class="co"># Generate example grid data for Peru (lat from -18.25 to -0.25, lon from -81.25 to -68.75)</span>
 <span class="va">lat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="op">-</span><span class="fl">18.25</span>,to<span class="op">=</span><span class="op">-</span><span class="fl">0.25</span>,by<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>; <span class="va">lat</span>
@@ -213,7 +212,7 @@
                               aggType <span class="op">=</span> <span class="st">"depth"</span>,
                               subRegCol<span class="op">=</span><span class="st">"subRegion"</span>,
                               nameAppend<span class="op">=</span><span class="st">"_examplePeruDepth"</span>,
-                              folderName<span class="op">=</span><span class="st">"vignetteGrid2Poly"</span><span class="op">)</span></pre></div>
+                              folderName<span class="op">=</span><span class="st">"vignetteGrid2Poly"</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
