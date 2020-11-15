@@ -67,7 +67,7 @@ metis.colors <- function(palx=NULL) {
                           "#ABDDA4", "#66C2A5", "#3288BD", "#5E4FA2"),100)
 
     # Basic Colors
-    pal_Basic <- add.alpha(rep(c("firebrick3", "forestgreen", "dodgerblue3","black","darkgoldenrod3","darkorchid3","gray50", "darkturquoise"),100),alpha=0.8)
+    pal_Basic <- add.alpha(rep(c("firebrick3","dodgerblue3","forestgreen","black","darkgoldenrod3","darkorchid3","gray50", "darkturquoise"),100),alpha=0.8)
 
     pal_hot <- c('#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026',"#4d0000")
     pal_wet <- c('#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b','#00004d')
