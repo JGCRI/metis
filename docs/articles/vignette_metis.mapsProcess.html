@@ -522,59 +522,6 @@
 <!-------------------------->
 <!-------------------------->
 </div>
-<div id="scale-range" class="section level1">
-<h1 class="hasAnchor">
-<a href="#scale-range" class="anchor"></a>Scale Range</h1>
-<p align="center">
-<img src="vignetteFigs/metisHeaderThick.PNG"></p>
-<!-------------------------->
-<!-------------------------->
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
-<span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
-                                <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>),
-                  <span class="kw">scenario</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,
-                               <span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>),
-                  <span class="kw">year</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">2010</span>,<span class="fl">10</span>),
-                  <span class="kw">value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">32</span>, <span class="fl">38</span>, <span class="fl">54</span>, <span class="fl">63</span>, <span class="fl">24</span>,
-                            <span class="fl">37</span>, <span class="fl">53</span>, <span class="fl">23</span>, <span class="fl">12</span>, <span class="fl">45</span>))
-<span class="fu"><a href="../reference/metis.mapsProcess.html">metis.mapsProcess</a></span>(<span class="kw">polygonTable</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">folderName</span> <span class="kw">=</span><span class="st">"scaleRange"</span>,
-                  <span class="kw">cropToBoundary</span><span class="kw">=</span><span class="no">T</span>, <span class="kw">extension</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">scenRef</span><span class="kw">=</span><span class="st">"scen1"</span>,
-                  <span class="kw">scaleRange</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">50</span>), <span class="kw">scaleRangeDiffAbs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">100</span>,<span class="fl">100</span>), <span class="kw">scaleRangeDiffPrcnt</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">60</span>,<span class="fl">60</span>))</pre></body></html></div>
-<p align="center" style="font-size:18px;">
-<em>Scale Range</em>
-</p>
-<p align="center">
-<img src="vignetteFigs/mapsProcess_scaleRange.PNG"></p>
-<!-------------------------->
-<!-------------------------->
-</div>
-<div id="color-palettes" class="section level1">
-<h1 class="hasAnchor">
-<a href="#color-palettes" class="anchor"></a>Color Palettes</h1>
-<p align="center">
-<img src="vignetteFigs/metisHeaderThick.PNG"></p>
-<!-------------------------->
-<!-------------------------->
-<p>Can use any <a href="https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf">R color palette</a> or choose from a list of metis color palettes at <a href="https://jgcri.github.io/metis/articles/vignette_colorsMapsParams.html#color-palettes-1">colors, maps and params</a>.</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
-<span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
-                                <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>),
-                  <span class="kw">scenario</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,
-                               <span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>),
-                  <span class="kw">year</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">2010</span>,<span class="fl">10</span>),
-                  <span class="kw">value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">32</span>, <span class="fl">38</span>, <span class="fl">54</span>, <span class="fl">63</span>, <span class="fl">24</span>,
-                            <span class="fl">37</span>, <span class="fl">53</span>, <span class="fl">23</span>, <span class="fl">12</span>, <span class="fl">45</span>))
-<span class="fu"><a href="../reference/metis.mapsProcess.html">metis.mapsProcess</a></span>(<span class="kw">polygonTable</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">folderName</span> <span class="kw">=</span><span class="st">"colorPalettes"</span>,
-                  <span class="kw">cropToBoundary</span><span class="kw">=</span><span class="no">T</span>, <span class="kw">extension</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">scenRef</span><span class="kw">=</span><span class="st">"scen1"</span>,
-                  <span class="kw">classPalette</span> <span class="kw">=</span> <span class="st">"pal_wet"</span>, <span class="kw">classPaletteDiff</span> <span class="kw">=</span> <span class="st">"pal_div_BrGn"</span>)</pre></body></html></div>
-<p align="center" style="font-size:18px;">
-<em>Color Palettes</em>
-</p>
-<p align="center">
-<img src="vignetteFigs/mapsProcess_colorPalettes.PNG"></p>
-<!-------------------------->
-<!-------------------------->
-</div>
 <div id="multi-year-animations" class="section level1">
 <h1 class="hasAnchor">
 <a href="#multi-year-animations" class="anchor"></a>Multi-Year &amp; Animations</h1>
@@ -582,7 +529,7 @@
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
@@ -617,7 +564,7 @@
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
@@ -649,7 +596,7 @@
 <!-------------------------->
 <!-------------------------->
 <p>With multiple scenarios assigning a <strong>scenRef</strong> calculates the absolute and percentage difference between the different scenarios and stores them in corresponding folders.</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>),
@@ -683,7 +630,7 @@
 <!-------------------------->
 <!-------------------------->
 <p>With multiple years assigning a <strong>xRef</strong> calculates the absolute and percentage difference between the different years and stores them in corresponding folders.</p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
 <span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
                                 <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>),
@@ -703,6 +650,59 @@
 </p>
 <p align="center">
 <img src="vignetteFigs/mapsProcess_multiYearStructure.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+</div>
+<div id="scale-range" class="section level1">
+<h1 class="hasAnchor">
+<a href="#scale-range" class="anchor"></a>Scale Range</h1>
+<p align="center">
+<img src="vignetteFigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
+                                <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>),
+                  <span class="kw">scenario</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,
+                               <span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>),
+                  <span class="kw">year</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">2010</span>,<span class="fl">10</span>),
+                  <span class="kw">value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">32</span>, <span class="fl">38</span>, <span class="fl">54</span>, <span class="fl">63</span>, <span class="fl">24</span>,
+                            <span class="fl">37</span>, <span class="fl">53</span>, <span class="fl">23</span>, <span class="fl">12</span>, <span class="fl">45</span>))
+<span class="fu"><a href="../reference/metis.mapsProcess.html">metis.mapsProcess</a></span>(<span class="kw">polygonTable</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">folderName</span> <span class="kw">=</span><span class="st">"scaleRange"</span>,
+                  <span class="kw">cropToBoundary</span><span class="kw">=</span><span class="no">T</span>, <span class="kw">extension</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">scenRef</span><span class="kw">=</span><span class="st">"scen1"</span>,
+                  <span class="kw">scaleRange</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">50</span>), <span class="kw">scaleRangeDiffAbs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">100</span>,<span class="fl">100</span>), <span class="kw">scaleRangeDiffPrcnt</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">60</span>,<span class="fl">60</span>))</pre></body></html></div>
+<p align="center" style="font-size:18px;">
+<em>Scale Range</em>
+</p>
+<p align="center">
+<img src="vignetteFigs/mapsProcess_scaleRange.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+</div>
+<div id="color-palettes" class="section level1">
+<h1 class="hasAnchor">
+<a href="#color-palettes" class="anchor"></a>Color Palettes</h1>
+<p align="center">
+<img src="vignetteFigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+<p>Can use any <a href="https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf">R color palette</a> or choose from a list of metis color palettes at <a href="https://jgcri.github.io/metis/articles/vignette_colorsMapsParams.html#color-palettes-1">colors, maps and params</a>.</p>
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metis</span>)
+<span class="no">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">subRegion</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>,
+                                <span class="st">"Austria"</span>,<span class="st">"Spain"</span>, <span class="st">"Italy"</span>, <span class="st">"Germany"</span>,<span class="st">"Greece"</span>),
+                  <span class="kw">scenario</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,<span class="st">"scen1"</span>,
+                               <span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>,<span class="st">"scen2"</span>),
+                  <span class="kw">year</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">2010</span>,<span class="fl">10</span>),
+                  <span class="kw">value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">32</span>, <span class="fl">38</span>, <span class="fl">54</span>, <span class="fl">63</span>, <span class="fl">24</span>,
+                            <span class="fl">37</span>, <span class="fl">53</span>, <span class="fl">23</span>, <span class="fl">12</span>, <span class="fl">45</span>))
+<span class="fu"><a href="../reference/metis.mapsProcess.html">metis.mapsProcess</a></span>(<span class="kw">polygonTable</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">folderName</span> <span class="kw">=</span><span class="st">"colorPalettes"</span>,
+                  <span class="kw">cropToBoundary</span><span class="kw">=</span><span class="no">T</span>, <span class="kw">extension</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">scenRef</span><span class="kw">=</span><span class="st">"scen1"</span>,
+                  <span class="kw">classPalette</span> <span class="kw">=</span> <span class="st">"pal_wet"</span>, <span class="kw">classPaletteDiff</span> <span class="kw">=</span> <span class="st">"pal_div_BrGn"</span>)</pre></body></html></div>
+<p align="center" style="font-size:18px;">
+<em>Color Palettes</em>
+</p>
+<p align="center">
+<img src="vignetteFigs/mapsProcess_colorPalettes.PNG"></p>
 <!-------------------------->
 <!-------------------------->
 </div>
