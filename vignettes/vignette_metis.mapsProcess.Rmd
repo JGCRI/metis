@@ -404,61 +404,6 @@ metis.mapsProcess(polygonTable = data, mapTitleOn=F, folderName = "vignetteMaps"
 
 <!-------------------------->
 <!-------------------------->
-# Scale Range
-<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
-<!-------------------------->
-<!-------------------------->
-
-```{r, eval=F}
-library(metis)
-data = data.frame(subRegion = c("Austria","Spain", "Italy", "Germany","Greece",
-                                "Austria","Spain", "Italy", "Germany","Greece"),
-                  scenario = c("scen1","scen1","scen1","scen1","scen1",
-                               "scen2","scen2","scen2","scen2","scen2"),
-                  year = rep(2010,10),
-                  value = c(32, 38, 54, 63, 24,
-                            37, 53, 23, 12, 45))
-metis.mapsProcess(polygonTable = data, folderName ="scaleRange", 
-                  cropToBoundary=T, extension = T, scenRef="scen1", 
-                  scaleRange = c(0,50), scaleRangeDiffAbs = c(-100,100), scaleRangeDiffPrcnt = c(-60,60))
-```
-
-
-<p align="center" style="font-size:18px;"> *Scale Range* </p>
-<p align="center"> <img src="vignetteFigs/mapsProcess_scaleRange.PNG"></p>
-
-
-<!-------------------------->
-<!-------------------------->
-# Color Palettes
-<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
-<!-------------------------->
-<!-------------------------->
-
-Can use any [R color palette](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf) or choose from a list of metis color palettes at [colors, maps and params](https://jgcri.github.io/metis/articles/vignette_colorsMapsParams.html#color-palettes-1).
-
-```{r, eval=F}
-library(metis)
-data = data.frame(subRegion = c("Austria","Spain", "Italy", "Germany","Greece",
-                                "Austria","Spain", "Italy", "Germany","Greece"),
-                  scenario = c("scen1","scen1","scen1","scen1","scen1",
-                               "scen2","scen2","scen2","scen2","scen2"),
-                  year = rep(2010,10),
-                  value = c(32, 38, 54, 63, 24,
-                            37, 53, 23, 12, 45))
-metis.mapsProcess(polygonTable = data, folderName ="colorPalettes", 
-                  cropToBoundary=T, extension = T, scenRef="scen1",
-                  classPalette = "pal_wet", classPaletteDiff = "pal_div_BrGn")
-
-```
-
-
-<p align="center" style="font-size:18px;"> *Color Palettes* </p>
-<p align="center"> <img src="vignetteFigs/mapsProcess_colorPalettes.PNG"></p>
-
-
-<!-------------------------->
-<!-------------------------->
 # Multi-Year & Animations
 <p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
@@ -583,6 +528,60 @@ metis.mapsProcess(polygonTable = data, folderName ="multiYear",
 
 <p align="center" style="font-size:18px;"> *Multi-Year Diff Folders* </p>
 <p align="center"> <img src="vignetteFigs/mapsProcess_multiYearStructure.PNG"></p>
+
+<!-------------------------->
+<!-------------------------->
+# Scale Range
+<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+
+```{r, eval=F}
+library(metis)
+data = data.frame(subRegion = c("Austria","Spain", "Italy", "Germany","Greece",
+                                "Austria","Spain", "Italy", "Germany","Greece"),
+                  scenario = c("scen1","scen1","scen1","scen1","scen1",
+                               "scen2","scen2","scen2","scen2","scen2"),
+                  year = rep(2010,10),
+                  value = c(32, 38, 54, 63, 24,
+                            37, 53, 23, 12, 45))
+metis.mapsProcess(polygonTable = data, folderName ="scaleRange", 
+                  cropToBoundary=T, extension = T, scenRef="scen1", 
+                  scaleRange = c(0,50), scaleRangeDiffAbs = c(-100,100), scaleRangeDiffPrcnt = c(-60,60))
+```
+
+
+<p align="center" style="font-size:18px;"> *Scale Range* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_scaleRange.PNG"></p>
+
+
+<!-------------------------->
+<!-------------------------->
+# Color Palettes
+<p align="center"> <img src="vignetteFigs/metisHeaderThick.PNG"></p>
+<!-------------------------->
+<!-------------------------->
+
+Can use any [R color palette](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf) or choose from a list of metis color palettes at [colors, maps and params](https://jgcri.github.io/metis/articles/vignette_colorsMapsParams.html#color-palettes-1).
+
+```{r, eval=F}
+library(metis)
+data = data.frame(subRegion = c("Austria","Spain", "Italy", "Germany","Greece",
+                                "Austria","Spain", "Italy", "Germany","Greece"),
+                  scenario = c("scen1","scen1","scen1","scen1","scen1",
+                               "scen2","scen2","scen2","scen2","scen2"),
+                  year = rep(2010,10),
+                  value = c(32, 38, 54, 63, 24,
+                            37, 53, 23, 12, 45))
+metis.mapsProcess(polygonTable = data, folderName ="colorPalettes", 
+                  cropToBoundary=T, extension = T, scenRef="scen1",
+                  classPalette = "pal_wet", classPaletteDiff = "pal_div_BrGn")
+
+```
+
+
+<p align="center" style="font-size:18px;"> *Color Palettes* </p>
+<p align="center"> <img src="vignetteFigs/mapsProcess_colorPalettes.PNG"></p>
 
 
 
