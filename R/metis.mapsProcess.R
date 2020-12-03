@@ -3272,10 +3272,11 @@ metis.mapsProcess<-function(polygonTable=NULL,
               subRegShape <- subRegShapeOrig
             }
 
+            if(!is.null(subRegShape)){
             if(subRegColOrig %in% names(subRegShape@data)){
               subRegShape@data <- subRegShape@data %>%
                 dplyr::rename(subRegion=!!as.name(subRegColOrig))
-            }
+            }}
 
             if(runSection){
 
