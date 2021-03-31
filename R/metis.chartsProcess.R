@@ -154,8 +154,8 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
                        pointsOn=T,
                        multiPlotOn=F,
                        multiPlotFigsOnly=F,
-                       multiPlotFigLabels=T,
-                       multiPlotAllYears=F,
+                       multiPlotFigLabels=F,
+                       multiPlotAllYears=T,
                        mp = list(paramSet=list(c("energy"),
                                                 c("water")),
                                   param=list(c("elecCapByFuel","elecByTechTWh"),
@@ -216,6 +216,7 @@ metis.chartsProcess <- function(dataTables=NULL,rTable=NULL,scenRef=NULL,
   # legendPosition="right"
   # figWidth=13
   # figHeight=9
+  # multiPlotFigLabels=F
   # multiPlotOn=F
   # multiPlotAllYears=F
   # mp = list(paramSet=list(c("energy"),
@@ -323,9 +324,9 @@ addMissing<-function(data){
     data<-data%>%dplyr::mutate(class1="class1")}else{data<-data%>%dplyr::mutate(class1=class)}}else{
       data <- data %>% dplyr::rename(!!"class1" := (names(data)[grepl("\\<class1\\>",names(data),ignore.case = T)])[1])
       data<-data%>%dplyr::mutate(class1=dplyr::case_when(is.na(class1)~"class1",TRUE~class1))}
-  if(!any(grepl("\\<classlabel1\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(classLabel1="classLabel1")}else{
+  if(!any(grepl("\\<classlabel1\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(classLabel1="")}else{
     data <- data %>% dplyr::rename(!!"classLabel1" := (names(data)[grepl("\\<classlabel1\\>",names(data),ignore.case = T)])[1])
-    data<-data%>%dplyr::mutate(classLabel1=dplyr::case_when(is.na(classLabel1)~"classLabel1",TRUE~classLabel1))}
+    data<-data%>%dplyr::mutate(classLabel1=dplyr::case_when(is.na(classLabel1)|classLabel1=="classLabel1"~"",TRUE~classLabel1))}
   if(!any(grepl("\\<classpalette1\\>",names(data),ignore.case = T))){ if(is.null(classPalette)){data<-data%>%dplyr::mutate(classPalette1="pal_metis")}else{
     data<-data%>%dplyr::mutate(classPalette1=classPalette)}}else{
       data <- data %>% dplyr::rename(!!"classPalette1" := (names(data)[grepl("\\<classpalette1\\>",names(data),ignore.case = T)])[1])
@@ -333,9 +334,9 @@ addMissing<-function(data){
   if(!any(grepl("\\<class2\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(class2="class2")}else{
     data <- data %>% dplyr::rename(!!"class2" := (names(data)[grepl("\\<class2\\>",names(data),ignore.case = T)])[1])
     data<-data%>%dplyr::mutate(class2=dplyr::case_when(is.na(class2)~"class2",TRUE~class2))}
-  if(!any(grepl("\\<classlabel2\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(classLabel2="classLabel2")}else{
+  if(!any(grepl("\\<classlabel2\\>",names(data),ignore.case = T))){data<-data%>%dplyr::mutate(classLabel2="")}else{
     data <- data %>% dplyr::rename(!!"classLabel2" := (names(data)[grepl("\\<classlabel2\\>",names(data),ignore.case = T)])[1])
-    data<-data%>%dplyr::mutate(classLabel2=dplyr::case_when(is.na(classLabel2)~"classLabel2",TRUE~classLabel2))}
+    data<-data%>%dplyr::mutate(classLabel2=dplyr::case_when(is.na(classLabel2)|classLabel2=="classLabel2"~"",TRUE~classLabel2))}
   if(!any(grepl("\\<classpalette2\\>",names(data),ignore.case = T))){ if(is.null(classPalette)){data<-data%>%dplyr::mutate(classPalette2="pal_metis")}else{
     data<-data%>%dplyr::mutate(classPalette2=classPalette)}}else{
       data <- data %>% dplyr::rename(!!"classPalette2" := (names(data)[grepl("\\<classpalette2\\>",names(data),ignore.case = T)])[1])
@@ -377,13 +378,6 @@ for(i in dataTables){
   if(file.exists(i)){
   tblNew<-utils::read.csv(paste(i), stringsAsFactors = F, encoding="Latin-1")%>%tibble::as_tibble()
   if("class"%in%names(tblNew) & !"class1"%in%names(tblNew)){tblNew<-tblNew%>%dplyr::mutate(class1=class)}
-
-  # Join relevant colors and classes using the mapping file if it exists
-  if(file.exists(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""))){
-    map<-utils::read.csv(paste(getwd(),"/dataFiles/mapping/template_Regional_mapping.csv", sep = ""), stringsAsFactors = F, encoding="Latin-1")%>%tibble::as_tibble()
-    for(missing_i in c( "classLabel1","classPalette1","classLabel2","classPalette2")){
-      if(!missing_i %in% names(tblNew))
-    tblNew<-tblNew%>%dplyr::left_join(map%>%dplyr::select(param,missing_i)%>%dplyr::distinct(),by=c("param"))}}
 
    tbl<-dplyr::bind_rows(tbl,tblNew)
    } else {stop(paste(i," does not exist. Please run metis.readgcam.R to generate corresponding table."))}
@@ -1645,12 +1639,16 @@ if(scenarioCompareOnly!=1){
       }};mpdf
 
     # Subset to available plots
-    print(paste("Params selected but not available for multiPlot are:"))
-    print(paste(unique(mpdf$param)[!unique(mpdf$param) %in% unique(unlist(mpParamPlots$param))],collapse=", "))
+    print(paste("Params selected for scenario: ",j,", region: ",i,", but not available for multiPlot are:",sep=""))
+    paramsUnavail <- unique(unlist(mpParamPlots$param))[unique(unlist(mpParamPlots$param)) %in%
+                                                          unique((tbl%>%filter(region==i,
+                                                                       scenario==j))$param)]
+    print(paste(unique(mpdf$param)[!unique(mpdf$param) %in% paramsUnavail],collapse=", "))
     print(paste("Params available for multiPlot are:"))
-    print(paste(unique(mpdf$param)[unique(mpdf$param) %in% unique(unlist(mpParamPlots$param))],collapse=", "))
+    print(paste(unique(mpdf$param)[unique(mpdf$param) %in% paramsUnavail],collapse=", "))
+    paramsAvail <-unique(mpdf$param)[unique(mpdf$param) %in% paramsUnavail]; paramsAvail
 
-    mpdf <- mpdf %>% dplyr::filter(param %in% unique(unlist(mpParamPlots$param))); mpdf
+    mpdf <- mpdf %>% dplyr::filter(param %in% paramsAvail); mpdf
 
 
     if(nrow(mpdf)>0){
@@ -3251,7 +3249,7 @@ if(T){
       metis.printPdfPng(figure=figure,
                         dir=paste(dirOutputs, "/", folderName, "/Charts","/", i,"/multiPlot", sep = ""),
                         filename=paste(paramSet_i,"_",i,"_mplot_SumLineAbs",sep=""),
-                        figWidth=figWidth*max(ncol_i,3)*0.5,
+                        figWidth=figWidth*max(ncol_i,3)*0.75,
                         figHeight=figHeight*(max(nrow_i))*1,
                         pdfpng="png")
 

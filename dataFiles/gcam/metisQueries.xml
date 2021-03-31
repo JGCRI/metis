@@ -491,26 +491,6 @@
 </supplyDemandQuery>
       </aQuery>
 
-<aQuery>
-		<all-regions/>
-  <emissionsQueryBuilder title="CO2 emissions by sector">
-            <axis1 name="sector">sector</axis1>
-            <axis2 name="Year">emissions</axis2>
-            <xPath buildList="true" dataName="emissions" group="false" sumAll="false">*[@type='sector']//CO2/emissions/node()</xPath>
-            <comments/>
-         </emissionsQueryBuilder>
-     </aQuery>
-
-<aQuery>
-		<all-regions/>
-         <emissionsQueryBuilder title="nonCO2 emissions by sector">
-            <axis1 name="GHG">GHG</axis1>
-            <axis2 name="Year">emissions</axis2>
-            <xPath buildList="true" dataName="emissions" group="false" sumAll="false">*[@type = 'sector']//*[@type = 'GHG']/emissions/node()</xPath>
-            <comments/>
-         </emissionsQueryBuilder>
-     </aQuery>
-
    	<aQuery>
       <all-regions/>
       <gdpQueryBuilder title="GDP per capita MER by region">
@@ -1222,5 +1202,143 @@
                <comments/>
             </supplyDemandQuery>
     </aQuery>
+
+ <aQuery>
+  <all-regions/>
+  <region name="HI"/>
+  <region name="DE"/>
+  <region name="TX"/>
+  <region name="MA"/>
+  <region name="MD"/>
+  <region name="ME"/>
+  <region name="IA"/>
+  <region name="ID"/>
+  <region name="MI"/>
+  <region name="UT"/>
+  <region name="MN"/>
+  <region name="MO"/>
+  <region name="IL"/>
+  <region name="IN"/>
+  <region name="MS"/>
+  <region name="MT"/>
+  <region name="AK"/>
+  <region name="VA"/>
+  <region name="AL"/>
+  <region name="AR"/>
+  <region name="NC"/>
+  <region name="ND"/>
+  <region name="RI"/>
+  <region name="NE"/>
+  <region name="AZ"/>
+  <region name="NH"/>
+  <region name="NJ"/>
+  <region name="VT"/>
+  <region name="NM"/>
+  <region name="FL"/>
+  <region name="NV"/>
+  <region name="WA"/>
+  <region name="NY"/>
+  <region name="SC"/>
+  <region name="SD"/>
+  <region name="WI"/>
+  <region name="OH"/>
+  <region name="GA"/>
+  <region name="OK"/>
+  <region name="CA"/>
+  <region name="WV"/>
+  <region name="WY"/>
+  <region name="OR"/>
+  <region name="KS"/>
+  <region name="CO"/>
+  <region name="KY"/>
+  <region name="CT"/>
+  <region name="PA"/>
+  <region name="LA"/>
+  <region name="TN"/>
+  <region name="DC"/>
+  <region name="USA"/>
+  <region name="Alaska grid"/>
+  <region name="California grid"/>
+  <region name="Central East grid"/>
+  <region name="Central Northeast grid"/>
+  <region name="Central Northwest grid"/>
+  <region name="Central Southwest grid"/>
+  <region name="Florida grid"/>
+  <region name="Hawaii grid"/>
+  <region name="Mid-Atlantic grid"/>
+  <region name="New England grid"/>
+  <region name="New York grid"/>
+  <region name="Northwest grid"/>
+  <region name="Southeast grid"/>
+  <region name="Southwest grid"/>
+  <region name="Texas grid"/>
+  <emissionsQueryBuilder title="nonCO2 emissions by sector USA">
+   <axis1 name="GHG">GHG</axis1>
+   <axis2 name="Year">emissions</axis2>
+   <xPath buildList="true" dataName="emissions" group="false" sumAll="false">*[@type = 'sector']//*[@type = 'GHG']/emissions/node()</xPath>
+   <comments/>
+  </emissionsQueryBuilder>
+ </aQuery>
+
+   <aQuery>
+  <all-regions/>
+	<region name="Africa_Eastern"/>
+	<region name="Africa_Northern"/>
+	<region name="Africa_Southern"/>
+	<region name="Africa_Western"/>
+	<region name="Argentina"/>
+	<region name="Australia_NZ"/>
+	<region name="Brazil"/>
+	<region name="Canada"/>
+	<region name="Central America and Caribbean"/>
+	<region name="Central Asia"/>
+	<region name="China"/>
+	<region name="Colombia"/>
+	<region name="EU-12"/>
+	<region name="EU-15"/>
+	<region name="Europe_Eastern"/>
+	<region name="Europe_Non_EU"/>
+	<region name="European Free Trade Association"/>
+	<region name="India"/>
+	<region name="Indonesia"/>
+	<region name="Japan"/>
+	<region name="Mexico"/>
+	<region name="Middle East"/>
+	<region name="Pakistan"/>
+	<region name="Russia"/>
+	<region name="South Africa"/>
+	<region name="South America_Northern"/>
+	<region name="South America_Southern"/>
+	<region name="South Asia"/>
+	<region name="South Korea"/>
+	<region name="Southeast Asia"/>
+	<region name="Taiwan"/>
+  <emissionsQueryBuilder title="nonCO2 emissions by sector USA nonUS">
+   <axis1 name="GHG">GHG</axis1>
+   <axis2 name="Year">emissions</axis2>
+   <xPath buildList="true" dataName="emissions" group="false" sumAll="false">*[@type = 'sector']//*[@type = 'GHG']/emissions/node()</xPath>
+   <comments/>
+  </emissionsQueryBuilder>
+ </aQuery>
+
+  <aQuery>
+  <all-regions/>
+  <emissionsQueryBuilder title="nonCO2 emissions by sector">
+   <axis1 name="GHG">GHG</axis1>
+   <axis2 name="Year">emissions</axis2>
+   <xPath buildList="true" dataName="emissions" group="false" sumAll="false">*[@type = 'sector']//*[@type = 'GHG']/emissions/node()</xPath>
+   <comments/>
+  </emissionsQueryBuilder>
+ </aQuery>
+
+  <aQuery>
+  <all-regions/>
+  <emissionsQueryBuilder title="CO2 emissions by sector">
+   <axis1 name="sector">sector</axis1>
+   <axis2 name="Year">emissions</axis2>
+   <xPath buildList="true" dataName="emissions" group="false" sumAll="false">*[@type='sector']//CO2/emissions/node()</xPath>
+   <comments/>
+  </emissionsQueryBuilder>
+ </aQuery>
 
 </queries>

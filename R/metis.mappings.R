@@ -56,7 +56,7 @@ metis.mappings <- function(name=NULL) {
     # Electricity
     "electricity","elecByTechTWh", c("elec gen by gen tech cogen USA","elec gen by gen tech USA","elec gen by gen tech and cooling tech"),"pal_hot",
     "electricity","elecCapByFuel", c("elec gen by gen tech cogen USA","elec gen by gen tech USA","elec gen by gen tech and cooling tech"),"pal_hot",
-    "electricity","elecFinalBySecTWh", "Final energy by detailed end-use sector and fuel","pal_hot",
+    "electricity","elecFinalBySecTWh",  "inputs by tech","pal_hot",
     "electricity","elecFinalByFuelTWh", "Final energy by detailed end-use sector and fuel","pal_hot",
     "electricity","elecNewCapCost", c("elec gen by gen tech and cooling tech and vintage","Electricity generation by aggregate technology"),"pal_hot",
     "electricity","elecNewCapGW", c("elec gen by gen tech and cooling tech and vintage","Electricity generation by aggregate technology"),"pal_hot",
@@ -69,8 +69,10 @@ metis.mappings <- function(name=NULL) {
     # Transport
     "transport","transportPassengerVMTByMode", "transport service output by mode","pal_hot",
     "transport","transportFreightVMTByMode", "transport service output by mode","pal_hot",
-    "transport","transportPassengerVMTByFuel","transport service output by tech (new)","pal_hot",
-    "transport","transportFreightVMTByFuel", "transport service output by tech (new)","pal_hot",
+    "transport","transportPassengerVMTByFuelNew","transport service output by tech (new)","pal_hot",
+    "transport","transportFreightVMTByFuelNew", "transport service output by tech (new)","pal_hot",
+    "transport","transportPassengerVMTByFuel","transport service output by tech","pal_hot",
+    "transport","transportFreightVMTByFuel", "transport service output by tech","pal_hot",
     # Water
     "water","watConsumBySec", "water consumption by state, sector, basin (includes desal)","pal_wet",
     "water","watWithdrawBySec", "water withdrawals by state, sector, basin (includes desal)","pal_wet",
@@ -108,8 +110,16 @@ metis.mappings <- function(name=NULL) {
     # Emissions
     "emissions","emissNonCO2BySectorGWPAR5", "nonCO2 emissions by sector","pal_hot",
     "emissions","emissNonCO2BySectorGTPAR5", "nonCO2 emissions by sector","pal_hot",
+    "emissions","emissNonCO2BySectorGWPAR5", "nonCO2 emissions by sector USA","pal_hot",
+    "emissions","emissNonCO2BySectorGTPAR5", "nonCO2 emissions by sector USA","pal_hot",
     "emissions","emissNonCO2BySectorOrigUnits", "nonCO2 emissions by sector","pal_hot",
     "emissions","emissLUC", "Land Use Change Emission (future)","pal_hot",
+    "emissions","emissCO2BySector", "CO2 emissions by sector","pal_hot",
+    "emissions","emissCO2CumGlobal2010to2100", "CO2 emissions by sector","pal_hot",
+    "emissions","emissCO2CumGlobal2010to2100RCP", "CO2 emissions by sector","pal_hot",
+    "emissions","emissNonCO2BySector", "nonCO2 emissions by sector USA","pal_hot",
+    "emissions","emissNonCO2BySector", "nonCO2 emissions by sector USA nonUS","pal_hot",
+    "emissions","emissNonCO2BySector", "nonCO2 emissions by sector","pal_hot",
     "emissions","emissCO2BySectorNoBio", "CO2 emissions by sector (no bio)","pal_hot",
     "emissions","emissNonCO2ByResProdGWPAR5", "nonCO2 emissions by resource production","pal_hot",
     "emissions","emissMethaneBySourceGWPAR5", "nonCO2 emissions by sector","pal_hot",

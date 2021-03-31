@@ -1,6 +1,6 @@
 
 library(tibble);library(dplyr);library(rgdal);library(devtools);library(metis); library(tmaptools)
-library(rgeos); library(rgcam); library(maptools)
+library(rgeos); library(rgcam); library(maptools); library(usethis)
 
 redoMaps = F
 
@@ -1082,7 +1082,7 @@ use_data(exampleMapDataClass, overwrite=T)
 #-------------------
 
 # Metis XMl Query Files
-xmlFilePath = paste(getwd(),"/dataFiles/gcam/metisQueries.xml",sep="")
+xmlFilePath = paste(getwd(),"/inst/extdata/queries.xml",sep="")
 xmlfile <- XML::xmlTreeParse(xmlFilePath)
 xmltop <- XML::xmlRoot(xmlfile)
 top <- XML::xmlNode(XML::xmlName(xmltop))

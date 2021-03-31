@@ -370,6 +370,9 @@ print(paste("Starting metis.ic.R...",sep=""))
            }
          }; matcol
 
+         icOrder <- c(icSectors,"other")
+         icOrder <- icOrder[icOrder %in% unique(c(datax_comb$from,datax_comb$to))]
+
          grDevices::png(paste(dir,"/",subRegType_i,subRegion_i,scenario_i,x_i,"_",rank_print_file,"_chord.png",sep=""),
              res=300,width=4,height=4,units="in")
          graphics::par(mar=c(0,0,3,0))
@@ -377,7 +380,7 @@ print(paste("Starting metis.ic.R...",sep=""))
                       scale=T,
                       reduce=-0.01,
                       directional=1,
-                      order=unique(c(datax_comb$from,datax_comb$to)),
+                      order=icOrder,
                       transparency = 0.25,
                       direction.type = c("arrows","diffHeight"), diffHeight  = -0.04,
                       link.arr.type = "big.arrow", link.sort = TRUE, link.largest.ontop = TRUE,
