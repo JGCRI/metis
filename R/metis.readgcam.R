@@ -3391,7 +3391,7 @@ paramx <- "emissCO2BySectorNoBio"
                         origScen, origQuery, origUnits, origX)%>%dplyr::summarize_at(dplyr::vars("value","origValue"),list(~sum(.,na.rm = T)))%>%dplyr::ungroup()%>%
         dplyr::filter(!is.na(value))
     } else {
-      tblUSANonUS <- tibble::tibble()
+      tblUSAnonUS <- tibble::tibble()
       # if(queryx %in% queriesSelectx){print(paste("Query '", queryx, "' not found in database", sep = ""))}
     }
 
