@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,13 +41,13 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa fas fa-book"></span>
+    <span class="fas fa-book"></span>
      
     Guides
      
@@ -68,26 +70,26 @@
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     Reference
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     News
   </a>
 </li>
 <li>
-  <a href="https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf">cheatsheet</a>
+  <a href="https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf" class="external-link">cheatsheet</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/JGCRI/metis/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/JGCRI/metis/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -107,7 +109,7 @@
       <h1 data-toc-skip>metis.grid2poly</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/JGCRI/metis/blob/master/vignettes/vignette_metis.grid2poly.Rmd"><code>vignettes/vignette_metis.grid2poly.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/JGCRI/metis/blob/master/vignettes/vignette_metis.grid2poly.Rmd" class="external-link"><code>vignettes/vignette_metis.grid2poly.Rmd</code></a></small>
       <div class="hidden name"><code>vignette_metis.grid2poly.Rmd</code></div>
 
     </div>
@@ -124,11 +126,11 @@
 <!-------------------------->
 <!-------------------------->
 <ul>
-<li>Github: <a href="https://github.com/JGCRI/metis" class="uri">https://github.com/JGCRI/metis</a>
+<li>Github: <a href="https://github.com/JGCRI/metis" class="external-link uri">https://github.com/JGCRI/metis</a>
 </li>
-<li>Webpage: <a href="https://jgcri.github.io/metis/" class="uri">https://jgcri.github.io/metis/</a>
+<li>Webpage: <a href="https://jgcri.github.io/metis/" class="external-link uri">https://jgcri.github.io/metis/</a>
 </li>
-<li>Cheatsheet: <a href="https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf" class="uri">https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf</a>
+<li>Cheatsheet: <a href="https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf" class="external-link uri">https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf</a>
 </li>
 </ul>
 <!--------------------------><!-------------------------->
@@ -177,26 +179,26 @@
 <!-------------------------->
 <p>If data is in multiple columns please convert to the long format and label the different categories in the “class” column as shown in the example below for the “value1” and “value2” columns.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis">metis</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis" class="external-link">metis</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>
 
 <span class="co"># Generate example grid data for Peru (lat from -18.25 to -0.25, lon from -81.25 to -68.75)</span>
-<span class="va">lat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="op">-</span><span class="fl">18.25</span>,to<span class="op">=</span><span class="op">-</span><span class="fl">0.25</span>,by<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>; <span class="va">lat</span>
-<span class="va">lon</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="op">-</span><span class="fl">81.25</span>,to<span class="op">=</span><span class="op">-</span><span class="fl">68.75</span>,by<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>; <span class="va">lon</span>
-<span class="va">gridx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span><span class="va">lat</span>,<span class="va">lon</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>value1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">lat</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span>,
-                value2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">lat</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>lat<span class="op">=</span><span class="va">Var1</span>,lon<span class="op">=</span><span class="va">Var2</span><span class="op">)</span>; <span class="va">gridx</span><span class="op">%&gt;%</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">lat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="op">-</span><span class="fl">18.25</span>,to<span class="op">=</span><span class="op">-</span><span class="fl">0.25</span>,by<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>; <span class="va">lat</span>
+<span class="va">lon</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="op">-</span><span class="fl">81.25</span>,to<span class="op">=</span><span class="op">-</span><span class="fl">68.75</span>,by<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>; <span class="va">lon</span>
+<span class="va">gridx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span><span class="va">lat</span>,<span class="va">lon</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>value1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lat</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span>,
+                value2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lat</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>lat<span class="op">=</span><span class="va">Var1</span>,lon<span class="op">=</span><span class="va">Var2</span><span class="op">)</span>; <span class="va">gridx</span><span class="op">%&gt;%</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Switch data to long format with columns: lat, lon, class, value </span>
 <span class="co"># Other optional columns (scenario, param, x or year)</span>
 <span class="co"># All other columns will be treated as characters</span>
 <span class="va">gridx</span> <span class="op">&lt;-</span> <span class="va">gridx</span> <span class="op">%&gt;%</span>
-  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span><span class="op">(</span>key<span class="op">=</span><span class="st">"class"</span>,value<span class="op">=</span><span class="st">"value"</span>,<span class="op">-</span><span class="va">lat</span>,<span class="op">-</span><span class="va">lon</span><span class="op">)</span>; <span class="va">gridx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html" class="external-link">gather</a></span><span class="op">(</span>key<span class="op">=</span><span class="st">"class"</span>,value<span class="op">=</span><span class="st">"value"</span>,<span class="op">-</span><span class="va">lat</span>,<span class="op">-</span><span class="va">lon</span><span class="op">)</span>; <span class="va">gridx</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Shape: Peru States</span>
 <span class="va">shapex</span> <span class="op">&lt;-</span> <span class="fu">metis</span><span class="fu">::</span><span class="va"><a href="../reference/mapStates.html">mapStates</a></span>
-<span class="va">shapex</span> <span class="op">&lt;-</span> <span class="va">shapex</span><span class="op">[</span><span class="va">shapex</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">region</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Peru"</span><span class="op">)</span>,<span class="op">]</span>
-<span class="va">shapex</span><span class="op">@</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html">droplevels</a></span><span class="op">(</span><span class="va">shapex</span><span class="op">@</span><span class="va">data</span><span class="op">)</span>
+<span class="va">shapex</span> <span class="op">&lt;-</span> <span class="va">shapex</span><span class="op">[</span><span class="va">shapex</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">region</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Peru"</span><span class="op">)</span>,<span class="op">]</span>
+<span class="va">shapex</span><span class="op">@</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="va">shapex</span><span class="op">@</span><span class="va">data</span><span class="op">)</span>
 <span class="fu"><a href="../reference/metis.map.html">metis.map</a></span><span class="op">(</span><span class="va">shapex</span><span class="op">)</span>
 
 <span class="co"># Run metis.grid2poly</span>
@@ -227,11 +229,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Zarrar Khan, Tom Wild, Chris Vernon.</p>
+  <p></p>
+<p>Developed by Zarrar Khan, Tom Wild, Chris Vernon.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
@@ -239,6 +243,8 @@
 
   
 
+
+  
 
   </body>
 </html>

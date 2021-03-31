@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,13 +41,13 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa fas fa-book"></span>
+    <span class="fas fa-book"></span>
      
     Guides
      
@@ -68,26 +70,26 @@
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     Reference
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     News
   </a>
 </li>
 <li>
-  <a href="https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf">cheatsheet</a>
+  <a href="https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf" class="external-link">cheatsheet</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/JGCRI/metis/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/JGCRI/metis/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -107,7 +109,7 @@
       <h1 data-toc-skip>metisColorsMapsParams</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/JGCRI/metis/blob/master/vignettes/vignette_colorsMapsParams.Rmd"><code>vignettes/vignette_colorsMapsParams.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/JGCRI/metis/blob/master/vignettes/vignette_colorsMapsParams.Rmd" class="external-link"><code>vignettes/vignette_colorsMapsParams.Rmd</code></a></small>
       <div class="hidden name"><code>vignette_colorsMapsParams.Rmd</code></div>
 
     </div>
@@ -124,11 +126,11 @@
 <!-------------------------->
 <!-------------------------->
 <ul>
-<li>Github: <a href="https://github.com/JGCRI/metis" class="uri">https://github.com/JGCRI/metis</a>
+<li>Github: <a href="https://github.com/JGCRI/metis" class="external-link uri">https://github.com/JGCRI/metis</a>
 </li>
-<li>Webpage: <a href="https://jgcri.github.io/metis/" class="uri">https://jgcri.github.io/metis/</a>
+<li>Webpage: <a href="https://jgcri.github.io/metis/" class="external-link uri">https://jgcri.github.io/metis/</a>
 </li>
-<li>Cheatsheet: <a href="https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf" class="uri">https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf</a>
+<li>Cheatsheet: <a href="https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf" class="external-link uri">https://github.com/JGCRI/metis/blob/master/metisCheatsheet.pdf</a>
 </li>
 </ul>
 <!--------------------------><!-------------------------->
@@ -161,9 +163,9 @@
 </ul>
 <p>The following commands can be used to view the list of metis palettes as well as to visualize a particular palette and get a list of its colors:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis">metis</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis" class="external-link">metis</a></span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># View all palettes</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># View all palettes</span>
 <span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span><span class="op">(</span><span class="st">"pal_hot"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span><span class="op">(</span><span class="st">"pal_div_BrGn"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/metis.colors.html">metis.colors</a></span><span class="op">(</span><span class="st">"pal_ScarcityCat"</span><span class="op">)</span></code></pre></div>
@@ -212,9 +214,9 @@
 </ul>
 <p>The following commands can be used to view a particular map and the data contained in the shape file:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis">metis</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis" class="external-link">metis</a></span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mapUS49</span><span class="op">@</span><span class="va">data</span><span class="op">)</span> <span class="co"># To View data in shapefile</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mapUS49</span><span class="op">@</span><span class="va">data</span><span class="op">)</span> <span class="co"># To View data in shapefile</span>
 <span class="fu">metis</span><span class="fu">::</span><span class="fu"><a href="../reference/metis.map.html">metis.map</a></span><span class="op">(</span><span class="va">mapUS49</span>, labels<span class="op">=</span><span class="cn">T</span><span class="op">)</span></code></pre></div>
 <p align="center" style="font-size:18px;">
 <em>Example View of Pre-loaded Map for US49</em>
@@ -231,11 +233,11 @@
 <img src="vignetteFigs/metisHeaderThick.PNG"></p>
 <!-------------------------->
 <!-------------------------->
-<p>The following command will provide an updated list of params and paramSets to be used in <a href="https://jgcri.github.io/metis/articles/vignette_metis.readgcam.html">metis.readgcam</a>.</p>
+<p>The following command will provide an updated list of params and paramSets to be used in <a href="https://jgcri.github.io/metis/articles/vignette_metis.readgcam.html" class="external-link">metis.readgcam</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis">metis</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/metis" class="external-link">metis</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/metis.mappings.html">metis.mappings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">mapParamQuery</span><span class="op">%&gt;%</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">query</span>,<span class="op">-</span><span class="va">mapPalette</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../reference/metis.mappings.html">metis.mappings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">mapParamQuery</span><span class="op">%&gt;%</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">query</span>,<span class="op">-</span><span class="va">mapPalette</span><span class="op">)</span></code></pre></div>
 <p align="center" style="font-size:18px;">
 <em>List of key Params for readGCAM</em>
 </p>
@@ -255,11 +257,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Zarrar Khan, Tom Wild, Chris Vernon.</p>
+  <p></p>
+<p>Developed by Zarrar Khan, Tom Wild, Chris Vernon.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
@@ -267,6 +271,8 @@
 
   
 
+
+  
 
   </body>
 </html>

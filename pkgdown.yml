@@ -1,11 +1,11 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1.9000
-pkgdown_sha: 6094ac3dd80a1f3f1d4e2f47d0ed4716d51362b0
+pkgdown: 1.6.1.9001
+pkgdown_sha: 38f0d8a2db6e26027bc4da8ded7d035e4ddaf987
 articles:
   vignette_colorsMapsParams: vignette_colorsMapsParams.html
   vignette_metis.chartsProcess: vignette_metis.chartsProcess.html
   vignette_metis.grid2poly: vignette_metis.grid2poly.html
   vignette_metis.mapsProcess: vignette_metis.mapsProcess.html
   vignette_metis.readgcam: vignette_metis.readgcam.html
-last_built: 2020-12-03T23:35Z
+last_built: 2021-03-31T13:32Z
 
