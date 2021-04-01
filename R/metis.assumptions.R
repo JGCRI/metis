@@ -100,16 +100,6 @@ metis.assumptions <- function(name=NULL) {
 
 
   #--------------------------------------------------------------------------------------------------
-  # Data source for capacity factor:
-  # https://hub.globalccsinstitute.com/publications/renewable-power-generation-costs-2012-overview/52-capacity-factors-hydropower
-  # Data source for hydropower capital cost
-  # https://hub.globalccsinstitute.com/publications/renewable-power-generation-costs-2012-overview/51-hydropower-capital-costs
-  #--------------------------------------------------------------------------------------------------
-
-  hydro_cap_fact <- 0.38
-  hydro_cost_GW <- 1.5
-
-  #--------------------------------------------------------------------------------------------------
   # GCAM USA Regions
   #--------------------------------------------------------------------------------------------------
   US52 <- c("AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA",
@@ -138,8 +128,8 @@ metis.assumptions <- function(name=NULL) {
     convGW_kW=convGW_kW,
     conv_C_CO2=conv_C_CO2,
     conv_MT_GT=conv_MT_GT,
-    hydro_cap_fact=hydro_cap_fact,
-    hydro_cost_GW=hydro_cost_GW,
+    # hydro_cap_fact=hydro_cap_fact,
+    # hydro_cost_GW=hydro_cost_GW,
     convUSD_1975_2010=convUSD_1975_2010,
     convUSD_1975_2015=convUSD_1975_2015,
     conv1975USDperGJ22017USDperMWh=conv1975USDperGJ22017USDperMWh,
