@@ -15,6 +15,19 @@
 #' }
 "xmlMetisQueries"
 
+# metis.readgcam internal files
+
+#' data_capfactors
+#'
+#' @source paste(getwd(),"/dataFiles/gcam/capacity_factor_by_elec_gen_subsector.csv",sep="")
+#' @format .csv
+#' @examples
+#' \dontrun{
+#'  library(metis);
+#'  metis::data_capfactors
+#' }
+"data_capfactors"
+
 
 #-----------------
 # Example data files to test metis
