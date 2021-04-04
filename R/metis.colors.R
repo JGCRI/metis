@@ -148,6 +148,7 @@ metis.colors <- function(palx=NULL) {
       `Biomass CCS` = "#88c892",
       `d biomass CCS` = "#88c892",
       `h Bioenergy w/CCS` = '#88c892',
+      `Bioenergy CCS` = '#88c892',
       `j traditional bioenergy` = "chartreuse3",
       `traditional bioenergy` = "chartreuse3",
       `biomass (IGCC CCS)` = "olivedrab2",
